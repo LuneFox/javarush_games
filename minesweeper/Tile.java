@@ -1,0 +1,143 @@
+package com.javarush.games.minesweeper;
+
+import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.Image;
+import com.javarush.games.minesweeper.graphics.Sprite;
+
+import java.util.HashMap;
+
+/**
+ * Logical game element and a cell for drawing sprites inside.
+ * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
+ */
+
+class Tile extends Image {
+    private static HashMap<Integer, Bitmap> spriteNumbers = new HashMap<>();
+    int x;
+    int y;                          // logical position
+    private Sprite sprite;          // a sprite can be assigned to a tile to be drawn over it
+    boolean isMine;                 // this tile contains mine
+    boolean isOpen;                 // this tile has been revealed
+    boolean isShielded;             // this tile has been blocked with shield
+    boolean isScanned;              // this tile has been revealed with scanner
+    boolean isFlag;                 // this tile was flagged by player
+    boolean isDestroyed;            // who did this? :(
+    int countMineNeighbors;         // how many neighboring tiles have mines
+
+    static {
+        spriteNumbers.put(0, Bitmap.BOARD_NONE);
+        spriteNumbers.put(1, Bitmap.BOARD_1);
+        spriteNumbers.put(2, Bitmap.BOARD_2);
+        spriteNumbers.put(3, Bitmap.BOARD_3);
+        spriteNumbers.put(4, Bitmap.BOARD_4);
+        spriteNumbers.put(5, Bitmap.BOARD_5);
+        spriteNumbers.put(6, Bitmap.BOARD_6);
+        spriteNumbers.put(7, Bitmap.BOARD_7);
+        spriteNumbers.put(8, Bitmap.BOARD_8);
+        spriteNumbers.put(9, Bitmap.BOARD_9);
+    }
+
+    Tile(Bitmap bitmap, Game game, int x, int y, boolean isMine) {
+        super(bitmap, game, x * 10, y * 10);
+        this.x = x;
+        this.y = y;
+        this.isMine = isMine;
+        if (isMine) {
+            assignSprite(Bitmap.BOARD_MINE);
+        } else {
+            assignSprite(Bitmap.BOARD_NONE);
+        }
+        colors = new Color[]{Color.NONE, Color.SADDLEBROWN, Color.BLANCHEDALMOND, Color.BURLYWOOD, Color.BLACK, Color.GRAY};
+        draw();
+    }
+
+    // draws a button in a pushed state and reveals its sprite (number or icon), used while opening a tile
+    void push() {
+        if (isDestroyed) {
+            bitmapData = assignBitmap(Bitmap.TILE_DESTROYED);
+        } else {
+            bitmapData = assignBitmap(Bitmap.TILE_OPENED);
+        }
+        if (isFlag && isMine && !isDestroyed) {
+            replaceColor(Color.GREEN, 3); // marks right guesses on game over
+        } else if (isShielded) {
+            replaceColor(Color.YELLOW, 3); // shielded remain yellow on push
+        } else if (isScanned) {
+            replaceColor(Color.ORANGE, 3); // scanned remain light blue
+        } else if (isDestroyed) {
+            replaceColor(Color.DARKSLATEGRAY, 3); // boom
+        } else {
+            replaceColor(Color.SANDYBROWN, 3);
+        }
+        draw();
+        drawSprite();
+    }
+
+    // assigns a sprite to this tile by its name
+    void assignSprite(Bitmap bitmap) {
+        this.sprite = new Sprite(bitmap, GAME, x * 10, y * 10);
+    }
+
+    // assigns a number sprites to this tile, used to draw the number of mines nearby
+    void assignSprite(int number) {
+        this.sprite = new Sprite(spriteNumbers.get(number), GAME, x * 10, y * 10);
+    }
+
+    // draws an assigned sprite over the tile
+    void drawSprite() {
+        sprite.draw();
+    }
+
+    // assigns an empty sprite and draws the tile again to remove whatever is drawn over it
+    void eraseSprite() {
+        this.sprite = new Sprite(Bitmap.BOARD_NONE, GAME, x * 10, y * 10);
+        draw();
+    }
+
+    protected int[][] assignBitmap(Bitmap bitmap) {
+        switch (bitmap) {
+            case TILE_CLOSED:
+                return new int[][]{
+                        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
+                        {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                };
+            case TILE_OPENED:
+                return new int[][]{
+                        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+                        {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
+                };
+            case TILE_DESTROYED:
+                return new int[][]{
+                        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+                        {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
+                        {2, 1, 5, 3, 3, 3, 5, 3, 3, 5},
+                        {2, 1, 3, 5, 4, 3, 5, 3, 5, 3},
+                        {2, 1, 5, 3, 3, 4, 4, 3, 4, 3},
+                        {2, 1, 5, 4, 5, 4, 4, 3, 5, 3},
+                        {2, 1, 3, 5, 3, 5, 3, 5, 3, 3},
+                        {2, 1, 3, 5, 4, 3, 5, 4, 5, 5},
+                        {2, 1, 3, 5, 3, 3, 3, 5, 3, 3},
+                        {2, 1, 5, 3, 3, 3, 3, 5, 3, 3},
+                };
+            default:
+                return new int[10][10];
+        }
+    }
+}
