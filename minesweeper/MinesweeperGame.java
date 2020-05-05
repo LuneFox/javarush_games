@@ -49,7 +49,7 @@ public class MinesweeperGame extends Game {
     boolean isStopped;
     boolean lastResultIsVictory;
     boolean allowCountMoves;
-    boolean allowFlagExplosion;
+    boolean flagExplosionPossible;
 
     @Override
     public void initialize() {
@@ -375,35 +375,32 @@ public class MinesweeperGame extends Game {
     }
 
     private void destroyTile(int x, int y) {
-        if (allowCountMoves) {
-            countMoves++;
-        } // counts move only after physical click
+        countMoves();
         Tile cell = GAME_TILES[y][x];
-        if (isStopped || cell.isOpen || (cell.isFlag && !allowFlagExplosion) || cell.isDestroyed) {
+
+        if (tileDestructionImpossible(cell)) {
             return;
         }
+
         cell.isDestroyed = true;
         cell.isOpen = true;
-        countClosedTiles--;
         cell.assignSprite(Bitmap.BOARD_NONE);
         cell.push();
-        if (countMoves >= shopGoldenShovel.expireMove) {
-            shopGoldenShovel.isActivated = false;
-        }
-        if (countMoves >= shopLuckyDice.expireMove) {
-            shopLuckyDice.isActivated = false;
-        }
+        countClosedTiles--;
+
+        deactivateExpiredItems();
+
         if (cell.isFlag) {
             shopFlag.count++;   // returning exploded flag to the shop
             cell.isFlag = false;
         }
         if (cell.isMine) { // recursive explosions
-            allowFlagExplosion = true;
             cell.isMine = false;
-            countMinesOnField--;
             allowCountMoves = false;
+            countMinesOnField--;
+            flagExplosionPossible = true;
             List<Tile> neighbors = getNeighbors(cell);
-            for (Tile neighbor : neighbors) {
+            for (Tile neighbor : neighbors) { // recursion
                 if (neighbor.isMine) {
                     destroyTile(neighbor.x, neighbor.y);
                 }
@@ -413,6 +410,27 @@ public class MinesweeperGame extends Game {
             if (countClosedTiles == countMinesOnField) {
                 win();
             }
+        }
+    }
+
+    private boolean tileDestructionImpossible(Tile cell) {
+        boolean activated = (cell.isOpen || cell.isDestroyed);
+        boolean noFlagDestruction = (cell.isFlag && !flagExplosionPossible);
+        return (isStopped || activated || noFlagDestruction);
+    }
+
+    private void countMoves() {
+        if (allowCountMoves) { // counts moves only after physical click
+            countMoves++;
+        }
+    }
+
+    private void deactivateExpiredItems() {
+        if (countMoves >= shopGoldenShovel.expireMove) {
+            shopGoldenShovel.isActivated = false;
+        }
+        if (countMoves >= shopLuckyDice.expireMove) {
+            shopLuckyDice.isActivated = false;
         }
     }
 

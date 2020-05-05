@@ -26,7 +26,7 @@ class InputEvent {
         }
         ScreenType screen = Screen.get();
         GAME.allowCountMoves = true;
-        GAME.allowFlagExplosion = false;
+        GAME.flagExplosionPossible = false;
         switch (screen) {
             case MAIN_MENU:
                 leftClickInMenu(x, y);
