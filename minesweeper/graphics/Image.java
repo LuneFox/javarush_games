@@ -115,46 +115,62 @@ public abstract class Image {
     } // returns a map of numbers from strings
 
     final int[][] createWindowBitmap(int sizeX, int sizeY, boolean shadow, boolean frame) {
-        if (shadow) {
+        if (shadow) { // if shadow is ON, image is 1 px taller and wider
             sizeX++;
             sizeY++;
         }
+
         int[][] window = new int[sizeY][sizeX];
+        generateWindowBackground(window, sizeX, sizeY);
+
+        if (shadow) {
+            generateWindowShadow(window, sizeX, sizeY);
+        }
+
+        if (frame) {
+            generateWindowFrame(window, sizeX, sizeY, shadow);
+        }
+
+        return window;
+    }
+
+    private void generateWindowShadow(int[][] window, int sizeX, int sizeY) {
+        for (int x = 0; x < sizeX; x++) {
+            if (x == 0) {
+                window[sizeY - 1][x] = 0;
+            } else {
+                window[sizeY - 1][x] = 2;
+            }
+        }
+        for (int y = 0; y < sizeY; y++) {
+            if (y == 0) {
+                window[y][sizeX - 1] = 0;
+            } else {
+                window[y][sizeX - 1] = 2;
+            }
+        }
+    }
+
+    private void generateWindowFrame(int[][] window, int sizeX, int sizeY, boolean shadow) {
+        if (shadow) { // if shadow is drawn, shrink the drawing zone back to normal window
+            sizeX--;
+            sizeY--;
+        }
+        for (int x = 0; x < sizeX; x++) {
+            window[0][x] = 3;
+            window[sizeY - 1][x] = 3;
+        }
+        for (int y = 0; y < sizeY; y++) {
+            window[y][0] = 3;
+            window[y][sizeX - 1] = 3;
+        }
+    }
+
+    private void generateWindowBackground(int[][] window, int sizeX, int sizeY) {
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 window[y][x] = 1;
             }
         }
-        if (shadow) {
-            for (int x = 0; x < sizeX; x++) {
-                if (x == 0) {
-                    window[sizeY - 1][x] = 0;
-                } else {
-                    window[sizeY - 1][x] = 2;
-                }
-            }
-            for (int y = 0; y < sizeY; y++) {
-                if (y == 0) {
-                    window[y][sizeX - 1] = 0;
-                } else {
-                    window[y][sizeX - 1] = 2;
-                }
-            }
-        }
-        if (frame) {
-            if (shadow) {
-                sizeX--;
-                sizeY--;
-            }
-            for (int x = 0; x < sizeX; x++) {
-                window[0][x] = 3;
-                window[sizeY - 1][x] = 3;
-            }
-            for (int y = 0; y < sizeY; y++) {
-                window[y][0] = 3;
-                window[y][sizeX - 1] = 3;
-            }
-        }
-        return window;
     }
 }

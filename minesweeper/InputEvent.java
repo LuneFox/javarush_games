@@ -186,9 +186,15 @@ class InputEvent {
             GAME.buyLuckyDice();
         } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
             GAME.buyMiniBomb();
-        } else if ((x >= 0 && x <= 9 || x >= 90 && x <= 99) || (y >= 0 && y <= 10 || y >= 91 && y <= 99)) {
+        } else if (clickOutsideShop(x, y)) {
             MENU.displayGameBoard();
         }
+    }
+
+    private boolean clickOutsideShop(int x, int y) {
+        boolean horizontal = (x >= 0 && x <= 9 || x >= 90 && x <= 99);
+        boolean vertical = (y >= 0 && y <= 10 || y >= 91 && y <= 99);
+        return (horizontal || vertical);
     }
 
     private void rightClickInShop(int x, int y) {
