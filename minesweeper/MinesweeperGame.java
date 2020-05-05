@@ -228,95 +228,31 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    void openTile(int x, int y) {  // mouse click or recursive
-        if (shopMiniBomb.isActivated) {
-            shopMiniBomb.isActivated = false;
-            shopScanner.count = 1; // allow to buy
-            destroyTile(x, y);
-            redrawAllTiles();
+    void openTile(int x, int y) { // mouse click or recursive
+        if (miniBombAction(x, y) || scannerAction(x, y)) {
             return;
         }
-
-        if (shopScanner.isActivated) {
-            shopScanner.isActivated = false;
-            shopMiniBomb.count = 1; // allow to buy
-            openRandomNeighbor(x, y);
-            redrawAllTiles();
-            return;
-        }
-
         Tile cell = GAME_TILES[y][x];
         if (isStopped || cell.isFlag || cell.isOpen) {
             return;
         }
-
-        cell.isOpen = true;
-        cell.push();
-        countClosedTiles--;
-
-        if (allowCountMoves) {
-            countMoves++;
-        } // counts move only after physical click
-
-        if (cell.isMine) {
-            if (isFirstMove) {
-                cell.eraseSprite();
-                cell.isMine = false;
-                plantMines();
-                countMineNeighbors();
-            } else if (shopShield.isActivated) {
-                countClosedTiles++; // don't count as open, even though it's physically open
-                cell.assignSprite(Bitmap.BOARD_MINE);
-                cell.replaceColor(Color.YELLOW, 3); // highlight mine that was blocked
-                cell.draw();
-                cell.drawSprite();
-                cell.isShielded = true;
-                shopShield.isActivated = false;
-                int scoreBefore = score;
-                score = Math.max(score - 150 * (difficulty / 5), 0);
-                scoreLost -= scoreBefore - score;
-                setScore(score);
-            } else {
-                revealAllMines();
-                cell.replaceColor(Color.RED, 3); // highlight mine that caused game over
-                cell.draw();
-                cell.drawSprite();
-                gameOver();
-                return;
-            }
+        pushCell(cell);
+        countMoves();
+        if (!surviveMine(cell)) {
+            return;
         }
-
-        if (!cell.isFlag && !cell.isMine) {
-            cell.assignSprite(cell.countMineNeighbors);
-        }
-        cell.drawSprite();
-
+        drawNumberOnCell(cell);
         countMoney += cell.countMineNeighbors * (shopGoldenShovel.isActivated ? 2 : 1);
-        if (countMoves >= shopGoldenShovel.expireMove) {
-            shopGoldenShovel.isActivated = false;
-        }
-
-        openedCellCount++;
-        scoreCell += difficulty;
-        int scoreBeforeDice = score;
-        score += difficulty * (shopLuckyDice.isActivated ? getRandomNumber(6) + 1 : 1);
-        if (shopLuckyDice.isActivated) {
-            scoreDice += (score - scoreBeforeDice) - difficulty;
-        }
-        if (countMoves >= shopLuckyDice.expireMove) {
-            shopLuckyDice.isActivated = false;
-        }
-
+        addScore();
         setScore(score);
+        deactivateExpiredItems();
+        checkVictory();
+        isFirstMove = false; // first move ends here, doesn't affect recursion
+        recursiveOpen(cell);
+    }
 
-
-        if (countClosedTiles == countMinesOnField) {
-            win();
-        }   // everything except bombs is open = win
-        if (isFirstMove) {
-            isFirstMove = false;
-        }               // first move ends here, doesn't affect recursion
-        if (cell.countMineNeighbors == 0 && !cell.isMine) { // recursive opening if 0 mines are around
+    private void recursiveOpen(Tile cell) {
+        if (cell.countMineNeighbors == 0 && !cell.isMine) {
             allowCountMoves = false;
             List<Tile> neighbors = getNeighbors(cell);
             for (Tile neighbor : neighbors) {
@@ -325,6 +261,90 @@ public class MinesweeperGame extends Game {
                 }
             }
         }
+    }
+
+    private boolean miniBombAction(int x, int y) {
+        if (shopMiniBomb.isActivated) {
+            shopMiniBomb.isActivated = false;
+            shopScanner.count = 1; // allow to buy
+            destroyTile(x, y);
+            redrawAllTiles();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private boolean scannerAction(int x, int y) {
+        if (shopScanner.isActivated) {
+            shopScanner.isActivated = false;
+            shopMiniBomb.count = 1; // allow to buy
+            openRandomNeighbor(x, y);
+            redrawAllTiles();
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private void shieldAction(Tile cell) {
+        countClosedTiles++; // don't count as open, even though it's physically open
+        cell.assignSprite(Bitmap.BOARD_MINE);
+        cell.replaceColor(Color.YELLOW, 3); // highlight mine that was blocked
+        cell.draw();
+        cell.drawSprite();
+        cell.isShielded = true;
+        shopShield.isActivated = false;
+        int scoreBefore = score;
+        score = Math.max(score - 150 * (difficulty / 5), 0);
+        scoreLost -= scoreBefore - score;
+        setScore(score);
+    }
+
+    private boolean surviveMine(Tile cell) {
+        if (cell.isMine) {
+            if (isFirstMove) {
+                replantMine(cell);
+            } else if (shopShield.isActivated) {
+                shieldAction(cell);
+            } else {
+                triggerGameOver(cell);
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private void addScore() {
+        openedCellCount++; // for score detail
+        scoreCell += difficulty;
+        int scoreBeforeDice = score;
+        score += difficulty * (shopLuckyDice.isActivated ? getRandomNumber(6) + 1 : 1);
+        if (shopLuckyDice.isActivated) {
+            scoreDice += (score - scoreBeforeDice) - difficulty;
+        }
+    }
+
+    private void drawNumberOnCell(Tile cell) {
+        if (!cell.isFlag && !cell.isMine) {
+            cell.assignSprite(cell.countMineNeighbors);
+        }
+        cell.drawSprite();
+    }
+
+    private void replantMine(Tile cell) {
+        cell.eraseSprite();
+        cell.isMine = false;
+        plantMines();
+        countMineNeighbors();
+    }
+
+    private void triggerGameOver(Tile cell) {
+        revealAllMines();
+        cell.replaceColor(Color.RED, 3); // highlight mine that caused game over
+        cell.draw();
+        cell.drawSprite();
+        gameOver();
     }
 
     void openRest(int x, int y) {
@@ -382,12 +402,9 @@ public class MinesweeperGame extends Game {
             return;
         }
 
-        cell.isDestroyed = true;
-        cell.isOpen = true;
         cell.assignSprite(Bitmap.BOARD_NONE);
-        cell.push();
-        countClosedTiles--;
-
+        cell.isDestroyed = true;
+        pushCell(cell);
         deactivateExpiredItems();
 
         if (cell.isFlag) {
@@ -423,6 +440,18 @@ public class MinesweeperGame extends Game {
         if (allowCountMoves) { // counts moves only after physical click
             countMoves++;
         }
+    }
+
+    private void checkVictory() {
+        if (countClosedTiles == countMinesOnField) { // everything except bombs is open = win
+            win();
+        }
+    }
+
+    private void pushCell(Tile cell) {
+        cell.isOpen = true;
+        cell.push();
+        countClosedTiles--;
     }
 
     private void deactivateExpiredItems() {
