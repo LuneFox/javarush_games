@@ -9,7 +9,7 @@ import java.util.*;
  * Neutral snake can eat food
  * Water snake can swim and put out fire
  * Fire snake can set wooden stuff on fire
- * Ground snake use wormholes
+ * Ground snake uses wormholes
  * Air snake can fly over everything
  */
 

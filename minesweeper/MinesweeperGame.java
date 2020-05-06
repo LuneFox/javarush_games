@@ -678,7 +678,7 @@ public class MinesweeperGame extends Game {
         return MENU;
     }
 
-    Text getTextWriter() {
+    public Text getTextWriter() {
         return TEXT_WRITER;
     }
 }

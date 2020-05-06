@@ -9,19 +9,19 @@ public class Button {
     private int y1;
     private int y2;
     private Image body;
-    private Text textArtist;
+    private Text textWriter;
     private Color textColor;
     private String text;
     private int textOffset = 2;
 
     public Button(MinesweeperGame game, int posX, int posY, int sizeX, int sizeY, String text) {
-        this.textArtist = new Text(Bitmap.BOARD_NONE, game);
+        this.textWriter = game.getTextWriter();
         this.x1 = posX;
         this.y1 = posY;
         this.x2 = posX + sizeX;
         this.y2 = posY + sizeY;
         this.text = text;
-        int textLength = textArtist.calculateLengthInPixels(text);
+        int textLength = textWriter.calculateLengthInPixels(text);
         this.textOffset = ((sizeX - textLength) / 2) + 1;
         this.textColor = Color.WHITE;
         this.body = new Image(Bitmap.MENU_BUTTON, game, posX, posY) {
@@ -35,10 +35,10 @@ public class Button {
     }
 
     public Button(MinesweeperGame game, int posX, int posY, String text) {
-        this.textArtist = new Text(Bitmap.BOARD_NONE, game);
+        this.textWriter = game.getTextWriter();
         this.x1 = posX;
         this.y1 = posY;
-        this.x2 = posX + textArtist.calculateLengthInPixels(text) + 3;
+        this.x2 = posX + textWriter.calculateLengthInPixels(text) + 3;
         this.y2 = posY + 9;
         this.text = text;
         this.textColor = Color.WHITE;
@@ -54,7 +54,7 @@ public class Button {
 
     public void draw() {
         this.body.draw();
-        textArtist.write(text, textColor, x1 + textOffset, y1, false);
+        textWriter.write(text, textColor, x1 + textOffset, y1, false);
     }
 
     public boolean has(int x, int y) {
