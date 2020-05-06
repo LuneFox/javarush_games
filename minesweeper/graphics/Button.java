@@ -21,7 +21,7 @@ public class Button {
         this.x2 = posX + sizeX;
         this.y2 = posY + sizeY;
         this.text = text;
-        int textLength = textArtist.calculateLength(text);
+        int textLength = textArtist.calculateLengthInPixels(text);
         this.textOffset = ((sizeX - textLength) / 2) + 1;
         this.textColor = Color.WHITE;
         this.body = new Image(Bitmap.MENU_BUTTON, game, posX, posY) {
@@ -38,7 +38,7 @@ public class Button {
         this.textArtist = new Text(Bitmap.BOARD_NONE, game);
         this.x1 = posX;
         this.y1 = posY;
-        this.x2 = posX + textArtist.calculateLength(text) + 3;
+        this.x2 = posX + textArtist.calculateLengthInPixels(text) + 3;
         this.y2 = posY + 9;
         this.text = text;
         this.textColor = Color.WHITE;

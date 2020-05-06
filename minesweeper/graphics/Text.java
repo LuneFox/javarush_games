@@ -52,7 +52,6 @@ public class Text extends Image {
         }
     }
 
-    // load all letters into memory once and forever
     public void loadAlphabet() {
         alphabet.put('а', new Text(Bitmap.RUSSIAN_LETTER_A, GAME));
         alphabet.put('б', new Text(Bitmap.RUSSIAN_LETTER_B, GAME));
@@ -135,7 +134,7 @@ public class Text extends Image {
         alphabet.put('\n', new Text(Bitmap.SYMBOL_NEWLINE, GAME));
     }
 
-    int calculateLength(String s) {
+    int calculateLengthInPixels(String s) {
         int length = 0;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {

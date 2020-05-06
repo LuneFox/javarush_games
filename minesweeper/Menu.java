@@ -44,7 +44,8 @@ class Menu {
         this.TEXT_WRITER = GAME.getTextWriter();
     }
 
-    // MAIN MENU
+
+    // MAIN
 
     void displayMain() {
         Screen.set(ScreenType.MAIN_MENU);
@@ -55,8 +56,8 @@ class Menu {
         BUTTONS.get(ButtonID.START).draw();
 
         TEXT_WRITER.write(MinesweeperGame.VERSION, Color.DARKRED, 85, 0, false);
-        if (GAME.scoreTop > 0) {
-            TEXT_WRITER.write("рекорд:\n" + GAME.scoreTop + "\n" + GAME.topScoreTitle,
+        if (GAME.topScore > 0) {
+            TEXT_WRITER.write("рекорд:\n" + GAME.topScore + "\n" + GAME.topScoreTitle,
                     Color.LIGHTGOLDENRODYELLOW, 4, 71, false);
         }
         printRandomQuote();
@@ -68,104 +69,23 @@ class Menu {
         TEXT_WRITER.write(quote, Color.SALMON, 4, 44, false);
     }
 
-    // GAME OVER MENU
-
-    final void displayGameOver(boolean victory) {
-        Screen.set(ScreenType.GAME_OVER);
-        if (victory) {
-            IMAGES.get(Bitmap.WINDOW_VICTORY).draw();
-            IMAGES.get(Bitmap.PICTURE_FACE_HAPPY).draw();
-            TEXT_WRITER.write("победа!", Color.YELLOW, 18, 33, false);
-        } else {
-            IMAGES.get(Bitmap.WINDOW_GAME_OVER).draw();
-            IMAGES.get(Bitmap.PICTURE_FACE_SAD).draw();
-            TEXT_WRITER.write("не повезло!", Color.YELLOW, 18, 33, false);
-        }
-        TEXT_WRITER.write("счёт: " + GAME.score, Color.LIGHTGOLDENRODYELLOW, 18, 57, false);
-        BUTTONS.get(ButtonID.AGAIN).draw();
-        BUTTONS.get(ButtonID.RETURN).draw();
-        BUTTONS.get(ButtonID.CLOSE).draw();
+    final void displayAbout() {
+        Screen.set(ScreenType.ABOUT);
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
+        TEXT_WRITER.write("информация", Color.YELLOW, 24, 2, false);
+        TEXT_WRITER.write(
+                "В моей версии игры\n" +
+                        "есть магазин вещей.\n" +
+                        "Он поможет меньше\n" +
+                        "полагаться на удачу,\n" +
+                        "больше планировать.\n" +
+                        "    На поле:\n" +
+                        "Пробел - магазин\n" +
+                        "ПКМ - инфо о вещах",
+                Color.WHITE, 3, 13, false);
+        BUTTONS.get(ButtonID.BACK).draw();
     }
 
-    // SHOP MENU
-
-    final void displayShop() {
-        Screen.set(ScreenType.SHOP);
-        IMAGES.get(Bitmap.WINDOW_SHOP).draw();
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).setPosition(-1, 10);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).draw();
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).setPosition(-1, 78);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).draw();
-        IMAGES.get(Bitmap.BOARD_MINE).draw();
-        TEXT_WRITER.write("" + GAME.countMinesOnField, Color.WHITE, 22, 12, false);
-        IMAGES.get(Bitmap.BOARD_FLAG).draw();
-        TEXT_WRITER.write("" + GAME.countFlagsInInventory, Color.WHITE, 49, 12, false);
-        IMAGES.get(Bitmap.SHOP_COIN).setPosition(69, 13);
-        IMAGES.get(Bitmap.SHOP_COIN).draw();
-        TEXT_WRITER.write("" + GAME.countMoney, Color.WHITE, 75, 12, false);
-
-        TEXT_WRITER.write("магазин", Color.YELLOW, 33, 22, false);
-        for (int y = 0; y < 2; y++) {
-            int dy = y * 25;
-            for (int x = 0; x < 3; x++) {
-                int dx = x * 25;
-                ShopItem item = GAME.getAllShopItems().get(x + y * 3);
-                Picture frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME);
-
-                if (item.cost > GAME.countMoney || item.count <= 0) {
-                    frame.replaceColor(Color.RED, 3);
-                } else {
-                    frame.replaceColor(Color.GREEN, 3);
-                }
-                if (item.isActivated) {
-                    frame.replaceColor(Color.BLUE, 3);
-                }
-
-                frame.setPosition(15 + dx, 30 + dy);
-                frame.draw();
-                item.icon.setPosition(16 + dx, 31 + dy);
-                item.icon.draw();
-
-                if (item.count > 0 && !item.isActivated) {
-                    TEXT_WRITER.write("" + item.cost, Color.YELLOW, 30 + dx, 41 + dy, true);
-                } else if (item.isActivated) {
-                    TEXT_WRITER.write("АКТ", Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
-                } else {
-                    TEXT_WRITER.write("НЕТ", Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
-                }   // draw prices
-            }
-        }
-
-        TEXT_WRITER.write("очки:" + GAME.score, Color.LIGHTCYAN, 13, 80, false);
-        TEXT_WRITER.write("шаги:" + GAME.countMoves, Color.LIGHTBLUE, 84, 80, true);
-    }
-
-    // ITEM HELP
-
-    final void displayItemHelp(ShopItem item) {
-        Screen.set(ScreenType.ITEM_HELP);
-        IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw();
-        item.icon.setPosition(5, 5);
-        item.icon.draw();
-        TEXT_WRITER.write(item.name, Color.YELLOW, 25, 9, false);
-        TEXT_WRITER.write(item.description, Color.WHITE, 4, 25, false);
-        BUTTONS.get(ButtonID.CONFIRM).draw();
-    }
-
-    // GAME BOARD
-
-    final void displayGameBoard() {
-        Screen.set(ScreenType.GAME_BOARD);
-        GAME.redrawAllTiles();
-        if (GAME.getAllShopItems().get(1).isActivated) {
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
-        }
-        if (GAME.getAllShopItems().get(5).isActivated) {
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
-        }
-    }
 
     // OPTIONS
 
@@ -184,7 +104,7 @@ class Menu {
         TEXT_WRITER.write(TITLE_NAMES.get(GAME.difficultySetting / 5 - 1),
                 Color.SALMON, 93, 30, true);
         TEXT_WRITER.write("покупка\nфлажков", Color.WHITE, 2, 50, false);
-        if (GAME.autoBuyFlags) {
+        if (GAME.allowAutoBuyFlags) {
             IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.GREEN, 1);
             IMAGES.get(Bitmap.MENU_SWITCH).setPosition(88, 50);
             TEXT_WRITER.write("авто", Color.SALMON, 93, 60, true);
@@ -234,30 +154,106 @@ class Menu {
     }
 
     final void switchAutoBuyFlags() {
-        GAME.autoBuyFlags = !GAME.autoBuyFlags;
+        GAME.allowAutoBuyFlags = !GAME.allowAutoBuyFlags;
         displayOptions();
     }
 
-    // ABOUT
 
-    final void displayAbout() {
-        Screen.set(ScreenType.ABOUT);
-        IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        TEXT_WRITER.write("информация", Color.YELLOW, 24, 2, false);
-        TEXT_WRITER.write(
-                "В моей версии игры\n" +
-                        "есть магазин вещей.\n" +
-                        "Он поможет меньше\n" +
-                        "полагаться на удачу,\n" +
-                        "больше планировать.\n" +
-                        "    На поле:\n" +
-                        "Пробел - магазин\n" +
-                        "ПКМ - инфо о вещах",
-                Color.WHITE, 3, 13, false);
-        BUTTONS.get(ButtonID.BACK).draw();
+    // GAME BOARD
+
+    final void displayGameBoard() {
+        Screen.set(ScreenType.GAME_BOARD);
+        GAME.redrawAllTiles();
+        if (GAME.getAllShopItems().get(1).isActivated) {
+            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
+            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+        }
+        if (GAME.getAllShopItems().get(5).isActivated) {
+            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
+            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+        }
     }
 
-    // SCORE_DETAIL
+    final void displayShop() {
+        Screen.set(ScreenType.SHOP);
+        IMAGES.get(Bitmap.WINDOW_SHOP).draw();
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).setPosition(-1, 10);
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).draw();
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).setPosition(-1, 78);
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).draw();
+        IMAGES.get(Bitmap.BOARD_MINE).draw();
+        TEXT_WRITER.write("" + GAME.countMinesOnField, Color.WHITE, 22, 12, false);
+        IMAGES.get(Bitmap.BOARD_FLAG).draw();
+        TEXT_WRITER.write("" + GAME.countFlags, Color.WHITE, 49, 12, false);
+        IMAGES.get(Bitmap.SHOP_COIN).setPosition(69, 13);
+        IMAGES.get(Bitmap.SHOP_COIN).draw();
+        TEXT_WRITER.write("" + GAME.countMoney, Color.WHITE, 75, 12, false);
+
+        TEXT_WRITER.write("магазин", Color.YELLOW, 33, 22, false);
+        for (int y = 0; y < 2; y++) {
+            int dy = y * 25;
+            for (int x = 0; x < 3; x++) {
+                int dx = x * 25;
+                ShopItem item = GAME.getAllShopItems().get(x + y * 3);
+                Picture frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME);
+
+                if (item.cost > GAME.countMoney || item.count <= 0) {
+                    frame.replaceColor(Color.RED, 3);
+                } else {
+                    frame.replaceColor(Color.GREEN, 3);
+                }
+                if (item.isActivated) {
+                    frame.replaceColor(Color.BLUE, 3);
+                }
+
+                frame.setPosition(15 + dx, 30 + dy);
+                frame.draw();
+                item.icon.setPosition(16 + dx, 31 + dy);
+                item.icon.draw();
+
+                if (item.count > 0 && !item.isActivated) {
+                    TEXT_WRITER.write("" + item.cost, Color.YELLOW, 30 + dx, 41 + dy, true);
+                } else if (item.isActivated) {
+                    TEXT_WRITER.write("АКТ", Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
+                } else {
+                    TEXT_WRITER.write("НЕТ", Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
+                }   // draw prices
+            }
+        }
+
+        TEXT_WRITER.write("очки:" + GAME.score, Color.LIGHTCYAN, 13, 80, false);
+        TEXT_WRITER.write("шаги:" + GAME.countMoves, Color.LIGHTBLUE, 84, 80, true);
+    }
+
+    final void displayItemHelp(ShopItem item) {
+        Screen.set(ScreenType.ITEM_HELP);
+        IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw();
+        item.icon.setPosition(5, 5);
+        item.icon.draw();
+        TEXT_WRITER.write(item.name, Color.YELLOW, 25, 9, false);
+        TEXT_WRITER.write(item.description, Color.WHITE, 4, 25, false);
+        BUTTONS.get(ButtonID.CONFIRM).draw();
+    }
+
+
+    // GAME OVER
+
+    final void displayGameOver(boolean victory) {
+        Screen.set(ScreenType.GAME_OVER);
+        if (victory) {
+            IMAGES.get(Bitmap.WINDOW_VICTORY).draw();
+            IMAGES.get(Bitmap.PICTURE_FACE_HAPPY).draw();
+            TEXT_WRITER.write("победа!", Color.YELLOW, 18, 33, false);
+        } else {
+            IMAGES.get(Bitmap.WINDOW_GAME_OVER).draw();
+            IMAGES.get(Bitmap.PICTURE_FACE_SAD).draw();
+            TEXT_WRITER.write("не повезло!", Color.YELLOW, 18, 33, false);
+        }
+        TEXT_WRITER.write("счёт: " + GAME.score, Color.LIGHTGOLDENRODYELLOW, 18, 57, false);
+        BUTTONS.get(ButtonID.AGAIN).draw();
+        BUTTONS.get(ButtonID.RETURN).draw();
+        BUTTONS.get(ButtonID.CLOSE).draw();
+    }
 
     final void displayScoreDetail() {
         Screen.set(ScreenType.SCORE_DETAIL);
@@ -266,7 +262,7 @@ class Menu {
         String minesScoreDetail = 20 * GAME.difficulty + "*" + GAME.countMinesOnField + " = ";
         int moneyScore = GAME.countMoney * GAME.difficulty;
         String moneyScoreDetail = GAME.countMoney + "*" + GAME.difficulty + " = ";
-        String cellScoreDetail = GAME.openedCellCount + "*" + GAME.difficulty + " = ";
+        String cellScoreDetail = GAME.openedCellsCount + "*" + GAME.difficulty + " = ";
 
         TEXT_WRITER.write("подробно", Color.YELLOW, 29, 2, false);
         TEXT_WRITER.write(
@@ -289,7 +285,8 @@ class Menu {
         BUTTONS.get(ButtonID.CONFIRM).draw();
     }
 
-    // ALL
+
+    // LOAD RESOURCES
 
     final void loadImages() { // pre-load images with default position
         IMAGES.put(Bitmap.WINDOW_MENU, new Picture(Bitmap.WINDOW_MENU, GAME, 0, 0));

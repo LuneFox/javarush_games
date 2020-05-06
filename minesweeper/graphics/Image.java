@@ -4,12 +4,6 @@ import com.javarush.engine.cell.*;
 
 /**
  * Abstract class that allows drawing stuff using colored cells.
- * Objects of this class have graphics data and position. Graphics is made of color codes stored in int[][].
- * Objects of this class can be drawn straight, or mirrored by X or Y.
- * Objects of this class should have a game instance to be drawn in.
- * If images are too large to be drawn as as int[][], conversion from strings is possible.
- * If needed, colors of objects can be altered.
- * Has only one abstract method: assignGraphicsData(Graphics graphics), since it shouldn't have graphics data by itself.
  */
 
 public abstract class Image {
@@ -101,6 +95,9 @@ public abstract class Image {
 
     protected abstract int[][] assignBitmap(Bitmap bitmap); // subclasses' individual pictures go here
 
+
+    // IMAGE GENERATION
+
     final int[][] createBitmapFromStrings(String... strings) {
         int sizeX = strings[0].length();
         int sizeY = strings.length;
@@ -112,7 +109,10 @@ public abstract class Image {
             }
         }
         return result;
-    } // returns a map of numbers from strings
+    }
+
+
+    // WINDOW GENERATION
 
     final int[][] createWindowBitmap(int sizeX, int sizeY, boolean shadow, boolean frame) {
         if (shadow) { // if shadow is ON, image is 1 px taller and wider

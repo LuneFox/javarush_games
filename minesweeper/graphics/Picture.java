@@ -4,7 +4,6 @@ import com.javarush.engine.cell.*;
 
 /**
  * Sub-class for creating big images that are not comfortable to draw as two-dimensional arrays.
- * It contains only images that are drawn by converting strings into two-dimensional arrays.
  */
 
 public class Picture extends Image {

@@ -26,7 +26,7 @@ class InputEvent {
         }
         ScreenType screen = Screen.get();
         GAME.allowCountMoves = true;
-        GAME.flagExplosionPossible = false;
+        GAME.allowFlagExplosion = false;
         switch (screen) {
             case MAIN_MENU:
                 leftClickInMenu(x, y);
@@ -154,7 +154,7 @@ class InputEvent {
             Screen.set(ScreenType.GAME_OVER);
             return;
         }
-        Tile cell = GAME.GAME_TILES[y / 10][x / 10];
+        Tile cell = GAME.FIELD[y / 10][x / 10];
         if (!cell.isFlag || GAME.getShopScanner().isActivated) {
             GAME.openTile(x / 10, y / 10);
         }
