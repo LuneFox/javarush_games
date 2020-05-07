@@ -6,7 +6,9 @@ public class Moon {
     private final MoonLanderGame game;
     public double posX;
     public double posY;
-    public double radius = 1;
+    public final double MIN_RADIUS = 4;
+    public final double MAX_RADIUS = 48;
+    public double radius = MIN_RADIUS;
 
     public Moon(MoonLanderGame game, double posX, double posY) {
         this.posX = posX;

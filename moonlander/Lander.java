@@ -48,12 +48,12 @@ public class Lander extends GameObject {
     }
 
     private void limitMoonDistance() {
-        if (moon.radius < 1.0 || moon.radius > 48.0) {
+        if (moon.radius < moon.MIN_RADIUS || moon.radius > moon.MAX_RADIUS) {
             speedZ = 0.0;
-            if (moon.radius < 1.0) {
-                moon.radius = 1.0;
-            } else if (moon.radius > 48.0) {
-                moon.radius = 48.0;
+            if (moon.radius < moon.MIN_RADIUS) {
+                moon.radius = moon.MIN_RADIUS;
+            } else if (moon.radius > moon.MAX_RADIUS) {
+                moon.radius = moon.MAX_RADIUS;
             }
         }
     }
@@ -88,6 +88,7 @@ public class Lander extends GameObject {
         moon.posX += speedX;
         game.stars.x += speedX / 8;
         game.earth.x += speedX / 4;
+        x -= speedX / 12;
 
 
         if (isUpPressed) {
@@ -106,5 +107,6 @@ public class Lander extends GameObject {
         moon.posY += speedY;
         game.stars.y += speedY / 8;
         game.earth.y += speedY / 4;
+        y -= speedY / 12;
     }
 }
