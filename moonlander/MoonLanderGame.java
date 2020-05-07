@@ -6,13 +6,17 @@ public class MoonLanderGame extends Game {
 
     public static final int WIDTH = 64;
     public static final int HEIGHT = 64;
+    public Color bgColor = Color.BLACK;
     private Rocket rocket;
     private GameObject landscape;
     private GameObject platform;
+    private Moon moon;
+    private Lander lander;
     private int score;
     private boolean isUpPressed;
     private boolean isLeftPressed;
     private boolean isRightPressed;
+    private boolean isSpacePressed;
     private boolean isGameStopped;
 
     @Override
@@ -24,12 +28,7 @@ public class MoonLanderGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        if (score > 0) {
-            score--;
-        }
-        rocket.move(isUpPressed, isLeftPressed, isRightPressed);
-        check();
-        setScore(score);
+        lander.move(isSpacePressed);
         drawScene();
     }
 
@@ -42,7 +41,7 @@ public class MoonLanderGame extends Game {
     }
 
     private void createGame() {
-        setTurnTimer(50);
+        setTurnTimer(100);
         createGameObjects();
         drawScene();
         isUpPressed = false;
@@ -53,19 +52,26 @@ public class MoonLanderGame extends Game {
     }
 
     private void createGameObjects() {
-        rocket = new Rocket(WIDTH / 2, 0);
-        platform = new GameObject(23, MoonLanderGame.HEIGHT - 1, ShapeMatrix.PLATFORM);
-        landscape = new GameObject(0, 25, ShapeMatrix.LANDSCAPE);
+        moon = new Moon(this, WIDTH / 2 + 20, HEIGHT / 2 + 20);
+        lander = new Lander(this,
+                WIDTH / 2 - ShapeMatrix.LANDER[0].length / 2,
+                HEIGHT / 2 - ShapeMatrix.LANDER.length / 2,
+                moon
+        );
     }
 
     private void drawScene() {
+        drawBackground();
+        moon.draw();
+        lander.draw(this);
+    }
+
+    public void drawBackground() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                setCellColor(x, y, Color.DARKBLUE);
+                setCellColor(x, y, bgColor);
             }
         }
-        rocket.draw(this);
-        landscape.draw(this);
     }
 
     // GAME MECHANICS
@@ -113,6 +119,10 @@ public class MoonLanderGame extends Game {
                 break;
             }
             case SPACE: {
+                isSpacePressed = true;
+                break;
+            }
+            case ENTER: {
                 if (isGameStopped) {
                     createGame();
                     return;
@@ -138,6 +148,10 @@ public class MoonLanderGame extends Game {
             }
             case RIGHT: {
                 isRightPressed = false;
+            }
+            case SPACE: {
+                isSpacePressed = false;
+                break;
             }
             default: {
                 break;

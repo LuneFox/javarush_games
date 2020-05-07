@@ -7,7 +7,7 @@ import java.util.ArrayList;
 public class Rocket extends GameObject {
     private double speedY = 0;
     private double speedX = 0;
-    private double boost = 0.05;
+    private double boost = 0.2;
     private double slowdown = boost / 10;
     private RocketFire downFire;
     private RocketFire leftFire;
