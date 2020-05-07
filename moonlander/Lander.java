@@ -6,7 +6,8 @@ public class Lander extends GameObject {
     private double speedZ = 0;
     private double speedX = 0;
     private double speedY = 0;
-    private double boost = 0.01;
+    private double boost = 0;
+    private double sideBoost = 0.01;
     private double slowdownX = boost * 0.95;
     private double slowdownY = boost * 0.95;
 
@@ -73,10 +74,10 @@ public class Lander extends GameObject {
                                       boolean isUpPressed,
                                       boolean isDownPressed) {
         if (isLeftPressed) {
-            speedX += boost;
+            speedX += sideBoost;
             moon.posX += speedX;
         } else if (isRightPressed) {
-            speedX -= boost;
+            speedX -= sideBoost;
             moon.posX += speedX;
         } else if (speedX > slowdownX) {
             speedX += slowdownX;
@@ -92,10 +93,10 @@ public class Lander extends GameObject {
 
 
         if (isUpPressed) {
-            speedY += boost;
+            speedY += sideBoost;
             moon.posY += speedY;
         } else if (isDownPressed) {
-            speedY -= boost;
+            speedY -= sideBoost;
             moon.posY += speedY;
         } else if (speedY > slowdownY) {
             speedY += slowdownY;
@@ -108,5 +109,9 @@ public class Lander extends GameObject {
         game.stars.y += speedY / 8;
         game.earth.y += speedY / 4;
         y -= speedY / 12;
+    }
+
+    public void startLanding(){
+        boost = 0.01;
     }
 }

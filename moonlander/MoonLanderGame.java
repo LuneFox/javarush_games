@@ -201,6 +201,10 @@ public class MoonLanderGame extends Game {
                 break;
             }
             case ENTER: {
+                lander.startLanding();
+                break;
+            }
+            case ESCAPE: {
                 //if (isGameStopped) {
                 createGame();
                 return;
