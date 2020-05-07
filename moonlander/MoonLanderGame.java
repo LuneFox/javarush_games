@@ -14,6 +14,7 @@ public class MoonLanderGame extends Game {
     private Lander lander;
     private int score;
     private boolean isUpPressed;
+    private boolean isDownPressed;
     private boolean isLeftPressed;
     private boolean isRightPressed;
     private boolean isSpacePressed;
@@ -28,7 +29,7 @@ public class MoonLanderGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        lander.move(isSpacePressed);
+        lander.move(isSpacePressed, isLeftPressed, isRightPressed, isUpPressed, isDownPressed);
         drawScene();
     }
 
@@ -41,7 +42,7 @@ public class MoonLanderGame extends Game {
     }
 
     private void createGame() {
-        setTurnTimer(100);
+        setTurnTimer(50);
         createGameObjects();
         drawScene();
         isUpPressed = false;
@@ -106,6 +107,12 @@ public class MoonLanderGame extends Game {
         switch (key) {
             case UP: {
                 isUpPressed = true;
+                isDownPressed = false;
+                break;
+            }
+            case DOWN:{
+                isUpPressed = false;
+                isDownPressed = true;
                 break;
             }
             case LEFT: {
@@ -140,6 +147,10 @@ public class MoonLanderGame extends Game {
         switch (key) {
             case UP: {
                 isUpPressed = false;
+                break;
+            }
+            case DOWN: {
+                isDownPressed = false;
                 break;
             }
             case LEFT: {
