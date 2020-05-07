@@ -62,8 +62,8 @@ public class Lander extends GameObject {
             moon.posX = 0;
             slowdownX = 0;
             speedX = 0;
-        } else if (moon.posX > game.WIDTH - 1) {
-            moon.posX = game.WIDTH - 1;
+        } else if (moon.posX > 63) {
+            moon.posX = 63;
             slowdownX = 0;
             speedX = 0;
         }
@@ -71,8 +71,8 @@ public class Lander extends GameObject {
             moon.posY = 0;
             slowdownY = 0;
             speedY = 0;
-        } else if (moon.posY > game.HEIGHT - 1) {
-            moon.posY = game.HEIGHT - 1;
+        } else if (moon.posY > 63) {
+            moon.posY = 63;
             slowdownY = 0;
             speedY = 0;
         }
@@ -97,6 +97,5 @@ public class Lander extends GameObject {
         }
         moon.radius += speedZ;
         limitMoonDistance();
-        System.out.println(speedZ);
     }
 }

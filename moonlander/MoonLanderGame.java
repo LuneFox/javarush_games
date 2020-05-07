@@ -4,9 +4,8 @@ import com.javarush.engine.cell.*;
 
 public class MoonLanderGame extends Game {
 
-    public static final int WIDTH = 64;
-    public static final int HEIGHT = 64;
-    public Color bgColor = Color.BLACK;
+    public static final int WIDTH = 100;
+    public static final int HEIGHT = 100;
     private Rocket rocket;
     private GameObject landscape;
     private GameObject platform;
@@ -50,27 +49,40 @@ public class MoonLanderGame extends Game {
         isRightPressed = false;
         isGameStopped = false;
         score = 1000;
+        drawInterfaceBackground();
     }
 
     private void createGameObjects() {
-        moon = new Moon(this, WIDTH / 2 + 20, HEIGHT / 2 + 20);
+        moon = new Moon(this, getRandomNumber(63), getRandomNumber(63));
         lander = new Lander(this,
-                WIDTH / 2 - ShapeMatrix.LANDER[0].length / 2,
-                HEIGHT / 2 - ShapeMatrix.LANDER.length / 2,
-                moon
-        );
+                32 - ShapeMatrix.LANDER[0].length / 2,
+                32 - ShapeMatrix.LANDER.length / 2,
+                moon);
     }
 
     private void drawScene() {
-        drawBackground();
+        drawGameBackground();
         moon.draw();
         lander.draw(this);
     }
 
-    public void drawBackground() {
-        for (int y = 0; y < HEIGHT; y++) {
-            for (int x = 0; x < WIDTH; x++) {
-                setCellColor(x, y, bgColor);
+    public void drawGameBackground() {
+        for (int y = 0; y < 64; y++) {
+            for (int x = 0; x < 64; x++) {
+                setCellColor(x, y, Color.BLACK);
+            }
+        }
+    }
+
+    public void drawInterfaceBackground() {
+        for (int y = 64; y < 100; y++) {
+            for (int x = 0; x < 100; x++) {
+                setCellColor(x, y, Color.GRAY);
+            }
+        }
+        for (int y = 0; y < 64; y++) {
+            for (int x = 64; x < 100; x++) {
+                setCellColor(x, y, Color.GRAY);
             }
         }
     }
@@ -110,7 +122,7 @@ public class MoonLanderGame extends Game {
                 isDownPressed = false;
                 break;
             }
-            case DOWN:{
+            case DOWN: {
                 isDownPressed = true;
                 isUpPressed = false;
                 break;
@@ -130,11 +142,11 @@ public class MoonLanderGame extends Game {
                 break;
             }
             case ENTER: {
-                if (isGameStopped) {
-                    createGame();
-                    return;
-                }
-                break;
+                //if (isGameStopped) {
+                createGame();
+                return;
+                //}
+                //break;
             }
             default: {
                 break;
