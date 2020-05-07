@@ -1,6 +1,6 @@
 package com.javarush.games.moonlander;
 
-import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.*;
 
 public class Rocket extends GameObject {
     private double speedY = 0;
@@ -36,6 +36,16 @@ public class Rocket extends GameObject {
         x += speedX;
         checkBorders();
     }
+
+    public void land(){
+        y -= 1;
+    }
+
+    public void crash(){
+        this.matrix = ShapeMatrix.ROCKET_CRASH;
+    }
+
+    // CHECKS
 
     private void checkBorders() {
         if (x < 0) {

@@ -8,9 +8,11 @@ public class MoonLanderGame extends Game {
     public static final int HEIGHT = 64;
     private Rocket rocket;
     private GameObject landscape;
+    private GameObject platform;
     private boolean isUpPressed;
     private boolean isLeftPressed;
     private boolean isRightPressed;
+    private boolean isGameStopped;
 
     @Override
     public void initialize() {
@@ -41,10 +43,12 @@ public class MoonLanderGame extends Game {
         isUpPressed = false;
         isLeftPressed = false;
         isRightPressed = false;
+        isGameStopped = false;
     }
 
     private void createGameObjects() {
         rocket = new Rocket(WIDTH / 2, 0);
+        platform = new GameObject(23, MoonLanderGame.HEIGHT - 1, ShapeMatrix.PLATFORM);
         landscape = new GameObject(0, 25, ShapeMatrix.LANDSCAPE);
     }
 
@@ -61,15 +65,25 @@ public class MoonLanderGame extends Game {
     // GAME MECHANICS
 
     private void check() {
-
+        if (rocket.isCollision(platform) && rocket.isStopped()) {
+            win();
+        } else if (rocket.isCollision(landscape)) {
+            gameOver();
+        }
     }
 
     private void win() {
-
+        isGameStopped = true;
+        rocket.land();
+        showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Hello Moon!", Color.BLACK, 75);
+        stopTurnTimer();
     }
 
     private void gameOver() {
-
+        rocket.crash();
+        isGameStopped = true;
+        showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Goodbye Lander!", Color.DARKRED, 75);
+        stopTurnTimer();
     }
 
     // CONTROLS
@@ -89,6 +103,14 @@ public class MoonLanderGame extends Game {
             case RIGHT: {
                 isLeftPressed = false;
                 isRightPressed = true;
+                break;
+            }
+            case SPACE: {
+                if (isGameStopped) {
+                    createGame();
+                    return;
+                }
+                break;
             }
             default: {
                 break;
