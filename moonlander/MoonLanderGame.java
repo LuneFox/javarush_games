@@ -10,6 +10,7 @@ public class MoonLanderGame extends Game {
     private GameObject landscape;
     private GameObject platform;
     public GameObject stars;
+    public GameObject earth;
     private Moon moon;
     private Lander lander;
     private int score;
@@ -52,6 +53,7 @@ public class MoonLanderGame extends Game {
                 32 - ShapeMatrix.LANDER.length / 2,
                 moon);
         stars = new GameObject(0, 0, new int[32][32]);
+        earth = new GameObject(getRandomNumber(53), getRandomNumber(53), ShapeMatrix.EARTH);
         createStarMap();
     }
 
@@ -60,6 +62,7 @@ public class MoonLanderGame extends Game {
     private void drawScene() {
         drawGameBackground();
         drawStarMap();
+        earth.draw(this);
         moon.draw();
         lander.draw(this);
         drawInterfaceBackground();
@@ -133,6 +136,15 @@ public class MoonLanderGame extends Game {
         }
         super.setCellValueEx(x, y, cellColor, value, textColor);
     }
+
+    @Override
+    public void setCellValueEx(int x, int y, Color cellColor, String value) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellValueEx(x, y, cellColor, value);
+    }
+
 // GAME MECHANICS
 
     private void check() {

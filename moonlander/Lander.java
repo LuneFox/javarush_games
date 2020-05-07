@@ -86,7 +86,8 @@ public class Lander extends GameObject {
             speedX = 0;
         }
         moon.posX += speedX;
-        game.stars.x += speedX / 5;
+        game.stars.x += speedX / 8;
+        game.earth.x += speedX / 4;
 
 
         if (isUpPressed) {
@@ -103,6 +104,7 @@ public class Lander extends GameObject {
             speedY = 0;
         }
         moon.posY += speedY;
-        game.stars.y += speedY / 5;
+        game.stars.y += speedY / 8;
+        game.earth.y += speedY / 4;
     }
 }
