@@ -36,13 +36,6 @@ public class Lander extends GameObject {
             speedX = 0;
         }
         moon.posX += speedX;
-        if (moon.posX < 0) {
-            moon.posX = 0;
-            slowdownX = 0;
-        } else if (moon.posX > game.WIDTH - 1) {
-            moon.posX = game.WIDTH - 1;
-            slowdownX = 0;
-        }
 
 
         if (isUpPressed) {
@@ -59,34 +52,51 @@ public class Lander extends GameObject {
             speedY = 0;
         }
         moon.posY += speedY;
+
+        keepMoonInSight();
+        activateMainThrottle(isSpacePressed);
+    }
+
+    private void keepMoonInSight() {
+        if (moon.posX < 0) {
+            moon.posX = 0;
+            slowdownX = 0;
+            speedX = 0;
+        } else if (moon.posX > game.WIDTH - 1) {
+            moon.posX = game.WIDTH - 1;
+            slowdownX = 0;
+            speedX = 0;
+        }
         if (moon.posY < 0) {
             moon.posY = 0;
             slowdownY = 0;
+            speedY = 0;
         } else if (moon.posY > game.HEIGHT - 1) {
             moon.posY = game.HEIGHT - 1;
             slowdownY = 0;
+            speedY = 0;
         }
+    }
 
-        if (moon.radius >= 1 && moon.radius <= 48) {
-            if (isSpacePressed) {
-                if (speedZ > -0.5) {
-                    speedZ -= boost;
-                }
-            } else {
-                if (speedZ < 0.5) {
-                    speedZ += boost;
-                }
-            }
-
-            moon.radius += speedZ;
-
-            if (moon.radius < 1) {
-                moon.radius = 1;
-                speedZ = 0;
-            } else if (moon.radius > 48) {
-                moon.radius = 48;
-                speedZ = 0;
+    private void limitMoonDistance() {
+        if (moon.radius < 1.0 || moon.radius > 48.0) {
+            speedZ = 0.0;
+            if (moon.radius < 1.0) {
+                moon.radius = 1.0;
+            } else if (moon.radius > 48.0) {
+                moon.radius = 48.0;
             }
         }
+    }
+
+    private void activateMainThrottle(boolean isSpacePressed) {
+        if (isSpacePressed) {
+            speedZ -= boost;
+        } else {
+            speedZ += boost;
+        }
+        moon.radius += speedZ;
+        limitMoonDistance();
+        System.out.println(speedZ);
     }
 }

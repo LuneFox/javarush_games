@@ -111,8 +111,8 @@ public class MoonLanderGame extends Game {
                 break;
             }
             case DOWN:{
-                isUpPressed = false;
                 isDownPressed = true;
+                isUpPressed = false;
                 break;
             }
             case LEFT: {
@@ -159,6 +159,7 @@ public class MoonLanderGame extends Game {
             }
             case RIGHT: {
                 isRightPressed = false;
+                break;
             }
             case SPACE: {
                 isSpacePressed = false;

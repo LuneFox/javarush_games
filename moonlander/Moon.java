@@ -21,9 +21,14 @@ public class Moon {
             double drawX = posX + x;
             double squareX = x * x;
             for (int y = (-intRadius); y <= intRadius; y++) {
-                if (!(drawX < 0 || posY + y < 0 || drawX > MoonLanderGame.WIDTH - 1 || posY + y > MoonLanderGame.HEIGHT - 1)) {
+                if (!(drawX < 0 || posY + y < 0 || drawX > MoonLanderGame.WIDTH || posY + y > MoonLanderGame.HEIGHT)) {
                     if (squareX + (y * y) < squareRadius) {
                         game.setCellColor((int) posX + x, (int) posY + y, Color.YELLOW);
+                        if (radius > 20 && squareX + (y * y) > squareRadius - 40) {
+                            game.setCellColor((int) posX + x, (int) posY + y, Color.ORANGE);
+                        } else if (radius < 20 && squareX + (y * y) > squareRadius - 5) {
+                            game.setCellColor((int) posX + x, (int) posY + y, Color.ORANGE);
+                        }
                     }
                 }
             }
