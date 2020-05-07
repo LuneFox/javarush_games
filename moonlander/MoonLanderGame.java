@@ -9,6 +9,7 @@ public class MoonLanderGame extends Game {
     private Rocket rocket;
     private GameObject landscape;
     private GameObject platform;
+    public GameObject stars;
     private Moon moon;
     private Lander lander;
     private int score;
@@ -32,13 +33,6 @@ public class MoonLanderGame extends Game {
         drawScene();
     }
 
-    @Override
-    public void setCellColor(int x, int y, Color color) {
-        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
-            return;
-        }
-        super.setCellColor(x, y, color);
-    }
 
     private void createGame() {
         setTurnTimer(50);
@@ -49,7 +43,6 @@ public class MoonLanderGame extends Game {
         isRightPressed = false;
         isGameStopped = false;
         score = 1000;
-        drawInterfaceBackground();
     }
 
     private void createGameObjects() {
@@ -58,18 +51,24 @@ public class MoonLanderGame extends Game {
                 32 - ShapeMatrix.LANDER[0].length / 2,
                 32 - ShapeMatrix.LANDER.length / 2,
                 moon);
+        stars = new GameObject(0, 0, new int[32][32]);
+        createStarMap();
     }
 
+
+    // DRAW
     private void drawScene() {
         drawGameBackground();
+        drawStarMap();
         moon.draw();
         lander.draw(this);
+        drawInterfaceBackground();
     }
 
     public void drawGameBackground() {
         for (int y = 0; y < 64; y++) {
             for (int x = 0; x < 64; x++) {
-                setCellColor(x, y, Color.BLACK);
+                setCellValueEx(x, y, Color.BLACK, "");
             }
         }
     }
@@ -77,17 +76,64 @@ public class MoonLanderGame extends Game {
     public void drawInterfaceBackground() {
         for (int y = 64; y < 100; y++) {
             for (int x = 0; x < 100; x++) {
-                setCellColor(x, y, Color.GRAY);
+                setCellValueEx(x, y, Color.GRAY, "");
             }
         }
+
         for (int y = 0; y < 64; y++) {
             for (int x = 64; x < 100; x++) {
-                setCellColor(x, y, Color.GRAY);
+                setCellValueEx(x, y, Color.GRAY, "");
             }
         }
     }
 
-    // GAME MECHANICS
+    private void drawStarMap() {
+        for (int y = 0; y < stars.matrix.length; y++) {
+            for (int x = 0; x < stars.matrix[0].length; x++) {
+                if (stars.matrix[y][x] == 1) {
+                    if (getRandomNumber(5) != 1)
+                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "ж", Color.PALEGOLDENROD);
+                    else
+                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "ж", Color.ORANGE);
+                } else if (stars.matrix[y][x] == 2) {
+                    if (getRandomNumber(10) != 1)
+                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "*", Color.WHITE);
+                    else
+                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "*", Color.BLUE);
+                }
+            }
+        }
+    }
+
+    private void createStarMap() {
+        for (int y = 0; y < stars.matrix.length; y++) {
+            for (int x = 0; x < stars.matrix[0].length; x++) {
+                int random = getRandomNumber(25);
+                if (random == 1) {
+                    stars.matrix[y][x] = 1;
+                } else if (random == 2) {
+                    stars.matrix[y][x] = 2;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void setCellColor(int x, int y, Color color) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellColor(x, y, color);
+    }
+
+    @Override
+    public void setCellValueEx(int x, int y, Color cellColor, String value, Color textColor) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellValueEx(x, y, cellColor, value, textColor);
+    }
+// GAME MECHANICS
 
     private void check() {
         if (rocket.isCollision(platform) && rocket.isStopped()) {
@@ -111,6 +157,7 @@ public class MoonLanderGame extends Game {
         showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Goodbye Lander!", Color.DARKRED, 75);
         stopTurnTimer();
     }
+
 
     // CONTROLS
 

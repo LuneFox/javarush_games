@@ -21,38 +21,7 @@ public class Lander extends GameObject {
                      boolean isRightPressed,
                      boolean isUpPressed,
                      boolean isDownPressed) {
-
-        if (isLeftPressed) {
-            speedX += boost;
-            moon.posX += speedX;
-        } else if (isRightPressed) {
-            speedX -= boost;
-            moon.posX += speedX;
-        } else if (speedX > slowdownX) {
-            speedX += slowdownX;
-        } else if (speedX < -slowdownX) {
-            speedX -= slowdownX;
-        } else {
-            speedX = 0;
-        }
-        moon.posX += speedX;
-
-
-        if (isUpPressed) {
-            speedY += boost;
-            moon.posY += speedY;
-        } else if (isDownPressed) {
-            speedY -= boost;
-            moon.posY += speedY;
-        } else if (speedY > slowdownY) {
-            speedY += slowdownY;
-        } else if (speedY < -slowdownY) {
-            speedY -= slowdownY;
-        } else {
-            speedY = 0;
-        }
-        moon.posY += speedY;
-
+        activateSideThrottle(isLeftPressed, isRightPressed, isUpPressed, isDownPressed);
         keepMoonInSight();
         activateMainThrottle(isSpacePressed);
     }
@@ -97,5 +66,43 @@ public class Lander extends GameObject {
         }
         moon.radius += speedZ;
         limitMoonDistance();
+    }
+
+    private void activateSideThrottle(boolean isLeftPressed,
+                                      boolean isRightPressed,
+                                      boolean isUpPressed,
+                                      boolean isDownPressed) {
+        if (isLeftPressed) {
+            speedX += boost;
+            moon.posX += speedX;
+        } else if (isRightPressed) {
+            speedX -= boost;
+            moon.posX += speedX;
+        } else if (speedX > slowdownX) {
+            speedX += slowdownX;
+        } else if (speedX < -slowdownX) {
+            speedX -= slowdownX;
+        } else {
+            speedX = 0;
+        }
+        moon.posX += speedX;
+        game.stars.x += speedX / 5;
+
+
+        if (isUpPressed) {
+            speedY += boost;
+            moon.posY += speedY;
+        } else if (isDownPressed) {
+            speedY -= boost;
+            moon.posY += speedY;
+        } else if (speedY > slowdownY) {
+            speedY += slowdownY;
+        } else if (speedY < -slowdownY) {
+            speedY -= slowdownY;
+        } else {
+            speedY = 0;
+        }
+        moon.posY += speedY;
+        game.stars.y += speedY / 5;
     }
 }

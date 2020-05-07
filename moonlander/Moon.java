@@ -29,6 +29,7 @@ public class Moon {
                         } else if (radius < 20 && squareX + (y * y) > squareRadius - 5) {
                             game.setCellColor((int) posX + x, (int) posY + y, Color.ORANGE);
                         }
+                        game.setCellValue((int) posX + x, (int) posY + y, "");
                     }
                 }
             }
