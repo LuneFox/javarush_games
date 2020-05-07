@@ -9,6 +9,7 @@ public class MoonLanderGame extends Game {
     private Rocket rocket;
     private GameObject landscape;
     private GameObject platform;
+    private int score;
     private boolean isUpPressed;
     private boolean isLeftPressed;
     private boolean isRightPressed;
@@ -23,8 +24,12 @@ public class MoonLanderGame extends Game {
 
     @Override
     public void onTurn(int step) {
+        if (score > 0) {
+            score--;
+        }
         rocket.move(isUpPressed, isLeftPressed, isRightPressed);
         check();
+        setScore(score);
         drawScene();
     }
 
@@ -44,6 +49,7 @@ public class MoonLanderGame extends Game {
         isLeftPressed = false;
         isRightPressed = false;
         isGameStopped = false;
+        score = 1000;
     }
 
     private void createGameObjects() {
@@ -80,6 +86,7 @@ public class MoonLanderGame extends Game {
     }
 
     private void gameOver() {
+        score = 0;
         rocket.crash();
         isGameStopped = true;
         showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Goodbye Lander!", Color.DARKRED, 75);

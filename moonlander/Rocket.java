@@ -2,14 +2,29 @@ package com.javarush.games.moonlander;
 
 import com.javarush.engine.cell.*;
 
+import java.util.ArrayList;
+
 public class Rocket extends GameObject {
     private double speedY = 0;
     private double speedX = 0;
     private double boost = 0.05;
     private double slowdown = boost / 10;
+    private RocketFire downFire;
+    private RocketFire leftFire;
+    private RocketFire rightFire;
 
     public Rocket(double x, double y) {
         super(x, y, ShapeMatrix.ROCKET);
+        ArrayList<int[][]> downFireFrames = new ArrayList<>();
+        downFireFrames.add(ShapeMatrix.FIRE_DOWN_1);
+        downFireFrames.add(ShapeMatrix.FIRE_DOWN_2);
+        downFireFrames.add(ShapeMatrix.FIRE_DOWN_3);
+        ArrayList<int[][]> sideFireFrames = new ArrayList<>();
+        sideFireFrames.add(ShapeMatrix.FIRE_SIDE_1);
+        sideFireFrames.add(ShapeMatrix.FIRE_SIDE_2);
+        downFire = new RocketFire(downFireFrames);
+        leftFire = new RocketFire(sideFireFrames);
+        rightFire = new RocketFire(sideFireFrames);
     }
 
     public void move(boolean isUpPressed, boolean isLeftPressed, boolean isRightPressed) {
@@ -35,13 +50,14 @@ public class Rocket extends GameObject {
         }
         x += speedX;
         checkBorders();
+        switchFire(isUpPressed, isLeftPressed, isRightPressed);
     }
 
-    public void land(){
+    public void land() {
         y -= 1;
     }
 
-    public void crash(){
+    public void crash() {
         this.matrix = ShapeMatrix.ROCKET_CRASH;
     }
 
@@ -83,5 +99,39 @@ public class Rocket extends GameObject {
             }
         }
         return false;
+    }
+
+    // ANIMATIONS
+
+    private void switchFire(boolean isUpPressed, boolean isLeftPressed, boolean isRightPressed) {
+        if (isUpPressed) {
+            downFire.x = matrix[0].length / 2 + x;
+            downFire.y = matrix.length + y;
+            downFire.show();
+        } else {
+            downFire.hide();
+        }
+        if (isLeftPressed) {
+            leftFire.x = matrix[0].length + x;
+            leftFire.y = matrix.length + y;
+            leftFire.show();
+        } else {
+            leftFire.hide();
+        }
+        if (isRightPressed) {
+            rightFire.x = x - ShapeMatrix.FIRE_SIDE_1[0].length;
+            rightFire.y = matrix.length + y;
+            rightFire.show();
+        } else {
+            rightFire.hide();
+        }
+    }
+
+    @Override
+    public void draw(Game game) {
+        super.draw(game);
+        downFire.draw(game);
+        leftFire.draw(game);
+        rightFire.draw(game);
     }
 }
