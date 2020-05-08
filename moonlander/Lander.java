@@ -1,5 +1,6 @@
 package com.javarush.games.moonlander;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 
 import java.util.ArrayList;
@@ -15,10 +16,10 @@ public class Lander extends GameObject {
     private double speedZ;
     private double speedX;
     private double speedY;
-    private double boost;
-    private double sideBoost;
-    private double slowdownX;
-    private double slowdownY;
+    private double boost = 0.00;
+    private double sideBoost = 0.02;
+    private double slowdownX = -sideBoost * 0.3;
+    private double slowdownY = -sideBoost * 0.3;
     private boolean release = false;
 
     public Lander(MoonLanderGame game, double x, double y, Moon moon) {
@@ -48,49 +49,16 @@ public class Lander extends GameObject {
         mainFire = new RocketFire(mainFireFrames);
     }
 
-    public void move(boolean isSpacePressed,
-                     boolean isLeftPressed,
-                     boolean isRightPressed,
-                     boolean isUpPressed,
+    public void move(boolean isSpacePressed, boolean isLeftPressed,
+                     boolean isRightPressed, boolean isUpPressed,
                      boolean isDownPressed) {
+        // optimizeFPS();
         switchFire(isUpPressed, isDownPressed, isLeftPressed, isRightPressed, isSpacePressed);
-        optimizeFPS();
         activateSideThrottle(isLeftPressed, isRightPressed, isUpPressed, isDownPressed);
-        keepMoonInSight();
         activateMainThrottle(isSpacePressed);
+        keepMoonInSight();
     }
 
-    private void keepMoonInSight() {
-        if (moon.posX + moon.radius < 0) {
-            moon.posX = 1 - moon.radius;
-            slowdownX = 0;
-            speedX = 0;
-        } else if (moon.posX - moon.radius > 63) {
-            moon.posX = 63 + moon.radius;
-            slowdownX = 0;
-            speedX = 0;
-        }
-        if (moon.posY + moon.radius < 0) {
-            moon.posY = 1 - moon.radius;
-            slowdownY = 0;
-            speedY = 0;
-        } else if (moon.posY - moon.radius > 63) {
-            moon.posY = 63 + moon.radius;
-            slowdownY = 0;
-            speedY = 0;
-        }
-    }
-
-    private void limitMoonDistance() {
-        if (moon.radius < moon.MIN_RADIUS || moon.radius > moon.MAX_RADIUS) {
-            speedZ = 0.0;
-            if (moon.radius < moon.MIN_RADIUS) {
-                moon.radius = moon.MIN_RADIUS;
-            } else if (moon.radius > moon.MAX_RADIUS) {
-                moon.radius = moon.MAX_RADIUS;
-            }
-        }
-    }
 
     private void activateMainThrottle(boolean isSpacePressed) {
         if (isSpacePressed) {
@@ -102,10 +70,8 @@ public class Lander extends GameObject {
         limitMoonDistance();
     }
 
-    private void activateSideThrottle(boolean isLeftPressed,
-                                      boolean isRightPressed,
-                                      boolean isUpPressed,
-                                      boolean isDownPressed) {
+    private void activateSideThrottle(boolean isLeftPressed, boolean isRightPressed,
+                                      boolean isUpPressed, boolean isDownPressed) {
         if (isLeftPressed) {
             speedX += sideBoost;
             moon.posX += speedX;
@@ -146,10 +112,7 @@ public class Lander extends GameObject {
         y -= speedY / 12;
     }
 
-    private void switchFire(boolean isUpPressed,
-                            boolean isDownPressed,
-                            boolean isLeftPressed,
-                            boolean isRightPressed,
+    private void switchFire(boolean isUpPressed, boolean isDownPressed, boolean isLeftPressed, boolean isRightPressed,
                             boolean isSpacePressed) {
         if (isDownPressed) {
             upFire.x = matrix[0].length / 2 + x - 1;
@@ -198,6 +161,30 @@ public class Lander extends GameObject {
         mainFire.draw(game);
     }
 
+    public boolean isStopped() {
+        return speedY < 10 * boost;
+    }
+
+    public boolean isCollision(GameObject object) {
+        int transparent = Color.NONE.ordinal();
+
+        for (int matrixX = 0; matrixX < width; matrixX++) {
+            for (int matrixY = 0; matrixY < height; matrixY++) {
+                int objectX = matrixX + (int) x - (int) object.x;
+                int objectY = matrixY + (int) y - (int) object.y;
+
+                if (objectX < 0 || objectX >= object.width || objectY < 0 || objectY >= object.height) {
+                    continue;
+                }
+
+                if (matrix[matrixY][matrixX] != transparent && object.matrix[objectY][objectX] != transparent) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     // TOOLS
 
@@ -221,12 +208,44 @@ public class Lander extends GameObject {
             slowdownX = -boost * 0.3;
             slowdownY = -boost * 0.3;
         }
-        if (!release) {
-            boost = 0.00;
-        }
     }
 
     public void startLanding() {
-        release = true;
+        boost = sideBoost;
+    }
+
+
+    // MOON LIMITERS
+
+    private void keepMoonInSight() {
+        if (moon.posX + moon.radius < 0) {
+            moon.posX = 1 - moon.radius;
+            slowdownX = 0;
+            speedX = 0;
+        } else if (moon.posX - moon.radius > 63) {
+            moon.posX = 63 + moon.radius;
+            slowdownX = 0;
+            speedX = 0;
+        }
+        if (moon.posY + moon.radius < 0) {
+            moon.posY = 1 - moon.radius;
+            slowdownY = 0;
+            speedY = 0;
+        } else if (moon.posY - moon.radius > 63) {
+            moon.posY = 63 + moon.radius;
+            slowdownY = 0;
+            speedY = 0;
+        }
+    }
+
+    private void limitMoonDistance() {
+        if (moon.radius < moon.MIN_RADIUS || moon.radius > moon.MAX_RADIUS) {
+            speedZ = 0.0;
+            if (moon.radius < moon.MIN_RADIUS) {
+                moon.radius = moon.MIN_RADIUS;
+            } else if (moon.radius > moon.MAX_RADIUS) {
+                moon.radius = moon.MAX_RADIUS;
+            }
+        }
     }
 }

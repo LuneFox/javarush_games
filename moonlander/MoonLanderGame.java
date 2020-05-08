@@ -6,7 +6,7 @@ public class MoonLanderGame extends Game {
 
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
-    private Rocket rocket;
+    private Color[][] colorMap = new Color[100][100];
     private GameObject landscape;
     private GameObject platform;
     public GameObject stars;
@@ -132,66 +132,17 @@ public class MoonLanderGame extends Game {
         }
     }
 
-    @Override
-    public void setCellColor(int x, int y, Color color) {
-        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
-            return;
-        }
-        super.setCellColor(x, y, color);
-    }
-
-    @Override
-    public void setCellValueEx(int x, int y, Color cellColor, String value, Color textColor) {
-        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
-            return;
-        }
-        super.setCellValueEx(x, y, cellColor, value, textColor);
-    }
-
-    @Override
-    public void setCellValueEx(int x, int y, Color cellColor, String value) {
-        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
-            return;
-        }
-        super.setCellValueEx(x, y, cellColor, value);
-    }
-
-    @Override
-    public void setCellValue(int x, int y, String value) {
-        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
-            return;
-        }
-        super.setCellValue(x, y, value);
-    }
-
-    @Override
-    public void setCellTextColor(int x, int y, Color color) {
-        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
-            return;
-        }
-        super.setCellTextColor(x, y, color);
-    }
 
     // GAME MECHANICS
 
-    private void check() {
-        if (rocket.isCollision(platform) && rocket.isStopped()) {
-            win();
-        } else if (rocket.isCollision(landscape)) {
-            gameOver();
-        }
-    }
-
     private void win() {
         isGameStopped = true;
-        rocket.land();
         showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Hello Moon!", Color.BLACK, 75);
         stopTurnTimer();
     }
 
     private void gameOver() {
         score = 0;
-        rocket.crash();
         isGameStopped = true;
         showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Goodbye Lander!", Color.DARKRED, 75);
         stopTurnTimer();
@@ -273,4 +224,48 @@ public class MoonLanderGame extends Game {
             }
         }
     }
+
+
+    // CELL FILLERS
+
+    @Override
+    public void setCellColor(int x, int y, Color color) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellColor(x, y, color);
+    }
+
+    @Override
+    public void setCellValueEx(int x, int y, Color cellColor, String value, Color textColor) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellValueEx(x, y, cellColor, value, textColor);
+    }
+
+    @Override
+    public void setCellValueEx(int x, int y, Color cellColor, String value) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellValueEx(x, y, cellColor, value);
+    }
+
+    @Override
+    public void setCellValue(int x, int y, String value) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellValue(x, y, value);
+    }
+
+    @Override
+    public void setCellTextColor(int x, int y, Color color) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellTextColor(x, y, color);
+    }
+
 }
