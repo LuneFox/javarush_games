@@ -7,9 +7,10 @@ public class Lander extends GameObject {
     private double speedX = 0;
     private double speedY = 0;
     private double boost = 0;
-    private double sideBoost = 0.01;
-    private double slowdownX = boost * 0.95;
-    private double slowdownY = boost * 0.95;
+    private double sideBoost = 0.00;
+    private double slowdownX = boost * 0.00;
+    private double slowdownY = boost * 0.00;
+    private boolean release = false;
 
     public Lander(MoonLanderGame game, double x, double y, Moon moon) {
         super(x, y, ShapeMatrix.LANDER);
@@ -22,6 +23,7 @@ public class Lander extends GameObject {
                      boolean isRightPressed,
                      boolean isUpPressed,
                      boolean isDownPressed) {
+        optimizeFPS();
         activateSideThrottle(isLeftPressed, isRightPressed, isUpPressed, isDownPressed);
         keepMoonInSight();
         activateMainThrottle(isSpacePressed);
@@ -111,7 +113,32 @@ public class Lander extends GameObject {
         y -= speedY / 12;
     }
 
-    public void startLanding(){
-        boost = 0.01;
+    public void startLanding() {
+        release = true;
+    }
+
+    public void optimizeFPS() {
+        if (moon.radius < 24.0) {
+            game.setTurnTimer(50);
+            boost = 0.02;
+            sideBoost = 0.02;
+            slowdownX = -boost * 0.3;
+            slowdownY = -boost * 0.3;
+        } else if (moon.radius > 24.0) {
+            game.setTurnTimer(100);
+            boost = 0.04;
+            sideBoost = 0.04;
+            slowdownX = -boost * 0.3;
+            slowdownY = -boost * 0.3;
+        } else if (moon.radius > 36.0) {
+            game.setTurnTimer(200);
+            boost = 0.08;
+            sideBoost = 0.08;
+            slowdownX = -boost * 0.3;
+            slowdownY = -boost * 0.3;
+        }
+        if (!release) {
+            boost = 0.00;
+        }
     }
 }

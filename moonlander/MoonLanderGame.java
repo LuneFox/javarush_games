@@ -101,7 +101,7 @@ public class MoonLanderGame extends Game {
                     } else {
                         setCellTextColor(starX, starY, Color.ORANGE);
                     }
-                    setCellValue(starX, starY, "ж");
+                    setCellValue(starX, starY, "●");
                 } else if (stars.matrix[y][x] == 2) {
                     if (getRandomNumber(10) != 1) {
                         setCellTextColor(starX, starY, Color.WHITE);
