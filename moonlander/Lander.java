@@ -202,22 +202,22 @@ public class Lander extends GameObject {
     // TOOLS
 
     public void optimizeFPS() {
-        if (moon.radius < 24.0) {
+        if (moon.heaviness < 1000.0) {
             game.setTurnTimer(50);
             boost = 0.02;
             sideBoost = 0.02;
             slowdownX = -boost * 0.3;
             slowdownY = -boost * 0.3;
-        } else if (moon.radius > 24.0) {
+        } else if (moon.heaviness > 1000.0) {
             game.setTurnTimer(100);
-            boost = 0.04;
-            sideBoost = 0.04;
+            boost = 0.16;
+            sideBoost = 0.16;
             slowdownX = -boost * 0.3;
             slowdownY = -boost * 0.3;
-        } else if (moon.radius > 36.0) {
+        } else if (moon.heaviness > 3000.0) {
             game.setTurnTimer(200);
-            boost = 0.08;
-            sideBoost = 0.08;
+            boost = 0.32;
+            sideBoost = 0.32;
             slowdownX = -boost * 0.3;
             slowdownY = -boost * 0.3;
         }
