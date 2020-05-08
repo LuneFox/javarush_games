@@ -10,6 +10,7 @@ public class MoonLanderGame extends Game {
     private GameObject landscape;
     private GameObject platform;
     public GameObject stars;
+    public GameObject bigStars;
     public GameObject earth;
     private Moon moon;
     private Lander lander;
@@ -49,10 +50,11 @@ public class MoonLanderGame extends Game {
     private void createGameObjects() {
         moon = new Moon(this, getRandomNumber(63), getRandomNumber(63));
         lander = new Lander(this,
-                32 - ShapeMatrix.LANDER[0].length / 2,
-                32 - ShapeMatrix.LANDER.length / 2,
+                32 - (ShapeMatrix.LANDER[0].length / 2),
+                32 - (ShapeMatrix.LANDER.length / 2),
                 moon);
         stars = new GameObject(-4, -4, new int[40][40]);
+        bigStars = new GameObject(stars.x, stars.y, new int[stars.matrix.length][stars.matrix[0].length]);
         earth = new GameObject(getRandomNumber(53), getRandomNumber(53), ShapeMatrix.EARTH);
         createStarMap();
     }
@@ -95,20 +97,23 @@ public class MoonLanderGame extends Game {
             for (int x = 0; x < stars.matrix[0].length; x++) {
                 int starX = (int) stars.x + x * 2;
                 int starY = (int) stars.y + y * 2;
+                int bigStarX = (int) bigStars.x + x * 2;
+                int bigStarY = (int) bigStars.y + y * 2;
                 if (stars.matrix[y][x] == 1) {
-                    if (getRandomNumber(5) != 1) {
-                        setCellTextColor(starX, starY, Color.PALEGOLDENROD);
-                    } else {
-                        setCellTextColor(starX, starY, Color.ORANGE);
-                    }
-                    setCellValue(starX, starY, "●");
-                } else if (stars.matrix[y][x] == 2) {
                     if (getRandomNumber(10) != 1) {
                         setCellTextColor(starX, starY, Color.WHITE);
                     } else {
                         setCellTextColor(starX, starY, Color.BLUE);
                     }
                     setCellValue(starX, starY, "*");
+                }
+                if (bigStars.matrix[y][x] == 1) {
+                    if (getRandomNumber(5) != 1) {
+                        setCellTextColor(bigStarX, bigStarY, Color.PALEGOLDENROD);
+                    } else {
+                        setCellTextColor(bigStarX, bigStarY, Color.ORANGE);
+                    }
+                    setCellValue(bigStarX, bigStarY, "●");
                 }
             }
         }
@@ -121,7 +126,7 @@ public class MoonLanderGame extends Game {
                 if (random == 1) {
                     stars.matrix[y][x] = 1;
                 } else if (random == 2) {
-                    stars.matrix[y][x] = 2;
+                    bigStars.matrix[y][x] = 1;
                 }
             }
         }
@@ -220,6 +225,7 @@ public class MoonLanderGame extends Game {
             }
             case SPACE: {
                 isSpacePressed = true;
+                lander.startLanding();
                 break;
             }
             case ENTER: {

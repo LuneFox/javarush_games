@@ -18,10 +18,9 @@ public class Rocket extends GameObject {
         ArrayList<int[][]> downFireFrames = new ArrayList<>();
         downFireFrames.add(ShapeMatrix.FIRE_DOWN_1);
         downFireFrames.add(ShapeMatrix.FIRE_DOWN_2);
-        downFireFrames.add(ShapeMatrix.FIRE_DOWN_3);
         ArrayList<int[][]> sideFireFrames = new ArrayList<>();
-        sideFireFrames.add(ShapeMatrix.FIRE_SIDE_1);
-        sideFireFrames.add(ShapeMatrix.FIRE_SIDE_2);
+        sideFireFrames.add(ShapeMatrix.FIRE_RIGHT_1);
+        sideFireFrames.add(ShapeMatrix.FIRE_RIGHT_2);
         downFire = new RocketFire(downFireFrames);
         leftFire = new RocketFire(sideFireFrames);
         rightFire = new RocketFire(sideFireFrames);
@@ -119,7 +118,7 @@ public class Rocket extends GameObject {
             leftFire.hide();
         }
         if (isRightPressed) {
-            rightFire.x = x - ShapeMatrix.FIRE_SIDE_1[0].length;
+            rightFire.x = x - ShapeMatrix.FIRE_RIGHT_1[0].length;
             rightFire.y = matrix.length + y;
             rightFire.show();
         } else {

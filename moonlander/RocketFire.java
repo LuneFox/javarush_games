@@ -18,11 +18,9 @@ public class RocketFire extends GameObject {
 
     private void nextFrame() {
         frameIndex++;
-
         if (frameIndex >= frames.size()) {
             frameIndex = 0;
         }
-        // frameIndex = (frameIndex >= frames.size() ? frameIndex = 0 : frameIndex + 1);
         matrix = frames.get(frameIndex);
     }
 

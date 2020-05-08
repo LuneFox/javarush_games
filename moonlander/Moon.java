@@ -20,10 +20,10 @@ public class Moon {
         int intRadius = (int) radius;
         double squareRadius = radius * radius;
         for (int x = (-intRadius); x <= intRadius; x++) {
-            double drawX = posX + x;
+            int drawX = (int) (posX + x);
             double squareX = x * x;
             for (int y = (-intRadius); y <= intRadius; y++) {
-                if (!(drawX < 0 || (posY + y) < 0 || (int) drawX > 63 || (int) (posY + y) > 63)) {
+                if (!(drawX < 0 || (int) (posY + y) < 0 || drawX > 63 || (int) (posY + y) > 63)) {
                     if (squareX + (y * y) < squareRadius) {
                         game.setCellValueEx((int) posX + x, (int) posY + y, Color.PALEGOLDENROD, "");
                         if (radius > 20 && squareX + (y * y) > squareRadius - 40) {
