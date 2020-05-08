@@ -52,7 +52,7 @@ public class MoonLanderGame extends Game {
                 32 - ShapeMatrix.LANDER[0].length / 2,
                 32 - ShapeMatrix.LANDER.length / 2,
                 moon);
-        stars = new GameObject(0, 0, new int[32][32]);
+        stars = new GameObject(-4, -4, new int[40][40]);
         earth = new GameObject(getRandomNumber(53), getRandomNumber(53), ShapeMatrix.EARTH);
         createStarMap();
     }
@@ -93,16 +93,22 @@ public class MoonLanderGame extends Game {
     private void drawStarMap() {
         for (int y = 0; y < stars.matrix.length; y++) {
             for (int x = 0; x < stars.matrix[0].length; x++) {
+                int starX = (int) stars.x + x * 2;
+                int starY = (int) stars.y + y * 2;
                 if (stars.matrix[y][x] == 1) {
-                    if (getRandomNumber(5) != 1)
-                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "ж", Color.PALEGOLDENROD);
-                    else
-                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "ж", Color.ORANGE);
+                    if (getRandomNumber(5) != 1) {
+                        setCellTextColor(starX, starY, Color.PALEGOLDENROD);
+                    } else {
+                        setCellTextColor(starX, starY, Color.ORANGE);
+                    }
+                    setCellValue(starX, starY, "ж");
                 } else if (stars.matrix[y][x] == 2) {
-                    if (getRandomNumber(10) != 1)
-                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "*", Color.WHITE);
-                    else
-                        setCellValueEx((int) stars.x + x * 2, (int) stars.y + y * 2, Color.BLACK, "*", Color.BLUE);
+                    if (getRandomNumber(10) != 1) {
+                        setCellTextColor(starX, starY, Color.WHITE);
+                    } else {
+                        setCellTextColor(starX, starY, Color.BLUE);
+                    }
+                    setCellValue(starX, starY, "*");
                 }
             }
         }
@@ -145,7 +151,23 @@ public class MoonLanderGame extends Game {
         super.setCellValueEx(x, y, cellColor, value);
     }
 
-// GAME MECHANICS
+    @Override
+    public void setCellValue(int x, int y, String value) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellValue(x, y, value);
+    }
+
+    @Override
+    public void setCellTextColor(int x, int y, Color color) {
+        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
+            return;
+        }
+        super.setCellTextColor(x, y, color);
+    }
+
+    // GAME MECHANICS
 
     private void check() {
         if (rocket.isCollision(platform) && rocket.isStopped()) {

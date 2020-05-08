@@ -25,13 +25,12 @@ public class Moon {
             for (int y = (-intRadius); y <= intRadius; y++) {
                 if (!(drawX < 0 || (posY + y) < 0 || (int) drawX > 63 || (int) (posY + y) > 63)) {
                     if (squareX + (y * y) < squareRadius) {
-                        game.setCellColor((int) posX + x, (int) posY + y, Color.PALEGOLDENROD);
+                        game.setCellValueEx((int) posX + x, (int) posY + y, Color.PALEGOLDENROD, "");
                         if (radius > 20 && squareX + (y * y) > squareRadius - 40) {
                             game.setCellColor((int) posX + x, (int) posY + y, Color.TAN);
                         } else if (radius < 20 && squareX + (y * y) > squareRadius - 5) {
                             game.setCellColor((int) posX + x, (int) posY + y, Color.TAN);
                         }
-                        game.setCellValue((int) posX + x, (int) posY + y, "");
                     }
                 }
             }
