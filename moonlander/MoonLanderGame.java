@@ -8,9 +8,6 @@ public class MoonLanderGame extends Game {
 
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
-    private Color[][] colorMap = new Color[100][100];
-    private GameObject landscape;
-    private GameObject platform;
     private Text writer;
     public GameObject stars;
     public GameObject bigStars;
@@ -28,6 +25,10 @@ public class MoonLanderGame extends Game {
     private boolean isRightPressed;
     private boolean isSpacePressed;
     private boolean isGameStopped;
+    static boolean limitFPS = false;
+    static boolean transparentMoon = false;
+    static boolean disableStars = false;
+    static boolean disableEarth = false;
 
     @Override
     public void initialize() {
@@ -76,8 +77,13 @@ public class MoonLanderGame extends Game {
     // DRAW
     private void drawScene() {
         drawGameBackground();
-        drawStarMap();
-        earth.draw(this);
+        if (!disableStars) {
+            drawStarMap();
+        }
+        if (!disableEarth) {
+            earth.draw(this);
+        }
+
         moon.draw();
         lander.draw(this);
         drawInterfaceBackground();
@@ -87,8 +93,18 @@ public class MoonLanderGame extends Game {
         speedMeterZ.displaySpeed(lander.speedZ);
 
         // text
-        writer.write("высота", Color.WHITE, 66, 0, false);
-        writer.write(round((48.0 - moon.radius), 1) + "", Color.WHITE, 66, 9, false);
+        writer.write("height", Color.YELLOW, 66, 0, false);
+        writer.write("s\np\ne\ne\nd", Color.LAWNGREEN, 90, 19, false);
+        writer.write(round((48.0 - moon.radius), 1) + "", Color.YELLOW, 66, 9, false);
+
+        writer.write("пропуск кадров",
+                (limitFPS ? Color.YELLOW : Color.WHITE), 2, 66, false);
+        writer.write("прозрачная луна",
+                (transparentMoon ? Color.YELLOW : Color.WHITE), 2, 74, false);
+        writer.write("отключить звёзды",
+                (disableStars ? Color.YELLOW : Color.WHITE), 2, 82, false);
+        writer.write("отключить землю",
+                (disableEarth ? Color.YELLOW : Color.WHITE), 2, 90, false);
     }
 
     public void drawGameBackground() {
@@ -246,6 +262,18 @@ public class MoonLanderGame extends Game {
         }
     }
 
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+        if (y >= 66 && y < 72) {
+            limitFPS = !limitFPS;
+        } else if (y >= 74 && y < 82) {
+            transparentMoon = !transparentMoon;
+        } else if (y >= 82 && y < 90) {
+            disableStars = !disableStars;
+        } else if (y >= 90 && y < 98) {
+            disableEarth = !disableEarth;
+        }
+    }
 
     // CELL FILLERS
 

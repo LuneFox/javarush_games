@@ -13,7 +13,7 @@ public class Meter extends GameObject {
     public void displayHeight(double radius) {
         for (int y = 0; y < matrix.length; y++) {
             for (int x = 0; x < matrix[0].length; x++) {
-                matrix[y][x] = (y == (int) (radius - 4) ? 2 : 1);
+                matrix[y][x] = (y == (int) (radius - 4) ? 3 : 1);
             }
         }
         draw(game);

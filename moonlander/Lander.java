@@ -52,7 +52,9 @@ public class Lander extends GameObject {
     public void move(boolean isSpacePressed, boolean isLeftPressed,
                      boolean isRightPressed, boolean isUpPressed,
                      boolean isDownPressed) {
-        // optimizeFPS();
+        if (MoonLanderGame.limitFPS) {
+            optimizeFPS();
+        }
         switchFire(isUpPressed, isDownPressed, isLeftPressed, isRightPressed, isSpacePressed);
         activateSideThrottle(isLeftPressed, isRightPressed, isUpPressed, isDownPressed);
         activateMainThrottle(isSpacePressed);

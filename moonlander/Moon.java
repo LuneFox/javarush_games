@@ -29,7 +29,8 @@ public class Moon {
                 if (!(drawX < 0 || (int) (posY + y) < 0 || drawX > 63 || (int) (posY + y) > 63)) {
                     if (squareX + (y * y) < squareRadius) {
                         heaviness++;
-                        game.setCellValueEx((int) posX + x, (int) posY + y, Color.PALEGOLDENROD, "");
+                        game.setCellValueEx((int) posX + x, (int) posY + y,
+                                (MoonLanderGame.transparentMoon ? Color.NONE : Color.PALEGOLDENROD), "");
                         if (radius > 20 && squareX + (y * y) > squareRadius - 40) {
                             game.setCellColor((int) posX + x, (int) posY + y, Color.TAN);
                         } else if (radius < 20 && squareX + (y * y) > squareRadius - 5) {
