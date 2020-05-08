@@ -2,6 +2,8 @@ package com.javarush.games.moonlander;
 
 import com.javarush.engine.cell.*;
 
+import java.lang.reflect.Method;
+
 public class MoonLanderGame extends Game {
 
     public static final int WIDTH = 100;
@@ -12,6 +14,7 @@ public class MoonLanderGame extends Game {
     public GameObject stars;
     public GameObject bigStars;
     public GameObject earth;
+    public Meter meter;
     private Moon moon;
     private Lander lander;
     private int score;
@@ -56,6 +59,7 @@ public class MoonLanderGame extends Game {
         stars = new GameObject(-4, -4, new int[40][40]);
         bigStars = new GameObject(stars.x, stars.y, new int[stars.matrix.length][stars.matrix[0].length]);
         earth = new GameObject(getRandomNumber(53), getRandomNumber(53), ShapeMatrix.EARTH);
+        meter = new Meter(this, moon);
         createStarMap();
     }
 
@@ -68,6 +72,7 @@ public class MoonLanderGame extends Game {
         moon.draw();
         lander.draw(this);
         drawInterfaceBackground();
+        meter.display();
     }
 
     public void drawGameBackground() {
