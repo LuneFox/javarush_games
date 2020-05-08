@@ -13,9 +13,9 @@ public class Lander extends GameObject {
     private RocketFire leftFire;
     private RocketFire rightFire;
     private RocketFire mainFire;
-    private double speedZ;
-    private double speedX;
-    private double speedY;
+    double speedZ;
+    double speedX;
+    double speedY;
     private double boost = 0.00;
     private double sideBoost = 0.02;
     private double slowdownX = -sideBoost * 0.3;
@@ -220,20 +220,16 @@ public class Lander extends GameObject {
     private void keepMoonInSight() {
         if (moon.posX + moon.radius < 0) {
             moon.posX = 1 - moon.radius;
-            slowdownX = 0;
             speedX = 0;
         } else if (moon.posX - moon.radius > 63) {
             moon.posX = 63 + moon.radius;
-            slowdownX = 0;
             speedX = 0;
         }
         if (moon.posY + moon.radius < 0) {
             moon.posY = 1 - moon.radius;
-            slowdownY = 0;
             speedY = 0;
         } else if (moon.posY - moon.radius > 63) {
             moon.posY = 63 + moon.radius;
-            slowdownY = 0;
             speedY = 0;
         }
     }

@@ -1,8 +1,8 @@
 package com.javarush.games.moonlander;
 
 import com.javarush.engine.cell.*;
-
-import java.lang.reflect.Method;
+import com.javarush.games.moonlander.graphics.Bitmap;
+import com.javarush.games.moonlander.graphics.Text;
 
 public class MoonLanderGame extends Game {
 
@@ -11,10 +11,14 @@ public class MoonLanderGame extends Game {
     private Color[][] colorMap = new Color[100][100];
     private GameObject landscape;
     private GameObject platform;
+    private Text writer;
     public GameObject stars;
     public GameObject bigStars;
     public GameObject earth;
-    public Meter meter;
+    public Meter heightMeter;
+    public Meter speedMeterX;
+    public Meter speedMeterY;
+    public Meter speedMeterZ;
     private Moon moon;
     private Lander lander;
     private int score;
@@ -51,6 +55,8 @@ public class MoonLanderGame extends Game {
     }
 
     private void createGameObjects() {
+        writer = new Text(Bitmap.NONE, this);
+        writer.loadAlphabet();
         moon = new Moon(this, getRandomNumber(63), getRandomNumber(63));
         lander = new Lander(this,
                 32 - (ShapeMatrix.LANDER[0].length / 2),
@@ -59,7 +65,10 @@ public class MoonLanderGame extends Game {
         stars = new GameObject(-4, -4, new int[40][40]);
         bigStars = new GameObject(stars.x, stars.y, new int[stars.matrix.length][stars.matrix[0].length]);
         earth = new GameObject(getRandomNumber(53), getRandomNumber(53), ShapeMatrix.EARTH);
-        meter = new Meter(this, moon);
+        heightMeter = new Meter(66, 19, this);
+        speedMeterX = new Meter(74, 19, this);
+        speedMeterY = new Meter(78, 19, this);
+        speedMeterZ = new Meter(82, 19, this);
         createStarMap();
     }
 
@@ -72,7 +81,14 @@ public class MoonLanderGame extends Game {
         moon.draw();
         lander.draw(this);
         drawInterfaceBackground();
-        meter.display();
+        heightMeter.displayHeight(moon.radius);
+        speedMeterX.displaySpeed(lander.speedX);
+        speedMeterY.displaySpeed(lander.speedY);
+        speedMeterZ.displaySpeed(lander.speedZ);
+
+        // text
+        writer.write("высота", Color.WHITE, 66, 0, false);
+        writer.write(round((48.0 - moon.radius), 1) + "", Color.WHITE, 66, 9, false);
     }
 
     public void drawGameBackground() {
@@ -272,5 +288,16 @@ public class MoonLanderGame extends Game {
         }
         super.setCellTextColor(x, y, color);
     }
+
+    // UTILITY
+
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+        long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
 
 }
