@@ -192,19 +192,22 @@ public class Lander extends GameObject {
 
     public void optimizeFPS() {
         if (moon.heaviness < 1000.0) {
-            game.setTurnTimer(50);
+            game.turnTimer = 50;
+            game.setTurnTimer(game.turnTimer);
             boost = 0.02;
             sideBoost = 0.02;
             slowdownX = -boost * 0.3;
             slowdownY = -boost * 0.3;
         } else if (moon.heaviness > 1000.0) {
-            game.setTurnTimer(100);
+            game.turnTimer = 100;
+            game.setTurnTimer(game.turnTimer);
             boost = 0.16;
             sideBoost = 0.16;
             slowdownX = -boost * 0.3;
             slowdownY = -boost * 0.3;
         } else if (moon.heaviness > 3000.0) {
-            game.setTurnTimer(200);
+            game.turnTimer = 200;
+            game.setTurnTimer(game.turnTimer);
             boost = 0.32;
             sideBoost = 0.32;
             slowdownX = -boost * 0.3;

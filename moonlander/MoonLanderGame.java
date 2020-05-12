@@ -4,6 +4,8 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.moonlander.graphics.Bitmap;
 import com.javarush.games.moonlander.graphics.Text;
 
+import java.util.Date;
+
 public class MoonLanderGame extends Game {
 
     public static final int WIDTH = 100;
@@ -18,7 +20,11 @@ public class MoonLanderGame extends Game {
     public Meter speedMeterZ;
     private Moon moon;
     private Lander lander;
-    private int score;
+    private long startTime;
+    private long before = 0;
+    private int frameCounter;
+    private int fps;
+    public int turnTimer;
     private boolean isUpPressed;
     private boolean isDownPressed;
     private boolean isLeftPressed;
@@ -35,6 +41,7 @@ public class MoonLanderGame extends Game {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         createGame();
+        //showMessageDialog(Color.YELLOW, "Это не готовая игра!\nЭто технический тест.", Color.RED, 35);
     }
 
     @Override
@@ -45,14 +52,16 @@ public class MoonLanderGame extends Game {
 
 
     private void createGame() {
-        setTurnTimer(50);
+        frameCounter = 0;
+        startTime = new Date().getTime();
+        turnTimer = 50;
+        setTurnTimer(turnTimer);
         createGameObjects();
         drawScene();
         isUpPressed = false;
         isLeftPressed = false;
         isRightPressed = false;
         isGameStopped = false;
-        score = 1000;
     }
 
     private void createGameObjects() {
@@ -76,10 +85,13 @@ public class MoonLanderGame extends Game {
 
     // DRAW
     private void drawScene() {
+        long time = (new Date().getTime() - startTime);
         drawGameBackground();
+
         if (!disableStars) {
             drawStarMap();
         }
+
         if (!disableEarth) {
             earth.draw(this);
         }
@@ -93,9 +105,9 @@ public class MoonLanderGame extends Game {
         speedMeterZ.displaySpeed(lander.speedZ);
 
         // text
-        writer.write("height", Color.YELLOW, 66, 0, false);
+        writer.write("FPS " + (fps), Color.PINK, 66, 0, false);
+        writer.write(("TIME " + (time / 1000)), Color.YELLOW, 66, 9, false);
         writer.write("s\np\ne\ne\nd", Color.LAWNGREEN, 90, 19, false);
-        writer.write(round((48.0 - moon.radius), 1) + "", Color.YELLOW, 66, 9, false);
 
         writer.write("пропуск кадров",
                 (limitFPS ? Color.YELLOW : Color.WHITE), 2, 66, false);
@@ -105,6 +117,13 @@ public class MoonLanderGame extends Game {
                 (disableStars ? Color.YELLOW : Color.WHITE), 2, 82, false);
         writer.write("отключить землю",
                 (disableEarth ? Color.YELLOW : Color.WHITE), 2, 90, false);
+        frameCounter++;
+        long after = new Date().getTime();
+        if (after - before > 999) {
+            before = new Date().getTime();
+            fps = frameCounter;
+            frameCounter = 0;
+        }
     }
 
     public void drawGameBackground() {
@@ -179,7 +198,6 @@ public class MoonLanderGame extends Game {
     }
 
     private void gameOver() {
-        score = 0;
         isGameStopped = true;
         showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Goodbye Lander!", Color.DARKRED, 75);
         stopTurnTimer();
