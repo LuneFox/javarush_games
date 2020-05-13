@@ -154,8 +154,8 @@ public class Snake {
         if (element == Element.ALMIGHTY) {
             game.decreaseLifetime();
             if (game.getLifetime() <= 0) return;
-            if (game.getMap().getLayoutNode(head.x, head.y).getTerrain() != Terrain.VOID) game.setScore(1, true);
-            game.getMap().setLayoutNode(head.x, head.y, Terrain.VOID);
+            if (game.getMap().getLayoutNode(head.x, head.y).getTerrain() != Node.Terrain.VOID) game.setScore(1, true);
+            game.getMap().setLayoutNode(head.x, head.y, Node.Terrain.VOID);
             return;
         }
         switch (node.getTerrain()) {
@@ -172,7 +172,7 @@ public class Snake {
             case WOOD:
                 breath = snakeParts.size();
                 if (element == Element.FIRE) { // fire snake sets wood on fire
-                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.FIRE);
+                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.FIRE);
                 }
                 if (element == Element.WATER) { // water snake moistens wood
                     game.getMap().getLayoutNode(getNewHeadX(), getNewHeadY()).resetFireResistance();
@@ -191,13 +191,13 @@ public class Snake {
                     game.setGameOverReason("Snake was burned!");
                 }
                 if (element == Element.WATER) { // water snake extinguishes burning wood
-                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.WOOD);
+                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.WOOD);
                 }
                 break;
             case FOREST:
                 breath = snakeParts.size();
                 if (element == Element.FIRE) { // fire snake sets forest on fire
-                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.FIRE);
+                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.FIRE);
                 } else if (element != Element.AIR) { // air snake can fly over fire
                     isAlive = false;
                     game.setGameOverReason("Snake was eaten by a forest beast!");

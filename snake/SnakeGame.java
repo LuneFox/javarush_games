@@ -15,6 +15,7 @@ public class SnakeGame extends Game {
     static final int HEIGHT = 32;
     static final int MAX_TURN_DELAY = 300;
     private InputEvent ie;
+    private Screen screen;
 
     // Game flow parameters
     private String currentTask;
@@ -44,10 +45,11 @@ public class SnakeGame extends Game {
         Signs.setSigns(Graphics.KANJI);
         createGame();
         ie = new InputEvent(this);
+        Screen.set(Screen.Type.MAIN_MENU);
     }
 
     final void createGame() { // reset values for new game
-        if (firstLaunch) {
+        if (Screen.get() == Screen.Type.MAIN_MENU) {
             displayHelp();
         } else {
             score = 0;
@@ -89,12 +91,14 @@ public class SnakeGame extends Game {
     // GAME MECHANICS
 
     public void onTurn(int step) {
-        if (firstLaunch) {
+        if (Screen.is(Screen.Type.MAIN_MENU)) {
             drawScene();
             return;
         }
         snake.move();
-        for (Orb o : orbs) snake.orbInteract(o);
+        for (Orb o : orbs) {
+            snake.orbInteract(o);
+        }
         processOrb(neutralOrb);
         processOrb(waterOrb);
         processOrb(fireOrb);
@@ -202,16 +206,16 @@ public class SnakeGame extends Game {
                 y = getRandomNumber(HEIGHT - 4) + 4;
                 neutralOrb = new Orb(x, y, Element.NEUTRAL);
             } while (snake.checkCollision(neutralOrb)
-                    || (map.getLayoutNode(x, y).getTerrain() != Terrain.FIELD
-                    && map.getLayoutNode(x, y).getTerrain() != Terrain.WATER
-                    && map.getLayoutNode(x, y).getTerrain() != Terrain.WOOD));
+                    || (map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD
+                    && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WATER
+                    && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WOOD));
         } else // can place orbs on field only
             do {
                 x = getRandomNumber(WIDTH);
                 y = getRandomNumber(HEIGHT - 4) + 4;
                 neutralOrb = new Orb(x, y, Element.NEUTRAL);
             } while (snake.checkCollision(neutralOrb)
-                    || map.getLayoutNode(x, y).getTerrain() != Terrain.FIELD);
+                    || map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD);
         orbs.add(neutralOrb);
     }
 
@@ -235,7 +239,7 @@ public class SnakeGame extends Game {
     private void drawScene() { // draw terrain, orbs, snake, interface
         for (int x = 0; x < WIDTH; x++) for (int y = 0; y < HEIGHT; y++) map.getLayout()[y][x].draw(this);
         for (Orb o : orbs) o.draw(this);
-        if (!firstLaunch) {
+        if (Screen.is(Screen.Type.GAME)) {
             snake.draw(this);
             drawInterface();
         }

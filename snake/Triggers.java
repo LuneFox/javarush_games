@@ -7,7 +7,6 @@ class Triggers {
     static boolean airOrbObtained = false;
     static boolean almightyOrbObtained = false;
     static boolean speedUpDelay = true;
-    static boolean firstLaunch = true;
 
     static void reset() {
         waterOrbObtained = false;

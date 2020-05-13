@@ -1,9 +1,6 @@
 package com.javarush.games.snake;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.snake.enums.Terrain;
-
-import static com.javarush.games.snake.Triggers.firstLaunch;
 
 /**
  * Interactive tile nodes
@@ -15,6 +12,10 @@ class Node extends GameObject {
     private Color bgColor;
     private String sign;
     private int fireResistance;
+
+    public enum Terrain {
+        FIELD, WOOD, WATER, FIRE, FOREST, WORMHOLE, PIT, WALL, SAND, VOID
+    }
 
     Node(int x, int y, SnakeGame game, int type) {
         super(x, y, game);
@@ -91,7 +92,7 @@ class Node extends GameObject {
     }
 
     private void activate() { // interact with surrounding nodes
-        if (firstLaunch) return;
+        if (!Screen.is(Screen.Type.GAME)) return;
         Node activeNode;
         if (terrain == Terrain.FIRE) { // ignite wood
             for (int x = this.x - 1; x <= this.x + 1; x++) {

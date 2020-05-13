@@ -1,7 +1,5 @@
 package com.javarush.games.snake;
 
-import com.javarush.games.snake.enums.Terrain;
-
 /**
  * Contains two-dimensional array of nodes, which are, in fact, interactive tile objects
  */
@@ -28,7 +26,7 @@ class Map {
         return layout[y][x];
     }
 
-    void setLayoutNode(int x, int y, Terrain terrain) {
+    void setLayoutNode(int x, int y, Node.Terrain terrain) {
         switch (terrain) {
             case FIELD:
                 this.layout[y][x] = new Node(x, y, game, 0);

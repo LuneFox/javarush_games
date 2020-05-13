@@ -13,11 +13,13 @@ class InputEvent {
         this.game = game;
     }
 
+    // BASIC ACTIONS
+
     void keyPress(Key key) {
-        if (firstLaunch) {
+        if (Screen.is(Screen.Type.MAIN_MENU)) {
             switch (key) {
                 case SPACE:
-                    firstLaunch = false;
+                    Screen.set(Screen.Type.GAME);
                     game.createGame();
                     this.snake = game.getSnake();
                     break;
@@ -73,19 +75,27 @@ class InputEvent {
     }
 
     void keyRelease(Key key) {
-        if ((!firstLaunch) && (isDirectionalKey(key))) {
+        if (Screen.is(Screen.Type.GAME) && isDirectionalKey(key)) {
             Triggers.speedUpDelay = true;
             game.setTurnDelay(Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100));
         }
     }
 
     void leftClick(int x, int y) {
-        if (!firstLaunch) snake.swapNextElement();
+        if (Screen.is(Screen.Type.GAME)) {
+            snake.swapNextElement();
+        }
     }
 
     void rightClick(int x, int y) {
-        if (!firstLaunch) snake.swapPreviousElement();
+        if (Screen.is(Screen.Type.GAME)) {
+            snake.swapPreviousElement();
+        }
     }
+
+    // SCREEN ACTIONS TODO
+
+    // UTILITY
 
     private boolean isDirectionalKey(Key key) {
         return key == Key.UP || key == Key.RIGHT || key == Key.LEFT || key == Key.DOWN;
