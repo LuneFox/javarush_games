@@ -48,25 +48,26 @@ public class SnakeGame extends Game {
         menu.displayMain();
     }
 
-    final void createGame() { // reset values for new game
-        if (Screen.get() == Screen.Type.MAIN_MENU) {
-            createOrbsForMenu();
-        } else {
-            score = 0;
-            lifetime = 301;
-            snake = new Snake(2, 27, this);
-            snakeLength = snake.getLength();
-            map = new Map(Map.pattern, this);
-            orbs = new ArrayList<>();
-            createNeutralOrb();
-            createElementalOrbs();
-            Triggers.reset();
-            turnDelay = MAX_TURN_DELAY;
-            setTurnTimer(turnDelay);
-            isStopped = false;
-            currentTask = "Reach water orb!";
-            drawScene();
-        }
+    final void createGame() {
+        // Make new objects
+        map = new Map(Map.pattern, this);
+        snake = new Snake(2, 27, this);
+        orbs = new ArrayList<>();
+        createNeutralOrb();
+        createElementalOrbs();
+
+        // Initialize values
+        Triggers.reset();
+        snakeLength = snake.getLength();
+        score = 0;
+        lifetime = 301;
+        currentTask = "Reach water orb!";
+
+        // Launch
+        isStopped = false;
+        turnDelay = MAX_TURN_DELAY;
+        setTurnTimer(turnDelay);
+        drawScene();
     }
 
 
@@ -90,13 +91,9 @@ public class SnakeGame extends Game {
     // GAME MECHANICS
 
     public void onTurn(int step) {
-        if (Screen.is(Screen.Type.MAIN_MENU)) {
-            drawScene();
-            return;
-        }
         snake.move();
-        for (Orb o : orbs) {
-            snake.orbInteract(o);
+        for (Orb orb : orbs) {
+            snake.orbInteract(orb);
         }
         processOrb(neutralOrb);
         processOrb(waterOrb);
@@ -234,13 +231,13 @@ public class SnakeGame extends Game {
 
     private void drawInterface() {
         if (Screen.is(Screen.Type.GAME)) {
-            new DockMessage("strength: " + (snake.getLength()), Color.WHITE).draw(this, 0, 0);
-            new DockMessage("hunger: " + snake.getHunger() + "%", Color.WHITE).draw(this, 19, 0);
-            new DockMessage("element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw(this, 0, 1);
-            new DockMessage("task    : " + currentTask, Color.LIGHTGREEN).draw(this, 0, 2);
-            new DockMessage("score   : " + score, Color.LIGHTBLUE).draw(this, 0, 3);
+            new Message("strength: " + (snake.getLength()), Color.WHITE).draw(this, 0, 0);
+            new Message("hunger: " + snake.getHunger() + "%", Color.WHITE).draw(this, 19, 0);
+            new Message("element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw(this, 0, 1);
+            new Message("task    : " + currentTask, Color.LIGHTGREEN).draw(this, 0, 2);
+            new Message("score   : " + score, Color.LIGHTBLUE).draw(this, 0, 3);
             if (lifetime < 301) {
-                new DockMessage("time: " + lifetime, Color.CORAL).draw(this, 20, 3);
+                new Message("time: " + lifetime, Color.CORAL).draw(this, 20, 3);
             }
         }
     }
@@ -296,7 +293,6 @@ public class SnakeGame extends Game {
         return (snake.checkCollision(neutralOrb) || map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD);
     }
 
-
     // CONTROLS
 
     @Override
@@ -341,7 +337,7 @@ public class SnakeGame extends Game {
         return snake;
     }
 
-    public Menu getMenu() {
+    Menu getMenu() {
         return menu;
     }
 

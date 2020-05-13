@@ -2,14 +2,14 @@ package com.javarush.games.snake;
 
 import com.javarush.engine.cell.*;
 
-public class DockMessage {
+public class Message {
     private String[] splitText;
     private Color color;
     private Color bgColor = Color.BLACK;
     private int textSize = 70;
 
     // create message object with given text
-    DockMessage(String text, Color color) {
+    Message(String text, Color color) {
         splitText = specialSplit(text);
         this.color = color;
     }
