@@ -9,37 +9,39 @@ import java.util.Collections;
 import static com.javarush.games.snake.Triggers.*;
 
 public class SnakeGame extends Game {
+    // Global parameters
     private static final String VERSION = "1.05";
     static final int WIDTH = 32;
     static final int HEIGHT = 32;
-    static int snakeLength;
-    static int score;
-    static int lifetime;
-    static Map map;
-    static String gameOverReason;
     static final int MAX_TURN_DELAY = 300;
-    private Snake snake;
-    private Orb neutralOrb, waterOrb, fireOrb, earthOrb, airOrb, almightyOrb;
 
-    private ArrayList<Orb> orbs = new ArrayList<>();
+    // Game flow parameters
     private String currentTask;
-    int turnDelay;
-    private boolean isGameStopped;
+    private String gameOverReason;
+    private int turnDelay;
+    private int snakeLength;
+    private int score;
+    private int lifetime;
+    private boolean isStopped;
+
+    // Game objects
+    private Snake snake;
+    private Map map;
+    private Orb neutralOrb;
+    private Orb waterOrb;
+    private Orb fireOrb;
+    private Orb earthOrb;
+    private Orb airOrb;
+    private Orb almightyOrb;
+    private ArrayList<Orb> orbs;
+
+    // SETUP
 
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         Signs.setSigns(Graphics.KANJI);
         createGame();
-    }
-
-    private void drawScene() { // draw terrain, orbs, snake, interface
-        for (int x = 0; x < WIDTH; x++) for (int y = 0; y < HEIGHT; y++) map.getLayout()[y][x].draw(this);
-        for (Orb o : orbs) o.draw(this);
-        if (!firstLaunch) {
-            snake.draw(this);
-            drawInterface();
-        }
     }
 
     private void createGame() { // reset values for new game
@@ -51,32 +53,38 @@ public class SnakeGame extends Game {
             setScore(score);
             snake = new Snake(2, 27, this);
             snakeLength = snake.getLength();
-            map = new Map(Map.pattern);
-            orbs.clear();
+            map = new Map(Map.pattern, this);
+            orbs = new ArrayList<>();
             createNeutralOrb();
             createElementalOrbs();
             Triggers.reset();
             turnDelay = MAX_TURN_DELAY;
             setTurnTimer(turnDelay);
-            isGameStopped = false;
+            isStopped = false;
             currentTask = "Reach water orb!";
             drawScene();
         }
     }
 
-    private void gameOver() {
-        stopTurnTimer();
-        drawScene();
-        isGameStopped = true;
-        showMessageDialog(Color.YELLOW, gameOverReason + "\nScore: " + score, Color.RED, 27);
-    }
+
+    // GAME END
 
     private void win() {
         stopTurnTimer();
         drawScene();
-        isGameStopped = true;
+        isStopped = true;
         showMessageDialog(Color.YELLOW, "YOU WIN!\nScore: " + score, Color.GREEN, 27);
     }
+
+    private void gameOver() {
+        stopTurnTimer();
+        drawScene();
+        isStopped = true;
+        showMessageDialog(Color.YELLOW, gameOverReason + "\nScore: " + score, Color.RED, 27);
+    }
+
+
+    // GAME MECHANICS
 
     public void onTurn(int step) {
         if (firstLaunch) {
@@ -93,113 +101,9 @@ public class SnakeGame extends Game {
         processOrb(almightyOrb);
         if (!snake.isAlive) gameOver();
         if (lifetime <= 0) win();
-        snakeLength = snake.getLength(); // copying value to static for public use
+        snakeLength = snake.getLength();
         setTurnTimer(turnDelay);
         drawScene();
-    }
-
-    @Override
-    public void onKeyPress(Key key) {
-        if (firstLaunch) {
-            switch (key) {
-                case SPACE:
-                    firstLaunch = false;
-                    createGame();
-                    break;
-                case UP:
-                    Signs.setSigns(Graphics.KANJI);
-                    displayHelp();
-                    break;
-                case DOWN:
-                    Signs.setSigns(Graphics.EMOJI);
-                    displayHelp();
-                    break;
-                default:
-                    break;
-            }
-        } else if (!isGameStopped) {
-            if (speedUpDelay) {
-                turnDelay = Math.max((MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
-                Triggers.speedUpDelay = false;
-            } else turnDelay = 50;
-            switch (key) {
-                case UP:
-                    snake.setDirection(Direction.UP);
-                    break;
-                case RIGHT:
-                    snake.setDirection(Direction.RIGHT);
-                    break;
-                case DOWN:
-                    snake.setDirection(Direction.DOWN);
-                    break;
-                case LEFT:
-                    snake.setDirection(Direction.LEFT);
-                    break;
-                case ENTER:
-                    snake.swapNextElement();
-                    break;
-                case ESCAPE:
-                    snake.swapPreviousElement();
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            if (key == Key.SPACE) createGame();
-        }
-    }
-
-    @Override
-    public void onKeyReleased(Key key) {
-        if (!firstLaunch) {
-            Triggers.speedUpDelay = true;
-            turnDelay = Math.max((MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
-        }
-    }
-
-    @Override
-    public void onMouseLeftClick(int x, int y) {
-        if (!firstLaunch) snake.swapNextElement();
-    }
-
-    @Override
-    public void onMouseRightClick(int x, int y) {
-        if (!firstLaunch) snake.swapPreviousElement();
-    }
-
-    private void createNeutralOrb() {
-        int x, y;
-        if (snake.getElementsAvailable().contains(Element.WATER)) { // can place orbs on field and water
-            do {
-                x = getRandomNumber(WIDTH);
-                y = getRandomNumber(HEIGHT - 4) + 4;
-                neutralOrb = new Orb(x, y, Element.NEUTRAL);
-            } while (snake.checkCollision(neutralOrb)
-                    || (map.getLayoutNode(x, y).getTerrain() != Terrain.FIELD
-                    && map.getLayoutNode(x, y).getTerrain() != Terrain.WATER
-                    && map.getLayoutNode(x, y).getTerrain() != Terrain.WOOD));
-        } else // can place orbs on field only
-            do {
-                x = getRandomNumber(WIDTH);
-                y = getRandomNumber(HEIGHT - 4) + 4;
-                neutralOrb = new Orb(x, y, Element.NEUTRAL);
-            } while (snake.checkCollision(neutralOrb)
-                    || map.getLayoutNode(x, y).getTerrain() != Terrain.FIELD);
-        orbs.add(neutralOrb);
-    }
-
-    private void createElementalOrbs() {
-        waterOrb = new Orb(3, 7, Element.WATER);
-        fireOrb = new Orb(27, 27, Element.FIRE);
-        earthOrb = new Orb(16, 18, Element.EARTH);
-        airOrb = new Orb(18, 8, Element.AIR);
-        almightyOrb = new Orb(24, 9, Element.ALMIGHTY);
-
-        orbs.add(waterOrb);
-        orbs.add(fireOrb);
-        orbs.add(earthOrb);
-        orbs.add(airOrb);
-        orbs.add(almightyOrb);
     }
 
     private void processOrb(Orb orb) {
@@ -285,18 +189,70 @@ public class SnakeGame extends Game {
         }
     }
 
+
+    // OBJECT CREATIONS
+
+    private void createNeutralOrb() {
+        int x, y;
+        if (snake.getElementsAvailable().contains(Element.WATER)) { // can place orbs on field and water
+            do {
+                x = getRandomNumber(WIDTH);
+                y = getRandomNumber(HEIGHT - 4) + 4;
+                neutralOrb = new Orb(x, y, Element.NEUTRAL);
+            } while (snake.checkCollision(neutralOrb)
+                    || (map.getLayoutNode(x, y).getTerrain() != Terrain.FIELD
+                    && map.getLayoutNode(x, y).getTerrain() != Terrain.WATER
+                    && map.getLayoutNode(x, y).getTerrain() != Terrain.WOOD));
+        } else // can place orbs on field only
+            do {
+                x = getRandomNumber(WIDTH);
+                y = getRandomNumber(HEIGHT - 4) + 4;
+                neutralOrb = new Orb(x, y, Element.NEUTRAL);
+            } while (snake.checkCollision(neutralOrb)
+                    || map.getLayoutNode(x, y).getTerrain() != Terrain.FIELD);
+        orbs.add(neutralOrb);
+    }
+
+    private void createElementalOrbs() {
+        waterOrb = new Orb(3, 7, Element.WATER);
+        fireOrb = new Orb(27, 27, Element.FIRE);
+        earthOrb = new Orb(16, 18, Element.EARTH);
+        airOrb = new Orb(18, 8, Element.AIR);
+        almightyOrb = new Orb(24, 9, Element.ALMIGHTY);
+
+        orbs.add(waterOrb);
+        orbs.add(fireOrb);
+        orbs.add(earthOrb);
+        orbs.add(airOrb);
+        orbs.add(almightyOrb);
+    }
+
+
+    // VISUALS
+
+    private void drawScene() { // draw terrain, orbs, snake, interface
+        for (int x = 0; x < WIDTH; x++) for (int y = 0; y < HEIGHT; y++) map.getLayout()[y][x].draw(this);
+        for (Orb o : orbs) o.draw(this);
+        if (!firstLaunch) {
+            snake.draw(this);
+            drawInterface();
+        }
+    }
+
     private void drawInterface() {
         new DockMessage("strength: " + (snake.getLength()), Color.WHITE).draw(this, 0, 0);
         new DockMessage("hunger: " + snake.getHunger() + "%", Color.WHITE).draw(this, 19, 0);
         new DockMessage("element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw(this, 0, 1);
         new DockMessage("task    : " + currentTask, Color.LIGHTGREEN).draw(this, 0, 2);
         new DockMessage("score   : " + score, Color.LIGHTBLUE).draw(this, 0, 3);
-        if (lifetime < 301) new DockMessage("time: " + lifetime, Color.CORAL).draw(this, 20, 3);
-        setScore(score);
+        if (lifetime < 301) {
+            new DockMessage("time: " + lifetime, Color.CORAL).draw(this, 20, 3);
+        }
     }
 
     private void displayHelp() {
-        map = new Map(Map.patternBlank);
+        orbs = new ArrayList<>();
+        map = new Map(Map.patternBlank, this);
         neutralOrb = new Orb(16, 9, Element.NEUTRAL);
         waterOrb = new Orb(1, 9, Element.WATER);
         fireOrb = new Orb(1, 11, Element.FIRE);
@@ -331,5 +287,117 @@ public class SnakeGame extends Game {
         new DockMessage("ESC,   R-CLICK: PREV ELEMENT", Color.WHITE).draw(this, 1, 25);
         new DockMessage("SPACE         : NEW GAME", Color.WHITE).draw(this, 1, 27);
         new DockMessage("PRESS SPACE TO START", Color.PINK).draw(this, 30);
+    }
+
+
+    // CONTROLS
+
+    @Override
+    public void onKeyPress(Key key) {
+        if (firstLaunch) {
+            switch (key) {
+                case SPACE:
+                    firstLaunch = false;
+                    createGame();
+                    break;
+                case UP:
+                    Signs.setSigns(Graphics.KANJI);
+                    displayHelp();
+                    break;
+                case DOWN:
+                    Signs.setSigns(Graphics.EMOJI);
+                    displayHelp();
+                    break;
+                default:
+                    break;
+            }
+        } else if (!isStopped) {
+            if (speedUpDelay) {
+                turnDelay = Math.max((MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
+                Triggers.speedUpDelay = false;
+            } else turnDelay = 50;
+            switch (key) {
+                case UP:
+                    snake.setDirection(Direction.UP);
+                    break;
+                case RIGHT:
+                    snake.setDirection(Direction.RIGHT);
+                    break;
+                case DOWN:
+                    snake.setDirection(Direction.DOWN);
+                    break;
+                case LEFT:
+                    snake.setDirection(Direction.LEFT);
+                    break;
+                case ENTER:
+                    snake.swapNextElement();
+                    break;
+                case ESCAPE:
+                    snake.swapPreviousElement();
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            if (key == Key.SPACE) createGame();
+        }
+    }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        if (!firstLaunch) {
+            Triggers.speedUpDelay = true;
+            turnDelay = Math.max((MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
+        }
+    }
+
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+        if (!firstLaunch) snake.swapNextElement();
+    }
+
+    @Override
+    public void onMouseRightClick(int x, int y) {
+        if (!firstLaunch) snake.swapPreviousElement();
+    }
+
+    // GETTERS
+
+    int getSnakeLength() {
+        return snakeLength;
+    }
+
+    int getLifetime() {
+        return lifetime;
+    }
+
+    Map getMap() {
+        return map;
+    }
+
+
+    // SETTERS
+
+    void setGameOverReason(String reason) {
+        this.gameOverReason = reason;
+    }
+
+    void setScore(int score, boolean add) {
+        if (add) {
+            this.score += score;
+        } else {
+            this.score = score;
+        }
+    }
+
+    void setTurnDelay(int turnDelay) {
+        this.turnDelay = turnDelay;
+    }
+
+
+    // MODIFIERS
+
+    void decreaseLifetime() {
+        this.lifetime -= 1;
     }
 }

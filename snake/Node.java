@@ -16,8 +16,8 @@ class Node extends GameObject {
     private String sign;
     private int fireResistance;
 
-    Node(int x, int y, int type) {
-        super(x, y);
+    Node(int x, int y, SnakeGame game, int type) {
+        super(x, y, game);
         resetFireResistance();
         switch (type) {
             case 0:
@@ -96,10 +96,10 @@ class Node extends GameObject {
         if (terrain == Terrain.FIRE) { // ignite wood
             for (int x = this.x - 1; x <= this.x + 1; x++) {
                 for (int y = this.y - 1; y <= this.y + 1; y++) {
-                    activeNode = (SnakeGame.map.getLayoutNode(x, y));
+                    activeNode = (game.getMap().getLayoutNode(x, y));
                     if (activeNode.terrain == Terrain.WOOD || activeNode.terrain == Terrain.FOREST) {
                         activeNode.fireResistance--;
-                        if (activeNode.fireResistance <= 0) SnakeGame.map.setLayoutNode(x, y, Terrain.FIRE);
+                        if (activeNode.fireResistance <= 0) game.getMap().setLayoutNode(x, y, Terrain.FIRE);
                     }
                 }
             }
@@ -107,8 +107,8 @@ class Node extends GameObject {
     }
 
     void resetFireResistance() {
-        this.fireResistance = (fireResistance < 30) ? 30 : (SnakeGame.snakeLength * 10 - 50);
-        this.fireResistance = (fireResistance > 60) ? 60 : (SnakeGame.snakeLength * 10 - 50);
+        this.fireResistance = (fireResistance < 30) ? 30 : (game.getSnakeLength() * 10 - 50);
+        this.fireResistance = (fireResistance > 60) ? 60 : (game.getSnakeLength() * 10 - 50);
     }
 
     Terrain getTerrain() {

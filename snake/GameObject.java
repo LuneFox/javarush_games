@@ -3,7 +3,22 @@ package com.javarush.games.snake;
 import java.util.Objects;
 
 public class GameObject {
-    public int x, y;
+    public int x;
+    public int y;
+    protected SnakeGame game;
+
+    public GameObject(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public GameObject(int x, int y, SnakeGame game) {
+        this.x = x;
+        this.y = y;
+        this.game = game;
+    }
+
+    // EQUALS AND HASHCODE
 
     @Override
     public boolean equals(Object o) {
@@ -17,10 +32,5 @@ public class GameObject {
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
-    }
-
-    public GameObject(int x, int y) {
-        this.x = x;
-        this.y = y;
     }
 }

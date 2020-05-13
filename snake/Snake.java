@@ -73,22 +73,22 @@ public class Snake {
     }
 
     void move() {
-        if (!isAlive || SnakeGame.lifetime <= 0) return; // return because the snake is simply dead or the game ended
+        if (!isAlive || game.getLifetime() <= 0) return; // return because the snake is simply dead or the game ended
         head = createNewHead();
         if (head.x < 0 || head.x >= SnakeGame.WIDTH || head.y < 4 || head.y >= SnakeGame.HEIGHT) {
             isAlive = false;
-            SnakeGame.gameOverReason = "Snake tried to escape!";
+            game.setGameOverReason("Snake tried to escape!");
         } else if (checkCollision(head) && !(element == Element.ALMIGHTY)) {
             isAlive = false;
-            SnakeGame.gameOverReason = "Snake bit itself to death!";
+            game.setGameOverReason("Snake bit itself to death!");
         } else {
-            nodeInteract(SnakeGame.map.getLayout()[head.y][head.x]);
+            nodeInteract(game.getMap().getLayout()[head.y][head.x]);
             if (!isAlive) return; // return because something happened to the snake during interaction with a node
 
             if (!(element == Element.ALMIGHTY)) hunger += getLength() / 5;
             if (hunger > 100) {
                 removeTail();
-                SnakeGame.score -= 5;
+                game.setScore(-5, true);
                 hunger = 0;
             }
             snakeParts.add(0, head); // moving a snake, step 1
@@ -102,7 +102,7 @@ public class Snake {
 
     void orbInteract(Orb orb) {
         if (head.x == orb.x && head.y == orb.y && element != Element.AIR) {
-            game.turnDelay = Math.max((game.MAX_TURN_DELAY - (getLength() * 10)), 100);
+            game.setTurnDelay(Math.max((SnakeGame.MAX_TURN_DELAY - (getLength() * 10)), 100));
             breath++;
             hunger = 0;
             orb.isAlive = false;
@@ -152,17 +152,18 @@ public class Snake {
 
     private void nodeInteract(Node node) {
         if (element == Element.ALMIGHTY) {
-            SnakeGame.lifetime--;
-            if (SnakeGame.lifetime <= 0) return;
-            if (SnakeGame.map.getLayoutNode(head.x, head.y).getTerrain() != Terrain.VOID) SnakeGame.score++;
-            SnakeGame.map.setLayoutNode(head.x, head.y, Terrain.VOID);
+            game.decreaseLifetime();
+            if (game.getLifetime() <= 0) return;
+            if (game.getMap().getLayoutNode(head.x, head.y).getTerrain() != Terrain.VOID) game.setScore(1, true);
+            game.getMap().setLayoutNode(head.x, head.y, Terrain.VOID);
             return;
         }
         switch (node.getTerrain()) {
             case WALL:
                 if (element != Element.AIR) { // air snake can fly over walls
                     isAlive = false;
-                    SnakeGame.gameOverReason = "Snake hit the wall!";
+                    game.setGameOverReason("Snake hit the wall!");
+                    ;
                 }
                 break;
             case FIELD:
@@ -171,41 +172,41 @@ public class Snake {
             case WOOD:
                 breath = snakeParts.size();
                 if (element == Element.FIRE) { // fire snake sets wood on fire
-                    SnakeGame.map.setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.FIRE);
+                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.FIRE);
                 }
                 if (element == Element.WATER) { // water snake moistens wood
-                    SnakeGame.map.getLayoutNode(getNewHeadX(), getNewHeadY()).resetFireResistance();
+                    game.getMap().getLayoutNode(getNewHeadX(), getNewHeadY()).resetFireResistance();
                 }
                 break;
             case WATER:
                 if (element == Element.FIRE && getLength() > 3) removeTail();
                 if (element != Element.WATER && element != Element.AIR) breath--; // air snake can fly over water
                 if (breath == -1) isAlive = false;
-                SnakeGame.gameOverReason = "Snake has drowned!";
+                game.setGameOverReason("Snake has drowned!");
 
                 break;
             case FIRE:
                 if (element == Element.NEUTRAL || element == Element.EARTH) {
                     isAlive = false; // earth and neutral snakes die
-                    SnakeGame.gameOverReason = "Snake was burned!";
+                    game.setGameOverReason("Snake was burned!");
                 }
                 if (element == Element.WATER) { // water snake extinguishes burning wood
-                    SnakeGame.map.setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.WOOD);
+                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.WOOD);
                 }
                 break;
             case FOREST:
                 breath = snakeParts.size();
                 if (element == Element.FIRE) { // fire snake sets forest on fire
-                    SnakeGame.map.setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.FIRE);
+                    game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Terrain.FIRE);
                 } else if (element != Element.AIR) { // air snake can fly over fire
                     isAlive = false;
-                    SnakeGame.gameOverReason = "Snake was eaten by a forest beast!";
+                    game.setGameOverReason("Snake was eaten by a forest beast!");
                 }
                 break;
             case WORMHOLE:
                 if (element != Element.EARTH && element != Element.AIR) { // only earth snake can use wormholes
                     isAlive = false;
-                    SnakeGame.gameOverReason = "Snake got lost underground!";
+                    game.setGameOverReason("Snake got lost underground!");
                 } else if (element == Element.EARTH) {
                     if (node.x == 5 && node.y == 5) {
                         head.x = 13;

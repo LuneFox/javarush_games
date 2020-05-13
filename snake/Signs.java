@@ -2,7 +2,7 @@ package com.javarush.games.snake;
 
 import com.javarush.games.snake.enums.Graphics;
 
-public class Signs {
+class Signs {
     static String headSign;
     static String deadSign;
     static String bodySign;

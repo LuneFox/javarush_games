@@ -9,11 +9,13 @@ import com.javarush.games.snake.enums.Terrain;
 class Map {
     // loaded map containing created nodes
     private Node[][] layout = new Node[SnakeGame.HEIGHT][SnakeGame.WIDTH];
+    private SnakeGame game;
 
-    Map(int[][] base) {
+    Map(int[][] base, SnakeGame game) {
+        this.game = game;
         for (int y = 0; y < SnakeGame.HEIGHT; y++) {
             for (int x = 0; x < SnakeGame.WIDTH; x++) {
-                layout[y][x] = new Node(x, y, base[y][x]);
+                layout[y][x] = new Node(x, y, game, base[y][x]);
             }
         }
     }
@@ -29,34 +31,34 @@ class Map {
     void setLayoutNode(int x, int y, Terrain terrain) {
         switch (terrain) {
             case FIELD:
-                this.layout[y][x] = new Node(x, y, 0);
+                this.layout[y][x] = new Node(x, y, game, 0);
                 break;
             case WOOD:
-                this.layout[y][x] = new Node(x, y, 1);
+                this.layout[y][x] = new Node(x, y, game, 1);
                 break;
             case WATER:
-                this.layout[y][x] = new Node(x, y, 2);
+                this.layout[y][x] = new Node(x, y, game, 2);
                 break;
             case FIRE:
-                this.layout[y][x] = new Node(x, y, 3);
+                this.layout[y][x] = new Node(x, y, game, 3);
                 break;
             case FOREST:
-                this.layout[y][x] = new Node(x, y, 4);
+                this.layout[y][x] = new Node(x, y, game, 4);
                 break;
             case WORMHOLE:
-                this.layout[y][x] = new Node(x, y, 5);
+                this.layout[y][x] = new Node(x, y, game, 5);
                 break;
             case PIT:
-                this.layout[y][x] = new Node(x, y, 6);
+                this.layout[y][x] = new Node(x, y, game, 6);
                 break;
             case WALL:
-                this.layout[y][x] = new Node(x, y, 7);
+                this.layout[y][x] = new Node(x, y, game, 7);
                 break;
             case SAND:
-                this.layout[y][x] = new Node(x, y, 8);
+                this.layout[y][x] = new Node(x, y, game, 8);
                 break;
             case VOID:
-                this.layout[y][x] = new Node(x, y, 9);
+                this.layout[y][x] = new Node(x, y, game, 9);
                 break;
             default:
                 throw new IllegalStateException("Unexpected value: " + terrain);
