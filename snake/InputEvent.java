@@ -6,9 +6,11 @@ import com.javarush.games.snake.enums.*;
 class InputEvent {
     private SnakeGame game;
     private Snake snake;
+    private Menu menu;
 
     InputEvent(SnakeGame game) {
         this.game = game;
+        this.menu = game.getMenu();
     }
 
     // GENERAL
@@ -37,17 +39,16 @@ class InputEvent {
         if (Screen.is(Screen.Type.MAIN_MENU)) {
             switch (key) {
                 case SPACE:
-                    Screen.set(Screen.Type.GAME);
-                    game.createGame();
+                    menu.displayGame();
                     this.snake = game.getSnake();
                     break;
                 case UP:
                     Signs.set(Graphics.KANJI);
-                    game.displayMainMenu();
+                    menu.displayMain();
                     break;
                 case DOWN:
                     Signs.set(Graphics.EMOJI);
-                    game.displayMainMenu();
+                    menu.displayMain();
                     break;
                 default:
                     break;
@@ -83,7 +84,7 @@ class InputEvent {
                 }
             } else { // if game is stopped
                 if (key == Key.SPACE) {
-                    game.createGame();
+                    menu.displayGame();
                     this.snake = game.getSnake();
                 }
             }
@@ -99,13 +100,13 @@ class InputEvent {
     }
 
     private void leftClickInGame(int x, int y) {
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Screen.is(Screen.Type.GAME) && !game.isStopped()) {
             snake.swapNextElement();
         }
     }
 
     private void rightClickInGame(int x, int y) {
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Screen.is(Screen.Type.GAME) && !game.isStopped()) {
             snake.swapPreviousElement();
         }
     }

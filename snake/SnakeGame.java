@@ -10,11 +10,12 @@ import static com.javarush.games.snake.Triggers.*;
 
 public class SnakeGame extends Game {
     // Global parameters
-    private static final String VERSION = "1.05";
+    static final String VERSION = "1.05";
     static final int WIDTH = 32;
     static final int HEIGHT = 32;
     static final int MAX_TURN_DELAY = 300;
     private InputEvent ie;
+    private final Menu menu = new Menu(this);
 
     // Game flow parameters
     private String currentTask;
@@ -43,13 +44,13 @@ public class SnakeGame extends Game {
         setScreenSize(WIDTH, HEIGHT);
         Signs.set(Graphics.KANJI);
         Screen.set(Screen.Type.MAIN_MENU);
-        createGame();
         ie = new InputEvent(this);
+        menu.displayMain();
     }
 
     final void createGame() { // reset values for new game
         if (Screen.get() == Screen.Type.MAIN_MENU) {
-            displayMainMenu();
+            createOrbsForMenu();
         } else {
             score = 0;
             lifetime = 301;
@@ -224,7 +225,7 @@ public class SnakeGame extends Game {
 
     // VISUALS
 
-    private void drawScene() {
+    void drawScene() {
         drawMap();
         drawOrbs();
         drawSnake();
@@ -264,7 +265,7 @@ public class SnakeGame extends Game {
         }
     }
 
-    final void displayMainMenu() {
+    final void createOrbsForMenu() {
         orbs = new ArrayList<>();
         map = new Map(Map.patternBlank, this);
         neutralOrb = new Orb(16, 9, Element.NEUTRAL);
@@ -279,28 +280,6 @@ public class SnakeGame extends Game {
         orbs.add(airOrb);
         orbs.add(almightyOrb);
         orbs.add(neutralOrb);
-        drawScene();
-
-        new DockMessage("ALCHEMY SNAKE VER " + VERSION, Color.LIGHTGREEN).draw(this);
-
-        String selector1 = (Signs.currentSetting == Graphics.KANJI ? "■" : "□");
-        String selector2 = (Signs.currentSetting == Graphics.EMOJI ? "■" : "□");
-        new DockMessage("SELECT ICONS: " + selector1 + " KANJI", Color.SKYBLUE).draw(this, 3);
-        new DockMessage(" (UP, DOWN)   " + selector2 + " EMOJI", Color.SKYBLUE).draw(this, 5);
-
-        new DockMessage("COLLECT THESE TO WIN:", Color.YELLOW).draw(this, 7);
-        new DockMessage("WATER ORB", Color.WHITE).draw(this, 3, 9);
-        new DockMessage("ORB (FOOD)", Color.WHITE).draw(this, 18, 9);
-        new DockMessage("FIRE ORB", Color.WHITE).draw(this, 3, 11);
-        new DockMessage("EARTH ORB", Color.WHITE).draw(this, 3, 13);
-        new DockMessage("AIR ORB", Color.WHITE).draw(this, 3, 15);
-        new DockMessage("ALMIGHTY ORB", Color.WHITE).draw(this, 3, 17);
-        new DockMessage("CONTROLS:", Color.YELLOW).draw(this, 19);
-        new DockMessage("↑ ↓ → ←       : DIRECTION", Color.WHITE).draw(this, 1, 21);
-        new DockMessage("ENTER, L-CLICK: NEXT ELEMENT", Color.WHITE).draw(this, 1, 23);
-        new DockMessage("ESC,   R-CLICK: PREV ELEMENT", Color.WHITE).draw(this, 1, 25);
-        new DockMessage("SPACE         : NEW GAME", Color.WHITE).draw(this, 1, 27);
-        new DockMessage("PRESS SPACE TO START", Color.PINK).draw(this, 30);
     }
 
 
@@ -361,6 +340,11 @@ public class SnakeGame extends Game {
     public Snake getSnake() {
         return snake;
     }
+
+    public Menu getMenu() {
+        return menu;
+    }
+
 
     // SETTERS
 
