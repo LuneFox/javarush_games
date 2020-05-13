@@ -10,7 +10,6 @@ class Orb extends GameObject {
     Element element;
     boolean isAlive = true;
 
-
     Orb(int x, int y, Element e){
         super(x, y);
         this.element = e;
