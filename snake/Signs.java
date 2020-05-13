@@ -24,7 +24,7 @@ class Signs {
     static String almightyOrb;
     static Graphics currentSetting;
 
-    static void setSigns(Graphics graphics) {
+    static void set(Graphics graphics) {
         switch (graphics) {
             case KANJI:
                 headSign = "頭";

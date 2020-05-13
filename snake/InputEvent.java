@@ -3,8 +3,6 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.*;
 import com.javarush.games.snake.enums.*;
 
-import static com.javarush.games.snake.Triggers.*;
-
 class InputEvent {
     private SnakeGame game;
     private Snake snake;
@@ -44,12 +42,12 @@ class InputEvent {
                     this.snake = game.getSnake();
                     break;
                 case UP:
-                    Signs.setSigns(Graphics.KANJI);
-                    game.displayHelp();
+                    Signs.set(Graphics.KANJI);
+                    game.displayMainMenu();
                     break;
                 case DOWN:
-                    Signs.setSigns(Graphics.EMOJI);
-                    game.displayHelp();
+                    Signs.set(Graphics.EMOJI);
+                    game.displayMainMenu();
                     break;
                 default:
                     break;

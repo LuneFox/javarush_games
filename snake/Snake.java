@@ -306,6 +306,10 @@ public class Snake {
         }
     }
 
+    boolean canUse(Element element) {
+        return (this.elementsAvailable.contains(element));
+    }
+
     int getHunger() {
         return hunger;
     }
