@@ -14,6 +14,7 @@ public class SnakeGame extends Game {
     static final int WIDTH = 32;
     static final int HEIGHT = 32;
     static final int MAX_TURN_DELAY = 300;
+    private InputEvent ie;
 
     // Game flow parameters
     private String currentTask;
@@ -42,9 +43,10 @@ public class SnakeGame extends Game {
         setScreenSize(WIDTH, HEIGHT);
         Signs.setSigns(Graphics.KANJI);
         createGame();
+        ie = new InputEvent(this);
     }
 
-    private void createGame() { // reset values for new game
+    final void createGame() { // reset values for new game
         if (firstLaunch) {
             displayHelp();
         } else {
@@ -250,7 +252,7 @@ public class SnakeGame extends Game {
         }
     }
 
-    private void displayHelp() {
+    final void displayHelp() {
         orbs = new ArrayList<>();
         map = new Map(Map.patternBlank, this);
         neutralOrb = new Orb(16, 9, Element.NEUTRAL);
@@ -294,71 +296,22 @@ public class SnakeGame extends Game {
 
     @Override
     public void onKeyPress(Key key) {
-        if (firstLaunch) {
-            switch (key) {
-                case SPACE:
-                    firstLaunch = false;
-                    createGame();
-                    break;
-                case UP:
-                    Signs.setSigns(Graphics.KANJI);
-                    displayHelp();
-                    break;
-                case DOWN:
-                    Signs.setSigns(Graphics.EMOJI);
-                    displayHelp();
-                    break;
-                default:
-                    break;
-            }
-        } else if (!isStopped) {
-            if (speedUpDelay) {
-                turnDelay = Math.max((MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
-                Triggers.speedUpDelay = false;
-            } else turnDelay = 50;
-            switch (key) {
-                case UP:
-                    snake.setDirection(Direction.UP);
-                    break;
-                case RIGHT:
-                    snake.setDirection(Direction.RIGHT);
-                    break;
-                case DOWN:
-                    snake.setDirection(Direction.DOWN);
-                    break;
-                case LEFT:
-                    snake.setDirection(Direction.LEFT);
-                    break;
-                case ENTER:
-                    snake.swapNextElement();
-                    break;
-                case ESCAPE:
-                    snake.swapPreviousElement();
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            if (key == Key.SPACE) createGame();
-        }
+        ie.keyPress(key);
     }
 
     @Override
     public void onKeyReleased(Key key) {
-        if (!firstLaunch) {
-            Triggers.speedUpDelay = true;
-            turnDelay = Math.max((MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
-        }
+        ie.keyRelease(key);
     }
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        if (!firstLaunch) snake.swapNextElement();
+        ie.leftClick(x, y);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        if (!firstLaunch) snake.swapPreviousElement();
+        ie.rightClick(x, y);
     }
 
     // GETTERS
@@ -375,6 +328,13 @@ public class SnakeGame extends Game {
         return map;
     }
 
+    boolean isStopped() {
+        return isStopped;
+    }
+
+    public Snake getSnake() {
+        return snake;
+    }
 
     // SETTERS
 
