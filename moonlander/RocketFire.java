@@ -9,7 +9,7 @@ public class RocketFire extends GameObject {
     private int frameIndex;
     private boolean isVisible;
 
-    public RocketFire(List<int[][]> frameList) {
+    RocketFire(List<int[][]> frameList) {
         super(0, 0, frameList.get(0));
         frames = frameList;
         frameIndex = 0;
@@ -33,11 +33,11 @@ public class RocketFire extends GameObject {
         super.draw(game);
     }
 
-    public void show() {
+    void show() {
         isVisible = true;
     }
 
-    public void hide() {
+    void hide() {
         isVisible = false;
     }
 }

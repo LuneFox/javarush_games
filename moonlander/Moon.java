@@ -4,12 +4,12 @@ import com.javarush.engine.cell.Color;
 
 public class Moon {
     private final MoonLanderGame game;
-    public final double MIN_RADIUS = 4;
-    public final double MAX_RADIUS = 48;
-    public double posX;
-    public double posY;
-    public double radius = MIN_RADIUS;
-    public int heaviness;
+    final double MIN_RADIUS = 4;
+    final double MAX_RADIUS = 48;
+    double radius = MIN_RADIUS;
+    double posX;
+    double posY;
+    int heaviness;
 
     public Moon(MoonLanderGame game, double posX, double posY) {
         this.posX = posX;

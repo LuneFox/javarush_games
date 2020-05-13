@@ -20,7 +20,6 @@ public class Lander extends GameObject {
     private double sideBoost = 0.02;
     private double slowdownX = -sideBoost * 0.3;
     private double slowdownY = -sideBoost * 0.3;
-    private boolean release = false;
 
     public Lander(MoonLanderGame game, double x, double y, Moon moon) {
         super(x, y, ShapeMatrix.LANDER);
@@ -49,9 +48,9 @@ public class Lander extends GameObject {
         mainFire = new RocketFire(mainFireFrames);
     }
 
-    public void move(boolean isSpacePressed, boolean isLeftPressed,
-                     boolean isRightPressed, boolean isUpPressed,
-                     boolean isDownPressed) {
+    void move(boolean isSpacePressed, boolean isLeftPressed,
+              boolean isRightPressed, boolean isUpPressed,
+              boolean isDownPressed) {
         if (MoonLanderGame.limitFPS) {
             optimizeFPS();
         }
@@ -117,14 +116,14 @@ public class Lander extends GameObject {
     private void switchFire(boolean isUpPressed, boolean isDownPressed, boolean isLeftPressed, boolean isRightPressed,
                             boolean isSpacePressed) {
         if (isDownPressed) {
-            upFire.x = matrix[0].length / 2 + x - 1;
+            upFire.x = matrix[0].length / 2.0 + x - 1;
             upFire.y = y - ShapeMatrix.FIRE_DOWN_1.length;
             upFire.show();
         } else {
             upFire.hide();
         }
         if (isUpPressed) {
-            downFire.x = matrix[0].length / 2 + x - 1;
+            downFire.x = matrix[0].length / 2.0 + x - 1;
             downFire.y = matrix.length + y;
             downFire.show();
         } else {
@@ -132,14 +131,14 @@ public class Lander extends GameObject {
         }
         if (isLeftPressed) {
             leftFire.x = matrix[0].length + x;
-            leftFire.y = matrix.length / 2 - 1 + y;
+            leftFire.y = matrix.length / 2.0 - 1 + y;
             leftFire.show();
         } else {
             leftFire.hide();
         }
         if (isRightPressed) {
             rightFire.x = x - ShapeMatrix.FIRE_RIGHT_1[0].length;
-            rightFire.y = matrix.length / 2 - 1 + y;
+            rightFire.y = matrix.length / 2.0 - 1 + y;
             rightFire.show();
         } else {
             rightFire.hide();
@@ -164,7 +163,7 @@ public class Lander extends GameObject {
     }
 
     public boolean isStopped() {
-        return speedY < 10 * boost;
+        return speedZ < 10 * boost;
     }
 
     public boolean isCollision(GameObject object) {
@@ -190,7 +189,7 @@ public class Lander extends GameObject {
 
     // TOOLS
 
-    public void optimizeFPS() {
+    private void optimizeFPS() {
         if (moon.heaviness < 1000.0) {
             game.turnTimer = 50;
             game.setTurnTimer(game.turnTimer);
@@ -215,8 +214,8 @@ public class Lander extends GameObject {
         }
     }
 
-    public void startLanding() {
-        boost = sideBoost;
+    void startLanding() {
+        boost = 0.02;
     }
 
 

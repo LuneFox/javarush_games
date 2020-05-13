@@ -5,9 +5,9 @@ import com.javarush.engine.cell.*;
 public class GameObject {
     public double x;
     public double y;
-    public int[][] matrix;
-    public int width;
-    public int height;
+    int[][] matrix;
+    int width;
+    int height;
 
     public GameObject(double x, double y, int[][] matrix) {
         this.x = x;

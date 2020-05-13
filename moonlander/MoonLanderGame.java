@@ -7,34 +7,43 @@ import com.javarush.games.moonlander.graphics.Text;
 import java.util.Date;
 
 public class MoonLanderGame extends Game {
+    // Screen size
+    static final int WIDTH = 100;
+    static final int HEIGHT = 100;
 
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 100;
+    // Game objects
+    GameObject stars;
+    GameObject bigStars;
+    GameObject earth;
     private Text writer;
-    public GameObject stars;
-    public GameObject bigStars;
-    public GameObject earth;
-    public Meter heightMeter;
-    public Meter speedMeterX;
-    public Meter speedMeterY;
-    public Meter speedMeterZ;
+    private Meter heightMeter;
+    private Meter speedMeterX;
+    private Meter speedMeterY;
+    private Meter speedMeterZ;
     private Moon moon;
     private Lander lander;
+
+    // Time and performance counters
     private long startTime;
     private long before = 0;
     private int frameCounter;
     private int fps;
-    public int turnTimer;
+    int turnTimer;
+
+    // Key states
     private boolean isUpPressed;
     private boolean isDownPressed;
     private boolean isLeftPressed;
     private boolean isRightPressed;
     private boolean isSpacePressed;
-    private boolean isGameStopped;
+
+    // Graphics switches
     static boolean limitFPS = false;
     static boolean transparentMoon = false;
-    static boolean disableStars = false;
-    static boolean disableEarth = false;
+    private static boolean disableStars = false;
+    private static boolean disableEarth = false;
+
+    // BASE
 
     @Override
     public void initialize() {
@@ -50,7 +59,6 @@ public class MoonLanderGame extends Game {
         drawScene();
     }
 
-
     private void createGame() {
         frameCounter = 0;
         startTime = new Date().getTime();
@@ -61,7 +69,6 @@ public class MoonLanderGame extends Game {
         isUpPressed = false;
         isLeftPressed = false;
         isRightPressed = false;
-        isGameStopped = false;
     }
 
     private void createGameObjects() {
@@ -69,8 +76,8 @@ public class MoonLanderGame extends Game {
         writer.loadAlphabet();
         moon = new Moon(this, getRandomNumber(63), getRandomNumber(63));
         lander = new Lander(this,
-                32 - (ShapeMatrix.LANDER[0].length / 2),
-                32 - (ShapeMatrix.LANDER.length / 2),
+                32 - (ShapeMatrix.LANDER[0].length / 2.0),
+                32 - (ShapeMatrix.LANDER.length / 2.0),
                 moon);
         stars = new GameObject(-4, -4, new int[40][40]);
         bigStars = new GameObject(stars.x, stars.y, new int[stars.matrix.length][stars.matrix[0].length]);
@@ -84,6 +91,7 @@ public class MoonLanderGame extends Game {
 
 
     // DRAW
+
     private void drawScene() {
         long time = (new Date().getTime() - startTime);
         drawGameBackground();
@@ -126,7 +134,7 @@ public class MoonLanderGame extends Game {
         }
     }
 
-    public void drawGameBackground() {
+    private void drawGameBackground() {
         for (int y = 0; y < 64; y++) {
             for (int x = 0; x < 64; x++) {
                 setCellValueEx(x, y, Color.BLACK, "");
@@ -134,7 +142,7 @@ public class MoonLanderGame extends Game {
         }
     }
 
-    public void drawInterfaceBackground() {
+    private void drawInterfaceBackground() {
         for (int y = 64; y < 100; y++) {
             for (int x = 0; x < 100; x++) {
                 setCellValueEx(x, y, Color.GRAY, "");
@@ -187,22 +195,6 @@ public class MoonLanderGame extends Game {
             }
         }
     }
-
-
-    // GAME MECHANICS
-
-    private void win() {
-        isGameStopped = true;
-        showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Hello Moon!", Color.BLACK, 75);
-        stopTurnTimer();
-    }
-
-    private void gameOver() {
-        isGameStopped = true;
-        showMessageDialog(Color.LIGHTGOLDENRODYELLOW, "Goodbye Lander!", Color.DARKRED, 75);
-        stopTurnTimer();
-    }
-
 
     // CONTROLS
 
@@ -334,16 +326,5 @@ public class MoonLanderGame extends Game {
         }
         super.setCellTextColor(x, y, color);
     }
-
-    // UTILITY
-
-    public static double round(double value, int places) {
-        if (places < 0) throw new IllegalArgumentException();
-        long factor = (long) Math.pow(10, places);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
-
 
 }
