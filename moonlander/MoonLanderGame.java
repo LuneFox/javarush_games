@@ -50,7 +50,7 @@ public class MoonLanderGame extends Game {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         createGame();
-        //showMessageDialog(Color.YELLOW, "Это не готовая игра!\nЭто технический тест.", Color.RED, 35);
+        // showMessageDialog(Color.YELLOW, "Это не готовая игра!\nЭто технический тест. (v0.12)", Color.RED, 35);
     }
 
     @Override
