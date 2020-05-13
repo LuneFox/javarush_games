@@ -92,7 +92,9 @@ class Node extends GameObject {
     }
 
     private void activate() { // interact with surrounding nodes
-        if (!Screen.is(Screen.Type.GAME)) return;
+        if (!Screen.is(Screen.Type.GAME)) {
+            return;
+        }
         Node activeNode;
         if (terrain == Terrain.FIRE) { // ignite wood
             for (int x = this.x - 1; x <= this.x + 1; x++) {
@@ -100,7 +102,9 @@ class Node extends GameObject {
                     activeNode = (game.getMap().getLayoutNode(x, y));
                     if (activeNode.terrain == Terrain.WOOD || activeNode.terrain == Terrain.FOREST) {
                         activeNode.fireResistance--;
-                        if (activeNode.fireResistance <= 0) game.getMap().setLayoutNode(x, y, Terrain.FIRE);
+                        if (activeNode.fireResistance <= 0) {
+                            game.getMap().setLayoutNode(x, y, Terrain.FIRE);
+                        }
                     }
                 }
             }

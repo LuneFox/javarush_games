@@ -43,6 +43,9 @@ class Orb extends GameObject {
                 color = Color.WHITE;
                 bgColor = Color.ORCHID;
                 sign = Signs.almightyOrb;
+                break;
+            default:
+                break;
         }
     }
 

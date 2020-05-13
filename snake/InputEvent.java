@@ -74,10 +74,10 @@ class InputEvent {
                         snake.setDirection(Direction.LEFT);
                         break;
                     case ENTER:
-                        snake.swapNextElement();
+                        snake.rotateToNextElement();
                         break;
                     case ESCAPE:
-                        snake.swapPreviousElement();
+                        snake.rotateToPreviousElement();
                         break;
                     default:
                         break;
@@ -101,13 +101,13 @@ class InputEvent {
 
     private void leftClickInGame(int x, int y) {
         if (Screen.is(Screen.Type.GAME) && !game.isStopped()) {
-            snake.swapNextElement();
+            snake.rotateToNextElement();
         }
     }
 
     private void rightClickInGame(int x, int y) {
         if (Screen.is(Screen.Type.GAME) && !game.isStopped()) {
-            snake.swapPreviousElement();
+            snake.rotateToPreviousElement();
         }
     }
 
@@ -120,7 +120,7 @@ class InputEvent {
 
     private void speedUp(Key key) {
         if (Triggers.speedUpDelay) { // normal, slow step for the first time
-            game.setTurnDelay(Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100));
+            game.setTurnDelay();
             Triggers.speedUpDelay = false;
         } else {                     // speed up if the user keeps holding the key
             if (isDirectionalKey(key)) {

@@ -22,8 +22,12 @@ public class GameObject {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
         GameObject that = (GameObject) o;
         return x == that.x &&
                 y == that.y;

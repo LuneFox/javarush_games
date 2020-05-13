@@ -93,7 +93,7 @@ public class SnakeGame extends Game {
     public void onTurn(int step) {
         snake.move();
         for (Orb orb : orbs) {
-            snake.orbInteract(orb);
+            snake.interactWithOrb(orb);
         }
         processOrb(neutralOrb);
         processOrb(waterOrb);
@@ -102,8 +102,15 @@ public class SnakeGame extends Game {
         processOrb(airOrb);
         processOrb(almightyOrb);
         snakeLength = snake.getLength();
-        if (!snake.isAlive) gameOver();
-        if (lifetime <= 0) win();
+
+        if (!snake.isAlive) {
+            gameOver();
+        }
+
+        if (lifetime <= 0) {
+            win();
+        }
+
         setTurnTimer(turnDelay);
         drawScene();
     }
@@ -124,7 +131,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.WATER);
                     do {
-                        snake.swapNextElement();
+                        snake.rotateToNextElement();
                     } while (snake.getElement() != Element.WATER);
                     score += 25;
                     currentTask = "Get fire orb!";
@@ -137,7 +144,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.FIRE);
                     do {
-                        snake.swapNextElement();
+                        snake.rotateToNextElement();
                     } while (snake.getElement() != Element.FIRE);
                     score += 35;
                     currentTask = "Take earth orb!";
@@ -150,7 +157,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.EARTH);
                     do {
-                        snake.swapNextElement();
+                        snake.rotateToNextElement();
                     } while (snake.getElement() != Element.EARTH);
                     score += 45;
                     currentTask = "Take air, fly!";
@@ -163,7 +170,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.AIR);
                     do {
-                        snake.swapNextElement();
+                        snake.rotateToNextElement();
                     } while (snake.getElement() != Element.AIR);
                     score += 55;
                     currentTask = "Become almighty!";
@@ -176,11 +183,13 @@ public class SnakeGame extends Game {
                     snake.getElementsAvailable().clear();
                     snake.getElementsAvailable().add(Element.ALMIGHTY);
                     do {
-                        snake.swapNextElement();
+                        snake.rotateToNextElement();
                     } while (snake.getElement() != Element.ALMIGHTY);
                     score += 200;
                     currentTask = "Eat! Eat everything!";
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -191,18 +200,11 @@ public class SnakeGame extends Game {
     private void createNeutralOrb() {
         int x;
         int y;
-        if (snake.canUse(Element.WATER)) {
-            do {
-                x = getRandomNumber(WIDTH);
-                y = getRandomNumber(HEIGHT - 4) + 4;
-                neutralOrb = new Orb(x, y, Element.NEUTRAL);
-            } while (isPlaceNotReachableFromWater(x, y));
-        } else
-            do {
-                x = getRandomNumber(WIDTH);
-                y = getRandomNumber(HEIGHT - 4) + 4;
-                neutralOrb = new Orb(x, y, Element.NEUTRAL);
-            } while (isPlaceNotReachableFromField(x, y));
+        do {
+            x = getRandomNumber(WIDTH);
+            y = getRandomNumber(HEIGHT - 4) + 4;
+            neutralOrb = new Orb(x, y, Element.NEUTRAL);
+        } while (isBadPlaceForOrb(x, y));
         orbs.add(neutralOrb);
     }
 
@@ -258,7 +260,7 @@ public class SnakeGame extends Game {
 
     private void drawSnake() {
         if (Screen.is(Screen.Type.GAME)) {
-            snake.draw(this);
+            snake.draw();
         }
     }
 
@@ -282,16 +284,18 @@ public class SnakeGame extends Game {
 
     // UTILITY & CHECKS
 
-    private boolean isPlaceNotReachableFromWater(int x, int y) {
-        return (snake.checkCollision(neutralOrb)
-                || (map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD
-                && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WATER
-                && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WOOD));
+    private boolean isBadPlaceForOrb(int x, int y) {
+        if (snake.canUse(Element.WATER)) {
+            return (snake.checkCollision(neutralOrb)
+                    || (map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD
+                    && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WATER
+                    && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WOOD));
+        } else {
+            return (snake.checkCollision(neutralOrb)
+                    || map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD);
+        }
     }
 
-    private boolean isPlaceNotReachableFromField(int x, int y) {
-        return (snake.checkCollision(neutralOrb) || map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD);
-    }
 
     // CONTROLS
 
@@ -357,9 +361,14 @@ public class SnakeGame extends Game {
     }
 
     void setTurnDelay(int turnDelay) {
+        // Sets specific turn delay
         this.turnDelay = turnDelay;
     }
 
+    void setTurnDelay() {
+        // Sets normal turn delay
+        this.turnDelay = Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
+    }
 
     // MODIFIERS
 

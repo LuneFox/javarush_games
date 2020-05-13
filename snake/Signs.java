@@ -70,6 +70,8 @@ class Signs {
                 almightyOrb = "⚡";
                 currentSetting = Graphics.EMOJI;
                 break;
+            default:
+                break;
         }
     }
 }
