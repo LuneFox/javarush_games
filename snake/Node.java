@@ -11,7 +11,7 @@ class Node extends GameObject {
     private Color color;
     private Color bgColor;
     private String sign;
-    private int fireResistance;
+    private int fireResistance = 60;
 
     public enum Terrain {
         FIELD, WOOD, WATER, FIRE, FOREST, WORMHOLE, PIT, WALL, SAND, VOID

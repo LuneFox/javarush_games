@@ -1,6 +1,7 @@
 package com.javarush.games.snake;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.snake.enums.Element;
 import com.javarush.games.snake.enums.Graphics;
 
 import java.nio.channels.Selector;
@@ -8,52 +9,88 @@ import java.util.ArrayList;
 
 class Menu {
     private SnakeGame game;
+    int lastPointerPosition;
 
     Menu(SnakeGame game) {
         this.game = game;
         Selector.getInstance(game);
     }
 
+    // DISPLAY SCREENS
+
     void displayMain() {
         Screen.set(Screen.Type.MAIN_MENU);
-        game.stopTurnTimer();
-        game.createOrbsForMenu();
-        game.drawScene();
-
-        new Message("ALCHEMY SNAKE VER " + SnakeGame.VERSION, Color.LIGHTGREEN).draw(game);
-
-        String selector1 = (Signs.currentSetting == Graphics.KANJI ? "■" : "□");
-        String selector2 = (Signs.currentSetting == Graphics.EMOJI ? "■" : "□");
-        new Message("SELECT ICONS: " + selector1 + " KANJI", Color.SKYBLUE).draw(game, 3);
-        new Message(" (UP, DOWN)   " + selector2 + " EMOJI", Color.SKYBLUE).draw(game, 5);
-
-        new Message("COLLECT THESE TO WIN:", Color.YELLOW).draw(game, 7);
-        new Message("WATER ORB", Color.WHITE).draw(game, 3, 9);
-        new Message("ORB (FOOD)", Color.WHITE).draw(game, 18, 9);
-        new Message("FIRE ORB", Color.WHITE).draw(game, 3, 11);
-        new Message("EARTH ORB", Color.WHITE).draw(game, 3, 13);
-        new Message("AIR ORB", Color.WHITE).draw(game, 3, 15);
-        new Message("ALMIGHTY ORB", Color.WHITE).draw(game, 3, 17);
-        new Message("CONTROLS:", Color.YELLOW).draw(game, 19);
-        new Message("↑ ↓ → ←       : DIRECTION", Color.WHITE).draw(game, 1, 21);
-        new Message("ENTER, L-CLICK: NEXT ELEMENT", Color.WHITE).draw(game, 1, 23);
-        new Message("ESC,   R-CLICK: PREV ELEMENT", Color.WHITE).draw(game, 1, 25);
-        new Message("SPACE         : NEW GAME", Color.WHITE).draw(game, 1, 27);
-        new Message("PRESS SPACE TO START", Color.PINK).draw(game, 30);
-    }
-
-    void displayNewMain() {
-        Screen.set(Screen.Type.MAIN_MENU);
+        drawBackground();
         new Message("ALCHEMY SNAKE", Color.LIGHTGREEN).draw(game, 5);
-        new Message("VER." + SnakeGame.VERSION, Color.GRAY).draw(game, 30);
+        new Message("VER " + SnakeGame.VERSION, Color.DARKBLUE).draw(game, 30);
 
         Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
         Selector.draw(13, 12);
     }
 
-    void displayGame() {
+    void displayOptions() {
+        drawBackground();
+        Screen.set(Screen.Type.OPTIONS);
+        new Message("OPTIONS", Color.SKYBLUE).draw(game, 7);
+        Selector.setEntries("SYMBOLS", "MAP", "HUNGER");
+        Selector.draw(2, 12);
+        new Message(Signs.currentSetting.toString(), Color.WHITE).draw(game, 15, 12);
+        new Orb(21, 12, Element.WATER).draw(game);
+        new Orb(23, 12, Element.FIRE).draw(game);
+    }
+
+    void displayControls() {
+        drawBackground();
+        Screen.set(Screen.Type.CONTROLS);
+        new Message("CONTROLS", Color.SKYBLUE).draw(game, 7);
+        new Message("↑ ↓ → ←       : DIRECTION", Color.WHITE).draw(game, 1, 11);
+        new Message("ENTER, L-CLICK: NEXT ELEMENT", Color.WHITE).draw(game, 1, 13);
+        new Message("ESC,   R-CLICK: PREV ELEMENT", Color.WHITE).draw(game, 1, 15);
+        new Message("SPACE         : BACK TO MENU", Color.WHITE).draw(game, 1, 17);
+    }
+
+    void displayHelp() {
+        drawBackground();
+        Screen.set(Screen.Type.HELP);
+        new Message("HELP", Color.SKYBLUE).draw(game, 7);
+        new Message("COLLECT TO WIN:", Color.YELLOW).draw(game, 9);
+        new Message("ORB OF WATER", Color.LIGHTBLUE).draw(game, 3, 11);
+        new Message("ORB OF FIRE", Color.RED).draw(game, 3, 13);
+        new Message("ORB OF EARTH", Color.ORANGE).draw(game, 3, 15);
+        new Message("ORB OF AIR", Color.AZURE).draw(game, 3, 17);
+        new Message("ORB OF POWER", Color.PINK).draw(game, 3, 19);
+        new Message("COLLECT TO GROW:", Color.YELLOW).draw(game, 21);
+        new Message("ORB OF WISDOM", Color.MEDIUMPURPLE).draw(game, 3, 23);
+
+        new Orb(1, 11, Element.WATER).draw(game);
+        new Orb(1, 13, Element.FIRE).draw(game);
+        new Orb(1, 15, Element.EARTH).draw(game);
+        new Orb(1, 17, Element.AIR).draw(game);
+        new Orb(1, 19, Element.ALMIGHTY).draw(game);
+        new Orb(1, 23, Element.NEUTRAL).draw(game);
+    }
+
+    void startGame() {
         Screen.set(Screen.Type.GAME);
         game.createGame();
+    }
+
+    // UTILITIES
+
+    void drawBackground() {
+        for (int x = 0; x < SnakeGame.WIDTH; x++) {
+            for (int y = 0; y < SnakeGame.HEIGHT; y++) {
+                game.setCellValueEx(x, y, Color.BLACK, "");
+            }
+        }
+    }
+
+    void switchSymbolSet() {
+        if (Signs.currentSetting == Graphics.KANJI) {
+            Signs.set(Graphics.EMOJI);
+        } else {
+            Signs.set(Graphics.KANJI);
+        }
     }
 
     public static class Selector {
@@ -81,7 +118,7 @@ class Menu {
                 } else {
                     instance.game.setCellValue(x - 2, y, "");
                 }
-                Message line = new Message(instance.entries.get(i), (instance.pointer == i ? Color.YELLOW : Color.WHITE));
+                Message line = new Message(instance.entries.get(i), (instance.pointer == i ? Color.WHITE : Color.GRAY));
                 line.draw(instance.game, x, y);
                 y += 2;
             }
@@ -89,16 +126,20 @@ class Menu {
 
         static void selectDown() {
             if (instance.pointer < instance.entries.size() - 1) {
-                System.out.println(instance.pointer);
                 instance.pointer++;
             }
         }
 
         static void selectUp() {
             if (instance.pointer > 0) {
-                System.out.println(instance.pointer);
                 instance.pointer--;
             }
+        }
+
+        // MECHANICS
+
+        static boolean nowAt(String option) {
+            return (option.equals(instance.entries.get(instance.pointer)));
         }
 
 
@@ -111,10 +152,9 @@ class Menu {
             return instance;
         }
 
-        static String getCurrentOption() {
-            return instance.entries.get(instance.pointer);
+        public static int getPointer() {
+            return instance.pointer;
         }
-
 
         // SETTERS
 

@@ -45,8 +45,8 @@ public class SnakeGame extends Game {
         Signs.set(Graphics.KANJI);
         Screen.set(Screen.Type.MAIN_MENU);
         ie = new InputEvent(this);
-        menu.displayNewMain();
         Menu.Selector.setPointer(0);
+        menu.displayMain();
     }
 
     final void createGame() {
