@@ -46,7 +46,7 @@ public class SnakeGame extends Game {
         ie = new InputEvent(this);
         Menu.Selector.setPointer(0);
         menu.displayMain();
-        stage = 0;
+        stage = 1;
     }
 
     final void createGame() {
@@ -176,7 +176,7 @@ public class SnakeGame extends Game {
                 if (!orb.isAlive && !almightyOrbObtained) {
                     almightyOrbObtained = true;
                     orbs.remove(orb);
-                    snake.getElementsAvailable().clear();
+                    snake.clearElements();
                     snake.getElementsAvailable().add(Element.ALMIGHTY);
                     do {
                         snake.rotateToNextElement();
@@ -278,7 +278,7 @@ public class SnakeGame extends Game {
     // UTILITY & CHECKS
 
     private boolean isBadPlaceForOrb(int x, int y) {
-        if (snake.canUse(Element.WATER)) {
+        if (snake.canUse(Element.WATER) || snake.canUse(Element.ALMIGHTY)) {
             return (snake.checkCollision(neutralOrb)
                     || (map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD
                     && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WATER
@@ -367,7 +367,7 @@ public class SnakeGame extends Game {
         this.turnDelay = Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
     }
 
-    public void setStage(int stage) {
+    void setStage(int stage) {
         this.stage = stage;
     }
 

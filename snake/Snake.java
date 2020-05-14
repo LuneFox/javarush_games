@@ -94,6 +94,7 @@ public class Snake {
                 break;
 
             case FIELD:
+            case SAND:
                 breath = snakeParts.size();
                 break;
 
@@ -240,10 +241,10 @@ public class Snake {
     }
 
     void rotateToNextElement() {
-        Element movingElement = element;      // taking element to move (it's current)
-        elementsAvailable.remove(element);    // removing it from list (it's first)
-        elementsAvailable.add(movingElement); // adding it to the end
-        setElement(elementsAvailable.get(0)); // element that shifted to 0 is a new element
+        Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
+        elementsAvailable.remove(element);                     // removing it from list (it's first)
+        elementsAvailable.add(movingElement);                  // adding it to the end
+        setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
     }
 
     void rotateToPreviousElement() {
@@ -254,8 +255,13 @@ public class Snake {
         setElement(elementsAvailable.get(0));                       // making it new element
     }
 
+    void clearElements() {
+        this.elementsAvailable.clear();
+    }
+
 
     // UTILITIES AND CHECKS
+
 
     boolean canUse(Element element) {
         return (this.elementsAvailable.contains(element));

@@ -3,6 +3,8 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.*;
 import com.javarush.games.snake.enums.*;
 
+import java.util.TreeMap;
+
 class InputEvent {
     private SnakeGame game;
     private Snake snake;
@@ -43,6 +45,7 @@ class InputEvent {
     }
 
     void rightClick(int x, int y) {
+        System.out.println("x: " + x + ", y: " + y);
         if (Screen.is(Screen.Type.GAME)) {
             rightClickInGame(x, y);
         }
@@ -210,6 +213,7 @@ class InputEvent {
         } else {                     // speed up if the user keeps holding the key
             if (isDirectionalKey(key)) {
                 game.setTurnDelay(50);
+                Triggers.speedUpDelay = false;
             }
         }
     }
