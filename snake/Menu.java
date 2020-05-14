@@ -87,7 +87,7 @@ class Menu {
     // UTILITIES
 
     void selectStageUp() {
-        if (game.getStage() < Map.stages.size() - 1) {
+        if (game.getStage() < Map.stages.size() - 2) {
             game.setStage(game.getStage() + 1);
         } else {
             game.setStage(0);
@@ -98,7 +98,7 @@ class Menu {
         if (game.getStage() > 0) {
             game.setStage(game.getStage() - 1);
         } else {
-            game.setStage(Map.stages.size() - 1);
+            game.setStage(Map.stages.size() - 2);
         }
     }
 
