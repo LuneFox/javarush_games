@@ -8,14 +8,20 @@ public class Message {
     private Color bgColor = Color.BLACK;
     private int textSize = 70;
 
-    // create message object with given text
+
+    // CONSTRUCTOR
+
     Message(String text, Color color) {
+        // Create message object with given text and color
         splitText = specialSplit(text);
         this.color = color;
     }
 
-    // draw message at given position
+
+    // VISUALS
+
     public void draw(Game game, int x, int y) {
+        // Draw message at given position
         if (x + splitText.length > SnakeGame.WIDTH) {
             color = Color.RED;
             x = 0;
@@ -27,8 +33,8 @@ public class Message {
         }
     }
 
-    // draw message in the middle
     void draw(Game game) {
+        // Draw message in the middle
         if (splitText.length > 32) {
             color = Color.RED;
             splitText = specialSplit("text is to long!");
@@ -42,8 +48,8 @@ public class Message {
 
     }
 
-    // draw message in the middle at given height;
     void draw(Game game, int y) {
+        // Draw message in the middle at given height;
         if (splitText.length > 32) {
             color = Color.RED;
             splitText = specialSplit("text is to long!");
@@ -56,6 +62,9 @@ public class Message {
 
 
     }
+
+
+    // MECHANICS
 
     private String[] specialSplit(String text) {
         //if (text.length() % 2 == 1) text = text + " ";

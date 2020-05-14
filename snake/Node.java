@@ -17,6 +17,8 @@ class Node extends GameObject {
         FIELD, WOOD, WATER, FIRE, FOREST, WORMHOLE, PIT, WALL, SAND, VOID
     }
 
+    // CONSTRUCTOR
+
     Node(int x, int y, SnakeGame game, int type) {
         super(x, y, game);
         resetFireResistance();
@@ -86,25 +88,36 @@ class Node extends GameObject {
         }
     }
 
+
+    //  VISUALS
+
     void draw(Game game) {
-        this.activate();
+        this.causeEffect();
         game.setCellValueEx(x, y, bgColor, sign, color, 75);
     }
 
-    private void activate() { // interact with surrounding nodes
+
+    // MECHANICS
+
+    private void causeEffect() { // interact with surrounding nodes
         if (!Screen.is(Screen.Type.GAME)) {
             return;
         }
-        Node activeNode;
         if (terrain == Terrain.FIRE) { // ignite wood
-            for (int x = this.x - 1; x <= this.x + 1; x++) {
-                for (int y = this.y - 1; y <= this.y + 1; y++) {
-                    activeNode = (game.getMap().getLayoutNode(x, y));
-                    if (activeNode.terrain == Terrain.WOOD || activeNode.terrain == Terrain.FOREST) {
-                        activeNode.fireResistance--;
-                        if (activeNode.fireResistance <= 0) {
-                            game.getMap().setLayoutNode(x, y, Terrain.FIRE);
-                        }
+            igniteWoodenNeighbors();
+        }
+    }
+
+    private void igniteWoodenNeighbors() {
+        // If fire resistance of a neighboring wooden node drops below 0, it turns into a fire node
+        Node activeNode;
+        for (int x = this.x - 1; x <= this.x + 1; x++) {
+            for (int y = this.y - 1; y <= this.y + 1; y++) {
+                activeNode = (game.getMap().getLayoutNode(x, y));
+                if (activeNode.terrain == Terrain.WOOD || activeNode.terrain == Terrain.FOREST) {
+                    activeNode.fireResistance--;
+                    if (activeNode.fireResistance <= 0) {
+                        game.getMap().setLayoutNode(x, y, Terrain.FIRE);
                     }
                 }
             }
@@ -112,9 +125,13 @@ class Node extends GameObject {
     }
 
     void resetFireResistance() {
+        // Keep fire resistance between 30 and 60
         this.fireResistance = (fireResistance < 30) ? 30 : (game.getSnakeLength() * 10 - 50);
         this.fireResistance = (fireResistance > 60) ? 60 : (game.getSnakeLength() * 10 - 50);
     }
+
+
+    // GETTERS
 
     Terrain getTerrain() {
         return terrain;

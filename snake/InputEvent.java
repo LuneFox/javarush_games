@@ -15,7 +15,7 @@ class InputEvent {
 
     // GENERAL
 
-    void keyPress(Key key) {
+    void keyPress(Key key) { // TODO: returns!!
         keyPressInMenu(key);
         keyPressInGame(key);
     }

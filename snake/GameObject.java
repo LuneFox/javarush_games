@@ -7,6 +7,8 @@ public class GameObject {
     public int y;
     protected SnakeGame game;
 
+    // CONSTRUCTOR
+
     public GameObject(int x, int y) {
         this.x = x;
         this.y = y;
@@ -18,7 +20,8 @@ public class GameObject {
         this.game = game;
     }
 
-    // EQUALS AND HASHCODE
+
+    // COMPARE
 
     @Override
     public boolean equals(Object o) {

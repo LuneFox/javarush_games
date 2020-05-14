@@ -79,15 +79,11 @@ public class Snake {
 
     void interactWithOrb(Orb orb) {
         if (head.x == orb.x && head.y == orb.y && element != Element.AIR) {
-            game.setTurnDelay();
+            orb.isAlive = false;
             breath++;
             hunger = 0;
-            orb.isAlive = false;
-
-            // Elongate tail
-            int tail = snakeParts.size() - 1;
-            GameObject newTail = new GameObject(snakeParts.get(tail).x, snakeParts.get(tail).y);
-            snakeParts.add(newTail);
+            elongateTail();
+            game.setTurnDelay();
         }
     }
 
@@ -233,6 +229,12 @@ public class Snake {
 
     private void removeTail() {
         snakeParts.remove(snakeParts.size() - 1);
+    }
+
+    private void elongateTail() {
+        int tail = snakeParts.size() - 1;
+        GameObject newTail = new GameObject(snakeParts.get(tail).x, snakeParts.get(tail).y);
+        snakeParts.add(newTail);
     }
 
     private void increaseHunger() {
