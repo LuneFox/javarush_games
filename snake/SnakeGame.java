@@ -80,6 +80,7 @@ public class SnakeGame extends Game {
         drawScene();
         isStopped = true;
         showMessageDialog(Color.YELLOW, Strings.VICTORY + score, Color.GREEN, 27);
+        menu.selectStageUp();
     }
 
     private void gameOver() {
