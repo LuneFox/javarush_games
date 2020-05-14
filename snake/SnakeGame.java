@@ -17,7 +17,6 @@ public class SnakeGame extends Game {
     private final Menu menu = new Menu(this);
 
     // Game flow parameters
-    private String currentTask;
     private String gameOverReason;
     private int turnDelay;
     private int snakeLength;
@@ -63,7 +62,6 @@ public class SnakeGame extends Game {
         snakeLength = snake.getLength();
         score = 0;
         lifetime = 301;
-        currentTask = Strings.TASK_1;
 
         // Launch
         isStopped = false;
@@ -136,7 +134,6 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.WATER);
                     score += 25;
-                    currentTask = Strings.TASK_2;
                 }
                 break;
             case FIRE:
@@ -149,7 +146,6 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.FIRE);
                     score += 35;
-                    currentTask = Strings.TASK_3;
                 }
                 break;
             case EARTH:
@@ -162,7 +158,6 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.EARTH);
                     score += 45;
-                    currentTask = Strings.TASK_4;
                 }
                 break;
             case AIR:
@@ -175,7 +170,6 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.AIR);
                     score += 55;
-                    currentTask = Strings.TASK_5;
                 }
                 break;
             case ALMIGHTY:
@@ -188,7 +182,6 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.ALMIGHTY);
                     score += 200;
-                    currentTask = Strings.TASK_6;
                 }
                 break;
             default:
@@ -226,7 +219,7 @@ public class SnakeGame extends Game {
 
     // VISUALS
 
-    void drawScene() {
+    private void drawScene() {
         drawMap();
         drawOrbs();
         drawSnake();
@@ -345,7 +338,7 @@ public class SnakeGame extends Game {
         return menu;
     }
 
-    public int getStage() {
+    int getStage() {
         return stage;
     }
 
