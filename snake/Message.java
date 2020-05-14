@@ -29,10 +29,6 @@ public class Message {
         }
 
         for (int i = 0; i < splitText.length; i++) {
-            if (i == 0 && splitText[i].equals("")) { // JavaRush browser fix
-                i--;
-                continue;
-            }
             game.setCellValueEx((i + x), y, bgColor, splitText[i], color, textSize);
         }
     }
@@ -46,10 +42,6 @@ public class Message {
 
         int padding = splitText.length / 2;
         for (int i = 0; i < splitText.length; i++) { // JavaRush browser fix
-            if (i == 0 && splitText[i].equals("")) {
-                i--;
-                continue;
-            }
             game.setCellValueEx((SnakeGame.WIDTH / 2 + i - padding), y, bgColor, splitText[i], color, textSize);
         }
 
@@ -60,8 +52,17 @@ public class Message {
     // MECHANICS
 
     private String[] specialSplit(String text) {
+        String[] result = text.toUpperCase().split("");
         //if (text.length() % 2 == 1) text = text + " ";
         //return text.toUpperCase().split("(?<=\\G..)");
-        return text.toUpperCase().split("");
+        if (!result[0].equals("")) {
+            return result;
+        } else {
+            String[] resultJavaRush = new String[result.length - 1];
+            for (int i = 0; i < resultJavaRush.length; i++) {
+                resultJavaRush[i] = result[i + 1];
+            }
+            return resultJavaRush;
+        }
     }
 }
