@@ -105,11 +105,17 @@ class InputEvent {
                 if (Menu.Selector.nowAt("SYMBOLS")) {
                     menu.switchSymbolSet();
                     menu.displayOptions();
+                } else if (Menu.Selector.nowAt("MAP")) {
+                    menu.selectStageUp();
+                    menu.displayOptions();
                 }
                 break;
             case LEFT:
                 if (Menu.Selector.nowAt("SYMBOLS")) {
                     menu.switchSymbolSet();
+                    menu.displayOptions();
+                } else if (Menu.Selector.nowAt("MAP")) {
+                    menu.selectStageDown();
                     menu.displayOptions();
                 }
                 break;

@@ -367,6 +367,10 @@ public class SnakeGame extends Game {
         this.turnDelay = Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
     }
 
+    public void setStage(int stage) {
+        this.stage = stage;
+    }
+
     // MODIFIERS
 
     void decreaseLifetime() {

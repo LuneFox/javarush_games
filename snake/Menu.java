@@ -86,6 +86,22 @@ class Menu {
 
     // UTILITIES
 
+    void selectStageUp() {
+        if (game.getStage() < Map.stages.size() - 1) {
+            game.setStage(game.getStage() + 1);
+        } else {
+            game.setStage(0);
+        }
+    }
+
+    void selectStageDown() {
+        if (game.getStage() > 0) {
+            game.setStage(game.getStage() - 1);
+        } else {
+            game.setStage(Map.stages.size() - 1);
+        }
+    }
+
     void drawBackground() {
         for (int x = 0; x < SnakeGame.WIDTH; x++) {
             for (int y = 0; y < SnakeGame.HEIGHT; y++) {
