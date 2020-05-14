@@ -31,21 +31,31 @@ class Menu {
         drawBackground();
         Screen.set(Screen.Type.OPTIONS);
         new Message("OPTIONS", Color.SKYBLUE).draw(game, 7);
-        Selector.setEntries("SYMBOLS", "MAP", "HUNGER");
+        Selector.setEntries("MAP", "SYMBOLS");
         Selector.draw(2, 12);
-        new Message(Signs.currentSetting.toString(), Color.WHITE).draw(game, 15, 12);
-        new Orb(21, 12, Element.WATER).draw(game);
-        new Orb(23, 12, Element.FIRE).draw(game);
+
+        new Message("STAGE " + (game.getStage() + 1), Color.WHITE).draw(game, 15, 12);
+
+        new Message(Signs.currentSetting.toString(), Color.WHITE).draw(game, 15, 14);
+        new Orb(21, 14, Element.WATER).draw(game);
+
     }
 
     void displayControls() {
         drawBackground();
         Screen.set(Screen.Type.CONTROLS);
         new Message("CONTROLS", Color.SKYBLUE).draw(game, 7);
-        new Message("↑ ↓ → ←       : DIRECTION", Color.WHITE).draw(game, 1, 11);
-        new Message("ENTER, L-CLICK: NEXT ELEMENT", Color.WHITE).draw(game, 1, 13);
-        new Message("ESC,   R-CLICK: PREV ELEMENT", Color.WHITE).draw(game, 1, 15);
-        new Message("SPACE         : BACK TO MENU", Color.WHITE).draw(game, 1, 17);
+        new Message("↑ ↓ → ←       :", Color.YELLOW).draw(game, 1, 11);
+        new Message("HOLD DIRECTION:", Color.YELLOW).draw(game, 1, 13);
+        new Message("ENTER, L-CLICK:", Color.YELLOW).draw(game, 1, 15);
+        new Message("ESC,   R-CLICK:", Color.YELLOW).draw(game, 1, 17);
+        new Message("SPACE         :", Color.YELLOW).draw(game, 1, 19);
+        new Message("DIRECTION", Color.WHITE).draw(game, 17, 11);
+        new Message("ACCELERATE", Color.WHITE).draw(game, 17, 13);
+        new Message("NEXT ELEMENT", Color.WHITE).draw(game, 17, 15);
+        new Message("PREV ELEMENT", Color.WHITE).draw(game, 17, 17);
+        new Message("BACK TO MENU", Color.WHITE).draw(game, 17, 19);
+        new Message("AT GAME OVER", Color.WHITE).draw(game, 17, 21);
     }
 
     void displayHelp() {
@@ -113,7 +123,7 @@ class Menu {
         public static void draw(int x, int y) {
             for (int i = 0; i < instance.entries.size(); i++) {
                 if (instance.pointer == i) {
-                    instance.game.setCellValueEx(x - 2, y, Color.NONE, ">>", Color.YELLOW);
+                    instance.game.setCellValueEx(x - 2, y, Color.NONE, ">", Color.YELLOW, 90);
                 } else {
                     instance.game.setCellValue(x - 2, y, "");
                 }

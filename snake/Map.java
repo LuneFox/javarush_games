@@ -1,5 +1,8 @@
 package com.javarush.games.snake;
 
+import com.javarush.games.snake.enums.Direction;
+import com.javarush.games.snake.enums.Element;
+
 import java.util.ArrayList;
 
 /**
@@ -9,8 +12,10 @@ import java.util.ArrayList;
 class Map {
     private Node[][] layout = new Node[SnakeGame.HEIGHT][SnakeGame.WIDTH];
     ArrayList<WormHole> wormHoles = new ArrayList<>();
+    ArrayList<Orb> orbs = new ArrayList<>();
+    Coordinate snakeStartPlace;
+    Direction snakeStartDirection;
     private SnakeGame game;
-
 
     private static ArrayList<int[][]> stages = new ArrayList<>();
 
@@ -64,8 +69,20 @@ class Map {
 
         switch (stage) {
             case 0: {
+                Orb waterOrb = new Orb(3, 7, Element.WATER);
+                Orb fireOrb = new Orb(27, 27, Element.FIRE);
+                Orb earthOrb = new Orb(16, 18, Element.EARTH);
+                Orb airOrb = new Orb(18, 8, Element.AIR);
+                Orb almightyOrb = new Orb(24, 9, Element.ALMIGHTY);
+                orbs.add(waterOrb);
+                orbs.add(fireOrb);
+                orbs.add(earthOrb);
+                orbs.add(airOrb);
+                orbs.add(almightyOrb);
                 wormHoles.add(new WormHole(5,5,13,12));
                 wormHoles.add(new WormHole(1,30,30,5));
+                snakeStartPlace = new Coordinate(2, 27);
+                snakeStartDirection = Direction.LEFT;
             }
             default:
                 break;
@@ -102,7 +119,7 @@ class Map {
         Coordinate location;
         Coordinate destination;
 
-        public WormHole(int xLoc, int yLoc, int xDest, int yDest) {
+        WormHole(int xLoc, int yLoc, int xDest, int yDest) {
             this.location = new Coordinate(xLoc, yLoc);
             this.destination = new Coordinate(xDest, yDest);
         }

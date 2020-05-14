@@ -23,23 +23,17 @@ public class Snake {
 
     // CONSTRUCTOR
 
-    public Snake(int x, int y, SnakeGame game) {
+    public Snake(int x, int y, SnakeGame game, Direction direction) {
         // Properties of a fresh snake
         this.game = game;
-        this.direction = Direction.UP;
+        this.direction = direction;
         this.bodyColor = new Color[2];
         this.elementsAvailable = new LinkedList<>();
         this.snakeParts = new ArrayList<>();
         this.setElement(Element.NEUTRAL);
         this.elementsAvailable.add(Element.NEUTRAL);
         this.hunger = 0;
-
-        // Adding 3 body parts, starting with head and going down vertically
-        for (int i = 0; i < 3; i++) {
-            snakeParts.add(new GameObject(x, y + i));
-        }
-
-        // Snake has as much breath as its length
+        addParts(x, y, direction, 3);
         breath = snakeParts.size();
     }
 
@@ -265,6 +259,32 @@ public class Snake {
 
     boolean canUse(Element element) {
         return (this.elementsAvailable.contains(element));
+    }
+
+    private void addParts(int x, int y, Direction direction, int amount) {
+        // Used in snake creation
+        switch (direction) {
+            case UP:
+                for (int i = 0; i < amount; i++) {
+                    snakeParts.add(new GameObject(x, y + i));
+                }
+                break;
+            case DOWN:
+                for (int i = 0; i < amount; i++) {
+                    snakeParts.add(new GameObject(x, y - i));
+                }
+                break;
+            case LEFT:
+                for (int i = 0; i < amount; i++) {
+                    snakeParts.add(new GameObject(x + i, y));
+                }
+                break;
+            case RIGHT:
+                for (int i = 0; i < amount; i++) {
+                    snakeParts.add(new GameObject(x - i, y));
+                }
+                break;
+        }
     }
 
     private int getNewHeadX() {

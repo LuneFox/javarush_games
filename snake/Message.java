@@ -6,7 +6,7 @@ public class Message {
     private String[] splitText;
     private Color color;
     private Color bgColor = Color.BLACK;
-    private int textSize = 70;
+    private int textSize = 90;
 
 
     // CONSTRUCTOR

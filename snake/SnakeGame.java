@@ -53,10 +53,10 @@ public class SnakeGame extends Game {
     final void createGame() {
         // Make new objects
         map = new Map(stage, this);
-        snake = new Snake(2, 27, this);
+        snake = new Snake(map.snakeStartPlace.x, map.snakeStartPlace.y, this, map.snakeStartDirection);
         orbs = new ArrayList<>();
+        importElementalOrbs();
         createNeutralOrb();
-        createElementalOrbs();
 
         // Initialize values
         Triggers.reset();
@@ -210,12 +210,12 @@ public class SnakeGame extends Game {
         orbs.add(neutralOrb);
     }
 
-    private void createElementalOrbs() {
-        waterOrb = new Orb(3, 7, Element.WATER);
-        fireOrb = new Orb(27, 27, Element.FIRE);
-        earthOrb = new Orb(16, 18, Element.EARTH);
-        airOrb = new Orb(18, 8, Element.AIR);
-        almightyOrb = new Orb(24, 9, Element.ALMIGHTY);
+    private void importElementalOrbs() {
+        waterOrb = map.orbs.get(0);
+        fireOrb = map.orbs.get(1);
+        earthOrb = map.orbs.get(2);
+        airOrb = map.orbs.get(3);
+        almightyOrb = map.orbs.get(4);
         orbs.add(waterOrb);
         orbs.add(fireOrb);
         orbs.add(earthOrb);
@@ -329,8 +329,12 @@ public class SnakeGame extends Game {
         return menu;
     }
 
+    public int getStage() {
+        return stage;
+    }
 
-    // SETTERS
+
+// SETTERS
 
     void setGameOverReason(String reason) {
         this.gameOverReason = reason;
