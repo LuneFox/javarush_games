@@ -151,18 +151,15 @@ public class Snake {
                     isAlive = false;
                     game.setGameOverReason(Strings.GAME_OVER_LOST);
                 } else if (element == Element.EARTH) {
-                    if (node.x == 5 && node.y == 5) {
-                        head.x = 13;
-                        head.y = 12;
-                    } else if (node.x == 13 && node.y == 12) {
-                        head.x = 5;
-                        head.y = 5;
-                    } else if (node.x == 1 && node.y == 30) {
-                        head.x = 30;
-                        head.y = 5;
-                    } else if (node.x == 30 && node.y == 5) {
-                        head.x = 1;
-                        head.y = 30;
+                    Map map = game.getMap();
+                    for (Map.WormHole wormHole : map.wormHoles) {
+                        if (node.x == wormHole.location.x && node.y == wormHole.location.y) {
+                            head.x = wormHole.destination.x;
+                            head.y = wormHole.destination.y;
+                        } else if (node.x == wormHole.destination.x && node.y == wormHole.destination.y) {
+                            head.x = wormHole.location.x;
+                            head.y = wormHole.location.y;
+                        }
                     }
                 }
                 break;

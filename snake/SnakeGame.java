@@ -24,6 +24,7 @@ public class SnakeGame extends Game {
     private int score;
     private int lifetime;
     private boolean isStopped;
+    private int stage;
 
     // Game objects
     private Snake snake;
@@ -46,11 +47,12 @@ public class SnakeGame extends Game {
         ie = new InputEvent(this);
         Menu.Selector.setPointer(0);
         menu.displayMain();
+        stage = 0;
     }
 
     final void createGame() {
         // Make new objects
-        map = new Map(Map.pattern, this);
+        map = new Map(stage, this);
         snake = new Snake(2, 27, this);
         orbs = new ArrayList<>();
         createNeutralOrb();
@@ -263,24 +265,6 @@ public class SnakeGame extends Game {
             snake.draw();
         }
     }
-
-    final void createOrbsForMenu() {
-        orbs = new ArrayList<>();
-        map = new Map(Map.patternBlank, this);
-        neutralOrb = new Orb(16, 9, Element.NEUTRAL);
-        waterOrb = new Orb(1, 9, Element.WATER);
-        fireOrb = new Orb(1, 11, Element.FIRE);
-        earthOrb = new Orb(1, 13, Element.EARTH);
-        airOrb = new Orb(1, 15, Element.AIR);
-        almightyOrb = new Orb(1, 17, Element.ALMIGHTY);
-        orbs.add(waterOrb);
-        orbs.add(fireOrb);
-        orbs.add(earthOrb);
-        orbs.add(airOrb);
-        orbs.add(almightyOrb);
-        orbs.add(neutralOrb);
-    }
-
 
     // UTILITY & CHECKS
 
