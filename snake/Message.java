@@ -29,34 +29,27 @@ public class Message {
         }
 
         for (int i = 0; i < splitText.length; i++) {
+            if (i == 0 && splitText[i].equals("")) { // JavaRush browser fix
+                i--;
+                continue;
+            }
             game.setCellValueEx((i + x), y, bgColor, splitText[i], color, textSize);
         }
     }
 
-    void draw(Game game) {
-        // Draw message in the middle
-        if (splitText.length > 32) {
-            color = Color.RED;
-            splitText = specialSplit("text is to long!");
-        }
-
-        int padding = splitText.length / 2;
-        for (int i = 0; i < splitText.length; i++) {
-            game.setCellValueEx((SnakeGame.WIDTH / 2 + i - padding), 1, bgColor, splitText[i], color, textSize);
-        }
-
-
-    }
-
     void draw(Game game, int y) {
         // Draw message in the middle at given height;
-        if (splitText.length > 32) {
+        if (splitText.length > SnakeGame.WIDTH) {
             color = Color.RED;
             splitText = specialSplit("text is to long!");
         }
 
         int padding = splitText.length / 2;
-        for (int i = 0; i < splitText.length; i++) {
+        for (int i = 0; i < splitText.length; i++) { // JavaRush browser fix
+            if (i == 0 && splitText[i].equals("")) {
+                i--;
+                continue;
+            }
             game.setCellValueEx((SnakeGame.WIDTH / 2 + i - padding), y, bgColor, splitText[i], color, textSize);
         }
 

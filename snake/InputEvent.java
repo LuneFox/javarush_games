@@ -45,7 +45,7 @@ class InputEvent {
     }
 
     void rightClick(int x, int y) {
-        System.out.println("x: " + x + ", y: " + y);
+        // System.out.println("x: " + x + ", y: " + y);
         if (Screen.is(Screen.Type.GAME)) {
             rightClickInGame(x, y);
         }
