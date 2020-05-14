@@ -4,7 +4,6 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.enums.Element;
 import com.javarush.games.snake.enums.Graphics;
 
-import java.nio.channels.Selector;
 import java.util.ArrayList;
 
 class Menu {
@@ -22,7 +21,7 @@ class Menu {
         Screen.set(Screen.Type.MAIN_MENU);
         drawBackground();
         new Message("ALCHEMY SNAKE", Color.LIGHTGREEN).draw(game, 5);
-        new Message("VER " + SnakeGame.VERSION, Color.DARKBLUE).draw(game, 30);
+        new Message("VER " + Strings.VERSION, Color.DARKBLUE).draw(game, 30);
 
         Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
         Selector.draw(13, 12);

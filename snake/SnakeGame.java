@@ -10,7 +10,6 @@ import static com.javarush.games.snake.Triggers.*;
 
 public class SnakeGame extends Game {
     // Global parameters
-    static final String VERSION = "1.05";
     static final int WIDTH = 32;
     static final int HEIGHT = 32;
     static final int MAX_TURN_DELAY = 300;
@@ -62,7 +61,7 @@ public class SnakeGame extends Game {
         snakeLength = snake.getLength();
         score = 0;
         lifetime = 301;
-        currentTask = "Reach water orb!";
+        currentTask = Strings.TASK_1;
 
         // Launch
         isStopped = false;
@@ -78,14 +77,14 @@ public class SnakeGame extends Game {
         stopTurnTimer();
         drawScene();
         isStopped = true;
-        showMessageDialog(Color.YELLOW, "YOU WIN!\nScore: " + score, Color.GREEN, 27);
+        showMessageDialog(Color.YELLOW, Strings.VICTORY + score, Color.GREEN, 27);
     }
 
     private void gameOver() {
         stopTurnTimer();
         drawScene();
         isStopped = true;
-        showMessageDialog(Color.YELLOW, gameOverReason + "\nScore: " + score, Color.RED, 27);
+        showMessageDialog(Color.YELLOW, gameOverReason, Color.RED, 27);
     }
 
 
@@ -135,7 +134,7 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.WATER);
                     score += 25;
-                    currentTask = "Get fire orb!";
+                    currentTask = Strings.TASK_2;
                 }
                 break;
             case FIRE:
@@ -148,7 +147,7 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.FIRE);
                     score += 35;
-                    currentTask = "Take earth orb!";
+                    currentTask = Strings.TASK_3;
                 }
                 break;
             case EARTH:
@@ -161,7 +160,7 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.EARTH);
                     score += 45;
-                    currentTask = "Take air, fly!";
+                    currentTask = Strings.TASK_4;
                 }
                 break;
             case AIR:
@@ -174,7 +173,7 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.AIR);
                     score += 55;
-                    currentTask = "Become almighty!";
+                    currentTask = Strings.TASK_5;
                 }
                 break;
             case ALMIGHTY:
@@ -187,7 +186,7 @@ public class SnakeGame extends Game {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.ALMIGHTY);
                     score += 200;
-                    currentTask = "Eat! Eat everything!";
+                    currentTask = Strings.TASK_6;
                 }
                 break;
             default:

@@ -95,7 +95,7 @@ public class Snake {
             case WALL:
                 if (element != Element.AIR) { // air snake can fly over walls
                     isAlive = false;
-                    game.setGameOverReason("Snake hit the wall!");
+                    game.setGameOverReason(Strings.GAME_OVER_BUMPED);
                 }
                 break;
 
@@ -123,13 +123,13 @@ public class Snake {
                 if (breath == -1) {
                     isAlive = false;
                 }
-                game.setGameOverReason("Snake has drowned!");
+                game.setGameOverReason(Strings.GAME_OVER_DROWNED);
                 break;
 
             case FIRE:
                 if (element == Element.NEUTRAL || element == Element.EARTH) {
                     isAlive = false; // earth and neutral snakes die
-                    game.setGameOverReason("Snake was burned!");
+                    game.setGameOverReason(Strings.GAME_OVER_BURNED);
                 }
                 if (element == Element.WATER) { // water snake extinguishes burning wood
                     game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.WOOD);
@@ -142,14 +142,14 @@ public class Snake {
                     game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.FIRE);
                 } else if (element != Element.AIR) { // air snake can fly over fire
                     isAlive = false;
-                    game.setGameOverReason("Snake was eaten by a forest beast!");
+                    game.setGameOverReason(Strings.GAME_OVER_EATEN);
                 }
                 break;
 
             case WORMHOLE:
                 if (element != Element.EARTH && element != Element.AIR) { // only earth snake can use wormholes
                     isAlive = false;
-                    game.setGameOverReason("Snake got lost underground!");
+                    game.setGameOverReason(Strings.GAME_OVER_LOST);
                 } else if (element == Element.EARTH) {
                     if (node.x == 5 && node.y == 5) {
                         head.x = 13;
@@ -306,7 +306,7 @@ public class Snake {
     private boolean checkEscapeBorders() {
         if (head.x < 0 || head.x >= SnakeGame.WIDTH || head.y < 4 || head.y >= SnakeGame.HEIGHT) {
             isAlive = false;
-            game.setGameOverReason("Snake tried to escape!");
+            game.setGameOverReason(Strings.GAME_OVER_RUNAWAY);
             return true;
         }
         return false;
@@ -315,7 +315,7 @@ public class Snake {
     private boolean checkBiteSelf() {
         if (checkCollision(head) && !(element == Element.ALMIGHTY)) {
             isAlive = false;
-            game.setGameOverReason("Snake bit itself to death!");
+            game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN);
             return true;
         }
         return false;
