@@ -31,13 +31,15 @@ class Menu {
         drawBackground();
         Screen.set(Screen.Type.OPTIONS);
         new Message("OPTIONS", Color.SKYBLUE).draw(game, 7);
-        Selector.setEntries("MAP", "SYMBOLS");
+        Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
         Selector.draw(2, 12);
 
-        new Message("STAGE " + (game.getStage() + 1), Color.WHITE).draw(game, 15, 12);
+        new Message("STAGE " + (game.getStage() + 1), Color.WHITE).draw(game, 17, 12);
 
-        new Message(Signs.currentSetting.toString(), Color.WHITE).draw(game, 15, 14);
-        new Orb(21, 14, Element.WATER).draw(game);
+        new Message(Signs.currentSetting.toString(), Color.WHITE).draw(game, 17, 14);
+        new Orb(23, 14, Element.WATER).draw(game);
+
+        new Message((game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE).draw(game, 17, 16);
 
     }
 

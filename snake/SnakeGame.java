@@ -24,6 +24,7 @@ public class SnakeGame extends Game {
     private int lifetime;
     private boolean isStopped;
     private int stage;
+    boolean acceleration;
 
     // Game objects
     private Snake snake;
@@ -46,7 +47,8 @@ public class SnakeGame extends Game {
         ie = new InputEvent(this);
         Menu.Selector.setPointer(0);
         menu.displayMain();
-        stage = 1;
+        stage = 0;
+        acceleration = true;
     }
 
     final void createGame() {

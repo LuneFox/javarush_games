@@ -107,20 +107,22 @@ class InputEvent {
             case RIGHT:
                 if (Menu.Selector.nowAt("SYMBOLS")) {
                     menu.switchSymbolSet();
-                    menu.displayOptions();
                 } else if (Menu.Selector.nowAt("MAP")) {
                     menu.selectStageUp();
-                    menu.displayOptions();
+                } else if (Menu.Selector.nowAt("ACCELERATION")) {
+                    game.acceleration = !game.acceleration;
                 }
+                menu.displayOptions();
                 break;
             case LEFT:
                 if (Menu.Selector.nowAt("SYMBOLS")) {
                     menu.switchSymbolSet();
-                    menu.displayOptions();
                 } else if (Menu.Selector.nowAt("MAP")) {
                     menu.selectStageDown();
-                    menu.displayOptions();
+                } else if (Menu.Selector.nowAt("ACCELERATION")) {
+                    game.acceleration = !game.acceleration;
                 }
+                menu.displayOptions();
                 break;
             case ESCAPE:
                 Menu.Selector.setPointer(menu.lastPointerPosition);
@@ -207,20 +209,24 @@ class InputEvent {
     }
 
     private void speedUp(Key key) {
-        if (Triggers.speedUpDelay) { // normal, slow step for the first time
-            game.setTurnDelay();
-            Triggers.speedUpDelay = false;
-        } else {                     // speed up if the user keeps holding the key
-            if (isDirectionalKey(key)) {
-                game.setTurnDelay(50);
+        if (game.acceleration) {
+            if (Triggers.speedUpDelay) { // normal, slow step for the first time
+                game.setTurnDelay();
                 Triggers.speedUpDelay = false;
+            } else {                     // speed up if the user keeps holding the key
+                if (isDirectionalKey(key)) {
+                    game.setTurnDelay(50);
+                    Triggers.speedUpDelay = false;
+                }
             }
         }
     }
 
     private void speedDown() {
         // returns to normal speed when user releases any directional key
-        Triggers.speedUpDelay = true;
-        game.setTurnDelay(Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100));
+        if (game.acceleration) {
+            Triggers.speedUpDelay = true;
+            game.setTurnDelay(Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100));
+        }
     }
 }

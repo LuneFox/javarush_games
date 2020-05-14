@@ -242,7 +242,7 @@ public class Snake {
 
     void rotateToNextElement() {
         Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
-        elementsAvailable.remove(element);                     // removing it from list (it's first)
+        elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
         elementsAvailable.add(movingElement);                  // adding it to the end
         setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
     }
