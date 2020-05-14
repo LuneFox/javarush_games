@@ -3,11 +3,15 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.enums.Graphics;
 
+import java.nio.channels.Selector;
+import java.util.ArrayList;
+
 class Menu {
     private SnakeGame game;
 
     Menu(SnakeGame game) {
         this.game = game;
+        Selector.getInstance(game);
     }
 
     void displayMain() {
@@ -38,8 +42,91 @@ class Menu {
         new Message("PRESS SPACE TO START", Color.PINK).draw(game, 30);
     }
 
+    void displayNewMain() {
+        Screen.set(Screen.Type.MAIN_MENU);
+        new Message("ALCHEMY SNAKE", Color.LIGHTGREEN).draw(game, 5);
+        new Message("VER." + SnakeGame.VERSION, Color.GRAY).draw(game, 30);
+
+        Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
+        Selector.draw(13, 12);
+    }
+
     void displayGame() {
         Screen.set(Screen.Type.GAME);
         game.createGame();
+    }
+
+    public static class Selector {
+        SnakeGame game;
+        ArrayList<String> entries;
+        static Selector instance;
+        int pointer;
+
+
+        // CONSTRUCTOR
+
+        private Selector(SnakeGame game) {
+            this.game = game;
+            entries = new ArrayList<>();
+            this.pointer = 0;
+        }
+
+
+        // VISUALS
+
+        public static void draw(int x, int y) {
+            for (int i = 0; i < instance.entries.size(); i++) {
+                if (instance.pointer == i) {
+                    instance.game.setCellValueEx(x - 2, y, Color.NONE, ">>", Color.YELLOW);
+                } else {
+                    instance.game.setCellValue(x - 2, y, "");
+                }
+                Message line = new Message(instance.entries.get(i), (instance.pointer == i ? Color.YELLOW : Color.WHITE));
+                line.draw(instance.game, x, y);
+                y += 2;
+            }
+        }
+
+        static void selectDown() {
+            if (instance.pointer < instance.entries.size() - 1) {
+                System.out.println(instance.pointer);
+                instance.pointer++;
+            }
+        }
+
+        static void selectUp() {
+            if (instance.pointer > 0) {
+                System.out.println(instance.pointer);
+                instance.pointer--;
+            }
+        }
+
+
+        // GETTERS
+
+        static Selector getInstance(SnakeGame game) {
+            if (instance == null) {
+                instance = new Selector(game);
+            }
+            return instance;
+        }
+
+        static String getCurrentOption() {
+            return instance.entries.get(instance.pointer);
+        }
+
+
+        // SETTERS
+
+        static void setEntries(String... strings) {
+            instance.entries.clear();
+            for (String s : strings) {
+                instance.entries.add(s);
+            }
+        }
+
+        static void setPointer(int position) {
+            instance.pointer = position;
+        }
     }
 }

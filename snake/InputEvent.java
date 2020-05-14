@@ -43,12 +43,12 @@ class InputEvent {
                     this.snake = game.getSnake();
                     break;
                 case UP:
-                    Signs.set(Graphics.KANJI);
-                    menu.displayMain();
+                    Menu.Selector.selectUp();
+                    menu.displayNewMain();
                     break;
                 case DOWN:
-                    Signs.set(Graphics.EMOJI);
-                    menu.displayMain();
+                    Menu.Selector.selectDown();
+                    menu.displayNewMain();
                     break;
                 default:
                     break;
