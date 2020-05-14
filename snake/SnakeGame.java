@@ -235,15 +235,31 @@ public class SnakeGame extends Game {
 
     private void drawInterface() {
         if (Screen.is(Screen.Type.GAME)) {
-            new Message("strength: " + (snake.getLength()), Color.WHITE).draw(this, 0, 0);
-            new Message("hunger: " + snake.getHunger() + "%", Color.WHITE).draw(this, 19, 0);
-            new Message("element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw(this, 0, 1);
-            new Message("task    : " + currentTask, Color.LIGHTGREEN).draw(this, 0, 2);
+            new Message("hunger  : ", Color.CORAL).draw(this, 0, 0);
+            new Message("strength: " + (snake.getLength()), Color.WHITE).draw(this, 0, 1);
+            new Message("element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw(this, 0, 2);
             new Message("score   : " + score, Color.LIGHTBLUE).draw(this, 0, 3);
+            drawHungerBar();
             if (lifetime < 301) {
-                new Message("time: " + lifetime, Color.CORAL).draw(this, 20, 3);
+                new Message("power: " + lifetime, Color.CORAL).draw(this, 19, 3);
             }
         }
+    }
+
+    private void drawHungerBar() {
+        for (int x = 0; x < 20; x++) {
+            Color barColor;
+            if (100 - snake.getHunger() > 50) {
+                barColor = Color.GREEN;
+            } else if (100 - snake.getHunger() > 25) {
+                barColor = Color.YELLOW;
+            } else {
+                barColor = Color.RED;
+            }
+            barColor = ((100 - snake.getHunger()) / 5 <= x ? Color.BLACK : barColor);
+            setCellColor(x + 10, 0, barColor);
+        }
+
     }
 
     private void drawMap() {

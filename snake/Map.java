@@ -82,7 +82,7 @@ class Map {
                 wormHoles.add(new WormHole(5,5,13,12));
                 wormHoles.add(new WormHole(1,30,30,5));
                 snakeStartPlace = new Coordinate(2, 27);
-                snakeStartDirection = Direction.LEFT;
+                snakeStartDirection = Direction.UP;
             }
             default:
                 break;

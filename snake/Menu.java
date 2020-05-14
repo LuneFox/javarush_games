@@ -49,13 +49,13 @@ class Menu {
         new Message("HOLD DIRECTION:", Color.YELLOW).draw(game, 1, 13);
         new Message("ENTER, L-CLICK:", Color.YELLOW).draw(game, 1, 15);
         new Message("ESC,   R-CLICK:", Color.YELLOW).draw(game, 1, 17);
-        new Message("SPACE         :", Color.YELLOW).draw(game, 1, 19);
+        new Message("SPACE         :", Color.YELLOW).draw(game, 1, 21);
         new Message("DIRECTION", Color.WHITE).draw(game, 17, 11);
         new Message("ACCELERATE", Color.WHITE).draw(game, 17, 13);
         new Message("NEXT ELEMENT", Color.WHITE).draw(game, 17, 15);
         new Message("PREV ELEMENT", Color.WHITE).draw(game, 17, 17);
-        new Message("BACK TO MENU", Color.WHITE).draw(game, 17, 19);
-        new Message("AT GAME OVER", Color.WHITE).draw(game, 17, 21);
+        new Message("BACK TO MENU", Color.WHITE).draw(game, 17, 21);
+        new Message("AT GAME OVER", Color.WHITE).draw(game, 17, 23);
     }
 
     void displayHelp() {
