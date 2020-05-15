@@ -233,7 +233,7 @@ class InputEvent {
     }
 
     private void leftClickInMapEditor(int x, int y) {
-        if (x < 0 || x > 31 || y < 4 || y > 31) {
+        if (game.outOfBounds(x, y)) {
             return;
         }
         menu.drawTerrain(x, y);
@@ -241,7 +241,7 @@ class InputEvent {
     }
 
     private void rightClickInMapEditor(int x, int y) {
-        if (x < 0 || x > 31 || y < 4 || y > 31) {
+        if (game.outOfBounds(x, y)) {
             return;
         }
         menu.printCoordinate(x, y);

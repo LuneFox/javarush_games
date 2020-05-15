@@ -58,7 +58,7 @@ class Signs {
                 fireSign = "\uD83D\uDD25";
                 forestSign = "\uD83C\uDF33";
                 wormHoleSign = "\uD83D\uDD73️";
-                mountainSign = " ";
+                mountainSign = "\uD83C\uDFD4";
                 wallSign = "";
                 sandSign = ". -";
                 voidSign = "";

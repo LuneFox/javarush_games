@@ -24,8 +24,8 @@ class Menu {
         new Message("ALCHEMY SNAKE", Color.LIGHTGREEN).draw(game, 5);
         new Message("VER " + Strings.VERSION, Color.DARKBLUE).draw(game, 30);
 
-        //Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
-        Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
+        Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
+        //Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
         Selector.draw(13, 12);
     }
 
@@ -125,7 +125,7 @@ class Menu {
     }
 
     void printTerrain() {
-        ///*
+        /*
         Map map = game.getMap();
         System.out.println("new int[][]{");
 
@@ -145,13 +145,13 @@ class Menu {
             }
         }
         System.out.println("});");
-        //*/
+        */
     }
 
     void printCoordinate(int x, int y) {
-        ///*
+        /*
         System.out.println(x + "," + y);
-        //*/
+        */
     }
 
     // UTILITIES

@@ -292,6 +292,10 @@ public class SnakeGame extends Game {
         }
     }
 
+    boolean outOfBounds(int x, int y) {
+        return (x < 0 || y < 4 || x > WIDTH - 1 || y > HEIGHT - 1);
+    }
+
 
     // CONTROLS
 

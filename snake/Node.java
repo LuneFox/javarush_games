@@ -113,6 +113,9 @@ class Node extends GameObject {
         Node activeNode;
         for (int x = this.x - 1; x <= this.x + 1; x++) {
             for (int y = this.y - 1; y <= this.y + 1; y++) {
+                if (game.outOfBounds(x, y)){
+                    continue;
+                }
                 activeNode = (game.getMap().getLayoutNode(x, y));
                 if (activeNode.terrain == Terrain.WOOD || activeNode.terrain == Terrain.FOREST) {
                     activeNode.fireResistance--;
