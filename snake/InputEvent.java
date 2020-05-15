@@ -257,12 +257,12 @@ class InputEvent {
     }
 
     private void speedUp(Key key) {
-        if (game.acceleration) {
-            if (Triggers.speedUpDelay) { // normal, slow step for the first time
-                game.setTurnDelay();
-                Triggers.speedUpDelay = false;
-            } else {                     // speed up if the user keeps holding the key
-                if (isDirectionalKey(key)) {
+        if (isDirectionalKey(key)) {
+            if (game.acceleration) {
+                if (Triggers.speedUpDelay) { // normal, slow step for the first time
+                    game.setTurnDelay();
+                    Triggers.speedUpDelay = false;
+                } else {                     // speed up if the user keeps holding the key
                     game.setTurnDelay(50);
                     Triggers.speedUpDelay = false;
                 }
