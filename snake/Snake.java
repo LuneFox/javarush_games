@@ -163,9 +163,11 @@ public class Snake {
 
             case MOUNTAIN:
                 breath = snakeParts.size();
-                if (element == Element.AIR){
+                if (element == Element.AIR) {
                     isAlive = false;
                     game.setGameOverReason(Strings.GAME_OVER_MOUNTAIN_BUMP);
+                } else {
+                    if (snakeParts.size() > 4) hunger += 10;
                 }
                 break;
 
