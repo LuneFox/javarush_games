@@ -7,7 +7,7 @@ public class Screen {
     private static ArrayList<Screen> screens = new ArrayList<>();
 
     public enum Type {
-        MAIN_MENU, GAME, OPTIONS, CONTROLS, HELP
+        MAIN_MENU, GAME, OPTIONS, CONTROLS, HELP, MAP_EDIT
     }
 
     static {
@@ -16,6 +16,7 @@ public class Screen {
         screens.add(new Screen(Type.OPTIONS));
         screens.add(new Screen(Type.CONTROLS));
         screens.add(new Screen(Type.HELP));
+        screens.add(new Screen(Type.MAP_EDIT));
     }
 
     private Screen(Type type) {

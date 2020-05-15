@@ -258,7 +258,7 @@ public class SnakeGame extends Game {
 
     }
 
-    private void drawMap() {
+    void drawMap() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 map.getLayout()[y][x].draw(this);
@@ -325,10 +325,6 @@ public class SnakeGame extends Game {
         return lifetime;
     }
 
-    Map getMap() {
-        return map;
-    }
-
     boolean isStopped() {
         return isStopped;
     }
@@ -343,6 +339,10 @@ public class SnakeGame extends Game {
 
     int getStage() {
         return stage;
+    }
+
+    Map getMap() {
+        return map;
     }
 
 
@@ -372,6 +372,10 @@ public class SnakeGame extends Game {
 
     void setStage(int stage) {
         this.stage = stage;
+    }
+
+    void setMap(int stage) {
+        this.map = new Map(stage, this);
     }
 
     // MODIFIERS

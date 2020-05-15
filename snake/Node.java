@@ -14,7 +14,7 @@ class Node extends GameObject {
     private int fireResistance = 60;
 
     public enum Terrain {
-        FIELD, WOOD, WATER, FIRE, FOREST, WORMHOLE, PIT, WALL, SAND, VOID
+        FIELD, WOOD, WATER, FIRE, FOREST, WORMHOLE, MOUNTAIN, WALL, SAND, VOID
     }
 
     // CONSTRUCTOR
@@ -60,10 +60,10 @@ class Node extends GameObject {
                 this.sign = Signs.wormHoleSign;
                 break;
             case 6:
-                this.terrain = Terrain.PIT;
-                this.color = Color.GRAY;
-                this.bgColor = Color.BLACK;
-                this.sign = Signs.pitSign;
+                this.terrain = Terrain.MOUNTAIN;
+                this.color = Color.ORANGE;
+                this.bgColor = Color.BROWN;
+                this.sign = Signs.mountainSign;
                 break;
             case 7:
                 this.terrain = Terrain.WALL;

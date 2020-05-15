@@ -12,7 +12,7 @@ class Signs {
     static String fireSign;       // 3
     static String forestSign;     // 4
     static String wormHoleSign;   // 5
-    static String pitSign;        // 6
+    static String mountainSign;   // 6
     static String wallSign;       // 7
     static String sandSign;       // 8
     static String voidSign;       // 9
@@ -36,7 +36,7 @@ class Signs {
                 fireSign = "炎";        // 3
                 forestSign = "森";      // 4
                 wormHoleSign = "下";    // 5
-                pitSign = "穴";         // 6
+                mountainSign = "山";    // 6
                 wallSign = "壁";        // 7
                 sandSign = ". -";       // 8
                 voidSign = "";
@@ -58,7 +58,7 @@ class Signs {
                 fireSign = "\uD83D\uDD25";
                 forestSign = "\uD83C\uDF33";
                 wormHoleSign = "\uD83D\uDD73️";
-                pitSign = " ";
+                mountainSign = " ";
                 wallSign = "";
                 sandSign = ". -";
                 voidSign = "";

@@ -3,8 +3,6 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.*;
 import com.javarush.games.snake.enums.*;
 
-import java.util.TreeMap;
-
 class InputEvent {
     private SnakeGame game;
     private Snake snake;
@@ -28,6 +26,8 @@ class InputEvent {
             keyPressInControls(key);
         } else if (Screen.is(Screen.Type.HELP)) {
             keyPressInHelp(key);
+        } else if (Screen.is(Screen.Type.MAP_EDIT)) {
+            keyPressInMapEditor(key);
         }
     }
 
@@ -41,13 +41,16 @@ class InputEvent {
     void leftClick(int x, int y) {
         if (Screen.is(Screen.Type.GAME)) {
             leftClickInGame(x, y);
+        } else if (Screen.is(Screen.Type.MAP_EDIT)) {
+            leftClickInMapEditor(x, y);
         }
     }
 
     void rightClick(int x, int y) {
-        // System.out.println("x: " + x + ", y: " + y);
         if (Screen.is(Screen.Type.GAME)) {
             rightClickInGame(x, y);
+        } else if (Screen.is(Screen.Type.MAP_EDIT)) {
+            rightClickInMapEditor(x, y);
         }
     }
 
@@ -85,6 +88,12 @@ class InputEvent {
                     menu.lastPointerPosition = Menu.Selector.getPointer();
                     Menu.Selector.setPointer(0);
                     menu.displayHelp();
+                    break;
+                } else if (Menu.Selector.nowAt("EDIT")) {
+                    menu.lastPointerPosition = Menu.Selector.getPointer();
+                    Menu.Selector.setPointer(0);
+                    game.setMap(game.getStage() + 1);
+                    menu.displayMapEditor();
                     break;
                 }
             default:
@@ -183,6 +192,28 @@ class InputEvent {
         }
     }
 
+    private void keyPressInMapEditor(Key key) {
+        switch (key) {
+            case ESCAPE:
+                Menu.Selector.setPointer(menu.lastPointerPosition);
+                menu.displayMain();
+                break;
+            case UP:
+            case RIGHT:
+                menu.brushNext();
+                menu.displayMapEditor();
+                break;
+            case DOWN:
+            case LEFT:
+                menu.brushPrevious();
+                menu.displayMapEditor();
+                break;
+            case ENTER:
+                menu.printTerrain();
+                break;
+        }
+    }
+
     private void keyReleaseInGame(Key key) {
         if (isDirectionalKey(key)) {
             speedDown();
@@ -199,6 +230,23 @@ class InputEvent {
         if (!game.isStopped()) {
             snake.rotateToPreviousElement();
         }
+    }
+
+    private void leftClickInMapEditor(int x, int y) {
+        if (x < 0 || x > 31 || y < 4 || y > 31) {
+            return;
+        }
+        menu.drawTerrain(x, y);
+        menu.displayMapEditor();
+    }
+
+    private void rightClickInMapEditor(int x, int y) {
+        if (x < 0 || x > 31 || y < 4 || y > 31) {
+            return;
+        }
+        menu.printCoordinate(x, y);
+        menu.copyTerrain(x, y);
+        menu.displayMapEditor();
     }
 
 

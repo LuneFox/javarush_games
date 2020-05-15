@@ -9,6 +9,7 @@ import java.util.ArrayList;
 class Menu {
     private SnakeGame game;
     int lastPointerPosition;
+    int brush;
 
     Menu(SnakeGame game) {
         this.game = game;
@@ -23,7 +24,8 @@ class Menu {
         new Message("ALCHEMY SNAKE", Color.LIGHTGREEN).draw(game, 5);
         new Message("VER " + Strings.VERSION, Color.DARKBLUE).draw(game, 30);
 
-        Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
+        //Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
+        Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
         Selector.draw(13, 12);
     }
 
@@ -84,6 +86,72 @@ class Menu {
     void startGame() {
         Screen.set(Screen.Type.GAME);
         game.createGame();
+    }
+
+
+    // MAP EDITOR (COMMENT PRINT LINES OUT BEFORE UPLOADING TO JAVARUSH)
+
+    void displayMapEditor() {
+        Screen.set(Screen.Type.MAP_EDIT);
+        Node node = new Node(1, 1, game, brush);
+        game.getMap().setLayoutNode(1, 1, node.getTerrain());
+        game.drawMap();
+        new Message(node.getTerrain().name(), Color.WHITE).draw(game, 3, 1);
+    }
+
+    void brushNext() {
+        if (brush < 9) {
+            brush++;
+        } else {
+            brush = 0;
+        }
+    }
+
+    void brushPrevious() {
+        if (brush > 0) {
+            brush--;
+        } else {
+            brush = 9;
+        }
+    }
+
+    void drawTerrain(int x, int y) {
+        Node node = new Node(x, y, game, brush);
+        game.getMap().setLayoutNode(node.x, node.y, node.getTerrain());
+    }
+
+    void copyTerrain(int x, int y) {
+        brush = game.getMap().getLayoutNode(x, y).getTerrain().ordinal();
+    }
+
+    void printTerrain() {
+        ///*
+        Map map = game.getMap();
+        System.out.println("new int[][]{");
+
+        for (int y = 0; y < SnakeGame.HEIGHT; y++) {
+            for (int x = 0; x < SnakeGame.WIDTH; x++) {
+                int number = (y < 4 ? 9 : map.getLayoutNode(x, y).getTerrain().ordinal());
+                if (x == 0) {
+                    System.out.print("{");
+                }
+                if (x < SnakeGame.WIDTH - 1) {
+                    System.out.print(number + ", ");
+                }
+                if (x == SnakeGame.WIDTH - 1) {
+                    System.out.print(number);
+                    System.out.println("},");
+                }
+            }
+        }
+        System.out.println("});");
+        //*/
+    }
+
+    void printCoordinate(int x, int y) {
+        ///*
+        System.out.println(x + "," + y);
+        //*/
     }
 
     // UTILITIES
