@@ -9,5 +9,6 @@ public class Strings {
     static final String GAME_OVER_LOST = "Snake got lost underground!\nOnly earth snakes know the way.";
     static final String GAME_OVER_RUNAWAY = "Snake tried to escape!\nAlchemy is not for cowards!";
     static final String GAME_OVER_SELF_BITTEN = "Snake bit itself to death!\nAre you THAT hungry?";
+    static final String GAME_OVER_MOUNTAIN_BUMP = "Snake hit the mountain!\nIt can't fly so high!";
     static final String VICTORY = "You became the god of snakes!\nStage clear! Score: ";
 }

@@ -122,6 +122,7 @@ public class Snake {
                 break;
 
             case FIRE:
+                breath = snakeParts.size();
                 if (element == Element.NEUTRAL || element == Element.EARTH) {
                     isAlive = false; // earth and neutral snakes die
                     game.setGameOverReason(Strings.GAME_OVER_BURNED);
@@ -142,6 +143,7 @@ public class Snake {
                 break;
 
             case WORMHOLE:
+                breath = snakeParts.size();
                 if (element != Element.EARTH && element != Element.AIR) { // only earth snake can use wormholes
                     isAlive = false;
                     game.setGameOverReason(Strings.GAME_OVER_LOST);
@@ -156,6 +158,14 @@ public class Snake {
                             head.y = wormHole.location.y;
                         }
                     }
+                }
+                break;
+
+            case MOUNTAIN:
+                breath = snakeParts.size();
+                if (element == Element.AIR){
+                    isAlive = false;
+                    game.setGameOverReason(Strings.GAME_OVER_MOUNTAIN_BUMP);
                 }
                 break;
 
