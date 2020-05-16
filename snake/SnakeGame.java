@@ -5,6 +5,7 @@ import com.javarush.games.snake.enums.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import static com.javarush.games.snake.Triggers.*;
 
@@ -18,6 +19,8 @@ public class SnakeGame extends Game {
 
     // Game flow parameters
     private String gameOverReason;
+    private Date stageStartDate;
+    private long points;
     private int turnDelay;
     private int snakeLength;
     private int score;
@@ -70,6 +73,8 @@ public class SnakeGame extends Game {
         turnDelay = MAX_TURN_DELAY;
         setTurnTimer(turnDelay);
         drawScene();
+        stageStartDate = new Date();
+        points = 300;
     }
 
 
@@ -94,6 +99,7 @@ public class SnakeGame extends Game {
     // GAME MECHANICS
 
     public void onTurn(int step) {
+        points = calculatePoints();
         snake.move();
         for (Orb orb : orbs) {
             snake.interactWithOrb(orb);
@@ -136,7 +142,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.WATER);
-                    score += 25;
+                    score += points;
                 }
                 break;
             case FIRE:
@@ -148,7 +154,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.FIRE);
-                    score += 35;
+                    score += points;
                 }
                 break;
             case EARTH:
@@ -160,7 +166,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.EARTH);
-                    score += 45;
+                    score += points;
                 }
                 break;
             case AIR:
@@ -172,7 +178,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.AIR);
-                    score += 55;
+                    score += points;
                 }
                 break;
             case ALMIGHTY:
@@ -184,7 +190,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement();
                     } while (snake.getElement() != Element.ALMIGHTY);
-                    score += 200;
+                    score += points;
                 }
                 break;
             default:
@@ -283,7 +289,7 @@ public class SnakeGame extends Game {
         Color textColor;
         Color bgColor;
         for (Element element : Element.values()) {
-            textColor = snake.canUse(element) ? Color.WHITE : Color.GRAY;
+            textColor = snake.canUse(element) ? Color.WHITE : Color.DARKSLATEGRAY;
             switch (element) {
                 case NEUTRAL:
                     bgColor = snake.getElement() == element ? Color.PURPLE : Color.BLACK;
@@ -316,6 +322,13 @@ public class SnakeGame extends Game {
     }
 
     // UTILITY & CHECKS
+
+    private long calculatePoints() {
+        if (points > 0) {
+            long stageTimePassed = (new Date().getTime() - stageStartDate.getTime()) / 1000;
+            return Math.max(300 - stageTimePassed, 0);
+        } else return 0;
+    }
 
     private boolean isBadPlaceForOrb(int x, int y) {
         if (snake.canUse(Element.WATER) || snake.canUse(Element.ALMIGHTY)) {

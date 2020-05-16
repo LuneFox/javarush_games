@@ -51,8 +51,8 @@ class Menu {
         new Message("CONTROLS", Color.SKYBLUE).draw(game, 7);
         new Message("↑ ↓ → ←       :", Color.YELLOW).draw(game, 1, 11);
         new Message("HOLD DIRECTION:", Color.YELLOW).draw(game, 1, 13);
-        new Message("ENTER, L-CLICK:", Color.YELLOW).draw(game, 1, 15);
-        new Message("ESC,   R-CLICK:", Color.YELLOW).draw(game, 1, 17);
+        new Message("ENTER, R-CLICK:", Color.YELLOW).draw(game, 1, 15);
+        new Message("ESC,   L-CLICK:", Color.YELLOW).draw(game, 1, 17);
         new Message("SPACE         :", Color.YELLOW).draw(game, 1, 21);
         new Message("DIRECTION", Color.WHITE).draw(game, 17, 11);
         new Message("ACCELERATE", Color.WHITE).draw(game, 17, 13);
