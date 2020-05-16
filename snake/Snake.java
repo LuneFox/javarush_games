@@ -102,9 +102,8 @@ public class Snake {
                 breath = snakeParts.size();
                 if (element == Element.FIRE) { // fire snake sets wood on fire
                     game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.FIRE);
-                }
-                if (element == Element.WATER) { // water snake moistens wood
-                    game.getMap().getLayoutNode(getNewHeadX(), getNewHeadY()).resetFireResistance();
+                } else if (element == Element.WATER) { // water snake moistens wood
+                    game.getMap().getLayoutNode(getNewHeadX(), getNewHeadY()).setMoist(true);
                 }
                 break;
 
@@ -126,9 +125,9 @@ public class Snake {
                 if (element == Element.NEUTRAL || element == Element.EARTH) {
                     isAlive = false; // earth and neutral snakes die
                     game.setGameOverReason(Strings.GAME_OVER_BURNED);
-                }
-                if (element == Element.WATER) { // water snake extinguishes burning wood
+                } else if (element == Element.WATER) { // water snake extinguishes burning wood
                     game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.WOOD);
+                    game.getMap().getLayoutNode(getNewHeadX(), getNewHeadY()).setMoist(true);
                 }
                 break;
 

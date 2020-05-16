@@ -2,6 +2,8 @@ package com.javarush.games.snake;
 
 import com.javarush.engine.cell.*;
 
+import java.util.Date;
+
 /**
  * Interactive tile nodes
  */
@@ -11,6 +13,8 @@ class Node extends GameObject {
     private Color color;
     private Color bgColor;
     private String sign;
+    private Date wetDate;
+    private boolean isMoist; // water snake was here
     private int fireResistance = 60;
 
     public enum Terrain {
@@ -21,7 +25,8 @@ class Node extends GameObject {
 
     Node(int x, int y, SnakeGame game, int type) {
         super(x, y, game);
-        resetFireResistance();
+        this.wetDate = new Date();
+        this.isMoist = false;
         switch (type) {
             case 0:
                 this.terrain = Terrain.FIELD;
@@ -100,43 +105,50 @@ class Node extends GameObject {
     // MECHANICS
 
     private void causeEffect() { // interact with surrounding nodes
-        if (!Screen.is(Screen.Type.GAME)) {
-            return;
-        }
-        if (terrain == Terrain.FIRE) { // ignite wood
-            igniteWoodenNeighbors();
-        }
-    }
-
-    private void igniteWoodenNeighbors() {
-        // If fire resistance of a neighboring wooden node drops below 0, it turns into a fire node
-        Node activeNode;
-        for (int x = this.x - 1; x <= this.x + 1; x++) {
-            for (int y = this.y - 1; y <= this.y + 1; y++) {
-                if (game.outOfBounds(x, y)){
-                    continue;
-                }
-                activeNode = (game.getMap().getLayoutNode(x, y));
-                if (activeNode.terrain == Terrain.WOOD || activeNode.terrain == Terrain.FOREST) {
-                    activeNode.fireResistance--;
-                    if (activeNode.fireResistance <= 0) {
-                        game.getMap().setLayoutNode(x, y, Terrain.FIRE);
-                    }
-                }
+        if (Screen.is(Screen.Type.GAME)) {
+            if (terrain == Terrain.WOOD || terrain == Terrain.FOREST) {
+                setOnFire();
             }
         }
     }
 
-    void resetFireResistance() {
-        // Keep fire resistance between 30 and 60
-        this.fireResistance = (fireResistance < 30) ? 30 : (game.getSnakeLength() * 10 - 50);
-        this.fireResistance = (fireResistance > 60) ? 60 : (game.getSnakeLength() * 10 - 50);
+    private boolean hasFireNear() {
+        Node neighbor;
+        for (int x = this.x - 1; x <= this.x + 1; x++) {
+            for (int y = this.y - 1; y <= this.y + 1; y++) {
+                if (game.outOfBounds(x, y)) {
+                    continue;
+                }
+                neighbor = (game.getMap().getLayoutNode(x, y));
+                if (neighbor.terrain == Terrain.FIRE) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
+    private void setOnFire() {
+        if (hasFireNear()) {
+            int igniteDelay;
+            igniteDelay = isMoist ? Math.max(game.getSnakeLength() * 500, 1000) : 1000;
+            if (new Date().getTime() - wetDate.getTime() > igniteDelay) {
+                game.getMap().setLayoutNode(x, y, Terrain.FIRE);
+            }
+        } else {
+            wetDate = new Date();
+        }
+    }
 
     // GETTERS
 
     Terrain getTerrain() {
         return terrain;
+    }
+
+    // SETTERS
+
+    void setMoist(boolean moist) {
+        isMoist = moist;
     }
 }
