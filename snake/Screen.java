@@ -34,7 +34,7 @@ public class Screen {
         screens.add(0, screen);
     }
 
-    public static Type get() { // returns current active screen type
+    public static Type getCurrent() { // returns current active screen type
         return screens.get(0).type;
     }
 

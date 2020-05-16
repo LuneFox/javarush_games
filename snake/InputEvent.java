@@ -16,21 +16,29 @@ class InputEvent {
     // GENERAL
 
     void keyPress(Key key) {
-        if (Screen.is(Screen.Type.GAME)) {
-            keyPressInGame(key);
-        } else if (Screen.is(Screen.Type.MAIN_MENU)) {
-            keyPressInMenu(key);
-        } else if (Screen.is(Screen.Type.OPTIONS)) {
-            keyPressInOptions(key);
-        } else if (Screen.is(Screen.Type.CONTROLS)) {
-            keyPressInControls(key);
-        } else if (Screen.is(Screen.Type.HELP)) {
-            keyPressInHelp(key);
-        } else if (Screen.is(Screen.Type.MAP_EDIT)) {
-            keyPressInMapEditor(key);
+        switch (Screen.getCurrent()) {
+            case GAME:
+                keyPressInGame(key);
+                break;
+            case MAIN_MENU:
+                keyPressInMenu(key);
+                break;
+            case OPTIONS:
+                keyPressInOptions(key);
+                break;
+            case CONTROLS:
+                keyPressInControls(key);
+                break;
+            case HELP:
+                keyPressInHelp(key);
+                break;
+            case MAP_EDIT:
+                keyPressInMapEditor(key);
+                break;
+            default:
+                break;
         }
     }
-
 
     void keyRelease(Key key) {
         if (Screen.is(Screen.Type.GAME)) {
