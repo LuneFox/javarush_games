@@ -235,9 +235,10 @@ public class SnakeGame extends Game {
             new Message("strength: " + (snake.getLength()), Color.WHITE).draw(this, 0, 1);
             new Message("element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw(this, 0, 2);
             new Message("score   : " + score, Color.LIGHTBLUE).draw(this, 0, 3);
+            drawElementsPanel();
             drawHungerBar();
             if (lifetime < 301) {
-                new Message("power: " + lifetime, Color.CORAL).draw(this, 19, 3);
+                new Message("power: " + lifetime, Color.CORAL).draw(this, 20, 3);
             }
         }
     }
@@ -275,6 +276,42 @@ public class SnakeGame extends Game {
     private void drawSnake() {
         if (Screen.is(Screen.Type.GAME)) {
             snake.draw();
+        }
+    }
+
+    private void drawElementsPanel() {
+        Color textColor;
+        Color bgColor;
+        for (Element element : Element.values()) {
+            textColor = snake.canUse(element) ? Color.WHITE : Color.GRAY;
+            switch (element) {
+                case NEUTRAL:
+                    bgColor = snake.getElement() == element ? Color.PURPLE : Color.BLACK;
+                    setCellValueEx(24, 2, bgColor, "N", textColor, 90);
+                    break;
+                case WATER:
+                    bgColor = snake.getElement() == element ? Color.BLUE : Color.BLACK;
+                    setCellValueEx(25, 2, bgColor, "W", textColor, 90);
+                    break;
+                case FIRE:
+                    bgColor = snake.getElement() == element ? Color.RED : Color.BLACK;
+                    setCellValueEx(26, 2, bgColor, "F", textColor, 90);
+                    break;
+                case EARTH:
+                    bgColor = snake.getElement() == element ? Color.BROWN : Color.BLACK;
+                    setCellValueEx(27, 2, bgColor, "E", textColor, 90);
+                    break;
+                case AIR:
+                    bgColor = snake.getElement() == element ? Color.LIGHTSKYBLUE : Color.BLACK;
+                    setCellValueEx(28, 2, bgColor, "A", textColor, 90);
+                    break;
+                case ALMIGHTY:
+                    bgColor = snake.getElement() == element ? Color.ORCHID : Color.BLACK;
+                    setCellValueEx(29, 2, bgColor, "S", textColor, 90);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

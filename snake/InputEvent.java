@@ -230,13 +230,13 @@ class InputEvent {
 
     private void leftClickInGame(int x, int y) {
         if (!game.isStopped()) {
-            snake.rotateToNextElement();
+            snake.rotateToPreviousElement();
         }
     }
 
     private void rightClickInGame(int x, int y) {
         if (!game.isStopped()) {
-            snake.rotateToPreviousElement();
+            snake.rotateToNextElement();
         }
     }
 

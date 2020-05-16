@@ -222,15 +222,15 @@ class Map {
                 snakeStartDirection = Direction.LEFT;
                 break;
             }
-            case 9999: {
-                orbs.add(new Orb(0, 0, Element.WATER));
-                orbs.add(new Orb(0, 0, Element.FIRE));
-                orbs.add(new Orb(0, 0, Element.EARTH));
-                orbs.add(new Orb(0, 0, Element.AIR));
-                orbs.add(new Orb(0, 0, Element.ALMIGHTY));
+            case 3: {
+                orbs.add(new Orb(1, 6, Element.WATER));
+                orbs.add(new Orb(5, 6, Element.FIRE));
+                orbs.add(new Orb(9, 6, Element.EARTH));
+                orbs.add(new Orb(13, 6, Element.AIR));
+                orbs.add(new Orb(17, 6, Element.ALMIGHTY));
                 wormHoles.add(new WormHole(0, 0, 0, 0));
-                snakeStartPlace = new Coordinate(0, 0);
-                snakeStartDirection = Direction.DOWN;
+                snakeStartPlace = new Coordinate(10, 10);
+                snakeStartDirection = Direction.RIGHT;
                 break;
             }
             default:
