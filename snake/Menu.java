@@ -25,7 +25,7 @@ class Menu {
         new Message("VER " + Strings.VERSION, Color.DARKBLUE).draw(game, 30);
 
         Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
-        //Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
+        // Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
         Selector.draw(13, 12);
     }
 
@@ -125,8 +125,7 @@ class Menu {
     }
 
     void printTerrain() {
-        /*
-        Map map = game.getMap();
+/*        Map map = game.getMap();
         System.out.println("new int[][]{");
 
         for (int y = 0; y < SnakeGame.HEIGHT; y++) {
@@ -144,15 +143,13 @@ class Menu {
                 }
             }
         }
-        System.out.println("});");
-        */
+        System.out.println("});");*/
     }
 
     void printCoordinate(int x, int y) {
-        /*
-        System.out.println(x + "," + y);
-        */
+        // System.out.println(x + "," + y);
     }
+
 
     // UTILITIES
 

@@ -100,7 +100,7 @@ class InputEvent {
                 } else if (Menu.Selector.nowAt("EDIT")) {
                     menu.lastPointerPosition = Menu.Selector.getPointer();
                     Menu.Selector.setPointer(0);
-                    game.setMap(game.getStage() + 1);
+                    game.setMap(game.getStage());
                     menu.displayMapEditor();
                     break;
                 }
