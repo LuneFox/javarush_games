@@ -50,10 +50,10 @@ public class Snake {
         for (int i = snakeParts.size() - 1; i >= 0; i--) {
             if (i == 0) {
                 game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[1],
-                        head, Color.WHITE, 75);
+                        head, Color.WHITE, 90);
             } else {
                 game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[i % 2],
-                        Signs.bodySign, Color.WHITE, 75);
+                        Signs.bodySign, Color.WHITE, 90);
             }
         }
     }

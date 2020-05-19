@@ -71,6 +71,6 @@ class Orb extends GameObject {
         timeAfter = new Date().getTime();
         timeDifference = timeAfter - timeBefore;
         blink = (timeDifference < 250);
-        game.setCellValueEx(x, y, blink ? bgColor1 : bgColor2, sign, color, 75);
+        game.setCellValueEx(x, y, blink ? bgColor1 : bgColor2, sign, color, 90);
     }
 }

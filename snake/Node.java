@@ -15,7 +15,6 @@ class Node extends GameObject {
     private String sign;
     private Date wetDate;
     private boolean isMoist; // water snake was here
-    private int fireResistance = 60;
 
     public enum Terrain {
         FIELD, WOOD, WATER, FIRE, FOREST, WORMHOLE, MOUNTAIN, WALL, SAND, VOID
@@ -56,7 +55,7 @@ class Node extends GameObject {
                 this.terrain = Terrain.FOREST;
                 this.color = Color.LIGHTGREEN;
                 this.bgColor = Color.FORESTGREEN;
-                this.sign = Signs.forestSign;
+                this.sign = (game.getRandomNumber(2) == 1) ? Signs.forestSign1 : Signs.forestSign2;
                 break;
             case 5:
                 this.terrain = Terrain.WORMHOLE;
@@ -98,7 +97,7 @@ class Node extends GameObject {
 
     void draw(Game game) {
         this.causeEffect();
-        game.setCellValueEx(x, y, bgColor, sign, color, 75);
+        game.setCellValueEx(x, y, bgColor, sign, color, 90);
     }
 
 
