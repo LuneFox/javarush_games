@@ -2,7 +2,6 @@ package com.javarush.games.moonlander;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
-import com.javarush.games.snake.SnakeGame;
 
 public class Message {
     private String[] splitText;
@@ -55,8 +54,6 @@ public class Message {
 
     private String[] specialSplit(String text) {
         String[] result = text.toUpperCase().split("");
-        //if (text.length() % 2 == 1) text = text + " ";
-        //return text.toUpperCase().split("(?<=\\G..)");
         if (!result[0].equals("")) {
             return result;
         } else {

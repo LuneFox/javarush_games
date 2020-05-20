@@ -7,12 +7,11 @@ public class Screen {
     private static ArrayList<Screen> screens = new ArrayList<>();
 
     public enum Type {
-        MAIN_MENU, MOON_LANDER_GAME, COLOR_PAINTER
+        MAIN_MENU, COLOR_PAINTER
     }
 
     static {
         screens.add(new Screen(Type.MAIN_MENU));
-        screens.add(new Screen(Type.MOON_LANDER_GAME));
         screens.add(new Screen(Type.COLOR_PAINTER));
     }
 
@@ -35,7 +34,7 @@ public class Screen {
         return screens.get(0).type;
     }
 
-    public static boolean is(Type type){
+    public static boolean is(Type type) {
         return (screens.get(0).type == type);
     }
 }
