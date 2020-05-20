@@ -138,19 +138,18 @@ public class SpritePainterTool {
         if (!clickedOnSprite(x, y)) {
             return;
         }
-        Color baseColor = game.getCellColor(x, y);
+        int baseColor = sprite[y - 8][x - 8];
         sprite[y - 8][x - 8] = brush;
-        game.setCellColor(x, y, Color.values()[brush]);
-        if (game.getCellColor(x - 1, y) == baseColor) {
+        if (x - 9 > -1 && sprite[y - 8][x - 9] == baseColor) {
             fillColor(x - 1, y);
         }
-        if (game.getCellColor(x + 1, y) == baseColor) {
+        if (x - 7 < 32 && sprite[y - 8][x - 7] == baseColor) {
             fillColor(x + 1, y);
         }
-        if (game.getCellColor(x, y - 1) == baseColor) {
+        if (y - 9 > -1 && sprite[y - 9][x - 8] == baseColor) {
             fillColor(x, y - 1);
         }
-        if (game.getCellColor(x, y + 1) == baseColor) {
+        if (y - 7 < 32 && sprite[y - 7][x - 8] == baseColor) {
             fillColor(x, y + 1);
         }
         fillSelected = false;
