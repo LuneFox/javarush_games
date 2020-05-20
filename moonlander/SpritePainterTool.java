@@ -3,14 +3,18 @@ package com.javarush.games.moonlander;
 import com.javarush.engine.cell.Color;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class SpritePainterTool {
     private MoonLanderGame game;
     private ArrayList<Color> backgroundColors;
+    private ArrayList<int[][]> savedStates;
     private int brush;
     private int spriteSizeX;
     private int spriteSizeY;
-    private int[][] sprite;
+    int[][] sprite;
+    boolean fillSelected = false;
+    boolean replaceSelected = false;
 
     SpritePainterTool(MoonLanderGame game) {
         this.game = game;
@@ -25,6 +29,10 @@ public class SpritePainterTool {
         spriteSizeX = 9;
         spriteSizeY = 9;
         createSprite(32, 32);
+        savedStates = new ArrayList<>();
+        int[][] firstSavedState = new int[32][32];
+        copyArray(sprite, firstSavedState);
+        savedStates.add(firstSavedState);
     }
 
     // VISUALS
@@ -61,11 +69,7 @@ public class SpritePainterTool {
                 colorValue++;
             }
         }
-
-        new Message("USE:", Color.WHITE).draw(game, 1, 6);
         game.setCellValueEx(5, 6, Color.values()[brush], String.valueOf(brush), Color.WHITE);
-        new Message("(" + Color.values()[brush].name() + ", #" + Color.values()[brush].ordinal() + ")",
-                Color.WHITE).draw(game, 7, 6);
     }
 
     private void drawSprite() {
@@ -100,8 +104,20 @@ public class SpritePainterTool {
         new Message("JAVARUSH GAMES SPRITE MAKER", Color.YELLOW).draw(game, 0);
         new Message("ARRAY SIZE: " + spriteSizeX + "x" + spriteSizeY, Color.SKYBLUE).draw(game, 1, 2);
         new Message("BACKGROUND: " + backgroundColors.get(0).name(), Color.LIGHTGRAY).draw(game, 1, 4);
+
+        if (fillSelected) {
+            new Message("FILL", Color.WHITE).draw(game, 1, 6);
+        } else if (replaceSelected) {
+            new Message("REPL", Color.WHITE).draw(game, 1, 6);
+        } else {
+            new Message("DRAW", Color.WHITE).draw(game, 1, 6);
+        }
+        new Message("(" + Color.values()[brush].name() + ", #" + Color.values()[brush].ordinal() + ")",
+                Color.WHITE).draw(game, 7, 6);
+
         new Message("CLEAR", Color.RED).draw(game, 34, 2);
         new Message("EXPORT", Color.LAWNGREEN).draw(game, 33, 4);
+        new Message("UNDO", (savedStates.size() == 0 ? Color.GRAY : Color.YELLOW)).draw(game, 35, 6);
     }
 
 
@@ -111,11 +127,49 @@ public class SpritePainterTool {
         this.sprite = new int[sizeY][sizeX];
     }
 
-    public void pasteColor(int x, int y) {
+    public void drawColor(int x, int y) {
+        if (clickedOnSprite(x, y)) {
+            sprite[y - 8][x - 8] = brush;
+            display();
+        }
+    }
+
+    public void fillColor(int x, int y) {
+        if (!clickedOnSprite(x, y)) {
+            return;
+        }
+        Color baseColor = game.getCellColor(x, y);
+        sprite[y - 8][x - 8] = brush;
+        game.setCellColor(x, y, Color.values()[brush]);
+        if (game.getCellColor(x - 1, y) == baseColor) {
+            fillColor(x - 1, y);
+        }
+        if (game.getCellColor(x + 1, y) == baseColor) {
+            fillColor(x + 1, y);
+        }
+        if (game.getCellColor(x, y - 1) == baseColor) {
+            fillColor(x, y - 1);
+        }
+        if (game.getCellColor(x, y + 1) == baseColor) {
+            fillColor(x, y + 1);
+        }
+        fillSelected = false;
+        display();
+    }
+
+    public void replaceColor(int x, int y) {
         if (clickedOnMask(x, y)) {
             return;
         }
-        sprite[y - 8][x - 8] = brush;
+        Color selectedColor = game.getCellColor(x, y);
+        for (int j = 0; j < spriteSizeY; j++) {
+            for (int i = 0; i < spriteSizeX; i++) {
+                if (sprite[j][i] == brush) {
+                    sprite[j][i] = selectedColor.ordinal();
+                }
+            }
+        }
+        replaceSelected = false;
         display();
     }
 
@@ -132,6 +186,38 @@ public class SpritePainterTool {
             brush = copiedColor.ordinal();
         }
         display();
+    }
+
+    public void undo() {
+        if (savedStates.size() <= 0) {
+            return;
+        }
+        copyArray(savedStates.get(0), sprite);
+        savedStates.remove(0);
+        display();
+    }
+
+    public void backup() {
+        if (savedStates.size() != 0 && sameArray(sprite, savedStates.get(0))) {
+            return;
+        }
+        int[][] saveState = new int[32][32];
+        copyArray(sprite, saveState);
+        savedStates.add(0, saveState);
+        if (savedStates.size() > 20) {
+            savedStates.remove(savedStates.size() - 1);
+        }
+    }
+
+    public boolean sameArray(int[][] original, int[][] copy) {
+        for (int y = 0; y < original.length; y++) {
+            for (int x = 0; x < original[0].length; x++) {
+                if (copy[y][x] != original[y][x]) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void changeSpriteSize(Direction direction, int amount) {
@@ -173,6 +259,14 @@ public class SpritePainterTool {
         display();
     }
 
+    public void copyArray(int[][] original, int[][] copy) {
+        for (int y = 0; y < original.length; y++) {
+            for (int x = 0; x < original[0].length; x++) {
+                copy[y][x] = original[y][x];
+            }
+        }
+    }
+
     public void exportArray() {
         StringBuilder result = new StringBuilder();
         result.append("new int[][]{");
@@ -204,6 +298,10 @@ public class SpritePainterTool {
         boolean clickedOnXMask = (x > MoonLanderGame.WIDTH - 1 - maskX);
         boolean clickedOnYMask = (y > MoonLanderGame.HEIGHT - 1 - maskY);
         return (clickedOnBoard && (clickedOnXMask || clickedOnYMask));
+    }
+
+    boolean clickedOnSprite(int x, int y) {
+        return (x > 7 && y > 7 && !clickedOnMask(x, y));
     }
 
 
