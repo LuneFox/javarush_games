@@ -67,6 +67,7 @@ public class InputEvent {
                     game.spritePainterTool.backup();
                     if (game.spritePainterTool.fillSelected) {
                         game.spritePainterTool.fillColor(x, y);
+                        game.spritePainterTool.display();
                     } else {
                         game.spritePainterTool.backup();
                         game.spritePainterTool.drawColor(x, y);

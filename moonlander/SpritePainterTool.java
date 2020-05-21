@@ -153,7 +153,6 @@ public class SpritePainterTool {
             fillColor(x, y + 1);
         }
         fillSelected = false;
-        display();
     }
 
     public void replaceColor(int x, int y) {
