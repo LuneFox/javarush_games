@@ -68,6 +68,9 @@ public class InputEvent {
                     if (game.spritePainterTool.fillSelected) {
                         game.spritePainterTool.fillColor(x, y);
                         game.spritePainterTool.display();
+                    } else if (game.spritePainterTool.replaceSelected) {
+                        game.spritePainterTool.backup();
+                        game.spritePainterTool.replaceColor(x, y);
                     } else {
                         game.spritePainterTool.backup();
                         game.spritePainterTool.drawColor(x, y);
@@ -103,12 +106,7 @@ public class InputEvent {
         // System.out.println(x + ", " + y);
         switch (Screen.getCurrent()) {
             case COLOR_PAINTER: {
-                game.spritePainterTool.backup();
-                if (game.spritePainterTool.replaceSelected) {
-                    game.spritePainterTool.replaceColor(x, y);
-                } else {
-                    game.spritePainterTool.copyColor(x, y);
-                }
+                game.spritePainterTool.copyColor(x, y);
                 break;
             }
         }

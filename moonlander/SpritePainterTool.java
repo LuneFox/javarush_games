@@ -3,7 +3,6 @@ package com.javarush.games.moonlander;
 import com.javarush.engine.cell.Color;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 public class SpritePainterTool {
     private MoonLanderGame game;
@@ -12,7 +11,7 @@ public class SpritePainterTool {
     private int brush;
     private int spriteSizeX;
     private int spriteSizeY;
-    int[][] sprite;
+    private int[][] sprite;
     boolean fillSelected = false;
     boolean replaceSelected = false;
 
@@ -162,8 +161,8 @@ public class SpritePainterTool {
         Color selectedColor = game.getCellColor(x, y);
         for (int j = 0; j < spriteSizeY; j++) {
             for (int i = 0; i < spriteSizeX; i++) {
-                if (sprite[j][i] == brush) {
-                    sprite[j][i] = selectedColor.ordinal();
+                if (sprite[j][i] == selectedColor.ordinal()) {
+                    sprite[j][i] = brush;
                 }
             }
         }
@@ -289,6 +288,10 @@ public class SpritePainterTool {
                 "and search for \"nеw int\".", Color.BLACK, 25);
     }
 
+    boolean clickedOnSprite(int x, int y) {
+        return (x > 7 && y > 7 && !clickedOnMask(x, y));
+    }
+
     private boolean clickedOnMask(int x, int y) {
         int maskX = 32 - spriteSizeX;
         int maskY = 32 - spriteSizeY;
@@ -296,10 +299,6 @@ public class SpritePainterTool {
         boolean clickedOnXMask = (x > MoonLanderGame.WIDTH - 1 - maskX);
         boolean clickedOnYMask = (y > MoonLanderGame.HEIGHT - 1 - maskY);
         return (clickedOnBoard && (clickedOnXMask || clickedOnYMask));
-    }
-
-    boolean clickedOnSprite(int x, int y) {
-        return (x > 7 && y > 7 && !clickedOnMask(x, y));
     }
 
 
