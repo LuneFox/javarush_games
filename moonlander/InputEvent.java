@@ -33,6 +33,18 @@ public class InputEvent {
                         game.spritePainterTool.changeBackground();
                         break;
                     }
+                    case ENTER: {
+                        game.spritePainterTool.fillSelected = !game.spritePainterTool.fillSelected;
+                        game.spritePainterTool.replaceSelected = false;
+                        game.spritePainterTool.display();
+                        break;
+                    }
+                    case ESCAPE: {
+                        game.spritePainterTool.replaceSelected = !game.spritePainterTool.replaceSelected;
+                        game.spritePainterTool.fillSelected = false;
+                        game.spritePainterTool.display();
+                        break;
+                    }
                     default: {
                         break;
                     }
@@ -52,23 +64,36 @@ public class InputEvent {
         switch (Screen.getCurrent()) {
             case COLOR_PAINTER: {
                 if (x > 7 && y > 7) {
-                    game.spritePainterTool.pasteColor(x, y);
+                    game.spritePainterTool.backup();
+                    if (game.spritePainterTool.fillSelected) {
+                        game.spritePainterTool.fillColor(x, y);
+                        game.spritePainterTool.display();
+                    } else if (game.spritePainterTool.replaceSelected) {
+                        game.spritePainterTool.backup();
+                        game.spritePainterTool.replaceColor(x, y);
+                    } else {
+                        game.spritePainterTool.backup();
+                        game.spritePainterTool.drawColor(x, y);
+                    }
                 } else if (x > 33 && x < 39 && y == 2) {
+                    game.spritePainterTool.backup();
                     game.spritePainterTool.clearSprite();
                 } else if (x > 32 && x < 39 && y == 4) {
                     game.spritePainterTool.exportArray();
+                } else if (x > 34 && x < 39 && y == 6) {
+                    game.spritePainterTool.undo();
                 } else if (x > 0 && x < 16 && y == 2) {
                     game.showMessageDialog(Color.YELLOW, "Use ARROW KEYS to adjust array size.", Color.BLACK, 20);
                 } else if (x > 0 && x < 16 && y == 4) {
                     game.showMessageDialog(Color.YELLOW, "Use SPACE KEY to switch background (transparent) color.", Color.BLACK, 20);
                 } else if (y == 6) {
-                    game.showMessageDialog(Color.YELLOW, "This is current color. Use LEFT CLICK to paint a cell.", Color.BLACK, 20);
+                    game.showMessageDialog(Color.YELLOW, "This is current color. Use LEFT CLICK to paint a cell.\n" +
+                            "Use ENTER for fill tool. Use ESC for replace tool.", Color.BLACK, 20);
                 } else if (x > 1 && x < 7 && y > 7) {
                     game.showMessageDialog(Color.YELLOW, "Use RIGHT CLICK to copy any color on the screen.", Color.BLACK, 20);
                 } else if (y == 0) {
-                    game.showMessageDialog(Color.ORANGE, "Thanks for using this tool! Hope you like it!\n-- LuneFox. (version: 0.90)", Color.WHITE, 20);
+                    game.showMessageDialog(Color.ORANGE, "Thanks for using this tool! Hope you like it!\n-- LuneFox. (version: 0.91)", Color.WHITE, 20);
                 }
-
                 break;
             }
         }
