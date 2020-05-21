@@ -167,11 +167,9 @@ class Menu {
         Screen.set(ScreenType.GAME_BOARD);
         GAME.redrawAllTiles();
         if (GAME.getAllShopItems().get(1).isActivated) {
-            GAME.DISPLAY.draw(); // bug fix ?! why?!
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
         } else if (GAME.getAllShopItems().get(5).isActivated) {
-            GAME.DISPLAY.draw(); // bug fix ?! why?!
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
         }

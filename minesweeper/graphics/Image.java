@@ -30,7 +30,7 @@ public abstract class Image {
     public void draw() {
         for (int innerY = 0; innerY < bitmapData.length; innerY++) {
             for (int innerX = 0; innerX < bitmapData[0].length; innerX++) {
-                if (bitmapData[innerY][innerX] == 0) {
+                if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
                     continue;
                 } // transparent color
                 try {
@@ -49,7 +49,7 @@ public abstract class Image {
     public final void draw(boolean mirror) { // true reflects X, false reflects Y
         for (int innerY = 0; innerY < bitmapData.length; innerY++) {
             for (int innerX = 0; innerX < bitmapData[0].length; innerX++) {
-                if (bitmapData[innerY][innerX] == 0) {
+                if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
                     continue;
                 } // transparent color
                 try {
