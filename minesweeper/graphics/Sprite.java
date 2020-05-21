@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
  * Images of numbers and icons to draw over tiles, and not only tiles if needed.
@@ -8,7 +9,7 @@ import com.javarush.engine.cell.*;
  */
 
 public class Sprite extends Image {
-    public Sprite(Bitmap bitmap, Game game, int x, int y) { // creates a sprite in a logical position
+    public Sprite(Bitmap bitmap, MinesweeperGame game, int x, int y) { // creates a sprite in a logical position
         super(bitmap, game, x, y);
     }
 

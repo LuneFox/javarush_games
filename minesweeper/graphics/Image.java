@@ -1,26 +1,27 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
  * Abstract class that allows drawing stuff using colored cells.
  */
 
 public abstract class Image {
-    final protected Game GAME;                // game instance to be drawn into
+    final protected MinesweeperGame GAME;                // game instance to be drawn into
     private int drawX;
     private int drawY;                        // real position in pixels
     protected int[][] bitmapData;             // matrix of color numbers
     protected Color[] colors;                 // an array to match colors and numbers
 
-    protected Image(Bitmap bitmap, Game game, int drawX, int drawY) { // constructor with setting position at once
+    protected Image(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) { // constructor with setting position at once
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
         this.GAME = game;
         setPosition(drawX, drawY);
     }
 
-    Image(Bitmap bitmap, Game game) { // constructor without setting position (for loading images in memory)
+    Image(Bitmap bitmap, MinesweeperGame game) { // constructor without setting position (for loading images in memory)
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
         this.GAME = game;
@@ -33,7 +34,7 @@ public abstract class Image {
                     continue;
                 } // transparent color
                 try {
-                    GAME.setCellColor(
+                    GAME.DISPLAY.setCellColor(
                             drawX + innerX,
                             drawY + innerY,
                             colors[bitmapData[innerY][innerX]]
@@ -53,13 +54,13 @@ public abstract class Image {
                 } // transparent color
                 try {
                     if (mirror) {
-                        GAME.setCellColor(
+                        GAME.DISPLAY.setCellColor(
                                 drawX + (bitmapData[0].length - 1 - innerX), // flip horizontally
                                 drawY + innerY,
                                 colors[bitmapData[innerY][innerX]]
                         );
                     } else {
-                        GAME.setCellColor(
+                        GAME.DISPLAY.setCellColor(
                                 drawX + innerX,
                                 drawY + (bitmapData.length - 1 - innerY),     // flip vertically
                                 colors[bitmapData[innerY][innerX]]

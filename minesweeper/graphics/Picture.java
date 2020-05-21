@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
  * Sub-class for creating big images that are not comfortable to draw as two-dimensional arrays.
@@ -8,7 +9,7 @@ import com.javarush.engine.cell.*;
 
 public class Picture extends Image {
 
-    public Picture(Bitmap bitmap, Game game, int drawX, int drawY) {
+    public Picture(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) {
         super(bitmap, game, drawX, drawY);
     }
 

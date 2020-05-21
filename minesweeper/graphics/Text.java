@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.MinesweeperGame;
 
 import java.util.HashMap;
 
@@ -12,7 +13,7 @@ public class Text extends Image {
     private static HashMap<Character, Text> alphabet = new HashMap<>(); // pre-loaded alphabet goes here
     private Text symbol;
 
-    public Text(Bitmap bitmap, Game game) {
+    public Text(Bitmap bitmap, MinesweeperGame game) {
         super(bitmap, game);
     }
 

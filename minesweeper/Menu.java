@@ -11,9 +11,6 @@ import java.util.LinkedList;
 
 /**
  * Class for displaying various menus on the screen.
- * Main methods:
- * displayMain() - draws main menu
- * displayGameOver(boolean victory) - draws confirmation menu after winning or losing the game
  */
 
 class Menu {
@@ -23,6 +20,7 @@ class Menu {
     final static LinkedList<String> TITLE_NAMES = new LinkedList<>();
     final private static LinkedList<String> QUOTES = new LinkedList<>();
     final private Text TEXT_WRITER;
+    private boolean firstLoad = true;
 
     static {
         TITLE_NAMES.addAll(Arrays.asList("хомячок", "новичок", "любитель", "опытный", "эксперт",
@@ -61,6 +59,10 @@ class Menu {
                     Color.LIGHTGOLDENRODYELLOW, 4, 71, false);
         }
         printRandomQuote();
+        if (firstLoad) {
+            GAME.DISPLAY.draw();
+            firstLoad = false;
+        }
     }
 
     private void printRandomQuote() {
@@ -165,10 +167,11 @@ class Menu {
         Screen.set(ScreenType.GAME_BOARD);
         GAME.redrawAllTiles();
         if (GAME.getAllShopItems().get(1).isActivated) {
+            GAME.DISPLAY.draw(); // bug fix ?! why?!
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
-        }
-        if (GAME.getAllShopItems().get(5).isActivated) {
+        } else if (GAME.getAllShopItems().get(5).isActivated) {
+            GAME.DISPLAY.draw(); // bug fix ?! why?!
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
         }

@@ -13,7 +13,8 @@ import java.util.*;
 public class MinesweeperGame extends Game {
 
     // FINAL OBJECTS
-    static final String VERSION = "1.03";
+    static final String VERSION = "1.04";
+    public final Display DISPLAY = new Display(this);
     final private Text TEXT_WRITER = new Text(Bitmap.NONE, this);
     final private Menu MENU = new Menu(this);
     final private InputEvent IE = new InputEvent(this);
@@ -90,6 +91,7 @@ public class MinesweeperGame extends Game {
         countMineNeighbors();
         createShopItems();
         Screen.set(ScreenType.GAME_BOARD);
+        MENU.displayGameBoard();
     }
 
     private void loadResources() {

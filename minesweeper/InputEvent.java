@@ -55,6 +55,7 @@ class InputEvent {
             default:
                 break;
         }
+        GAME.DISPLAY.draw();
     }
 
     final void rightClick(int x, int y) {
@@ -73,6 +74,7 @@ class InputEvent {
             default:
                 break;
         }
+        GAME.DISPLAY.draw();
         // System.out.println(String.format("%d %d", x, y));
     }
 
@@ -132,6 +134,7 @@ class InputEvent {
                 }
                 break;
         }
+        GAME.DISPLAY.draw();
     }
 
     // MENU

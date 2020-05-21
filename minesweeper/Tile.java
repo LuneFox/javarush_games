@@ -38,7 +38,7 @@ class Tile extends Image {
         spriteNumbers.put(9, Bitmap.BOARD_9);
     }
 
-    Tile(Bitmap bitmap, Game game, int x, int y, boolean isMine) {
+    Tile(Bitmap bitmap, MinesweeperGame game, int x, int y, boolean isMine) {
         super(bitmap, game, x * 10, y * 10);
         this.x = x;
         this.y = y;
