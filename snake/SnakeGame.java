@@ -85,7 +85,6 @@ public class SnakeGame extends Game {
         drawScene();
         isStopped = true;
         showMessageDialog(Color.YELLOW, Strings.VICTORY + score, Color.GREEN, 27);
-        menu.selectStageUp();
     }
 
     private void gameOver() {
@@ -184,6 +183,7 @@ public class SnakeGame extends Game {
             case ALMIGHTY:
                 if (!orb.isAlive && !almightyOrbObtained) {
                     almightyOrbObtained = true;
+                    menu.selectStageUp();
                     orbs.remove(orb);
                     snake.clearElements();
                     snake.getElementsAvailable().add(Element.ALMIGHTY);
