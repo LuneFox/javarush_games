@@ -2,6 +2,8 @@ package com.javarush.games.racer.road;
 
 import com.javarush.games.racer.*;
 
+import java.util.List;
+
 public class RoadObject extends GameObject {
     public RoadObjectType type;
     public int speed;
@@ -19,6 +21,10 @@ public class RoadObject extends GameObject {
      * которая зависит от скорости движения игрока.
      */
     public void move(int boost) {
+        this.y += boost;
+    }
+
+    public void move(int boost, List<RoadObject> items) {
         this.y += boost;
     }
 
