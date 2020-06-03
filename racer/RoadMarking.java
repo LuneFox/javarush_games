@@ -10,23 +10,23 @@ public class RoadMarking {
     private List<GameObject> roadMarking = new ArrayList<>();
 
     public RoadMarking() {
-        for (int i = -4; i <= RacerGame.HEIGHT + 4; i += 8) {
-            roadMarking.add(new GameObject(RacerGame.CENTER_X - 9, i, ShapeMatrix.ROAD_MARKING));
-            roadMarking.add(new GameObject(RacerGame.CENTER_X + 9, i, ShapeMatrix.ROAD_MARKING));
+        for (int i = RacerGame.WIDTH + 4; i >= -4; i -= 8) {
+            roadMarking.add(new GameObject(i, (RacerGame.HEIGHT / 2) - (RoadManager.ROAD_WIDTH / 4), ShapeMatrix.ROAD_MARKING));
+            roadMarking.add(new GameObject(i, (RacerGame.HEIGHT / 2) + (RoadManager.ROAD_WIDTH / 4), ShapeMatrix.ROAD_MARKING));
         }
     }
 
-    public void move(int boost) {
+    public void move(double step) {
         for (GameObject item : roadMarking) {
-            if (item.y >= RacerGame.HEIGHT - 1) {
-                item.y = item.y - RacerGame.HEIGHT - 8 + boost;
+            if (item.x <= -4.0) {
+                item.x = RacerGame.WIDTH - step;
             } else {
-                item.y += boost;
+                item.x -= step;
             }
         }
     }
 
-    public void draw(Game game) {
+    public void draw(RacerGame game) {
         for (GameObject item : roadMarking) {
             item.draw(game);
         }

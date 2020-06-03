@@ -1,11 +1,10 @@
 package com.javarush.games.racer;
 
-import com.javarush.engine.cell.Color;
-import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.*;
 
 public class GameObject {
-    public int x;
-    public int y;
+    public double x;
+    public double y;
     public int width;
     public int height;
     public int[][] matrix;
@@ -23,11 +22,11 @@ public class GameObject {
         height = matrix.length;
     }
 
-    public void draw(Game game) {
+    public void draw(RacerGame game) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 int colorIndex = matrix[j][i];
-                game.setCellColor(x + i, y + j, Color.values()[colorIndex]);
+                game.display.setCellColor((int) x + i, (int) y + j, Color.values()[colorIndex]);
             }
         }
     }
@@ -51,7 +50,7 @@ public class GameObject {
         for (int carX = 0; carX < gameObject.width; carX++) {
             for (int carY = 0; carY < gameObject.height; carY++) {
                 if (gameObject.matrix[carY][carX] != 0) {
-                    if (isCollision(carX + gameObject.x, carY + gameObject.y)) {
+                    if (isCollision(carX + (int) gameObject.x, carY + (int) gameObject.y)) {
                         return true;
                     }
                 }

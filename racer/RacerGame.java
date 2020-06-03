@@ -1,23 +1,19 @@
 package com.javarush.games.racer;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.racer.road.RoadManager;
 
 public class RacerGame extends Game {
-    public final static int WIDTH = 64;
-    public final static int HEIGHT = 64;
-    public final static int CENTER_X = WIDTH / 2;
-    public final static int ROADSIDE_WIDTH = 14;
-    private final static int RACE_GOAL_CARS_COUNT = 40;
+    public final static int WIDTH = 100;
+    public final static int HEIGHT = 100;
 
-    private RoadMarking roadMarking;
-    private PlayerCar player;
-    private RoadManager roadManager;
-    private FinishLine finishLine;
-    private ProgressBar progressBar;
+    public final Display display = new Display(this);
+    public final InputEvent inputEvent = new InputEvent(this);
 
-    private boolean isGameStopped;
-    private int score;
+    public Delorean delorean;
+    public RoadMarking roadMarking;
+
+
+    // GAME MECHANICS
 
     @Override
     public void initialize() {
@@ -28,80 +24,44 @@ public class RacerGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        score -= 5;
-        setScore(score);
-        if (roadManager.checkCrush(player)) {
-            gameOver();
-            drawScene();
-            return;
-        } else if (finishLine.isCrossed(player)) {
-            win();
-            drawScene();
-            return;
-        }
-        if (roadManager.getPassedCarsCount() >= RACE_GOAL_CARS_COUNT) {
-            finishLine.show();
-        }
-        roadManager.generateNewRoadObjects(this);
-        moveAll();
+        delorean.steer();
+        delorean.gas();
+        roadMarking.move(delorean.getSpeed());
         drawScene();
     }
 
     private void createGame() {
-        score = 3500;
+        delorean = new Delorean();
         roadMarking = new RoadMarking();
-        player = new PlayerCar();
-        roadManager = new RoadManager();
-        finishLine = new FinishLine();
-        progressBar = new ProgressBar(RACE_GOAL_CARS_COUNT);
-        drawScene();
         setTurnTimer(40);
-        isGameStopped = false;
     }
 
     private void drawScene() {
         drawField();
-        finishLine.draw(this);
         roadMarking.draw(this);
-        roadManager.draw(this);
-        player.draw(this);
-        progressBar.draw(this);
+        delorean.draw(this);
+        display.draw();
     }
 
+
+    // GRAPHICS
+
     private void drawField() {
-        for (int y = 0; y < HEIGHT; y++) {
-            for (int x = 0; x < WIDTH; x++) {
-                if (x == CENTER_X) {
-                    setCellColor(x, y, Color.WHITE);
-                } else if (x < ROADSIDE_WIDTH || x >= WIDTH - ROADSIDE_WIDTH) {
-                    setCellColor(x, y, Color.DARKGREEN);
+        for (int x = 0; x < WIDTH; x++) {
+            for (int y = 0; y < HEIGHT; y++) {
+                if (y < RoadManager.UPPER_BORDER || y >= RoadManager.LOWER_BORDER) {
+                    display.setCellColor(x, y, Color.SIENNA);
+                } else if (y == HEIGHT / 2) {
+                    display.setCellColor(x, y, Color.SNOW);
                 } else {
-                    setCellColor(x, y, Color.GRAY);
+                    display.setCellColor(x, y, Color.DARKGRAY);
                 }
+
             }
         }
     }
 
-    private void moveAll() {
-        roadMarking.move(player.speed);
-        roadManager.move(player.speed);
-        finishLine.move(player.speed);
-        progressBar.move(roadManager.getPassedCarsCount());
-        player.move();
-    }
-
-    private void win() {
-        isGameStopped = true;
-        showMessageDialog(Color.DARKBLUE, "CONGRATULATIONS!", Color.WHITE, 55);
-        stopTurnTimer();
-    }
-
-    private void gameOver() {
-        isGameStopped = true;
-        showMessageDialog(Color.DARKBLUE, "RACE OVER", Color.WHITE, 75);
-        stopTurnTimer();
-        player.stop();
-    }
+    // REPLACED METHODS
 
     @Override
     public void setCellColor(int x, int y, Color color) {
@@ -111,46 +71,16 @@ public class RacerGame extends Game {
         super.setCellColor(x, y, color);
     }
 
+
+    // CONTROLS
+
     @Override
     public void onKeyPress(Key key) {
-        switch (key) {
-            case LEFT:
-                player.setDirection(Direction.LEFT);
-                break;
-            case RIGHT:
-                player.setDirection(Direction.RIGHT);
-                break;
-            case UP:
-                player.speed = 2;
-                break;
-            case SPACE:
-                if (isGameStopped) {
-                    createGame();
-                    break;
-                }
-            default:
-                break;
-        }
+        inputEvent.keyPress(key);
     }
 
     @Override
     public void onKeyReleased(Key key) {
-        switch (key) {
-            case LEFT:
-                if (player.getDirection() == Direction.LEFT) {
-                    player.setDirection(Direction.NONE);
-                }
-                break;
-            case RIGHT:
-                if (player.getDirection() == Direction.RIGHT) {
-                    player.setDirection(Direction.NONE);
-                }
-                break;
-            case UP:
-                player.speed = 1;
-                break;
-            default:
-                break;
-        }
+        inputEvent.keyRelease(key);
     }
 }

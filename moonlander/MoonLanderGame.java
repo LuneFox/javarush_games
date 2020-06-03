@@ -4,8 +4,8 @@ import com.javarush.engine.cell.*;
 
 public class MoonLanderGame extends Game {
     // Screen size
-    static final int WIDTH = 40;
-    static final int HEIGHT = 40;
+    static final int WIDTH = 50;
+    static final int HEIGHT = 50;
 
     // Painter
     private InputEvent inputEvent = new InputEvent(this);
