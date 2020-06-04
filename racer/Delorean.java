@@ -7,7 +7,7 @@ public class Delorean extends GameObject {
     private double acceleration;
 
     public Delorean() {
-        super(3, RacerGame.HEIGHT / 2 - ShapeMatrix.PLAYER.length /  + 10, ShapeMatrix.PLAYER);
+        super(3, RacerGame.HEIGHT / 2 - ShapeMatrix.PLAYER.length / +10, ShapeMatrix.PLAYER);
         this.verticalDirection = Direction.NONE;
         this.horizontalDirection = Direction.NONE;
         this.speed = 0.0;
@@ -22,10 +22,18 @@ public class Delorean extends GameObject {
         }
         switch (verticalDirection) {
             case UP:
-                y -= 2;
+                if (speed > 2) {
+                    y -= 2;
+                } else {
+                    y -= speed;
+                }
                 break;
             case DOWN:
-                y += 2;
+                if (speed > 2) {
+                    y += 2;
+                } else {
+                    y += speed;
+                }
                 break;
             default:
                 break;
@@ -35,7 +43,7 @@ public class Delorean extends GameObject {
     public void gas() {
         switch (horizontalDirection) {
             case RIGHT:
-                acceleration = 0.1;
+                acceleration = 0.05 * (1 - speed * 0.1);
                 speed += acceleration;
                 if (speed > 8.8) {
                     speed = 8.8;
@@ -49,7 +57,7 @@ public class Delorean extends GameObject {
                 }
                 break;
             case NONE:
-                acceleration = 0.05;
+                acceleration = 0.025;
                 speed -= acceleration;
                 if (speed < 0) {
                     speed = 0;

@@ -1,6 +1,8 @@
 package com.javarush.games.racer;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.racer.graphics.Bitmap;
+import com.javarush.games.racer.graphics.Text;
 
 public class RacerGame extends Game {
     public final static int WIDTH = 100;
@@ -8,6 +10,7 @@ public class RacerGame extends Game {
 
     public final Display display = new Display(this);
     public final InputEvent inputEvent = new InputEvent(this);
+    public final Text text = new Text(Bitmap.NONE, this);
 
     public Delorean delorean;
     public RoadMarking roadMarking;
@@ -19,6 +22,7 @@ public class RacerGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
+        text.loadAlphabet();
         createGame();
     }
 
@@ -40,6 +44,7 @@ public class RacerGame extends Game {
         drawField();
         roadMarking.draw(this);
         delorean.draw(this);
+        text.write((int) (delorean.getSpeed() * 10) + " MPH", Color.WHITE, 2, 0, false);
         display.draw();
     }
 
