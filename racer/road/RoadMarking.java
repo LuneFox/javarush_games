@@ -1,6 +1,8 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.road;
 
-import com.javarush.engine.cell.Game;
+import com.javarush.games.racer.GameObject;
+import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.ShapeMatrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +18,7 @@ public class RoadMarking {
         }
     }
 
-    public void move(double step) {
+    public void move(double boost) {
         for (GameObject item : roadMarking) {
             if (item.x <= -8) {
                 double mostRightX = 0;
@@ -27,7 +29,7 @@ public class RoadMarking {
                 }
                 item.x = Math.ceil(mostRightX + 8);
             } else {
-                item.x -= step;
+                item.x -= boost;
             }
         }
     }

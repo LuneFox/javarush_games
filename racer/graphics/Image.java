@@ -1,7 +1,6 @@
 package com.javarush.games.racer.graphics;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.racer.RacerGame;
 
 /**

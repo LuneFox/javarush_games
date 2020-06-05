@@ -3,6 +3,8 @@ package com.javarush.games.racer;
 import com.javarush.engine.cell.*;
 import com.javarush.games.racer.graphics.Bitmap;
 import com.javarush.games.racer.graphics.Text;
+import com.javarush.games.racer.road.RoadManager;
+import com.javarush.games.racer.road.RoadMarking;
 
 public class RacerGame extends Game {
     public final static int WIDTH = 100;
@@ -14,6 +16,7 @@ public class RacerGame extends Game {
 
     public Delorean delorean;
     public RoadMarking roadMarking;
+    public RoadManager roadManager;
 
 
     // GAME MECHANICS
@@ -28,24 +31,32 @@ public class RacerGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        delorean.steer();
-        delorean.gas();
-        roadMarking.move(delorean.getSpeed());
+        roadManager.generateNewRoadObjects(this);
+        moveAll();
         drawScene();
     }
 
     private void createGame() {
         delorean = new Delorean();
         roadMarking = new RoadMarking();
+        roadManager = new RoadManager();
         setTurnTimer(40);
     }
 
     private void drawScene() {
         drawField();
         roadMarking.draw(this);
+        roadManager.draw(this);
         delorean.draw(this);
         text.write((int) (delorean.getSpeed() * 10) + " MPH", Color.WHITE, 2, 0, false);
         display.draw();
+    }
+
+    private void moveAll(){
+        delorean.steer();
+        delorean.gas();
+        roadManager.move(delorean.getSpeed());
+        roadMarking.move(delorean.getSpeed());
     }
 
 

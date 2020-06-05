@@ -9,12 +9,12 @@ public class GameObject {
     public int height;
     public int[][] matrix;
 
-    public GameObject(int x, int y) {
+    public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
-    public GameObject(int x, int y, int[][] matrix) {
+    public GameObject(double x, double y, int[][] matrix) {
         this.x = x;
         this.y = y;
         this.matrix = matrix;

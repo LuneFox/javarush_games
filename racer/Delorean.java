@@ -1,5 +1,7 @@
 package com.javarush.games.racer;
 
+import com.javarush.games.racer.road.RoadManager;
+
 public class Delorean extends GameObject {
     private Direction verticalDirection;
     private Direction horizontalDirection;
@@ -7,7 +9,7 @@ public class Delorean extends GameObject {
     private double acceleration;
 
     public Delorean() {
-        super(3, RacerGame.HEIGHT / 2 - ShapeMatrix.PLAYER.length / +10, ShapeMatrix.PLAYER);
+        super(3, RacerGame.HEIGHT / 2 - ShapeMatrix.DELOREAN_DEFAULT.length / 2 + 8, ShapeMatrix.DELOREAN_DEFAULT);
         this.verticalDirection = Direction.NONE;
         this.horizontalDirection = Direction.NONE;
         this.speed = 0.0;
