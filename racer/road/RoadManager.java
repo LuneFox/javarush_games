@@ -38,7 +38,12 @@ public class RoadManager {
                         delorean.setSpeed((delorean.getSpeed() / 100) * 95);
                         break;
                     case HOLE:
-                        delorean.setSpeed((delorean.getSpeed() / 100) * 50);
+                        delorean.setSpeed((delorean.getSpeed() / 100) * 80);
+                        break;
+                    case ENERGY:
+                        Energy energy = (Energy) item;
+                        energy.isCollected = true;
+                        break;
                     default:
                         break;
                 }
@@ -52,6 +57,7 @@ public class RoadManager {
     public void generateNewRoadObjects(RacerGame game) {
         generatePuddle(game);
         generateHole(game);
+        generateEnergy(game);
     }
 
     private RoadObject createRoadObject(RoadObjectType type, int x, int y) {
@@ -60,6 +66,8 @@ public class RoadManager {
                 return new Puddle(x, y);
             case HOLE:
                 return new Hole(x, y);
+            case ENERGY:
+                return new Energy(x, y);
             default:
                 return null;
         }
@@ -88,6 +96,13 @@ public class RoadManager {
         }
     }
 
+    private void generateEnergy(RacerGame game) {
+        int x = game.getRandomNumber(100);
+        if (x < 15 && !isEnergyExist()) {
+            addRoadObject(RoadObjectType.ENERGY, game);
+        }
+    }
+
     private void deletePassedItems() {
         List<RoadObject> itemsCopy = new ArrayList<>(items);
         for (RoadObject ro : itemsCopy) {
@@ -113,6 +128,15 @@ public class RoadManager {
     private boolean isHoleExist() {
         for (RoadObject ro : items) {
             if (ro.type == RoadObjectType.HOLE) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isEnergyExist() {
+        for (RoadObject ro : items) {
+            if (ro.type == RoadObjectType.ENERGY) {
                 return true;
             }
         }
