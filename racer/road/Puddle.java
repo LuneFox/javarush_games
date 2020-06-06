@@ -1,6 +1,7 @@
 package com.javarush.games.racer.road;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.racer.HitBox;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.ShapeMatrix;
 
@@ -10,6 +11,7 @@ public class Puddle extends RoadObject {
     public Puddle(double x, double y) {
         super(RoadObjectType.PUDDLE, x, y);
         this.speed = 0;
+        this.hitBox = new HitBox(0, 0, 8, 15);
     }
 
     @Override

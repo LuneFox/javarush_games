@@ -10,7 +10,7 @@ public class Delorean extends GameObject {
 
     public Delorean() {
         super(3, (int) (RacerGame.HEIGHT / 2 - ShapeMatrix.DELOREAN_DEFAULT.length / 2 + 8), ShapeMatrix.DELOREAN_DEFAULT);
-        this.hitBox = ShapeMatrix.DELOREAN_HIT_BOX;
+        this.hitBox = new HitBox(7,6, 20, 28);
         this.verticalDirection = Direction.NONE;
         this.horizontalDirection = Direction.NONE;
         this.speed = 0.0;
