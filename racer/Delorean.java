@@ -9,7 +9,8 @@ public class Delorean extends GameObject {
     private double acceleration;
 
     public Delorean() {
-        super(3, RacerGame.HEIGHT / 2 - ShapeMatrix.DELOREAN_DEFAULT.length / 2 + 8, ShapeMatrix.DELOREAN_DEFAULT);
+        super(3, (int) (RacerGame.HEIGHT / 2 - ShapeMatrix.DELOREAN_DEFAULT.length / 2 + 8), ShapeMatrix.DELOREAN_DEFAULT);
+        this.hitBox = ShapeMatrix.DELOREAN_HIT_BOX;
         this.verticalDirection = Direction.NONE;
         this.horizontalDirection = Direction.NONE;
         this.speed = 0.0;
@@ -89,5 +90,9 @@ public class Delorean extends GameObject {
 
     public void setHorizontalDirection(Direction horizontalDirection) {
         this.horizontalDirection = horizontalDirection;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
     }
 }

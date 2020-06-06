@@ -1,5 +1,6 @@
 package com.javarush.games.racer.road;
 
+import com.javarush.games.racer.Delorean;
 import com.javarush.games.racer.RacerGame;
 
 import java.util.ArrayList;
@@ -28,8 +29,16 @@ public class RoadManager {
         deletePassedItems();
     }
 
+    public void checkCross(Delorean delorean) {
+        for (RoadObject item : items) {
+            if (item.isCollisionWithHitBox(delorean) && item.type == RoadObjectType.PUDDLE) {
+                delorean.setSpeed((delorean.getSpeed() / 100) * 95);
+            }
+        }
+    }
 
-    // OBJECTS CREATION
+
+    // OBJECTS CREATION AND DELETION
 
     public void generateNewRoadObjects(RacerGame game) {
         generatePuddle(game);

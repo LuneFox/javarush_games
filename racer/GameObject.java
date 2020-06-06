@@ -8,6 +8,7 @@ public class GameObject {
     public int width;
     public int height;
     public int[][] matrix;
+    public int[][] hitBox;
 
     public GameObject(double x, double y) {
         this.x = x;
@@ -39,18 +40,21 @@ public class GameObject {
         if (y > otherGameObject.y + otherGameObject.height || y + height < otherGameObject.y) {
             return false;
         }
+
         return true;
     }
 
-    public boolean isCollision(GameObject gameObject) {
+    public boolean isCollisionWithHitBox(GameObject gameObject) {
         if (!isCollisionPossible(gameObject)) {
             return false;
         }
 
-        for (int carX = 0; carX < gameObject.width; carX++) {
-            for (int carY = 0; carY < gameObject.height; carY++) {
-                if (gameObject.matrix[carY][carX] != 0) {
+        for (int carY = 0; carY < gameObject.height; carY++) {
+            for (int carX = 0; carX < gameObject.width; carX++) {
+                // проходим по непустым ячейкам машины
+                if (gameObject.hitBox[carY][carX] != 0) {
                     if (isCollision(carX + (int) gameObject.x, carY + (int) gameObject.y)) {
+                        // координаты непустых пикселей хитбокса машины совпадают с координатами непустых пикселей объекта?
                         return true;
                     }
                 }
@@ -60,13 +64,14 @@ public class GameObject {
     }
 
     private boolean isCollision(int x, int y) {
-        for (int matrixX = 0; matrixX < width; matrixX++) {
-            for (int matrixY = 0; matrixY < height; matrixY++) {
-                if (matrix[matrixY][matrixX] != 0 && matrixX + this.x == x && matrixY + this.y == y) {
+        for (int matrixY = 0; matrixY < height; matrixY++) {
+            for (int matrixX = 0; matrixX < width; matrixX++) {
+                if (matrix[matrixY][matrixX] != 0 && matrixX + (int) this.x == x && matrixY + (int) this.y == y) {
                     return true;
                 }
             }
         }
         return false;
     }
+
 }

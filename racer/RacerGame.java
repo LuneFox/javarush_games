@@ -32,6 +32,7 @@ public class RacerGame extends Game {
     @Override
     public void onTurn(int step) {
         roadManager.generateNewRoadObjects(this);
+        roadManager.checkCross(delorean);
         moveAll();
         drawScene();
     }
@@ -52,7 +53,7 @@ public class RacerGame extends Game {
         display.draw();
     }
 
-    private void moveAll(){
+    private void moveAll() {
         delorean.steer();
         delorean.gas();
         roadManager.move(delorean.getSpeed());
@@ -60,7 +61,7 @@ public class RacerGame extends Game {
     }
 
 
-    // GRAPHICS
+    // VISUALS & GRAPHICS
 
     private void drawField() {
         for (int x = 0; x < WIDTH; x++) {
@@ -77,7 +78,8 @@ public class RacerGame extends Game {
         }
     }
 
-    // REPLACED METHODS
+
+    // OVERRIDES
 
     @Override
     public void setCellColor(int x, int y, Color color) {
