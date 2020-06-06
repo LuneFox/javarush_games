@@ -24,6 +24,11 @@ public class InputEvent {
             case LEFT:
                 game.delorean.setHorizontalDirection(Direction.LEFT);
                 break;
+            case SPACE:
+                if (game.isStopped && game.finishTimeOut <= 0) {
+                    game.createGame();
+                }
+                break;
             default:
                 break;
         }

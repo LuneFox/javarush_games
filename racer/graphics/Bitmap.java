@@ -74,5 +74,7 @@ public enum Bitmap {
     SYMBOL_DASH,
     SYMBOL_EQUALS,
     SYMBOL_ASTERISK,
+    SYMBOL_APOSTROPHE,
+    SYMBOL_QUOTE,
     SYMBOL_NEWLINE,
 }

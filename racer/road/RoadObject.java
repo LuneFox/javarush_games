@@ -53,6 +53,8 @@ public class RoadObject extends GameObject {
         switch (type) {
             case PUDDLE:
                 return ShapeMatrix.PUDDLE;
+            case HOLE:
+                return ShapeMatrix.HOLE;
             default:
                 return ShapeMatrix.DELOREAN_RUN_0;
         }

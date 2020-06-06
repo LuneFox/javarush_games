@@ -1,8 +1,16 @@
 package com.javarush.games.racer;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.road.RoadManager;
 
 public class DeLorean extends GameObject {
+    public static final double MAX_SPEED = 8.89;
+    private static final double MAX_STEER = 2.0;
+    private static final double GLOW_POINT = 6.0;
+    private static final double BOOST = 0.05;
+    private static final double BRAKE = 0.2;
+    private static final double DECAY = 0.025;
+
     private Direction verticalDirection;
     private Direction horizontalDirection;
     private Animation animation;
@@ -11,7 +19,7 @@ public class DeLorean extends GameObject {
 
     public DeLorean() {
         super(3, (int) (RacerGame.HEIGHT / 2 - ShapeMatrix.DELOREAN_RUN_0.length / 2 + 8), ShapeMatrix.DELOREAN_RUN_0);
-        this.hitBox = new HitBox(7, 6, 20, 28);
+        this.hitBox = new HitBox(9, 6, 20, 28);
         this.verticalDirection = Direction.NONE;
         this.horizontalDirection = Direction.NONE;
         this.speed = 0.0;
@@ -20,6 +28,9 @@ public class DeLorean extends GameObject {
     }
 
     public void steer() {
+        if (this.x != 3) {
+            return;
+        }
         if (y < RoadManager.UPPER_BORDER - 8) {
             speed = (speed / 100) * 99.5;
             y = RoadManager.UPPER_BORDER - 8;
@@ -29,15 +40,15 @@ public class DeLorean extends GameObject {
         }
         switch (verticalDirection) {
             case UP:
-                if (speed > 2) {
-                    y -= 2;
+                if (speed > MAX_STEER) {
+                    y -= MAX_STEER;
                 } else {
                     y -= speed;
                 }
                 break;
             case DOWN:
-                if (speed > 2) {
-                    y += 2;
+                if (speed > MAX_STEER) {
+                    y += MAX_STEER;
                 } else {
                     y += speed;
                 }
@@ -48,32 +59,35 @@ public class DeLorean extends GameObject {
     }
 
     public void gas() {
+        if (this.x != 3) {
+            return;
+        }
 
         if (speed <= 0 && animation != Animation.STOPPED) {
             animateStopped();
-        } else if (speed > 0 && speed < 6 && animation != Animation.RUNNING) {
+        } else if (speed > 0 && speed < GLOW_POINT && animation != Animation.RUNNING) {
             animateRunning();
-        } else if (speed >= 6 && animation != Animation.GLOWING) {
+        } else if (speed >= GLOW_POINT && animation != Animation.GLOWING) {
             animateGlowing();
         }
 
         switch (horizontalDirection) {
             case RIGHT:
-                acceleration = 0.05 * (1 - speed * 0.1);
+                acceleration = BOOST * (1 - speed * 0.1);
                 speed += acceleration;
-                if (speed > 8.8) {
-                    speed = 8.8;
+                if (speed > MAX_SPEED) {
+                    x = 3;
                 }
                 break;
             case LEFT:
-                acceleration = 0.2;
+                acceleration = BRAKE;
                 speed -= acceleration;
                 if (speed < 0) {
                     speed = 0;
                 }
                 break;
             case NONE:
-                acceleration = 0.025;
+                acceleration = DECAY;
                 speed -= acceleration;
                 if (speed < 0) {
                     speed = 0;
@@ -83,6 +97,24 @@ public class DeLorean extends GameObject {
         }
     }
 
+    @Override
+    public void draw(RacerGame game) {
+        Portal portal = game.getPortal();
+        if (speed > MAX_SPEED - 0.09 && !game.isStopped) {
+            this.x += 3;
+        }
+        int shift = (this.x == 3 ? 3 : 6);
+        for (int i = 0; i < width - (this.x - shift); i++) {
+            for (int j = 0; j < height; j++) {
+                int colorIndex = matrix[j][i];
+                game.display.setCellColor((int) x + i, (int) y + j, Color.values()[colorIndex]);
+            }
+        }
+        if (this.x > portal.x + 5) {
+            speed = 0;
+            game.isStopped = true;
+        }
+    }
 
     // ANIMATIONS
 
@@ -108,6 +140,7 @@ public class DeLorean extends GameObject {
         setAnimation(ShapeMatrix.DELOREAN_RUN_0);
         this.animation = Animation.STOPPED;
     }
+
 
     // GETTERS AND SETTERS
 

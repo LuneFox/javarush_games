@@ -16,8 +16,14 @@ public class RacerGame extends Game {
 
     public DeLorean delorean;
     public Portal portal;
+    public TireFlame tireFlame;
+    public Marty marty;
     public RoadMarking roadMarking;
     public RoadManager roadManager;
+
+    public int finishTimeOut;
+    public boolean isStopped;
+    private int time;
 
 
     // GAME MECHANICS
@@ -32,18 +38,26 @@ public class RacerGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        // roadManager.generateNewRoadObjects(this);
+        roadManager.generateNewRoadObjects(this);
         roadManager.checkCross(delorean);
+        if (!isStopped) {
+            time += 40;
+        }
         moveAll();
         drawScene();
     }
 
-    private void createGame() {
+    public void createGame() {
         delorean = new DeLorean();
         portal = new Portal();
+        tireFlame = new TireFlame();
+        marty = new Marty();
         roadMarking = new RoadMarking();
         roadManager = new RoadManager();
+        finishTimeOut = 100;
+        time = 0;
         setTurnTimer(40);
+        isStopped = false;
     }
 
     private void drawScene() {
@@ -52,7 +66,9 @@ public class RacerGame extends Game {
         roadManager.draw(this);
         delorean.animate(this, (int) (10 / delorean.getSpeed() + 0.0001));
         portal.animate(this, delorean);
-        text.write((int) (delorean.getSpeed() * 10) + " MPH", Color.WHITE, 2, 0, false);
+        tireFlame.animate(this, delorean);
+        drawEnding();
+        drawSpeed();
         display.draw();
     }
 
@@ -81,6 +97,27 @@ public class RacerGame extends Game {
         }
     }
 
+    private void drawSpeed(){
+        if (isStopped) {
+            text.write("88 MPH", Color.WHITE, 2, 0, false);
+        } else {
+            text.write((int) (delorean.getSpeed() * 10) + " MPH", Color.WHITE, 2, 0, false);
+        }
+    }
+
+    private void drawEnding(){
+        if (isStopped && finishTimeOut > 0) {
+            finishTimeOut--;
+        }
+        if (finishTimeOut <= 50) {
+            marty.draw(this);
+            if (finishTimeOut <= 30) {
+                text.write("ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\"",
+                        Color.WHITE, 3, HEIGHT - 9, false);
+            }
+        }
+    }
+
 
     // OVERRIDES
 
@@ -103,5 +140,11 @@ public class RacerGame extends Game {
     @Override
     public void onKeyReleased(Key key) {
         inputEvent.keyRelease(key);
+    }
+
+    // GETTERS
+
+    public Portal getPortal() {
+        return portal;
     }
 }

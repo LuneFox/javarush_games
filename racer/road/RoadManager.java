@@ -32,8 +32,16 @@ public class RoadManager {
 
     public void checkCross(DeLorean delorean) {
         for (RoadObject item : items) {
-            if (HitBox.isCollision(item, delorean)) {
-                delorean.setSpeed((delorean.getSpeed() / 100) * 95);
+            if (HitBox.isCollision(item, delorean) && delorean.x == 3) {
+                switch (item.type) {
+                    case PUDDLE:
+                        delorean.setSpeed((delorean.getSpeed() / 100) * 95);
+                        break;
+                    case HOLE:
+                        delorean.setSpeed((delorean.getSpeed() / 100) * 50);
+                    default:
+                        break;
+                }
             }
         }
     }
@@ -43,12 +51,15 @@ public class RoadManager {
 
     public void generateNewRoadObjects(RacerGame game) {
         generatePuddle(game);
+        generateHole(game);
     }
 
     private RoadObject createRoadObject(RoadObjectType type, int x, int y) {
         switch (type) {
             case PUDDLE:
                 return new Puddle(x, y);
+            case HOLE:
+                return new Hole(x, y);
             default:
                 return null;
         }
@@ -67,6 +78,13 @@ public class RoadManager {
         int x = game.getRandomNumber(100);
         if (x < 10 && !isTwoPuddlesExist()) {
             addRoadObject(RoadObjectType.PUDDLE, game);
+        }
+    }
+
+    private void generateHole(RacerGame game) {
+        int x = game.getRandomNumber(100);
+        if (x < 2 && !isHoleExist()) {
+            addRoadObject(RoadObjectType.HOLE, game);
         }
     }
 
@@ -90,5 +108,14 @@ public class RoadManager {
             }
         }
         return (count == 2);
+    }
+
+    private boolean isHoleExist() {
+        for (RoadObject ro : items) {
+            if (ro.type == RoadObjectType.HOLE) {
+                return true;
+            }
+        }
+        return false;
     }
 }

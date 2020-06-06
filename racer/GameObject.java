@@ -11,7 +11,7 @@ public class GameObject {
     public int width;
     public int height;
     public int[][] matrix;
-    public HitBox hitBox;
+    protected HitBox hitBox;
 
     private ArrayList<int[][]> frames;
     private int currentFrame;
@@ -20,6 +20,8 @@ public class GameObject {
     public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
+        frames = new ArrayList<>();
+        currentFrame = 0;
     }
 
     public GameObject(double x, double y, int[][] matrix) {
@@ -58,8 +60,8 @@ public class GameObject {
 
     public void setAnimation(int[][]... frames) {
         this.frames = new ArrayList<>();
-        this.frames.addAll(Arrays.asList(frames)); // Works on JavaRush?
-        frameCounter = 0;
+        this.frames.addAll(Arrays.asList(frames));
+        frameCounter = this.frames.size() - 1;
         currentFrame = 0;
     }
 }

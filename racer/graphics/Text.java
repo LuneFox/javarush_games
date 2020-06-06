@@ -132,6 +132,8 @@ public class Text extends Image {
         alphabet.put('!', new Text(Bitmap.SYMBOL_EXCLAMATION, GAME));
         alphabet.put('?', new Text(Bitmap.SYMBOL_QUESTION, GAME));
         alphabet.put('*', new Text(Bitmap.SYMBOL_ASTERISK, GAME));
+        alphabet.put('\'', new Text(Bitmap.SYMBOL_APOSTROPHE, GAME));
+        alphabet.put('\"', new Text(Bitmap.SYMBOL_QUOTE, GAME));
         alphabet.put('\n', new Text(Bitmap.SYMBOL_NEWLINE, GAME));
     }
 
@@ -710,6 +712,26 @@ public class Text extends Image {
                         {1, 0, 1},
                         {0, 1, 0},
                         {1, 0, 1},
+                        {0, 0, 0}
+                };
+            case SYMBOL_APOSTROPHE:
+                return new int[][]{
+                        {0},
+                        {0},
+                        {1},
+                        {1},
+                        {0},
+                        {0},
+                        {0}
+                };
+            case SYMBOL_QUOTE:
+                return new int[][]{
+                        {0, 0, 0},
+                        {0, 0, 0},
+                        {1, 0, 1},
+                        {1, 0, 1},
+                        {0, 0, 0},
+                        {0, 0, 0},
                         {0, 0, 0}
                 };
             case SYMBOL_SPACE:
