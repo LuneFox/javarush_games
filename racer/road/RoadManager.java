@@ -42,7 +42,12 @@ public class RoadManager {
                         break;
                     case ENERGY:
                         Energy energy = (Energy) item;
-                        energy.isCollected = true;
+                        if (!energy.isCollected) {
+                            if (delorean.getEnergy() < DeLorean.MAX_ENERGY) {
+                                delorean.setEnergy(delorean.getEnergy() + DeLorean.MAX_ENERGY / 10);
+                            }
+                            energy.isCollected = true;
+                        }
                         break;
                     default:
                         break;
@@ -76,10 +81,13 @@ public class RoadManager {
     private void addRoadObject(RoadObjectType type, RacerGame game) {
         int x = RacerGame.WIDTH * 2 + RoadObject.getWidth(type);
         int y = game.getRandomNumber(RoadManager.UPPER_BORDER, RoadManager.LOWER_BORDER - RoadObject.getHeight(type));
-        RoadObject ro = createRoadObject(type, x, y);
-        if (ro != null) {
-            items.add(ro);
+        RoadObject newItem = createRoadObject(type, x, y);
+        for (RoadObject item : items) {
+            if (HitBox.isCollisionY(item, newItem)) {
+                return;
+            }
         }
+        items.add(newItem);
     }
 
     private void generatePuddle(RacerGame game) {
@@ -98,7 +106,7 @@ public class RoadManager {
 
     private void generateEnergy(RacerGame game) {
         int x = game.getRandomNumber(100);
-        if (x < 15 && !isEnergyExist()) {
+        if (x < 15 && !isEnergyExist() && game.delorean.getEnergy() < DeLorean.MAX_ENERGY) {
             addRoadObject(RoadObjectType.ENERGY, game);
         }
     }

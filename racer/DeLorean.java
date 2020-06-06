@@ -5,6 +5,7 @@ import com.javarush.games.racer.road.RoadManager;
 
 public class DeLorean extends GameObject {
     public static final double MAX_SPEED = 8.89;
+    public static final double MAX_ENERGY = 1.21;
     private static final double MAX_STEER = 2.0;
     private static final double GLOW_POINT = 6.0;
     private static final double BOOST = 0.05;
@@ -16,6 +17,7 @@ public class DeLorean extends GameObject {
     private Animation animation;
     private double speed;
     private double acceleration;
+    private double energy;
 
     public DeLorean() {
         super(3, (int) (RacerGame.HEIGHT / 2 - ShapeMatrix.DELOREAN_RUN_0.length / 2 + 8), ShapeMatrix.DELOREAN_RUN_0);
@@ -24,6 +26,7 @@ public class DeLorean extends GameObject {
         this.horizontalDirection = Direction.NONE;
         this.speed = 0.0;
         this.acceleration = 0.0;
+        this.energy = 0.0;
         animateStopped();
     }
 
@@ -75,8 +78,8 @@ public class DeLorean extends GameObject {
             case RIGHT:
                 acceleration = BOOST * (1 - speed * 0.1);
                 speed += acceleration;
-                if (speed > MAX_SPEED) {
-                    x = 3;
+                if (speed >= GLOW_POINT - 0.1 && energy < MAX_ENERGY) {
+                    speed = GLOW_POINT - 0.1;
                 }
                 break;
             case LEFT:
@@ -166,6 +169,14 @@ public class DeLorean extends GameObject {
 
     public void setSpeed(double speed) {
         this.speed = speed;
+    }
+
+    public void setEnergy(double energy) {
+        this.energy = energy;
+    }
+
+    public double getEnergy() {
+        return energy;
     }
 
     private enum Animation {

@@ -69,6 +69,7 @@ public class RacerGame extends Game {
         tireFlame.animate(this, delorean);
         drawEnding();
         drawSpeed();
+        drawEnergy();
         display.draw();
     }
 
@@ -97,7 +98,7 @@ public class RacerGame extends Game {
         }
     }
 
-    private void drawSpeed(){
+    private void drawSpeed() {
         if (isStopped) {
             text.write("88 MPH", Color.WHITE, 2, 0, false);
         } else {
@@ -105,7 +106,11 @@ public class RacerGame extends Game {
         }
     }
 
-    private void drawEnding(){
+    private void drawEnergy() {
+        text.write(delorean.getEnergy()+ " ГВТ", Color.YELLOW, WIDTH -5, 0, true);
+    }
+
+    private void drawEnding() {
         if (isStopped && finishTimeOut > 0) {
             finishTimeOut--;
         }

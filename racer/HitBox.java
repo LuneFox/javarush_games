@@ -43,4 +43,13 @@ public class HitBox {
         // хитбоксы имеют общие зоны
         return true;
     }
+
+    public static boolean isCollisionY(GameObject thisObject, GameObject otherObject) {
+        int thisY = thisObject.hitBox.startY + (int) thisObject.y;
+        int otherY = otherObject.hitBox.startY + (int) otherObject.y;
+        int thisHeight = thisObject.hitBox.height;
+        int otherHeight = otherObject.hitBox.height;
+
+        return thisY <= otherY + otherHeight && thisY + thisHeight >= otherY;
+    }
 }
