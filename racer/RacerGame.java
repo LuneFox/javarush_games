@@ -14,7 +14,8 @@ public class RacerGame extends Game {
     public final InputEvent inputEvent = new InputEvent(this);
     public final Text text = new Text(Bitmap.NONE, this);
 
-    public Delorean delorean;
+    public DeLorean delorean;
+    public Portal portal;
     public RoadMarking roadMarking;
     public RoadManager roadManager;
 
@@ -31,14 +32,15 @@ public class RacerGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        roadManager.generateNewRoadObjects(this);
+        // roadManager.generateNewRoadObjects(this);
         roadManager.checkCross(delorean);
         moveAll();
         drawScene();
     }
 
     private void createGame() {
-        delorean = new Delorean();
+        delorean = new DeLorean();
+        portal = new Portal();
         roadMarking = new RoadMarking();
         roadManager = new RoadManager();
         setTurnTimer(40);
@@ -48,7 +50,8 @@ public class RacerGame extends Game {
         drawField();
         roadMarking.draw(this);
         roadManager.draw(this);
-        delorean.draw(this);
+        delorean.animate(this, (int) (10 / delorean.getSpeed() + 0.0001));
+        portal.animate(this, delorean);
         text.write((int) (delorean.getSpeed() * 10) + " MPH", Color.WHITE, 2, 0, false);
         display.draw();
     }

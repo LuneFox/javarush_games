@@ -54,7 +54,7 @@ public class RoadObject extends GameObject {
             case PUDDLE:
                 return ShapeMatrix.PUDDLE;
             default:
-                return ShapeMatrix.DELOREAN_DEFAULT;
+                return ShapeMatrix.DELOREAN_RUN_0;
         }
     }
 

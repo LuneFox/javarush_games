@@ -1,6 +1,6 @@
 package com.javarush.games.racer.road;
 
-import com.javarush.games.racer.Delorean;
+import com.javarush.games.racer.DeLorean;
 import com.javarush.games.racer.HitBox;
 import com.javarush.games.racer.RacerGame;
 
@@ -30,7 +30,7 @@ public class RoadManager {
         deletePassedItems();
     }
 
-    public void checkCross(Delorean delorean) {
+    public void checkCross(DeLorean delorean) {
         for (RoadObject item : items) {
             if (HitBox.isCollision(item, delorean)) {
                 delorean.setSpeed((delorean.getSpeed() / 100) * 95);
