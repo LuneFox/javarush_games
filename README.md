@@ -9,3 +9,5 @@
 [2048](https://javarush.ru/projects/apps/129978)
 
 [JavaRush Games Sprite Maker](https://javarush.ru/projects/apps/134119) (не игра)
+
+[Racer](https://javarush.ru/projects/apps/36456)
