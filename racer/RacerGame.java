@@ -7,7 +7,7 @@ import com.javarush.games.racer.road.RoadManager;
 import com.javarush.games.racer.road.RoadMarking;
 
 public class RacerGame extends Game {
-    public final static String VERSION = "1.00";
+    public final static String VERSION = "1.01";
     public final static int WIDTH = 100;
     public final static int HEIGHT = 100;
 
@@ -22,6 +22,7 @@ public class RacerGame extends Game {
     public RoadMarking roadMarking;
     public RoadManager roadManager;
 
+    public static boolean allowCountTime;
     public int finishTimeOut;
     public boolean isStopped;
     private int time;
@@ -35,18 +36,22 @@ public class RacerGame extends Game {
         setScreenSize(WIDTH, HEIGHT);
         text.loadAlphabet();
         createGame();
-        showMessageDialog(Color.BLACK, "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
-                "Нужно вернуться в Россию будущего, там дороги не нужны!\n" +
-                "Собери 1.21 ГВт энергии, чтобы разогнать Делореан до 88 миль в час!\n" +
-                "Главное — не попадай в лужи, а тем более в ямы!", Color.YELLOW, 15);
+        try {
+            showMessageDialog(Color.BLACK, "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
+                    "Нужно вернуться в Россию будущего, там дороги не нужны!\n" +
+                    "Собери 1.21 ГВт энергии, чтобы разогнать Делореан до 88 миль в час!\n" +
+                    "Главное — не попадай в лужи, а тем более в ямы!", Color.YELLOW, 15);
+        } catch (NullPointerException ignored) {
+
+        }
     }
 
 
     @Override
     public void onTurn(int step) {
-        roadManager.generateNewRoadObjects(this);
+        roadManager.generateNewRoadObjects(this, delorean);
         roadManager.checkCross(delorean);
-        if (!isStopped) {
+        if (!isStopped && allowCountTime) {
             time += 40;
         }
         moveAll();
@@ -64,6 +69,7 @@ public class RacerGame extends Game {
         time = 0;
         setTurnTimer(40);
         isStopped = false;
+        allowCountTime = false;
     }
 
     private void drawScene() {

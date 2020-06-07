@@ -59,10 +59,12 @@ public class RoadManager {
 
     // OBJECTS CREATION AND DELETION
 
-    public void generateNewRoadObjects(RacerGame game) {
-        generatePuddle(game);
-        generateHole(game);
-        generateEnergy(game);
+    public void generateNewRoadObjects(RacerGame game, DeLorean deLorean) {
+        if (RacerGame.allowCountTime && deLorean.getSpeed() > 0) {
+            generatePuddle(game);
+            generateHole(game);
+            generateEnergy(game);
+        }
     }
 
     private RoadObject createRoadObject(RoadObjectType type, int x, int y) {

@@ -2,8 +2,6 @@ package com.javarush.games.racer.road;
 
 import com.javarush.games.racer.*;
 
-import java.util.List;
-
 public class RoadObject extends GameObject {
     public RoadObjectType type;
     public double speed;
@@ -22,28 +20,6 @@ public class RoadObject extends GameObject {
      */
     public void move(double boost) {
         this.x -= boost;
-    }
-
-    public void move(double boost, List<RoadObject> items) {
-        this.y -= boost;
-    }
-
-    /**
-     * Проверяет текущий объект и объект, который пришел в качестве параметра, на пересечение их изображений
-     * с учетом дистанции distance.
-     * Например, если в качестве distance передать число 12, а 2 объекта расположены друг от друга на расстоянии меньшем,
-     * чем 12 ячеек игрового поля, метод вернет true. В ином случае вернет false.
-     */
-    public boolean isCollisionWithDistance(RoadObject roadObject, int distance) {
-        if ((x - distance > roadObject.x + roadObject.width) || (x + width + distance < roadObject.x)) {
-            return false;
-        }
-
-        if ((y - distance > roadObject.y + roadObject.height) || (y + height + distance < roadObject.y)) {
-            return false;
-        }
-
-        return true;
     }
 
     /**

@@ -76,6 +76,7 @@ public class DeLorean extends GameObject {
 
         switch (horizontalDirection) {
             case RIGHT:
+                RacerGame.allowCountTime = true;
                 acceleration = BOOST * (1 - speed * 0.1);
                 speed += acceleration;
                 if (speed >= GLOW_POINT - 0.1 && energy < MAX_ENERGY) {
