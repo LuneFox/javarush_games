@@ -11,20 +11,30 @@ public class SpaceInvadersGame extends Game {
     public static final int HEIGHT = 64;
 
     private List<Star> stars;
+    private EnemyFleet enemyFleet;
 
     @Override
     public void initialize() {
+        showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         createGame();
     }
 
+    @Override
+    public void onTurn(int step) {
+        drawScene();
+    }
+
     private void createGame() {
         createStars();
+        enemyFleet = new EnemyFleet();
+        setTurnTimer(40);
         drawScene();
     }
 
     private void drawScene() {
         drawField();
+        enemyFleet.draw(this);
     }
 
     private void drawField() {
