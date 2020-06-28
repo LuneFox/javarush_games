@@ -4,6 +4,7 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.spaceinvaders.gameobjects.*;
 import com.javarush.games.spaceinvaders.gameobjects.decorations.FloorTile;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
+import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class SpaceInvadersGame extends Game {
     public Display display;
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
+    private List<Brick> bricks;
     private EnemyFleet enemyFleet;
     private Mario mario;
     private FloorTile floorTile;
@@ -41,6 +43,8 @@ public class SpaceInvadersGame extends Game {
         mario = new Mario();
         enemyBullets = new ArrayList<>();
         playerBullets = new ArrayList<>();
+        bricks = new ArrayList<>();
+        createBricks();
         setTurnTimer(40);
         animationsCount = 0;
         isGameStopped = false;
@@ -60,6 +64,17 @@ public class SpaceInvadersGame extends Game {
         display.draw();
     }
 
+    private void createBricks() {
+        bricks.add(new Brick(0, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new QuestionBrick(10, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new Brick(20, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new Brick(30, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new Brick(60, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new Brick(70, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new QuestionBrick(80, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new Brick(90, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+    }
+
 
     // -------- GRAPHICS
 
@@ -69,6 +84,7 @@ public class SpaceInvadersGame extends Game {
         mario.draw(this);
         enemyBullets.forEach(bullet -> bullet.draw(this, false));
         playerBullets.forEach(bullet -> bullet.draw(this, false));
+        drawBricks();
         drawFloor();
     }
 
@@ -86,6 +102,10 @@ public class SpaceInvadersGame extends Game {
             floorTile.x = i * floorTile.width;
             floorTile.draw(this, false);
         }
+    }
+
+    private void drawBricks() {
+        bricks.forEach(brick -> brick.draw(this, false));
     }
 
     @Override

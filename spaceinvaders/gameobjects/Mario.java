@@ -8,8 +8,8 @@ import com.javarush.games.spaceinvaders.shapes.MarioShape;
 import java.util.List;
 
 public class Mario extends Ship {
-    private static final int JUMP_HEIGHT_LIMIT = 30;
-    private static final int FLOOR_LEVEL = 4;
+    public static final int JUMP_HEIGHT_LIMIT = 30;
+    public static final int FLOOR_LEVEL = 4;
     public boolean isJumping = false;
     public boolean isWalking = false;
     public boolean isBraking = false;
