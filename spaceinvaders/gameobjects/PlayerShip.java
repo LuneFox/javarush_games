@@ -35,7 +35,6 @@ public class PlayerShip extends Ship {
                 x = SpaceInvadersGame.WIDTH - width;
             }
         }
-        System.out.println(x);
     }
 
     @Override

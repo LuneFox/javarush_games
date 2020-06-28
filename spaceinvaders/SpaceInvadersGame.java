@@ -7,11 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SpaceInvadersGame extends Game {
-    public static final int WIDTH = 64;
-    public static final int HEIGHT = 64;
+    public static final int WIDTH = 100;
+    public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
-    private static final int PLAYER_BULLETS_MAX = 1;
+    private static final int PLAYER_BULLETS_MAX = 5;
 
+    public Display display;
     private List<Star> stars;
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
@@ -28,6 +29,7 @@ public class SpaceInvadersGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
+        display = new Display(this);
         createGame();
     }
 
@@ -54,6 +56,7 @@ public class SpaceInvadersGame extends Game {
         }
         setScore(score);
         drawScene();
+        display.draw();
     }
 
 
@@ -70,7 +73,7 @@ public class SpaceInvadersGame extends Game {
     private void drawField() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                setCellValueEx(x, y, Color.BLACK, "");
+                display.setCellValueEx(x, y, Color.values()[102], "");
             }
         }
         stars.forEach(star -> star.draw(this));
