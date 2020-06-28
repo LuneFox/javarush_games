@@ -9,15 +9,17 @@ import java.util.List;
 
 public class Mario extends Ship {
     private static final int JUMP_HEIGHT_LIMIT = 30;
+    private static final int FLOOR_LEVEL = 4;
     public boolean isJumping = false;
     public boolean isWalking = false;
+    public boolean isBraking = false;
     private Direction direction = Direction.UP;
     private Direction faceDirection = Direction.RIGHT;
     private int frameCounter = 0;
     private boolean reachedJumpTop;
 
     public Mario() {
-        super(SpaceInvadersGame.WIDTH / 2.0, SpaceInvadersGame.HEIGHT - MarioShape.STAND.length);
+        super(SpaceInvadersGame.WIDTH / 2.0, SpaceInvadersGame.HEIGHT - MarioShape.STAND.length - FLOOR_LEVEL);
         setStaticView(MarioShape.STAND);
     }
 
@@ -101,27 +103,28 @@ public class Mario extends Ship {
             x = -4;
             if (!isJumping) {
                 setStaticView(MarioShape.BRAKE);
+                isBraking = true;
             }
         } else if (x + width > SpaceInvadersGame.WIDTH + 4) {
             x = SpaceInvadersGame.WIDTH - width + 4;
             if (!isJumping) {
                 setStaticView(MarioShape.BRAKE);
+                isBraking = true;
             }
         }
-
     }
 
     public void controlJump() {
         Direction lastDirection = direction;
         if (isJumping) {
             setStaticView(MarioShape.JUMP);
-            if (y > SpaceInvadersGame.HEIGHT - JUMP_HEIGHT_LIMIT && !reachedJumpTop) {
+            if (y > SpaceInvadersGame.HEIGHT - JUMP_HEIGHT_LIMIT - FLOOR_LEVEL && !reachedJumpTop) {
                 this.y -= 2;
             } else {
                 reachedJumpTop = true;
                 this.y += 2;
-                if (y >= SpaceInvadersGame.HEIGHT - height) {
-                    y = SpaceInvadersGame.HEIGHT - height;
+                if (y >= SpaceInvadersGame.HEIGHT - height - FLOOR_LEVEL) {
+                    y = SpaceInvadersGame.HEIGHT - height - FLOOR_LEVEL;
                     isJumping = false;
                     setDirection(lastDirection);
                 }
@@ -154,15 +157,15 @@ public class Mario extends Ship {
     }
 
     public void setDirection(Direction newDirection) {
-        if ((newDirection == Direction.RIGHT) ||
-                (newDirection == Direction.LEFT)) {
-            if (!isJumping && !isWalking) {
+        if ((newDirection == Direction.RIGHT) || (newDirection == Direction.LEFT)) {
+            if (!isJumping && !isWalking || isBraking) {
                 setAnimatedView(true,
                         MarioShape.WALK_3,
                         MarioShape.WALK_2,
                         MarioShape.WALK_1,
                         MarioShape.WALK_2);
                 isWalking = true;
+                isBraking = false;
             }
         } else if (newDirection == Direction.UP) {
             setStaticView(MarioShape.STAND);

@@ -2,6 +2,8 @@ package com.javarush.games.spaceinvaders;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.spaceinvaders.gameobjects.*;
+import com.javarush.games.spaceinvaders.gameobjects.decorations.FloorTile;
+import com.javarush.games.spaceinvaders.shapes.DecoShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +15,11 @@ public class SpaceInvadersGame extends Game {
     private static final int PLAYER_BULLETS_MAX = 50;
 
     public Display display;
-    private List<Star> stars;
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
     private EnemyFleet enemyFleet;
     private Mario mario;
+    private FloorTile floorTile;
     private int animationsCount;
     private int score;
     private boolean isGameStopped;
@@ -35,7 +37,6 @@ public class SpaceInvadersGame extends Game {
 
     private void createGame() {
         score = 0;
-        createStars();
         enemyFleet = new EnemyFleet();
         mario = new Mario();
         enemyBullets = new ArrayList<>();
@@ -68,23 +69,22 @@ public class SpaceInvadersGame extends Game {
         mario.draw(this);
         enemyBullets.forEach(bullet -> bullet.draw(this, false));
         playerBullets.forEach(bullet -> bullet.draw(this, false));
+        drawFloor();
     }
 
     private void drawField() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                display.setCellValueEx(x, y, Color.values()[102], "");
+                display.setCellValueEx(x, y, Color.DEEPSKYBLUE, "");
             }
         }
-        stars.forEach(star -> star.draw(this));
     }
 
-    private void createStars() {
-        stars = new ArrayList<Star>();
-        for (int i = 0; i < 8; i++) {
-            int randomX = getRandomNumber(WIDTH);
-            int randomY = getRandomNumber(HEIGHT);
-            stars.add(new Star(randomX, randomY));
+    private void drawFloor() {
+        floorTile = new FloorTile(0, HEIGHT - DecoShape.FLOOR.length);
+        for (int i = 0; i < 7; i++) {
+            floorTile.x = i * floorTile.width;
+            floorTile.draw(this, false);
         }
     }
 
