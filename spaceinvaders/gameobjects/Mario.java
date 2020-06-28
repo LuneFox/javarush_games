@@ -7,11 +7,16 @@ import com.javarush.games.spaceinvaders.shapes.MarioShape;
 
 import java.util.List;
 
-public class PlayerShip extends Ship {
+public class Mario extends Ship {
+    private static final int JUMP_HEIGHT_LIMIT = 30;
+    public boolean isJumping = false;
+    public boolean isWalking = false;
     private Direction direction = Direction.UP;
     private Direction faceDirection = Direction.RIGHT;
+    private int frameCounter = 0;
+    private boolean reachedJumpTop;
 
-    public PlayerShip() {
+    public Mario() {
         super(SpaceInvadersGame.WIDTH / 2.0, SpaceInvadersGame.HEIGHT - MarioShape.STAND.length);
         setStaticView(MarioShape.STAND);
     }
@@ -22,21 +27,23 @@ public class PlayerShip extends Ship {
         if (isAlive) {
             switch (direction) {
                 case RIGHT:
-                    this.x++;
+                    this.x += 2;
                     break;
                 case LEFT:
-                    this.x--;
+                    this.x -= 2;
                     break;
                 default:
                     break;
             }
-
-            if (x < 0) {
-                x = 0;
-            } else if (x + width > SpaceInvadersGame.WIDTH - 1) {
-                x = SpaceInvadersGame.WIDTH - width;
-            }
+            controlJump();
+            keepInBounds();
         }
+    }
+
+    public void jump() {
+        isJumping = true;
+        isWalking = false;
+        reachedJumpTop = false;
     }
 
     @Override
@@ -53,13 +60,11 @@ public class PlayerShip extends Ship {
             return;
         }
         isAlive = false;
-        setAnimatedView(false,
-                ShapeMatrix.KILL_PLAYER_ANIMATION_FIRST,
-                ShapeMatrix.KILL_PLAYER_ANIMATION_SECOND,
-                ShapeMatrix.KILL_PLAYER_ANIMATION_THIRD,
-                ShapeMatrix.DEAD_PLAYER
-        );
+        setStaticView(MarioShape.DEAD);
     }
+
+
+    // -------- GRAPHICS
 
     public void draw(SpaceInvadersGame game) {
         switch (direction) {
@@ -79,10 +84,46 @@ public class PlayerShip extends Ship {
         super.draw(game, reverse);
     }
 
+    @Override
+    public void nextFrame() {
+        frameCounter++;
+        if (frameCounter == 2) {
+            super.nextFrame();
+            frameCounter = 0;
+        }
+    }
+
+
     // -------- UTILITIES
 
+    public void keepInBounds() {
+        if (x < -4) {
+            x = -4;
+        } else if (x + width > SpaceInvadersGame.WIDTH + 3) {
+            x = SpaceInvadersGame.WIDTH - width + 4;
+        }
+    }
+
+    public void controlJump() {
+        Direction lastDirection = direction;
+        if (isJumping) {
+            setStaticView(MarioShape.JUMP);
+            if (y > SpaceInvadersGame.HEIGHT - JUMP_HEIGHT_LIMIT && !reachedJumpTop) {
+                this.y -= 2;
+            } else {
+                reachedJumpTop = true;
+                this.y += 2;
+                if (y >= SpaceInvadersGame.HEIGHT - height) {
+                    y = SpaceInvadersGame.HEIGHT - height;
+                    isJumping = false;
+                    setDirection(lastDirection);
+                }
+            }
+        }
+    }
+
     public void win() {
-        setStaticView(ShapeMatrix.WIN_PLAYER);
+        setStaticView(MarioShape.JUMP);
     }
 
     public void verifyHit(List<Bullet> bullets) {
@@ -106,6 +147,20 @@ public class PlayerShip extends Ship {
     }
 
     public void setDirection(Direction newDirection) {
+        if ((newDirection == Direction.RIGHT) ||
+                (newDirection == Direction.LEFT)) {
+            if (!isJumping && !isWalking) {
+                setAnimatedView(true,
+                        MarioShape.WALK_3,
+                        MarioShape.WALK_2,
+                        MarioShape.WALK_1,
+                        MarioShape.WALK_2);
+                isWalking = true;
+            }
+        } else if (newDirection == Direction.UP) {
+            setStaticView(MarioShape.STAND);
+            isWalking = false;
+        }
         if (newDirection != Direction.DOWN) {
             direction = newDirection;
         }

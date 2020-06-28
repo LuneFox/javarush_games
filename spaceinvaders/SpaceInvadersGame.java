@@ -10,14 +10,14 @@ public class SpaceInvadersGame extends Game {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
-    private static final int PLAYER_BULLETS_MAX = 5;
+    private static final int PLAYER_BULLETS_MAX = 50;
 
     public Display display;
     private List<Star> stars;
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
     private EnemyFleet enemyFleet;
-    private PlayerShip playerShip;
+    private Mario mario;
     private int animationsCount;
     private int score;
     private boolean isGameStopped;
@@ -37,7 +37,7 @@ public class SpaceInvadersGame extends Game {
         score = 0;
         createStars();
         enemyFleet = new EnemyFleet();
-        playerShip = new PlayerShip();
+        mario = new Mario();
         enemyBullets = new ArrayList<>();
         playerBullets = new ArrayList<>();
         setTurnTimer(40);
@@ -65,7 +65,7 @@ public class SpaceInvadersGame extends Game {
     private void drawScene() {
         drawField();
         enemyFleet.draw(this, false);
-        playerShip.draw(this);
+        mario.draw(this);
         enemyBullets.forEach(bullet -> bullet.draw(this, false));
         playerBullets.forEach(bullet -> bullet.draw(this, false));
     }
@@ -102,7 +102,7 @@ public class SpaceInvadersGame extends Game {
         enemyFleet.move();
         enemyBullets.forEach(Bullet::move);
         playerBullets.forEach(Bullet::move);
-        playerShip.move();
+        mario.move();
     }
 
     private void removeDeadBullets() {
@@ -122,18 +122,18 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void check() {
-        playerShip.verifyHit(enemyBullets);
+        mario.verifyHit(enemyBullets);
         score += enemyFleet.verifyHit(playerBullets);
         enemyFleet.deleteHiddenShips();
         removeDeadBullets();
-        if (enemyFleet.getBottomBorder() >= playerShip.y) {
-            playerShip.kill();
+        if (enemyFleet.getBottomBorder() >= mario.y) {
+            mario.kill();
         }
-        if (!playerShip.isAlive) {
+        if (!mario.isAlive) {
             stopGameWithDelay();
         }
         if (enemyFleet.getShipsCount() == 0) {
-            playerShip.win();
+            mario.win();
             stopGameWithDelay();
         }
     }
@@ -151,7 +151,7 @@ public class SpaceInvadersGame extends Game {
     private void stopGameWithDelay() {
         animationsCount++;
         if (animationsCount >= 10) {
-            stopGame(playerShip.isAlive);
+            stopGame(mario.isAlive);
         }
     }
 
@@ -165,17 +165,22 @@ public class SpaceInvadersGame extends Game {
                 if (isGameStopped) {
                     createGame();
                 } else {
-                    Bullet playerBullet = playerShip.fire();
+                    Bullet playerBullet = mario.fire();
                     if (playerBullet != null && playerBullets.size() < PLAYER_BULLETS_MAX) {
                         playerBullets.add(playerBullet);
                     }
                 }
                 break;
             case LEFT:
-                playerShip.setDirection(Direction.LEFT);
+                mario.setDirection(Direction.LEFT);
                 break;
             case RIGHT:
-                playerShip.setDirection(Direction.RIGHT);
+                mario.setDirection(Direction.RIGHT);
+                break;
+            case UP:
+                if (!mario.isJumping) {
+                    mario.jump();
+                }
                 break;
             default:
                 break;
@@ -186,13 +191,13 @@ public class SpaceInvadersGame extends Game {
     public void onKeyReleased(Key key) {
         switch (key) {
             case LEFT:
-                if (playerShip.getDirection() == Direction.LEFT) {
-                    playerShip.setDirection(Direction.UP);
+                if (mario.getDirection() == Direction.LEFT) {
+                    mario.setDirection(Direction.UP);
                 }
                 break;
             case RIGHT:
-                if (playerShip.getDirection() == Direction.RIGHT) {
-                    playerShip.setDirection(Direction.UP);
+                if (mario.getDirection() == Direction.RIGHT) {
+                    mario.setDirection(Direction.UP);
                 }
                 break;
         }
