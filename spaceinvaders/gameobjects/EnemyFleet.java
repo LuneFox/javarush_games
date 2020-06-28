@@ -92,7 +92,7 @@ public class EnemyFleet {
         int[] sum = new int[]{0};
         ships.forEach(enemyShip -> {
             bullets.forEach(bullet -> {
-                if (enemyShip.isCollision(bullet) && enemyShip.isAlive && bullet.isAlive) {
+                if (enemyShip.isCollision(bullet, false) && enemyShip.isAlive && bullet.isAlive) {
                     enemyShip.kill();
                     bullet.kill();
                     sum[0] += enemyShip.score;

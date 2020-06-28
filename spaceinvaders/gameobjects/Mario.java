@@ -142,7 +142,7 @@ public class Mario extends Ship {
         }
 
         bullets.forEach(bullet -> {
-            if (isAlive && bullet.isAlive && isCollision(bullet)) {
+            if (isAlive && bullet.isAlive && isCollision(bullet, false)) {
                 kill();
                 bullet.kill();
             }
@@ -154,6 +154,10 @@ public class Mario extends Ship {
 
     public Direction getDirection() {
         return direction;
+    }
+
+    public Direction getFaceDirection() {
+        return faceDirection;
     }
 
     public void setDirection(Direction newDirection) {

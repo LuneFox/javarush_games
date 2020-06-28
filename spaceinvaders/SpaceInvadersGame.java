@@ -13,7 +13,7 @@ public class SpaceInvadersGame extends Game {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
-    private static final int PLAYER_BULLETS_MAX = 50;
+    private static final int PLAYER_BULLETS_MAX = 2;
 
     public Display display;
     private List<Bullet> enemyBullets;
@@ -65,14 +65,15 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void createBricks() {
-        bricks.add(new Brick(0, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
-        bricks.add(new QuestionBrick(10, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
-        bricks.add(new Brick(20, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
-        bricks.add(new Brick(30, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
-        bricks.add(new Brick(60, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
-        bricks.add(new Brick(70, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
-        bricks.add(new QuestionBrick(80, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
-        bricks.add(new Brick(90, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        int height = HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length;
+        bricks.add(new QuestionBrick(10, height));
+        bricks.add(new QuestionBrick(80, height));
+        bricks.add(new Brick(0, height));
+        bricks.add(new Brick(20, height));
+        bricks.add(new Brick(30, height));
+        bricks.add(new Brick(60, height));
+        bricks.add(new Brick(70, height));
+        bricks.add(new Brick(90, height));
     }
 
 
@@ -122,6 +123,7 @@ public class SpaceInvadersGame extends Game {
         enemyFleet.move();
         enemyBullets.forEach(Bullet::move);
         playerBullets.forEach(Bullet::move);
+        bricks.forEach(brick -> brick.jump(this));
         mario.move();
     }
 
@@ -141,10 +143,17 @@ public class SpaceInvadersGame extends Game {
         });
     }
 
+    public void addBullet(Bullet bullet) {
+        if (bullet != null && playerBullets.size() < PLAYER_BULLETS_MAX) {
+            playerBullets.add(bullet);
+        }
+    }
+
     private void check() {
         mario.verifyHit(enemyBullets);
         score += enemyFleet.verifyHit(playerBullets);
         enemyFleet.deleteHiddenShips();
+        bricks.forEach(brick -> brick.verifyTouch(mario, this));
         removeDeadBullets();
         if (enemyFleet.getBottomBorder() >= mario.y) {
             mario.kill();
@@ -184,11 +193,6 @@ public class SpaceInvadersGame extends Game {
             case SPACE:
                 if (isGameStopped) {
                     createGame();
-                } else {
-                    Bullet playerBullet = mario.fire();
-                    if (playerBullet != null && playerBullets.size() < PLAYER_BULLETS_MAX) {
-                        playerBullets.add(playerBullet);
-                    }
                 }
                 break;
             case LEFT:

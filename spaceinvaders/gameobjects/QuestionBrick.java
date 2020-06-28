@@ -7,4 +7,9 @@ public class QuestionBrick extends Brick {
         super(x, y);
         this.matrix = ObjectShape.QUESTION_BRICK_EMPTY;
     }
+
+    @Override
+    public Bullet fire() {
+        return null;
+    }
 }

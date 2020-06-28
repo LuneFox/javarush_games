@@ -52,7 +52,6 @@ public class GameObject {
         height = matrix.length;
     }
 
-
     public void setStaticView(int[][] viewFrame) {
         this.setMatrix(viewFrame);
         frames = new ArrayList<>();
@@ -84,12 +83,24 @@ public class GameObject {
 
     // -------- COLLISION CHECKS
 
-    public boolean isCollision(GameObject gameObject) {
-        for (int gameObjectX = 0; gameObjectX < gameObject.width; gameObjectX++) {
-            for (int gameObjectY = 0; gameObjectY < gameObject.height; gameObjectY++) {
-                if (gameObject.matrix[gameObjectY][gameObjectX] > 0) {
-                    if (isCollision(gameObjectX + gameObject.x, gameObjectY + gameObject.y)) {
-                        return true;
+    public boolean isCollision(GameObject gameObject, boolean reversed) {
+        if (reversed) {
+            for (int gameObjectX = 0; gameObjectX < gameObject.width; gameObjectX++) {
+                for (int gameObjectY = 0; gameObjectY < gameObject.height; gameObjectY++) {
+                    if (gameObject.matrix[gameObjectY][gameObjectX] > 0) {
+                        if (isCollision((gameObject.width - gameObjectX) + gameObject.x, gameObjectY + gameObject.y)) {
+                            return true;
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int gameObjectX = 0; gameObjectX < gameObject.width; gameObjectX++) {
+                for (int gameObjectY = 0; gameObjectY < gameObject.height; gameObjectY++) {
+                    if (gameObject.matrix[gameObjectY][gameObjectX] > 0) {
+                        if (isCollision(gameObjectX + gameObject.x, gameObjectY + gameObject.y)) {
+                            return true;
+                        }
                     }
                 }
             }
