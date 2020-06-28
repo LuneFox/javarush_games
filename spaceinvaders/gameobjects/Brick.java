@@ -5,6 +5,6 @@ import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 public class Brick extends GameObject {
     public Brick(double x, double y) {
         super(x, y);
-        setMatrix(ObjectShape.BRICK);
+        setStaticView(ObjectShape.BRICK);
     }
 }

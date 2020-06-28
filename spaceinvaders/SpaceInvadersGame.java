@@ -65,14 +65,14 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void createBricks() {
-        bricks.add(new Brick(0, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
-        bricks.add(new QuestionBrick(10, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
-        bricks.add(new Brick(20, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
-        bricks.add(new Brick(30, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
-        bricks.add(new Brick(60, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
-        bricks.add(new Brick(70, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
-        bricks.add(new QuestionBrick(80, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
-        bricks.add(new Brick(90, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length - 1));
+        bricks.add(new Brick(0, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        bricks.add(new QuestionBrick(10, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        bricks.add(new Brick(20, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        bricks.add(new Brick(30, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        bricks.add(new Brick(60, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        bricks.add(new Brick(70, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        bricks.add(new QuestionBrick(80, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
+        bricks.add(new Brick(90, HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length));
     }
 
 

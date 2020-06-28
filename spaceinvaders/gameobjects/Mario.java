@@ -53,7 +53,7 @@ public class Mario extends Ship {
         if (!isAlive) {
             return null;
         }
-        return new Bullet(x + 2, y - ShapeMatrix.BULLET.length, Direction.UP);
+        return new Coin(x + 2, y - ShapeMatrix.BULLET.length, Direction.UP);
     }
 
     @Override
