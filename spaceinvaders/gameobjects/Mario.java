@@ -99,9 +99,16 @@ public class Mario extends Ship {
     public void keepInBounds() {
         if (x < -4) {
             x = -4;
-        } else if (x + width > SpaceInvadersGame.WIDTH + 3) {
+            if (!isJumping) {
+                setStaticView(MarioShape.BRAKE);
+            }
+        } else if (x + width > SpaceInvadersGame.WIDTH + 4) {
             x = SpaceInvadersGame.WIDTH - width + 4;
+            if (!isJumping) {
+                setStaticView(MarioShape.BRAKE);
+            }
         }
+
     }
 
     public void controlJump() {
