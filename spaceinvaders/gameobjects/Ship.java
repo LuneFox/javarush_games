@@ -33,8 +33,8 @@ public class Ship extends GameObject {
     // -------- GRAPHICS
 
     @Override
-    public void draw(SpaceInvadersGame game) {
-        super.draw(game);
+    public void draw(SpaceInvadersGame game, boolean reversed) {
+        super.draw(game, reversed);
         nextFrame();
     }
 

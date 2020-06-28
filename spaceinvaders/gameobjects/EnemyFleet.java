@@ -67,8 +67,8 @@ public class EnemyFleet {
 
     // -------- GRAPHICS
 
-    public void draw(SpaceInvadersGame game) {
-        ships.forEach(ship -> ship.draw(game));
+    public void draw(SpaceInvadersGame game, boolean reversed) {
+        ships.forEach(ship -> ship.draw(game, false));
     }
 
 

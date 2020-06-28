@@ -64,10 +64,10 @@ public class SpaceInvadersGame extends Game {
 
     private void drawScene() {
         drawField();
-        enemyFleet.draw(this);
+        enemyFleet.draw(this, false);
         playerShip.draw(this);
-        enemyBullets.forEach(bullet -> bullet.draw(this));
-        playerBullets.forEach(bullet -> bullet.draw(this));
+        enemyBullets.forEach(bullet -> bullet.draw(this, false));
+        playerBullets.forEach(bullet -> bullet.draw(this, false));
     }
 
     private void drawField() {

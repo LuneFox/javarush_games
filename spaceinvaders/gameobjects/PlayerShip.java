@@ -3,15 +3,17 @@ package com.javarush.games.spaceinvaders.gameobjects;
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.shapes.MarioShape;
 
 import java.util.List;
 
 public class PlayerShip extends Ship {
     private Direction direction = Direction.UP;
+    private Direction faceDirection = Direction.RIGHT;
 
     public PlayerShip() {
-        super(SpaceInvadersGame.WIDTH / 2.0, SpaceInvadersGame.HEIGHT - ShapeMatrix.PLAYER.length - 1);
-        setStaticView(ShapeMatrix.PLAYER);
+        super(SpaceInvadersGame.WIDTH / 2.0, SpaceInvadersGame.HEIGHT - MarioShape.STAND.length);
+        setStaticView(MarioShape.STAND);
     }
 
     // -------- BASIC ACTIONS
@@ -59,6 +61,23 @@ public class PlayerShip extends Ship {
         );
     }
 
+    public void draw(SpaceInvadersGame game) {
+        switch (direction) {
+            case RIGHT:
+                faceDirection = Direction.RIGHT;
+                break;
+            case LEFT:
+                faceDirection = Direction.LEFT;
+                break;
+            default:
+                break;
+        }
+        boolean reverse = false;
+        if (faceDirection == Direction.LEFT) {
+            reverse = true;
+        }
+        super.draw(game, reverse);
+    }
 
     // -------- UTILITIES
 

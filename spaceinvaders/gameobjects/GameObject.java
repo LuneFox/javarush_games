@@ -18,11 +18,20 @@ public class GameObject {
 
     // -------- GRAPHICS
 
-    public void draw(SpaceInvadersGame game) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                int colorIndex = matrix[j][i];
-                game.display.setCellValueEx((int) x + i, (int) y + j, Color.values()[colorIndex], "");
+    public void draw(SpaceInvadersGame game, boolean reversed) {
+        if (!reversed) {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    int colorIndex = matrix[j][i];
+                    game.display.setCellValueEx((int) x + i, (int) y + j, Color.values()[colorIndex], "");
+                }
+            }
+        } else {
+            for (int i = 0; i < width; i++) {
+                for (int j = 0; j < height; j++) {
+                    int colorIndex = matrix[j][i];
+                    game.display.setCellValueEx((int) x + (width - i - 1), (int) y + j, Color.values()[colorIndex], "");
+                }
             }
         }
     }
