@@ -141,12 +141,22 @@ public class Mario extends Ship {
             return;
         }
 
-        bullets.forEach(bullet -> {
-            if (isAlive && bullet.isAlive && isCollision(bullet, false)) {
-                kill();
-                bullet.kill();
-            }
-        });
+        if (faceDirection == Direction.RIGHT) {
+            bullets.forEach(bullet -> {
+                if (isAlive && bullet.isAlive && isCollision(bullet, false)) {
+                    kill();
+                    bullet.kill();
+                }
+            });
+        } else if (faceDirection == Direction.LEFT) {
+            bullets.forEach(bullet -> {
+                if (isAlive && bullet.isAlive && isCollision(bullet, true)) {
+                    kill();
+                    bullet.kill();
+                }
+            });
+        }
+
     }
 
 
