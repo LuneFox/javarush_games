@@ -33,18 +33,12 @@ public class PlayerShip extends Ship {
             return;
         }
         isAlive = false;
-        setAnimatedView(
+        setAnimatedView(false,
                 ShapeMatrix.KILL_PLAYER_ANIMATION_FIRST,
                 ShapeMatrix.KILL_PLAYER_ANIMATION_SECOND,
                 ShapeMatrix.KILL_PLAYER_ANIMATION_THIRD,
                 ShapeMatrix.DEAD_PLAYER
         );
-    }
-
-    public void setDirection(Direction newDirection) {
-        if (newDirection != Direction.DOWN) {
-            direction = newDirection;
-        }
     }
 
     public void move() {
@@ -65,6 +59,31 @@ public class PlayerShip extends Ship {
             } else if (x + width > SpaceInvadersGame.WIDTH - 1) {
                 x = SpaceInvadersGame.WIDTH - width;
             }
+        }
+    }
+
+    @Override
+    public Bullet fire() {
+        if (!isAlive) {
+            return null;
+        }
+        return new Bullet(x + 2, y - ShapeMatrix.BULLET.length, Direction.UP);
+    }
+
+    public void win() {
+        setStaticView(ShapeMatrix.WIN_PLAYER);
+    }
+
+    // -------- GETTERS AND SETTERS
+
+
+    public Direction getDirection() {
+        return direction;
+    }
+
+    public void setDirection(Direction newDirection) {
+        if (newDirection != Direction.DOWN) {
+            direction = newDirection;
         }
     }
 }

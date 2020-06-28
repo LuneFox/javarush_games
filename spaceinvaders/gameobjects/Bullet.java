@@ -1,6 +1,5 @@
 package com.javarush.games.spaceinvaders.gameobjects;
 
-import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
 

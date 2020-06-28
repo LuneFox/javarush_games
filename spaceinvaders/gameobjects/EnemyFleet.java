@@ -28,6 +28,7 @@ public class EnemyFleet {
                 ships.add(new EnemyShip(x * STEP, y * STEP + 12));
             }
         }
+        ships.add(new Boss((STEP * COLUMNS_COUNT / 2.0) - (ShapeMatrix.BOSS_ANIMATION_FIRST.length / 2.0) - 1, 5));
     }
 
     public void draw(Game game) {
@@ -72,6 +73,45 @@ public class EnemyFleet {
 
         int randomShip = game.getRandomNumber(ships.size());
         return (ships.get(randomShip).fire());
+    }
+
+    public int verifyHit(List<Bullet> bullets) {
+        if (bullets.isEmpty()) {
+            return 0;
+        }
+
+        int[] sum = new int[]{0};
+        ships.forEach(enemyShip -> {
+            bullets.forEach(bullet -> {
+                if (enemyShip.isCollision(bullet) && enemyShip.isAlive && bullet.isAlive) {
+                    enemyShip.kill();
+                    bullet.kill();
+                    sum[0] += enemyShip.score;
+                }
+            });
+        });
+        return sum[0];
+    }
+
+    public void deleteHiddenShips() {
+        ArrayList<EnemyShip> shipsClone = new ArrayList<>(ships);
+        shipsClone.forEach(enemyShip -> {
+            if (!enemyShip.isVisible()) {
+                ships.remove(enemyShip);
+            }
+        });
+    }
+
+    public int getShipsCount() {
+        return ships.size();
+    }
+
+    public double getBottomBorder() {
+        final double[] bottomBorder = {0};
+        ships.forEach(ship -> {
+            bottomBorder[0] = Math.max(bottomBorder[0], ship.y + ship.height);
+        });
+        return bottomBorder[0];
     }
 
     private double getSpeed() {
