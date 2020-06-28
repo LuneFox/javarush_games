@@ -61,6 +61,7 @@ public class Ship extends GameObject {
         }
     }
 
+
     // -------- UTILITIES
 
     public boolean isVisible() {

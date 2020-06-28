@@ -87,7 +87,7 @@ public class SpaceInvadersGame extends Game {
 
     @Override
     public void setCellValueEx(int x, int y, Color cellColor, String value) {
-        if (x > 0 && y > 0 && x < WIDTH && y < HEIGHT) {
+        if (x >= 0 && y >= 0 && x < WIDTH && y < HEIGHT) {
             super.setCellValueEx(x, y, cellColor, value);
         }
     }
