@@ -21,19 +21,8 @@ public class EnemyFleet {
     private List<EnemyShip> ships;
     private Direction direction = Direction.RIGHT;
 
-    private void createShips() {
-        ships = new ArrayList<>();
-        for (int x = 0; x < COLUMNS_COUNT; x++) {
-            for (int y = 0; y < ROWS_COUNT; y++) {
-                ships.add(new EnemyShip(x * STEP, y * STEP + 12));
-            }
-        }
-        ships.add(new Boss((STEP * COLUMNS_COUNT / 2.0) - (ShapeMatrix.BOSS_ANIMATION_FIRST.length / 2.0) - 1, 5));
-    }
 
-    public void draw(Game game) {
-        ships.forEach(ship -> ship.draw(game));
-    }
+    // -------- BASIC ACTIONS
 
     public void move() {
         if (ships.isEmpty()) {
@@ -75,6 +64,26 @@ public class EnemyFleet {
         return (ships.get(randomShip).fire());
     }
 
+
+    // -------- GRAPHICS
+
+    public void draw(Game game) {
+        ships.forEach(ship -> ship.draw(game));
+    }
+
+
+    // -------- UTILITIES
+
+    private void createShips() {
+        ships = new ArrayList<>();
+        for (int x = 0; x < COLUMNS_COUNT; x++) {
+            for (int y = 0; y < ROWS_COUNT; y++) {
+                ships.add(new EnemyShip(x * STEP, y * STEP + 12));
+            }
+        }
+        ships.add(new Boss((STEP * COLUMNS_COUNT / 2.0) - (ShapeMatrix.BOSS_ANIMATION_FIRST.length / 2.0) - 1, 5));
+    }
+
     public int verifyHit(List<Bullet> bullets) {
         if (bullets.isEmpty()) {
             return 0;
@@ -102,6 +111,13 @@ public class EnemyFleet {
         });
     }
 
+
+    // -------- STATUS GETTERS
+
+    private double getSpeed() {
+        return Math.min(2.0, 3.0 / ships.size());
+    }
+
     public int getShipsCount() {
         return ships.size();
     }
@@ -112,10 +128,6 @@ public class EnemyFleet {
             bottomBorder[0] = Math.max(bottomBorder[0], ship.y + ship.height);
         });
         return bottomBorder[0];
-    }
-
-    private double getSpeed() {
-        return Math.min(2.0, 3.0 / ships.size());
     }
 
     private double getLeftBorder() {

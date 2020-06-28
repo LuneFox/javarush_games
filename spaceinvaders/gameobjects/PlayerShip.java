@@ -14,32 +14,7 @@ public class PlayerShip extends Ship {
         setStaticView(ShapeMatrix.PLAYER);
     }
 
-    public void verifyHit(List<Bullet> bullets) {
-        if (bullets.isEmpty()) {
-            return;
-        }
-
-        bullets.forEach(bullet -> {
-            if (isAlive && bullet.isAlive && isCollision(bullet)) {
-                kill();
-                bullet.kill();
-            }
-        });
-    }
-
-    @Override
-    public void kill() {
-        if (!isAlive) {
-            return;
-        }
-        isAlive = false;
-        setAnimatedView(false,
-                ShapeMatrix.KILL_PLAYER_ANIMATION_FIRST,
-                ShapeMatrix.KILL_PLAYER_ANIMATION_SECOND,
-                ShapeMatrix.KILL_PLAYER_ANIMATION_THIRD,
-                ShapeMatrix.DEAD_PLAYER
-        );
-    }
+    // -------- BASIC ACTIONS
 
     public void move() {
         if (isAlive) {
@@ -70,12 +45,42 @@ public class PlayerShip extends Ship {
         return new Bullet(x + 2, y - ShapeMatrix.BULLET.length, Direction.UP);
     }
 
+    @Override
+    public void kill() {
+        if (!isAlive) {
+            return;
+        }
+        isAlive = false;
+        setAnimatedView(false,
+                ShapeMatrix.KILL_PLAYER_ANIMATION_FIRST,
+                ShapeMatrix.KILL_PLAYER_ANIMATION_SECOND,
+                ShapeMatrix.KILL_PLAYER_ANIMATION_THIRD,
+                ShapeMatrix.DEAD_PLAYER
+        );
+    }
+
+
+    // -------- UTILITIES
+
     public void win() {
         setStaticView(ShapeMatrix.WIN_PLAYER);
     }
 
-    // -------- GETTERS AND SETTERS
+    public void verifyHit(List<Bullet> bullets) {
+        if (bullets.isEmpty()) {
+            return;
+        }
 
+        bullets.forEach(bullet -> {
+            if (isAlive && bullet.isAlive && isCollision(bullet)) {
+                kill();
+                bullet.kill();
+            }
+        });
+    }
+
+
+    // -------- GETTERS AND SETTERS
 
     public Direction getDirection() {
         return direction;

@@ -11,6 +11,8 @@ public class EnemyShip extends Ship {
         setStaticView(ShapeMatrix.ENEMY);
     }
 
+    // -------- BASIC ACTIONS
+
     public void move(Direction direction, double speed) {
         switch (direction) {
             case RIGHT:

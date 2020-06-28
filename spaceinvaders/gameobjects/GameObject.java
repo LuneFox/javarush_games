@@ -15,11 +15,25 @@ public class GameObject {
         this.y = y;
     }
 
+    // -------- GRAPHICS
+
+    public void draw(Game game) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int colorIndex = matrix[j][i];
+                game.setCellValueEx((int) x + i, (int) y + j, Color.values()[colorIndex], "");
+            }
+        }
+    }
+
     public void setMatrix(int[][] matrix) {
         this.matrix = matrix;
         width = matrix[0].length;
         height = matrix.length;
     }
+
+
+    // -------- COLLISION CHECKS
 
     public boolean isCollision(GameObject gameObject) {
         for (int gameObjectX = 0; gameObjectX < gameObject.width; gameObjectX++) {
@@ -45,14 +59,5 @@ public class GameObject {
             }
         }
         return false;
-    }
-
-    public void draw(Game game) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                int colorIndex = matrix[j][i];
-                game.setCellValueEx((int) x + i, (int) y + j, Color.values()[colorIndex], "");
-            }
-        }
     }
 }

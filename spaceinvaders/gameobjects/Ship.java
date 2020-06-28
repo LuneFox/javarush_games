@@ -17,6 +17,26 @@ public class Ship extends GameObject {
         super(x, y);
     }
 
+
+    // -------- BASIC ACTIONS
+
+    public Bullet fire() {
+        return null;
+    }
+
+    public void kill() {
+        isAlive = false;
+    }
+
+
+    // -------- GRAPHICS
+
+    @Override
+    public void draw(Game game) {
+        super.draw(game);
+        nextFrame();
+    }
+
     public void setStaticView(int[][] viewFrame) {
         this.setMatrix(viewFrame);
         frames = new ArrayList<>();
@@ -41,21 +61,9 @@ public class Ship extends GameObject {
         }
     }
 
+    // -------- UTILITIES
+
     public boolean isVisible() {
         return (isAlive || frameIndex + 1 < frames.size());
-    }
-
-    @Override
-    public void draw(Game game) {
-        super.draw(game);
-        nextFrame();
-    }
-
-    public Bullet fire() {
-        return null;
-    }
-
-    public void kill() {
-        isAlive = false;
     }
 }

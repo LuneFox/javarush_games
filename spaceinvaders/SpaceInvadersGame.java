@@ -92,7 +92,8 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
-    // -------- MECHANICS
+
+    // -------- UTILITIES
 
     private void moveSpaceObjects() {
         enemyFleet.move();
@@ -150,6 +151,7 @@ public class SpaceInvadersGame extends Game {
             stopGame(playerShip.isAlive);
         }
     }
+
 
     // -------- CONTROLS
 
