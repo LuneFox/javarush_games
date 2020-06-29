@@ -13,7 +13,7 @@ public class SpaceInvadersGame extends Game {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
-    private static final int PLAYER_BULLETS_MAX = 5;
+    private static final int PLAYER_BULLETS_MAX = 2;
 
     public Display display;
     private List<Bullet> enemyBullets;
@@ -155,7 +155,7 @@ public class SpaceInvadersGame extends Game {
         enemyFleet.deleteHiddenShips();
         bricks.forEach(brick -> brick.verifyTouch(mario, this));
         removeDeadBullets();
-        if (enemyFleet.getBottomBorder() >= mario.y) {
+        if (enemyFleet.getBottomBorder() >= bricks.get(0).y) {
             mario.kill();
         }
         if (!mario.isAlive) {
