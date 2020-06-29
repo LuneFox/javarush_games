@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * VERSION 1.00
+ */
+
 public class SpaceInvadersGame extends Game {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
