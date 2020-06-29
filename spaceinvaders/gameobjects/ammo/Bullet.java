@@ -1,7 +1,8 @@
-package com.javarush.games.spaceinvaders.gameobjects;
+package com.javarush.games.spaceinvaders.gameobjects.ammo;
 
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
+import com.javarush.games.spaceinvaders.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 public class Bullet extends GameObject {

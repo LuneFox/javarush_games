@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.gameobjects.decorations;
+package com.javarush.games.spaceinvaders.gameobjects.decoration;
 
 import com.javarush.games.spaceinvaders.gameobjects.GameObject;
 

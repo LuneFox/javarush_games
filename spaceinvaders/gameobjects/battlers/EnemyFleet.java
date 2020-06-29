@@ -1,9 +1,10 @@
-package com.javarush.games.spaceinvaders.gameobjects;
+package com.javarush.games.spaceinvaders.gameobjects.battlers;
 
 import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class EnemyFleet {
 
     private static final int ROWS_COUNT = 3;
     private static final int COLUMNS_COUNT = 10;
-    private static final int STEP = ShapeMatrix.ENEMY.length + 3;
+    private static final int STEP = ObjectShape.TANK_1.length + 1;
 
     private List<EnemyShip> ships;
     private Direction direction = Direction.RIGHT;

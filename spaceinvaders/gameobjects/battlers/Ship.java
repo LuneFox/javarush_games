@@ -1,11 +1,7 @@
-package com.javarush.games.spaceinvaders.gameobjects;
+package com.javarush.games.spaceinvaders.gameobjects.battlers;
 
-import com.javarush.engine.cell.Game;
-import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import com.javarush.games.spaceinvaders.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
 
 public class Ship extends GameObject {
 

@@ -1,8 +1,12 @@
 package com.javarush.games.spaceinvaders;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.spaceinvaders.gameobjects.*;
-import com.javarush.games.spaceinvaders.gameobjects.decorations.FloorTile;
+import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
+import com.javarush.games.spaceinvaders.gameobjects.battlers.EnemyFleet;
+import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
+import com.javarush.games.spaceinvaders.gameobjects.brick.Brick;
+import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
+import com.javarush.games.spaceinvaders.gameobjects.decoration.FloorTile;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
@@ -171,9 +175,9 @@ public class SpaceInvadersGame extends Game {
         isGameStopped = true;
         stopTurnTimer();
         if (isWin) {
-            showMessageDialog(Color.GREY, "VICTORY", Color.GREEN, 75);
+            showMessageDialog(Color.BLACK, "SORRY, MARIO!\nYOUR PRINCESS IS IN ANOTHER GAME!", Color.GREEN, 20);
         } else {
-            showMessageDialog(Color.GREY, "FAIL", Color.RED, 75);
+            showMessageDialog(Color.BLACK, "MAMMA MIA!", Color.RED, 75);
         }
     }
 

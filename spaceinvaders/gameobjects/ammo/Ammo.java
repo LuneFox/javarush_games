@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.gameobjects;
+package com.javarush.games.spaceinvaders.gameobjects.ammo;
 
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
