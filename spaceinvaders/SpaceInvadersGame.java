@@ -7,6 +7,7 @@ import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.brick.Brick;
 import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
 import com.javarush.games.spaceinvaders.gameobjects.decoration.FloorTile;
+import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
@@ -18,11 +19,13 @@ public class SpaceInvadersGame extends Game {
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
     private static final int PLAYER_BULLETS_MAX = 2;
+    private static final int BONUS_MAX = 2;
 
     public Display display;
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
     private List<Brick> bricks;
+    private List<Bonus> bonuses;
     private EnemyFleet enemyFleet;
     private Mario mario;
     private FloorTile floorTile;
@@ -48,6 +51,7 @@ public class SpaceInvadersGame extends Game {
         enemyBullets = new ArrayList<>();
         playerBullets = new ArrayList<>();
         bricks = new ArrayList<>();
+        bonuses = new ArrayList<>();
         createBricks();
         setTurnTimer(40);
         animationsCount = 0;
@@ -88,6 +92,7 @@ public class SpaceInvadersGame extends Game {
         enemyFleet.draw(this, false);
         mario.draw(this);
         playerBullets.forEach(bullet -> bullet.draw(this, false));
+        bonuses.forEach(bonus -> bonus.draw(this, false));
         drawBricks();
         enemyBullets.forEach(bullet -> bullet.draw(this, false));
         drawFloor();
@@ -127,11 +132,12 @@ public class SpaceInvadersGame extends Game {
         enemyFleet.move();
         enemyBullets.forEach(Bullet::move);
         playerBullets.forEach(Bullet::move);
+        bonuses.forEach(bonus -> bonus.move());
         bricks.forEach(brick -> brick.jump(this));
         mario.move();
     }
 
-    private void removeDeadBullets() {
+    private void removeDeadObjects() {
         ArrayList<Bullet> enemyBulletsClone = new ArrayList<>(enemyBullets);
         enemyBulletsClone.forEach(bullet -> {
             if (bullet.y >= HEIGHT - 1 || !bullet.isAlive) {
@@ -145,6 +151,14 @@ public class SpaceInvadersGame extends Game {
                 playerBullets.remove(bullet);
             }
         });
+
+        ArrayList<Bonus> bonusesClone = new ArrayList<>(bonuses);
+        bonusesClone.forEach(bonus -> {
+            if (bonus.x + bonus.width < 0 || bonus.x > WIDTH) {
+                bonus.isCollected = true;
+                bonuses.remove(bonus);
+            }
+        });
     }
 
     public void addBullet(Bullet bullet) {
@@ -153,12 +167,18 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
+    public void addBonus(Bonus bonus) {
+        if (bonus != null && bonuses.size() < BONUS_MAX) {
+            bonuses.add(bonus);
+        }
+    }
+
     private void check() {
         mario.verifyHit(enemyBullets);
         score += enemyFleet.verifyHit(playerBullets);
         enemyFleet.deleteHiddenShips();
         bricks.forEach(brick -> brick.verifyTouch(mario, this));
-        removeDeadBullets();
+        removeDeadObjects();
         if (enemyFleet.getBottomBorder() >= bricks.get(0).y) {
             mario.kill();
         }
