@@ -5,16 +5,21 @@ import com.javarush.games.spaceinvaders.ShapeMatrix;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
 import com.javarush.games.spaceinvaders.gameobjects.ammo.Coin;
+import com.javarush.games.spaceinvaders.gameobjects.ammo.FireBall;
+import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
 import com.javarush.games.spaceinvaders.shapes.MarioShape;
+import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 import java.util.List;
 
 public class Mario extends Ship {
     public static final int JUMP_HEIGHT_LIMIT = 30;
-    public static final int FLOOR_LEVEL = 4;
+    private static final int FLOOR_LEVEL = 4;
+
+    public Bonus bonus;
     public boolean isJumping = false;
-    public boolean isWalking = false;
-    public boolean isBraking = false;
+    private boolean isWalking = false;
+    private boolean isBraking = false;
     private Direction direction = Direction.UP;
     private Direction faceDirection = Direction.RIGHT;
     private int frameCounter = 0;
@@ -52,10 +57,13 @@ public class Mario extends Ship {
 
     @Override
     public Bullet fire() {
-        if (!isAlive) {
+        if (!isAlive || bonus == null || !bonus.getClass().getName().contains("Mushroom")) {
             return null;
         }
-        return new Coin(x + 2, y - ShapeMatrix.BULLET.length, Direction.UP);
+        bonus = null;
+        return new FireBall(
+                x + width / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
+                y - ObjectShape.FIREBALL_1.length, Direction.UP);
     }
 
     @Override
@@ -159,6 +167,10 @@ public class Mario extends Ship {
             });
         }
 
+    }
+
+    public void collect(Bonus bonus) {
+        this.bonus = bonus;
     }
 
 

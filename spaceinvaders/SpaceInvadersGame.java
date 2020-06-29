@@ -8,6 +8,7 @@ import com.javarush.games.spaceinvaders.gameobjects.brick.Brick;
 import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
 import com.javarush.games.spaceinvaders.gameobjects.decoration.FloorTile;
 import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
+import com.javarush.games.spaceinvaders.gameobjects.item.Mushroom;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
@@ -154,17 +155,28 @@ public class SpaceInvadersGame extends Game {
 
         ArrayList<Bonus> bonusesClone = new ArrayList<>(bonuses);
         bonusesClone.forEach(bonus -> {
-            if (bonus.x + bonus.width < 0 || bonus.x > WIDTH) {
+            if (bonus.x + bonus.width < 0 || bonus.x > WIDTH || bonus.isCollected) {
                 bonus.isCollected = true;
                 bonuses.remove(bonus);
             }
         });
     }
 
-    public void addBullet(Bullet bullet) {
-        if (bullet != null && playerBullets.size() < PLAYER_BULLETS_MAX) {
+    public void addPlayerBullet(Bullet bullet) {
+        if (bullet != null && (playerBullets.size() < (PLAYER_BULLETS_MAX + countFireBalls())
+                || bullet.getClass().getName().contains("FireBall"))) {
             playerBullets.add(bullet);
         }
+    }
+
+    private int countFireBalls() {
+        final int[] count = {0};
+        playerBullets.forEach(bullet -> {
+            if (bullet.getClass().getName().contains("FireBall")) {
+                count[0]++;
+            }
+        });
+        return count[0];
     }
 
     public void addBonus(Bonus bonus) {
@@ -178,6 +190,12 @@ public class SpaceInvadersGame extends Game {
         score += enemyFleet.verifyHit(playerBullets);
         enemyFleet.deleteHiddenShips();
         bricks.forEach(brick -> brick.verifyTouch(mario, this));
+        bonuses.forEach(bonus -> {
+            bonus.verifyTouch(mario, this);
+            if (bonus.getClass().getName().contains("Mushroom")) {
+                ((Mushroom) bonus).verifyHit(enemyBullets);
+            }
+        });
         removeDeadObjects();
         if (enemyFleet.getBottomBorder() >= bricks.get(0).y) {
             mario.kill();
@@ -217,6 +235,9 @@ public class SpaceInvadersGame extends Game {
             case SPACE:
                 if (isGameStopped) {
                     createGame();
+                } else {
+                    Bullet bullet = mario.fire();
+                    addPlayerBullet(bullet);
                 }
                 break;
             case LEFT:

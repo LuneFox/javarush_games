@@ -1,8 +1,9 @@
 package com.javarush.games.spaceinvaders.gameobjects.item;
 
-import com.javarush.games.racer.Direction;
+import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
@@ -25,6 +26,21 @@ public abstract class Bonus extends GameObject {
             dx = 1;
         } else {
             dx = -1;
+        }
+    }
+
+    public void verifyTouch(Mario mario, SpaceInvadersGame game) {
+        // проверка пересечения Марио и бонуса с учётом отзеркаливания спрайта
+        if (mario.getFaceDirection() == com.javarush.games.spaceinvaders.Direction.RIGHT) {
+            if (this.isCollision(mario, false)) {
+                mario.collect(this);
+                this.isCollected = true;
+            }
+        } else if (mario.getFaceDirection() == Direction.LEFT) {
+            if (this.isCollision(mario, true)) {
+                mario.collect(this);
+                this.isCollected = true;
+            }
         }
     }
 

@@ -42,7 +42,7 @@ public class Brick extends GameObject {
                 jumpReserve--; // уменьшаем запас для прыжка
                 if (jumpReserve <= 0) { // когда кончается запас
                     jumped = true; // считаем, что кирпич совершил прыжок до максимальной точки
-                    game.addBullet(fire()); // кирпич стреляет монетой
+                    game.addPlayerBullet(fire()); // кирпич стреляет монетой
                 }
             } else if (jumpReserve < JUMP_HEIGHT) { // иначе (если кирпич подпрыгнул), если запас прыжка не полный
                 this.y++; // опускаем кирпич
