@@ -23,6 +23,7 @@ public class Mario extends Ship {
     private Direction direction = Direction.UP;
     private Direction faceDirection = Direction.RIGHT;
     private int frameCounter = 0;
+    public int faintCounter = 0;
     private boolean reachedJumpTop;
 
     public Mario() {
@@ -46,6 +47,15 @@ public class Mario extends Ship {
             }
             controlJump();
             keepInBounds();
+        } else {
+            setStaticView(MarioShape.DEAD);
+            if (faintCounter < 5) {
+                y -= 2;
+                faintCounter++;
+            } else if (faintCounter < 20) {
+                y += 3;
+                faintCounter++;
+            }
         }
     }
 
@@ -63,7 +73,15 @@ public class Mario extends Ship {
         bonus = null;
         return new FireBall(
                 x + width / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
-                y - ObjectShape.FIREBALL_1.length, Direction.UP);
+                y - ObjectShape.FIREBALL_1.length + 4, Direction.UP);
+    }
+
+    public boolean wipeEnemyBullets() {
+        if (!isAlive || bonus == null || !bonus.getClass().getName().contains("Star")) {
+            return false;
+        }
+        bonus = null;
+        return true;
     }
 
     @Override

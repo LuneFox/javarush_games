@@ -13,5 +13,6 @@ public class Coin extends Bullet {
                 ObjectShape.COIN_WIDTH_1,
                 ObjectShape.COIN_WIDTH_3,
                 ObjectShape.COIN_WIDTH_5);
+        deadlyForEnemies = true;
     }
 }

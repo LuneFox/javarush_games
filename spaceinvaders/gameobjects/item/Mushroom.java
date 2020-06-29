@@ -12,6 +12,7 @@ public class Mushroom extends Bonus {
         setStaticView(ObjectShape.MUSHROOM);
     }
 
+    @Override
     public void verifyHit(List<Bullet> bullets) {
         bullets.forEach(bullet -> {
             if (isCollision(bullet, true)) {

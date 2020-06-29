@@ -2,7 +2,6 @@ package com.javarush.games.spaceinvaders.gameobjects.battlers;
 
 import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.Direction;
-import com.javarush.games.spaceinvaders.ShapeMatrix;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
@@ -95,9 +94,11 @@ public class EnemyFleet {
         ships.forEach(enemyShip -> {
             bullets.forEach(bullet -> {
                 if (enemyShip.isCollision(bullet, false) && enemyShip.isAlive && bullet.isAlive) {
-                    enemyShip.kill();
-                    bullet.kill();
-                    sum[0] += enemyShip.score;
+                    if (bullet.deadlyForEnemies) {
+                        enemyShip.kill();
+                        bullet.kill();
+                        sum[0] += enemyShip.score;
+                    }
                 }
             });
         });
