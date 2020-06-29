@@ -11,3 +11,5 @@
 [JavaRush Games Sprite Maker](https://javarush.ru/projects/apps/134119) (не игра)
 
 [Racer](https://javarush.ru/projects/apps/36456)
+
+[Space Invaders](https://javarush.ru/projects/apps/50729)
