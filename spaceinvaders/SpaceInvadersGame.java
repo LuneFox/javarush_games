@@ -13,7 +13,7 @@ public class SpaceInvadersGame extends Game {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
-    private static final int PLAYER_BULLETS_MAX = 2;
+    private static final int PLAYER_BULLETS_MAX = 5;
 
     public Display display;
     private List<Bullet> enemyBullets;
@@ -83,9 +83,9 @@ public class SpaceInvadersGame extends Game {
         drawField();
         enemyFleet.draw(this, false);
         mario.draw(this);
-        enemyBullets.forEach(bullet -> bullet.draw(this, false));
         playerBullets.forEach(bullet -> bullet.draw(this, false));
         drawBricks();
+        enemyBullets.forEach(bullet -> bullet.draw(this, false));
         drawFloor();
     }
 
@@ -196,16 +196,22 @@ public class SpaceInvadersGame extends Game {
                 }
                 break;
             case LEFT:
-                mario.setDirection(Direction.LEFT);
-                break;
-            case RIGHT:
-                mario.setDirection(Direction.RIGHT);
-                break;
-            case UP:
-                if (!mario.isJumping) {
-                    mario.jump();
+                if (!isGameStopped) {
+                    mario.setDirection(Direction.LEFT);
+                    break;
                 }
-                break;
+            case RIGHT:
+                if (!isGameStopped) {
+                    mario.setDirection(Direction.RIGHT);
+                    break;
+                }
+            case UP:
+                if (!isGameStopped) {
+                    if (!mario.isJumping) {
+                        mario.jump();
+                    }
+                    break;
+                }
             default:
                 break;
         }

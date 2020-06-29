@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.gameobjects;
 
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.ShapeMatrix;
+import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 public class Boss extends EnemyShip {
     private int frameCount = 0;
@@ -9,8 +10,7 @@ public class Boss extends EnemyShip {
     public Boss(double x, double y) {
         super(x, y);
         setAnimatedView(true,
-                ShapeMatrix.BOSS_ANIMATION_FIRST,
-                ShapeMatrix.BOSS_ANIMATION_SECOND);
+                ObjectShape.BOSS_TANK_1, ObjectShape.BOSS_TANK_2);
         score = 100;
     }
 
@@ -27,11 +27,7 @@ public class Boss extends EnemyShip {
         if (!isAlive) {
             return null;
         }
-        if (matrix == ShapeMatrix.BOSS_ANIMATION_FIRST) {
-            return new Bullet(x + 6, y + height, Direction.DOWN);
-        } else {
-            return new Bullet(x, y + height, Direction.DOWN);
-        }
+        return new Ammo(x + 6, y + height, Direction.DOWN);
     }
 
     @Override
@@ -39,9 +35,11 @@ public class Boss extends EnemyShip {
         if (isAlive) {
             isAlive = false;
             setAnimatedView(false,
-                    ShapeMatrix.KILL_BOSS_ANIMATION_FIRST,
-                    ShapeMatrix.KILL_BOSS_ANIMATION_SECOND,
-                    ShapeMatrix.KILL_BOSS_ANIMATION_THIRD);
+                    ObjectShape.BOSS_TANK_KILL_1,
+                    ObjectShape.BOSS_TANK_KILL_2,
+                    ObjectShape.BOSS_TANK_KILL_3,
+                    ObjectShape.BOSS_TANK_KILL_4,
+                    ObjectShape.BOSS_TANK_KILL_4);
         }
     }
 }
