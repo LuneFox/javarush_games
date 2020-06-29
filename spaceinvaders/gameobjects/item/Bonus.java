@@ -38,11 +38,13 @@ public abstract class Bonus extends GameObject {
             if (this.isCollision(mario, false)) {
                 mario.collect(this);
                 this.isCollected = true;
+                game.increaseScore(10);
             }
         } else if (mario.getFaceDirection() == Direction.LEFT) {
             if (this.isCollision(mario, true)) {
                 mario.collect(this);
                 this.isCollected = true;
+                game.increaseScore(10);
             }
         }
     }

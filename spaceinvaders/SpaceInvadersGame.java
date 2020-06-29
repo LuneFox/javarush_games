@@ -6,12 +6,16 @@ import com.javarush.games.spaceinvaders.gameobjects.battlers.EnemyFleet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.brick.Brick;
 import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
+import com.javarush.games.spaceinvaders.gameobjects.decoration.Bush;
+import com.javarush.games.spaceinvaders.gameobjects.decoration.Cloud;
 import com.javarush.games.spaceinvaders.gameobjects.decoration.FloorTile;
+import com.javarush.games.spaceinvaders.gameobjects.decoration.Hill;
 import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class SpaceInvadersGame extends Game {
@@ -28,7 +32,7 @@ public class SpaceInvadersGame extends Game {
     private List<Bonus> bonuses;
     private EnemyFleet enemyFleet;
     private Mario mario;
-    private FloorTile floorTile;
+    private Date startTime;
     private int animationsCount;
     private int score;
     private boolean isGameStopped;
@@ -60,6 +64,7 @@ public class SpaceInvadersGame extends Game {
         isGameStopped = false;
         displayedEnding = false;
         drawScene();
+        startTime = new Date();
     }
 
     @Override
@@ -92,6 +97,9 @@ public class SpaceInvadersGame extends Game {
 
     private void drawScene() {
         drawSky();
+        drawClouds();
+        drawHills();
+        drawBushes();
         enemyFleet.draw(this, false);
         playerBullets.forEach(bullet -> bullet.draw(this, false));
         bonuses.forEach(bonus -> bonus.draw(this, false));
@@ -105,17 +113,44 @@ public class SpaceInvadersGame extends Game {
     private void drawSky() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                display.setCellValueEx(x, y, Color.DEEPSKYBLUE, "");
+                display.setCellValueEx(x, y, (y > 60) ? Color.DEEPSKYBLUE : Color.BLACK, "");
             }
         }
     }
 
     private void drawFloor() {
-        floorTile = new FloorTile(0, HEIGHT - DecoShape.FLOOR.length);
+        FloorTile floorTile = new FloorTile(0, HEIGHT - DecoShape.FLOOR.length);
         for (int i = 0; i < 7; i++) {
             floorTile.x = i * floorTile.width;
             floorTile.draw(this, false);
         }
+    }
+
+    private void drawBushes() {
+        Bush bush = new Bush(0, HEIGHT - DecoShape.FLOOR.length - DecoShape.BUSH.length);
+        for (int i = 0; i < 3; i++) {
+            bush.x = 2 * i * bush.width;
+            bush.draw(this, false);
+        }
+    }
+
+    private void drawHills() {
+        Hill hill = new Hill(0, HEIGHT - DecoShape.FLOOR.length - DecoShape.HILL.length);
+        for (int i = 0; i < 2; i++) {
+            hill.x = 1.8 * i * hill.width + 14;
+            hill.draw(this, false);
+        }
+    }
+
+    private void drawClouds() {
+        Cloud cloud = new Cloud(5, 65);
+        cloud.draw(this, false);
+        cloud.x = 38;
+        cloud.y = 57;
+        cloud.draw(this, false);
+        cloud.x = 81;
+        cloud.y = 72;
+        cloud.draw(this, true);
     }
 
     private void drawBricks() {
@@ -199,10 +234,21 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
+    public int getMultiplier() {
+        Date now = new Date();
+        long millis = now.getTime() - startTime.getTime();
+        int seconds = (int) millis / 1000;
+        return Math.max(100 - seconds, 0);
+    }
+
+    public void increaseScore(int amount) {
+        score += amount * getMultiplier();
+    }
+
     private void check() {
         mario.verifyHit(enemyBullets);
-        score += enemyFleet.verifyHit(playerBullets);
-        enemyFleet.verifyHit(enemyBullets);
+        score += enemyFleet.verifyHit(playerBullets) * getMultiplier();
+        score += enemyFleet.verifyHit(enemyBullets) * getMultiplier();
         enemyFleet.deleteHiddenShips();
         bricks.forEach(brick -> brick.verifyTouch(mario, this));
         bonuses.forEach(bonus -> {
@@ -226,10 +272,12 @@ public class SpaceInvadersGame extends Game {
         stopTurnTimer();
         if (isWin) {
             showMessageDialog(Color.BLACK,
-                    "THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!", Color.WHITE, 20);
+                    "SCORE: " + score + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!",
+                    Color.WHITE, 20);
         } else {
             showMessageDialog(Color.BLACK,
-                    "MAMMA MIA!", Color.RED, 75);
+                    "MAMMA MIA!",
+                    Color.RED, 75);
         }
     }
 
@@ -256,6 +304,7 @@ public class SpaceInvadersGame extends Game {
                     addPlayerBullet(bullet);
                     if (mario.wipeEnemyBullets()) {
                         showFlash = true;
+                        score += enemyBullets.size() * 5 * getMultiplier();
                         enemyBullets.clear();
                     }
                 }

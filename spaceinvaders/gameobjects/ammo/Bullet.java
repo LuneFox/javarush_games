@@ -1,7 +1,6 @@
 package com.javarush.games.spaceinvaders.gameobjects.ammo;
 
 import com.javarush.games.spaceinvaders.Direction;
-import com.javarush.games.spaceinvaders.ShapeMatrix;
 import com.javarush.games.spaceinvaders.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
@@ -14,7 +13,7 @@ public class Bullet extends GameObject {
     public Bullet(double x, double y, Direction direction) {
         super(x, y);
         dy = (direction == Direction.UP) ? -1 : 1;
-        setStaticView(ShapeMatrix.BULLET);
+        setStaticView(ObjectShape.BULLET);
     }
 
     public void move() {
