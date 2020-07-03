@@ -1,7 +1,7 @@
 package com.javarush.games.snake;
 
 public class Strings {
-    static final String VERSION = "1.13";
+    static final String VERSION = "1.14";
     static final String GAME_OVER_BUMPED = "Snake hit the wall!\nWatch your step next time!";
     static final String GAME_OVER_DROWNED = "Snake has drowned!\nGrow longer or become water snake!";
     static final String GAME_OVER_BURNED = "Snake was burned!\nUse water body to extinguish fire!";

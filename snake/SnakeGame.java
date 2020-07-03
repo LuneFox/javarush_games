@@ -26,6 +26,7 @@ public class SnakeGame extends Game {
     private int score;
     private int lifetime;
     private boolean isStopped;
+    private boolean isPaused;
     private int stage;
     boolean acceleration;
 
@@ -70,6 +71,7 @@ public class SnakeGame extends Game {
 
         // Launch
         isStopped = false;
+        isPaused = false;
         turnDelay = MAX_TURN_DELAY;
         setTurnTimer(turnDelay);
         drawScene();
@@ -323,6 +325,22 @@ public class SnakeGame extends Game {
 
     // UTILITY & CHECKS
 
+    public int getSpeed() {
+        return Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
+    }
+
+    public void pause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+            stopTurnTimer();
+            new Message("       ", Color.WHITE).draw(this, 15);
+            new Message(" pause ", Color.WHITE).draw(this, 16);
+            new Message("       ", Color.WHITE).draw(this, 17);
+        } else {
+            setTurnTimer(turnDelay);
+        }
+    }
+
     private long calculatePoints() {
         if (points > 0) {
             long stageTimePassed = (new Date().getTime() - stageStartDate.getTime()) / 1000;
@@ -421,7 +439,7 @@ public class SnakeGame extends Game {
 
     void setTurnDelay() {
         // Sets normal turn delay
-        this.turnDelay = Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
+        this.turnDelay = getSpeed();
     }
 
     void setStage(int stage) {

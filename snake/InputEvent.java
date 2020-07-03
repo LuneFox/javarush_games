@@ -186,6 +186,9 @@ class InputEvent {
                 case ESCAPE:
                     snake.rotateToPreviousElement();
                     break;
+                case SPACE:
+                    game.pause();
+                    break;
                 default:
                     break;
             }
@@ -282,7 +285,7 @@ class InputEvent {
         // returns to normal speed when user releases any directional key
         if (game.acceleration) {
             Triggers.speedUpDelay = true;
-            game.setTurnDelay(Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100));
+            game.setTurnDelay(game.getSpeed());
         }
     }
 }
