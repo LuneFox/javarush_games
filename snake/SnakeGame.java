@@ -141,7 +141,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.WATER);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.WATER);
                     score += points;
                 }
@@ -153,7 +153,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.FIRE);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.FIRE);
                     score += points;
                 }
@@ -165,7 +165,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.EARTH);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.EARTH);
                     score += points;
                 }
@@ -177,7 +177,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.AIR);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.AIR);
                     score += points;
                 }
@@ -190,7 +190,7 @@ public class SnakeGame extends Game {
                     snake.clearElements();
                     snake.getElementsAvailable().add(Element.ALMIGHTY);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.ALMIGHTY);
                     score += points;
                 }
@@ -287,7 +287,7 @@ public class SnakeGame extends Game {
         }
     }
 
-    private void drawElementsPanel() {
+    public void drawElementsPanel() {
         Color textColor;
         Color bgColor;
         for (Element element : Element.values()) {
@@ -333,9 +333,9 @@ public class SnakeGame extends Game {
         isPaused = !isPaused;
         if (isPaused) {
             stopTurnTimer();
-            new Message("       ", Color.WHITE).draw(this, 15);
-            new Message(" pause ", Color.WHITE).draw(this, 16);
-            new Message("       ", Color.WHITE).draw(this, 17);
+            new Message("             ", Color.WHITE).draw(this, 15);
+            new Message(" SLEEPING... ", Color.WHITE).draw(this, 16);
+            new Message("             ", Color.WHITE).draw(this, 17);
         } else {
             setTurnTimer(turnDelay);
         }
@@ -418,7 +418,7 @@ public class SnakeGame extends Game {
     }
 
 
-// SETTERS
+    // SETTERS
 
     void setGameOverReason(String reason) {
         this.gameOverReason = reason;

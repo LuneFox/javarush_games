@@ -251,19 +251,21 @@ public class Snake {
         }
     }
 
-    void rotateToNextElement() {
+    void rotateToNextElement(SnakeGame game) {
         Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
         elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
         elementsAvailable.add(movingElement);                  // adding it to the end
         setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
+        game.drawElementsPanel();
     }
 
-    void rotateToPreviousElement() {
+    void rotateToPreviousElement(SnakeGame game) {
         int lastElement = elementsAvailable.size() - 1;
         Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
         elementsAvailable.remove(movingElement);                    // removing it from list (it was last)
         elementsAvailable.add(0, movingElement);             // instantly adding it to the beginning
         setElement(elementsAvailable.get(0));                       // making it new element
+        game.drawElementsPanel();
     }
 
     void clearElements() {

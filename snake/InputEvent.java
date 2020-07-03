@@ -181,10 +181,10 @@ class InputEvent {
                     snake.setDirection(Direction.LEFT);
                     break;
                 case ENTER:
-                    snake.rotateToNextElement();
+                    snake.rotateToNextElement(game);
                     break;
                 case ESCAPE:
-                    snake.rotateToPreviousElement();
+                    snake.rotateToPreviousElement(game);
                     break;
                 case SPACE:
                     game.pause();
@@ -233,13 +233,13 @@ class InputEvent {
 
     private void leftClickInGame(int x, int y) {
         if (!game.isStopped()) {
-            snake.rotateToPreviousElement();
+            snake.rotateToPreviousElement(game);
         }
     }
 
     private void rightClickInGame(int x, int y) {
         if (!game.isStopped()) {
-            snake.rotateToNextElement();
+            snake.rotateToNextElement(game);
         }
     }
 

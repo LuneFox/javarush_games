@@ -61,7 +61,7 @@ class Menu {
         new Message("ACCELERATE", Color.WHITE).draw(game, 17, 13);
         new Message("NEXT ELEMENT", Color.WHITE).draw(game, 17, 15);
         new Message("PREV ELEMENT", Color.WHITE).draw(game, 17, 17);
-        new Message("PAUSE", Color.WHITE).draw(game, 17, 21);
+        new Message("SLEEP", Color.WHITE).draw(game, 17, 21);
         new Message("BACK TO MENU", Color.WHITE).draw(game, 17, 23);
     }
 
