@@ -62,8 +62,7 @@ class Orb extends GameObject {
     }
 
     void draw(Game game) {
-        Date now = new Date();
-        if (now.getTime() - blinkTime.getTime() > 250) {
+        if (new Date().getTime() - blinkTime.getTime() > 250) {
             blink = !blink;
             blinkTime = new Date();
         }

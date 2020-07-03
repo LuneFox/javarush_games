@@ -238,19 +238,17 @@ public class Snake {
     }
 
     private void starve() {
-        Date now = new Date();
-        if (now.getTime() - starveTime.getTime() < 300){
-            return;
+        if (new Date().getTime() - starveTime.getTime() > 300) {
+            if (!(element == Element.ALMIGHTY)) {
+                hunger += getLength() / 5;
+            }
+            if (hunger > 100) {
+                removeTail();
+                game.setScore(-5, true);
+                hunger = 0;
+            }
+            starveTime = new Date();
         }
-        if (!(element == Element.ALMIGHTY)) {
-            hunger += getLength() / 5;
-        }
-        if (hunger > 100) {
-            removeTail();
-            game.setScore(-5, true);
-            hunger = 0;
-        }
-        starveTime = new Date();
     }
 
     void rotateToNextElement() {
