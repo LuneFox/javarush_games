@@ -9,7 +9,7 @@ import java.util.ArrayList;
 class Menu {
     private SnakeGame game;
     int lastPointerPosition;
-    int brush;
+    private int brush;
 
     Menu(SnakeGame game) {
         this.game = game;
@@ -49,23 +49,26 @@ class Menu {
         drawBackground();
         Screen.set(Screen.Type.CONTROLS);
         new Message("CONTROLS", Color.SKYBLUE).draw(game, 7);
+
         new Message("↑ ↓ → ←       :", Color.YELLOW).draw(game, 1, 11);
         new Message("HOLD DIRECTION:", Color.YELLOW).draw(game, 1, 13);
         new Message("ENTER, R-CLICK:", Color.YELLOW).draw(game, 1, 15);
         new Message("ESC,   L-CLICK:", Color.YELLOW).draw(game, 1, 17);
-        new Message("SPACE         :", Color.YELLOW).draw(game, 1, 21);
+        new Message("SPACE (GAME)  :", Color.YELLOW).draw(game, 1, 21);
+        new Message("SPACE (G.OVER):", Color.YELLOW).draw(game, 1, 23);
+
         new Message("DIRECTION", Color.WHITE).draw(game, 17, 11);
         new Message("ACCELERATE", Color.WHITE).draw(game, 17, 13);
         new Message("NEXT ELEMENT", Color.WHITE).draw(game, 17, 15);
         new Message("PREV ELEMENT", Color.WHITE).draw(game, 17, 17);
-        new Message("BACK TO MENU", Color.WHITE).draw(game, 17, 21);
-        new Message("AT GAME OVER", Color.WHITE).draw(game, 17, 23);
+        new Message("SLEEP", Color.WHITE).draw(game, 17, 21);
+        new Message("BACK TO MENU", Color.WHITE).draw(game, 17, 23);
     }
 
     void displayHelp() {
         drawBackground();
         Screen.set(Screen.Type.HELP);
-        new Message("HELP", Color.SKYBLUE).draw(game, 7);
+        new Message("HELP", Color.SKYBLUE).draw(game, 5);
         new Message("COLLECT TO WIN:", Color.YELLOW).draw(game, 9);
         new Message("ORB OF WATER", Color.LIGHTBLUE).draw(game, 3, 11);
         new Message("ORB OF FIRE", Color.RED).draw(game, 3, 13);

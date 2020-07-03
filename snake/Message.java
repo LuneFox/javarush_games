@@ -3,66 +3,57 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.*;
 
 public class Message {
-    private String[] splitText;
+    private String[] symbols;
     private Color color;
-    private Color bgColor = Color.BLACK;
-    private int textSize = 90;
-
-
-    // CONSTRUCTOR
+    private Color bgColor;
+    private int textSize;
 
     Message(String text, Color color) {
         // Create message object with given text and color
-        splitText = specialSplit(text);
+        this.symbols = specialSplit(text);
         this.color = color;
+        this.bgColor = Color.BLACK;
+        this.textSize = 90;
     }
-
-
-    // VISUALS
 
     public void draw(Game game, int x, int y) {
         // Draw message at given position
-        if (x + splitText.length > SnakeGame.WIDTH) {
+        if (x + symbols.length > SnakeGame.WIDTH) {
             color = Color.RED;
             x = 0;
-            splitText = specialSplit("text is out of bounds!");
+            symbols = specialSplit(Constants.TEXT_IS_OUT_OF_BOUNDS);
         }
 
-        for (int i = 0; i < splitText.length; i++) {
-            game.setCellValueEx((i + x), y, bgColor, splitText[i], color, textSize);
+        for (int i = 0; i < symbols.length; i++) {
+            game.setCellValueEx((i + x), y, bgColor, symbols[i], color, textSize);
         }
     }
 
     void draw(Game game, int y) {
         // Draw message in the middle at given height;
-        if (splitText.length > SnakeGame.WIDTH) {
+        if (symbols.length > SnakeGame.WIDTH) {
             color = Color.RED;
-            splitText = specialSplit("text is to long!");
+            symbols = specialSplit(Constants.TEXT_IS_OUT_OF_BOUNDS);
         }
 
-        int padding = splitText.length / 2;
-        for (int i = 0; i < splitText.length; i++) { // JavaRush browser fix
-            game.setCellValueEx((SnakeGame.WIDTH / 2 + i - padding), y, bgColor, splitText[i], color, textSize);
+        int padding = symbols.length / 2;
+        for (int i = 0; i < symbols.length; i++) {
+            game.setCellValueEx((SnakeGame.WIDTH / 2 + i - padding), y, bgColor, symbols[i], color, textSize);
         }
-
-
     }
-
-
-    // MECHANICS
 
     private String[] specialSplit(String text) {
         String[] result = text.toUpperCase().split("");
-        //if (text.length() % 2 == 1) text = text + " ";
-        //return text.toUpperCase().split("(?<=\\G..)");
         if (!result[0].equals("")) {
             return result;
         } else {
             String[] resultJavaRush = new String[result.length - 1];
-            for (int i = 0; i < resultJavaRush.length; i++) {
-                resultJavaRush[i] = result[i + 1];
-            }
+            System.arraycopy(result, 1, resultJavaRush, 0, resultJavaRush.length);
             return resultJavaRush;
         }
+    }
+
+    private static class Constants {
+        static final String TEXT_IS_OUT_OF_BOUNDS = "text is too long!";
     }
 }

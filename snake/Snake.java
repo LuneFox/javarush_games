@@ -17,6 +17,7 @@ public class Snake {
     private Color[] bodyColor;
     private ArrayList<GameObject> snakeParts;
     private LinkedList<Element> elementsAvailable;
+    private Date starveTime;
     private int breath;
     private int hunger;
     boolean isAlive = true;
@@ -33,6 +34,7 @@ public class Snake {
         this.setElement(Element.NEUTRAL);
         this.elementsAvailable.add(Element.NEUTRAL);
         this.hunger = 0;
+        this.starveTime = new Date();
         addParts(x, y, direction, 3);
         breath = snakeParts.size();
     }
@@ -66,7 +68,7 @@ public class Snake {
         if (checkGameOver() | checkEscapeBorders() | checkBiteSelf() || isDeadAfterNodeInteraction(head)) {
             return; // check last only if first 3 didn't return true ^
         }
-        increaseHunger();
+        starve();
         snakeParts.add(0, head);
         removeTail();
     }
@@ -235,30 +237,35 @@ public class Snake {
         snakeParts.add(newTail);
     }
 
-    private void increaseHunger() {
-        if (!(element == Element.ALMIGHTY)) {
-            hunger += getLength() / 5;
-        }
-        if (hunger > 100) {
-            removeTail();
-            game.setScore(-5, true);
-            hunger = 0;
+    private void starve() {
+        if (new Date().getTime() - starveTime.getTime() > 300) {
+            if (!(element == Element.ALMIGHTY)) {
+                hunger += getLength() / 5;
+            }
+            if (hunger > 100) {
+                removeTail();
+                game.setScore(-5, true);
+                hunger = 0;
+            }
+            starveTime = new Date();
         }
     }
 
-    void rotateToNextElement() {
+    void rotateToNextElement(SnakeGame game) {
         Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
         elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
         elementsAvailable.add(movingElement);                  // adding it to the end
         setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
+        game.drawElementsPanel();
     }
 
-    void rotateToPreviousElement() {
+    void rotateToPreviousElement(SnakeGame game) {
         int lastElement = elementsAvailable.size() - 1;
         Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
         elementsAvailable.remove(movingElement);                    // removing it from list (it was last)
         elementsAvailable.add(0, movingElement);             // instantly adding it to the beginning
         setElement(elementsAvailable.get(0));                       // making it new element
+        game.drawElementsPanel();
     }
 
     void clearElements() {

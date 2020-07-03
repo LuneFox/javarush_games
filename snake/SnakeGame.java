@@ -26,6 +26,7 @@ public class SnakeGame extends Game {
     private int score;
     private int lifetime;
     private boolean isStopped;
+    private boolean isPaused;
     private int stage;
     boolean acceleration;
 
@@ -70,6 +71,7 @@ public class SnakeGame extends Game {
 
         // Launch
         isStopped = false;
+        isPaused = false;
         turnDelay = MAX_TURN_DELAY;
         setTurnTimer(turnDelay);
         drawScene();
@@ -85,7 +87,6 @@ public class SnakeGame extends Game {
         drawScene();
         isStopped = true;
         showMessageDialog(Color.YELLOW, Strings.VICTORY + score, Color.GREEN, 27);
-        menu.selectStageUp();
     }
 
     private void gameOver() {
@@ -140,7 +141,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.WATER);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.WATER);
                     score += points;
                 }
@@ -152,7 +153,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.FIRE);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.FIRE);
                     score += points;
                 }
@@ -164,7 +165,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.EARTH);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.EARTH);
                     score += points;
                 }
@@ -176,7 +177,7 @@ public class SnakeGame extends Game {
                     Collections.sort(snake.getElementsAvailable());
                     snake.getElementsAvailable().add(Element.AIR);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.AIR);
                     score += points;
                 }
@@ -184,11 +185,12 @@ public class SnakeGame extends Game {
             case ALMIGHTY:
                 if (!orb.isAlive && !almightyOrbObtained) {
                     almightyOrbObtained = true;
+                    menu.selectStageUp();
                     orbs.remove(orb);
                     snake.clearElements();
                     snake.getElementsAvailable().add(Element.ALMIGHTY);
                     do {
-                        snake.rotateToNextElement();
+                        snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.ALMIGHTY);
                     score += points;
                 }
@@ -285,7 +287,7 @@ public class SnakeGame extends Game {
         }
     }
 
-    private void drawElementsPanel() {
+    public void drawElementsPanel() {
         Color textColor;
         Color bgColor;
         for (Element element : Element.values()) {
@@ -322,6 +324,22 @@ public class SnakeGame extends Game {
     }
 
     // UTILITY & CHECKS
+
+    public int getSpeed() {
+        return Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
+    }
+
+    public void pause() {
+        isPaused = !isPaused;
+        if (isPaused) {
+            stopTurnTimer();
+            new Message("             ", Color.WHITE).draw(this, 15);
+            new Message(" SLEEPING... ", Color.WHITE).draw(this, 16);
+            new Message("             ", Color.WHITE).draw(this, 17);
+        } else {
+            setTurnTimer(turnDelay);
+        }
+    }
 
     private long calculatePoints() {
         if (points > 0) {
@@ -400,7 +418,7 @@ public class SnakeGame extends Game {
     }
 
 
-// SETTERS
+    // SETTERS
 
     void setGameOverReason(String reason) {
         this.gameOverReason = reason;
@@ -421,7 +439,7 @@ public class SnakeGame extends Game {
 
     void setTurnDelay() {
         // Sets normal turn delay
-        this.turnDelay = Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
+        this.turnDelay = getSpeed();
     }
 
     void setStage(int stage) {

@@ -181,10 +181,13 @@ class InputEvent {
                     snake.setDirection(Direction.LEFT);
                     break;
                 case ENTER:
-                    snake.rotateToNextElement();
+                    snake.rotateToNextElement(game);
                     break;
                 case ESCAPE:
-                    snake.rotateToPreviousElement();
+                    snake.rotateToPreviousElement(game);
+                    break;
+                case SPACE:
+                    game.pause();
                     break;
                 default:
                     break;
@@ -230,13 +233,13 @@ class InputEvent {
 
     private void leftClickInGame(int x, int y) {
         if (!game.isStopped()) {
-            snake.rotateToPreviousElement();
+            snake.rotateToPreviousElement(game);
         }
     }
 
     private void rightClickInGame(int x, int y) {
         if (!game.isStopped()) {
-            snake.rotateToNextElement();
+            snake.rotateToNextElement(game);
         }
     }
 
@@ -282,7 +285,7 @@ class InputEvent {
         // returns to normal speed when user releases any directional key
         if (game.acceleration) {
             Triggers.speedUpDelay = true;
-            game.setTurnDelay(Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100));
+            game.setTurnDelay(game.getSpeed());
         }
     }
 }
