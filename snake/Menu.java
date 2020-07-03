@@ -9,7 +9,7 @@ import java.util.ArrayList;
 class Menu {
     private SnakeGame game;
     int lastPointerPosition;
-    int brush;
+    private int brush;
 
     Menu(SnakeGame game) {
         this.game = game;
