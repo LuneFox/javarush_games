@@ -53,15 +53,11 @@ public class Message {
 
     private String[] specialSplit(String text) {
         String[] result = text.toUpperCase().split("");
-        //if (text.length() % 2 == 1) text = text + " ";
-        //return text.toUpperCase().split("(?<=\\G..)");
         if (!result[0].equals("")) {
             return result;
         } else {
             String[] resultJavaRush = new String[result.length - 1];
-            for (int i = 0; i < resultJavaRush.length; i++) {
-                resultJavaRush[i] = result[i + 1];
-            }
+            System.arraycopy(result, 1, resultJavaRush, 0, resultJavaRush.length);
             return resultJavaRush;
         }
     }
