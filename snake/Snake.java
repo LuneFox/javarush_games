@@ -17,6 +17,7 @@ public class Snake {
     private Color[] bodyColor;
     private ArrayList<GameObject> snakeParts;
     private LinkedList<Element> elementsAvailable;
+    private Date starveTime;
     private int breath;
     private int hunger;
     boolean isAlive = true;
@@ -33,6 +34,7 @@ public class Snake {
         this.setElement(Element.NEUTRAL);
         this.elementsAvailable.add(Element.NEUTRAL);
         this.hunger = 0;
+        this.starveTime = new Date();
         addParts(x, y, direction, 3);
         breath = snakeParts.size();
     }
@@ -66,7 +68,7 @@ public class Snake {
         if (checkGameOver() | checkEscapeBorders() | checkBiteSelf() || isDeadAfterNodeInteraction(head)) {
             return; // check last only if first 3 didn't return true ^
         }
-        increaseHunger();
+        starve();
         snakeParts.add(0, head);
         removeTail();
     }
@@ -235,7 +237,11 @@ public class Snake {
         snakeParts.add(newTail);
     }
 
-    private void increaseHunger() {
+    private void starve() {
+        Date now = new Date();
+        if (now.getTime() - starveTime.getTime() < 300){
+            return;
+        }
         if (!(element == Element.ALMIGHTY)) {
             hunger += getLength() / 5;
         }
@@ -244,6 +250,7 @@ public class Snake {
             game.setScore(-5, true);
             hunger = 0;
         }
+        starveTime = new Date();
     }
 
     void rotateToNextElement() {

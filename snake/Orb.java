@@ -11,12 +11,9 @@ class Orb extends GameObject {
     private Color bgColor1;
     private Color bgColor2;
     private String sign;
+    private Date blinkTime;
     private boolean blink;
     boolean isAlive = true;
-
-    private long timeBefore;
-    private long timeAfter;
-    private long timeDifference;
 
     Orb(int x, int y, Element e) {
         super(x, y);
@@ -61,16 +58,15 @@ class Orb extends GameObject {
             default:
                 break;
         }
-        timeBefore = new Date().getTime();
+        blinkTime = new Date();
     }
 
     void draw(Game game) {
-        if (timeDifference > 500) {
-            timeBefore = new Date().getTime();
+        Date now = new Date();
+        if (now.getTime() - blinkTime.getTime() > 250) {
+            blink = !blink;
+            blinkTime = new Date();
         }
-        timeAfter = new Date().getTime();
-        timeDifference = timeAfter - timeBefore;
-        blink = (timeDifference < 250);
         game.setCellValueEx(x, y, blink ? bgColor1 : bgColor2, sign, color, 90);
     }
 }
