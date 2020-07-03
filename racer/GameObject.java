@@ -1,73 +1,67 @@
 package com.javarush.games.racer;
 
-import com.javarush.engine.cell.Color;
-import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.*;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class GameObject {
-    public int x;
-    public int y;
+    public double x;
+    public double y;
     public int width;
     public int height;
     public int[][] matrix;
+    protected HitBox hitBox;
 
-    public GameObject(int x, int y) {
+    private ArrayList<int[][]> frames;
+    private int currentFrame;
+    private int frameCounter;
+
+    public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
+        frames = new ArrayList<>();
+        currentFrame = 0;
     }
 
-    public GameObject(int x, int y, int[][] matrix) {
+    public GameObject(double x, double y, int[][] matrix) {
         this.x = x;
         this.y = y;
         this.matrix = matrix;
         width = matrix[0].length;
         height = matrix.length;
+        frames = new ArrayList<>();
+        currentFrame = 0;
     }
 
-    public void draw(Game game) {
+    public void draw(RacerGame game) {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 int colorIndex = matrix[j][i];
-                game.setCellColor(x + i, y + j, Color.values()[colorIndex]);
+                game.display.setCellColor((int) x + i, (int) y + j, Color.values()[colorIndex]);
             }
         }
     }
 
-    public boolean isCollisionPossible(GameObject otherGameObject) {
-        if (x > otherGameObject.x + otherGameObject.width || x + width < otherGameObject.x) {
-            return false;
+    public void animate(RacerGame game, int frameDelay) {
+        if (frameCounter < frameDelay) {
+            frameCounter++;
+        } else {
+            if (currentFrame < frames.size() - 1) {
+                this.matrix = frames.get(++currentFrame);
+            } else {
+                currentFrame = 0;
+                this.matrix = frames.get(currentFrame);
+            }
+            frameCounter = 0;
         }
-
-        if (y > otherGameObject.y + otherGameObject.height || y + height < otherGameObject.y) {
-            return false;
-        }
-        return true;
+        draw(game);
     }
 
-    public boolean isCollision(GameObject gameObject) {
-        if (!isCollisionPossible(gameObject)) {
-            return false;
-        }
-
-        for (int carX = 0; carX < gameObject.width; carX++) {
-            for (int carY = 0; carY < gameObject.height; carY++) {
-                if (gameObject.matrix[carY][carX] != 0) {
-                    if (isCollision(carX + gameObject.x, carY + gameObject.y)) {
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean isCollision(int x, int y) {
-        for (int matrixX = 0; matrixX < width; matrixX++) {
-            for (int matrixY = 0; matrixY < height; matrixY++) {
-                if (matrix[matrixY][matrixX] != 0 && matrixX + this.x == x && matrixY + this.y == y) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public void setAnimation(int[][]... frames) {
+        this.frames = new ArrayList<>();
+        this.frames.addAll(Arrays.asList(frames));
+        frameCounter = this.frames.size() - 1;
+        currentFrame = 0;
     }
 }

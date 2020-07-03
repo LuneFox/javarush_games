@@ -27,9 +27,9 @@ public class SpritePainterTool {
         backgroundColors.add(Color.DARKSLATEGRAY);
         spriteSizeX = 9;
         spriteSizeY = 9;
-        createSprite(32, 32);
+        createSprite(MoonLanderGame.WIDTH - 8, MoonLanderGame.HEIGHT - 8);
         savedStates = new ArrayList<>();
-        int[][] firstSavedState = new int[32][32];
+        int[][] firstSavedState = new int[MoonLanderGame.HEIGHT - 8][MoonLanderGame.WIDTH - 8];
         copyArray(sprite, firstSavedState);
         savedStates.add(firstSavedState);
     }
@@ -84,8 +84,8 @@ public class SpritePainterTool {
     }
 
     private void drawSpriteMask() {
-        int maskX = 32 - spriteSizeX;
-        int maskY = 32 - spriteSizeY;
+        int maskX = MoonLanderGame.WIDTH - 8 - spriteSizeX;
+        int maskY = MoonLanderGame.HEIGHT - 8 - spriteSizeY;
         for (int x = 8; x < MoonLanderGame.WIDTH; x++) {
             for (int y = MoonLanderGame.HEIGHT - maskY; y < MoonLanderGame.HEIGHT; y++) {
                 game.setCellValueEx(x, y, Color.BLACK, "", Color.NONE);
@@ -142,13 +142,13 @@ public class SpritePainterTool {
         if (x - 9 > -1 && sprite[y - 8][x - 9] == baseColor) {
             fillColor(x - 1, y);
         }
-        if (x - 7 < 32 && sprite[y - 8][x - 7] == baseColor) {
+        if (x - 7 < (MoonLanderGame.WIDTH - 8) && sprite[y - 8][x - 7] == baseColor) {
             fillColor(x + 1, y);
         }
         if (y - 9 > -1 && sprite[y - 9][x - 8] == baseColor) {
             fillColor(x, y - 1);
         }
-        if (y - 7 < 32 && sprite[y - 7][x - 8] == baseColor) {
+        if (y - 7 < (MoonLanderGame.HEIGHT - 8) && sprite[y - 7][x - 8] == baseColor) {
             fillColor(x, y + 1);
         }
         fillSelected = false;
@@ -198,7 +198,7 @@ public class SpritePainterTool {
         if (savedStates.size() != 0 && sameArray(sprite, savedStates.get(0))) {
             return;
         }
-        int[][] saveState = new int[32][32];
+        int[][] saveState = new int[MoonLanderGame.HEIGHT - 8][MoonLanderGame.WIDTH - 8];
         copyArray(sprite, saveState);
         savedStates.add(0, saveState);
         if (savedStates.size() > 20) {
@@ -221,8 +221,8 @@ public class SpritePainterTool {
         switch (direction) {
             case VERTICAL: {
                 spriteSizeY += amount;
-                if (spriteSizeY > 32) {
-                    spriteSizeY = 32;
+                if (spriteSizeY > MoonLanderGame.HEIGHT - 8) {
+                    spriteSizeY = MoonLanderGame.HEIGHT - 8;
                 } else if (spriteSizeY < 1) {
                     spriteSizeY = 1;
                 }
@@ -230,8 +230,8 @@ public class SpritePainterTool {
             }
             case HORIZONTAL: {
                 spriteSizeX += amount;
-                if (spriteSizeX > 32) {
-                    spriteSizeX = 32;
+                if (spriteSizeX > MoonLanderGame.WIDTH - 8) {
+                    spriteSizeX = MoonLanderGame.WIDTH - 8;
                 } else if (spriteSizeX < 1) {
                     spriteSizeX = 1;
                 }
@@ -252,7 +252,7 @@ public class SpritePainterTool {
     }
 
     public void clearSprite() {
-        createSprite(32, 32);
+        createSprite(MoonLanderGame.WIDTH - 8, MoonLanderGame.HEIGHT - 8);
         display();
     }
 
@@ -288,13 +288,36 @@ public class SpritePainterTool {
                 "and search for \"nеw int\".", Color.BLACK, 25);
     }
 
+    public void exportArrayToConsole() {
+        StringBuilder result = new StringBuilder();
+        result.append("new int[][]{");
+        for (int y = 0; y < spriteSizeY; y++) {
+            for (int x = 0; x < spriteSizeX; x++) {
+                if (x == 0) {
+                    result.append("\n");
+                    result.append("{" + sprite[y][x] + ",");
+                } else if (x < spriteSizeX - 1) {
+                    result.append(sprite[y][x] + ",");
+                } else if (x == spriteSizeX - 1) {
+                    result.append(sprite[y][x] + "}");
+                }
+                if (x == spriteSizeX - 1 && y != spriteSizeY - 1) {
+                    result.append(",");
+                }
+            }
+        }
+        result.append("\n}");
+        String exportedString = result.toString();
+        System.out.println(exportedString);
+    }
+
     boolean clickedOnSprite(int x, int y) {
         return (x > 7 && y > 7 && !clickedOnMask(x, y));
     }
 
     private boolean clickedOnMask(int x, int y) {
-        int maskX = 32 - spriteSizeX;
-        int maskY = 32 - spriteSizeY;
+        int maskX = MoonLanderGame.WIDTH - 8 - spriteSizeX;
+        int maskY = MoonLanderGame.HEIGHT - 8 - spriteSizeY;
         boolean clickedOnBoard = (x > 7 && x < MoonLanderGame.WIDTH && y > 7 && y < MoonLanderGame.HEIGHT);
         boolean clickedOnXMask = (x > MoonLanderGame.WIDTH - 1 - maskX);
         boolean clickedOnYMask = (y > MoonLanderGame.HEIGHT - 1 - maskY);

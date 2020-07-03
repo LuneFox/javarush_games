@@ -1,5 +1,5 @@
 package com.javarush.games.racer;
 
 public enum Direction {
-    RIGHT, LEFT, NONE
+    UP, DOWN, RIGHT, LEFT, NONE
 }

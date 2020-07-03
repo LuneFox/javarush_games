@@ -1,138 +1,155 @@
 package com.javarush.games.racer.road;
 
-import com.javarush.engine.cell.*;
-import com.javarush.games.racer.PlayerCar;
+import com.javarush.games.racer.DeLorean;
+import com.javarush.games.racer.HitBox;
 import com.javarush.games.racer.RacerGame;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RoadManager {
-    public static final int LEFT_BORDER = RacerGame.ROADSIDE_WIDTH;
-    public static final int RIGHT_BORDER = RacerGame.WIDTH - LEFT_BORDER;
-    private static final int FIRST_LANE_POSITION = 16;
-    private static final int FOURTH_LANE_POSITION = 44;
-    private static final int PLAYER_CAR_DISTANCE = 12;
-    private List<RoadObject> items = new ArrayList<>();
-    private int passedCarsCount = 0;
+    public static final int UPPER_BORDER = 10;
+    public static final int LOWER_BORDER = 90;
+    public static final int ROAD_WIDTH = RacerGame.HEIGHT - (UPPER_BORDER) - (RacerGame.HEIGHT - LOWER_BORDER);
 
-    public void draw(Game game) {
+    private List<RoadObject> items = new ArrayList<>();
+
+
+    // OBJECTS CONTROL
+
+    public void draw(RacerGame game) {
         for (RoadObject item : items) {
             item.draw(game);
         }
     }
 
-    public void move(int boost) {
+    public void move(double boost) {
         for (RoadObject item : items) {
-            item.move(item.speed + boost, items);
+            item.move(item.speed + boost);
         }
         deletePassedItems();
     }
 
+    public void checkCross(DeLorean delorean) {
+        for (RoadObject item : items) {
+            if (HitBox.isCollision(item, delorean) && delorean.x == 3) {
+                switch (item.type) {
+                    case PUDDLE:
+                        delorean.setSpeed((delorean.getSpeed() / 100) * 95);
+                        break;
+                    case HOLE:
+                        delorean.setSpeed((delorean.getSpeed() / 100) * 80);
+                        break;
+                    case ENERGY:
+                        Energy energy = (Energy) item;
+                        if (!energy.isCollected) {
+                            if (delorean.getEnergy() < DeLorean.MAX_ENERGY) {
+                                delorean.setEnergy(delorean.getEnergy() + DeLorean.MAX_ENERGY / 10);
+                            }
+                            energy.isCollected = true;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+
+    // OBJECTS CREATION AND DELETION
+
+    public void generateNewRoadObjects(RacerGame game, DeLorean deLorean) {
+        if (RacerGame.allowCountTime && deLorean.getSpeed() > 0) {
+            generatePuddle(game);
+            generateHole(game);
+            generateEnergy(game);
+        }
+    }
+
     private RoadObject createRoadObject(RoadObjectType type, int x, int y) {
         switch (type) {
-            case THORN:
-                return new Thorn(x, y);
-            case DRUNK_CAR:
-                return new MovingCar(x, y);
+            case PUDDLE:
+                return new Puddle(x, y);
+            case HOLE:
+                return new Hole(x, y);
+            case ENERGY:
+                return new Energy(x, y);
             default:
-                return new Car(type, x, y);
+                return null;
         }
     }
 
-    private void addRoadObject(RoadObjectType type, Game game) {
-        int x = game.getRandomNumber(FIRST_LANE_POSITION, FOURTH_LANE_POSITION);
-        int y = -1 * RoadObject.getHeight(type);
-
-        RoadObject ro = createRoadObject(type, x, y);
-
-        if (isRoadSpaceFree(ro)) {
-            items.add(ro);
+    private void addRoadObject(RoadObjectType type, RacerGame game) {
+        int x = RacerGame.WIDTH * 2 + RoadObject.getWidth(type);
+        int y = game.getRandomNumber(RoadManager.UPPER_BORDER, RoadManager.LOWER_BORDER - RoadObject.getHeight(type));
+        RoadObject newItem = createRoadObject(type, x, y);
+        for (RoadObject item : items) {
+            if (HitBox.isCollisionY(item, newItem)) {
+                return;
+            }
         }
-
+        items.add(newItem);
     }
 
-    private void generateThorn(Game game) {
+    private void generatePuddle(RacerGame game) {
         int x = game.getRandomNumber(100);
-        if (x < 10 && !isThornExists()) {
-            addRoadObject(RoadObjectType.THORN, game);
+        if (x < 10 && !isTwoPuddlesExist()) {
+            addRoadObject(RoadObjectType.PUDDLE, game);
         }
     }
 
-    private void generateRegularCar(Game game) {
-        int chance = game.getRandomNumber(100);
-        int carTypeNumber = game.getRandomNumber(4);
-        if (chance < 30) {
-            addRoadObject(RoadObjectType.values()[carTypeNumber], game);
+    private void generateHole(RacerGame game) {
+        int x = game.getRandomNumber(100);
+        if (x < 2 && !isHoleExist()) {
+            addRoadObject(RoadObjectType.HOLE, game);
         }
     }
 
-    private void generateMovingCar(Game game) {
-        int chance = game.getRandomNumber(100);
-        if (chance < 10 && !isMovingCarExists()) {
-            addRoadObject(RoadObjectType.DRUNK_CAR, game);
+    private void generateEnergy(RacerGame game) {
+        int x = game.getRandomNumber(100);
+        if (x < 15 && !isEnergyExist() && game.delorean.getEnergy() < DeLorean.MAX_ENERGY) {
+            addRoadObject(RoadObjectType.ENERGY, game);
         }
-    }
-
-    public void generateNewRoadObjects(Game game) {
-        generateThorn(game);
-        generateRegularCar(game);
-        generateMovingCar(game);
     }
 
     private void deletePassedItems() {
-        List<RoadObject> itemsCopy = new ArrayList<>();
-        for (RoadObject ro : items) {
-            itemsCopy.add(ro);
-        }
+        List<RoadObject> itemsCopy = new ArrayList<>(items);
         for (RoadObject ro : itemsCopy) {
-            if (ro.y >= RacerGame.HEIGHT) {
-                if (ro.type != RoadObjectType.THORN) {
-                    passedCarsCount++;
-                }
+            if (ro.x + ro.width < 0) {
                 items.remove(ro);
             }
         }
     }
 
-    private boolean isThornExists() {
+
+    // CHECKS
+
+    private boolean isTwoPuddlesExist() {
+        int count = 0;
         for (RoadObject ro : items) {
-            if (ro.type == RoadObjectType.THORN) {
+            if (ro.type == RoadObjectType.PUDDLE) {
+                count++;
+            }
+        }
+        return (count == 2);
+    }
+
+    private boolean isHoleExist() {
+        for (RoadObject ro : items) {
+            if (ro.type == RoadObjectType.HOLE) {
                 return true;
             }
         }
         return false;
     }
 
-    private boolean isMovingCarExists() {
+    private boolean isEnergyExist() {
         for (RoadObject ro : items) {
-            if (ro.type == RoadObjectType.DRUNK_CAR) {
+            if (ro.type == RoadObjectType.ENERGY) {
                 return true;
             }
         }
         return false;
-    }
-
-
-    public boolean checkCrush(PlayerCar car) {
-        for (RoadObject ro : items) {
-            if (ro.isCollision(car)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean isRoadSpaceFree(RoadObject object) {
-        for (RoadObject ro : items) {
-            if (ro.isCollisionWithDistance(object, PLAYER_CAR_DISTANCE)) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public int getPassedCarsCount() {
-        return passedCarsCount;
     }
 }

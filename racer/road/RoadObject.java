@@ -2,13 +2,11 @@ package com.javarush.games.racer.road;
 
 import com.javarush.games.racer.*;
 
-import java.util.List;
-
 public class RoadObject extends GameObject {
     public RoadObjectType type;
-    public int speed;
+    public double speed;
 
-    public RoadObject(RoadObjectType type, int x, int y) {
+    public RoadObject(RoadObjectType type, double x, double y) {
         super(x, y);
         this.type = type;
         this.matrix = getMatrix(type);
@@ -20,30 +18,8 @@ public class RoadObject extends GameObject {
      * Метод, отвечающий за передвижение препятствия. У препятствия может быть своя скорость и дополнительная,
      * которая зависит от скорости движения игрока.
      */
-    public void move(int boost) {
-        this.y += boost;
-    }
-
-    public void move(int boost, List<RoadObject> items) {
-        this.y += boost;
-    }
-
-    /**
-     * Проверяет текущий объект и объект, который пришел в качестве параметра, на пересечение их изображений
-     * с учетом дистанции distance.
-     * Например, если в качестве distance передать число 12, а 2 объекта расположены друг от друга на расстоянии меньшем,
-     * чем 12 ячеек игрового поля, метод вернет true. В ином случае вернет false.
-     */
-    public boolean isCollisionWithDistance(RoadObject roadObject, int distance) {
-        if ((x - distance > roadObject.x + roadObject.width) || (x + width + distance < roadObject.x)) {
-            return false;
-        }
-
-        if ((y - distance > roadObject.y + roadObject.height) || (y + height + distance < roadObject.y)) {
-            return false;
-        }
-
-        return true;
+    public void move(double boost) {
+        this.x -= boost;
     }
 
     /**
@@ -51,18 +27,14 @@ public class RoadObject extends GameObject {
      */
     private static int[][] getMatrix(RoadObjectType type) {
         switch (type) {
-            case CAR:
-                return ShapeMatrix.PASSENGER_CAR;
-            case BUS:
-                return ShapeMatrix.BUS;
-            case SPORT_CAR:
-                return ShapeMatrix.SPORT_CAR;
-            case THORN:
-                return ShapeMatrix.THORN;
-            case DRUNK_CAR:
-                return ShapeMatrix.DRUNK_CAR;
+            case PUDDLE:
+                return ShapeMatrix.PUDDLE;
+            case HOLE:
+                return ShapeMatrix.HOLE;
+            case ENERGY:
+                return ShapeMatrix.ENERGY;
             default:
-                return ShapeMatrix.TRUCK;
+                return ShapeMatrix.DELOREAN_RUN_0;
         }
     }
 
@@ -72,4 +44,9 @@ public class RoadObject extends GameObject {
     public static int getHeight(RoadObjectType type) {
         return getMatrix(type).length;
     }
+
+    public static int getWidth(RoadObjectType type) {
+        return getMatrix(type)[0].length;
+    }
+
 }

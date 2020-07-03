@@ -80,6 +80,7 @@ public class InputEvent {
                     game.spritePainterTool.clearSprite();
                 } else if (x > 32 && x < 39 && y == 4) {
                     game.spritePainterTool.exportArray();
+                    game.spritePainterTool.exportArrayToConsole();
                 } else if (x > 34 && x < 39 && y == 6) {
                     game.spritePainterTool.undo();
                 } else if (x > 0 && x < 16 && y == 2) {
