@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * VERSION 1.00
+ * VERSION 1.01
  */
 
 public class SpaceInvadersGame extends Game {
@@ -39,6 +39,7 @@ public class SpaceInvadersGame extends Game {
     private Date startTime;
     private int animationsCount;
     private int score;
+    private boolean flashColor;
     private boolean isGameStopped;
     private boolean displayedEnding;
     private boolean showFlash = false;
@@ -165,7 +166,10 @@ public class SpaceInvadersGame extends Game {
         if (showFlash) {
             for (int y = 0; y < HEIGHT; y++) {
                 for (int x = 0; x < WIDTH; x++) {
-                    display.setCellValueEx(x, y, Color.WHITE, "");
+                    if (y % 2 == 0 && x % 2 == 0) {
+                        flashColor = !flashColor;
+                        display.setCellValueEx(x, y, flashColor ? Color.WHITE : Color.YELLOW, "");
+                    }
                 }
             }
             showFlash = false;
