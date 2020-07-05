@@ -8,6 +8,7 @@ import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
+import java.util.Date;
 import java.util.List;
 
 public class QuestionBrick extends Brick {
@@ -186,9 +187,10 @@ public class QuestionBrick extends Brick {
         @Override
         public void verifyHit(List<Bullet> bullets) {
             bullets.forEach(bullet -> {
-                if (isCollision(bullet, true)) {
+                if (isCollision(bullet, true) && new Date().getTime() - bullet.collisionDate.getTime() > 500) {
                     bullet.changeDirection();
                     bullet.deadlyForEnemies = true;
+                    bullet.collisionDate = new Date();
                 }
             });
         }
