@@ -15,7 +15,7 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * VERSION 1.01
+ * VERSION 1.02
  */
 
 public class SpaceInvadersGame extends Game {

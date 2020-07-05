@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Bullet extends GameObject {
 
-    private int dy;
+    protected int dy;
     public boolean isAlive = true;
     public boolean deadlyForEnemies = false;
     public Date collisionDate;
@@ -55,6 +55,7 @@ public class Bullet extends GameObject {
     public static class FireBall extends Bullet {
         public FireBall(double x, double y, Direction direction) {
             super(x, y, direction);
+            dy = dy * 2;
             setAnimatedView(true,
                     ObjectShape.FIREBALL_1,
                     ObjectShape.FIREBALL_2,
