@@ -6,13 +6,10 @@ import com.javarush.games.spaceinvaders.gameobjects.battlers.EnemyFleet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.brick.Brick;
 import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
-import com.javarush.games.spaceinvaders.gameobjects.decoration.Bush;
-import com.javarush.games.spaceinvaders.gameobjects.decoration.Cloud;
-import com.javarush.games.spaceinvaders.gameobjects.decoration.FloorTile;
-import com.javarush.games.spaceinvaders.gameobjects.decoration.Hill;
 import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.Decoration.*;
 
 import java.util.ArrayList;
 import java.util.Date;
