@@ -163,16 +163,26 @@ public class QuestionBrick extends Brick {
     }
 
     public class Mushroom extends Bonus {
+        private int[][] sprite = new int[ObjectShape.MUSHROOM.length][ObjectShape.MUSHROOM[0].length];
+
         public Mushroom(double x, double y) {
             super(x, y);
-            setStaticView(ObjectShape.MUSHROOM);
+            for (int matrixY = 0; matrixY < ObjectShape.MUSHROOM.length; matrixY++) {
+                for (int matrixX = 0; matrixX < ObjectShape.MUSHROOM[0].length; matrixX++) {
+                    this.sprite[matrixY][matrixX] = ObjectShape.MUSHROOM[matrixY][matrixX];
+                }
+            }
+            setStaticView(sprite);
         }
 
         @Override
         public void verifyHit(List<Bullet> bullets) {
             bullets.forEach(bullet -> {
-                if (isCollision(bullet, true)) {
+                int[] point = isCollisionWithCoords(bullet, false);
+                if (point != null) {
                     bullet.kill();
+                    this.matrix[point[1]][point[0]] = 0;
+                    System.out.println(point[1] + ", " + point[0]);
                 }
             });
         }

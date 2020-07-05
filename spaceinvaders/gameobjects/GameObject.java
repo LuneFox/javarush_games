@@ -108,6 +108,33 @@ public class GameObject {
         return false;
     }
 
+    public int[] isCollisionWithCoords(GameObject gameObject, boolean reversed) {
+        if (reversed) {
+            for (int gameObjectX = 0; gameObjectX < gameObject.width; gameObjectX++) {
+                for (int gameObjectY = 0; gameObjectY < gameObject.height; gameObjectY++) {
+                    if (gameObject.matrix[gameObjectY][gameObjectX] > 0) {
+                        int[] point = isCollisionWithCoords((gameObject.width - gameObjectX) + gameObject.x, gameObjectY + gameObject.y);
+                        if (point != null) {
+                            return new int[]{point[0], point[1]};
+                        }
+                    }
+                }
+            }
+        } else {
+            for (int gameObjectX = 0; gameObjectX < gameObject.width; gameObjectX++) {
+                for (int gameObjectY = 0; gameObjectY < gameObject.height; gameObjectY++) {
+                    if (gameObject.matrix[gameObjectY][gameObjectX] > 0) {
+                        int[] point = isCollisionWithCoords(gameObjectX + gameObject.x, gameObjectY + gameObject.y);
+                        if (point != null) {
+                            return new int[]{point[0], point[1]};
+                        }
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     private boolean isCollision(double x, double y) {
         for (int matrixX = 0; matrixX < width; matrixX++) {
             for (int matrixY = 0; matrixY < height; matrixY++) {
@@ -119,5 +146,18 @@ public class GameObject {
             }
         }
         return false;
+    }
+
+    private int[] isCollisionWithCoords(double x, double y) {
+        for (int matrixX = 0; matrixX < width; matrixX++) {
+            for (int matrixY = 0; matrixY < height; matrixY++) {
+                if (matrix[matrixY][matrixX] > 0
+                        && matrixX + (int) this.x == (int) x
+                        && matrixY + (int) this.y == (int) y) {
+                    return new int[]{matrixX, matrixY};
+                }
+            }
+        }
+        return null;
     }
 }
