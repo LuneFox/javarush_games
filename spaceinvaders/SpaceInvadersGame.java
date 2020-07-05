@@ -254,12 +254,23 @@ public class SpaceInvadersGame extends Game {
         score += enemyFleet.verifyHit(playerBullets) * getMultiplier();
         score += enemyFleet.verifyHit(enemyBullets) * getMultiplier();
         enemyFleet.deleteHiddenShips();
-        bricks.forEach(brick -> brick.verifyTouch(mario, this));
+
+        bricks.forEach(brick -> {
+            brick.verifyTouch(mario, this);
+            if (brick.getClass().getSimpleName().equals("QuestionBrick")) {
+                QuestionBrick qb = (QuestionBrick) brick;
+                qb.putItem();
+                qb.ejectItem(this);
+            }
+        });
+
         bonuses.forEach(bonus -> {
             bonus.verifyTouch(mario, this);
             bonus.verifyHit(enemyBullets);
         });
+
         removeDeadObjects();
+
         if (enemyFleet.getBottomBorder() >= bricks.get(0).y) {
             mario.kill();
         }
@@ -275,11 +286,11 @@ public class SpaceInvadersGame extends Game {
     private void stopGame(boolean isWin) {
         stopTurnTimer();
         if (isWin) {
-            showMessageDialog(Color.BLACK,
+            showMessageDialog(Color.NONE,
                     "SCORE: " + score + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!",
                     Color.WHITE, 20);
         } else {
-            showMessageDialog(Color.BLACK,
+            showMessageDialog(Color.NONE,
                     "MAMMA MIA!",
                     Color.RED, 75);
         }

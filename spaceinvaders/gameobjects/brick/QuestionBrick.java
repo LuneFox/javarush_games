@@ -29,8 +29,6 @@ public class QuestionBrick extends Brick {
     @Override
     public void verifyTouch(Mario mario, SpaceInvadersGame game) {
         super.verifyTouch(mario, game);
-        putItem(); // constantly invoked
-        ejectItem(game);
     }
 
     private void open() {
@@ -38,7 +36,7 @@ public class QuestionBrick extends Brick {
         setStaticView(ObjectShape.QUESTION_BRICK_EMPTY);
     }
 
-    private void ejectItem(SpaceInvadersGame game) {
+    public void ejectItem(SpaceInvadersGame game) {
         if (isOpened && hasItem) {
             Bonus bonus = generateItem();
             this.bonus = bonus;
@@ -56,7 +54,7 @@ public class QuestionBrick extends Brick {
         }
     }
 
-    private void putItem() {
+    public void putItem() {
         double random = Math.random();
         if (random < 0.005 && isOpened && !hasItem) {
             if (bonus == null || bonus.isCollected) {
