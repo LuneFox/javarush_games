@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.gameobjects.brick;
+package com.javarush.games.spaceinvaders.gameobjects.items;
 
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
@@ -57,6 +57,10 @@ public class Brick extends GameObject {
 
     public Bullet fire() {
         return new Coin(x + 2, y, Direction.UP);
+    }
+
+    public void check(SpaceInvadersGame game) {
+
     }
 
 }

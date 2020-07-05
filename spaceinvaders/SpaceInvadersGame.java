@@ -3,9 +3,9 @@ package com.javarush.games.spaceinvaders;
 import com.javarush.engine.cell.*;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.EnemyFleet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
-import com.javarush.games.spaceinvaders.gameobjects.brick.Brick;
-import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
-import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
+import com.javarush.games.spaceinvaders.gameobjects.items.Brick;
+import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick;
+import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick.*;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 import com.javarush.games.spaceinvaders.Decoration.*;
@@ -23,7 +23,6 @@ public class SpaceInvadersGame extends Game {
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
     private static final int PLAYER_BULLETS_MAX = 2;
-    private static final int BONUS_MAX = 2;
 
     public Display display;
     private List<Bullet> enemyBullets;
@@ -186,7 +185,7 @@ public class SpaceInvadersGame extends Game {
         enemyFleet.move();
         enemyBullets.forEach(Bullet::move);
         playerBullets.forEach(Bullet::move);
-        bonuses.forEach(bonus -> bonus.move());
+        bonuses.forEach(Bonus::move);
         bricks.forEach(brick -> brick.jump(this));
         mario.move();
     }
@@ -233,12 +232,10 @@ public class SpaceInvadersGame extends Game {
     }
 
     public void addBonus(Bonus bonus) {
-        if (bonus != null && bonuses.size() < BONUS_MAX) {
-            bonuses.add(bonus);
-        }
+        bonuses.add(bonus);
     }
 
-    public int getMultiplier() {
+    private int getMultiplier() {
         Date now = new Date();
         long millis = now.getTime() - startTime.getTime();
         int seconds = (int) millis / 1000;
@@ -257,11 +254,7 @@ public class SpaceInvadersGame extends Game {
 
         bricks.forEach(brick -> {
             brick.verifyTouch(mario, this);
-            if (brick.getClass().getSimpleName().equals("QuestionBrick")) {
-                QuestionBrick qb = (QuestionBrick) brick;
-                qb.putItem();
-                qb.ejectItem(this);
-            }
+            brick.check(this);
         });
 
         bonuses.forEach(bonus -> {
