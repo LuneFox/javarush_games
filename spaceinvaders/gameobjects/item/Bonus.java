@@ -3,11 +3,10 @@ package com.javarush.games.spaceinvaders.gameobjects.item;
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
+import com.javarush.games.spaceinvaders.Bullet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
-import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 import java.util.List;
 

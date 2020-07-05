@@ -1,7 +1,7 @@
 package com.javarush.games.spaceinvaders.gameobjects.brick;
 
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
+import com.javarush.games.spaceinvaders.Bullet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
 import com.javarush.games.spaceinvaders.gameobjects.item.Mushroom;

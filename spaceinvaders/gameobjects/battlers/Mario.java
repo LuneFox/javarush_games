@@ -2,8 +2,8 @@ package com.javarush.games.spaceinvaders.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.FireBall;
+import com.javarush.games.spaceinvaders.Bullet;
+import com.javarush.games.spaceinvaders.Bullet.*;
 import com.javarush.games.spaceinvaders.gameobjects.item.Bonus;
 import com.javarush.games.spaceinvaders.shapes.MarioShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;

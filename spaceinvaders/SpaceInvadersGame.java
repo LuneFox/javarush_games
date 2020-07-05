@@ -1,7 +1,6 @@
 package com.javarush.games.spaceinvaders;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.EnemyFleet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.brick.Brick;

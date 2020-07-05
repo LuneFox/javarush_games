@@ -4,8 +4,8 @@ import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Coin;
+import com.javarush.games.spaceinvaders.Bullet;
+import com.javarush.games.spaceinvaders.Bullet.*;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 public class Brick extends GameObject {

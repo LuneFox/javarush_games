@@ -3,7 +3,7 @@ package com.javarush.games.spaceinvaders.gameobjects.battlers;
 import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
+import com.javarush.games.spaceinvaders.Bullet;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 import java.util.ArrayList;

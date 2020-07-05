@@ -1,6 +1,6 @@
 package com.javarush.games.spaceinvaders.gameobjects.item;
 
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
+import com.javarush.games.spaceinvaders.Bullet;
 import com.javarush.games.spaceinvaders.gameobjects.brick.QuestionBrick;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 

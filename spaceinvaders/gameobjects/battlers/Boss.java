@@ -1,8 +1,8 @@
 package com.javarush.games.spaceinvaders.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.Direction;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Ammo;
-import com.javarush.games.spaceinvaders.gameobjects.ammo.Bullet;
+import com.javarush.games.spaceinvaders.Bullet.*;
+import com.javarush.games.spaceinvaders.Bullet;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 public class Boss extends EnemyShip {
@@ -28,7 +28,7 @@ public class Boss extends EnemyShip {
         if (!isAlive) {
             return null;
         }
-        return new Ammo(x + 6, y + height, Direction.DOWN);
+        return new BossAmmo(x + 6, y + height, Direction.DOWN);
     }
 
     @Override
