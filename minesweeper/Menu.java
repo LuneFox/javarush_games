@@ -61,7 +61,7 @@ class Menu {
         }
         printRandomQuote();
         if (firstLoad) {
-            GAME.DISPLAY.draw();
+            GAME.display.draw();
             firstLoad = false;
         }
     }

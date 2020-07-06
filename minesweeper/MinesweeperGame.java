@@ -14,11 +14,11 @@ public class MinesweeperGame extends Game {
 
     // FINAL OBJECTS
     static final String VERSION = "1.04";
-    public final Display DISPLAY = new Display(this);
-    final private Text TEXT_WRITER = new Text(Bitmap.NONE, this);
-    final private Menu MENU = new Menu(this);
-    final private InputEvent IE = new InputEvent(this);
-    final Tile[][] FIELD = new Tile[10][10];
+    public final Display display = new Display(this);
+    final private Text text_writer = new Text(Bitmap.NONE, this);
+    final private Menu menu = new Menu(this);
+    final private InputEvent ie = new InputEvent(this);
+    final Tile[][] field = new Tile[10][10];
     private final int INIT_FLAGS = 3;
 
     // SHOP ITEMS
@@ -65,7 +65,7 @@ public class MinesweeperGame extends Game {
         setScreenSize(100, 100);
         loadResources();
         isStopped = true;
-        MENU.displayMain();
+        menu.displayMain();
     }
 
     void createGame() {
@@ -91,19 +91,19 @@ public class MinesweeperGame extends Game {
         countMineNeighbors();
         createShopItems();
         Screen.set(ScreenType.GAME_BOARD);
-        MENU.displayGameBoard();
+        menu.displayGameBoard();
     }
 
     private void loadResources() {
-        TEXT_WRITER.loadAlphabet();
-        MENU.loadImages();
-        MENU.loadButtons();
+        text_writer.loadAlphabet();
+        menu.loadImages();
+        menu.loadButtons();
     }
 
     private void createField() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
-                FIELD[y][x] = new Tile(Bitmap.TILE_CLOSED, this, x, y, false);
+                field[y][x] = new Tile(Bitmap.TILE_CLOSED, this, x, y, false);
             }
         }
     }
@@ -122,22 +122,16 @@ public class MinesweeperGame extends Game {
         this.shopMiniBomb = new ShopItem(5, 6 + difficulty / 10, 1,
                 (Picture) Menu.IMAGES.get(Bitmap.ITEM_BOMB), this);
         this.allShopItems.clear();
-        this.allShopItems.addAll(Arrays.asList(
-                shopShield,
-                shopScanner,
-                shopFlag,
-                shopGoldenShovel,
-                shopLuckyDice,
-                shopMiniBomb
-        ));
+        this.allShopItems.addAll(Arrays.asList(shopShield, shopScanner, shopFlag,
+                shopGoldenShovel, shopLuckyDice, shopMiniBomb));
     }
 
     private void plantMines() {
         while (countMinesOnField < difficulty / 1.5) { // fixed number of mines on field
             int x = getRandomNumber(10);
             int y = getRandomNumber(10);
-            if (!FIELD[y][x].isMine && !FIELD[y][x].isOpen) {
-                FIELD[y][x] = new Tile(Bitmap.TILE_CLOSED, this, x, y, true);
+            if (!field[y][x].isMine && !field[y][x].isOpen) {
+                field[y][x] = new Tile(Bitmap.TILE_CLOSED, this, x, y, true);
                 countMinesOnField++;
             }
         }
@@ -149,7 +143,7 @@ public class MinesweeperGame extends Game {
     private void gameOver() {
         lastResultIsVictory = false;
         isStopped = true;
-        MENU.displayGameOver(false);
+        menu.displayGameOver(false);
 
     }
 
@@ -162,7 +156,7 @@ public class MinesweeperGame extends Game {
             topScoreTitle = Menu.TITLE_NAMES.get(difficulty / 5 - 1);
         }
         isStopped = true;
-        MENU.displayGameOver(true);
+        menu.displayGameOver(true);
     }
 
 
@@ -172,7 +166,7 @@ public class MinesweeperGame extends Game {
         if (miniBombAction(x, y) || scannerAction(x, y)) {
             return;
         }
-        Tile cell = FIELD[y][x];
+        Tile cell = field[y][x];
         if (isStopped || cell.isFlag || cell.isOpen) {
             return;
         }
@@ -192,34 +186,30 @@ public class MinesweeperGame extends Game {
     }
 
     private void recursiveOpen(Tile cell) {
+        // empty cells open cells near them, does not count as a move made by player
         if (cell.countMineNeighbors == 0 && !cell.isMine) {
             allowCountMoves = false;
-            List<Tile> neighbors = getNeighbors(cell);
-            for (Tile neighbor : neighbors) {
+            getNeighbors(cell).forEach(neighbor -> {
                 if (!neighbor.isOpen) {
                     openTile(neighbor.x, neighbor.y);
                 }
-            }
+            });
         }
     }
 
     void openRest(int x, int y) {
-        Tile cell = FIELD[y][x];
-        if (!cell.isOpen || cell.isMine) {
-            return;
-        }
-        List<Tile> flaggedNeighbors = getFlaggedNeighbors(cell);
-        if (cell.countMineNeighbors == flaggedNeighbors.size()) {
-            List<Tile> neighbors = getNeighbors(cell);
-            for (Tile tile : neighbors) {
-                openTile(tile.x, tile.y);
+        // attempts to open cells around if number of flags nearby equals the number on the cell
+        Tile cell = field[y][x];
+        if (cell.isOpen && !cell.isMine) {
+            if (cell.countMineNeighbors == getFlaggedNeighbors(cell).size()) {
+                getNeighbors(cell).forEach(tile -> openTile(tile.x, tile.y));
             }
         }
     }
 
     private void destroyTile(int x, int y) {
         countMoves();
-        Tile cell = FIELD[y][x];
+        Tile cell = field[y][x];
 
         if (tileDestructionImpossible(cell)) {
             return;
@@ -234,17 +224,17 @@ public class MinesweeperGame extends Game {
             shopFlag.count++;   // returning exploded flag to the shop
             cell.isFlag = false;
         }
+
         if (cell.isMine) { // recursive explosions
             cell.isMine = false;
             allowCountMoves = false;
             countMinesOnField--;
             allowFlagExplosion = true;
-            List<Tile> neighbors = getNeighbors(cell);
-            for (Tile neighbor : neighbors) { // recursion
+            getNeighbors(cell).forEach(neighbor -> {
                 if (neighbor.isMine) {
-                    destroyTile(neighbor.x, neighbor.y);
+                    destroyTile(neighbor.x, neighbor.y); // recursive call
                 }
-            }
+            });
             countMineNeighbors();
             redrawAllTiles();
             if (countClosedTiles == countMinesOnField) {
@@ -257,7 +247,7 @@ public class MinesweeperGame extends Game {
         if (isStopped) {
             return;
         }
-        Tile cell = FIELD[y][x];
+        Tile cell = field[y][x];
         if (cell.isOpen) {
             return;
         }
@@ -275,7 +265,7 @@ public class MinesweeperGame extends Game {
                     shopFlag.count--;
                     countMoney -= shopFlag.cost;
                 } else {
-                    MENU.displayShop();
+                    menu.displayShop();
                     return;
                 }
             }
@@ -290,7 +280,7 @@ public class MinesweeperGame extends Game {
         if (isStopped) {
             return;
         }
-        Tile cell = FIELD[y][x];
+        Tile cell = field[y][x];
         if (cell.isOpen) {
             return;
         }
@@ -320,23 +310,23 @@ public class MinesweeperGame extends Game {
     }
 
     private void openRandomNeighbor(int x, int y) {
-        List<Tile> neighbors = getTilesForScanner(FIELD[y][x]);
+        List<Tile> neighbors = getTilesForScanner(field[y][x]);
         if (neighbors.size() == 0) {
-            List<Tile> neighborsToMark = getTilesForAutoFlagging(FIELD[y][x]);
-            for (Tile tile : neighborsToMark) {
+            getTilesForAutoFlagging(field[y][x]).forEach(tile -> {
                 if (countFlags == 0) {
                     shopFlag.count--;
                     countFlags++;   // free flags, yay!
                 }
                 markTileWithoutUndo(tile.x, tile.y); // doesn't unmark what was already flagged
-            }
+            });
             return;
         }
         Tile cell = neighbors.get(getRandomNumber(neighbors.size()));
         cell.isScanned = true;
         if (cell.isFlag) {
+            // remove flag with simple "mark" action
             markTile(cell.x, cell.y);
-        } // remove wrong flag
+        }
         openTile(cell.x, cell.y);
     }
 
@@ -346,15 +336,14 @@ public class MinesweeperGame extends Game {
     private void countMineNeighbors() { // counts mines in surrounding tiles
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
-                Tile cell = FIELD[y][x];
+                Tile cell = field[y][x];
                 cell.countMineNeighbors = 0;
                 if (!cell.isMine) {
-                    List<Tile> neighbors = getNeighbors(cell);
-                    for (Tile neighbor : neighbors) {
+                    getNeighbors(cell).forEach(neighbor -> {
                         if (neighbor.isMine) {
                             cell.countMineNeighbors++;
                         }
-                    }
+                    });
                     if (!cell.isDestroyed && !cell.isFlag) {
                         cell.assignSprite(cell.countMineNeighbors);
                     }
@@ -373,10 +362,10 @@ public class MinesweeperGame extends Game {
                 if (x < 0 || x >= 10) {
                     continue;
                 }
-                if (FIELD[y][x] == tile) {
+                if (field[y][x] == tile) {
                     continue;
                 }
-                result.add(FIELD[y][x]);
+                result.add(field[y][x]);
             }
         }
         return result;
@@ -392,11 +381,11 @@ public class MinesweeperGame extends Game {
                 if (x < 0 || x >= 10) {
                     continue;
                 }
-                if (FIELD[y][x] == tile) {
+                if (field[y][x] == tile) {
                     continue;
                 }
-                if (FIELD[y][x].isFlag || (FIELD[y][x].isOpen && FIELD[y][x].isMine)) {
-                    result.add(FIELD[y][x]);
+                if (field[y][x].isFlag || (field[y][x].isOpen && field[y][x].isMine)) {
+                    result.add(field[y][x]);
                 }
             }
         }
@@ -414,8 +403,8 @@ public class MinesweeperGame extends Game {
                 if (x < 0 || x >= 10) {
                     continue;
                 }
-                if (!FIELD[y][x].isOpen && !FIELD[y][x].isMine) {
-                    result.add(FIELD[y][x]);
+                if (!field[y][x].isOpen && !field[y][x].isMine) {
+                    result.add(field[y][x]);
                 }
             }
         }
@@ -432,8 +421,8 @@ public class MinesweeperGame extends Game {
                 if (x < 0 || x >= 10) {
                     continue;
                 }
-                if (!FIELD[y][x].isOpen) {
-                    result.add(FIELD[y][x]);
+                if (!field[y][x].isOpen) {
+                    result.add(field[y][x]);
                 }
             }
         }
@@ -559,7 +548,7 @@ public class MinesweeperGame extends Game {
         Tile cell;
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
-                cell = FIELD[y][x];
+                cell = field[y][x];
                 cell.draw();
                 if (cell.isOpen || cell.isFlag) {
                     cell.drawSprite();
@@ -571,7 +560,7 @@ public class MinesweeperGame extends Game {
     private void revealAllMines() {
         for (int posY = 0; posY < 10; posY++) {
             for (int posX = 0; posX < 10; posX++) {
-                Tile showCell = FIELD[posY][posX];
+                Tile showCell = field[posY][posX];
                 if (showCell.isMine) {
                     showCell.isOpen = true;
                     showCell.assignSprite(Bitmap.BOARD_MINE);
@@ -591,7 +580,7 @@ public class MinesweeperGame extends Game {
         countFlags++;
         shopFlag.count--;
         countMoney -= shopFlag.cost;
-        MENU.displayShop();
+        menu.displayShop();
     }
 
     void buyShield() {
@@ -600,7 +589,7 @@ public class MinesweeperGame extends Game {
         }
         shopShield.isActivated = true;
         countMoney -= shopShield.cost;
-        MENU.displayShop();
+        menu.displayShop();
     }
 
     void buyScanner() {
@@ -612,7 +601,7 @@ public class MinesweeperGame extends Game {
         shopMiniBomb.count = 0; // disallow buying
         Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
         Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
-        MENU.displayShop();
+        menu.displayShop();
     }
 
     void buyGoldenShovel() {
@@ -622,7 +611,7 @@ public class MinesweeperGame extends Game {
         shopGoldenShovel.isActivated = true;
         shopGoldenShovel.expireMove = countMoves + 5;
         countMoney -= shopGoldenShovel.cost;
-        MENU.displayShop();
+        menu.displayShop();
     }
 
     void buyLuckyDice() {
@@ -632,7 +621,7 @@ public class MinesweeperGame extends Game {
         shopLuckyDice.isActivated = true;
         shopLuckyDice.expireMove = countMoves + 3;
         countMoney -= shopLuckyDice.cost;
-        MENU.displayShop();
+        menu.displayShop();
     }
 
     void buyMiniBomb() {
@@ -644,7 +633,7 @@ public class MinesweeperGame extends Game {
         shopScanner.count = 0; // disallow buying
         Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
         Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
-        MENU.displayShop();
+        menu.displayShop();
     }
 
 
@@ -652,17 +641,17 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        IE.leftClick(x, y);
+        ie.leftClick(x, y);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        IE.rightClick(x, y);
+        ie.rightClick(x, y);
     }
 
     @Override
     public void onKeyPress(Key key) {
-        IE.keyPress(key);
+        ie.keyPress(key);
     }
 
 
@@ -677,10 +666,10 @@ public class MinesweeperGame extends Game {
     }
 
     Menu getMenu() {
-        return MENU;
+        return menu;
     }
 
     public Text getTextWriter() {
-        return TEXT_WRITER;
+        return text_writer;
     }
 }

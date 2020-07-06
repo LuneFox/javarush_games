@@ -9,12 +9,12 @@ import com.javarush.games.minesweeper.Screen.*;
  */
 
 class InputEvent {
-    final private MinesweeperGame GAME;
-    final private Menu MENU;
+    final private MinesweeperGame game;
+    final private Menu menu;
 
     InputEvent(MinesweeperGame game) {
-        this.GAME = game;
-        this.MENU = GAME.getMenu();
+        this.game = game;
+        this.menu = game.getMenu();
     }
 
     // GENERAL ATTITUDE
@@ -24,8 +24,8 @@ class InputEvent {
             return;
         }
         ScreenType screen = Screen.get();
-        GAME.allowCountMoves = true;
-        GAME.allowFlagExplosion = false;
+        game.allowCountMoves = true;
+        game.allowFlagExplosion = false;
         switch (screen) {
             case MAIN_MENU:
                 leftClickInMenu(x, y);
@@ -54,7 +54,7 @@ class InputEvent {
             default:
                 break;
         }
-        GAME.DISPLAY.draw();
+        game.display.draw();
     }
 
     final void rightClick(int x, int y) {
@@ -62,7 +62,7 @@ class InputEvent {
         if (clickOutsideScreen(x, y)) {
             return;
         }
-        GAME.allowCountMoves = true;
+        game.allowCountMoves = true;
         switch (screen) {
             case GAME_BOARD:
                 rightClickOnGameBoard(x, y);
@@ -73,7 +73,7 @@ class InputEvent {
             default:
                 break;
         }
-        GAME.DISPLAY.draw();
+        game.display.draw();
         // System.out.println(String.format("%d %d", x, y));
     }
 
@@ -84,15 +84,15 @@ class InputEvent {
             case SPACE:
                 switch (screen) {
                     case GAME_BOARD:
-                        if (!GAME.isStopped) {
-                            MENU.displayShop();
+                        if (!game.isStopped) {
+                            menu.displayShop();
                         } else {
-                            MENU.displayGameOver(GAME.lastResultIsVictory);
+                            menu.displayGameOver(game.lastResultIsVictory);
                             Screen.set(ScreenType.GAME_OVER);
                         }
                         break;
                     case SHOP:
-                        MENU.displayGameBoard();
+                        menu.displayGameBoard();
                         break;
                     default:
                         break;
@@ -101,74 +101,74 @@ class InputEvent {
             case ESCAPE:
                 switch (screen) {
                     case GAME_BOARD:
-                        if (GAME.isStopped) {
-                            MENU.displayGameOver(GAME.lastResultIsVictory);
+                        if (game.isStopped) {
+                            menu.displayGameOver(game.lastResultIsVictory);
                             Screen.set(ScreenType.GAME_OVER);
                             break;
                         }
                     case OPTIONS:
                     case ABOUT:
-                        MENU.displayMain();
+                        menu.displayMain();
                         break;
                     case MAIN_MENU:
-                        if (!GAME.isStopped) {
-                            MENU.displayGameBoard();
+                        if (!game.isStopped) {
+                            menu.displayGameBoard();
                         }
                         break;
                     case SHOP:
-                        MENU.displayGameBoard();
+                        menu.displayGameBoard();
                         break;
                     case ITEM_HELP:
-                        MENU.displayGameBoard();
-                        MENU.displayShop();
+                        menu.displayGameBoard();
+                        menu.displayShop();
                         break;
                     default:
                         break;
                 }
                 break;
             default:
-                if (screen == ScreenType.GAME_BOARD && GAME.isStopped) {
-                    MENU.displayGameOver(GAME.lastResultIsVictory);
+                if (screen == ScreenType.GAME_BOARD && game.isStopped) {
+                    menu.displayGameOver(game.lastResultIsVictory);
                     Screen.set(ScreenType.GAME_OVER);
                 }
                 break;
         }
-        GAME.DISPLAY.draw();
+        game.display.draw();
     }
 
     // MENU
 
     private void leftClickInMenu(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.START).has(x, y)) {
-            GAME.createGame();
+            game.createGame();
         } else if (Menu.BUTTONS.get(ButtonID.OPTIONS).has(x, y)) {
-            MENU.displayOptions();
+            menu.displayOptions();
         } else if (Menu.BUTTONS.get(ButtonID.ABOUT).has(x, y)) {
-            MENU.displayAbout();
+            menu.displayAbout();
         }
     }
 
     // BOARD
 
     private void leftClickOnGameBoard(int x, int y) {
-        if (GAME.isStopped) {
-            MENU.displayGameOver(GAME.lastResultIsVictory);
+        if (game.isStopped) {
+            menu.displayGameOver(game.lastResultIsVictory);
             Screen.set(ScreenType.GAME_OVER);
             return;
         }
-        Tile cell = GAME.FIELD[y / 10][x / 10];
-        if (!cell.isFlag || GAME.getShopScanner().isActivated) {
-            GAME.openTile(x / 10, y / 10);
+        Tile cell = game.field[y / 10][x / 10];
+        if (!cell.isFlag || game.getShopScanner().isActivated) {
+            game.openTile(x / 10, y / 10);
         }
     }
 
     private void rightClickOnGameBoard(int x, int y) {
-        if (GAME.isStopped) {
-            MENU.displayGameOver(GAME.lastResultIsVictory);
+        if (game.isStopped) {
+            menu.displayGameOver(game.lastResultIsVictory);
             Screen.set(ScreenType.GAME_OVER);
         } else {
-            GAME.markTile(x / 10, y / 10); // works only if tile is closed
-            GAME.openRest(x / 10, y / 10); // works only if tile is open
+            game.markTile(x / 10, y / 10); // works only if tile is closed
+            game.openRest(x / 10, y / 10); // works only if tile is open
             // above two actions don't interfere, only one will work
         }
     }
@@ -177,19 +177,19 @@ class InputEvent {
 
     private void leftClickInShop(int x, int y) {
         if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
-            GAME.buyShield();
+            game.buyShield();
         } else if (x >= 40 && x <= 59 && y >= 31 && y <= 50) {
-            GAME.buyScanner();
+            game.buyScanner();
         } else if (x >= 65 && x <= 84 && y >= 31 && y <= 50) {
-            GAME.buyFlag();
+            game.buyFlag();
         } else if (x >= 15 && x <= 34 && y >= 56 && y <= 75) {
-            GAME.buyGoldenShovel();
+            game.buyGoldenShovel();
         } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
-            GAME.buyLuckyDice();
+            game.buyLuckyDice();
         } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
-            GAME.buyMiniBomb();
+            game.buyMiniBomb();
         } else if (clickOutsideShop(x, y)) {
-            MENU.displayGameBoard();
+            menu.displayGameBoard();
         }
     }
 
@@ -201,24 +201,24 @@ class InputEvent {
 
     private void rightClickInShop(int x, int y) {
         if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
-            MENU.displayItemHelp(GAME.getAllShopItems().get(0));
+            menu.displayItemHelp(game.getAllShopItems().get(0));
         } else if (x >= 40 && x <= 59 && y >= 31 && y <= 50) {
-            MENU.displayItemHelp(GAME.getAllShopItems().get(1));
+            menu.displayItemHelp(game.getAllShopItems().get(1));
         } else if (x >= 65 && x <= 84 && y >= 31 && y <= 50) {
-            MENU.displayItemHelp(GAME.getAllShopItems().get(2));
+            menu.displayItemHelp(game.getAllShopItems().get(2));
         } else if (x >= 15 && x <= 34 && y >= 56 && y <= 75) {
-            MENU.displayItemHelp(GAME.getAllShopItems().get(3));
+            menu.displayItemHelp(game.getAllShopItems().get(3));
         } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
-            MENU.displayItemHelp(GAME.getAllShopItems().get(4));
+            menu.displayItemHelp(game.getAllShopItems().get(4));
         } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
-            MENU.displayItemHelp(GAME.getAllShopItems().get(5));
+            menu.displayItemHelp(game.getAllShopItems().get(5));
         }
     }
 
     private void leftClickInItemHelp(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.CONFIRM).has(x, y)) {
-            MENU.displayGameBoard();
-            MENU.displayShop();
+            menu.displayGameBoard();
+            menu.displayShop();
         }
     }
 
@@ -226,14 +226,14 @@ class InputEvent {
 
     private void leftClickInGameOver(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.CLOSE).has(x, y)) {
-            GAME.redrawAllTiles();
+            game.redrawAllTiles();
             Screen.set(ScreenType.GAME_BOARD);
         } else if (Menu.BUTTONS.get(ButtonID.RETURN).has(x, y)) {
-            MENU.displayMain();
+            menu.displayMain();
         } else if (Menu.BUTTONS.get(ButtonID.AGAIN).has(x, y)) {
-            GAME.createGame();
+            game.createGame();
         } else if (x >= 18 && x <= 37 && y >= 60 && y <= 64) {
-            MENU.displayScoreDetail();
+            menu.displayScoreDetail();
         }
     }
 
@@ -241,13 +241,13 @@ class InputEvent {
 
     private void leftClickInOptions(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
-            MENU.displayMain();
+            menu.displayMain();
         } else if (x >= 49 && x <= 53 && y >= 22 && y <= 28) {
-            MENU.changeDifficulty(false);
+            menu.changeDifficulty(false);
         } else if (x >= 93 && x <= 97 && y >= 22 && y <= 28) {
-            MENU.changeDifficulty(true);
+            menu.changeDifficulty(true);
         } else if (x >= 80 && x <= 91 && y >= 51 && y <= 57) {
-            MENU.switchAutoBuyFlags();
+            menu.switchAutoBuyFlags();
         }
     }
 
@@ -255,7 +255,7 @@ class InputEvent {
 
     private void leftClickInAbout(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
-            MENU.displayMain();
+            menu.displayMain();
         }
     }
 
@@ -263,8 +263,8 @@ class InputEvent {
 
     private void leftClickInScoreDetail(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.CONFIRM).has(x, y)) {
-            MENU.displayGameBoard();
-            MENU.displayGameOver(GAME.lastResultIsVictory);
+            menu.displayGameBoard();
+            menu.displayGameOver(game.lastResultIsVictory);
         }
     }
 

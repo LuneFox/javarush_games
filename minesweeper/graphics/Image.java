@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  */
 
 public abstract class Image {
-    final protected MinesweeperGame GAME;                // game instance to be drawn into
+    final protected MinesweeperGame game;     // game instance to be drawn into
     private int drawX;
     private int drawY;                        // real position in pixels
     protected int[][] bitmapData;             // matrix of color numbers
@@ -17,14 +17,14 @@ public abstract class Image {
     protected Image(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) { // constructor with setting position at once
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
-        this.GAME = game;
+        this.game = game;
         setPosition(drawX, drawY);
     }
 
     Image(Bitmap bitmap, MinesweeperGame game) { // constructor without setting position (for loading images in memory)
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
-        this.GAME = game;
+        this.game = game;
     }
 
     public void draw() {
@@ -33,15 +33,11 @@ public abstract class Image {
                 if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
                     continue;
                 } // transparent color
-                try {
-                    GAME.DISPLAY.setCellColor(
-                            drawX + innerX,
-                            drawY + innerY,
-                            colors[bitmapData[innerY][innerX]]
-                    );
-                } catch (IndexOutOfBoundsException e) {
-                    return;
-                }
+                game.display.setCellColor(
+                        drawX + innerX,
+                        drawY + innerY,
+                        colors[bitmapData[innerY][innerX]]
+                );
             }
         }
     }
@@ -54,13 +50,13 @@ public abstract class Image {
                 } // transparent color
                 try {
                     if (mirror) {
-                        GAME.DISPLAY.setCellColor(
+                        game.display.setCellColor(
                                 drawX + (bitmapData[0].length - 1 - innerX), // flip horizontally
                                 drawY + innerY,
                                 colors[bitmapData[innerY][innerX]]
                         );
                     } else {
-                        GAME.DISPLAY.setCellColor(
+                        game.display.setCellColor(
                                 drawX + innerX,
                                 drawY + (bitmapData.length - 1 - innerY),     // flip vertically
                                 colors[bitmapData[innerY][innerX]]

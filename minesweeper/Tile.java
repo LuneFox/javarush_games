@@ -76,12 +76,12 @@ class Tile extends Image {
 
     // assigns a sprite to this tile by its name
     void assignSprite(Bitmap bitmap) {
-        this.sprite = new Sprite(bitmap, GAME, x * 10, y * 10);
+        this.sprite = new Sprite(bitmap, game, x * 10, y * 10);
     }
 
     // assigns a number sprite to this tile, used to draw the number of mines nearby
     void assignSprite(int number) {
-        this.sprite = new Sprite(spriteNumbers.get(number), GAME, x * 10, y * 10);
+        this.sprite = new Sprite(spriteNumbers.get(number), game, x * 10, y * 10);
     }
 
     // draws an assigned sprite over the tile
@@ -91,7 +91,7 @@ class Tile extends Image {
 
     // assigns an empty sprite and draws the tile again to remove whatever is drawn over it
     void eraseSprite() {
-        this.sprite = new Sprite(Bitmap.BOARD_NONE, GAME, x * 10, y * 10);
+        this.sprite = new Sprite(Bitmap.BOARD_NONE, game, x * 10, y * 10);
         draw();
     }
 
