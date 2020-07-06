@@ -79,7 +79,7 @@ class Tile extends Image {
         this.sprite = new Sprite(bitmap, GAME, x * 10, y * 10);
     }
 
-    // assigns a number sprites to this tile, used to draw the number of mines nearby
+    // assigns a number sprite to this tile, used to draw the number of mines nearby
     void assignSprite(int number) {
         this.sprite = new Sprite(spriteNumbers.get(number), GAME, x * 10, y * 10);
     }

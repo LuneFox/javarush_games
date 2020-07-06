@@ -1,9 +1,8 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.minesweeper.graphics.ButtonID;
-import com.javarush.games.minesweeper.screens.Screen;
-import com.javarush.games.minesweeper.screens.ScreenType;
+import com.javarush.games.minesweeper.graphics.Button.*;
+import com.javarush.games.minesweeper.Screen.*;
 
 /**
  * Separate class for processing various input events.

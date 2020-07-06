@@ -14,6 +14,10 @@ public class Button {
     private String text;
     private int textOffset = 2;
 
+    public enum ButtonID {
+        OPTIONS, ABOUT, START, CONFIRM, BACK, AGAIN, RETURN, CLOSE,
+    }
+
     public Button(MinesweeperGame game, int posX, int posY, int sizeX, int sizeY, String text) {
         this.textWriter = game.getTextWriter();
         this.x1 = posX;

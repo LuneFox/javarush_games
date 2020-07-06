@@ -3,7 +3,8 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.screens.*;
+import com.javarush.games.minesweeper.Screen.*;
+import com.javarush.games.minesweeper.graphics.Button.*;
 
 import java.util.Arrays;
 import java.util.HashMap;

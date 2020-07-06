@@ -1,10 +1,14 @@
-package com.javarush.games.minesweeper.screens;
+package com.javarush.games.minesweeper;
 
 import java.util.ArrayList;
 
 public class Screen {
     private ScreenType screenType;
     private static ArrayList<Screen> screens = new ArrayList<>();
+
+    public enum ScreenType {
+        MAIN_MENU, GAME_OVER, SHOP, GAME_BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE_DETAIL,
+    }
 
     static {
         screens.add(new Screen(ScreenType.MAIN_MENU));
