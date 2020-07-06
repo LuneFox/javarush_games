@@ -12,8 +12,6 @@ public class EnemyShip extends Ship {
         setAnimatedView(true, ObjectShape.TANK_1, ObjectShape.TANK_2);
     }
 
-    // -------- BASIC ACTIONS
-
     public void move(Direction direction, double speed) {
         switch (direction) {
             case RIGHT:

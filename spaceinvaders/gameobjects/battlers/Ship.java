@@ -10,9 +10,6 @@ public class Ship extends GameObject {
         super(x, y);
     }
 
-
-    // -------- BASIC ACTIONS
-
     public Bullet fire() {
         return null;
     }
