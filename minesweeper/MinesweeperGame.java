@@ -13,7 +13,7 @@ import java.util.*;
 public class MinesweeperGame extends Game {
 
     // FINAL OBJECTS
-    static final String VERSION = "1.04";
+    static final String VERSION = "1.05";
     public final Display display = new Display(this);
     final private Text text_writer = new Text(Bitmap.NONE, this);
     final private Menu menu = new Menu(this);
@@ -66,6 +66,12 @@ public class MinesweeperGame extends Game {
         loadResources();
         isStopped = true;
         menu.displayMain();
+        setTurnTimer(30);
+    }
+
+    @Override
+    public void onTurn(int step) {
+        display.draw();
     }
 
     void createGame() {

@@ -5,6 +5,7 @@ import com.javarush.engine.cell.*;
 public class Display {
     private Game game;
     private Pixel[][] matrix;
+    private boolean interlace;
 
     Display(Game game) {
         this.game = game;
@@ -14,12 +15,31 @@ public class Display {
                 matrix[y][x] = new Pixel();
             }
         }
+        interlace = false;
     }
 
     public void draw() {
-        for (int y = 0; y < matrix.length; y++) {
-            for (int x = 0; x < matrix[0].length; x++) {
-                game.setCellColor(x, y, matrix[y][x].cellColor);
+        if (Screen.get() == Screen.ScreenType.GAME_BOARD) {
+            if (interlace) {
+                for (int y = 0; y < matrix.length; y += 2) {
+                    for (int x = 0; x < matrix[0].length; x++) {
+                        game.setCellColor(x, y, matrix[y][x].cellColor);
+                    }
+                }
+                interlace = !interlace;
+            } else {
+                for (int y = 1; y < matrix.length; y += 2) {
+                    for (int x = 0; x < matrix[0].length; x++) {
+                        game.setCellColor(x, y, matrix[y][x].cellColor);
+                    }
+                }
+                interlace = !interlace;
+            }
+        } else {
+            for (int y = 0; y < matrix.length; y++) {
+                for (int x = 0; x < matrix[0].length; x++) {
+                    game.setCellColor(x, y, matrix[y][x].cellColor);
+                }
             }
         }
     }
