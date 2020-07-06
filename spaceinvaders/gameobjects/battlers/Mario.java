@@ -1,7 +1,6 @@
 package com.javarush.games.spaceinvaders.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.Bullet;
-import com.javarush.games.spaceinvaders.Bullet.FireBall;
 import com.javarush.games.spaceinvaders.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick.Bonus;
@@ -69,9 +68,19 @@ public class Mario extends Ship {
             return null;
         }
         bonus = null;
-        return new FireBall(
-                x + width / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
-                y - ObjectShape.FIREBALL_1.length + 4, Direction.UP);
+        return new Bullet(
+                Mario.this.x + Mario.this.width / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
+                Mario.this.y - ObjectShape.FIREBALL_1.length + 4, Direction.UP) {
+            {
+                dy = dy * 2;
+                setAnimatedView(true,
+                        ObjectShape.FIREBALL_1,
+                        ObjectShape.FIREBALL_2,
+                        ObjectShape.FIREBALL_3,
+                        ObjectShape.FIREBALL_4);
+                deadlyForEnemies = true;
+            }
+        };
     }
 
     public boolean wipeEnemyBullets() {

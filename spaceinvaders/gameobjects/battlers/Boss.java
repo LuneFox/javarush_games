@@ -1,7 +1,5 @@
 package com.javarush.games.spaceinvaders.gameobjects.battlers;
-
 import com.javarush.games.spaceinvaders.Direction;
-import com.javarush.games.spaceinvaders.Bullet.*;
 import com.javarush.games.spaceinvaders.Bullet;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
@@ -28,7 +26,11 @@ public class Boss extends EnemyShip {
         if (!isAlive) {
             return null;
         }
-        return new BossAmmo(x + 6, y + height, Direction.DOWN);
+        return new Bullet(x + 6, y + height, Direction.DOWN) {
+            {
+                setStaticView(ObjectShape.BOSS_TANK_AMMO);
+            }
+        };
     }
 
     @Override

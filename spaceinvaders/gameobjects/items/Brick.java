@@ -56,7 +56,18 @@ public class Brick extends GameObject {
     }
 
     public Bullet fire() {
-        return new Coin(x + 2, y, Direction.UP);
+        return new Bullet(x + 2, y, Direction.UP) {
+            {
+                setAnimatedView(true,
+                        ObjectShape.COIN_WIDTH_7,
+                        ObjectShape.COIN_WIDTH_5,
+                        ObjectShape.COIN_WIDTH_3,
+                        ObjectShape.COIN_WIDTH_1,
+                        ObjectShape.COIN_WIDTH_3,
+                        ObjectShape.COIN_WIDTH_5);
+                deadlyForEnemies = true;
+            }
+        };
     }
 
     public void check(SpaceInvadersGame game) {
