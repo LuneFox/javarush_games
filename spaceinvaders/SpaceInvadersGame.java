@@ -1,6 +1,7 @@
 package com.javarush.games.spaceinvaders;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.spaceinvaders.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.EnemyFleet;
 import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.items.Brick;
@@ -8,10 +9,10 @@ import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick;
 import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick.*;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
-import com.javarush.games.spaceinvaders.Decoration.*;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -119,7 +120,11 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void drawFloor() {
-        FloorTile floorTile = new FloorTile(0, HEIGHT - DecoShape.FLOOR.length);
+        GameObject floorTile = new GameObject(0, HEIGHT - DecoShape.FLOOR.length) {
+            {
+                setStaticView(DecoShape.FLOOR);
+            }
+        };
         for (int i = 0; i < 7; i++) {
             floorTile.x = i * floorTile.width;
             floorTile.draw(this, false);
@@ -127,7 +132,11 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void drawBushes() {
-        Bush bush = new Bush(0, HEIGHT - DecoShape.FLOOR.length - DecoShape.BUSH.length);
+        GameObject bush = new GameObject(0, HEIGHT - DecoShape.FLOOR.length - DecoShape.BUSH.length) {
+            {
+                setStaticView(DecoShape.BUSH);
+            }
+        };
         for (int i = 0; i < 3; i++) {
             bush.x = 2 * i * bush.width;
             bush.draw(this, false);
@@ -135,7 +144,11 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void drawHills() {
-        Hill hill = new Hill(0, HEIGHT - DecoShape.FLOOR.length - DecoShape.HILL.length);
+        GameObject hill = new GameObject(0, HEIGHT - DecoShape.FLOOR.length - DecoShape.HILL.length) {
+            {
+                setStaticView(DecoShape.HILL);
+            }
+        };
         for (int i = 0; i < 2; i++) {
             hill.x = 1.8 * i * hill.width + 14;
             hill.draw(this, false);
@@ -143,14 +156,15 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void drawClouds() {
-        Cloud cloud = new Cloud(5, 65);
-        cloud.draw(this, false);
-        cloud.x = 38;
-        cloud.y = 57;
-        cloud.draw(this, false);
-        cloud.x = 81;
-        cloud.y = 72;
-        cloud.draw(this, true);
+        class Cloud extends GameObject {
+            Cloud(double x, double y) {
+                super(x, y);
+                setStaticView(DecoShape.CLOUD);
+            }
+        }
+        new Cloud(5, 65).draw(this, false);
+        new Cloud(38, 57).draw(this, false);
+        new Cloud(81, 72).draw(this, true);
     }
 
     private void drawBricks() {
