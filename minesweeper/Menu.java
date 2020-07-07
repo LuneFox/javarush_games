@@ -21,6 +21,7 @@ class Menu {
     final static LinkedList<String> TITLE_NAMES = new LinkedList<>();
     final private static LinkedList<String> QUOTES = new LinkedList<>();
     final private Text TEXT_WRITER;
+    int showDelay;
     private boolean firstLoad = true;
 
     static {
@@ -41,6 +42,7 @@ class Menu {
     Menu(MinesweeperGame game) {
         this.GAME = game;
         this.TEXT_WRITER = GAME.getTextWriter();
+        this.showDelay = 0;
     }
 
 
@@ -242,6 +244,9 @@ class Menu {
 
     final void displayGameOver(boolean victory) {
         Screen.set(ScreenType.GAME_OVER);
+        if (showDelay > 0) {
+            return;
+        }
         if (victory) {
             IMAGES.get(Bitmap.WINDOW_VICTORY).draw();
             IMAGES.get(Bitmap.PICTURE_FACE_HAPPY).draw();
@@ -285,6 +290,10 @@ class Menu {
                 Color.YELLOW, 94, 13, true);
 
         BUTTONS.get(ButtonID.CONFIRM).draw();
+    }
+
+    void decreaseShowDelay() {
+        showDelay--;
     }
 
 

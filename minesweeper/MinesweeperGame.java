@@ -13,7 +13,7 @@ import java.util.*;
 public class MinesweeperGame extends Game {
 
     // FINAL OBJECTS
-    static final String VERSION = "1.05";
+    static final String VERSION = "1.06";
     public final Display display = new Display(this);
     final private Text text_writer = new Text(Bitmap.NONE, this);
     final private Menu menu = new Menu(this);
@@ -72,6 +72,12 @@ public class MinesweeperGame extends Game {
     @Override
     public void onTurn(int step) {
         display.draw();
+        if (Screen.get() == ScreenType.GAME_OVER) {
+            if (menu.showDelay > 0) {
+                menu.decreaseShowDelay();
+            }
+            menu.displayGameOver(lastResultIsVictory);
+        }
     }
 
     void createGame() {
@@ -149,8 +155,8 @@ public class MinesweeperGame extends Game {
     private void gameOver() {
         lastResultIsVictory = false;
         isStopped = true;
+        menu.showDelay = 30;
         menu.displayGameOver(false);
-
     }
 
     private void win() {
@@ -162,6 +168,7 @@ public class MinesweeperGame extends Game {
             topScoreTitle = Menu.TITLE_NAMES.get(difficulty / 5 - 1);
         }
         isStopped = true;
+        menu.showDelay = 30;
         menu.displayGameOver(true);
     }
 

@@ -20,7 +20,7 @@ class InputEvent {
     // GENERAL ATTITUDE
 
     final void leftClick(int x, int y) {
-        if (clickOutsideScreen(x, y)) {
+        if (clickOutsideScreen(x, y) || menu.showDelay > 0) {
             return;
         }
         ScreenType screen = Screen.get();
