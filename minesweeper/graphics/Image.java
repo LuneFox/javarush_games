@@ -48,22 +48,18 @@ public abstract class Image {
                 if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
                     continue;
                 } // transparent color
-                try {
-                    if (mirror) {
-                        game.display.setCellColor(
-                                drawX + (bitmapData[0].length - 1 - innerX), // flip horizontally
-                                drawY + innerY,
-                                colors[bitmapData[innerY][innerX]]
-                        );
-                    } else {
-                        game.display.setCellColor(
-                                drawX + innerX,
-                                drawY + (bitmapData.length - 1 - innerY),     // flip vertically
-                                colors[bitmapData[innerY][innerX]]
-                        );
-                    }
-                } catch (IndexOutOfBoundsException e) {
-                    return;
+                if (mirror) {
+                    game.display.setCellColor(
+                            drawX + (bitmapData[0].length - 1 - innerX), // flip horizontally
+                            drawY + innerY,
+                            colors[bitmapData[innerY][innerX]]
+                    );
+                } else {
+                    game.display.setCellColor(
+                            drawX + innerX,
+                            drawY + (bitmapData.length - 1 - innerY),     // flip vertically
+                            colors[bitmapData[innerY][innerX]]
+                    );
                 }
             }
         }
@@ -73,7 +69,6 @@ public abstract class Image {
         try {
             this.colors[number] = color;
         } catch (IndexOutOfBoundsException ignored) {
-
         }
     }
 
