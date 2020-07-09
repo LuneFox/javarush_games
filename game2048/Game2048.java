@@ -5,7 +5,7 @@ import com.javarush.engine.cell.*;
 import java.util.ArrayList;
 
 public class Game2048 extends Game {
-    private static final String VERSION = "v0.94";
+    private static final String VERSION = "v0.95";
     private static final String[] BALLS = " ,❶,❷,❸,❹,❺,❻,❼,❽,➈,➉,⑪,⑫,⑬,⑭,⑮,⬤".split(",");
     private static final int SIDE = 7;
     private final InputEvent IE = new InputEvent(this);
@@ -13,7 +13,6 @@ public class Game2048 extends Game {
     private int[][] field;
     private int rotateDegree;
     private int score;
-    private int penalty;
     private int turnCount;
     private boolean winFlag = false; // сначала даёт завершить ход, и только потом разрешает рисовать победу
     boolean isStopped = false;
@@ -56,7 +55,6 @@ public class Game2048 extends Game {
         isStopped = false;
         whiteBallSet = false;
         score = 0;
-        penalty = 0;
         turnCount = 0;
         createGame();
         drawScene();
@@ -73,8 +71,7 @@ public class Game2048 extends Game {
                 setCellColoredBall(x, y, field[y][x]);
             }
         }
-        setCellValueEx(6, 2, Color.NONE, "Ходы: " + turnCount, Color.LAWNGREEN, 15);
-        setCellValueEx(6, 4, Color.NONE, "Штраф: " + ((turnCount / 50) + penalty), Color.LAWNGREEN, 15);
+        setCellValueEx(6, 0, Color.NONE, "Ходы: " + turnCount, Color.LAWNGREEN, 15);
         setCellValueEx(6, 6, Color.NONE, VERSION, Color.GREEN, 15);
         drawPockets();
     }
@@ -89,7 +86,7 @@ public class Game2048 extends Game {
             score += pocket.score;
         }
         showMessageDialog(Color.BLACK,
-                "Победа на " + turnCount + "-м ходу!\nСчёт: " + (score - (turnCount / 50) - penalty),
+                "Победа! Счёт: " + ((score * 100) / turnCount),
                 Color.PALEGOLDENROD, 30);
     }
 
@@ -240,9 +237,6 @@ public class Game2048 extends Game {
         }
         if (pocket.score == 0) {
             pocket.open = true;
-        }
-        if (changeMade) {
-            penalty++;
         }
     }
 
