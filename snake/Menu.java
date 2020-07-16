@@ -5,16 +5,22 @@ import com.javarush.games.snake.enums.Element;
 import com.javarush.games.snake.enums.Graphics;
 
 import java.util.ArrayList;
+import java.util.List;
 
 class Menu {
     private SnakeGame game;
+    ArrayList<HelpPage> helpPages = new ArrayList<>();
     int lastPointerPosition;
-    private int brush;
+    int currentHelpPage;
 
     Menu(SnakeGame game) {
         this.game = game;
         Selector.getInstance(game);
+        helpPages.add(HelpPage.getGoals());
+        helpPages.add(HelpPage.getSnakeAbilities());
     }
+
+    private int brush;
 
     // DISPLAY SCREENS
 
@@ -23,10 +29,10 @@ class Menu {
         drawBlackBackground();
         new Message(-1, 5, "ALCHEMY SNAKE", Color.LIGHTGREEN).draw();
         new Message(-1, 30, "VER " + Strings.VERSION, Color.DARKBLUE).draw();
-
         Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
         // Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
         Selector.draw(13, 12);
+        currentHelpPage = 0;
     }
 
     void displayOptions() {
@@ -35,55 +41,37 @@ class Menu {
         new Message(-1, 7, "OPTIONS", Color.SKYBLUE).draw();
         Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
         Selector.draw(2, 12);
-
         new Message(17, 12, "STAGE " + (game.getStage() + 1), Color.WHITE).draw();
-
         new Message(17, 14, Signs.currentSetting.toString(), Color.WHITE).draw();
         new Orb(23, 14, Element.WATER).draw(game);
-
         new Message(17, 16, (game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE).draw();
-
     }
 
     void displayControls() {
         drawBlackBackground();
         Screen.set(Screen.Type.CONTROLS);
-        new Message(-1, 7, "CONTROLS", Color.SKYBLUE).draw();
-
-        new Message(1, 11, "↑ ↓ → ←       :", Color.YELLOW).draw();
-        new Message(1, 13, "HOLD DIRECTION:", Color.YELLOW).draw();
-        new Message(1, 15, "ENTER, R-CLICK:", Color.YELLOW).draw();
-        new Message(1, 17, "ESC,   L-CLICK:", Color.YELLOW).draw();
-        new Message(1, 21, "SPACE (GAME)  :", Color.YELLOW).draw();
-        new Message(1, 23, "SPACE (G.OVER):", Color.YELLOW).draw();
-
-        new Message(17, 11, "DIRECTION", Color.WHITE).draw();
-        new Message(17, 13, "ACCELERATE", Color.WHITE).draw();
-        new Message(17, 15, "NEXT ELEMENT", Color.WHITE).draw();
-        new Message(17, 15, "PREV ELEMENT", Color.WHITE).draw();
-        new Message(17, 21, "SLEEP", Color.WHITE).draw();
-        new Message(17, 23, "BACK TO MENU", Color.WHITE).draw();
+        HelpPage.getControls().draw(game);
     }
 
     void displayHelp() {
         drawBlackBackground();
         Screen.set(Screen.Type.HELP);
-        new Message(-1, 5, "HELP", Color.SKYBLUE).draw();
-        new Message(-1, 9, "COLLECT TO WIN:", Color.YELLOW).draw();
-        new Message(3, 11, "ORB OF WATER", Color.LIGHTBLUE).draw();
-        new Message(3, 13, "ORB OF FIRE", Color.RED).draw();
-        new Message(3, 15, "ORB OF EARTH", Color.ORANGE).draw();
-        new Message(3, 17, "ORB OF AIR", Color.AZURE).draw();
-        new Message(3, 19, "ORB OF POWER", Color.PINK).draw();
-        new Message(-1, 21, "COLLECT TO GROW:", Color.YELLOW).draw();
-        new Message(3, 23, "ORB OF WISDOM", Color.MEDIUMPURPLE).draw();
+        helpPages.get(currentHelpPage).draw(game);
+        new Message(-1, 30, "← PAGE " + (currentHelpPage + 1) + "/" + helpPages.size() + " →", Color.WHITE).draw();
+    }
 
-        new Orb(1, 11, Element.WATER).draw(game);
-        new Orb(1, 13, Element.FIRE).draw(game);
-        new Orb(1, 15, Element.EARTH).draw(game);
-        new Orb(1, 17, Element.AIR).draw(game);
-        new Orb(1, 19, Element.ALMIGHTY).draw(game);
-        new Orb(1, 23, Element.NEUTRAL).draw(game);
+    void nextHelpPage() {
+        if (currentHelpPage + 1 < helpPages.size()) {
+            currentHelpPage++;
+            displayHelp();
+        }
+    }
+
+    void previousHelpPage() {
+        if (currentHelpPage > 0) {
+            currentHelpPage--;
+            displayHelp();
+        }
     }
 
     void startGame() {
@@ -196,6 +184,7 @@ class Menu {
         ArrayList<String> entries;
         static Selector instance;
         int pointer;
+        private final static String POINTER_SIGN = "→";
 
 
         // CONSTRUCTOR
@@ -212,7 +201,7 @@ class Menu {
         public static void draw(int x, int y) {
             for (int i = 0; i < instance.entries.size(); i++) {
                 if (instance.pointer == i) {
-                    instance.game.setCellValueEx(x - 2, y, Color.NONE, ">", Color.YELLOW, 90);
+                    instance.game.setCellValueEx(x - 2, y, Color.NONE, POINTER_SIGN, Color.YELLOW, 90);
                 } else {
                     instance.game.setCellValue(x - 2, y, "");
                 }

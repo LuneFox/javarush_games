@@ -161,6 +161,10 @@ class InputEvent {
         if (key == Key.ESCAPE) {
             Menu.Selector.setPointer(menu.lastPointerPosition);
             menu.displayMain();
+        } else if (key == Key.RIGHT) {
+            menu.nextHelpPage();
+        } else if (key == Key.LEFT) {
+            menu.previousHelpPage();
         }
     }
 

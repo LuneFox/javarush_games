@@ -13,7 +13,7 @@ public class SnakeGame extends Game {
     static final int HEIGHT = 32;
     private static final int MAX_TURN_DELAY = 300;
     private InputEvent ie;
-    private final Menu menu = new Menu(this);
+    private Menu menu;
 
     // Game flow parameters
     private String gameOverReason;
@@ -41,9 +41,9 @@ public class SnakeGame extends Game {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         Signs.set(Graphics.KANJI);
-        Screen.set(Screen.Type.MAIN_MENU);
-        ie = new InputEvent(this);
         Message.game = this;
+        menu = new Menu(this);
+        ie = new InputEvent(this);
         Menu.Selector.setPointer(0);
         menu.displayMain();
         stage = 0;
