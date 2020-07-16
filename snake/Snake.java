@@ -21,6 +21,7 @@ public class Snake {
     private int breath;
     private int hunger;
     boolean isAlive = true;
+    boolean canChangeElement = true;
 
     // CONSTRUCTOR
 
@@ -64,6 +65,7 @@ public class Snake {
     // MECHANICS
 
     void move() {
+        canChangeElement = true;
         head = createNewHead();
         if (checkGameOver() | checkEscapeBorders() | checkBiteSelf() || isDeadAfterNodeInteraction(head)) {
             return; // check last only if first 3 didn't return true ^
@@ -252,6 +254,9 @@ public class Snake {
     }
 
     void rotateToNextElement(SnakeGame game) {
+        if (!canChangeElement) {
+            return;
+        }
         Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
         elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
         elementsAvailable.add(movingElement);                  // adding it to the end
@@ -260,6 +265,9 @@ public class Snake {
     }
 
     void rotateToPreviousElement(SnakeGame game) {
+        if (!canChangeElement) {
+            return;
+        }
         int lastElement = elementsAvailable.size() - 1;
         Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
         elementsAvailable.remove(movingElement);                    // removing it from list (it was last)

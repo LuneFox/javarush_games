@@ -143,6 +143,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.WATER);
+                    snake.canChangeElement = false;
                     score += points;
                 }
                 break;
@@ -155,6 +156,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.FIRE);
+                    snake.canChangeElement = false;
                     score += points;
                 }
                 break;
@@ -167,6 +169,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.EARTH);
+                    snake.canChangeElement = false;
                     score += points;
                 }
                 break;
@@ -179,6 +182,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.AIR);
+                    snake.canChangeElement = false;
                     score += points;
                 }
                 break;
@@ -192,6 +196,7 @@ public class SnakeGame extends Game {
                     do {
                         snake.rotateToNextElement(this);
                     } while (snake.getElement() != Element.ALMIGHTY);
+                    snake.canChangeElement = false;
                     score += points;
                 }
                 break;
