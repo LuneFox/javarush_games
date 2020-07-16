@@ -250,7 +250,7 @@ public class Snake {
     }
 
     void rotateToNextElement(SnakeGame game) {
-        if (!canChangeElement) {
+        if (canChangeElement) {
             Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
             elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
             elementsAvailable.add(movingElement);                  // adding it to the end

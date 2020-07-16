@@ -125,6 +125,7 @@ public class SnakeGame extends Game {
                 }
                 snake.getElementsAvailable().add(orb.element);
                 do {
+                    System.out.println("omg");
                     snake.rotateToNextElement(this);
                 } while (snake.getElement() != orb.element);
                 snakeLength = snake.getLength();
