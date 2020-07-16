@@ -43,6 +43,7 @@ public class SnakeGame extends Game {
         Signs.set(Graphics.KANJI);
         Screen.set(Screen.Type.MAIN_MENU);
         ie = new InputEvent(this);
+        Message.game = this;
         Menu.Selector.setPointer(0);
         menu.displayMain();
         stage = 0;
@@ -174,14 +175,14 @@ public class SnakeGame extends Game {
 
     private void drawInterface() {
         if (Screen.is(Screen.Type.GAME)) {
-            new Message("hunger  : ", Color.CORAL).draw(this, 0, 0);
-            new Message("strength: " + (snake.getLength()), Color.WHITE).draw(this, 0, 1);
-            new Message("element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw(this, 0, 2);
-            new Message("score   : " + score, Color.LIGHTBLUE).draw(this, 0, 3);
+            new Message(0, 0, "hunger  : ", Color.CORAL).draw();
+            new Message(0, 1, "strength: " + (snake.getLength()), Color.WHITE).draw();
+            new Message(0, 2, "element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw();
+            new Message(0, 3, "score   : " + score, Color.LIGHTBLUE).draw();
             drawElementsPanel();
             drawHungerBar();
             if (lifetime < 301) {
-                new Message("power: " + lifetime, Color.CORAL).draw(this, 20, 3);
+                new Message(20, 3, "power: " + lifetime, Color.CORAL).draw();
             }
         }
     }
@@ -268,9 +269,9 @@ public class SnakeGame extends Game {
         isPaused = !isPaused;
         if (isPaused) {
             stopTurnTimer();
-            new Message("             ", Color.WHITE).draw(this, 15);
-            new Message(" SLEEPING... ", Color.WHITE).draw(this, 16);
-            new Message("             ", Color.WHITE).draw(this, 17);
+            new Message(-1, 15, "             ", Color.WHITE).draw();
+            new Message(-1, 16, " SLEEPING... ", Color.WHITE).draw();
+            new Message(-1, 17, "             ", Color.WHITE).draw();
         } else {
             setTurnTimer(turnDelay);
         }

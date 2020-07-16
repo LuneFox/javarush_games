@@ -20,9 +20,9 @@ class Menu {
 
     void displayMain() {
         Screen.set(Screen.Type.MAIN_MENU);
-        drawBackground();
-        new Message("ALCHEMY SNAKE", Color.LIGHTGREEN).draw(game, 5);
-        new Message("VER " + Strings.VERSION, Color.DARKBLUE).draw(game, 30);
+        drawBlackBackground();
+        new Message(-1, 5, "ALCHEMY SNAKE", Color.LIGHTGREEN).draw();
+        new Message(-1, 30, "VER " + Strings.VERSION, Color.DARKBLUE).draw();
 
         Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
         // Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
@@ -30,53 +30,53 @@ class Menu {
     }
 
     void displayOptions() {
-        drawBackground();
+        drawBlackBackground();
         Screen.set(Screen.Type.OPTIONS);
-        new Message("OPTIONS", Color.SKYBLUE).draw(game, 7);
+        new Message(-1, 7, "OPTIONS", Color.SKYBLUE).draw();
         Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
         Selector.draw(2, 12);
 
-        new Message("STAGE " + (game.getStage() + 1), Color.WHITE).draw(game, 17, 12);
+        new Message(17, 12, "STAGE " + (game.getStage() + 1), Color.WHITE).draw();
 
-        new Message(Signs.currentSetting.toString(), Color.WHITE).draw(game, 17, 14);
+        new Message(17, 14, Signs.currentSetting.toString(), Color.WHITE).draw();
         new Orb(23, 14, Element.WATER).draw(game);
 
-        new Message((game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE).draw(game, 17, 16);
+        new Message(17, 16, (game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE).draw();
 
     }
 
     void displayControls() {
-        drawBackground();
+        drawBlackBackground();
         Screen.set(Screen.Type.CONTROLS);
-        new Message("CONTROLS", Color.SKYBLUE).draw(game, 7);
+        new Message(-1, 7, "CONTROLS", Color.SKYBLUE).draw();
 
-        new Message("↑ ↓ → ←       :", Color.YELLOW).draw(game, 1, 11);
-        new Message("HOLD DIRECTION:", Color.YELLOW).draw(game, 1, 13);
-        new Message("ENTER, R-CLICK:", Color.YELLOW).draw(game, 1, 15);
-        new Message("ESC,   L-CLICK:", Color.YELLOW).draw(game, 1, 17);
-        new Message("SPACE (GAME)  :", Color.YELLOW).draw(game, 1, 21);
-        new Message("SPACE (G.OVER):", Color.YELLOW).draw(game, 1, 23);
+        new Message(1, 11, "↑ ↓ → ←       :", Color.YELLOW).draw();
+        new Message(1, 13, "HOLD DIRECTION:", Color.YELLOW).draw();
+        new Message(1, 15, "ENTER, R-CLICK:", Color.YELLOW).draw();
+        new Message(1, 17, "ESC,   L-CLICK:", Color.YELLOW).draw();
+        new Message(1, 21, "SPACE (GAME)  :", Color.YELLOW).draw();
+        new Message(1, 23, "SPACE (G.OVER):", Color.YELLOW).draw();
 
-        new Message("DIRECTION", Color.WHITE).draw(game, 17, 11);
-        new Message("ACCELERATE", Color.WHITE).draw(game, 17, 13);
-        new Message("NEXT ELEMENT", Color.WHITE).draw(game, 17, 15);
-        new Message("PREV ELEMENT", Color.WHITE).draw(game, 17, 17);
-        new Message("SLEEP", Color.WHITE).draw(game, 17, 21);
-        new Message("BACK TO MENU", Color.WHITE).draw(game, 17, 23);
+        new Message(17, 11, "DIRECTION", Color.WHITE).draw();
+        new Message(17, 13, "ACCELERATE", Color.WHITE).draw();
+        new Message(17, 15, "NEXT ELEMENT", Color.WHITE).draw();
+        new Message(17, 15, "PREV ELEMENT", Color.WHITE).draw();
+        new Message(17, 21, "SLEEP", Color.WHITE).draw();
+        new Message(17, 23, "BACK TO MENU", Color.WHITE).draw();
     }
 
     void displayHelp() {
-        drawBackground();
+        drawBlackBackground();
         Screen.set(Screen.Type.HELP);
-        new Message("HELP", Color.SKYBLUE).draw(game, 5);
-        new Message("COLLECT TO WIN:", Color.YELLOW).draw(game, 9);
-        new Message("ORB OF WATER", Color.LIGHTBLUE).draw(game, 3, 11);
-        new Message("ORB OF FIRE", Color.RED).draw(game, 3, 13);
-        new Message("ORB OF EARTH", Color.ORANGE).draw(game, 3, 15);
-        new Message("ORB OF AIR", Color.AZURE).draw(game, 3, 17);
-        new Message("ORB OF POWER", Color.PINK).draw(game, 3, 19);
-        new Message("COLLECT TO GROW:", Color.YELLOW).draw(game, 21);
-        new Message("ORB OF WISDOM", Color.MEDIUMPURPLE).draw(game, 3, 23);
+        new Message(-1, 5, "HELP", Color.SKYBLUE).draw();
+        new Message(-1, 9, "COLLECT TO WIN:", Color.YELLOW).draw();
+        new Message(3, 11, "ORB OF WATER", Color.LIGHTBLUE).draw();
+        new Message(3, 13, "ORB OF FIRE", Color.RED).draw();
+        new Message(3, 15, "ORB OF EARTH", Color.ORANGE).draw();
+        new Message(3, 17, "ORB OF AIR", Color.AZURE).draw();
+        new Message(3, 19, "ORB OF POWER", Color.PINK).draw();
+        new Message(-1, 21, "COLLECT TO GROW:", Color.YELLOW).draw();
+        new Message(3, 23, "ORB OF WISDOM", Color.MEDIUMPURPLE).draw();
 
         new Orb(1, 11, Element.WATER).draw(game);
         new Orb(1, 13, Element.FIRE).draw(game);
@@ -99,7 +99,7 @@ class Menu {
         Node node = new Node(1, 1, game, brush);
         game.getMap().setLayoutNode(1, 1, node.getTerrain());
         game.drawMap();
-        new Message(node.getTerrain().name(), Color.WHITE).draw(game, 3, 1);
+        new Message(3, 1, node.getTerrain().name(), Color.WHITE).draw();
     }
 
     void brushNext() {
@@ -172,7 +172,7 @@ class Menu {
         }
     }
 
-    void drawBackground() {
+    void drawBlackBackground() {
         for (int x = 0; x < SnakeGame.WIDTH; x++) {
             for (int y = 0; y < SnakeGame.HEIGHT; y++) {
                 game.setCellValueEx(x, y, Color.BLACK, "");
@@ -187,6 +187,9 @@ class Menu {
             Signs.set(Graphics.KANJI);
         }
     }
+
+
+    // INNER CLASSES
 
     public static class Selector {
         SnakeGame game;
@@ -213,8 +216,8 @@ class Menu {
                 } else {
                     instance.game.setCellValue(x - 2, y, "");
                 }
-                Message line = new Message(instance.entries.get(i), (instance.pointer == i ? Color.WHITE : Color.GRAY));
-                line.draw(instance.game, x, y);
+                Message line = new Message(x, y, instance.entries.get(i), (instance.pointer == i ? Color.WHITE : Color.GRAY));
+                line.draw();
                 y += 2;
             }
         }
