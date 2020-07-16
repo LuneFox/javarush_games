@@ -3,7 +3,6 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.*;
 
 public class Message {
-    public static SnakeGame game;
     private int x;
     private int y;
     private String[] symbols;
@@ -35,7 +34,7 @@ public class Message {
     public void draw() {
         try {
             for (int i = 0; i < symbols.length; i++) {
-                game.setCellValueEx((i + this.x), this.y, bgColor, symbols[i], color, textSize);
+                SnakeGame.game.setCellValueEx((i + this.x), this.y, bgColor, symbols[i], color, textSize);
             }
         } catch (IndexOutOfBoundsException ignored) {
 

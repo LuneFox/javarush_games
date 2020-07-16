@@ -9,6 +9,7 @@ import java.util.Date;
 
 public class SnakeGame extends Game {
     // Global parameters
+    public static SnakeGame game;
     static final int WIDTH = 32;
     static final int HEIGHT = 32;
     private static final int MAX_TURN_DELAY = 300;
@@ -41,7 +42,7 @@ public class SnakeGame extends Game {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         Signs.set(Graphics.KANJI);
-        Message.game = this;
+        game = this;
         menu = new Menu(this);
         ie = new InputEvent(this);
         Menu.Selector.setPointer(0);

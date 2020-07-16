@@ -16,8 +16,6 @@ class Menu {
     Menu(SnakeGame game) {
         this.game = game;
         Selector.getInstance(game);
-        helpPages.add(HelpPage.getGoals());
-        helpPages.add(HelpPage.getSnakeAbilities());
     }
 
     private int brush;
@@ -27,8 +25,13 @@ class Menu {
     void displayMain() {
         Screen.set(Screen.Type.MAIN_MENU);
         drawBlackBackground();
-        new Message(-1, 5, "ALCHEMY SNAKE", Color.LIGHTGREEN).draw();
-        new Message(-1, 30, "VER " + Strings.VERSION, Color.DARKBLUE).draw();
+        new Message(-1, 5, "✡                     ✡", Color.YELLOW).draw();
+        new Message(-1, 5, "✡                   ✡", Color.CYAN).draw();
+        new Message(-1, 5, "✡                 ✡", Color.LAWNGREEN).draw();
+        new Message(-1, 5, "✡               ✡", Color.RED).draw();
+        new Message(-1, 5, "ALCHEMY SNAKE", Color.FUCHSIA).draw();
+        new Message(-1, 7, "MASTER OF ELEMENTS", Color.PINK).draw();
+        new Message(-1, 30, "VER " + Strings.VERSION, Color.BLUE).draw();
         Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
         // Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
         Selector.draw(13, 12);
@@ -54,6 +57,12 @@ class Menu {
     }
 
     void displayHelp() {
+        helpPages.clear();
+        helpPages.add(HelpPage.getGoals());
+        helpPages.add(HelpPage.getSnakeAbilities());
+        helpPages.add(HelpPage.getTypesOfTerrain());
+        helpPages.add(HelpPage.getTips1());
+        helpPages.add(HelpPage.getTips2());
         drawBlackBackground();
         Screen.set(Screen.Type.HELP);
         helpPages.get(currentHelpPage).draw(game);

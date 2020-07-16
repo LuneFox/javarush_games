@@ -53,7 +53,7 @@ class Signs {
             case EMOJI:
                 headSign = "\uD83D\uDC32";
                 deadSign = "\uD83D\uDC80";
-                bodySign = "S";
+                bodySign = "✡";
                 fieldSign = "w";
                 woodSign = "\uD83C\uDF42";
                 waterSign = "~";
