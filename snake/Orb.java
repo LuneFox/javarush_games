@@ -14,6 +14,7 @@ class Orb extends GameObject {
     private Date blinkTime;
     private boolean blink;
     boolean isAlive = true;
+    boolean isObtained = false;
 
     Orb(int x, int y, Element e) {
         super(x, y);

@@ -4,16 +4,14 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.snake.enums.*;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 
-import static com.javarush.games.snake.Triggers.*;
 
 public class SnakeGame extends Game {
     // Global parameters
     static final int WIDTH = 32;
     static final int HEIGHT = 32;
-    static final int MAX_TURN_DELAY = 300;
+    private static final int MAX_TURN_DELAY = 300;
     private InputEvent ie;
     private final Menu menu = new Menu(this);
 
@@ -29,16 +27,12 @@ public class SnakeGame extends Game {
     private boolean isPaused;
     private int stage;
     boolean acceleration;
+    boolean speedUpDelay;
 
     // Game objects
     private Snake snake;
     private Map map;
     private Orb neutralOrb;
-    private Orb waterOrb;
-    private Orb fireOrb;
-    private Orb earthOrb;
-    private Orb airOrb;
-    private Orb almightyOrb;
     private ArrayList<Orb> orbs;
 
     // SETUP
@@ -64,7 +58,6 @@ public class SnakeGame extends Game {
         createNeutralOrb();
 
         // Initialize values
-        Triggers.reset();
         snakeLength = snake.getLength();
         score = 0;
         lifetime = 301;
@@ -72,6 +65,7 @@ public class SnakeGame extends Game {
         // Launch
         isStopped = false;
         isPaused = false;
+        speedUpDelay = false;
         turnDelay = MAX_TURN_DELAY;
         setTurnTimer(turnDelay);
         drawScene();
@@ -102,106 +96,41 @@ public class SnakeGame extends Game {
     public void onTurn(int step) {
         points = calculatePoints();
         snake.move();
-        for (Orb orb : orbs) {
+
+        ArrayList<Orb> orbsCopy = new ArrayList<>(orbs);
+        orbsCopy.forEach(orb -> {
             snake.interactWithOrb(orb);
-        }
-        processOrb(neutralOrb);
-        processOrb(waterOrb);
-        processOrb(fireOrb);
-        processOrb(earthOrb);
-        processOrb(airOrb);
-        processOrb(almightyOrb);
-        snakeLength = snake.getLength();
+            processOrb(orb);
+        });
 
-        if (!snake.isAlive) {
-            gameOver();
-        }
-
-        if (lifetime <= 0) {
-            win();
-        }
-
+        if (!snake.isAlive) gameOver();
+        if (lifetime <= 0) win();
         setTurnTimer(turnDelay);
         drawScene();
     }
 
     private void processOrb(Orb orb) {
-        switch (orb.element) {
-            case NEUTRAL:
-                if (!orb.isAlive) {
-                    orbs.remove(orb);
-                    createNeutralOrb();
-                    score += 5;
-                }
-                break;
-            case WATER:
-                if (!orb.isAlive && !waterOrbObtained) {
-                    waterOrbObtained = true;
-                    orbs.remove(orb);
-                    Collections.sort(snake.getElementsAvailable());
-                    snake.getElementsAvailable().add(Element.WATER);
-                    do {
-                        snake.rotateToNextElement(this);
-                    } while (snake.getElement() != Element.WATER);
-                    snake.canChangeElement = false;
-                    score += points;
-                }
-                break;
-            case FIRE:
-                if (!orb.isAlive && !fireOrbObtained) {
-                    fireOrbObtained = true;
-                    orbs.remove(orb);
-                    Collections.sort(snake.getElementsAvailable());
-                    snake.getElementsAvailable().add(Element.FIRE);
-                    do {
-                        snake.rotateToNextElement(this);
-                    } while (snake.getElement() != Element.FIRE);
-                    snake.canChangeElement = false;
-                    score += points;
-                }
-                break;
-            case EARTH:
-                if (!orb.isAlive && !earthOrbObtained) {
-                    earthOrbObtained = true;
-                    orbs.remove(orb);
-                    Collections.sort(snake.getElementsAvailable());
-                    snake.getElementsAvailable().add(Element.EARTH);
-                    do {
-                        snake.rotateToNextElement(this);
-                    } while (snake.getElement() != Element.EARTH);
-                    snake.canChangeElement = false;
-                    score += points;
-                }
-                break;
-            case AIR:
-                if (!orb.isAlive && !airOrbObtained) {
-                    airOrbObtained = true;
-                    orbs.remove(orb);
-                    Collections.sort(snake.getElementsAvailable());
-                    snake.getElementsAvailable().add(Element.AIR);
-                    do {
-                        snake.rotateToNextElement(this);
-                    } while (snake.getElement() != Element.AIR);
-                    snake.canChangeElement = false;
-                    score += points;
-                }
-                break;
-            case ALMIGHTY:
-                if (!orb.isAlive && !almightyOrbObtained) {
-                    almightyOrbObtained = true;
-                    menu.selectStageUp();
-                    orbs.remove(orb);
+        if (orb.isAlive) return;
+        if (orb.element == Element.NEUTRAL) {
+            orbs.remove(orb);
+            createNeutralOrb();
+            score += points / 10;
+        } else {
+            if (!orb.isObtained) {
+                orb.isObtained = true;
+                orbs.remove(orb);
+                if (orb.element == Element.ALMIGHTY) {
                     snake.clearElements();
-                    snake.getElementsAvailable().add(Element.ALMIGHTY);
-                    do {
-                        snake.rotateToNextElement(this);
-                    } while (snake.getElement() != Element.ALMIGHTY);
-                    snake.canChangeElement = false;
-                    score += points;
+                    menu.selectStageUp();
                 }
-                break;
-            default:
-                break;
+                snake.getElementsAvailable().add(orb.element);
+                do {
+                    snake.rotateToNextElement(this);
+                } while (snake.getElement() != orb.element);
+                snakeLength = snake.getLength();
+                snake.canChangeElement = false;
+                score += points;
+            }
         }
     }
 
@@ -220,11 +149,11 @@ public class SnakeGame extends Game {
     }
 
     private void importElementalOrbs() {
-        waterOrb = map.orbs.get(0);
-        fireOrb = map.orbs.get(1);
-        earthOrb = map.orbs.get(2);
-        airOrb = map.orbs.get(3);
-        almightyOrb = map.orbs.get(4);
+        Orb waterOrb = map.orbs.get(0);
+        Orb fireOrb = map.orbs.get(1);
+        Orb earthOrb = map.orbs.get(2);
+        Orb airOrb = map.orbs.get(3);
+        Orb almightyOrb = map.orbs.get(4);
         orbs.add(waterOrb);
         orbs.add(fireOrb);
         orbs.add(earthOrb);
@@ -292,7 +221,7 @@ public class SnakeGame extends Game {
         }
     }
 
-    public void drawElementsPanel() {
+    void drawElementsPanel() {
         Color textColor;
         Color bgColor;
         for (Element element : Element.values()) {
@@ -330,11 +259,11 @@ public class SnakeGame extends Game {
 
     // UTILITY & CHECKS
 
-    public int getSpeed() {
+    int getSpeed() {
         return Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
     }
 
-    public void pause() {
+    void pause() {
         isPaused = !isPaused;
         if (isPaused) {
             stopTurnTimer();
@@ -429,8 +358,8 @@ public class SnakeGame extends Game {
         this.gameOverReason = reason;
     }
 
-    void setScore(int score, boolean add) {
-        if (add) {
+    void setScore(int score, boolean modify) {
+        if (modify) {
             this.score += score;
         } else {
             this.score = score;

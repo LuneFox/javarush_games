@@ -20,24 +20,24 @@ public class Snake {
     private Date starveTime;
     private int breath;
     private int hunger;
-    boolean isAlive = true;
-    boolean canChangeElement = true;
+    boolean isAlive;
+    boolean canChangeElement;
 
     // CONSTRUCTOR
 
     public Snake(int x, int y, SnakeGame game, Direction direction) {
-        // Properties of a fresh snake
         this.game = game;
         this.direction = direction;
         this.bodyColor = new Color[2];
         this.elementsAvailable = new LinkedList<>();
         this.snakeParts = new ArrayList<>();
-        this.setElement(Element.NEUTRAL);
-        this.elementsAvailable.add(Element.NEUTRAL);
         this.hunger = 0;
         this.starveTime = new Date();
-        addParts(x, y, direction, 3);
-        breath = snakeParts.size();
+        this.isAlive = true;
+        this.canChangeElement = true;
+        this.elementsAvailable.add(Element.NEUTRAL);
+        this.setElement(Element.NEUTRAL);
+        this.addParts(x, y, direction, 3);
     }
 
 
@@ -86,9 +86,14 @@ public class Snake {
     }
 
     private void interactWithNode(Node node) {
-        if (almightyInteraction()) {
+        if (almightyInteraction()) { // if elements is ALMIGHTY, does action described inside and returns
             return;
         }
+
+        if (node.getTerrain() != Node.Terrain.WATER) { // take a breath outside water
+            breath = snakeParts.size();
+        }
+
         switch (node.getTerrain()) {
             case WALL:
                 if (element != Element.AIR) { // air snake can fly over walls
@@ -97,13 +102,7 @@ public class Snake {
                 }
                 break;
 
-            case FIELD:
-            case SAND:
-                breath = snakeParts.size();
-                break;
-
             case WOOD:
-                breath = snakeParts.size();
                 if (element == Element.FIRE) { // fire snake sets wood on fire
                     game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.FIRE);
                 } else if (element == Element.WATER) { // water snake moistens wood
@@ -125,7 +124,6 @@ public class Snake {
                 break;
 
             case FIRE:
-                breath = snakeParts.size();
                 if (element == Element.NEUTRAL || element == Element.EARTH) {
                     isAlive = false; // earth and neutral snakes die
                     game.setGameOverReason(Strings.GAME_OVER_BURNED);
@@ -136,7 +134,6 @@ public class Snake {
                 break;
 
             case FOREST:
-                breath = snakeParts.size();
                 if (element == Element.FIRE) { // fire snake sets forest on fire
                     game.getMap().setLayoutNode(getNewHeadX(), getNewHeadY(), Node.Terrain.FIRE);
                 } else if (element != Element.AIR) { // air snake can fly over fire
@@ -146,7 +143,6 @@ public class Snake {
                 break;
 
             case WORMHOLE:
-                breath = snakeParts.size();
                 if (element != Element.EARTH && element != Element.AIR) { // only earth snake can use wormholes
                     isAlive = false;
                     game.setGameOverReason(Strings.GAME_OVER_LOST);
@@ -255,25 +251,23 @@ public class Snake {
 
     void rotateToNextElement(SnakeGame game) {
         if (!canChangeElement) {
-            return;
+            Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
+            elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
+            elementsAvailable.add(movingElement);                  // adding it to the end
+            setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
+            game.drawElementsPanel();
         }
-        Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
-        elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
-        elementsAvailable.add(movingElement);                  // adding it to the end
-        setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
-        game.drawElementsPanel();
     }
 
     void rotateToPreviousElement(SnakeGame game) {
-        if (!canChangeElement) {
-            return;
+        if (canChangeElement) {
+            int lastElement = elementsAvailable.size() - 1;
+            Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
+            elementsAvailable.remove(movingElement);                    // removing it from list (it was last)
+            elementsAvailable.add(0, movingElement);             // instantly adding it to the beginning
+            setElement(elementsAvailable.get(0));                       // making it new element
+            game.drawElementsPanel();
         }
-        int lastElement = elementsAvailable.size() - 1;
-        Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
-        elementsAvailable.remove(movingElement);                    // removing it from list (it was last)
-        elementsAvailable.add(0, movingElement);             // instantly adding it to the beginning
-        setElement(elementsAvailable.get(0));                       // making it new element
-        game.drawElementsPanel();
     }
 
     void clearElements() {
@@ -282,7 +276,6 @@ public class Snake {
 
 
     // UTILITIES AND CHECKS
-
 
     boolean canUse(Element element) {
         return (this.elementsAvailable.contains(element));
