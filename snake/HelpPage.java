@@ -40,7 +40,7 @@ public class HelpPage {
     static HelpPage getSnakeAbilities() {
         HelpPage result = new HelpPage();
         result.messages.add(new Message(-1, 1, "SNAKE ABILITIES", Color.SKYBLUE));
-        result.messages.add(new Message(1, 5, "— NEUTRAL SNAKE", Color.MEDIUMPURPLE));
+        result.messages.add(new Message(1, 5, "— NEUTRAL SNAKE", Color.LIGHTGREEN));
         result.messages.add(new Message(3, 7, "NO SPECIAL POWERS", Color.WHITE));
         result.messages.add(new Message(1, 9, "— WATER SNAKE", Color.LIGHTBLUE));
         result.messages.add(new Message(3, 11, "CAN SWIM, PUT OUT FIRE", Color.WHITE));
