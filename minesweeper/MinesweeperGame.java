@@ -222,6 +222,10 @@ public class MinesweeperGame extends Game {
 
     void openRest(int x, int y) {
         // attempts to open cells around if number of flags nearby equals the number on the cell
+        if (shopScanner.isActivated || shopMiniBomb.isActivated){
+            // don't do anything if item usage is pending
+            return;
+        }
         Tile cell = field[y][x];
         if (cell.isOpen && !cell.isMine) {
             if (cell.countMineNeighbors == getFlaggedNeighbors(cell).size()) {
@@ -266,7 +270,7 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    void markTile(int x, int y) { // sets or removes a flag
+    void markTile(int x, int y, boolean unmarkAllowed) { // sets or removes a flag
         if (isStopped) {
             return;
         }
@@ -274,13 +278,13 @@ public class MinesweeperGame extends Game {
         if (cell.isOpen) {
             return;
         }
-        if (cell.isFlag) { // remove
+        if (cell.isFlag && unmarkAllowed) { // remove
             cell.isFlag = false;
             countFlags++;
             cell.eraseSprite();
         } else { // set
             if (countFlags == 0) {
-                // if there are no flags left
+                // if there are no flags left (happens only in manual mode, scanner gives free flag before coming here)
                 if (allowAutoBuyFlags) {
                     // buy flags automatically if you can
                     if (countMoney < shopFlag.cost || shopFlag.count <= 0) {
@@ -294,25 +298,6 @@ public class MinesweeperGame extends Game {
                     menu.displayShop();
                     return;
                 }
-            }
-            cell.isFlag = true;
-            countFlags--;
-            cell.assignSprite(Bitmap.BOARD_FLAG);
-            cell.drawSprite();
-        }
-    }
-
-    private void markTileWithoutUndo(int x, int y) { // doesn't unmark if it's already a flag
-        if (isStopped) {
-            return;
-        }
-        Tile cell = field[y][x];
-        if (cell.isOpen) {
-            return;
-        }
-        if (!cell.isFlag) { // set
-            if (countFlags == 0) {
-                return;
             }
             cell.isFlag = true;
             countFlags--;
@@ -339,22 +324,26 @@ public class MinesweeperGame extends Game {
     }
 
     private void openRandomNeighbor(int x, int y) {
+        // scanner action
         List<Tile> neighbors = getTilesForScanner(field[y][x]);
         if (neighbors.size() == 0) {
-            getTilesForAutoFlagging(field[y][x]).forEach(tile -> {
-                if (countFlags == 0) {
+            // if there are no tiles that scanner can open, it means that they're all mined
+            // so we can start force-flagging them all
+            getAllClosedTilesInArea(field[y][x]).forEach(tile -> {
+                if (countFlags == 0) { // ran out of flags? no problem, here are some freebies from the shop
                     shopFlag.count--;
-                    countFlags++;   // free flags, yay!
+                    countFlags++;
                 }
-                markTileWithoutUndo(tile.x, tile.y); // doesn't unmark what was already flagged
+                // force a flag mark to the tile, un-marking not allowed
+                markTile(tile.x, tile.y, false);
             });
             return;
         }
         Tile cell = neighbors.get(getRandomNumber(neighbors.size()));
         cell.isScanned = true;
         if (cell.isFlag) {
-            // remove flag with simple "mark" action
-            markTile(cell.x, cell.y);
+            // remove flag if it was placed wrong
+            markTile(cell.x, cell.y, true);
         }
         openTile(cell.x, cell.y);
     }
@@ -440,7 +429,8 @@ public class MinesweeperGame extends Game {
         return result;
     }
 
-    private List<Tile> getTilesForAutoFlagging(Tile tile) { // closed tiles from 3x3 area
+    private List<Tile> getAllClosedTilesInArea(Tile tile) {
+        // all closed tiles from 3x3 area
         List<Tile> result = new ArrayList<>();
         for (int y = tile.y - 1; y <= tile.y + 1; y++) {
             for (int x = tile.x - 1; x <= tile.x + 1; x++) {

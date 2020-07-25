@@ -164,8 +164,8 @@ class InputEvent {
             menu.displayGameOver(game.lastResultIsVictory);
             Screen.set(ScreenType.GAME_OVER);
         } else {
-            game.markTile(x / 10, y / 10); // works only if tile is closed
-            game.openRest(x / 10, y / 10); // works only if tile is open
+            game.markTile(x / 10, y / 10, true); // works only if tile is closed
+            game.openRest(x / 10, y / 10);                       // works only if tile is open
             // above two actions don't interfere, only one will work
         }
     }
