@@ -177,24 +177,34 @@ public class MinesweeperGame extends Game {
 
     void openTile(int x, int y) { // mouse click or recursive
         if (miniBombAction(x, y) || scannerAction(x, y)) {
+            // attempt to perform bomb action or scanner action before normal turn
+            // if any of them succeed, don't do anything else
             return;
         }
+
         Tile cell = field[y][x];
+
         if (isStopped || cell.isFlag || cell.isOpen) {
+            // don't do anything else if the game is stopped or if user clicks on flag or open cell
             return;
         }
+
         pushTile(cell);
         countMoves();
+
         if (!surviveMine(cell)) {
+            // check if the player survived the mine, and stop doing things below if so
             return;
         }
+
         drawNumberOnCell(cell);
         countMoney += cell.countMineNeighbors * (shopGoldenShovel.isActivated ? 2 : 1);
         addScore();
         setScore(score);
         deactivateExpiredItems();
         checkVictory();
-        isFirstMove = false; // first move ends here, doesn't affect recursion
+
+        isFirstMove = false; // protects from counting moves when opening cells in recursion
         recursiveOpen(cell);
     }
 
@@ -270,7 +280,9 @@ public class MinesweeperGame extends Game {
             cell.eraseSprite();
         } else { // set
             if (countFlags == 0) {
+                // if there are no flags left
                 if (allowAutoBuyFlags) {
+                    // buy flags automatically if you can
                     if (countMoney < shopFlag.cost || shopFlag.count <= 0) {
                         return;
                     }
@@ -278,6 +290,7 @@ public class MinesweeperGame extends Game {
                     shopFlag.count--;
                     countMoney -= shopFlag.cost;
                 } else {
+                    // otherwise proceed to the shop and stop
                     menu.displayShop();
                     return;
                 }
@@ -311,10 +324,13 @@ public class MinesweeperGame extends Game {
     private boolean surviveMine(Tile cell) {
         if (cell.isMine) {
             if (isFirstMove) {
+                // on the very first move, clicking on a mine moves it secretly to another place, returns true
                 replantMine(cell);
             } else if (shopShield.isActivated) {
+                // if the shield is bought, it saves from death, returns true
                 shieldAction(cell);
             } else {
+                // if nothing from above happened, triggers game over, returns false
                 explodeAndGameOver(cell);
                 return false;
             }
