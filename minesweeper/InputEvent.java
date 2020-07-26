@@ -20,7 +20,7 @@ class InputEvent {
     // GENERAL ATTITUDE
 
     final void leftClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || menu.showDelay > 0) {
+        if (clickOutsideScreen(x, y) || menu.gameOverDisplayDelay > 0) {
             return;
         }
         ScreenType screen = Screen.get();
@@ -85,7 +85,7 @@ class InputEvent {
                         if (!game.isStopped) {
                             menu.displayShop();
                         } else {
-                            menu.displayGameOver(game.lastResultIsVictory);
+                            menu.displayGameOver(game.lastResultIsVictory, 0);
                             Screen.set(ScreenType.GAME_OVER);
                         }
                         break;
@@ -100,7 +100,7 @@ class InputEvent {
                 switch (screen) {
                     case GAME_BOARD:
                         if (game.isStopped) {
-                            menu.displayGameOver(game.lastResultIsVictory);
+                            menu.displayGameOver(game.lastResultIsVictory, 0);
                             Screen.set(ScreenType.GAME_OVER);
                             break;
                         }
@@ -126,7 +126,7 @@ class InputEvent {
                 break;
             default:
                 if (screen == ScreenType.GAME_BOARD && game.isStopped) {
-                    menu.displayGameOver(game.lastResultIsVictory);
+                    menu.displayGameOver(game.lastResultIsVictory, 0);
                     Screen.set(ScreenType.GAME_OVER);
                 }
                 break;
@@ -149,7 +149,7 @@ class InputEvent {
 
     private void leftClickOnGameBoard(int x, int y) {
         if (game.isStopped) {
-            menu.displayGameOver(game.lastResultIsVictory);
+            menu.displayGameOver(game.lastResultIsVictory, 0);
             Screen.set(ScreenType.GAME_OVER);
             return;
         }
@@ -161,7 +161,7 @@ class InputEvent {
 
     private void rightClickOnGameBoard(int x, int y) {
         if (game.isStopped) {
-            menu.displayGameOver(game.lastResultIsVictory);
+            menu.displayGameOver(game.lastResultIsVictory, 0);
             Screen.set(ScreenType.GAME_OVER);
         } else {
             game.markTile(x / 10, y / 10, true); // works only if tile is closed
@@ -261,7 +261,7 @@ class InputEvent {
     private void leftClickInScoreDetail(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.CONFIRM).has(x, y)) {
             menu.displayGameBoard();
-            menu.displayGameOver(game.lastResultIsVictory);
+            menu.displayGameOver(game.lastResultIsVictory, 0);
         }
     }
 

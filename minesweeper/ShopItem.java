@@ -7,6 +7,7 @@ class ShopItem {
     int count;
     int expireMove;
     boolean isActivated;
+    ID id;
     String name;
     String description;
     Picture icon;
@@ -18,6 +19,7 @@ class ShopItem {
         isActivated = false;
         switch (slot) {
             case 0:
+                this.id = ID.SHIELD;
                 this.name = "Сапёрский щит";
                 this.description =
                         "Спасёт от взрыва\n" +
@@ -26,6 +28,7 @@ class ShopItem {
                                 "потеряете " + 150 * (game.difficulty / 5) + " очков.";
                 break;
             case 1:
+                this.id = ID.SCANNER;
                 this.name = "Сканер";
                 this.description =
                         "Откроет безопасную\n" +
@@ -37,6 +40,7 @@ class ShopItem {
                                 "нехватающие.";
                 break;
             case 2:
+                this.id = ID.FLAG;
                 this.name = "Флажок";
                 this.description =
                         "Обычный флажок\n" +
@@ -48,6 +52,7 @@ class ShopItem {
                                 "очевидна.";
                 break;
             case 3:
+                this.id = ID.SHOVEL;
                 this.name = "Золотая лопата";
                 this.description =
                         "Следующие 5 шагов\n" +
@@ -59,6 +64,7 @@ class ShopItem {
                                 "с цифрами.";
                 break;
             case 4:
+                this.id = ID.DICE;
                 this.name = "Кубик удачи";
                 this.description =
                         "Следующие 3 шага\n" +
@@ -69,6 +75,7 @@ class ShopItem {
                                 "от сложности игры.";
                 break;
             case 5:
+                this.id = ID.BOMB;
                 this.name = "Мини-бомба";
                 this.description =
                         "Бросив бомбочку, вы\n" +
@@ -82,5 +89,9 @@ class ShopItem {
             default:
                 break;
         }
+    }
+
+    public enum ID {
+        SHIELD, SCANNER, FLAG, SHOVEL, DICE, BOMB
     }
 }

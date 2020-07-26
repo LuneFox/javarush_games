@@ -21,8 +21,7 @@ class Menu {
     final static LinkedList<String> TITLE_NAMES = new LinkedList<>();
     final private static LinkedList<String> QUOTES = new LinkedList<>();
     final private Text TEXT_WRITER;
-    int showDelay;
-    private boolean firstLoad = true;
+    int gameOverDisplayDelay;
 
     static {
         TITLE_NAMES.addAll(Arrays.asList("хомячок", "новичок", "любитель", "опытный", "эксперт",
@@ -42,7 +41,7 @@ class Menu {
     Menu(MinesweeperGame game) {
         this.GAME = game;
         this.TEXT_WRITER = GAME.getTextWriter();
-        this.showDelay = 0;
+        this.gameOverDisplayDelay = 0;
     }
 
 
@@ -62,10 +61,6 @@ class Menu {
                     Color.LIGHTGOLDENRODYELLOW, 4, 71, false);
         }
         printRandomQuote();
-        if (firstLoad) {
-            GAME.display.draw();
-            firstLoad = false;
-        }
     }
 
     private void printRandomQuote() {
@@ -218,9 +213,15 @@ class Menu {
                 if (item.count > 0 && !item.isActivated) {
                     TEXT_WRITER.write("" + item.cost, Color.YELLOW, 30 + dx, 41 + dy, true);
                 } else if (item.isActivated) {
-                    TEXT_WRITER.write("АКТ", Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
+                    if (item.id == ShopItem.ID.SHOVEL || item.id == ShopItem.ID.DICE) {
+                        TEXT_WRITER.write(Integer.toString(item.expireMove - GAME.countMoves),
+                                Color.MAGENTA, 30 + (x * 25), 30 + (y * 25), true);
+                    }
+                    TEXT_WRITER.write("АКТ",
+                            Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
                 } else {
-                    TEXT_WRITER.write("НЕТ", Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
+                    TEXT_WRITER.write("НЕТ",
+                            Color.RED, 30 + (x * 25), 41 + (y * 25), true);
                 }   // draw prices
             }
         }
@@ -242,9 +243,10 @@ class Menu {
 
     // GAME OVER
 
-    final void displayGameOver(boolean victory) {
+    final void displayGameOver(boolean victory, int delay) {
         Screen.set(ScreenType.GAME_OVER);
-        if (showDelay > 0) {
+        gameOverDisplayDelay = delay;
+        if (gameOverDisplayDelay > 0) {
             return;
         }
         if (victory) {
@@ -291,11 +293,6 @@ class Menu {
 
         BUTTONS.get(ButtonID.CONFIRM).draw();
     }
-
-    void decreaseShowDelay() {
-        showDelay--;
-    }
-
 
     // LOAD RESOURCES
 

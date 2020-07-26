@@ -72,11 +72,14 @@ public class MinesweeperGame extends Game {
     @Override
     public void onTurn(int step) {
         display.draw();
-        if (Screen.get() == ScreenType.GAME_OVER) {
-            if (menu.showDelay > 0) {
-                menu.decreaseShowDelay();
-            }
-            menu.displayGameOver(lastResultIsVictory);
+        onTurnAction();
+    }
+
+    public void onTurnAction() {
+        if (Screen.get() == ScreenType.GAME_OVER && menu.gameOverDisplayDelay <= 0) {
+            menu.displayGameOver(lastResultIsVictory, 0);
+        } else {
+            menu.gameOverDisplayDelay--;
         }
     }
 
@@ -152,11 +155,10 @@ public class MinesweeperGame extends Game {
 
     // WIN AND LOSE
 
-    private void gameOver() {
+    private void lose() {
         lastResultIsVictory = false;
         isStopped = true;
-        menu.showDelay = 30;
-        menu.displayGameOver(false);
+        menu.displayGameOver(false, 30);
     }
 
     private void win() {
@@ -168,8 +170,7 @@ public class MinesweeperGame extends Game {
             topScoreTitle = Menu.TITLE_NAMES.get(difficulty / 5 - 1);
         }
         isStopped = true;
-        menu.showDelay = 30;
-        menu.displayGameOver(true);
+        menu.displayGameOver(true, 30);
     }
 
 
@@ -222,7 +223,7 @@ public class MinesweeperGame extends Game {
 
     void openRest(int x, int y) {
         // attempts to open cells around if number of flags nearby equals the number on the cell
-        if (shopScanner.isActivated || shopMiniBomb.isActivated){
+        if (shopScanner.isActivated || shopMiniBomb.isActivated) {
             // don't do anything if item usage is pending
             return;
         }
@@ -270,7 +271,7 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    void markTile(int x, int y, boolean unmarkAllowed) { // sets or removes a flag
+    void markTile(int x, int y, boolean isRevertible) { // sets or removes a flag
         if (isStopped) {
             return;
         }
@@ -278,7 +279,7 @@ public class MinesweeperGame extends Game {
         if (cell.isOpen) {
             return;
         }
-        if (cell.isFlag && unmarkAllowed) { // remove
+        if (cell.isFlag && isRevertible) { // remove
             cell.isFlag = false;
             countFlags++;
             cell.eraseSprite();
@@ -514,7 +515,7 @@ public class MinesweeperGame extends Game {
         cell.replaceColor(Color.RED, 3); // highlight mine that caused game over
         cell.draw();
         cell.drawSprite();
-        gameOver();
+        lose();
     }
 
 
