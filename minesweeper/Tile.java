@@ -89,6 +89,10 @@ class Tile extends Image {
         sprite.draw();
     }
 
+    void changeSpriteColor(Color color) {
+        sprite.replaceColor(color, 1);
+    }
+
     // assigns an empty sprite and draws the tile again to remove whatever is drawn over it
     void eraseSprite() {
         this.sprite = new Sprite(Bitmap.BOARD_NONE, game, x * 10, y * 10);

@@ -554,6 +554,9 @@ public class MinesweeperGame extends Game {
     private void drawNumberOnCell(Tile cell) {
         if (!cell.isFlag && !cell.isMine) {
             cell.assignSprite(cell.countMineNeighbors);
+            if (shopGoldenShovel.isActivated) {
+                cell.changeSpriteColor(Color.YELLOW);
+            }
         }
         cell.drawSprite();
     }
