@@ -30,6 +30,10 @@ public class MinesweeperGame extends Game {
     private ShopItem shopMiniBomb;
     private LinkedList<ShopItem> allShopItems = new LinkedList<>();
 
+    // DICE DISPLAY
+    private Dice dice;
+    private Tile firstClickedTile;
+
     // GAME STATE
     private int countClosedTiles = 100;
     int difficulty = 10;
@@ -71,15 +75,33 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        display.draw();
         onTurnAction();
+        display.draw();
     }
 
     public void onTurnAction() {
-        if (Screen.get() == ScreenType.GAME_OVER && menu.gameOverDisplayDelay <= 0) {
-            menu.displayGameOver(lastResultIsVictory, 0);
-        } else {
-            menu.gameOverDisplayDelay--;
+        switch (Screen.get()) {
+            case GAME_OVER:
+                if (menu.gameOverDisplayDelay <= 0) {
+                    menu.displayGameBoard();
+                    menu.displayGameOver(lastResultIsVictory, 0);
+                } else {
+                    menu.gameOverDisplayDelay--;
+                    int turns = shopLuckyDice.expireMove - countMoves;
+                    if (turns > -1 && turns < 3 && countMoves != 0) {
+                        if (!isStopped) {
+                            dice.draw();
+                        }
+                    }
+                }
+                break;
+            case GAME_BOARD:
+                int turns = shopLuckyDice.expireMove - countMoves;
+                if (turns > -1 && turns < 3 && countMoves != 0) {
+                    menu.displayGameBoard();
+                    dice.draw();
+                }
+                break;
         }
     }
 
@@ -139,6 +161,7 @@ public class MinesweeperGame extends Game {
         this.allShopItems.clear();
         this.allShopItems.addAll(Arrays.asList(shopShield, shopScanner, shopFlag,
                 shopGoldenShovel, shopLuckyDice, shopMiniBomb));
+        this.dice = new Dice(1);
     }
 
     private void plantMines() {
@@ -184,6 +207,9 @@ public class MinesweeperGame extends Game {
         }
 
         Tile cell = field[y][x];
+        if (allowCountMoves) {
+            firstClickedTile = cell;
+        }
 
         if (isStopped || cell.isFlag || cell.isOpen) {
             // don't do anything else if the game is stopped or if user clicks on flag or open cell
@@ -200,7 +226,7 @@ public class MinesweeperGame extends Game {
 
         drawNumberOnCell(cell);
         countMoney += cell.countMineNeighbors * (shopGoldenShovel.isActivated ? 2 : 1);
-        addScore();
+        addScore(firstClickedTile.x, firstClickedTile.y);
         setScore(score);
         deactivateExpiredItems();
         checkVictory();
@@ -493,11 +519,13 @@ public class MinesweeperGame extends Game {
 
     // UTILITIES
 
-    private void addScore() {
+    private void addScore(int x, int y) {
         openedCellsCount++; // for score detail
         scoreCell += difficulty;
         int scoreBeforeDice = score;
-        score += difficulty * (shopLuckyDice.isActivated ? getRandomNumber(6) + 1 : 1);
+        int randomNumber = getRandomNumber(6) + 1;
+        this.dice.setImage(randomNumber, x, y);
+        score += difficulty * (shopLuckyDice.isActivated ? randomNumber : 1);
         if (shopLuckyDice.isActivated) {
             scoreDice += (score - scoreBeforeDice) - difficulty;
         }

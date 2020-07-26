@@ -293,6 +293,78 @@ public class Picture extends Image {
                 colors = new Color[]{Color.NONE, Color.NONE, Color.NONE, Color.BLUE};
                 return createWindowBitmap(100, 100, false, true);
             }
+            case DICE_1: {
+                colors = new Color[]{Color.NONE, Color.WHITE, Color.RED, Color.BLACK};
+                return createBitmapFromStrings(
+                        "11111110",
+                        "11111113",
+                        "11111113",
+                        "11121113",
+                        "11111113",
+                        "11111113",
+                        "11111113",
+                        "03333333");
+            }
+            case DICE_2: {
+                colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
+                return createBitmapFromStrings(
+                        "11111110",
+                        "11111213",
+                        "11111113",
+                        "11111113",
+                        "11111113",
+                        "12111113",
+                        "11111113",
+                        "03333333");
+            }
+            case DICE_3: {
+                colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
+                return createBitmapFromStrings(
+                        "11111110",
+                        "11111213",
+                        "11111113",
+                        "11121113",
+                        "11111113",
+                        "12111113",
+                        "11111113",
+                        "03333333");
+            }
+            case DICE_4: {
+                colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
+                return createBitmapFromStrings(
+                        "11111110",
+                        "12111213",
+                        "11111113",
+                        "11111113",
+                        "11111113",
+                        "12111213",
+                        "11111113",
+                        "03333333");
+            }
+            case DICE_5: {
+                colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
+                return createBitmapFromStrings(
+                        "11111110",
+                        "12111213",
+                        "11111113",
+                        "11121113",
+                        "11111113",
+                        "12111213",
+                        "11111113",
+                        "03333333");
+            }
+            case DICE_6: {
+                colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
+                return createBitmapFromStrings(
+                        "11111110",
+                        "12111213",
+                        "11111113",
+                        "12111213",
+                        "11111113",
+                        "12111213",
+                        "11111113",
+                        "03333333");
+            }
             default: {
                 colors = new Color[]{Color.NONE, Color.WHITE};
                 return createBitmapFromStrings("1");

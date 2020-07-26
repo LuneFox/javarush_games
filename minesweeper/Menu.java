@@ -324,6 +324,12 @@ class Menu {
         IMAGES.put(Bitmap.MENU_SWITCH, new Picture(Bitmap.MENU_SWITCH, GAME, 0, 0));
         IMAGES.put(Bitmap.MENU_SWITCH_RAIL, new Picture(Bitmap.MENU_SWITCH_RAIL, GAME, 80, 52));
         IMAGES.put(Bitmap.BOARD_ACTIVE_FRAME, new Picture(Bitmap.BOARD_ACTIVE_FRAME, GAME, 0, 0));
+        IMAGES.put(Bitmap.DICE_1, new Picture(Bitmap.DICE_1, GAME, 0, 0));
+        IMAGES.put(Bitmap.DICE_2, new Picture(Bitmap.DICE_2, GAME, 0, 0));
+        IMAGES.put(Bitmap.DICE_3, new Picture(Bitmap.DICE_3, GAME, 0, 0));
+        IMAGES.put(Bitmap.DICE_4, new Picture(Bitmap.DICE_4, GAME, 0, 0));
+        IMAGES.put(Bitmap.DICE_5, new Picture(Bitmap.DICE_5, GAME, 0, 0));
+        IMAGES.put(Bitmap.DICE_6, new Picture(Bitmap.DICE_6, GAME, 0, 0));
     }
 
     final void loadButtons() {
