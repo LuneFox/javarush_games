@@ -4,13 +4,15 @@ import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Image;
 
 public class Dice {
-    int x;
-    int y;
-    int showDelay;
+    private int x;
+    private int y;
+    private int showDelay;
     private Image image;
+    boolean isHidden;
 
     public Dice(int number) {
         setImage(number, 0, 0);
+        isHidden = false;
     }
 
     public void setImage(int number, int x, int y) {
@@ -40,11 +42,12 @@ public class Dice {
     }
 
     public void draw() {
-        if (showDelay > 20) {
-            return;
+        if (!isHidden) {
+            if (showDelay < 20) {
+                showDelay++;
+                image.setPosition(this.x * 10 + 2, this.y * 10 + 2);
+                image.draw();
+            }
         }
-        showDelay++;
-        image.setPosition(this.x * 10 + 2, this.y * 10 + 2);
-        image.draw();
     }
 }

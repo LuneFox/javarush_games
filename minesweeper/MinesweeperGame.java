@@ -13,7 +13,7 @@ import java.util.*;
 public class MinesweeperGame extends Game {
 
     // FINAL OBJECTS
-    static final String VERSION = "1.08";
+    static final String VERSION = "1.09";
     public final Display display = new Display(this);
     final private Text text_writer = new Text(Bitmap.NONE, this);
     final private Menu menu = new Menu(this);
@@ -35,7 +35,6 @@ public class MinesweeperGame extends Game {
     private Tile firstClickedTile;
 
     // GAME STATE
-    private int countClosedTiles = 100;
     int difficulty = 10;
     int difficultySetting = 10;
     int countMinesOnField;
@@ -79,15 +78,7 @@ public class MinesweeperGame extends Game {
         display.draw();
     }
 
-    public void onTurnAction() {
-
-        int diceTurns;
-        if (shopLuckyDice == null) {
-            diceTurns = -1;
-        } else {
-            diceTurns = shopLuckyDice.expireMove - countMoves;
-        }
-
+    private void onTurnAction() {
         switch (Screen.get()) {
             case GAME_OVER:
                 if (menu.gameOverDisplayDelay <= 0) {
@@ -95,25 +86,19 @@ public class MinesweeperGame extends Game {
                     menu.displayGameOver(lastResultIsVictory, 0);
                 } else {
                     menu.gameOverDisplayDelay--;
-                    if (diceTurns > -1 && diceTurns < 3 && countMoves != 0 && !isStopped) {
-                        dice.draw();
-                    }
                 }
                 break;
             case GAME_BOARD:
-                if (diceTurns > -1 && diceTurns < 3 && countMoves != 0) {
-                    menu.displayGameBoard();
-                    dice.draw();
-                }
+                menu.displayGameBoard();
                 break;
         }
+        displayDice();
     }
 
     void createGame() {
         // reset values
         isStopped = false;
         isFirstMove = true;
-        countClosedTiles = 100;
         countMinesOnField = 0;
         countMoney = 0;
         countMoves = 0;
@@ -295,9 +280,6 @@ public class MinesweeperGame extends Game {
             });
             countMineNeighbors();
             redrawAllTiles();
-            if (countClosedTiles == countMinesOnField) {
-                win();
-            }
         }
     }
 
@@ -479,6 +461,18 @@ public class MinesweeperGame extends Game {
         return result;
     }
 
+    private int countClosedTiles() {
+        int count = 0;
+        for (int y = 0; y < 10; y++) {
+            for (int x = 0; x < 10; x++) {
+                if (!field[y][x].isOpen) {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
 
     // ITEM ACTIONS
 
@@ -488,6 +482,7 @@ public class MinesweeperGame extends Game {
             shopScanner.count = 1; // allow to buy
             destroyTile(x, y);
             redrawAllTiles();
+            checkVictory();
             return true;
         } else {
             return false;
@@ -507,7 +502,7 @@ public class MinesweeperGame extends Game {
     }
 
     private void shieldAction(Tile cell) {
-        countClosedTiles++; // revert opening, don't count opened mines
+        countMinesOnField--; // exploded mine isn't a mine anymore
         cell.assignSprite(Bitmap.BOARD_MINE);
         cell.replaceColor(Color.YELLOW, 3);
         cell.draw();
@@ -538,6 +533,7 @@ public class MinesweeperGame extends Game {
     private void replantMine(Tile cell) {
         cell.eraseSprite();
         cell.isMine = false;
+        countMinesOnField--;
         plantMines();
         countMineNeighbors();
     }
@@ -547,14 +543,33 @@ public class MinesweeperGame extends Game {
         cell.replaceColor(Color.RED, 3); // highlight mine that caused game over
         cell.draw();
         cell.drawSprite();
+        dice.isHidden = true;
         lose();
+    }
+
+    private void displayDice() {
+        int diceTurns;
+        if (shopLuckyDice == null) {
+            diceTurns = -1;
+        } else {
+            diceTurns = shopLuckyDice.expireMove - countMoves;
+        }
+        if (diceTurns > -1 && diceTurns < 3 && countMoves != 0) {
+            dice.draw();
+        }
+    }
+
+    void hideDice() {
+        if (shopMiniBomb != null) {
+            dice.isHidden = shopMiniBomb.isActivated;
+        }
     }
 
 
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
 
     private void checkVictory() {
-        if (countClosedTiles == countMinesOnField) { // everything except bombs is open = win
+        if (countClosedTiles() == countMinesOnField) { // everything except bombs is open = win
             win();
         }
     }
@@ -580,7 +595,6 @@ public class MinesweeperGame extends Game {
         }
     }
 
-
     // ANIMATIONS
 
     private void drawNumberOnCell(Tile cell) {
@@ -596,7 +610,6 @@ public class MinesweeperGame extends Game {
     private void pushTile(Tile tile) {
         tile.isOpen = true;
         tile.push();
-        countClosedTiles--;
     }
 
     void redrawAllTiles() { // redraws all tiles in current state to hide whatever was drawn over them
