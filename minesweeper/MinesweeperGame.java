@@ -13,7 +13,7 @@ import java.util.*;
 public class MinesweeperGame extends Game {
 
     // FINAL OBJECTS
-    static final String VERSION = "1.07";
+    static final String VERSION = "1.08";
     public final Display display = new Display(this);
     final private Text text_writer = new Text(Bitmap.NONE, this);
     final private Menu menu = new Menu(this);
