@@ -80,6 +80,14 @@ public class MinesweeperGame extends Game {
     }
 
     public void onTurnAction() {
+
+        int diceTurns;
+        if (shopLuckyDice == null) {
+            diceTurns = -1;
+        } else {
+            diceTurns = shopLuckyDice.expireMove - countMoves;
+        }
+
         switch (Screen.get()) {
             case GAME_OVER:
                 if (menu.gameOverDisplayDelay <= 0) {
@@ -87,17 +95,13 @@ public class MinesweeperGame extends Game {
                     menu.displayGameOver(lastResultIsVictory, 0);
                 } else {
                     menu.gameOverDisplayDelay--;
-                    int turns = shopLuckyDice.expireMove - countMoves;
-                    if (turns > -1 && turns < 3 && countMoves != 0) {
-                        if (!isStopped) {
-                            dice.draw();
-                        }
+                    if (diceTurns > -1 && diceTurns < 3 && countMoves != 0 && !isStopped) {
+                        dice.draw();
                     }
                 }
                 break;
             case GAME_BOARD:
-                int turns = shopLuckyDice.expireMove - countMoves;
-                if (turns > -1 && turns < 3 && countMoves != 0) {
+                if (diceTurns > -1 && diceTurns < 3 && countMoves != 0) {
                     menu.displayGameBoard();
                     dice.draw();
                 }
