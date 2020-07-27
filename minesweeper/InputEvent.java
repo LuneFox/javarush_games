@@ -110,6 +110,7 @@ class InputEvent {
                         }
                     case OPTIONS:
                     case ABOUT:
+                    case RECORDS:
                         menu.displayMain();
                         break;
                     case MAIN_MENU:
