@@ -15,7 +15,7 @@ public class Button {
     private int textOffset = 2;
 
     public enum ButtonID {
-        OPTIONS, ABOUT, START, CONFIRM, BACK, AGAIN, RETURN, CLOSE,
+        OPTIONS, ABOUT, START, CONFIRM, BACK, AGAIN, RETURN, CLOSE, RECORDS
     }
 
     public Button(MinesweeperGame game, int posX, int posY, int sizeX, int sizeY, String text) {

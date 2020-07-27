@@ -54,11 +54,12 @@ class Menu {
         BUTTONS.get(ButtonID.OPTIONS).draw();
         BUTTONS.get(ButtonID.ABOUT).draw();
         BUTTONS.get(ButtonID.START).draw();
+        BUTTONS.get(ButtonID.RECORDS).draw();
 
         TEXT_WRITER.write(MinesweeperGame.VERSION, Color.DARKRED, 85, 0, false);
         if (GAME.topScore > 0) {
-            TEXT_WRITER.write("рекорд:\n" + GAME.topScore + "\n" + GAME.topScoreTitle,
-                    Color.LIGHTGOLDENRODYELLOW, 4, 71, false);
+            TEXT_WRITER.write("счёт: " + GAME.topScore + "\n" + GAME.topScoreTitle,
+                    Color.LIGHTGOLDENRODYELLOW, 4, 65, false);
         }
         printRandomQuote();
     }
@@ -84,6 +85,32 @@ class Menu {
                         "ПКМ - инфо о вещах",
                 Color.WHITE, 3, 13, false);
         BUTTONS.get(ButtonID.BACK).draw();
+    }
+
+    final void displayRecords(){
+        Screen.set(ScreenType.RECORDS);
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
+        TEXT_WRITER.write("лучшие игроки", Color.YELLOW, 17, 2, false);
+        Image cup = IMAGES.get(Bitmap.CUP);
+        cup.replaceColor(Color.GOLD, 1);
+        cup.replaceColor(Color.WHITE, 2);
+        cup.setPosition(2,20);
+        cup.draw();
+        cup.replaceColor(Color.SILVER, 1);
+        cup.replaceColor(Color.WHITE, 2);
+        cup.setPosition(2, 40);
+        cup.draw();
+        cup.replaceColor(Color.DARKGOLDENROD,1);
+        cup.replaceColor(Color.PALEGOLDENROD,2);
+        cup.setPosition(2, 60);
+        cup.draw();
+        BUTTONS.get(ButtonID.BACK).draw();
+        TEXT_WRITER.write("Pavlo Plynko", Color.GOLD, 18, 19, false);
+        TEXT_WRITER.write("37890", Color.WHITE, 94, 28, true);
+        TEXT_WRITER.write("Станислав\nНикитин", Color.SILVER, 18, 39, false);
+        TEXT_WRITER.write("35955", Color.WHITE, 94, 48, true);
+        TEXT_WRITER.write("---", Color.PALEGOLDENROD, 18, 59, false);
+        TEXT_WRITER.write("0", Color.WHITE, 94, 68, true);
     }
 
 
@@ -330,12 +357,14 @@ class Menu {
         IMAGES.put(Bitmap.DICE_4, new Picture(Bitmap.DICE_4, GAME, 0, 0));
         IMAGES.put(Bitmap.DICE_5, new Picture(Bitmap.DICE_5, GAME, 0, 0));
         IMAGES.put(Bitmap.DICE_6, new Picture(Bitmap.DICE_6, GAME, 0, 0));
+        IMAGES.put(Bitmap.CUP, new Picture(Bitmap.CUP, GAME, 0, 0));
     }
 
     final void loadButtons() {
         BUTTONS.put(ButtonID.OPTIONS, new Button(GAME, 61, 64, 36, 9, "опции"));
         BUTTONS.put(ButtonID.ABOUT, new Button(GAME, 61, 76, 36, 9, "об игре"));
         BUTTONS.put(ButtonID.START, new Button(GAME, 61, 88, 36, 9, "старт"));
+        BUTTONS.put(ButtonID.RECORDS, new Button(GAME, 2, 88, "рекорды"));
         BUTTONS.put(ButtonID.BACK, new Button(GAME, 61, 88, 36, 9, "назад"));
         BUTTONS.put(ButtonID.CONFIRM, new Button(GAME, 61, 88, 36, 9, "ясно"));
         BUTTONS.put(ButtonID.AGAIN, new Button(GAME, 57, 69, "снова"));

@@ -52,6 +52,9 @@ class InputEvent {
             case ABOUT:
                 leftClickInAbout(x, y);
                 break;
+            case RECORDS:
+                leftClickInRecords(x, y);
+                break;
             default:
                 break;
         }
@@ -143,6 +146,8 @@ class InputEvent {
             menu.displayOptions();
         } else if (Menu.BUTTONS.get(ButtonID.ABOUT).has(x, y)) {
             menu.displayAbout();
+        } else if (Menu.BUTTONS.get(ButtonID.RECORDS).has(x, y)){
+            menu.displayRecords();
         }
     }
 
@@ -252,6 +257,14 @@ class InputEvent {
     // ABOUT
 
     private void leftClickInAbout(int x, int y) {
+        if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
+            menu.displayMain();
+        }
+    }
+
+    // RECORDS
+
+    private void leftClickInRecords(int x, int y) {
         if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
             menu.displayMain();
         }

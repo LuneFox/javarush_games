@@ -365,6 +365,25 @@ public class Picture extends Image {
                         "11111113",
                         "03333333");
             }
+            case CUP: {
+                colors = new Color[]{Color.NONE, Color.GOLD, Color.WHITE, Color.MAROON, Color.KHAKI};
+                return createBitmapFromStrings(
+                        "000111111111000",
+                        "001111111211200",
+                        "010111111211020",
+                        "010111111211020",
+                        "001111111211100",
+                        "000011111210000",
+                        "000011112110000",
+                        "000001111100000",
+                        "000000010000000",
+                        "000000010000000",
+                        "000000112000000",
+                        "000001111200000",
+                        "000033333330000",
+                        "000034444230000",
+                        "000333333333000");
+            }
             default: {
                 colors = new Color[]{Color.NONE, Color.WHITE};
                 return createBitmapFromStrings("1");

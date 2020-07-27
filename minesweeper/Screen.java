@@ -7,7 +7,7 @@ public class Screen {
     private static ArrayList<Screen> screens = new ArrayList<>();
 
     public enum ScreenType {
-        MAIN_MENU, GAME_OVER, SHOP, GAME_BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE_DETAIL,
+        MAIN_MENU, GAME_OVER, SHOP, GAME_BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE_DETAIL, RECORDS
     }
 
     static {
@@ -19,6 +19,7 @@ public class Screen {
         screens.add(new Screen(ScreenType.ABOUT));
         screens.add(new Screen(ScreenType.ITEM_HELP));
         screens.add(new Screen(ScreenType.SCORE_DETAIL));
+        screens.add(new Screen(ScreenType.RECORDS));
     }
 
     public static void set(ScreenType screenType) { // bringing active screen to the top of the list
