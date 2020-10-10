@@ -5,7 +5,7 @@ import com.javarush.engine.cell.*;
 import java.util.ArrayList;
 
 public class Game2048 extends Game {
-    private static final String VERSION = "v0.95";
+    private static final String VERSION = "v0.96";
     private static final String[] BALLS = " ,❶,❷,❸,❹,❺,❻,❼,❽,➈,➉,⑪,⑫,⑬,⑭,⑮,⬤".split(",");
     private static final int SIDE = 7;
     private final InputEvent IE = new InputEvent(this);
@@ -316,17 +316,27 @@ public class Game2048 extends Game {
     final boolean canUserMove() {
         for (int y = 1; y < SIDE - 1; y++) {
             for (int x = 1; x < SIDE - 1; x++) {
+                // пробегаемся по всем шарам построчно
                 if (field[y][x] == 0 || field[y][x] == 16) {
+                    // если ячейка пуста или на ней стоит белый шар (который можно убрать)
                     return true;
                 } else {
+                    if (field[y][x] == 15) {
+                        // если шар 15-й, пропустить итерацию (его нельзя сливать ни с чем)
+                        continue;
+                    }
                     if (field[y + 1][x] == field[y][x]) {
+                        // если шар ниже такой же, как и этот
                         if (y == SIDE - 2) {
+                            // если шаров ниже нет, пропустить итерацию
                             continue;
                         }
                         return true;
                     }
                     if (field[y][x + 1] == field[y][x]) {
+                        // если шар правее такой же, как и этот
                         if (x == SIDE - 2) {
+                            // если шаров правее нет, пропустить итерацию
                             continue;
                         }
                         return true;
