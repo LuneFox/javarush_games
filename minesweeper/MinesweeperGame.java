@@ -28,7 +28,7 @@ public class MinesweeperGame extends Game {
     private ShopItem shopGoldenShovel;
     private ShopItem shopLuckyDice;
     private ShopItem shopMiniBomb;
-    private LinkedList<ShopItem> allShopItems = new LinkedList<>();
+    private final LinkedList<ShopItem> allShopItems = new LinkedList<>();
 
     // DICE DISPLAY
     private Dice dice;
