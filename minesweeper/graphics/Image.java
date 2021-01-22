@@ -11,18 +11,18 @@ public abstract class Image {
     final protected MinesweeperGame game;     // game instance to be drawn into
     private int drawX;
     private int drawY;                        // real position in pixels
-    private int initialY;                     // initial position Y
-    private float frameCounter;
-    private boolean animationDirectionDown;
     protected int[][] bitmapData;             // matrix of color numbers
     protected Color[] colors;                 // an array to match colors and numbers
+    private int baseY;                        // initial position Y (anchor for animation)
+    private float animationCounter;
+    private boolean animationDirectionDown;
 
     protected Image(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) { // constructor with setting position at once
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
         this.game = game;
         setPosition(drawX, drawY);
-        frameCounter = 0;
+        animationCounter = 0;
         animationDirectionDown = true;
     }
 
@@ -70,21 +70,12 @@ public abstract class Image {
         }
     }
 
-    public final void animateFloating() {
-        if (animationDirectionDown) {
-            frameCounter += 0.2;
-            if (frameCounter > 4.0) {
-                animationDirectionDown = false;
-            }
-        } else {
-            frameCounter -= 0.2;
-            if (frameCounter < -4.0) {
-                animationDirectionDown = true;
-            }
+    public final void animateFloating(double height) {
+        animationCounter += (animationDirectionDown ? 0.2 : -0.2);
+        if (Math.abs(animationCounter) > height) {
+            animationDirectionDown = !animationDirectionDown;
         }
-        if (frameCounter > -2.0 && frameCounter < 2.0) {
-            this.drawY = (int) (initialY + frameCounter);
-        }
+        this.drawY = (int) (baseY + animationCounter);
         this.draw();
     }
 
@@ -106,7 +97,7 @@ public abstract class Image {
         } else {         // put at position
             this.drawY = drawY;
         }
-        this.initialY = this.drawY;
+        this.baseY = this.drawY;
     }
 
     protected abstract int[][] assignBitmap(Bitmap bitmap); // subclasses' individual pictures go here

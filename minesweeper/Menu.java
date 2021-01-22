@@ -55,7 +55,7 @@ class Menu {
     void displayMain() {
         Screen.set(ScreenType.MAIN_MENU);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        IMAGES.get(Bitmap.PICTURE_LOGO).animateFloating();
+        IMAGES.get(Bitmap.PICTURE_LOGO).animateFloating(2.8);
         BUTTONS.get(ButtonID.OPTIONS).draw();
         BUTTONS.get(ButtonID.ABOUT).draw();
         BUTTONS.get(ButtonID.START).draw();
