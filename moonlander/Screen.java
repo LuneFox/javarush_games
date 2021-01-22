@@ -2,6 +2,8 @@ package com.javarush.games.moonlander;
 
 import java.util.ArrayList;
 
+import static com.javarush.games.moonlander.Screen.Type.MAIN_MENU;
+
 public class Screen {
     private Type type;
     private static ArrayList<Screen> screens = new ArrayList<>();
@@ -11,7 +13,7 @@ public class Screen {
     }
 
     static {
-        screens.add(new Screen(Type.MAIN_MENU));
+        screens.add(new Screen(MAIN_MENU));
         screens.add(new Screen(Type.COLOR_PAINTER));
     }
 

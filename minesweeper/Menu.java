@@ -1,12 +1,12 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.*;
-import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.Screen.*;
-import com.javarush.games.minesweeper.graphics.Button.*;
+import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -21,6 +21,8 @@ class Menu {
     final static LinkedList<String> TITLE_NAMES = new LinkedList<>();
     final private static LinkedList<String> QUOTES = new LinkedList<>();
     final private Text TEXT_WRITER;
+    private static String quote;
+    private static Date lastQuoteDate;
     int gameOverDisplayDelay;
 
     static {
@@ -36,12 +38,15 @@ class Menu {
         QUOTES.add("В лопате нет\nничего смешного!");
         QUOTES.add("Втыкая флаг,\nне задень мину!");
         QUOTES.add("Какой идиот\nзакопал цифры?!");
+        lastQuoteDate = new Date();
+        quote = QUOTES.get(0);
     }
 
     Menu(MinesweeperGame game) {
         this.GAME = game;
         this.TEXT_WRITER = GAME.getTextWriter();
         this.gameOverDisplayDelay = 0;
+
     }
 
 
@@ -50,7 +55,7 @@ class Menu {
     void displayMain() {
         Screen.set(ScreenType.MAIN_MENU);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        IMAGES.get(Bitmap.PICTURE_LOGO).draw();
+        IMAGES.get(Bitmap.PICTURE_LOGO).animateFloating();
         BUTTONS.get(ButtonID.OPTIONS).draw();
         BUTTONS.get(ButtonID.ABOUT).draw();
         BUTTONS.get(ButtonID.START).draw();
@@ -65,7 +70,10 @@ class Menu {
     }
 
     private void printRandomQuote() {
-        String quote = QUOTES.get(GAME.getRandomNumber(QUOTES.size()));
+        if (new Date().getTime() - lastQuoteDate.getTime() > 30000) {
+            quote = QUOTES.get(GAME.getRandomNumber(QUOTES.size()));
+            lastQuoteDate = new Date();
+        }
         TEXT_WRITER.write(quote, Color.DARKRED, 5, 44, false); // shadow
         TEXT_WRITER.write(quote, Color.SALMON, 4, 44, false);
     }
@@ -87,21 +95,21 @@ class Menu {
         BUTTONS.get(ButtonID.BACK).draw();
     }
 
-    final void displayRecords(){
+    final void displayRecords() {
         Screen.set(ScreenType.RECORDS);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
         TEXT_WRITER.write("лучшие игроки", Color.YELLOW, 17, 2, false);
         Image cup = IMAGES.get(Bitmap.CUP);
         cup.replaceColor(Color.GOLD, 1);
         cup.replaceColor(Color.WHITE, 2);
-        cup.setPosition(2,20);
+        cup.setPosition(2, 20);
         cup.draw();
         cup.replaceColor(Color.SILVER, 1);
         cup.replaceColor(Color.WHITE, 2);
         cup.setPosition(2, 40);
         cup.draw();
-        cup.replaceColor(Color.DARKGOLDENROD,1);
-        cup.replaceColor(Color.PALEGOLDENROD,2);
+        cup.replaceColor(Color.DARKGOLDENROD, 1);
+        cup.replaceColor(Color.PALEGOLDENROD, 2);
         cup.setPosition(2, 60);
         cup.draw();
         BUTTONS.get(ButtonID.BACK).draw();
@@ -325,7 +333,7 @@ class Menu {
 
     final void loadImages() { // pre-load images with default position
         IMAGES.put(Bitmap.WINDOW_MENU, new Picture(Bitmap.WINDOW_MENU, GAME, 0, 0));
-        IMAGES.put(Bitmap.PICTURE_LOGO, new Picture(Bitmap.PICTURE_LOGO, GAME, -1, 10));
+        IMAGES.put(Bitmap.PICTURE_LOGO, new Picture(Bitmap.PICTURE_LOGO, GAME, -1, 8));
         IMAGES.put(Bitmap.BUTTON_MENU, new Picture(Bitmap.BUTTON_MENU, GAME, 61, 88));
         IMAGES.put(Bitmap.WINDOW_VICTORY, new Picture(Bitmap.WINDOW_VICTORY, GAME, -1, -1));
         IMAGES.put(Bitmap.WINDOW_GAME_OVER, new Picture(Bitmap.WINDOW_GAME_OVER, GAME, -1, -1));

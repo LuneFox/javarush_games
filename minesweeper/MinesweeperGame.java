@@ -80,6 +80,9 @@ public class MinesweeperGame extends Game {
 
     private void onTurnAction() {
         switch (Screen.get()) {
+            case MAIN_MENU:
+                menu.displayMain();
+                break;
             case GAME_OVER:
                 if (menu.gameOverDisplayDelay <= 0) {
                     menu.displayGameBoard();
