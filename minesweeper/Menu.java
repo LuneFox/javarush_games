@@ -117,8 +117,8 @@ class Menu {
         TEXT_WRITER.write("37890", Color.WHITE, 94, 28, true);
         TEXT_WRITER.write("Станислав\nНикитин", Color.SILVER, 18, 39, false);
         TEXT_WRITER.write("35955", Color.WHITE, 94, 48, true);
-        TEXT_WRITER.write("---", Color.PALEGOLDENROD, 18, 59, false);
-        TEXT_WRITER.write("0", Color.WHITE, 94, 68, true);
+        TEXT_WRITER.write("Alekzum", Color.PALEGOLDENROD, 18, 59, false);
+        TEXT_WRITER.write("28080", Color.WHITE, 94, 68, true);
     }
 
 
