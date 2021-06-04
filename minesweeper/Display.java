@@ -19,7 +19,7 @@ public class Display {
     }
 
     public void draw() {
-        if (Screen.get() == Screen.ScreenType.GAME_BOARD) {
+        if (Screen.getType() == Screen.ScreenType.GAME_BOARD) {
             if (interlace) {
                 for (int y = 0; y < matrix.length; y += 2) {
                     for (int x = 0; x < matrix[0].length; x++) {

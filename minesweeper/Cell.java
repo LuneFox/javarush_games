@@ -12,16 +12,16 @@ import java.util.HashMap;
  * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
  */
 
-class Tile extends Image {
+class Cell extends Image {
     private static HashMap<Integer, Bitmap> spriteNumbers = new HashMap<>();
     int x;
     int y;                          // logical position
     private Sprite sprite;          // a sprite can be assigned to a tile to be drawn over it
-    boolean isMine;                 // this tile contains mine
+    boolean isMined;                 // this tile contains mine
     boolean isOpen;                 // this tile has been revealed
     boolean isShielded;             // this tile has been blocked with shield
     boolean isScanned;              // this tile has been revealed with scanner
-    boolean isFlag;                 // this tile was flagged by player
+    boolean isFlagged;                 // this tile was flagged by player
     boolean isDestroyed;            // who did this? :(
     int countMineNeighbors;         // how many neighboring tiles have mines
 
@@ -38,12 +38,12 @@ class Tile extends Image {
         spriteNumbers.put(9, Bitmap.BOARD_9);
     }
 
-    Tile(Bitmap bitmap, MinesweeperGame game, int x, int y, boolean isMine) {
+    Cell(Bitmap bitmap, MinesweeperGame game, int x, int y, boolean isMined) {
         super(bitmap, game, x * 10, y * 10);
         this.x = x;
         this.y = y;
-        this.isMine = isMine;
-        if (isMine) {
+        this.isMined = isMined;
+        if (isMined) {
             assignSprite(Bitmap.BOARD_MINE);
         } else {
             assignSprite(Bitmap.BOARD_NONE);
@@ -55,11 +55,11 @@ class Tile extends Image {
     // draws a button in a pushed state and reveals its sprite (number or icon), used while opening a tile
     void push() {
         if (isDestroyed) {
-            bitmapData = assignBitmap(Bitmap.TILE_DESTROYED);
+            bitmapData = assignBitmap(Bitmap.CELL_DESTROYED);
         } else {
-            bitmapData = assignBitmap(Bitmap.TILE_OPENED);
+            bitmapData = assignBitmap(Bitmap.CELL_OPENED);
         }
-        if (isFlag && isMine && !isDestroyed) {
+        if (isFlagged && isMined && !isDestroyed) {
             replaceColor(Color.GREEN, 3); // marks right guesses on game over
         } else if (isShielded) {
             replaceColor(Color.YELLOW, 3); // shielded remain yellow on push
@@ -101,7 +101,7 @@ class Tile extends Image {
 
     protected int[][] assignBitmap(Bitmap bitmap) {
         switch (bitmap) {
-            case TILE_CLOSED:
+            case CELL_CLOSED:
                 return new int[][]{
                         {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
                         {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
@@ -114,7 +114,7 @@ class Tile extends Image {
                         {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
                         {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
                 };
-            case TILE_OPENED:
+            case CELL_OPENED:
                 return new int[][]{
                         {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
                         {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -127,7 +127,7 @@ class Tile extends Image {
                         {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
                         {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
                 };
-            case TILE_DESTROYED:
+            case CELL_DESTROYED:
                 return new int[][]{
                         {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
                         {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},

@@ -8,7 +8,7 @@ public enum Bitmap {
     NONE,
 
     /* TILES */
-    TILE_OPENED, TILE_CLOSED, TILE_DESTROYED,
+    CELL_OPENED, CELL_CLOSED, CELL_DESTROYED,
 
     /* SPRITES */
     BOARD_NONE,
