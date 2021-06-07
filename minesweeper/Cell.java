@@ -23,7 +23,7 @@ class Cell extends Image {
     boolean isScanned;              // this tile has been revealed with scanner
     boolean isFlagged;                 // this tile was flagged by player
     boolean isDestroyed;            // who did this? :(
-    int countMineNeighbors;         // how many neighboring tiles have mines
+    int countMinedNeighbors;         // how many neighboring tiles have mines
 
     static {
         spriteNumbers.put(0, Bitmap.BOARD_NONE);

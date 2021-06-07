@@ -56,7 +56,7 @@ class InputEvent {
                     return;
                 }
                 Cell cell = game.field[y / 10][x / 10];
-                if (!cell.isFlagged || game.getShopScanner().isActivated) {
+                if (!cell.isFlagged || game.getShopScanner().isActivated()) {
                     game.openCell(x / 10, y / 10);
                 }
                 break;

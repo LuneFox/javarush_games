@@ -4,9 +4,9 @@ import com.javarush.games.minesweeper.graphics.Picture;
 
 class ShopItem {
     int cost;
-    int count;
     int expireMove;
-    boolean isActivated;
+    private int count;
+    private boolean isActivated;
     ID id;
     String name;
     String description;
@@ -57,6 +57,34 @@ class ShopItem {
             default:
                 break;
         }
+    }
+
+    public void activate() {
+        this.isActivated = true;
+    }
+
+    public void deactivate() {
+        this.isActivated = false;
+    }
+
+    public void removeFromShop() {
+        this.count = 0;
+    }
+
+    public void restock(int amount) {
+        this.count += amount;
+    }
+
+    public void sell() {
+        this.count--;
+    }
+
+    public int getCount(){
+        return count;
+    }
+
+    public boolean isActivated() {
+        return isActivated;
     }
 
     public enum ID {

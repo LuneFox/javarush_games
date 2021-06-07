@@ -201,10 +201,10 @@ class Menu {
     final void displayGameBoard() {
         Screen.set(ScreenType.GAME_BOARD);
         GAME.redrawAllCells();
-        if (GAME.getAllShopItems().get(1).isActivated) {
+        if (GAME.getAllShopItems().get(1).isActivated()) {
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
-        } else if (GAME.getAllShopItems().get(5).isActivated) {
+        } else if (GAME.getAllShopItems().get(5).isActivated()) {
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
         }
@@ -220,10 +220,10 @@ class Menu {
         IMAGES.get(Bitmap.BOARD_MINE).draw();
         TEXT_WRITER.write("" + GAME.countMinesOnField, Color.WHITE, 22, 12, false);
         IMAGES.get(Bitmap.BOARD_FLAG).draw();
-        TEXT_WRITER.write("" + GAME.countFlags, Color.WHITE, 49, 12, false);
+        TEXT_WRITER.write("" + GAME.inventoryFlags, Color.WHITE, 49, 12, false);
         IMAGES.get(Bitmap.SHOP_COIN).setPosition(69, 13);
         IMAGES.get(Bitmap.SHOP_COIN).draw();
-        TEXT_WRITER.write("" + GAME.countMoney, Color.WHITE, 75, 12, false);
+        TEXT_WRITER.write("" + GAME.inventoryMoney, Color.WHITE, 75, 12, false);
 
         TEXT_WRITER.write("магазин", Color.YELLOW, 33, 22, false);
         for (int y = 0; y < 2; y++) {
@@ -233,12 +233,12 @@ class Menu {
                 ShopItem item = GAME.getAllShopItems().get(x + y * 3);
                 Picture frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME);
 
-                if (item.cost > GAME.countMoney || item.count <= 0) {
+                if (item.cost > GAME.inventoryMoney || item.getCount() <= 0) {
                     frame.replaceColor(Color.RED, 3);
                 } else {
                     frame.replaceColor(Color.GREEN, 3);
                 }
-                if (item.isActivated) {
+                if (item.isActivated()) {
                     frame.replaceColor(Color.BLUE, 3);
                 }
 
@@ -247,9 +247,9 @@ class Menu {
                 item.icon.setPosition(16 + dx, 31 + dy);
                 item.icon.draw();
 
-                if (item.count > 0 && !item.isActivated) {
+                if (item.getCount() > 0 && !item.isActivated()) {
                     TEXT_WRITER.write("" + item.cost, Color.YELLOW, 30 + dx, 41 + dy, true);
-                } else if (item.isActivated) {
+                } else if (item.isActivated()) {
                     if (item.id == ShopItem.ID.SHOVEL || item.id == ShopItem.ID.DICE) {
                         TEXT_WRITER.write(Integer.toString(item.expireMove - GAME.countMoves),
                                 Color.MAGENTA, 30 + (x * 25), 30 + (y * 25), true);
@@ -306,8 +306,8 @@ class Menu {
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
         int minesScore = GAME.countMinesOnField * 20 * GAME.difficulty;
         String minesScoreDetail = 20 * GAME.difficulty + "*" + GAME.countMinesOnField + " = ";
-        int moneyScore = GAME.countMoney * GAME.difficulty;
-        String moneyScoreDetail = GAME.countMoney + "*" + GAME.difficulty + " = ";
+        int moneyScore = GAME.inventoryMoney * GAME.difficulty;
+        String moneyScoreDetail = GAME.inventoryMoney + "*" + GAME.difficulty + " = ";
         String cellScoreDetail = GAME.countOpenCells + "*" + GAME.difficulty + " = ";
 
         TEXT_WRITER.write("подробно", Color.YELLOW, 29, 2, false);
