@@ -1,21 +1,29 @@
 package com.javarush.games.minesweeper;
 
+import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Picture;
 
 class ShopItem {
-    int cost;
-    int expireMove;
-    private int count;
+    private final MinesweeperGame game;
+    public int cost;
+    public int expireMove;
+    public int inStock;
     private boolean isActivated;
-    ID id;
-    String name;
-    String description;
-    Picture icon;
+    public ID id;
+    public String name;
+    public String description;
+    public Picture icon;
 
-    ShopItem(int slot, int cost, int count, Picture icon, MinesweeperGame game) {
-        this.cost = cost;
-        this.count = count;
+    public enum ID {
+        SHIELD, SCANNER, FLAG, SHOVEL, DICE, BOMB
+    }
+
+    ShopItem(int slot, int cost, int inStock, Picture icon, MinesweeperGame game) {
+        this.game = game;
         this.icon = icon;
+        this.cost = cost;
+        this.inStock = inStock;
         isActivated = false;
         switch (slot) {
             case 0:
@@ -59,6 +67,49 @@ class ShopItem {
         }
     }
 
+    public boolean use(Cell cell) {
+        switch (this.id) {
+            case SHIELD:
+                game.countMinesOnField--; // exploded mine isn't a mine anymore
+
+                cell.assignSprite(Bitmap.BOARD_MINE);
+                cell.replaceColor(Color.YELLOW, 3);
+                cell.draw();
+                cell.drawSprite();
+                cell.isShielded = true;
+
+                this.deactivate();
+                game.shop.restock(game.shop.shield, 1);
+
+                int scoreBefore = game.score;
+                game.score = Math.max(game.score - 150 * (game.difficulty / 5), 0);
+                game.scoreLost -= scoreBefore - game.score;
+                game.setScore(game.score);
+
+                return true;
+            case SCANNER:
+                if (this.isActivated) {
+                    deactivate();
+                    game.shop.restock(game.shop.scanner, 1);
+                    game.shop.restock(game.shop.miniBomb, 1);
+                    game.scanNeighbors(cell.x, cell.y);
+                    game.redrawAllCells();
+                    return true;
+                }
+            case BOMB:
+                if (isActivated()) {
+                    deactivate();
+                    game.shop.restock(game.shop.miniBomb, 1);
+                    game.shop.restock(game.shop.scanner, 1);
+                    game.destroyCell(cell.x, cell.y);
+                    game.redrawAllCells();
+                    game.checkVictory();
+                    return true;
+                }
+        }
+        return false;
+    }
+
     public void activate() {
         this.isActivated = true;
     }
@@ -67,27 +118,11 @@ class ShopItem {
         this.isActivated = false;
     }
 
-    public void removeFromShop() {
-        this.count = 0;
-    }
-
-    public void restock(int amount) {
-        this.count += amount;
-    }
-
-    public void sell() {
-        this.count--;
-    }
-
-    public int getCount(){
-        return count;
-    }
-
     public boolean isActivated() {
         return isActivated;
     }
 
-    public enum ID {
-        SHIELD, SCANNER, FLAG, SHOVEL, DICE, BOMB
+    public boolean isNotObtainable() {
+        return (game.inventory.money < this.cost || this.inStock <= 0 || this.isActivated);
     }
 }

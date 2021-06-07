@@ -56,23 +56,23 @@ class InputEvent {
                     return;
                 }
                 Cell cell = game.field[y / 10][x / 10];
-                if (!cell.isFlagged || game.getShopScanner().isActivated()) {
+                if (!cell.isFlagged || game.shop.scanner.isActivated()) {
                     game.openCell(x / 10, y / 10);
                 }
                 break;
             case SHOP:
                 if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
-                    game.buyShield();
+                    game.shop.sell(game.shop.shield);
                 } else if (x >= 40 && x <= 59 && y >= 31 && y <= 50) {
-                    game.buyScanner();
+                    game.shop.sell(game.shop.scanner);
                 } else if (x >= 65 && x <= 84 && y >= 31 && y <= 50) {
-                    game.buyFlag();
+                    game.shop.sell(game.shop.flag);
                 } else if (x >= 15 && x <= 34 && y >= 56 && y <= 75) {
-                    game.buyGoldenShovel();
+                    game.shop.sell(game.shop.goldenShovel);
                 } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
-                    game.buyLuckyDice();
+                    game.shop.sell(game.shop.luckyDice);
                 } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
-                    game.buyMiniBomb();
+                    game.shop.sell(game.shop.miniBomb);
                 } else if (clickOutsideShop(x, y)) {
                     menu.displayGameBoard();
                 }
@@ -130,24 +130,24 @@ class InputEvent {
                     menu.displayGameOver(game.lastResultIsVictory, 0);
                     Screen.set(ScreenType.GAME_OVER);
                 } else {
-                    game.markCell(x / 10, y / 10, true); // works only if tile is closed
+                    game.setFlag(x / 10, y / 10, true); // works only if tile is closed
                     game.openRest(x / 10, y / 10);                       // works only if tile is open
                     // above two actions don't interfere, only one will work
                 }
                 break;
             case SHOP:
                 if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
-                    menu.displayItemHelp(game.getAllShopItems().get(0));
+                    menu.displayItemHelp(game.shop.allItems.get(0));
                 } else if (x >= 40 && x <= 59 && y >= 31 && y <= 50) {
-                    menu.displayItemHelp(game.getAllShopItems().get(1));
+                    menu.displayItemHelp(game.shop.allItems.get(1));
                 } else if (x >= 65 && x <= 84 && y >= 31 && y <= 50) {
-                    menu.displayItemHelp(game.getAllShopItems().get(2));
+                    menu.displayItemHelp(game.shop.allItems.get(2));
                 } else if (x >= 15 && x <= 34 && y >= 56 && y <= 75) {
-                    menu.displayItemHelp(game.getAllShopItems().get(3));
+                    menu.displayItemHelp(game.shop.allItems.get(3));
                 } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
-                    menu.displayItemHelp(game.getAllShopItems().get(4));
+                    menu.displayItemHelp(game.shop.allItems.get(4));
                 } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
-                    menu.displayItemHelp(game.getAllShopItems().get(5));
+                    menu.displayItemHelp(game.shop.allItems.get(5));
                 }
                 break;
             default:
