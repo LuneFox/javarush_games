@@ -3,7 +3,12 @@ package com.javarush.games.minesweeper;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Image;
 
+/**
+ * Graphical dice that appears on screen when you use Lucky Dice
+ */
+
 public class Dice {
+    public Cell cell; // appears at this cell
     private int x;
     private int y;
     private int showDelay;

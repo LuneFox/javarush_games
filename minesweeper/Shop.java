@@ -7,6 +7,10 @@ import com.javarush.games.minesweeper.graphics.Picture;
 import java.util.Arrays;
 import java.util.LinkedList;
 
+/**
+ * Sells various items.
+ */
+
 public class Shop {
     final private MinesweeperGame game;
     public ShopItem shield;
@@ -23,7 +27,7 @@ public class Shop {
     }
 
     public void sell(ShopItem item) {
-        if (item.isNotObtainable()) {
+        if (item.isUnobtainableOrActivated()) {
             return;
         } else {
             item.inStock--;
@@ -42,11 +46,11 @@ public class Shop {
                 break;
             case SHOVEL:
                 goldenShovel.activate();
-                goldenShovel.expireMove = game.countMoves + 5;
+                goldenShovel.expireMove = game.player.countMoves + 5;
                 break;
             case DICE:
                 luckyDice.activate();
-                luckyDice.expireMove = game.countMoves + 3;
+                luckyDice.expireMove = game.player.countMoves + 3;
                 break;
             case BOMB:
                 if (scanner.isActivated()) return;

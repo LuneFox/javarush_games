@@ -100,6 +100,16 @@ public abstract class Image {
         this.baseY = this.drawY;
     }
 
+    public final void drawAt(int x, int y){
+        setPosition(x, y);
+        draw();
+    }
+
+    public final void drawAt(int x, int y, boolean mirror){
+        setPosition(x, y);
+        draw(mirror);
+    }
+
     protected abstract int[][] assignBitmap(Bitmap bitmap); // subclasses' individual pictures go here
 
 

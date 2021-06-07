@@ -15,7 +15,7 @@ public class Text extends Image {
 
     public Text(Bitmap bitmap, MinesweeperGame game) {
         super(bitmap, game);
-    }
+    }    
 
     // command an object to draw
     public void write(String input, Color color, int drawX, int drawY, boolean alignRight) {

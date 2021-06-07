@@ -2,6 +2,10 @@ package com.javarush.games.minesweeper;
 
 import java.util.HashMap;
 
+/**
+ * Keeps track of what player currently has in his bag. Can add, remove, reset items or check their count.
+ */
+
 public class Inventory {
     public int money;
     public final int INIT_FLAGS = 3;

@@ -13,7 +13,6 @@ import java.util.*;
 
 class Menu {
     final private MinesweeperGame game;
-    final private Text TEXT_WRITER;
     final static HashMap<Bitmap, Image> IMAGES = new HashMap<>();
     final static HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
     final private static LinkedList<String> QUOTES = new LinkedList<>();
@@ -31,7 +30,6 @@ class Menu {
 
     Menu(MinesweeperGame game) {
         this.game = game;
-        this.TEXT_WRITER = this.game.getTextWriter();
         this.gameOverDisplayDelay = 0;
     }
 
@@ -46,7 +44,7 @@ class Menu {
         BUTTONS.get(ButtonID.ABOUT).draw();
         BUTTONS.get(ButtonID.START).draw();
         BUTTONS.get(ButtonID.RECORDS).draw();
-        TEXT_WRITER.write(Strings.VERSION, Color.DARKRED, 85, 0, false);
+        game.out(Strings.VERSION, Color.DARKRED, 85, 0, false);
         printTopScore();
         printRandomQuote();
     }
@@ -56,25 +54,24 @@ class Menu {
             quote = QUOTES.get(game.getRandomNumber(QUOTES.size()));
             lastQuoteDate = new Date();
         }
-        TEXT_WRITER.write(quote, Color.DARKRED, 5, 44, false); // shadow
-        TEXT_WRITER.write(quote, Color.SALMON, 4, 44, false);
+        game.out(quote, Color.DARKRED, 5, 44, false); // shadow
+        game.out(quote, Color.SALMON, 4, 44, false);
     }
 
     private void printTopScore() {
-        if (game.topScore > 0) {
-            TEXT_WRITER.write("счёт: " + game.topScore + "\n" + game.topScoreTitle,
+        if (game.player.topScore > 0) {
+            game.out("счёт: " + game.player.topScore + "\n" + game.player.topScoreTitle,
                     Color.LIGHTGOLDENRODYELLOW, 4, 65, false);
         }
     }
-
 
     // ABOUT
 
     final void displayAbout() {
         Screen.set(ScreenType.ABOUT);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        TEXT_WRITER.write(Strings.ABOUT[0], Color.YELLOW, 24, 2, false);
-        TEXT_WRITER.write(Strings.ABOUT[1], Color.WHITE, 3, 13, false);
+        game.out(Strings.ABOUT[0], Color.YELLOW, 24, 2, false);
+        game.out(Strings.ABOUT[1], Color.WHITE, 3, 13, false);
         BUTTONS.get(ButtonID.BACK).draw();
     }
 
@@ -84,7 +81,7 @@ class Menu {
     final void displayRecords() {
         Screen.set(ScreenType.RECORDS);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        TEXT_WRITER.write(Strings.RECORDS[0], Color.YELLOW, 17, 2, false);
+        game.out(Strings.RECORDS[0], Color.YELLOW, 17, 2, false);
         BUTTONS.get(ButtonID.BACK).draw();
         drawPrizeCups();
         drawRecordEntries();
@@ -116,12 +113,12 @@ class Menu {
 
     final void drawRecordEntries() {
         Color[] colors = new Color[]{Color.WHITE, Color.GOLD, Color.SILVER, Color.PALEGOLDENROD};
-        TEXT_WRITER.write(Strings.RECORDS[1], colors[1], 18, 19, false);
-        TEXT_WRITER.write(Strings.RECORDS[2], colors[0], 94, 28, true);
-        TEXT_WRITER.write(Strings.RECORDS[3], colors[2], 18, 39, false);
-        TEXT_WRITER.write(Strings.RECORDS[4], colors[0], 94, 48, true);
-        TEXT_WRITER.write(Strings.RECORDS[5], colors[3], 18, 59, false);
-        TEXT_WRITER.write(Strings.RECORDS[6], colors[0], 94, 68, true);
+        game.out(Strings.RECORDS[1], colors[1], 18, 19, false);
+        game.out(Strings.RECORDS[2], colors[0], 94, 28, true);
+        game.out(Strings.RECORDS[3], colors[2], 18, 39, false);
+        game.out(Strings.RECORDS[4], colors[0], 94, 48, true);
+        game.out(Strings.RECORDS[5], colors[3], 18, 59, false);
+        game.out(Strings.RECORDS[6], colors[0], 94, 68, true);
     }
 
 
@@ -131,25 +128,23 @@ class Menu {
         Screen.set(ScreenType.OPTIONS);
 
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        TEXT_WRITER.write("настройки", Color.YELLOW, 28, 2, false);
+        game.out("настройки", Color.YELLOW, 28, 2, false);
 
-        IMAGES.get(Bitmap.MENU_ARROW).setPosition(93, 21);
-        IMAGES.get(Bitmap.MENU_ARROW).draw();
-        IMAGES.get(Bitmap.MENU_ARROW).setPosition(49, 21);
-        IMAGES.get(Bitmap.MENU_ARROW).draw(true);
+        IMAGES.get(Bitmap.MENU_ARROW).drawAt(93, 21);
+        IMAGES.get(Bitmap.MENU_ARROW).drawAt(49, 21, true);
         displayDifficultyBar();
-        TEXT_WRITER.write("сложность", Color.WHITE, 2, 20, false);
-        TEXT_WRITER.write(DIFFICULTY_NAMES.get(game.difficultyInOptionsScreen / 5 - 1),
+        game.out("сложность", Color.WHITE, 2, 20, false);
+        game.out(DIFFICULTY_NAMES.get(game.difficultyInOptionsScreen / 5 - 1),
                 Color.SALMON, 93, 30, true);
-        TEXT_WRITER.write("покупка\nфлажков", Color.WHITE, 2, 50, false);
+        game.out("покупка\nфлажков", Color.WHITE, 2, 50, false);
         if (game.optionAutoBuyFlagsOn) {
             IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.GREEN, 1);
             IMAGES.get(Bitmap.MENU_SWITCH).setPosition(88, 50);
-            TEXT_WRITER.write("авто", Color.SALMON, 93, 60, true);
+            game.out("авто", Color.SALMON, 93, 60, true);
         } else {
             IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.RED, 1);
             IMAGES.get(Bitmap.MENU_SWITCH).setPosition(80, 50);
-            TEXT_WRITER.write("вручную", Color.SALMON, 91, 60, true);
+            game.out("вручную", Color.SALMON, 91, 60, true);
 
         }
         IMAGES.get(Bitmap.MENU_SWITCH_RAIL).draw();
@@ -213,27 +208,33 @@ class Menu {
     final void displayShop() {
         Screen.set(ScreenType.SHOP);
         IMAGES.get(Bitmap.WINDOW_SHOP).draw();
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).setPosition(-1, 10);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).draw();
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).setPosition(-1, 78);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).draw();
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 10);
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 78);
         IMAGES.get(Bitmap.BOARD_MINE).draw();
-        TEXT_WRITER.write("" + game.countMinesOnField, Color.WHITE, 22, 12, false);
         IMAGES.get(Bitmap.BOARD_FLAG).draw();
-        TEXT_WRITER.write("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
-        IMAGES.get(Bitmap.SHOP_COIN).setPosition(69, 13);
-        IMAGES.get(Bitmap.SHOP_COIN).draw();
-        TEXT_WRITER.write("" + game.inventory.money, Color.WHITE, 75, 12, false);
+        IMAGES.get(Bitmap.SHOP_COIN).drawAt(69, 13);
+        game.out("" + game.countMinesOnField, Color.WHITE, 22, 12, false);
+        game.out("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
+        game.out("" + game.inventory.money, Color.WHITE, 75, 12, false);
+        game.out("магазин", Color.YELLOW, 33, 22, false);
+        game.out("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80, false);
+        game.out("шаги:" + game.player.countMoves, Color.LIGHTBLUE, 84, 80, true);
+        displayShopItems();
+    }
 
-        TEXT_WRITER.write("магазин", Color.YELLOW, 33, 22, false);
+    private void displayShopItems() {
+        int right = 30;
+        int upper = 30;
+        int bottom = 41;
         for (int y = 0; y < 2; y++) {
             int dy = y * 25;
             for (int x = 0; x < 3; x++) {
                 int dx = x * 25;
+
                 ShopItem item = game.shop.allItems.get(x + y * 3);
                 Picture frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME);
 
-                if (item.cost > game.inventory.money || item.inStock <= 0) {
+                if (item.isUnobtainable()) {
                     frame.replaceColor(Color.RED, 3);
                 } else {
                     frame.replaceColor(Color.GREEN, 3);
@@ -248,23 +249,17 @@ class Menu {
                 item.icon.draw();
 
                 if (item.inStock > 0 && !item.isActivated()) {
-                    TEXT_WRITER.write("" + item.cost, Color.YELLOW, 30 + dx, 41 + dy, true);
+                    game.out("" + item.cost, Color.YELLOW, right + dx, bottom + dy, true);
                 } else if (item.isActivated()) {
-                    if (item.id == ShopItem.ID.SHOVEL || item.id == ShopItem.ID.DICE) {
-                        TEXT_WRITER.write(Integer.toString(item.expireMove - game.countMoves),
-                                Color.MAGENTA, 30 + (x * 25), 30 + (y * 25), true);
+                    if (item.canExpire) {
+                        game.out(item.remainingMoves(), Color.MAGENTA, right + dx, upper + dy, true);
                     }
-                    TEXT_WRITER.write("АКТ",
-                            Color.YELLOW, 30 + (x * 25), 41 + (y * 25), true);
+                    game.out("АКТ", Color.YELLOW, right + dx, bottom + dy, true);
                 } else {
-                    TEXT_WRITER.write("НЕТ",
-                            Color.RED, 30 + (x * 25), 41 + (y * 25), true);
-                }   // draw prices
+                    game.out("НЕТ", Color.RED, right + dx, bottom + dy, true);
+                }
             }
         }
-
-        TEXT_WRITER.write("очки:" + game.score, Color.LIGHTCYAN, 13, 80, false);
-        TEXT_WRITER.write("шаги:" + game.countMoves, Color.LIGHTBLUE, 84, 80, true);
     }
 
     final void displayItemHelp(ShopItem item) {
@@ -272,8 +267,8 @@ class Menu {
         IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw();
         item.icon.setPosition(5, 5);
         item.icon.draw();
-        TEXT_WRITER.write(item.name, Color.YELLOW, 25, 9, false);
-        TEXT_WRITER.write(item.description, Color.WHITE, 4, 25, false);
+        game.out(item.name, Color.YELLOW, 25, 9, false);
+        game.out(item.description, Color.WHITE, 4, 25, false);
         BUTTONS.get(ButtonID.CONFIRM).draw();
     }
 
@@ -289,13 +284,13 @@ class Menu {
         if (victory) {
             IMAGES.get(Bitmap.WINDOW_VICTORY).draw();
             IMAGES.get(Bitmap.PICTURE_FACE_HAPPY).draw();
-            TEXT_WRITER.write("победа!", Color.YELLOW, 18, 33, false);
+            game.out("победа!", Color.YELLOW, 18, 33, false);
         } else {
             IMAGES.get(Bitmap.WINDOW_GAME_OVER).draw();
             IMAGES.get(Bitmap.PICTURE_FACE_SAD).draw();
-            TEXT_WRITER.write("не повезло!", Color.YELLOW, 18, 33, false);
+            game.out("не повезло!", Color.YELLOW, 18, 33, false);
         }
-        TEXT_WRITER.write("счёт: " + game.score, Color.LIGHTGOLDENRODYELLOW, 18, 57, false);
+        game.out("счёт: " + game.player.score, Color.LIGHTGOLDENRODYELLOW, 18, 57, false);
         BUTTONS.get(ButtonID.AGAIN).draw();
         BUTTONS.get(ButtonID.RETURN).draw();
         BUTTONS.get(ButtonID.CLOSE).draw();
@@ -308,10 +303,10 @@ class Menu {
         String minesScoreDetail = 20 * game.difficulty + "*" + game.countMinesOnField + " = ";
         int moneyScore = game.inventory.money * game.difficulty;
         String moneyScoreDetail = game.inventory.money + "*" + game.difficulty + " = ";
-        String cellScoreDetail = game.countOpenCells + "*" + game.difficulty + " = ";
+        String cellScoreDetail = game.player.openCells + "*" + game.difficulty + " = ";
 
-        TEXT_WRITER.write("подробно", Color.YELLOW, 29, 2, false);
-        TEXT_WRITER.write(
+        game.out("подробно", Color.YELLOW, 29, 2, false);
+        game.out(
                 "Ячейки:\n" +
                         "Кубик:\n" +
                         "Золото:\n" +
@@ -319,13 +314,13 @@ class Menu {
                         "Щиты:\n\n" +
                         "Итого:",
                 Color.WHITE, 3, 13, false);
-        TEXT_WRITER.write(
-                game.score +
-                        "\n\n" + game.scoreLost +
+        game.out(
+                game.player.score +
+                        "\n\n" + game.player.scoreLost +
                         "\n" + (game.lastResultIsVictory ? (minesScoreDetail + minesScore) : "вы проиграли") +
                         "\n" + (game.lastResultIsVictory ? (moneyScoreDetail + moneyScore) : "вы проиграли") +
-                        "\n" + game.scoreDice +
-                        "\n" + cellScoreDetail + game.scoreCell,
+                        "\n" + game.player.scoreDice +
+                        "\n" + cellScoreDetail + game.player.scoreCell,
                 Color.YELLOW, 94, 13, true);
 
         BUTTONS.get(ButtonID.CONFIRM).draw();

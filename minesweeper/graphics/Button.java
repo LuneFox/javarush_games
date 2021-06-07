@@ -3,15 +3,19 @@ package com.javarush.games.minesweeper.graphics;
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
+/**
+ * Allows to draw buttons with text wrapped in frames.
+ */
+
 public class Button {
-    private int x1;
-    private int x2;
-    private int y1;
-    private int y2;
-    private Image body;
-    private Text textWriter;
-    private Color textColor;
-    private String text;
+    private final MinesweeperGame game;
+    private final int x1;
+    private final int x2;
+    private final int y1;
+    private final int y2;
+    private final Image body;
+    private final Color textColor;
+    private final String text;
     private int textOffset = 2;
 
     public enum ButtonID {
@@ -19,13 +23,13 @@ public class Button {
     }
 
     public Button(MinesweeperGame game, int posX, int posY, int sizeX, int sizeY, String text) {
-        this.textWriter = game.getTextWriter();
+        this.game = game;
         this.x1 = posX;
         this.y1 = posY;
         this.x2 = posX + sizeX;
         this.y2 = posY + sizeY;
         this.text = text;
-        int textLength = textWriter.calculateLengthInPixels(text);
+        int textLength = Printer.getWriter().calculateLengthInPixels(text);
         this.textOffset = ((sizeX - textLength) / 2) + 1;
         this.textColor = Color.WHITE;
         this.body = new Image(Bitmap.MENU_BUTTON, game, posX, posY) {
@@ -39,10 +43,10 @@ public class Button {
     }
 
     public Button(MinesweeperGame game, int posX, int posY, String text) {
-        this.textWriter = game.getTextWriter();
+        this.game = game;
         this.x1 = posX;
         this.y1 = posY;
-        this.x2 = posX + textWriter.calculateLengthInPixels(text) + 3;
+        this.x2 = posX + Printer.getWriter().calculateLengthInPixels(text) + 3;
         this.y2 = posY + 9;
         this.text = text;
         this.textColor = Color.WHITE;
@@ -58,7 +62,7 @@ public class Button {
 
     public void draw() {
         this.body.draw();
-        textWriter.write(text, textColor, x1 + textOffset, y1, false);
+        game.out(text, textColor, x1 + textOffset, y1, false);
     }
 
     public boolean has(int x, int y) {

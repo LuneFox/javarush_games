@@ -4,9 +4,14 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Picture;
 
+/**
+ * Items you can buy in the shop and use in the game.
+ */
+
 class ShopItem {
     private final MinesweeperGame game;
     public int cost;
+    public boolean canExpire;
     public int expireMove;
     public int inStock;
     private boolean isActivated;
@@ -28,39 +33,39 @@ class ShopItem {
         switch (slot) {
             case 0:
                 this.id = ID.SHIELD;
-                this.name = "Сапёрский щит";
-                this.description = "Спасёт от взрыва\nпри открытии мины\nодин раз. Однако вы\n" +
-                        "потеряете " + 150 * (game.difficulty / 5) + " очков.";
+                this.name = Strings.ITEM_SHIELD_NAME;
+                this.description = Strings.ITEM_SHIELD_DESCRIPTION;
+                this.canExpire = false;
                 break;
             case 1:
                 this.id = ID.SCANNER;
-                this.name = "Сканер";
-                this.description = "Откроет безопасную\nклетку в поле 3*3\nвокруг курсора.\nЕсли таких нет,\n" +
-                        "расставит флажки\nнад минами, подарив\nнехватающие.";
+                this.name = Strings.ITEM_SCANNER_NAME;
+                this.description = Strings.ITEM_SCANNER_DESCRIPTION;
+                this.canExpire = false;
                 break;
             case 2:
                 this.id = ID.FLAG;
-                this.name = "Флажок";
-                this.description = "Обычный флажок\nдля установки на\nполе. Вы можете\nсэкономить золото,\n" +
-                        "не покупая флажки,\nкогда позиция мины\nочевидна.";
+                this.name = Strings.ITEM_FLAG_NAME;
+                this.description = Strings.ITEM_FLAG_DESCRIPTION;
+                this.canExpire = false;
                 break;
             case 3:
                 this.id = ID.SHOVEL;
-                this.name = "Золотая лопата";
-                this.description = "Следующие 5 шагов\nвы будете получать\nв два раза больше\nзолотых монет.\n" +
-                        "Золото добывается\nпри открытии клеток\nс цифрами.";
+                this.name = Strings.ITEM_SHOVEL_NAME;
+                this.description = Strings.ITEM_SHOVEL_DESCRIPTION;
+                this.canExpire = true;
                 break;
             case 4:
                 this.id = ID.DICE;
-                this.name = "Кубик удачи";
-                this.description = "Следующие 3 шага\nвы можете получить\nот 1 до 6 раз больше\nочков. Базовое\n" +
-                        "количество зависит\nот сложности игры.";
+                this.name = Strings.ITEM_DICE_NAME;
+                this.description = Strings.ITEM_DICE_DESCRIPTION;
+                this.canExpire = false;
                 break;
             case 5:
                 this.id = ID.BOMB;
-                this.name = "Мини-бомба";
-                this.description = "Бросив бомбочку, вы\nуничтожите закрытую\nклетку на поле.\nЕсли взорвёте мину,\n" +
-                        "соседние мины тоже\nвзорвутся по цепи.\nОчков не даёт.";
+                this.name = Strings.ITEM_BOMB_NAME;
+                this.description = Strings.ITEM_BOMB_DESCRIPTION;
+                this.canExpire = false;
                 break;
             default:
                 break;
@@ -70,26 +75,24 @@ class ShopItem {
     public boolean use(Cell cell) {
         switch (this.id) {
             case SHIELD:
-                game.countMinesOnField--; // exploded mine isn't a mine anymore
-
-                cell.assignSprite(Bitmap.BOARD_MINE);
-                cell.replaceColor(Color.YELLOW, 3);
-                cell.draw();
-                cell.drawSprite();
-                cell.isShielded = true;
-
-                this.deactivate();
-                game.shop.restock(game.shop.shield, 1);
-
-                int scoreBefore = game.score;
-                game.score = Math.max(game.score - 150 * (game.difficulty / 5), 0);
-                game.scoreLost -= scoreBefore - game.score;
-                game.setScore(game.score);
-
-                return true;
+                if (this.isActivated) {
+                    this.deactivate();
+                    game.countMinesOnField--; // exploded mine isn't a mine anymore
+                    cell.assignSprite(Bitmap.BOARD_MINE);
+                    cell.replaceColor(Color.YELLOW, 3);
+                    cell.draw();
+                    cell.drawSprite();
+                    cell.isShielded = true;
+                    game.shop.restock(game.shop.shield, 1);
+                    int scoreBefore = game.player.score;
+                    game.player.score = Math.max(game.player.score - 150 * (game.difficulty / 5), 0);
+                    game.player.scoreLost -= scoreBefore - game.player.score;
+                    game.setScore(game.player.score);
+                    return true;
+                }
             case SCANNER:
                 if (this.isActivated) {
-                    deactivate();
+                    this.deactivate();
                     game.shop.restock(game.shop.scanner, 1);
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.scanNeighbors(cell.x, cell.y);
@@ -98,7 +101,7 @@ class ShopItem {
                 }
             case BOMB:
                 if (isActivated()) {
-                    deactivate();
+                    this.deactivate();
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.shop.restock(game.shop.scanner, 1);
                     game.destroyCell(cell.x, cell.y);
@@ -108,6 +111,17 @@ class ShopItem {
                 }
         }
         return false;
+    }
+
+    public void expireCheck() {
+        if (game.player.countMoves >= this.expireMove) {
+            this.deactivate();
+            this.inStock = 1;
+        }
+    }
+
+    public String remainingMoves() {
+        return Integer.toString(expireMove - game.player.countMoves);
     }
 
     public void activate() {
@@ -122,7 +136,11 @@ class ShopItem {
         return isActivated;
     }
 
-    public boolean isNotObtainable() {
+    public boolean isUnobtainable() {
+        return (game.inventory.money < this.cost || this.inStock <= 0);
+    }
+
+    public boolean isUnobtainableOrActivated() {
         return (game.inventory.money < this.cost || this.inStock <= 0 || this.isActivated);
     }
 }
