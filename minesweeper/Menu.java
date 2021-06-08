@@ -22,6 +22,8 @@ class Menu {
     public int gameOverDisplayDelay;  // defines how soon will game over screen show up
     public int pushedItemFrameNumber; // defines what frame in the shop was pushed last time
     public int moneyOnDisplay;        // for smooth animation, runs towards real money
+    public int getShakingElementCountDownDefault = 20; // number of turns to shake the item
+    public int shakingElementCountDown = 20;           // active counter that counts to zero
 
     static {
         Collections.addAll(DIFFICULTY_NAMES, Strings.DIFFICULTY_NAMES);
@@ -212,6 +214,7 @@ class Menu {
 
     final void displayShop() {
         Screen.set(ScreenType.SHOP);
+        activateShakingElementCountDown();
         IMAGES.get(Bitmap.WINDOW_SHOP).draw();
         IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 10);
         IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 78);
@@ -238,12 +241,10 @@ class Menu {
 
     private int shakeMoneyShift() { // to shake money when you can't afford an item
         double now = new Date().getTime();
-        if (game.shop.couldNotAfford && now - InputEvent.lastClickInShopTime < 500) {
+        if (game.shop.couldNotAfford) {
             return (now % 2 == 0) ? 1 : 0;
-        } else {
-            game.shop.couldNotAfford = false;
-            return 0;
         }
+        return 0;
     }
 
     private int shakeActivatedShift(int currentFrame) { // to shake ACT sign if the item is activated
@@ -251,11 +252,19 @@ class Menu {
             return 0;
         }
         double now = new Date().getTime();
-        if (game.shop.couldNotActivate && now - InputEvent.lastClickInShopTime < 500) {
+        if (game.shop.couldNotActivate) {
             return (now % 2 == 0) ? 1 : 0;
+        }
+        return 0;
+    }
+
+    public void activateShakingElementCountDown() { // helps to shake elements only for a certain amount of time
+        if (shakingElementCountDown > 0 && (game.shop.couldNotActivate || game.shop.couldNotAfford)) {
+            shakingElementCountDown--;
         } else {
+            game.shop.couldNotAfford = false;
             game.shop.couldNotActivate = false;
-            return 0;
+            shakingElementCountDown = getShakingElementCountDownDefault;
         }
     }
 

@@ -31,11 +31,13 @@ public class Shop {
     public void sell(ShopItem item) {
         if (item.isActivated()) {
             couldNotActivate = true;
+            game.menu.activateShakingElementCountDown();
             return;
         } else if (item.inStock == 0) {
             return;
         } else if (item.isUnaffordable()) {
             couldNotAfford = true;
+            game.menu.activateShakingElementCountDown();
             return;
         } else {
             item.inStock--;

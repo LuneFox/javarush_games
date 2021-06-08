@@ -61,7 +61,7 @@ class InputEvent {
                 }
                 break;
             case SHOP:
-                lastClickInShopTime = new Date().getTime();
+                InputEvent.lastClickInShopTime = new Date().getTime();
                 if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
                     game.shop.sell(game.shop.shield);
                     game.menu.pushedItemFrameNumber = 0;
