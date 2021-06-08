@@ -1,8 +1,8 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.engine.cell.*;
-import com.javarush.games.minesweeper.graphics.Button.*;
-import com.javarush.games.minesweeper.Screen.*;
+import com.javarush.engine.cell.Key;
+import com.javarush.games.minesweeper.Screen.ScreenType;
+import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
 import java.util.Date;
 
@@ -12,7 +12,7 @@ import java.util.Date;
 
 class InputEvent {
     final private MinesweeperGame game;
-    public static double lastClickTime;
+    public static double lastClickInShopTime;
 
     InputEvent(MinesweeperGame game) {
         this.game = game;
@@ -37,7 +37,6 @@ class InputEvent {
         game.allowCountMoves = true;
         game.allowFlagExplosion = false;
         game.hideDice();
-        lastClickTime = new Date().getTime();
         switch (screenType) {
             case MAIN_MENU:
                 if (Menu.BUTTONS.get(ButtonID.START).has(x, y)) {
@@ -62,6 +61,7 @@ class InputEvent {
                 }
                 break;
             case SHOP:
+                lastClickInShopTime = new Date().getTime();
                 if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
                     game.shop.sell(game.shop.shield);
                     game.menu.pushedItemFrameNumber = 0;
@@ -172,6 +172,7 @@ class InputEvent {
                     case GAME_BOARD:
                         if (!game.isStopped) {
                             game.menu.displayShop();
+                            game.menu.moneyOnDisplay = game.inventory.money;
                         } else {
                             game.menu.displayGameOver(game.lastResultIsVictory, 0);
                             Screen.set(ScreenType.GAME_OVER);

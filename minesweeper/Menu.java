@@ -19,8 +19,9 @@ class Menu {
     final static LinkedList<String> DIFFICULTY_NAMES = new LinkedList<>();
     private static String quote;
     private static Date lastQuoteDate;
-    public int gameOverDisplayDelay;
-    public int pushedItemFrameNumber;
+    public int gameOverDisplayDelay;  // defines how soon will game over screen show up
+    public int pushedItemFrameNumber; // defines what frame in the shop was pushed last time
+    public int moneyOnDisplay;        // for smooth animation, runs towards real money
 
     static {
         Collections.addAll(DIFFICULTY_NAMES, Strings.DIFFICULTY_NAMES);
@@ -216,13 +217,22 @@ class Menu {
         IMAGES.get(Bitmap.BOARD_MINE).draw();
         IMAGES.get(Bitmap.BOARD_FLAG).draw();
         IMAGES.get(Bitmap.BOARD_COIN).drawAt(69, 13);
+        adjustMoneyOnDisplay();
         game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), Color.WHITE, 22, 12, false);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
-        game.print("" + game.inventory.money, Color.WHITE, 75, 12, false);
+        game.print("" + moneyOnDisplay, Color.WHITE, 75, 12, false);
         game.print("магазин", Color.YELLOW, 33, 22, false);
         game.print("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80, false);
         game.print("шаги:" + game.player.countMoves, Color.LIGHTBLUE, 84, 80, true);
         displayShopItems();
+    }
+
+    private void adjustMoneyOnDisplay(){
+        if (moneyOnDisplay < game.inventory.money){
+            moneyOnDisplay++;
+        } else if (moneyOnDisplay > game.inventory.money){
+            moneyOnDisplay--;
+        }
     }
 
     private void displayShopItems() {
@@ -238,7 +248,7 @@ class Menu {
                 ShopItem item = game.shop.allItems.get(x + y * 3);
                 currentFrame++;
                 Picture frame;
-                if (currentFrame == pushedItemFrameNumber && new Date().getTime() - InputEvent.lastClickTime < 100) {
+                if (currentFrame == pushedItemFrameNumber && new Date().getTime() - InputEvent.lastClickInShopTime < 100) {
                     frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME_PUSHED);
                     shift = 1;
                 } else {

@@ -61,7 +61,6 @@ public class Shop {
             default:
                 break;
         }
-        game.menu.displayShop();
     }
 
     public void give(ShopItem item) {

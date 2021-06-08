@@ -87,10 +87,10 @@ public class MinesweeperGame extends Game {
     }
 
     void createGame() {
-        applyDifficulty();
+        applyDifficulty(); // difficulty impacts the number of mines created below
         createField();
+        plantMines();      // number of mines define the number of flags given below
         resetValues();
-        plantMines();
         assignMineNumbersToCells();
         menu.displayGameBoard();
         setScore(player.score);
