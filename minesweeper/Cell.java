@@ -17,13 +17,13 @@ class Cell extends Image {
     int x;
     int y;                          // logical position
     private Sprite sprite;          // a sprite can be assigned to a tile to be drawn over it
-    boolean isMined;                 // this tile contains mine
+    boolean isMined;                // this tile contains mine
     boolean isOpen;                 // this tile has been revealed
     boolean isShielded;             // this tile has been blocked with shield
     boolean isScanned;              // this tile has been revealed with scanner
-    boolean isFlagged;                 // this tile was flagged by player
+    boolean isFlagged;              // this tile was flagged by player
     boolean isDestroyed;            // who did this? :(
-    int countMinedNeighbors;         // how many neighboring tiles have mines
+    int countMinedNeighbors;        // how many neighboring tiles have mines
 
     static {
         spriteNumbers.put(0, Bitmap.BOARD_NONE);

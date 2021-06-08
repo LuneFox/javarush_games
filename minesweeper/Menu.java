@@ -19,7 +19,8 @@ class Menu {
     final static LinkedList<String> DIFFICULTY_NAMES = new LinkedList<>();
     private static String quote;
     private static Date lastQuoteDate;
-    int gameOverDisplayDelay;
+    public int gameOverDisplayDelay;
+    public int pushedItemFrameNumber;
 
     static {
         Collections.addAll(DIFFICULTY_NAMES, Strings.DIFFICULTY_NAMES);
@@ -228,13 +229,22 @@ class Menu {
         int right = 30;
         int upper = 30;
         int bottom = 41;
+        int currentFrame = -1; // to detect which frame is being drawn right now
+        int shift;             // to shift pushed animation by this value when the button is pressed
         for (int y = 0; y < 2; y++) {
             int dy = y * 25;
             for (int x = 0; x < 3; x++) {
                 int dx = x * 25;
-
                 ShopItem item = game.shop.allItems.get(x + y * 3);
-                Picture frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME);
+                currentFrame++;
+                Picture frame;
+                if (currentFrame == pushedItemFrameNumber && new Date().getTime() - InputEvent.lastClickTime < 100) {
+                    frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME_PUSHED);
+                    shift = 1;
+                } else {
+                    frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME);
+                    shift = 0;
+                }
 
                 if (item.isUnobtainable()) {
                     frame.replaceColor(Color.RED, 3);
@@ -244,10 +254,9 @@ class Menu {
                 if (item.isActivated()) {
                     frame.replaceColor(Color.BLUE, 3);
                 }
-
-                frame.setPosition(15 + dx, 30 + dy);
+                frame.setPosition(15 + dx + shift, 30 + dy + shift);
                 frame.draw();
-                item.icon.setPosition(16 + dx, 31 + dy);
+                item.icon.setPosition(16 + dx + shift, 31 + dy + shift);
                 item.icon.draw();
 
                 if (item.inStock > 0 && !item.isActivated()) {
@@ -270,7 +279,7 @@ class Menu {
         IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw();
         item.icon.setPosition(5, 5);
         item.icon.draw();
-        if (item.id == ShopItem.ID.SHIELD){
+        if (item.id == ShopItem.ID.SHIELD) {
             item.description = Strings.generateNewShieldDescription().toString();
         }
         game.print(item.name, Color.YELLOW, 25, 9, false);
@@ -349,6 +358,7 @@ class Menu {
         IMAGES.put(Bitmap.BOARD_FLAG, new Sprite(Bitmap.BOARD_FLAG, game, 39, 11));
         IMAGES.put(Bitmap.BOARD_COIN, new Picture(Bitmap.BOARD_COIN, game, 69, 13));
         IMAGES.put(Bitmap.ITEM_FRAME, new Picture(Bitmap.ITEM_FRAME, game, 14, 30));
+        IMAGES.put(Bitmap.ITEM_FRAME_PUSHED, new Picture(Bitmap.ITEM_FRAME_PUSHED, game, 14, 30));
         IMAGES.put(Bitmap.MENU_ARROW, new Picture(Bitmap.MENU_ARROW, game, 93, 21));
         IMAGES.put(Bitmap.MENU_DIFFICULTY_BAR, new Picture(Bitmap.MENU_DIFFICULTY_BAR, game, 0, 0));
         IMAGES.put(Bitmap.BUTTON_OK, new Picture(Bitmap.BUTTON_OK, game, 0, 0));

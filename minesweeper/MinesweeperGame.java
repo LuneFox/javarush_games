@@ -77,6 +77,9 @@ public class MinesweeperGame extends Game {
             case GAME_BOARD:
                 menu.displayGameBoard();
                 break;
+            case SHOP:
+                menu.displayShop();
+                break;
             default:
                 break;
         }

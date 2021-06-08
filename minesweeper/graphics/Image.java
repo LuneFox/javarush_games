@@ -100,12 +100,12 @@ public abstract class Image {
         this.baseY = this.drawY;
     }
 
-    public final void drawAt(int x, int y){
+    public final void drawAt(int x, int y) {
         setPosition(x, y);
         draw();
     }
 
-    public final void drawAt(int x, int y, boolean mirror){
+    public final void drawAt(int x, int y, boolean mirror) {
         setPosition(x, y);
         draw(mirror);
     }

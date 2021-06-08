@@ -257,6 +257,10 @@ public class Picture extends Image {
                 colors = new Color[]{Color.NONE, Color.DARKGREEN, Color.BLACK, Color.GREEN};
                 return createWindowBitmap(20, 20, true, true);
             }
+            case ITEM_FRAME_PUSHED: {
+                colors = new Color[]{Color.NONE, Color.DARKGREEN, Color.BLACK, Color.GREEN};
+                return createWindowBitmap(20, 20, false, true);
+            }
             case WINDOW_ITEM_HELP: {
                 colors = new Color[]{Color.NONE, Color.DARKGREEN, Color.NONE, Color.GREEN};
                 return createWindowBitmap(100, 100, false, true);

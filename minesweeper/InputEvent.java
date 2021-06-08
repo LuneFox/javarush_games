@@ -4,12 +4,15 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.graphics.Button.*;
 import com.javarush.games.minesweeper.Screen.*;
 
+import java.util.Date;
+
 /**
  * Separate class for processing various input events.
  */
 
 class InputEvent {
     final private MinesweeperGame game;
+    public static double lastClickTime;
 
     InputEvent(MinesweeperGame game) {
         this.game = game;
@@ -19,9 +22,6 @@ class InputEvent {
         if (clickOutsideScreen(x, y) || game.menu.gameOverDisplayDelay > 0) {
             return;
         }
-        game.allowCountMoves = true;
-        game.allowFlagExplosion = false;
-        game.hideDice();
         leftClickAction(x, y, Screen.getType());
     }
 
@@ -29,12 +29,15 @@ class InputEvent {
         if (clickOutsideScreen(x, y)) {
             return;
         }
-        game.allowCountMoves = true;
         rightClickAction(x, y, Screen.getType());
         // System.out.println(String.format("%d %d", x, y));
     }
 
     private void leftClickAction(int x, int y, ScreenType screenType) {
+        game.allowCountMoves = true;
+        game.allowFlagExplosion = false;
+        game.hideDice();
+        lastClickTime = new Date().getTime();
         switch (screenType) {
             case MAIN_MENU:
                 if (Menu.BUTTONS.get(ButtonID.START).has(x, y)) {
@@ -61,16 +64,22 @@ class InputEvent {
             case SHOP:
                 if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
                     game.shop.sell(game.shop.shield);
+                    game.menu.pushedItemFrameNumber = 0;
                 } else if (x >= 40 && x <= 59 && y >= 31 && y <= 50) {
                     game.shop.sell(game.shop.scanner);
+                    game.menu.pushedItemFrameNumber = 1;
                 } else if (x >= 65 && x <= 84 && y >= 31 && y <= 50) {
                     game.shop.sell(game.shop.flag);
+                    game.menu.pushedItemFrameNumber = 2;
                 } else if (x >= 15 && x <= 34 && y >= 56 && y <= 75) {
                     game.shop.sell(game.shop.goldenShovel);
+                    game.menu.pushedItemFrameNumber = 3;
                 } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
                     game.shop.sell(game.shop.luckyDice);
+                    game.menu.pushedItemFrameNumber = 4 ;
                 } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
                     game.shop.sell(game.shop.miniBomb);
+                    game.menu.pushedItemFrameNumber = 5;
                 } else if (clickOutsideShop(x, y)) {
                     game.menu.displayGameBoard();
                 }
@@ -122,6 +131,7 @@ class InputEvent {
     }
 
     private void rightClickAction(int x, int y, ScreenType screenType) {
+        game.allowCountMoves = true;
         switch (screenType) {
             case GAME_BOARD:
                 if (game.isStopped) {
