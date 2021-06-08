@@ -12,7 +12,6 @@ public class Player {
     public int scoreLost;
     public int scoreDice;
     public int scoreCell;
-    public int openCells;
     public int countMoves;
 
     public Player(MinesweeperGame game){
@@ -25,7 +24,6 @@ public class Player {
         scoreLost = 0;
         scoreDice = 0;
         scoreCell = 0;
-        openCells = 0;
         countMoves = 0;
     }
 

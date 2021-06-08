@@ -215,7 +215,7 @@ class Menu {
         IMAGES.get(Bitmap.BOARD_MINE).draw();
         IMAGES.get(Bitmap.BOARD_FLAG).draw();
         IMAGES.get(Bitmap.BOARD_COIN).drawAt(69, 13);
-        game.print("" + game.countMinesOnField, Color.WHITE, 22, 12, false);
+        game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), Color.WHITE, 22, 12, false);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
         game.print("" + game.inventory.money, Color.WHITE, 75, 12, false);
         game.print("магазин", Color.YELLOW, 33, 22, false);
@@ -305,11 +305,12 @@ class Menu {
     final void displayScoreDetail() {
         Screen.set(ScreenType.SCORE_DETAIL);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        int minesScore = game.countMinesOnField * 20 * game.difficulty;
-        String minesScoreDetail = 20 * game.difficulty + "*" + game.countMinesOnField + " = ";
+        int minesCount = game.countAllCells(MinesweeperGame.Filter.MINED);
+        int minesScore = minesCount * 20 * game.difficulty;
+        String minesScoreDetail = 20 * game.difficulty + "*" + minesCount + " = ";
         int moneyScore = game.inventory.money * game.difficulty;
         String moneyScoreDetail = game.inventory.money + "*" + game.difficulty + " = ";
-        String cellScoreDetail = game.player.openCells + "*" + game.difficulty + " = ";
+        String cellScoreDetail = game.countAllCells(MinesweeperGame.Filter.OPEN) + "*" + game.difficulty + " = ";
 
         game.print("подробно", Color.YELLOW, 29, 2, false);
         game.print(

@@ -77,7 +77,6 @@ class ShopItem {
             case SHIELD:
                 if (this.isActivated) {
                     this.deactivate();
-                    game.countMinesOnField--; // exploded mine isn't a mine anymore
                     cell.assignSprite(Bitmap.BOARD_MINE);
                     cell.replaceColor(Color.YELLOW, 3);
                     cell.draw();

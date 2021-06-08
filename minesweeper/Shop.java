@@ -84,7 +84,7 @@ public class Shop {
                 (Picture) Menu.IMAGES.get(Bitmap.ITEM_SHIELD), game);
         this.scanner = new ShopItem(1, 8 + game.difficulty / 5, 1,
                 (Picture) Menu.IMAGES.get(Bitmap.ITEM_SCANNER), game);
-        this.flag = new ShopItem(2, 1, game.countMinesOnField - game.inventory.INIT_FLAGS,
+        this.flag = new ShopItem(2, 1, game.countAllCells(MinesweeperGame.Filter.MINED) - game.inventory.INIT_FLAGS,
                 (Picture) Menu.IMAGES.get(Bitmap.ITEM_FLAG), game);
         this.goldenShovel = new ShopItem(3, 9, 1,
                 (Picture) Menu.IMAGES.get(Bitmap.ITEM_SHOVEL), game);

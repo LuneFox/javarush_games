@@ -29,7 +29,6 @@ public class MinesweeperGame extends Game {
     public static int staticDifficulty;
     int difficulty = 10;
     int difficultyInOptionsScreen = 10;
-    int countMinesOnField;
 
     // FLAGS
     private boolean isFirstMove;
@@ -40,7 +39,7 @@ public class MinesweeperGame extends Game {
     boolean allowFlagExplosion;
 
     public enum Filter {
-        ALL, CLOSED, SAFE, MUST_CONTAIN_NUMBERS, FLAGGED_OR_REVEALED, MINED
+        ALL, CLOSED, OPEN, SAFE, MUST_CONTAIN_NUMBERS, FLAGGED_OR_REVEALED, MINED, MINED_AND_CLOSED
     }
 
     // NEW GAME
@@ -84,8 +83,9 @@ public class MinesweeperGame extends Game {
     }
 
     void createGame() {
-        resetValues();
+        applyDifficulty();
         createField();
+        resetValues();
         plantMines();
         assignMineNumbersToCells();
         menu.displayGameBoard();
@@ -95,12 +95,18 @@ public class MinesweeperGame extends Game {
     private void resetValues() {
         isStopped = false;
         isFirstMove = true;
-        difficulty = difficultyInOptionsScreen;
-        staticDifficulty = difficultyInOptionsScreen;
-        countMinesOnField = 0;
         player.reset();
         shop.reset();
         inventory.reset();
+    }
+
+    private void applyDifficulty() {
+        difficulty = difficultyInOptionsScreen;
+        staticDifficulty = difficultyInOptionsScreen;
+    }
+
+    public static int getDifficulty() {
+        return staticDifficulty;
     }
 
     private void createField() {
@@ -112,12 +118,11 @@ public class MinesweeperGame extends Game {
     }
 
     private void plantMines() {
-        while (countMinesOnField < difficulty / 1.5) { // fixed number of mines on field
+        while (countAllCells(Filter.MINED) < difficulty / 1.5) { // fixed number of mines on field
             int x = getRandomNumber(10);
             int y = getRandomNumber(10);
             if (!field[y][x].isMined && !field[y][x].isOpen) {
                 field[y][x] = new Cell(Bitmap.CELL_CLOSED, this, x, y, true);
-                countMinesOnField++;
             }
         }
     }
@@ -133,7 +138,7 @@ public class MinesweeperGame extends Game {
 
     private void win() {
         lastResultIsVictory = true;
-        player.score += (countMinesOnField * 20 * difficulty) + (inventory.money * difficulty);
+        player.score += (countAllCells(Filter.MINED)* 20 * difficulty) + (inventory.money * difficulty);
         setScore(player.score);
         player.registerTopScore();
         isStopped = true;
@@ -222,7 +227,6 @@ public class MinesweeperGame extends Game {
         if (cell.isMined) { // recursive explosions
             cell.isMined = false;
             allowCountMoves = false;
-            countMinesOnField--;
             allowFlagExplosion = true;
             getNeighborCells(cell, Filter.ALL, false).forEach(neighbor -> {
                 if (neighbor.isMined) {
@@ -313,8 +317,18 @@ public class MinesweeperGame extends Game {
                             result.add(cell);
                         }
                         break;
+                    case OPEN:
+                        if (field[y][x].isOpen) {
+                            result.add(field[y][x]);
+                        }
+                        break;
                     case MINED:
                         if (cell.isMined) {
+                            result.add(cell);
+                        }
+                        break;
+                    case MINED_AND_CLOSED:
+                        if (cell.isMined && !cell.isOpen) {
                             result.add(cell);
                         }
                         break;
@@ -331,6 +345,10 @@ public class MinesweeperGame extends Game {
             }
         }
         return result;
+    }
+
+    public int countAllCells(Filter filter) {
+        return getAllCells(filter).size();
     }
 
     private List<Cell> getNeighborCells(Cell cell, Filter filter, boolean includeSelf) {
@@ -382,7 +400,6 @@ public class MinesweeperGame extends Game {
     // UTILITIES
 
     private void addScore(int x, int y) {
-        player.openCells++; // for score detail
         player.scoreCell += difficulty;
         int scoreBeforeDice = player.score;
         int randomNumber = getRandomNumber(6) + 1;
@@ -396,7 +413,6 @@ public class MinesweeperGame extends Game {
     private void replantMine(Cell cell) {
         cell.eraseSprite();
         cell.isMined = false;
-        countMinesOnField--;
         plantMines();
         assignMineNumbersToCells();
     }
@@ -432,8 +448,7 @@ public class MinesweeperGame extends Game {
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
 
     public void checkVictory() {
-        // everything except bombs is open = win
-        if (getAllCells(Filter.CLOSED).size() == countMinesOnField) {
+        if (countAllCells(Filter.CLOSED) == countAllCells(Filter.MINED_AND_CLOSED)) {
             win();
         }
     }
@@ -494,16 +509,11 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    // TEXT OUTPUT
+    // MISC
 
     public void print(String text, Color color, int x, int y, boolean right) {
         printer.print(text, color, x, y, right);
     }
-
-    public static int getDifficulty(){
-        return staticDifficulty;
-    }
-
     // CONTROLS
 
     @Override
