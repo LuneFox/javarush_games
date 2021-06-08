@@ -289,9 +289,7 @@ public class MinesweeperGame extends Game {
 
     public void scanNeighbors(int x, int y) { // to use with a scanner item
         List<Cell> neighbors = getNeighborCells(field[y][x], Filter.SAFE, true);
-        System.out.println(neighbors.size());
         if (neighbors.size() == 0) { // no safe cells
-            System.out.println("No safe neigbors!!");
             getNeighborCells(field[y][x], Filter.CLOSED, true).forEach(closedCell -> {
                 if (inventory.getCount(ShopItem.ID.FLAG) == 0) { // get a free flag from the shop
                     shop.give(shop.flag);
