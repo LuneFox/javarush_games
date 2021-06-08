@@ -15,7 +15,7 @@ public class Printer {
         writer.loadAlphabet();
     }
 
-    public void out(String input, Color color, int x, int y, boolean alignRight) {
+    public void print(String input, Color color, int x, int y, boolean alignRight) {
         writer.write(input, color, x, y, alignRight);
     }
 

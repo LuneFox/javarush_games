@@ -229,7 +229,7 @@ public class Picture extends Image {
                         "000000000000000000"
                 );
             }
-            case SHOP_COIN: {
+            case BOARD_COIN: {
                 colors = new Color[]{Color.NONE, Color.YELLOW, Color.ORANGE};
                 return createBitmapFromStrings("0110", "1112", "1112", "1112", "1122", "0220");
             }

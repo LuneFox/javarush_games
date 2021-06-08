@@ -42,10 +42,12 @@ public class Strings {
     };
 
     public static final String ITEM_SHIELD_NAME = "Сапёрский щит";
-    // public static String ITEM_SHIELD_DESCRIPTION = "Спасёт от взрыва\nпри открытии мины\nодин раз. Однако вы\n" +
-    //         "потеряете " + 150 * (MinesweeperGame.shieldPenalty) + " очков."; // TODO: Значение не обновляется!
-    public static final String ITEM_SHIELD_DESCRIPTION = "Спасёт от взрыва\nпри открытии мины\nодин раз. Однако вы\n" +
-            "потеряете очки.";
+
+    public static StringBuilder generateNewShieldDescription() {
+        return new StringBuilder("Спасёт от взрыва\nпри открытии мины\nодин раз. Однако вы\n" +
+                "потеряете " + 150 * (MinesweeperGame.getDifficulty() / 5) + " очков.");
+    }
+
     public static final String ITEM_SCANNER_NAME = "Сканер";
     public static final String ITEM_SCANNER_DESCRIPTION =
             "Откроет безопасную\nклетку в поле 3*3\nвокруг курсора.\nЕсли таких нет,\n" +
@@ -66,4 +68,6 @@ public class Strings {
     public static final String ITEM_BOMB_DESCRIPTION =
             "Бросив бомбочку, вы\nуничтожите закрытую\nклетку на поле.\nЕсли взорвёте мину,\n" +
                     "соседние мины тоже\nвзорвутся по цепи.\nОчков не даёт.";
+
+
 }

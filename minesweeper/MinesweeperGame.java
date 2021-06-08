@@ -26,7 +26,7 @@ public class MinesweeperGame extends Game {
     final private InputEvent ie = new InputEvent(this);
 
     // GAME STATE
-    public static int shieldPenalty;
+    public static int staticDifficulty;
     int difficulty = 10;
     int difficultyInOptionsScreen = 10;
     int countMinesOnField;
@@ -49,7 +49,6 @@ public class MinesweeperGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(100, 100);
-        loadResources();
         isStopped = true;
         menu.displayMain();
         setTurnTimer(30);
@@ -85,10 +84,10 @@ public class MinesweeperGame extends Game {
     }
 
     void createGame() {
+        resetValues();
         createField();
         plantMines();
         assignMineNumbersToCells();
-        resetValues();
         menu.displayGameBoard();
         setScore(player.score);
     }
@@ -97,16 +96,11 @@ public class MinesweeperGame extends Game {
         isStopped = false;
         isFirstMove = true;
         difficulty = difficultyInOptionsScreen;
+        staticDifficulty = difficultyInOptionsScreen;
+        countMinesOnField = 0;
         player.reset();
         shop.reset();
         inventory.reset();
-        shieldPenalty = (difficulty / 5);
-        System.out.println(shieldPenalty);
-    }
-
-    private void loadResources() {
-        menu.loadImages();
-        menu.loadButtons();
     }
 
     private void createField() {
@@ -118,7 +112,6 @@ public class MinesweeperGame extends Game {
     }
 
     private void plantMines() {
-        countMinesOnField = 0;
         while (countMinesOnField < difficulty / 1.5) { // fixed number of mines on field
             int x = getRandomNumber(10);
             int y = getRandomNumber(10);
@@ -503,8 +496,12 @@ public class MinesweeperGame extends Game {
 
     // TEXT OUTPUT
 
-    public void out(String text, Color color, int x, int y, boolean right) {
-        printer.out(text, color, x, y, right);
+    public void print(String text, Color color, int x, int y, boolean right) {
+        printer.print(text, color, x, y, right);
+    }
+
+    public static int getDifficulty(){
+        return staticDifficulty;
     }
 
     // CONTROLS

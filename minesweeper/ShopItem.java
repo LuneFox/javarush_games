@@ -34,7 +34,7 @@ class ShopItem {
             case 0:
                 this.id = ID.SHIELD;
                 this.name = Strings.ITEM_SHIELD_NAME;
-                this.description = Strings.ITEM_SHIELD_DESCRIPTION;
+                this.description = Strings.generateNewShieldDescription().toString();
                 this.canExpire = false;
                 break;
             case 1:

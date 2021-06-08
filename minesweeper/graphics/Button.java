@@ -62,7 +62,7 @@ public class Button {
 
     public void draw() {
         this.body.draw();
-        game.out(text, textColor, x1 + textOffset, y1, false);
+        game.print(text, textColor, x1 + textOffset, y1, false);
     }
 
     public boolean has(int x, int y) {
