@@ -74,9 +74,10 @@ class Menu {
     final void displayAbout() {
         Screen.set(ScreenType.ABOUT);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        game.print(Strings.ABOUT[0], Color.YELLOW, 24, 2, false);
-        game.print(Strings.ABOUT[1], Color.WHITE, 3, 13, false);
+        game.print(Strings.getAbout()[0], Color.YELLOW, 24, 2, false);
+        game.print(Strings.getAbout()[1], Color.WHITE, 3, 13, false);
         BUTTONS.get(ButtonID.BACK).draw();
+        BUTTONS.get(ButtonID.FORWARD).draw();
     }
 
 
@@ -423,6 +424,7 @@ class Menu {
         BUTTONS.put(ButtonID.START, new Button(game, 61, 88, 36, 9, "старт"));
         BUTTONS.put(ButtonID.RECORDS, new Button(game, 2, 88, "рекорды"));
         BUTTONS.put(ButtonID.BACK, new Button(game, 61, 88, 36, 9, "назад"));
+        BUTTONS.put(ButtonID.FORWARD, new Button(game, 3, 88, 36, 9, "далее"));
         BUTTONS.put(ButtonID.CONFIRM, new Button(game, 61, 88, 36, 9, "ясно"));
         BUTTONS.put(ButtonID.AGAIN, new Button(game, 57, 69, "снова"));
         BUTTONS.put(ButtonID.RETURN, new Button(game, 15, 69, "меню"));

@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper;
 
 public class Strings {
     public static final String VERSION = "1.10";
+    public static int currentAboutPage = 0;
 
     public static final String[] RECORDS = new String[]{
             "Лучшие игроки",
@@ -35,11 +36,47 @@ public class Strings {
             "Какой идиот\nзакопал цифры?!"
     };
 
-    public static final String[] ABOUT = new String[]{
-            "Информация",
-            "В моей версии игры\nесть магазин вещей.\nОн поможет меньше\nполагаться на удачу,\nбольше планировать.\n" +
-                    "    На поле:\nПробел - магазин\nПКМ - инфо о вещах"
-    };
+    public static String[] getAbout() {
+        switch (currentAboutPage) {
+            case 0:
+                return new String[]{
+                        "Информация",
+                        "В моей версии игры\nесть магазин вещей.\nОн поможет меньше\nполагаться на удачу," +
+                                "\nбольше планировать.\n\nЖмите далее, чтобы\nузнать больше."};
+            case 1:
+                return new String[]{
+                        "О магазине",
+                        "Во время игры\nклавиша пробел\nоткроет или закроет\nмагазин.\n" +
+                                "\nПравый клик по вещи\nпокажет её описание."
+                };
+            case 2:
+                return new String[]{
+                        "Удобства",
+                        "Если около ячейки\nуже стоит нужное\nколичество флажков,\nправый клик по ней" +
+                                "\nоткроет прилегающие\nячейки автоматом.\n\nпрекрасно же?"
+                };
+            case 3:
+                return new String[]{
+                        "О счёте",
+                        "Чтобы посмотреть\nподробности счёта\nв конце игры,\nнажмите на слово" +
+                                "\n-счёт- рядом со\nсмайликом.\n\n"
+                };
+            case 4:
+                return new String[]{
+                        "Рекорды",
+                        "Чтобы попасть на\nстраницу рекордов,\nсделайте скриншот\nс вашим результатом" +
+                                "\nи прикрепите его\nв комментариях.\n\nВсё просто!"
+                };
+
+            case 5:
+                return new String[]{
+                        "Конец",
+                        "Мне пока больше\nнечего сказать.\nЧестное слово!\n" +
+                                "\nНажмёте далее -\nвернётесь в начало.\n\n...и спасибо за игру!"
+                };
+        }
+        return new String[]{"", ""};
+    }
 
     public static final String ITEM_SHIELD_NAME = "Сапёрский щит";
 

@@ -76,7 +76,7 @@ class InputEvent {
                     game.menu.pushedItemFrameNumber = 3;
                 } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
                     game.shop.sell(game.shop.luckyDice);
-                    game.menu.pushedItemFrameNumber = 4 ;
+                    game.menu.pushedItemFrameNumber = 4;
                 } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
                     game.shop.sell(game.shop.miniBomb);
                     game.menu.pushedItemFrameNumber = 5;
@@ -120,6 +120,18 @@ class InputEvent {
                 }
                 break;
             case ABOUT:
+                if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
+                    game.menu.displayMain();
+                } else if (Menu.BUTTONS.get(ButtonID.FORWARD).has(x, y)) {
+                    // TODO: Shift Page
+                    if (Strings.currentAboutPage < 5) {
+                        Strings.currentAboutPage++;
+                    } else {
+                        Strings.currentAboutPage = 0;
+                    }
+                    game.menu.displayAbout();
+                }
+                break;
             case RECORDS:
                 if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
                     game.menu.displayMain();
