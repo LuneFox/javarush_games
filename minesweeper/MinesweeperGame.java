@@ -7,6 +7,7 @@ import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Printer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -39,7 +40,7 @@ public class MinesweeperGame extends Game {
     boolean allowFlagExplosion;
 
     public enum Filter {
-        ALL, CLOSED, OPEN, SAFE, MUST_CONTAIN_NUMBERS, FLAGGED_OR_REVEALED, MINED, MINED_AND_CLOSED
+        NONE, CLOSED, OPEN, SAFE, MUST_CONTAIN_NUMBERS, FLAGGED_OR_REVEALED, MINED, MINED_AND_CLOSED
     }
 
     // NEW GAME
@@ -138,7 +139,7 @@ public class MinesweeperGame extends Game {
 
     private void win() {
         lastResultIsVictory = true;
-        player.score += (countAllCells(Filter.MINED)* 20 * difficulty) + (inventory.money * difficulty);
+        player.score += (countAllCells(Filter.MINED) * 20 * difficulty) + (inventory.money * difficulty);
         setScore(player.score);
         player.registerTopScore();
         isStopped = true;
@@ -184,7 +185,7 @@ public class MinesweeperGame extends Game {
         // empty cells open cells near them, does not count as a move made by player
         if (cell.countMinedNeighbors == 0 && !cell.isMined) {
             allowCountMoves = false;
-            getNeighborCells(cell, Filter.ALL, false).forEach(neighbor -> {
+            getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> {
                 if (!neighbor.isOpen) {
                     openCell(neighbor.x, neighbor.y);
                 }
@@ -201,7 +202,7 @@ public class MinesweeperGame extends Game {
         Cell cell = field[y][x];
         if (cell.isOpen && !cell.isMined) {
             if (cell.countMinedNeighbors == getNeighborCells(cell, Filter.FLAGGED_OR_REVEALED, false).size()) {
-                getNeighborCells(cell, Filter.ALL, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
+                getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
             }
         }
     }
@@ -228,7 +229,7 @@ public class MinesweeperGame extends Game {
             cell.isMined = false;
             allowCountMoves = false;
             allowFlagExplosion = true;
-            getNeighborCells(cell, Filter.ALL, false).forEach(neighbor -> {
+            getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> {
                 if (neighbor.isMined) {
                     destroyCell(neighbor.x, neighbor.y); // recursive call
                 }
@@ -303,48 +304,14 @@ public class MinesweeperGame extends Game {
         openCell(cell.x, cell.y);
     }
 
-
     // COLLECTING SURROUNDING CELLS & INFO
 
     private List<Cell> getAllCells(Filter filter) {
-        List<Cell> result = new ArrayList<>();
+        List<Cell> all = new ArrayList<>();
         for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
-                Cell cell = field[y][x];
-                switch (filter) {
-                    case CLOSED:
-                        if (!cell.isOpen) {
-                            result.add(cell);
-                        }
-                        break;
-                    case OPEN:
-                        if (field[y][x].isOpen) {
-                            result.add(field[y][x]);
-                        }
-                        break;
-                    case MINED:
-                        if (cell.isMined) {
-                            result.add(cell);
-                        }
-                        break;
-                    case MINED_AND_CLOSED:
-                        if (cell.isMined && !cell.isOpen) {
-                            result.add(cell);
-                        }
-                        break;
-                    case MUST_CONTAIN_NUMBERS:
-                        if (!cell.isDestroyed && !cell.isFlagged && !cell.isMined) {
-                            result.add(cell);
-                        }
-                        break;
-                    case ALL:
-                    default:
-                        result.add(cell);
-                        break;
-                }
-            }
+            all.addAll(Arrays.asList(field[y]).subList(0, 10));
         }
-        return result;
+        return filterCells(all, filter);
     }
 
     public int countAllCells(Filter filter) {
@@ -352,41 +319,59 @@ public class MinesweeperGame extends Game {
     }
 
     private List<Cell> getNeighborCells(Cell cell, Filter filter, boolean includeSelf) {
-        List<Cell> result = new ArrayList<>();
+        List<Cell> neighbors = new ArrayList<>();
         for (int y = cell.y - 1; y <= cell.y + 1; y++) {
             for (int x = cell.x - 1; x <= cell.x + 1; x++) {
                 if (y < 0 || y >= 10) continue;     // skip out of borders
                 if (x < 0 || x >= 10) continue;     // skip out of borders
                 if (field[y][x] == cell && !includeSelf) continue;  // skip center if not included
-                switch (filter) {
-                    case SAFE: // safe to open: closed and not mined
-                        if (!field[y][x].isOpen && !field[y][x].isMined) {
-                            result.add(field[y][x]);
-                        }
-                        break;
-                    case CLOSED:
-                        if (!field[y][x].isOpen) {
-                            result.add(field[y][x]);
-                        }
-                        break;
-                    case FLAGGED_OR_REVEALED:
-                        if (field[y][x].isFlagged || (field[y][x].isOpen && field[y][x].isMined)) {
-                            result.add(field[y][x]);
-                        }
-                        break;
-                    case MINED:
-                        if (field[y][x].isMined) {
-                            result.add(field[y][x]);
-                        }
-                        break;
-                    case ALL:
-                    default:
-                        result.add(field[y][x]);
-                        break;
-                }
-
+                neighbors.add(field[y][x]);
             }
         }
+        return filterCells(neighbors, filter);
+    }
+
+    private List<Cell> filterCells(List<Cell> list, Filter filter) {
+        List<Cell> result = new ArrayList<>();
+        list.forEach(cell -> {
+            int x = cell.x;
+            int y = cell.y;
+            switch (filter) {
+                case CLOSED:
+                    if (!cell.isOpen) {
+                        result.add(cell);
+                    }
+                    break;
+                case OPEN:
+                    if (field[y][x].isOpen) {
+                        result.add(field[y][x]);
+                    }
+                    break;
+                case MINED:
+                    if (cell.isMined) {
+                        result.add(cell);
+                    }
+                    break;
+                case MINED_AND_CLOSED:
+                    if (cell.isMined && !cell.isOpen) {
+                        result.add(cell);
+                    }
+                    break;
+                case MUST_CONTAIN_NUMBERS:
+                    if (!cell.isDestroyed && !cell.isFlagged && !cell.isMined) {
+                        result.add(cell);
+                    }
+                    break;
+                case FLAGGED_OR_REVEALED:
+                    if (field[y][x].isFlagged || (field[y][x].isOpen && field[y][x].isMined)) {
+                        result.add(field[y][x]);
+                    }
+                case NONE:
+                default:
+                    result.add(cell);
+                    break;
+            }
+        });
         return result;
     }
 
@@ -488,7 +473,7 @@ public class MinesweeperGame extends Game {
     }
 
     void redrawAllCells() { // redraws all cells in current state to hide whatever was drawn over them
-        getAllCells(Filter.ALL).forEach(cell -> {
+        getAllCells(Filter.NONE).forEach(cell -> {
             cell.draw();
             if (cell.isOpen || cell.isFlagged) {
                 cell.drawSprite();
@@ -514,6 +499,7 @@ public class MinesweeperGame extends Game {
     public void print(String text, Color color, int x, int y, boolean right) {
         printer.print(text, color, x, y, right);
     }
+
     // CONTROLS
 
     @Override
