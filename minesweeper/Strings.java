@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper;
 
 public class Strings {
-    public static final String VERSION = "1.10";
+    public static final String VERSION = "1.11";
     public static int currentAboutPage = 0;
 
     public static final String[] RECORDS = new String[]{
