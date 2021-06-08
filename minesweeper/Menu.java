@@ -216,22 +216,45 @@ class Menu {
         IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 78);
         IMAGES.get(Bitmap.BOARD_MINE).draw();
         IMAGES.get(Bitmap.BOARD_FLAG).draw();
-        IMAGES.get(Bitmap.BOARD_COIN).drawAt(69, 13);
+        IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + shakeMoneyShift(), 13);
         adjustMoneyOnDisplay();
         game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), Color.WHITE, 22, 12, false);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
-        game.print("" + moneyOnDisplay, Color.WHITE, 75, 12, false);
+        game.print("" + moneyOnDisplay, Color.WHITE, 75 + shakeMoneyShift(), 12, false);
         game.print("магазин", Color.YELLOW, 33, 22, false);
         game.print("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80, false);
         game.print("шаги:" + game.player.countMoves, Color.LIGHTBLUE, 84, 80, true);
         displayShopItems();
     }
 
-    private void adjustMoneyOnDisplay(){
-        if (moneyOnDisplay < game.inventory.money){
+    private void adjustMoneyOnDisplay() {
+        if (moneyOnDisplay < game.inventory.money) {
             moneyOnDisplay++;
-        } else if (moneyOnDisplay > game.inventory.money){
+        } else if (moneyOnDisplay > game.inventory.money) {
             moneyOnDisplay--;
+        }
+    }
+
+    private int shakeMoneyShift() { // to shake money when you can't afford an item
+        double now = new Date().getTime();
+        if (game.shop.couldNotAfford && now - InputEvent.lastClickInShopTime < 500) {
+            return (now % 2 == 0) ? 1 : 0;
+        } else {
+            game.shop.couldNotAfford = false;
+            return 0;
+        }
+    }
+
+    private int shakeActivatedShift(int currentFrame) { // to shake ACT sign if the item is activated
+        if (currentFrame != pushedItemFrameNumber) { // shake only in current frame
+            return 0;
+        }
+        double now = new Date().getTime();
+        if (game.shop.couldNotActivate && now - InputEvent.lastClickInShopTime < 500) {
+            return (now % 2 == 0) ? 1 : 0;
+        } else {
+            game.shop.couldNotActivate = false;
+            return 0;
         }
     }
 
@@ -246,6 +269,7 @@ class Menu {
             for (int x = 0; x < 3; x++) {
                 int dx = x * 25;
                 ShopItem item = game.shop.allItems.get(x + y * 3);
+
                 currentFrame++;
                 Picture frame;
                 if (currentFrame == pushedItemFrameNumber && new Date().getTime() - InputEvent.lastClickInShopTime < 100) {
@@ -264,6 +288,7 @@ class Menu {
                 if (item.isActivated()) {
                     frame.replaceColor(Color.BLUE, 3);
                 }
+
                 frame.setPosition(15 + dx + shift, 30 + dy + shift);
                 frame.draw();
                 item.icon.setPosition(16 + dx + shift, 31 + dy + shift);
@@ -275,7 +300,7 @@ class Menu {
                     if (item.canExpire) {
                         game.print(item.remainingMoves(), Color.MAGENTA, right + dx, upper + dy, true);
                     }
-                    game.print("АКТ", Color.YELLOW, right + dx, bottom + dy, true);
+                    game.print("АКТ", Color.YELLOW, right + dx - shakeActivatedShift(currentFrame), bottom + dy, true);
                 } else {
                     game.print("НЕТ", Color.RED, right + dx, bottom + dy, true);
                 }

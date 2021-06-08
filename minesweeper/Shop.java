@@ -21,13 +21,21 @@ public class Shop {
     public ShopItem miniBomb;
     public final LinkedList<ShopItem> allItems = new LinkedList<>();
     public Dice dice;
+    public boolean couldNotAfford;
+    public boolean couldNotActivate;
 
     public Shop(MinesweeperGame game) {
         this.game = game;
     }
 
     public void sell(ShopItem item) {
-        if (item.isUnobtainableOrActivated()) {
+        if (item.isActivated()) {
+            couldNotActivate = true;
+            return;
+        } else if (item.inStock == 0) {
+            return;
+        } else if (item.isUnaffordable()) {
+            couldNotAfford = true;
             return;
         } else {
             item.inStock--;

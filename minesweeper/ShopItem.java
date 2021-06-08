@@ -135,6 +135,10 @@ class ShopItem {
         return isActivated;
     }
 
+    public boolean isUnaffordable(){
+        return (game.inventory.money < this.cost);
+    }
+
     public boolean isUnobtainable() {
         return (game.inventory.money < this.cost || this.inStock <= 0);
     }
