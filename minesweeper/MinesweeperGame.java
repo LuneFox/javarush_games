@@ -289,7 +289,9 @@ public class MinesweeperGame extends Game {
 
     public void scanNeighbors(int x, int y) { // to use with a scanner item
         List<Cell> neighbors = getNeighborCells(field[y][x], Filter.SAFE, true);
+        System.out.println(neighbors.size());
         if (neighbors.size() == 0) { // no safe cells
+            System.out.println("No safe neigbors!!");
             getNeighborCells(field[y][x], Filter.CLOSED, true).forEach(closedCell -> {
                 if (inventory.getCount(ShopItem.ID.FLAG) == 0) { // get a free flag from the shop
                     shop.give(shop.flag);
@@ -337,8 +339,6 @@ public class MinesweeperGame extends Game {
     private List<Cell> filterCells(List<Cell> list, Filter filter) {
         List<Cell> result = new ArrayList<>();
         list.forEach(cell -> {
-            int x = cell.x;
-            int y = cell.y;
             switch (filter) {
                 case CLOSED:
                     if (!cell.isOpen) {
@@ -346,8 +346,8 @@ public class MinesweeperGame extends Game {
                     }
                     break;
                 case OPEN:
-                    if (field[y][x].isOpen) {
-                        result.add(field[y][x]);
+                    if (cell.isOpen) {
+                        result.add(cell);
                     }
                     break;
                 case MINED:
@@ -366,9 +366,15 @@ public class MinesweeperGame extends Game {
                     }
                     break;
                 case FLAGGED_OR_REVEALED:
-                    if (field[y][x].isFlagged || (field[y][x].isOpen && field[y][x].isMined)) {
-                        result.add(field[y][x]);
+                    if (cell.isFlagged || (cell.isOpen && cell.isMined)) {
+                        result.add(cell);
                     }
+                    break;
+                case SAFE:
+                    if (!cell.isOpen && !cell.isMined) {
+                        result.add(cell);
+                    }
+                    break;
                 case NONE:
                 default:
                     result.add(cell);
