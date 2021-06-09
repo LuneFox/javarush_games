@@ -5,6 +5,7 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Printer;
+import com.javarush.games.minesweeper.graphics.Image.Mirror;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -414,7 +415,7 @@ public class MinesweeperGame extends Game {
     private void explodeAndGameOver(Cell cell) {
         revealAllMines();
         cell.replaceColor(Color.RED, 3); // highlight mine that caused game over
-        cell.draw();
+        cell.draw(Mirror.NO);
         cell.drawSprite();
         shop.dice.isHidden = true;
         lose();
@@ -483,7 +484,7 @@ public class MinesweeperGame extends Game {
 
     void redrawAllCells() { // redraws all cells in current state to hide whatever was drawn over them
         getAllCells(Filter.NONE).forEach(cell -> {
-            cell.draw();
+            cell.draw(Mirror.NO);
             if (cell.isOpen || cell.isFlagged) {
                 cell.drawSprite();
             }

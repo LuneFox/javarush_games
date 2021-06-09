@@ -14,16 +14,16 @@ public abstract class Image {
     protected int[][] bitmapData;             // matrix of color numbers
     protected Color[] colors;                 // an array to match colors and numbers
     private int baseY;                        // initial position Y (anchor for animation)
-    private float animationCounter;
-    private boolean animationDirectionDown;
+    private float floatAnimationShift;        // difference between the anchor and current position
+    private boolean floatAnimationGoesDown;
 
     protected Image(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) { // constructor with setting position at once
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
         this.game = game;
         setPosition(drawX, drawY);
-        animationCounter = 0;
-        animationDirectionDown = true;
+        floatAnimationShift = 0;
+        floatAnimationGoesDown = true;
     }
 
     Image(Bitmap bitmap, MinesweeperGame game) { // constructor without setting position (for loading images in memory)
@@ -32,51 +32,51 @@ public abstract class Image {
         this.game = game;
     }
 
-    public void draw() {
-        for (int innerY = 0; innerY < bitmapData.length; innerY++) {
-            for (int innerX = 0; innerX < bitmapData[0].length; innerX++) {
-                if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
-                    continue;
-                } // transparent color
-                game.display.setCellColor(
-                        drawX + innerX,
-                        drawY + innerY,
-                        colors[bitmapData[innerY][innerX]]
-                );
-            }
-        }
+    public enum Mirror {
+        HORIZONTAL, VERTICAL, NO
     }
 
-    public final void draw(boolean mirror) { // true reflects X, false reflects Y
+    public void draw(Mirror mirror) {
         for (int innerY = 0; innerY < bitmapData.length; innerY++) {
             for (int innerX = 0; innerX < bitmapData[0].length; innerX++) {
                 if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
-                    continue;
-                } // transparent color
-                if (mirror) {
-                    game.display.setCellColor(
-                            drawX + (bitmapData[0].length - 1 - innerX), // flip horizontally
-                            drawY + innerY,
-                            colors[bitmapData[innerY][innerX]]
-                    );
-                } else {
-                    game.display.setCellColor(
-                            drawX + innerX,
-                            drawY + (bitmapData.length - 1 - innerY),     // flip vertically
-                            colors[bitmapData[innerY][innerX]]
-                    );
+                    continue; // transparent color
+                }
+                switch (mirror) {
+                    case HORIZONTAL:
+                        game.display.setCellColor(
+                                drawX + (bitmapData[0].length - 1 - innerX),
+                                drawY + innerY,
+                                colors[bitmapData[innerY][innerX]]
+                        );
+                        break;
+                    case VERTICAL:
+                        game.display.setCellColor(
+                                drawX + innerX,
+                                drawY + (bitmapData.length - 1 - innerY),
+                                colors[bitmapData[innerY][innerX]]
+                        );
+                        break;
+                    case NO:
+                    default:
+                        game.display.setCellColor(
+                                drawX + innerX,
+                                drawY + innerY,
+                                colors[bitmapData[innerY][innerX]]
+                        );
+                        break;
                 }
             }
         }
     }
 
-    public final void animateFloating(double height) {
-        animationCounter += (animationDirectionDown ? 0.2 : -0.2);
-        if (Math.abs(animationCounter) > height) {
-            animationDirectionDown = !animationDirectionDown;
+    public final void floatAnimation(double height) {
+        floatAnimationShift += (floatAnimationGoesDown ? 0.2 : -0.2);
+        if (Math.abs(floatAnimationShift) > height) {
+            floatAnimationGoesDown = !floatAnimationGoesDown;
         }
-        this.drawY = (int) (baseY + animationCounter);
-        this.draw();
+        this.drawY = (int) (baseY + floatAnimationShift);
+        this.draw(Mirror.NO);
     }
 
     public final void replaceColor(Color color, int number) {
@@ -86,26 +86,13 @@ public abstract class Image {
         }
     }
 
-    public final void setPosition(int drawX, int drawY) {
-        if (drawX < 0) { // align X center
-            this.drawX = 50 - bitmapData[0].length / 2;
-        } else {         // put at position
-            this.drawX = drawX;
-        }
-        if (drawY < 0) { // align Y center
-            this.drawY = 50 - bitmapData.length / 2;
-        } else {         // put at position
-            this.drawY = drawY;
-        }
+    public final void setPosition(int drawX, int drawY) { // negative value = middle
+        this.drawX = (drawX < 0) ? (50 - bitmapData[0].length / 2) : drawX;
+        this.drawY = (drawY < 0) ? (50 - bitmapData.length / 2) : drawY;
         this.baseY = this.drawY;
     }
 
-    public final void drawAt(int x, int y) {
-        setPosition(x, y);
-        draw();
-    }
-
-    public final void drawAt(int x, int y, boolean mirror) {
+    public final void drawAtPosition(int x, int y, Mirror mirror) {
         setPosition(x, y);
         draw(mirror);
     }
@@ -139,32 +126,17 @@ public abstract class Image {
 
         int[][] window = new int[sizeY][sizeX];
         generateWindowBackground(window, sizeX, sizeY);
-
-        if (shadow) {
-            generateWindowShadow(window, sizeX, sizeY);
-        }
-
-        if (frame) {
-            generateWindowFrame(window, sizeX, sizeY, shadow);
-        }
-
+        if (shadow) generateWindowShadow(window, sizeX, sizeY);
+        if (frame) generateWindowFrame(window, sizeX, sizeY, shadow);
         return window;
     }
 
     private void generateWindowShadow(int[][] window, int sizeX, int sizeY) {
         for (int x = 0; x < sizeX; x++) {
-            if (x == 0) {
-                window[sizeY - 1][x] = 0;
-            } else {
-                window[sizeY - 1][x] = 2;
-            }
+            window[sizeY - 1][x] = (x == 0) ? 0 : 2;
         }
         for (int y = 0; y < sizeY; y++) {
-            if (y == 0) {
-                window[y][sizeX - 1] = 0;
-            } else {
-                window[y][sizeX - 1] = 2;
-            }
+            window[y][sizeX - 1] = (y == 0) ? 0 : 2;
         }
     }
 

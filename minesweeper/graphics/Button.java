@@ -1,8 +1,7 @@
 package com.javarush.games.minesweeper.graphics;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
-
 /**
  * Allows to draw buttons with text wrapped in frames.
  */
@@ -61,7 +60,7 @@ public class Button {
     }
 
     public void draw() {
-        this.body.draw();
+        this.body.draw(Image.Mirror.NO);
         game.print(text, textColor, x1 + textOffset, y1, false);
     }
 

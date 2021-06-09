@@ -32,7 +32,7 @@ public class Text extends Image {
                 symbol = alphabet.get(chars[i]);
                 symbol.setPosition(caretX, caretY);
                 symbol.replaceColor(color, 1);
-                symbol.draw();
+                symbol.draw(Mirror.NO);
                 if (i > 0) { // move caret by the length of the NEXT letter
                     caretX = caretX - (alphabet.get(chars[i - 1]).bitmapData[0].length + 1);
                 }
@@ -47,7 +47,7 @@ public class Text extends Image {
                 symbol = alphabet.get(c);
                 symbol.setPosition(caretX, caretY);
                 symbol.replaceColor(color, 1);
-                symbol.draw();
+                symbol.draw(Mirror.NO);
                 caretX += (symbol.bitmapData[0].length + 1);
             }
         }

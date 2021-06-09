@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.graphics.Picture;
 
 /**
@@ -79,7 +80,7 @@ class ShopItem {
                     this.deactivate();
                     cell.assignSprite(Bitmap.BOARD_MINE);
                     cell.replaceColor(Color.YELLOW, 3);
-                    cell.draw();
+                    cell.draw(Image.Mirror.NO);
                     cell.drawSprite();
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);

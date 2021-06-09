@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.graphics.Picture;
 
 import java.util.Arrays;
@@ -109,6 +110,6 @@ public class Shop {
 
     private void drawColoredFrame(Color color) {
         Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(color, 3);
-        Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+        Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw(Image.Mirror.NO);
     }
 }
