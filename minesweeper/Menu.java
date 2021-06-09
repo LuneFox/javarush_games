@@ -22,8 +22,8 @@ class Menu {
     public int gameOverDisplayDelay;  // defines how soon will game over screen show up
     public int pushedItemFrameNumber; // defines what frame in the shop was pushed last time
     public int moneyOnDisplay;        // for smooth animation, runs towards real money
-    public int getShakingElementCountDownDefault = 20; // number of turns to shake the item
-    public int shakingElementCountDown = 20;           // active counter that counts to zero
+    public int shakingAnimationMaxTurns = 15;                             // number of turns to shake the item
+    public int shakingAnimationCurrentTurn = shakingAnimationMaxTurns;    // counts towards zero
 
     static {
         Collections.addAll(DIFFICULTY_NAMES, Strings.DIFFICULTY_NAMES);
@@ -214,58 +214,21 @@ class Menu {
 
     final void displayShop() {
         Screen.set(ScreenType.SHOP);
-        activateShakingElementCountDown();
+        shakeAnimationCountDown();
         IMAGES.get(Bitmap.WINDOW_SHOP).draw();
         IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 10);
         IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 78);
         IMAGES.get(Bitmap.BOARD_MINE).draw();
         IMAGES.get(Bitmap.BOARD_FLAG).draw();
-        IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + shakeMoneyShift(), 13);
-        adjustMoneyOnDisplay();
+        IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + calculateMoneyDisplayShift(), 13);
+        makeDisplayMoneyApproachRealMoney();
         game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), Color.WHITE, 22, 12, false);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
-        game.print("" + moneyOnDisplay, Color.WHITE, 75 + shakeMoneyShift(), 12, false);
+        game.print("" + moneyOnDisplay, Color.WHITE, 75 + calculateMoneyDisplayShift(), 12, false);
         game.print("магазин", Color.YELLOW, 33, 22, false);
         game.print("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80, false);
         game.print("шаги:" + game.player.countMoves, Color.LIGHTBLUE, 84, 80, true);
         displayShopItems();
-    }
-
-    private void adjustMoneyOnDisplay() {
-        if (moneyOnDisplay < game.inventory.money) {
-            moneyOnDisplay++;
-        } else if (moneyOnDisplay > game.inventory.money) {
-            moneyOnDisplay--;
-        }
-    }
-
-    private int shakeMoneyShift() { // to shake money when you can't afford an item
-        double now = new Date().getTime();
-        if (game.shop.couldNotAfford) {
-            return (now % 2 == 0) ? 1 : 0;
-        }
-        return 0;
-    }
-
-    private int shakeActivatedShift(int currentFrame) { // to shake ACT sign if the item is activated
-        if (currentFrame != pushedItemFrameNumber) { // shake only in current frame
-            return 0;
-        }
-        double now = new Date().getTime();
-        if (game.shop.couldNotActivate) {
-            return (now % 2 == 0) ? 1 : 0;
-        }
-        return 0;
-    }
-
-    public void activateShakingElementCountDown() { // helps to shake elements only for a certain amount of time
-        if (shakingElementCountDown > 0 && (game.shop.couldNotActivate || game.shop.couldNotAfford)) {
-            shakingElementCountDown--;
-        } else {
-            game.shop.couldNotAfford = false;
-            game.shop.couldNotActivate = false;
-            shakingElementCountDown = getShakingElementCountDownDefault;
-        }
     }
 
     private void displayShopItems() {
@@ -310,11 +273,47 @@ class Menu {
                     if (item.canExpire) {
                         game.print(item.remainingMoves(), Color.MAGENTA, right + dx, upper + dy, true);
                     }
-                    game.print("АКТ", Color.YELLOW, right + dx - shakeActivatedShift(currentFrame), bottom + dy, true);
+                    game.print("АКТ", Color.YELLOW, right + dx - calculateActivatedDisplayShift(currentFrame), bottom + dy, true);
                 } else {
                     game.print("НЕТ", Color.RED, right + dx, bottom + dy, true);
                 }
             }
+        }
+    }
+
+    private void makeDisplayMoneyApproachRealMoney() {
+        if (moneyOnDisplay < game.inventory.money) {
+            moneyOnDisplay++;
+        } else if (moneyOnDisplay > game.inventory.money) {
+            moneyOnDisplay--;
+        }
+    }
+
+    private int calculateMoneyDisplayShift() { // to shake money when you can't afford an item
+        if (game.shop.isUnaffordableAnimationTrigger) {
+            return (game.evenTurn) ? 1 : 0;
+        }
+        return 0;
+    }
+
+    private int calculateActivatedDisplayShift(int currentFrame) { // to shake ACT sign if the item is activated
+        if (currentFrame != pushedItemFrameNumber) { // shake only in current frame
+            return 0;
+        }
+        double now = new Date().getTime();
+        if (game.shop.isAlreadyActivatedAnimationTrigger) {
+            return (game.evenTurn) ? 1 : 0;
+        }
+        return 0;
+    }
+
+    public void shakeAnimationCountDown() { // helps to shake elements only for a certain amount of time
+        if (shakingAnimationCurrentTurn > 0 && (game.shop.isAlreadyActivatedAnimationTrigger || game.shop.isUnaffordableAnimationTrigger)) {
+            shakingAnimationCurrentTurn--;
+        } else {
+            game.shop.isUnaffordableAnimationTrigger = false;
+            game.shop.isAlreadyActivatedAnimationTrigger = false;
+            shakingAnimationCurrentTurn = shakingAnimationMaxTurns;
         }
     }
 

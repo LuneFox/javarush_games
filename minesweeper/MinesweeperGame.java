@@ -32,6 +32,7 @@ public class MinesweeperGame extends Game {
     int difficultyInOptionsScreen = 10;
 
     // FLAGS
+    public boolean evenTurn; // is now even turn or odd turn? helps with animation of certain elements
     private boolean isFirstMove;
     boolean isStopped;
     boolean lastResultIsVictory;
@@ -56,6 +57,7 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onTurn(int step) {
+        evenTurn = (!evenTurn);
         onTurnAction();
         display.draw();
     }

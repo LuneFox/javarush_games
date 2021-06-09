@@ -142,8 +142,4 @@ class ShopItem {
     public boolean isUnobtainable() {
         return (game.inventory.money < this.cost || this.inStock <= 0);
     }
-
-    public boolean isUnobtainableOrActivated() {
-        return (game.inventory.money < this.cost || this.inStock <= 0 || this.isActivated);
-    }
 }

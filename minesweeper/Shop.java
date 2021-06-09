@@ -21,8 +21,8 @@ public class Shop {
     public ShopItem miniBomb;
     public final LinkedList<ShopItem> allItems = new LinkedList<>();
     public Dice dice;
-    public boolean couldNotAfford;
-    public boolean couldNotActivate;
+    public boolean isUnaffordableAnimationTrigger;
+    public boolean isAlreadyActivatedAnimationTrigger;
 
     public Shop(MinesweeperGame game) {
         this.game = game;
@@ -30,14 +30,14 @@ public class Shop {
 
     public void sell(ShopItem item) {
         if (item.isActivated()) {
-            couldNotActivate = true;
-            game.menu.activateShakingElementCountDown();
+            isAlreadyActivatedAnimationTrigger = true;
+            game.menu.shakeAnimationCountDown();
             return;
         } else if (item.inStock == 0) {
             return;
         } else if (item.isUnaffordable()) {
-            couldNotAfford = true;
-            game.menu.activateShakingElementCountDown();
+            isUnaffordableAnimationTrigger = true;
+            game.menu.shakeAnimationCountDown();
             return;
         } else {
             item.inStock--;
