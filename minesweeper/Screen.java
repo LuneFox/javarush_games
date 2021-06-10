@@ -3,8 +3,8 @@ package com.javarush.games.minesweeper;
 import java.util.ArrayList;
 
 public class Screen {
-    private ScreenType screenType;
-    private static ArrayList<Screen> screens = new ArrayList<>();
+    private final ScreenType screenType;
+    private static final ArrayList<Screen> screens = new ArrayList<>();
 
     public enum ScreenType {
         MAIN_MENU, GAME_OVER, SHOP, GAME_BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE_DETAIL, RECORDS
@@ -22,7 +22,11 @@ public class Screen {
         screens.add(new Screen(ScreenType.RECORDS));
     }
 
-    public static void set(ScreenType screenType) { // bringing active screen to the top of the list
+    private Screen(ScreenType screenType) {
+        this.screenType = screenType;
+    }
+
+    public static void setType(ScreenType screenType) { // bringing active screen to the top of the list
         Screen screen = null;
         for (Screen s : screens) {
             if (s.screenType == screenType) {
@@ -35,9 +39,5 @@ public class Screen {
 
     public static ScreenType getType() { // returns current active screen type
         return screens.get(0).screenType;
-    }
-
-    private Screen(ScreenType screenType) {
-        this.screenType = screenType;
     }
 }

@@ -33,15 +33,21 @@ public abstract class Image {
     }
 
     public enum Mirror {
-        HORIZONTAL, VERTICAL, NO
+        HORIZONTAL, VERTICAL, NONE
+    }
+
+    public void draw() {
+        draw(Mirror.NONE);
     }
 
     public void draw(Mirror mirror) {
         for (int innerY = 0; innerY < bitmapData.length; innerY++) {
             for (int innerX = 0; innerX < bitmapData[0].length; innerX++) {
+
                 if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
                     continue; // transparent color
                 }
+
                 switch (mirror) {
                     case HORIZONTAL:
                         game.display.setCellColor(
@@ -57,7 +63,7 @@ public abstract class Image {
                                 colors[bitmapData[innerY][innerX]]
                         );
                         break;
-                    case NO:
+                    case NONE:
                     default:
                         game.display.setCellColor(
                                 drawX + innerX,
@@ -70,13 +76,15 @@ public abstract class Image {
         }
     }
 
-    public final void floatAnimation(double height) {
+    public final void floatAnimation(double height, int x, int y) {
+        this.setPosition(x, y);
+        this.baseY = y;
         floatAnimationShift += (floatAnimationGoesDown ? 0.2 : -0.2);
         if (Math.abs(floatAnimationShift) > height) {
             floatAnimationGoesDown = !floatAnimationGoesDown;
         }
         this.drawY = (int) (baseY + floatAnimationShift);
-        this.draw(Mirror.NO);
+        this.draw();
     }
 
     public final void replaceColor(Color color, int number) {
@@ -89,10 +97,13 @@ public abstract class Image {
     public final void setPosition(int drawX, int drawY) { // negative value = middle
         this.drawX = (drawX < 0) ? (50 - bitmapData[0].length / 2) : drawX;
         this.drawY = (drawY < 0) ? (50 - bitmapData.length / 2) : drawY;
-        this.baseY = this.drawY;
     }
 
-    public final void drawAtPosition(int x, int y, Mirror mirror) {
+    public final void drawAt(int x, int y) {
+        drawAt(x, y, Mirror.NONE);
+    }
+
+    public final void drawAt(int x, int y, Mirror mirror) {
         setPosition(x, y);
         draw(mirror);
     }

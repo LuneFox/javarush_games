@@ -21,7 +21,7 @@ class Menu {
     private static String quote;
     private static Date lastQuoteDate;
     public int gameOverDisplayDelay;  // defines how soon will game over screen show up
-    public int pushedItemFrameNumber; // defines what frame in the shop was pushed last time
+    public int lastClickedItemNumber; // defines what frame in the shop was pushed last time
     public int moneyOnDisplay;        // for smooth animation, runs towards real money
     public int shakingAnimationMaxTurns = 15;                             // number of turns to shake the item
     public int shakingAnimationCurrentTurn = shakingAnimationMaxTurns;    // counts towards zero
@@ -44,9 +44,9 @@ class Menu {
     // MAIN
 
     void displayMain() {
-        Screen.set(ScreenType.MAIN_MENU);
-        IMAGES.get(Bitmap.WINDOW_MENU).draw(Mirror.NO);
-        IMAGES.get(Bitmap.PICTURE_LOGO).floatAnimation(2.8);
+        Screen.setType(ScreenType.MAIN_MENU);
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
+        IMAGES.get(Bitmap.PICTURE_LOGO).floatAnimation(2.8, -1, 8);
         BUTTONS.get(ButtonID.OPTIONS).draw();
         BUTTONS.get(ButtonID.ABOUT).draw();
         BUTTONS.get(ButtonID.START).draw();
@@ -75,8 +75,8 @@ class Menu {
     // ABOUT
 
     final void displayAbout() {
-        Screen.set(ScreenType.ABOUT);
-        IMAGES.get(Bitmap.WINDOW_MENU).draw(Mirror.NO);
+        Screen.setType(ScreenType.ABOUT);
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
         game.print(Strings.getAbout()[0], Color.YELLOW, 24, 2, false);
         game.print(Strings.getAbout()[1], Color.WHITE, 3, 13, false);
         BUTTONS.get(ButtonID.BACK).draw();
@@ -87,8 +87,8 @@ class Menu {
     // RECORDS
 
     final void displayRecords() {
-        Screen.set(ScreenType.RECORDS);
-        IMAGES.get(Bitmap.WINDOW_MENU).draw(Mirror.NO);
+        Screen.setType(ScreenType.RECORDS);
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
         game.print(Strings.RECORDS[0], Color.YELLOW, 17, 2, false);
         BUTTONS.get(ButtonID.BACK).draw();
         drawPrizeCups();
@@ -115,7 +115,7 @@ class Menu {
             prizeCup.replaceColor(colors[0], 1);
             prizeCup.replaceColor(colors[1], 2);
             prizeCup.setPosition(2, 20 + (20 * i));
-            prizeCup.draw(Mirror.NO);
+            prizeCup.draw();
         }
     }
 
@@ -133,13 +133,13 @@ class Menu {
     // OPTIONS
 
     final void displayOptions() {
-        Screen.set(ScreenType.OPTIONS);
+        Screen.setType(ScreenType.OPTIONS);
 
-        IMAGES.get(Bitmap.WINDOW_MENU).draw(Mirror.NO);
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
         game.print("настройки", Color.YELLOW, 28, 2, false);
 
-        IMAGES.get(Bitmap.MENU_ARROW).drawAtPosition(93, 21, Mirror.NO);
-        IMAGES.get(Bitmap.MENU_ARROW).drawAtPosition(49, 21, Mirror.HORIZONTAL);
+        IMAGES.get(Bitmap.MENU_ARROW).drawAt(93, 21, Mirror.NONE);
+        IMAGES.get(Bitmap.MENU_ARROW).drawAt(49, 21, Mirror.HORIZONTAL);
         displayDifficultyBar();
         game.print("сложность", Color.WHITE, 2, 20, false);
         game.print(DIFFICULTY_NAMES.get(game.difficultyInOptionsScreen / 5 - 1),
@@ -155,8 +155,8 @@ class Menu {
             game.print("вручную", Color.SALMON, 91, 60, true);
 
         }
-        IMAGES.get(Bitmap.MENU_SWITCH_RAIL).draw(Mirror.NO);
-        IMAGES.get(Bitmap.MENU_SWITCH).draw(Mirror.NO);
+        IMAGES.get(Bitmap.MENU_SWITCH_RAIL).drawAt(80, 52);
+        IMAGES.get(Bitmap.MENU_SWITCH).draw();
         BUTTONS.get(ButtonID.BACK).draw();
     }
 
@@ -176,7 +176,7 @@ class Menu {
             difficulty.add(bar);
         }
         for (Picture p : difficulty) {
-            p.draw(Mirror.NO);
+            p.draw();
         }
     }
 
@@ -202,30 +202,30 @@ class Menu {
     // GAME BOARD
 
     final void displayGameBoard() {
-        Screen.set(ScreenType.GAME_BOARD);
+        Screen.setType(ScreenType.GAME_BOARD);
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw(Mirror.NO);
+            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
         } else if (game.shop.allItems.get(5).isActivated()) {
             IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw(Mirror.NO);
+            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
         }
     }
 
     final void displayShop() {
-        Screen.set(ScreenType.SHOP);
+        Screen.setType(ScreenType.SHOP);
         shakeAnimationCountDown();
-        IMAGES.get(Bitmap.WINDOW_SHOP).draw(Mirror.NO);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAtPosition(-1, 10, Mirror.NO);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAtPosition(-1, 78, Mirror.NO);
-        IMAGES.get(Bitmap.BOARD_MINE).draw(Mirror.NO);
-        IMAGES.get(Bitmap.BOARD_FLAG).draw(Mirror.NO);
-        IMAGES.get(Bitmap.BOARD_COIN).drawAtPosition(69 + calculateMoneyDisplayShift(), 13, Mirror.NO);
+        IMAGES.get(Bitmap.WINDOW_SHOP).drawAt(-1, -1);
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 10);
+        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 78);
+        IMAGES.get(Bitmap.BOARD_MINE).drawAt(10, 10);
+        IMAGES.get(Bitmap.BOARD_FLAG).drawAt(39, 11);
+        IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
         game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), Color.WHITE, 22, 12, false);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
-        game.print("" + moneyOnDisplay, Color.WHITE, 75 + calculateMoneyDisplayShift(), 12, false);
+        game.print("" + moneyOnDisplay, Color.WHITE, 75 + getMoneyShakeValue(), 12, false);
         game.print("* магазин *", Color.DARKSEAGREEN, 25, 22, false);
         game.print("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80, false);
         game.print("шаги:" + game.player.countMoves, Color.LIGHTBLUE, 84, 80, true);
@@ -242,11 +242,13 @@ class Menu {
             int dy = y * 25;
             for (int x = 0; x < 3; x++) {
                 int dx = x * 25;
+
                 ShopItem item = game.shop.allItems.get(x + y * 3);
 
                 currentFrame++;
                 Picture frame;
-                if (currentFrame == pushedItemFrameNumber && new Date().getTime() - InputEvent.lastClickInShopTime < 100) {
+                boolean lessThan100msPassed = (new Date().getTime() - InputEvent.lastClickInShopTime < 100);
+                if (currentFrame == lastClickedItemNumber && lessThan100msPassed) {
                     frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME_PUSHED);
                     shift = 1;
                 } else {
@@ -259,14 +261,13 @@ class Menu {
                 } else {
                     frame.replaceColor(Color.GREEN, 3);
                 }
+
                 if (item.isActivated()) {
                     frame.replaceColor(Color.BLUE, 3);
                 }
 
-                frame.setPosition(15 + dx + shift, 30 + dy + shift);
-                frame.draw(Mirror.NO);
-                item.icon.setPosition(16 + dx + shift, 31 + dy + shift);
-                item.icon.draw(Mirror.NO);
+                frame.drawAt(15 + dx + shift, 30 + dy + shift);
+                item.icon.drawAt(16 + dx + shift, 31 + dy + shift);
 
                 if (item.inStock > 0 && !item.isActivated()) {
                     game.print("" + item.cost, Color.YELLOW, right + dx, bottom + dy, true);
@@ -274,7 +275,7 @@ class Menu {
                     if (item.canExpire) {
                         game.print(item.remainingMoves(), Color.MAGENTA, right + dx, upper + dy, true);
                     }
-                    game.print("АКТ", Color.YELLOW, right + dx - calculateActivatedDisplayShift(currentFrame), bottom + dy, true);
+                    game.print("АКТ", Color.YELLOW, right + dx - getActShakeValue(currentFrame), bottom + dy, true);
                 } else {
                     game.print("НЕТ", Color.RED, right + dx, bottom + dy, true);
                 }
@@ -290,15 +291,15 @@ class Menu {
         }
     }
 
-    private int calculateMoneyDisplayShift() { // to shake money when you can't afford an item
+    private int getMoneyShakeValue() { // to shake money when you can't afford an item
         if (game.shop.isUnaffordableAnimationTrigger) {
             return (game.evenTurn) ? 1 : 0;
         }
         return 0;
     }
 
-    private int calculateActivatedDisplayShift(int currentFrame) { // to shake ACT sign if the item is activated
-        if (currentFrame != pushedItemFrameNumber) { // shake only in current frame
+    private int getActShakeValue(int currentFrame) { // to shake ACT sign if the item is activated
+        if (currentFrame != lastClickedItemNumber) { // shake only in current frame
             return 0;
         }
         if (game.shop.isAlreadyActivatedAnimationTrigger) {
@@ -308,7 +309,8 @@ class Menu {
     }
 
     public void shakeAnimationCountDown() { // helps to shake elements only for a certain amount of time
-        if (shakingAnimationCurrentTurn > 0 && (game.shop.isAlreadyActivatedAnimationTrigger || game.shop.isUnaffordableAnimationTrigger)) {
+        if (shakingAnimationCurrentTurn > 0 && (game.shop.isAlreadyActivatedAnimationTrigger
+                || game.shop.isUnaffordableAnimationTrigger)) {
             shakingAnimationCurrentTurn--;
         } else {
             game.shop.isUnaffordableAnimationTrigger = false;
@@ -318,11 +320,11 @@ class Menu {
     }
 
     final void displayItemHelp(ShopItem item) {
-        Screen.set(ScreenType.ITEM_HELP);
+        Screen.setType(ScreenType.ITEM_HELP);
         Strings.generateNewShieldDescription();
-        IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw(Mirror.NO);
+        IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw();
         item.icon.setPosition(5, 5);
-        item.icon.draw(Mirror.NO);
+        item.icon.draw();
         if (item.id == ShopItem.ID.SHIELD) {
             item.description = Strings.generateNewShieldDescription().toString();
         }
@@ -335,18 +337,18 @@ class Menu {
     // GAME OVER
 
     final void displayGameOver(boolean victory, int delay) {
-        Screen.set(ScreenType.GAME_OVER);
+        Screen.setType(ScreenType.GAME_OVER);
         gameOverDisplayDelay = delay;
         if (gameOverDisplayDelay > 0) {
             return;
         }
         if (victory) {
-            IMAGES.get(Bitmap.WINDOW_VICTORY).draw(Mirror.NO);
-            IMAGES.get(Bitmap.PICTURE_FACE_HAPPY).draw(Mirror.NO);
+            IMAGES.get(Bitmap.WINDOW_VICTORY).drawAt(-1, -1);
+            IMAGES.get(Bitmap.FACE_HAPPY).drawAt(-1, -1);
             game.print("победа!", Color.YELLOW, 18, 33, false);
         } else {
-            IMAGES.get(Bitmap.WINDOW_GAME_OVER).draw(Mirror.NO);
-            IMAGES.get(Bitmap.PICTURE_FACE_SAD).draw(Mirror.NO);
+            IMAGES.get(Bitmap.WINDOW_GAME_OVER).drawAt(-1, -1);
+            IMAGES.get(Bitmap.FACE_SAD).drawAt(-1, -1);
             game.print("не повезло!", Color.YELLOW, 18, 33, false);
         }
         game.print("счёт: " + game.player.score, Color.LIGHTGOLDENRODYELLOW, 18, 57, false);
@@ -356,8 +358,8 @@ class Menu {
     }
 
     final void displayScoreDetail() {
-        Screen.set(ScreenType.SCORE_DETAIL);
-        IMAGES.get(Bitmap.WINDOW_MENU).draw(Mirror.NO);
+        Screen.setType(ScreenType.SCORE_DETAIL);
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
         int minesCount = game.countAllCells(MinesweeperGame.Filter.MINED);
         int minesScore = minesCount * 20 * game.difficulty;
         String minesScoreDetail = 20 * game.difficulty + "*" + minesCount + " = ";
@@ -388,42 +390,68 @@ class Menu {
 
     // LOAD RESOURCES
 
-    final void loadImages() { // pre-load images with default position
-        IMAGES.put(Bitmap.WINDOW_MENU, new Picture(Bitmap.WINDOW_MENU, game, 0, 0));
-        IMAGES.put(Bitmap.PICTURE_LOGO, new Picture(Bitmap.PICTURE_LOGO, game, -1, 8));
-        IMAGES.put(Bitmap.BUTTON_MENU, new Picture(Bitmap.BUTTON_MENU, game, 61, 88));
-        IMAGES.put(Bitmap.WINDOW_VICTORY, new Picture(Bitmap.WINDOW_VICTORY, game, -1, -1));
-        IMAGES.put(Bitmap.WINDOW_GAME_OVER, new Picture(Bitmap.WINDOW_GAME_OVER, game, -1, -1));
-        IMAGES.put(Bitmap.PICTURE_FACE_HAPPY, new Picture(Bitmap.PICTURE_FACE_HAPPY, game, -1, -1));
-        IMAGES.put(Bitmap.PICTURE_FACE_SAD, new Picture(Bitmap.PICTURE_FACE_SAD, game, -1, -1));
-        IMAGES.put(Bitmap.WINDOW_SHOP, new Picture(Bitmap.WINDOW_SHOP, game, -1, -1));
-        IMAGES.put(Bitmap.WINDOW_SHOP_PANEL, new Picture(Bitmap.WINDOW_SHOP_PANEL, game, -1, 10));
-        IMAGES.put(Bitmap.BOARD_MINE, new Sprite(Bitmap.BOARD_MINE, game, 10, 10));
-        IMAGES.put(Bitmap.BOARD_FLAG, new Sprite(Bitmap.BOARD_FLAG, game, 39, 11));
-        IMAGES.put(Bitmap.BOARD_COIN, new Picture(Bitmap.BOARD_COIN, game, 69, 13));
-        IMAGES.put(Bitmap.ITEM_FRAME, new Picture(Bitmap.ITEM_FRAME, game, 14, 30));
-        IMAGES.put(Bitmap.ITEM_FRAME_PUSHED, new Picture(Bitmap.ITEM_FRAME_PUSHED, game, 14, 30));
-        IMAGES.put(Bitmap.MENU_ARROW, new Picture(Bitmap.MENU_ARROW, game, 93, 21));
-        IMAGES.put(Bitmap.MENU_DIFFICULTY_BAR, new Picture(Bitmap.MENU_DIFFICULTY_BAR, game, 0, 0));
-        IMAGES.put(Bitmap.BUTTON_OK, new Picture(Bitmap.BUTTON_OK, game, 0, 0));
-        IMAGES.put(Bitmap.BUTTON_CLOSE, new Picture(Bitmap.BUTTON_CLOSE, game, 0, 0));
-        IMAGES.put(Bitmap.ITEM_SHIELD, new Picture(Bitmap.ITEM_SHIELD, game, 0, 0));
-        IMAGES.put(Bitmap.ITEM_SCANNER, new Picture(Bitmap.ITEM_SCANNER, game, 0, 0));
-        IMAGES.put(Bitmap.ITEM_FLAG, new Picture(Bitmap.ITEM_FLAG, game, 0, 0));
-        IMAGES.put(Bitmap.ITEM_SHOVEL, new Picture(Bitmap.ITEM_SHOVEL, game, 0, 0));
-        IMAGES.put(Bitmap.ITEM_DICE, new Picture(Bitmap.ITEM_DICE, game, 0, 0));
-        IMAGES.put(Bitmap.ITEM_BOMB, new Picture(Bitmap.ITEM_BOMB, game, 0, 0));
-        IMAGES.put(Bitmap.WINDOW_ITEM_HELP, new Picture(Bitmap.WINDOW_ITEM_HELP, game, 0, 0));
-        IMAGES.put(Bitmap.MENU_SWITCH, new Picture(Bitmap.MENU_SWITCH, game, 0, 0));
-        IMAGES.put(Bitmap.MENU_SWITCH_RAIL, new Picture(Bitmap.MENU_SWITCH_RAIL, game, 80, 52));
-        IMAGES.put(Bitmap.BOARD_ACTIVE_FRAME, new Picture(Bitmap.BOARD_ACTIVE_FRAME, game, 0, 0));
-        IMAGES.put(Bitmap.DICE_1, new Picture(Bitmap.DICE_1, game, 0, 0));
-        IMAGES.put(Bitmap.DICE_2, new Picture(Bitmap.DICE_2, game, 0, 0));
-        IMAGES.put(Bitmap.DICE_3, new Picture(Bitmap.DICE_3, game, 0, 0));
-        IMAGES.put(Bitmap.DICE_4, new Picture(Bitmap.DICE_4, game, 0, 0));
-        IMAGES.put(Bitmap.DICE_5, new Picture(Bitmap.DICE_5, game, 0, 0));
-        IMAGES.put(Bitmap.DICE_6, new Picture(Bitmap.DICE_6, game, 0, 0));
-        IMAGES.put(Bitmap.CUP, new Picture(Bitmap.CUP, game, 0, 0));
+    private void loadSprite(Bitmap bitmap) {
+        loadSprite(bitmap, 0, 0);
+    }
+
+    private void loadSprite(Bitmap... bitmaps) {
+        Arrays.asList(bitmaps).forEach(this::loadSprite);
+    }
+
+    private void loadSprite(Bitmap bitmap, int x, int y) {
+        IMAGES.put(bitmap, new Sprite(bitmap, game, x, y));
+    }
+
+    private void loadPicture(Bitmap bitmap, int x, int y) {
+        IMAGES.put(bitmap, new Picture(bitmap, game, x, y));
+    }
+
+    private void loadPicture(Bitmap bitmap) {
+        loadPicture(bitmap, 0, 0);
+    }
+
+    private void loadPicture(Bitmap... bitmaps) {
+        Arrays.asList(bitmaps).forEach(this::loadPicture);
+    }
+
+    final void loadImages() { // load images once at launch and just re-use them all the time
+        loadSprite(
+                Bitmap.BOARD_FLAG,
+                Bitmap.BOARD_MINE);
+        loadPicture(
+                Bitmap.BOARD_ACTIVE_FRAME,
+                Bitmap.BOARD_COIN,
+                Bitmap.BUTTON_CLOSE,
+                Bitmap.BUTTON_OK,
+                Bitmap.CUP,
+                Bitmap.DICE_1,
+                Bitmap.DICE_2,
+                Bitmap.DICE_3,
+                Bitmap.DICE_4,
+                Bitmap.DICE_5,
+                Bitmap.DICE_6,
+                Bitmap.FACE_HAPPY,
+                Bitmap.FACE_SAD,
+                Bitmap.ITEM_BOMB,
+                Bitmap.ITEM_DICE,
+                Bitmap.ITEM_FLAG,
+                Bitmap.ITEM_FRAME,
+                Bitmap.ITEM_FRAME_PUSHED,
+                Bitmap.ITEM_SCANNER,
+                Bitmap.ITEM_SHIELD,
+                Bitmap.ITEM_SHOVEL,
+                Bitmap.MENU_ARROW,
+                Bitmap.MENU_DIFFICULTY_BAR,
+                Bitmap.MENU_SWITCH,
+                Bitmap.MENU_SWITCH_RAIL,
+                Bitmap.PICTURE_LOGO,
+                Bitmap.WINDOW_GAME_OVER,
+                Bitmap.WINDOW_ITEM_HELP,
+                Bitmap.WINDOW_MENU,
+                Bitmap.WINDOW_SHOP,
+                Bitmap.WINDOW_SHOP_PANEL,
+                Bitmap.WINDOW_VICTORY
+        );
     }
 
     final void loadButtons() {

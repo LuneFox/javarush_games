@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.graphics.Picture;
 
 import java.util.Arrays;
@@ -110,6 +109,18 @@ public class Shop {
 
     private void drawColoredFrame(Color color) {
         Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(color, 3);
-        Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw(Image.Mirror.NO);
+        Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+    }
+
+    public ShopItem getClickedItem(int x, int y) {
+        ShopItem[] result = new ShopItem[1];
+        allItems.forEach(shopItem -> {
+            boolean isAtX = (x >= shopItem.shopFramePosition[0] && x <= shopItem.shopFramePosition[1]);
+            boolean isAtY = (y >= shopItem.shopFramePosition[2] && y <= shopItem.shopFramePosition[3]);
+            if (isAtX && isAtY) {
+                result[0] = shopItem;
+            }
+        });
+        return result[0];
     }
 }

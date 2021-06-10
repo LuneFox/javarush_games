@@ -39,20 +39,20 @@ class InputEvent {
         game.hideDice();
         switch (screenType) {
             case MAIN_MENU:
-                if (Menu.BUTTONS.get(ButtonID.START).has(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.START).isUnder(x, y)) {
                     game.createGame();
-                } else if (Menu.BUTTONS.get(ButtonID.OPTIONS).has(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.OPTIONS).isUnder(x, y)) {
                     game.menu.displayOptions();
-                } else if (Menu.BUTTONS.get(ButtonID.ABOUT).has(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.ABOUT).isUnder(x, y)) {
                     game.menu.displayAbout();
-                } else if (Menu.BUTTONS.get(ButtonID.RECORDS).has(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.RECORDS).isUnder(x, y)) {
                     game.menu.displayRecords();
                 }
                 break;
             case GAME_BOARD:
                 if (game.isStopped) {
                     game.menu.displayGameOver(game.lastResultIsVictory, 0);
-                    Screen.set(ScreenType.GAME_OVER);
+                    Screen.setType(ScreenType.GAME_OVER);
                     return;
                 }
                 Cell cell = game.field[y / 10][x / 10];
@@ -61,49 +61,35 @@ class InputEvent {
                 }
                 break;
             case SHOP:
-                InputEvent.lastClickInShopTime = new Date().getTime();
-                if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
-                    game.shop.sell(game.shop.shield);
-                    game.menu.pushedItemFrameNumber = 0;
-                } else if (x >= 40 && x <= 59 && y >= 31 && y <= 50) {
-                    game.shop.sell(game.shop.scanner);
-                    game.menu.pushedItemFrameNumber = 1;
-                } else if (x >= 65 && x <= 84 && y >= 31 && y <= 50) {
-                    game.shop.sell(game.shop.flag);
-                    game.menu.pushedItemFrameNumber = 2;
-                } else if (x >= 15 && x <= 34 && y >= 56 && y <= 75) {
-                    game.shop.sell(game.shop.goldenShovel);
-                    game.menu.pushedItemFrameNumber = 3;
-                } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
-                    game.shop.sell(game.shop.luckyDice);
-                    game.menu.pushedItemFrameNumber = 4;
-                } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
-                    game.shop.sell(game.shop.miniBomb);
-                    game.menu.pushedItemFrameNumber = 5;
-                } else if (clickOutsideShop(x, y)) {
+                if (clickOutsideShop(x, y)) {
                     game.menu.displayGameBoard();
                 }
+                ShopItem item = game.shop.getClickedItem(x, y);
+                if (item == null) return;
+                InputEvent.lastClickInShopTime = new Date().getTime();
+                game.shop.sell(item);
+                game.menu.lastClickedItemNumber = item.number;
                 break;
             case ITEM_HELP:
-                if (Menu.BUTTONS.get(ButtonID.CONFIRM).has(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.CONFIRM).isUnder(x, y)) {
                     game.menu.displayGameBoard();
                     game.menu.displayShop();
                 }
                 break;
             case GAME_OVER:
-                if (Menu.BUTTONS.get(ButtonID.CLOSE).has(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.CLOSE).isUnder(x, y)) {
                     game.redrawAllCells();
-                    Screen.set(ScreenType.GAME_BOARD);
-                } else if (Menu.BUTTONS.get(ButtonID.RETURN).has(x, y)) {
+                    Screen.setType(ScreenType.GAME_BOARD);
+                } else if (Menu.BUTTONS.get(ButtonID.RETURN).isUnder(x, y)) {
                     game.menu.displayMain();
-                } else if (Menu.BUTTONS.get(ButtonID.AGAIN).has(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.AGAIN).isUnder(x, y)) {
                     game.createGame();
                 } else if (x >= 18 && x <= 37 && y >= 60 && y <= 64) {
                     game.menu.displayScoreDetail();
                 }
                 break;
             case OPTIONS:
-                if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.BACK).isUnder(x, y)) {
                     game.menu.displayMain();
                 } else if (x >= 49 && x <= 53 && y >= 22 && y <= 28) {
                     game.menu.changeDifficulty(false);
@@ -114,15 +100,15 @@ class InputEvent {
                 }
                 break;
             case SCORE_DETAIL:
-                if (Menu.BUTTONS.get(ButtonID.CONFIRM).has(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.CONFIRM).isUnder(x, y)) {
                     game.menu.displayGameBoard();
                     game.menu.displayGameOver(game.lastResultIsVictory, 0);
                 }
                 break;
             case ABOUT:
-                if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.BACK).isUnder(x, y)) {
                     game.menu.displayMain();
-                } else if (Menu.BUTTONS.get(ButtonID.FORWARD).has(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.FORWARD).isUnder(x, y)) {
                     // TODO: Shift Page
                     if (Strings.currentAboutPage < 5) {
                         Strings.currentAboutPage++;
@@ -133,7 +119,7 @@ class InputEvent {
                 }
                 break;
             case RECORDS:
-                if (Menu.BUTTONS.get(ButtonID.BACK).has(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.BACK).isUnder(x, y)) {
                     game.menu.displayMain();
                 }
                 break;
@@ -148,27 +134,17 @@ class InputEvent {
             case GAME_BOARD:
                 if (game.isStopped) {
                     game.menu.displayGameOver(game.lastResultIsVictory, 0);
-                    Screen.set(ScreenType.GAME_OVER);
+                    Screen.setType(ScreenType.GAME_OVER);
                 } else {
                     game.setFlag(x / 10, y / 10, true); // works only if tile is closed
-                    game.openRest(x / 10, y / 10);                       // works only if tile is open
+                    game.openRest(x / 10, y / 10);                // works only if tile is open
                     // above two actions don't interfere, only one will work
                 }
                 break;
             case SHOP:
-                if (x >= 15 && x <= 34 && y >= 31 && y <= 50) {
-                    game.menu.displayItemHelp(game.shop.allItems.get(0));
-                } else if (x >= 40 && x <= 59 && y >= 31 && y <= 50) {
-                    game.menu.displayItemHelp(game.shop.allItems.get(1));
-                } else if (x >= 65 && x <= 84 && y >= 31 && y <= 50) {
-                    game.menu.displayItemHelp(game.shop.allItems.get(2));
-                } else if (x >= 15 && x <= 34 && y >= 56 && y <= 75) {
-                    game.menu.displayItemHelp(game.shop.allItems.get(3));
-                } else if (x >= 40 && x <= 59 && y >= 56 && y <= 75) {
-                    game.menu.displayItemHelp(game.shop.allItems.get(4));
-                } else if (x >= 65 && x <= 84 && y >= 56 && y <= 75) {
-                    game.menu.displayItemHelp(game.shop.allItems.get(5));
-                }
+                ShopItem item = game.shop.getClickedItem(x, y);
+                if (item == null) return;
+                game.menu.displayItemHelp(item);
                 break;
             default:
                 break;
@@ -187,7 +163,7 @@ class InputEvent {
                             game.menu.moneyOnDisplay = game.inventory.money;
                         } else {
                             game.menu.displayGameOver(game.lastResultIsVictory, 0);
-                            Screen.set(ScreenType.GAME_OVER);
+                            Screen.setType(ScreenType.GAME_OVER);
                         }
                         break;
                     case SHOP:
@@ -202,7 +178,7 @@ class InputEvent {
                     case GAME_BOARD:
                         if (game.isStopped) {
                             game.menu.displayGameOver(game.lastResultIsVictory, 0);
-                            Screen.set(ScreenType.GAME_OVER);
+                            Screen.setType(ScreenType.GAME_OVER);
                             break;
                         }
                     case OPTIONS:
@@ -229,7 +205,7 @@ class InputEvent {
             default:
                 if (screen == ScreenType.GAME_BOARD && game.isStopped) {
                     game.menu.displayGameOver(game.lastResultIsVictory, 0);
-                    Screen.set(ScreenType.GAME_OVER);
+                    Screen.setType(ScreenType.GAME_OVER);
                 }
                 break;
         }

@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.graphics.Picture;
 
 /**
@@ -20,6 +19,8 @@ class ShopItem {
     public String name;
     public String description;
     public Picture icon;
+    public int number;
+    public int[] shopFramePosition; // x1, x2, y1, y2
 
     public enum ID {
         SHIELD, SCANNER, FLAG, SHOVEL, DICE, BOMB
@@ -29,6 +30,7 @@ class ShopItem {
         this.game = game;
         this.icon = icon;
         this.cost = cost;
+        this.number = slot;
         this.inStock = inStock;
         isActivated = false;
         switch (slot) {
@@ -37,36 +39,42 @@ class ShopItem {
                 this.name = Strings.ITEM_SHIELD_NAME;
                 this.description = Strings.generateNewShieldDescription().toString();
                 this.canExpire = false;
+                this.shopFramePosition = new int[]{15, 34, 31, 50};
                 break;
             case 1:
                 this.id = ID.SCANNER;
                 this.name = Strings.ITEM_SCANNER_NAME;
                 this.description = Strings.ITEM_SCANNER_DESCRIPTION;
                 this.canExpire = false;
+                this.shopFramePosition = new int[]{40, 59, 31, 50};
                 break;
             case 2:
                 this.id = ID.FLAG;
                 this.name = Strings.ITEM_FLAG_NAME;
                 this.description = Strings.ITEM_FLAG_DESCRIPTION;
                 this.canExpire = false;
+                this.shopFramePosition = new int[]{65, 84, 31, 50};
                 break;
             case 3:
                 this.id = ID.SHOVEL;
                 this.name = Strings.ITEM_SHOVEL_NAME;
                 this.description = Strings.ITEM_SHOVEL_DESCRIPTION;
                 this.canExpire = true;
+                this.shopFramePosition = new int[]{15, 34, 56, 75};
                 break;
             case 4:
                 this.id = ID.DICE;
                 this.name = Strings.ITEM_DICE_NAME;
                 this.description = Strings.ITEM_DICE_DESCRIPTION;
                 this.canExpire = false;
+                this.shopFramePosition = new int[]{40, 59, 56, 75};
                 break;
             case 5:
                 this.id = ID.BOMB;
                 this.name = Strings.ITEM_BOMB_NAME;
                 this.description = Strings.ITEM_BOMB_DESCRIPTION;
                 this.canExpire = false;
+                this.shopFramePosition = new int[]{65, 84, 56, 75};
                 break;
             default:
                 break;
@@ -80,7 +88,7 @@ class ShopItem {
                     this.deactivate();
                     cell.assignSprite(Bitmap.BOARD_MINE);
                     cell.replaceColor(Color.YELLOW, 3);
-                    cell.draw(Image.Mirror.NO);
+                    cell.draw();
                     cell.drawSprite();
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);
@@ -136,7 +144,7 @@ class ShopItem {
         return isActivated;
     }
 
-    public boolean isUnaffordable(){
+    public boolean isUnaffordable() {
         return (game.inventory.money < this.cost);
     }
 

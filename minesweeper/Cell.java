@@ -49,7 +49,7 @@ class Cell extends Image {
             assignSprite(Bitmap.BOARD_NONE);
         }
         colors = new Color[]{Color.NONE, Color.SADDLEBROWN, Color.BLANCHEDALMOND, Color.BURLYWOOD, Color.BLACK, Color.GRAY};
-        draw(Mirror.NO);
+        draw();
     }
 
     // draws a button in a pushed state and reveals its sprite (number or icon), used while opening a tile
@@ -70,7 +70,7 @@ class Cell extends Image {
         } else {
             replaceColor(Color.SANDYBROWN, 3);
         }
-        draw(Mirror.NO);
+        draw();
         drawSprite();
     }
 
@@ -86,7 +86,7 @@ class Cell extends Image {
 
     // draws an assigned sprite over the tile
     void drawSprite() {
-        sprite.draw(Mirror.NO);
+        sprite.draw();
     }
 
     void changeSpriteColor(Color color) {
@@ -96,7 +96,7 @@ class Cell extends Image {
     // assigns an empty sprite and draws the tile again to remove whatever is drawn over it
     void eraseSprite() {
         this.sprite = new Sprite(Bitmap.BOARD_NONE, game, x * 10, y * 10);
-        draw(Mirror.NO);
+        draw();
     }
 
     protected int[][] assignBitmap(Bitmap bitmap) {

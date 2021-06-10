@@ -51,7 +51,7 @@ public class Dice {
             if (showDelay < 20) {
                 showDelay++;
                 image.setPosition(this.x * 10 + 2, this.y * 10 + 2);
-                image.draw(Image.Mirror.NO);
+                image.draw();
             }
         }
     }

@@ -53,7 +53,7 @@ public class Picture extends Image {
                         "00011111111100000000000000000000000000000000000000000000000000000000"
                 );
             }
-            case PICTURE_FACE_HAPPY: {
+            case FACE_HAPPY: {
                 colors = new Color[]{Color.NONE, Color.YELLOW, Color.BLACK};
                 return createBitmapFromStrings(
                         "2222002222002222",
@@ -72,7 +72,7 @@ public class Picture extends Image {
                         "0000002222000000"
                 );
             }
-            case PICTURE_FACE_SAD: {
+            case FACE_SAD: {
                 colors = new Color[]{Color.NONE, Color.YELLOW, Color.BLACK};
                 return createBitmapFromStrings(
                         "2222002222002222",
@@ -281,10 +281,10 @@ public class Picture extends Image {
                 colors = new Color[]{Color.NONE, Color.SADDLEBROWN, Color.BLACK, Color.BURLYWOOD};
                 return createWindowBitmap(9, 9, true, true);
             }
-            case BUTTON_MENU: {
+            /* case BUTTON_MENU: {
                 colors = new Color[]{Color.NONE, Color.DARKRED, Color.BLACK, Color.SALMON};
                 return createWindowBitmap(36, 9, true, true);
-            }
+            } */
             case MENU_SWITCH: {
                 colors = new Color[]{Color.NONE, Color.RED, Color.BLACK, Color.YELLOW};
                 return createWindowBitmap(4, 7, false, true);
