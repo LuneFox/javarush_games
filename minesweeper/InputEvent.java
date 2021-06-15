@@ -39,13 +39,13 @@ class InputEvent {
         game.hideDice();
         switch (screenType) {
             case MAIN_MENU:
-                if (Menu.BUTTONS.get(ButtonID.START).isUnder(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.START).covers(x, y)) {
                     game.createGame();
-                } else if (Menu.BUTTONS.get(ButtonID.OPTIONS).isUnder(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.OPTIONS).covers(x, y)) {
                     game.menu.displayOptions();
-                } else if (Menu.BUTTONS.get(ButtonID.ABOUT).isUnder(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.ABOUT).covers(x, y)) {
                     game.menu.displayAbout();
-                } else if (Menu.BUTTONS.get(ButtonID.RECORDS).isUnder(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.RECORDS).covers(x, y)) {
                     game.menu.displayRecords();
                 }
                 break;
@@ -71,25 +71,25 @@ class InputEvent {
                 game.menu.lastClickedItemNumber = item.number;
                 break;
             case ITEM_HELP:
-                if (Menu.BUTTONS.get(ButtonID.CONFIRM).isUnder(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.CONFIRM).covers(x, y)) {
                     game.menu.displayGameBoard();
                     game.menu.displayShop();
                 }
                 break;
             case GAME_OVER:
-                if (Menu.BUTTONS.get(ButtonID.CLOSE).isUnder(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.CLOSE).covers(x, y)) {
                     game.redrawAllCells();
                     Screen.setType(ScreenType.GAME_BOARD);
-                } else if (Menu.BUTTONS.get(ButtonID.RETURN).isUnder(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.RETURN).covers(x, y)) {
                     game.menu.displayMain();
-                } else if (Menu.BUTTONS.get(ButtonID.AGAIN).isUnder(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.AGAIN).covers(x, y)) {
                     game.createGame();
                 } else if (x >= 18 && x <= 37 && y >= 60 && y <= 64) {
                     game.menu.displayScoreDetail();
                 }
                 break;
             case OPTIONS:
-                if (Menu.BUTTONS.get(ButtonID.BACK).isUnder(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
                     game.menu.displayMain();
                 } else if (x >= 49 && x <= 53 && y >= 22 && y <= 28) {
                     game.menu.changeDifficulty(false);
@@ -100,15 +100,15 @@ class InputEvent {
                 }
                 break;
             case SCORE_DETAIL:
-                if (Menu.BUTTONS.get(ButtonID.CONFIRM).isUnder(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.CONFIRM).covers(x, y)) {
                     game.menu.displayGameBoard();
                     game.menu.displayGameOver(game.lastResultIsVictory, 0);
                 }
                 break;
             case ABOUT:
-                if (Menu.BUTTONS.get(ButtonID.BACK).isUnder(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
                     game.menu.displayMain();
-                } else if (Menu.BUTTONS.get(ButtonID.FORWARD).isUnder(x, y)) {
+                } else if (Menu.BUTTONS.get(ButtonID.FORWARD).covers(x, y)) {
                     // TODO: Shift Page
                     if (Strings.currentAboutPage < 5) {
                         Strings.currentAboutPage++;
@@ -119,7 +119,7 @@ class InputEvent {
                 }
                 break;
             case RECORDS:
-                if (Menu.BUTTONS.get(ButtonID.BACK).isUnder(x, y)) {
+                if (Menu.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
                     game.menu.displayMain();
                 }
                 break;

@@ -16,7 +16,7 @@ public class Button {
     private final Image body;
     private final Color textColor;
     private final String text;
-    private int textOffset;
+    private final int textOffset;
 
     public enum ButtonID {
         OPTIONS, ABOUT, START, CONFIRM, BACK, FORWARD, AGAIN, RETURN, CLOSE, RECORDS
@@ -48,10 +48,10 @@ public class Button {
 
     public void draw() {
         this.body.draw();
-        game.print(text, textColor, x1 + textOffset, y1, false);
+        game.print(text, textColor, x1 + textOffset, y1);
     }
 
-    public boolean isUnder(int x, int y) {
+    public boolean covers(int x, int y) {
         return (x >= x1 && x <= x2 && y >= y1 && y <= y2);
     }
 }

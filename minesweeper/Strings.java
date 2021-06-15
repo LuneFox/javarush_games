@@ -6,9 +6,9 @@ public class Strings {
 
     public static final String[] RECORDS = new String[]{
             "Лучшие игроки",
-            "Pavlo Plynko", "37890",
+            "Pavlo\nPlynko", "37890",
             "Станислав\nНикитин", "35955",
-            "Михаил Васильев", "35775"
+            "Михаил\nВасильев", "35775"
     };
 
     public static final String[] DIFFICULTY_NAMES = new String[]{

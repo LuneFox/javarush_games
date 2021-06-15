@@ -503,10 +503,18 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    // MISC
+    // PRINT
 
     public void print(String text, Color color, int x, int y, boolean right) {
         printer.print(text, color, x, y, right);
+    }
+
+    public void print(String text, Color color, int x, int y) {
+        print(text, color, x, y, false);
+    }
+
+    public void print(String text, int x, int y) {
+        print(text, Color.WHITE, x, y, false);
     }
 
     // CONTROLS

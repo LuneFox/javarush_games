@@ -51,7 +51,7 @@ class Menu {
         BUTTONS.get(ButtonID.ABOUT).draw();
         BUTTONS.get(ButtonID.START).draw();
         BUTTONS.get(ButtonID.RECORDS).draw();
-        game.print(Strings.VERSION, Color.DARKRED, 85, 0, false);
+        game.print(Strings.VERSION, Color.DARKRED, 85, 0);
         printTopScore();
         printRandomQuote();
     }
@@ -61,14 +61,14 @@ class Menu {
             quote = QUOTES.get(game.getRandomNumber(QUOTES.size()));
             lastQuoteDate = new Date();
         }
-        game.print(quote, Color.DARKRED, 5, 44, false); // shadow
-        game.print(quote, Color.SALMON, 4, 44, false);
+        game.print(quote, Color.DARKRED, 5, 44); // shadow
+        game.print(quote, Color.SALMON, 4, 44);
     }
 
     private void printTopScore() {
         if (game.player.topScore > 0) {
             game.print("счёт: " + game.player.topScore + "\n" + game.player.topScoreTitle,
-                    Color.LIGHTGOLDENRODYELLOW, 4, 65, false);
+                    Color.LIGHTGOLDENRODYELLOW, 4, 65);
         }
     }
 
@@ -77,8 +77,8 @@ class Menu {
     final void displayAbout() {
         Screen.setType(ScreenType.ABOUT);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        game.print(Strings.getAbout()[0], Color.YELLOW, 24, 2, false);
-        game.print(Strings.getAbout()[1], Color.WHITE, 3, 13, false);
+        game.print(Strings.getAbout()[0], Color.YELLOW, 24, 2);
+        game.print(Strings.getAbout()[1], 3, 13);
         BUTTONS.get(ButtonID.BACK).draw();
         BUTTONS.get(ButtonID.FORWARD).draw();
     }
@@ -89,7 +89,7 @@ class Menu {
     final void displayRecords() {
         Screen.setType(ScreenType.RECORDS);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        game.print(Strings.RECORDS[0], Color.YELLOW, 17, 2, false);
+        game.print(Strings.RECORDS[0], Color.YELLOW, 17, 2);
         BUTTONS.get(ButtonID.BACK).draw();
         drawPrizeCups();
         drawRecordEntries();
@@ -121,12 +121,12 @@ class Menu {
 
     final void drawRecordEntries() {
         Color[] colors = new Color[]{Color.WHITE, Color.GOLD, Color.SILVER, Color.PALEGOLDENROD};
-        game.print(Strings.RECORDS[1], colors[1], 18, 19, false);
-        game.print(Strings.RECORDS[2], colors[0], 94, 28, true);
-        game.print(Strings.RECORDS[3], colors[2], 18, 39, false);
-        game.print(Strings.RECORDS[4], colors[0], 94, 48, true);
-        game.print(Strings.RECORDS[5], colors[3], 18, 59, false);
-        game.print(Strings.RECORDS[6], colors[0], 94, 68, true);
+        game.print(Strings.RECORDS[1], colors[1], 18, 18);
+        game.print(Strings.RECORDS[2], colors[0], 94, 27, true);
+        game.print(Strings.RECORDS[3], colors[2], 18, 38);
+        game.print(Strings.RECORDS[4], colors[0], 94, 47, true);
+        game.print(Strings.RECORDS[5], colors[3], 18, 58);
+        game.print(Strings.RECORDS[6], colors[0], 94, 67, true);
     }
 
 
@@ -136,15 +136,15 @@ class Menu {
         Screen.setType(ScreenType.OPTIONS);
 
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        game.print("настройки", Color.YELLOW, 28, 2, false);
+        game.print("настройки", Color.YELLOW, 28, 2);
 
         IMAGES.get(Bitmap.MENU_ARROW).drawAt(93, 21, Mirror.NONE);
         IMAGES.get(Bitmap.MENU_ARROW).drawAt(49, 21, Mirror.HORIZONTAL);
         displayDifficultyBar();
-        game.print("сложность", Color.WHITE, 2, 20, false);
+        game.print("сложность", 2, 20);
         game.print(DIFFICULTY_NAMES.get(game.difficultyInOptionsScreen / 5 - 1),
                 Color.SALMON, 93, 30, true);
-        game.print("покупка\nфлажков", Color.WHITE, 2, 50, false);
+        game.print("покупка\nфлажков", 2, 50);
         if (game.optionAutoBuyFlagsOn) {
             IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.GREEN, 1);
             IMAGES.get(Bitmap.MENU_SWITCH).setPosition(88, 50);
@@ -223,11 +223,11 @@ class Menu {
         IMAGES.get(Bitmap.BOARD_FLAG).drawAt(39, 11);
         IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
-        game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), Color.WHITE, 22, 12, false);
-        game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), Color.WHITE, 49, 12, false);
-        game.print("" + moneyOnDisplay, Color.WHITE, 75 + getMoneyShakeValue(), 12, false);
-        game.print("* магазин *", Color.DARKSEAGREEN, 25, 22, false);
-        game.print("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80, false);
+        game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), 22, 12);
+        game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
+        game.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
+        game.print("* магазин *", Color.DARKSEAGREEN, 25, 22);
+        game.print("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80);
         game.print("шаги:" + game.player.countMoves, Color.LIGHTBLUE, 84, 80, true);
         displayShopItems();
     }
@@ -328,8 +328,8 @@ class Menu {
         if (item.id == ShopItem.ID.SHIELD) {
             item.description = Strings.generateNewShieldDescription().toString();
         }
-        game.print(item.name, Color.YELLOW, 25, 9, false);
-        game.print(item.description, Color.WHITE, 4, 25, false);
+        game.print(item.name, Color.YELLOW, 25, 9);
+        game.print(item.description, 4, 25);
         BUTTONS.get(ButtonID.CONFIRM).draw();
     }
 
@@ -345,13 +345,13 @@ class Menu {
         if (victory) {
             IMAGES.get(Bitmap.WINDOW_VICTORY).drawAt(-1, -1);
             IMAGES.get(Bitmap.FACE_HAPPY).drawAt(-1, -1);
-            game.print("победа!", Color.YELLOW, 18, 33, false);
+            game.print("победа!", Color.YELLOW, 18, 33);
         } else {
             IMAGES.get(Bitmap.WINDOW_GAME_OVER).drawAt(-1, -1);
             IMAGES.get(Bitmap.FACE_SAD).drawAt(-1, -1);
-            game.print("не повезло!", Color.YELLOW, 18, 33, false);
+            game.print("не повезло!", Color.YELLOW, 18, 33);
         }
-        game.print("счёт: " + game.player.score, Color.LIGHTGOLDENRODYELLOW, 18, 57, false);
+        game.print("счёт: " + game.player.score, Color.LIGHTGOLDENRODYELLOW, 18, 57);
         BUTTONS.get(ButtonID.AGAIN).draw();
         BUTTONS.get(ButtonID.RETURN).draw();
         BUTTONS.get(ButtonID.CLOSE).draw();
@@ -367,20 +367,14 @@ class Menu {
         String moneyScoreDetail = game.inventory.money + "*" + game.difficulty + " = ";
         String cellScoreDetail = game.countAllCells(MinesweeperGame.Filter.OPEN) + "*" + game.difficulty + " = ";
 
-        game.print("подробно", Color.YELLOW, 29, 2, false);
-        game.print(
-                "Ячейки:\n" +
-                        "Кубик:\n" +
-                        "Золото:\n" +
-                        "Мины:\n" +
-                        "Щиты:\n\n" +
-                        "Итого:",
-                Color.WHITE, 3, 13, false);
+        String youLost = "вы проиграли";
+        game.print("подробно", Color.YELLOW, 29, 2);
+        game.print("ячейки:\nкубик:\nзолото:\nмины:\nщиты:\n\nитого:", 3, 13);
         game.print(
                 game.player.score +
                         "\n\n" + game.player.scoreLost +
-                        "\n" + (game.lastResultIsVictory ? (minesScoreDetail + minesScore) : "вы проиграли") +
-                        "\n" + (game.lastResultIsVictory ? (moneyScoreDetail + moneyScore) : "вы проиграли") +
+                        "\n" + (game.lastResultIsVictory ? (minesScoreDetail + minesScore) : youLost) +
+                        "\n" + (game.lastResultIsVictory ? (moneyScoreDetail + moneyScore) : youLost) +
                         "\n" + game.player.scoreDice +
                         "\n" + cellScoreDetail + game.player.scoreCell,
                 Color.YELLOW, 94, 13, true);
@@ -391,23 +385,15 @@ class Menu {
     // LOAD RESOURCES
 
     private void loadSprite(Bitmap bitmap) {
-        loadSprite(bitmap, 0, 0);
+        IMAGES.put(bitmap, new Sprite(bitmap, game, 0, 0));
     }
 
     private void loadSprite(Bitmap... bitmaps) {
         Arrays.asList(bitmaps).forEach(this::loadSprite);
     }
 
-    private void loadSprite(Bitmap bitmap, int x, int y) {
-        IMAGES.put(bitmap, new Sprite(bitmap, game, x, y));
-    }
-
-    private void loadPicture(Bitmap bitmap, int x, int y) {
-        IMAGES.put(bitmap, new Picture(bitmap, game, x, y));
-    }
-
     private void loadPicture(Bitmap bitmap) {
-        loadPicture(bitmap, 0, 0);
+        IMAGES.put(bitmap, new Picture(bitmap, game, 0, 0));
     }
 
     private void loadPicture(Bitmap... bitmaps) {
