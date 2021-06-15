@@ -30,7 +30,7 @@ class InputEvent {
             return;
         }
         rightClickAction(x, y, Screen.getType());
-        // System.out.println(String.format("%d %d", x, y));
+        // System.out.printf("%d %d%n", x, y);
     }
 
     private void leftClickAction(int x, int y, ScreenType screenType) {
@@ -108,13 +108,13 @@ class InputEvent {
             case ABOUT:
                 if (Menu.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
                     game.menu.displayMain();
-                } else if (Menu.BUTTONS.get(ButtonID.FORWARD).covers(x, y)) {
-                    // TODO: Shift Page
-                    if (Strings.currentAboutPage < 5) {
-                        Strings.currentAboutPage++;
-                    } else {
-                        Strings.currentAboutPage = 0;
-                    }
+                } else if (x >= 5 && x <= 27 && y >= 88 && y <= 99) {
+                    Menu.currentAboutPage = (Menu.currentAboutPage <= 0) ? 0 : Menu.currentAboutPage - 1;
+                    game.menu.displayAbout();
+                } else if (x >= 31 && x <= 54 && y >= 88 && y <= 99) {
+                    Menu.currentAboutPage =
+                            (Menu.currentAboutPage >= Strings.ABOUT_HEAD.length - 1 ?
+                                    Strings.ABOUT_HEAD.length - 1 : Menu.currentAboutPage + 1);
                     game.menu.displayAbout();
                 }
                 break;

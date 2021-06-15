@@ -111,4 +111,5 @@ public enum Bitmap {
     SYMBOL_EQUALS,
     SYMBOL_ASTERISK,
     SYMBOL_NEWLINE,
+    SYMBOL_SLASH
 }

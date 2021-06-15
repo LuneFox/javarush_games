@@ -131,6 +131,7 @@ public class Text extends Image {
         loadLetter('!', Bitmap.SYMBOL_EXCLAMATION);
         loadLetter('?', Bitmap.SYMBOL_QUESTION);
         loadLetter('*', Bitmap.SYMBOL_ASTERISK);
+        loadLetter('/', Bitmap.SYMBOL_SLASH);
         loadLetter('\n', Bitmap.SYMBOL_NEWLINE);
     }
 
@@ -684,6 +685,16 @@ public class Text extends Image {
                         {0, 1, 1, 0},
                         {0, 0, 0, 0},
                         {0, 1, 0, 0}
+                };
+            case SYMBOL_SLASH:
+                return new int[][]{
+                        {0, 0, 0},
+                        {0, 0, 1},
+                        {0, 0, 1},
+                        {0, 1, 0},
+                        {0, 1, 0},
+                        {1, 0, 0},
+                        {1, 0, 0}
                 };
             case SYMBOL_DASH:
                 return new int[][]{

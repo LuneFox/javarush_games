@@ -18,6 +18,7 @@ class Menu {
     final static HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
     final private static LinkedList<String> QUOTES = new LinkedList<>();
     final static LinkedList<String> DIFFICULTY_NAMES = new LinkedList<>();
+    public static int currentAboutPage = 0;
     private static String quote;
     private static Date lastQuoteDate;
     public int gameOverDisplayDelay;  // defines how soon will game over screen show up
@@ -77,10 +78,12 @@ class Menu {
     final void displayAbout() {
         Screen.setType(ScreenType.ABOUT);
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
-        game.print(Strings.getAbout()[0], Color.YELLOW, 24, 2);
-        game.print(Strings.getAbout()[1], 3, 13);
+        game.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, 24, 2);
+        game.print(Strings.ABOUT_BODY[currentAboutPage], 3, 13);
         BUTTONS.get(ButtonID.BACK).draw();
-        BUTTONS.get(ButtonID.FORWARD).draw();
+        IMAGES.get(Bitmap.MENU_ARROW).drawAt(7, 89, Mirror.HORIZONTAL);
+        IMAGES.get(Bitmap.MENU_ARROW).drawAt(47, 89);
+        game.print((currentAboutPage + 1) + " / " + Strings.ABOUT_HEAD.length, 20, 88);
     }
 
 
