@@ -99,6 +99,7 @@ public enum Bitmap {
     EN_LETTER_U,
     EN_LETTER_V,
     EN_LETTER_W,
+    EN_LETTER_X,
     EN_LETTER_Y,
     EN_LETTER_Z,
     SYMBOL_COMMA,

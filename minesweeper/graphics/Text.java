@@ -109,7 +109,7 @@ public class Text extends Image {
         loadLetter('u', Bitmap.EN_LETTER_U);
         loadLetter('v', Bitmap.EN_LETTER_V);
         loadLetter('w', Bitmap.EN_LETTER_W);
-        loadLetter('x', Bitmap.RU_LETTER_H);
+        loadLetter('x', Bitmap.EN_LETTER_X);
         loadLetter('y', Bitmap.EN_LETTER_Y);
         loadLetter('z', Bitmap.EN_LETTER_Z);
         loadLetter('0', Bitmap.DIGIT_0);
@@ -613,6 +613,16 @@ public class Text extends Image {
                         {1, 0, 0, 0, 1},
                         {1, 0, 1, 0, 1},
                         {1, 1, 0, 1, 1},
+                        {1, 0, 0, 0, 1}
+                };
+            case EN_LETTER_X:
+                return new int[][]{
+                        {0, 0, 0, 0, 0},
+                        {0, 0, 0, 0, 0},
+                        {1, 0, 0, 0, 1},
+                        {0, 1, 0, 1, 0},
+                        {0, 0, 1, 0, 0},
+                        {0, 1, 0, 1, 0},
                         {1, 0, 0, 0, 1}
                 };
             case EN_LETTER_Y:
