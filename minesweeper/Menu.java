@@ -86,6 +86,17 @@ class Menu {
         game.print((currentAboutPage + 1) + " / " + Strings.ABOUT_HEAD.length, 20, 88);
     }
 
+    public final void aboutPrevPage() {
+        currentAboutPage = (currentAboutPage <= 0) ? 0 : Menu.currentAboutPage - 1;
+        displayAbout();
+    }
+
+    public final void aboutNextPage() {
+        currentAboutPage = (currentAboutPage >= Strings.ABOUT_HEAD.length - 1 ?
+                Strings.ABOUT_HEAD.length - 1 : currentAboutPage + 1);
+        displayAbout();
+    }
+
 
     // RECORDS
 

@@ -109,13 +109,9 @@ class InputEvent {
                 if (Menu.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
                     game.menu.displayMain();
                 } else if (x >= 5 && x <= 27 && y >= 88 && y <= 99) {
-                    Menu.currentAboutPage = (Menu.currentAboutPage <= 0) ? 0 : Menu.currentAboutPage - 1;
-                    game.menu.displayAbout();
+                    game.menu.aboutPrevPage();
                 } else if (x >= 31 && x <= 54 && y >= 88 && y <= 99) {
-                    Menu.currentAboutPage =
-                            (Menu.currentAboutPage >= Strings.ABOUT_HEAD.length - 1 ?
-                                    Strings.ABOUT_HEAD.length - 1 : Menu.currentAboutPage + 1);
-                    game.menu.displayAbout();
+                    game.menu.aboutNextPage();
                 }
                 break;
             case RECORDS:
@@ -197,6 +193,30 @@ class InputEvent {
                     case ITEM_HELP:
                         game.menu.displayGameBoard();
                         game.menu.displayShop();
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case LEFT:
+                switch (screen) {
+                    case ABOUT:
+                        game.menu.aboutPrevPage();
+                        break;
+                    case OPTIONS:
+                        game.menu.changeDifficulty(false);
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case RIGHT:
+                switch (screen) {
+                    case ABOUT:
+                        game.menu.aboutNextPage();
+                        break;
+                    case OPTIONS:
+                        game.menu.changeDifficulty(true);
                         break;
                     default:
                         break;
