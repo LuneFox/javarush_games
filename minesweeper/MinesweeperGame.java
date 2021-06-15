@@ -162,6 +162,7 @@ public class MinesweeperGame extends Game {
 
     private boolean timeOutCheck() {
         if (timer.isZero() && !isStopped) {
+            menu.displayGameBoard();
             revealAllMines();
             lose();
             menu.displayGameOver(false, 30);
