@@ -23,6 +23,7 @@ public class MinesweeperGame extends Game {
     public final Inventory inventory = new Inventory();
     public final Shop shop = new Shop(this);
     public final Player player = new Player(this);
+    public final Timer timer = new Timer(this);
     public final Cell[][] field = new Cell[10][10];
     final private InputEvent ie = new InputEvent(this);
 
@@ -77,9 +78,15 @@ public class MinesweeperGame extends Game {
                 }
                 break;
             case GAME_BOARD:
+                if (timeOutCheck()) {
+                    return;
+                }
                 menu.displayGameBoard();
                 break;
             case SHOP:
+                if (timeOutCheck()) {
+                    return;
+                }
                 menu.displayShop();
                 break;
             default:
@@ -104,10 +111,12 @@ public class MinesweeperGame extends Game {
         player.reset();
         shop.reset();
         inventory.reset();
+        timer.restart();
     }
 
     private void applyDifficulty() {
         difficulty = difficultyInOptionsScreen;
+        timer.isOn = timer.optionIsOn;
         staticDifficulty = difficultyInOptionsScreen;
     }
 
@@ -151,6 +160,17 @@ public class MinesweeperGame extends Game {
         menu.displayGameOver(true, 30);
     }
 
+    private boolean timeOutCheck() {
+        if (timer.isZero() && !isStopped) {
+            revealAllMines();
+            lose();
+            menu.displayGameOver(false, 30);
+            return true;
+        }
+        timer.countDown();
+        return false;
+    }
+
 
     // ACTIVE CELL OPERATIONS
 
@@ -169,7 +189,7 @@ public class MinesweeperGame extends Game {
         }
 
         pushCell(cell);
-        countMoves();   // count moves if opened not recursively (manually)
+        onPlayerMove();   // count moves if opened not recursively (manually) and resets timer
 
         if (!surviveMine(cell)) { // check if the player survived the mine, and stop doing things below if so
             return;
@@ -213,7 +233,7 @@ public class MinesweeperGame extends Game {
     }
 
     public void destroyCell(int x, int y) {
-        countMoves();
+        onPlayerMove();
         Cell cell = field[y][x];
 
         if (cellDestructionImpossible(cell)) {
@@ -453,9 +473,12 @@ public class MinesweeperGame extends Game {
         return (isStopped || activated || noFlagDestruction);
     }
 
-    private void countMoves() {
+    private void onPlayerMove() {
         if (allowCountMoves) {
             player.countMoves++;
+            player.score += timer.getScore();
+            player.scoreTimer += timer.getScore();
+            timer.restart();
         }
     }
 
@@ -501,6 +524,7 @@ public class MinesweeperGame extends Game {
                 }
             }
         }
+        timer.draw();
     }
 
     // PRINT

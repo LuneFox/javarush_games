@@ -12,6 +12,7 @@ public class Player {
     public int scoreLost;
     public int scoreDice;
     public int scoreCell;
+    public int scoreTimer;
     public int countMoves;
 
     public Player(MinesweeperGame game){
@@ -25,6 +26,7 @@ public class Player {
         scoreDice = 0;
         scoreCell = 0;
         countMoves = 0;
+        scoreTimer = 0;
     }
 
     public void registerTopScore() {

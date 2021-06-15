@@ -95,8 +95,10 @@ class InputEvent {
                     game.menu.changeDifficulty(false);
                 } else if (x >= 93 && x <= 97 && y >= 22 && y <= 28) {
                     game.menu.changeDifficulty(true);
-                } else if (x >= 80 && x <= 91 && y >= 51 && y <= 57) {
+                } else if (x >= 80 && x <= 91 && y >= 41 && y <= 47) {
                     game.menu.switchAutoBuyFlags();
+                } else if (x >= 80 && x <= 91 && y >= 64 && y <= 70) {
+                    game.menu.switchGameTimer();
                 }
                 break;
             case SCORE_DETAIL:
