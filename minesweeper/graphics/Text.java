@@ -90,7 +90,7 @@ public class Text extends Image {
         loadLetter('b', Bitmap.RU_LETTER_V);
         loadLetter('c', Bitmap.RU_LETTER_S);
         loadLetter('d', Bitmap.EN_LETTER_D);
-        loadLetter('e', Bitmap.RU_LETTER_Y);
+        loadLetter('e', Bitmap.RU_LETTER_YE);
         loadLetter('f', Bitmap.EN_LETTER_F);
         loadLetter('g', Bitmap.EN_LETTER_G);
         loadLetter('h', Bitmap.RU_LETTER_N);
