@@ -50,8 +50,7 @@ public class Dice {
         if (!isHidden) {
             if (showDelay < 20) {
                 showDelay++;
-                image.setPosition(this.x * 10 + 2, this.y * 10 + 2);
-                image.draw();
+                image.drawAt(this.x * 10 + 2, this.y * 10 + 2);
             }
         }
     }

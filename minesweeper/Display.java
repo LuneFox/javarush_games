@@ -3,8 +3,8 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.*;
 
 public class Display {
-    private Game game;
-    private Pixel[][] matrix;
+    private final Game game;
+    private final Pixel[][] matrix;
     private boolean interlace;
 
     Display(Game game) {
@@ -26,15 +26,14 @@ public class Display {
                         game.setCellColor(x, y, matrix[y][x].cellColor);
                     }
                 }
-                interlace = !interlace;
             } else {
                 for (int y = 1; y < matrix.length; y += 2) {
                     for (int x = 0; x < matrix[0].length; x++) {
                         game.setCellColor(x, y, matrix[y][x].cellColor);
                     }
                 }
-                interlace = !interlace;
             }
+            interlace = !interlace;
         } else {
             for (int y = 0; y < matrix.length; y++) {
                 for (int x = 0; x < matrix[0].length; x++) {

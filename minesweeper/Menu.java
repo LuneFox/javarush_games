@@ -87,13 +87,13 @@ class Menu {
     }
 
     public final void aboutPrevPage() {
-        currentAboutPage = (currentAboutPage <= 0) ? 0 : Menu.currentAboutPage - 1;
+        currentAboutPage = currentAboutPage <= 0 ? 0 : Menu.currentAboutPage - 1;
         displayAbout();
     }
 
     public final void aboutNextPage() {
-        currentAboutPage = (currentAboutPage >= Strings.ABOUT_HEAD.length - 1 ?
-                Strings.ABOUT_HEAD.length - 1 : currentAboutPage + 1);
+        int lastPage = Strings.ABOUT_HEAD.length - 1;
+        currentAboutPage = currentAboutPage >= lastPage ? lastPage : currentAboutPage + 1;
         displayAbout();
     }
 
@@ -128,8 +128,7 @@ class Menu {
             }
             prizeCup.replaceColor(colors[0], 1);
             prizeCup.replaceColor(colors[1], 2);
-            prizeCup.setPosition(2, 20 + (20 * i));
-            prizeCup.draw();
+            prizeCup.drawAt(2, 20 + (20 * i));
         }
     }
 
@@ -149,77 +148,72 @@ class Menu {
     final void displayOptions() {
         Screen.setType(ScreenType.OPTIONS);
 
+        Image arrowButton = IMAGES.get(Bitmap.MENU_ARROW);
+        Image switchButton = IMAGES.get(Bitmap.MENU_SWITCH);
+        Image switchRail = IMAGES.get(Bitmap.MENU_SWITCH_RAIL);
+        String difficultyName = DIFFICULTY_NAMES.get(game.difficultyInOptionsScreen / 5 - 1);
+
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
         game.print("настройки", Color.YELLOW, 28, 2);
 
-        IMAGES.get(Bitmap.MENU_ARROW).drawAt(93, 21, Mirror.NONE);
-        IMAGES.get(Bitmap.MENU_ARROW).drawAt(49, 21, Mirror.HORIZONTAL);
-        displayDifficultyBar();
-        IMAGES.get(Bitmap.MENU_SWITCH_RAIL).drawAt(80, 42);
-        IMAGES.get(Bitmap.MENU_SWITCH_RAIL).drawAt(80, 65);
         game.print("сложность", 2, 20);
-        game.print(DIFFICULTY_NAMES.get(game.difficultyInOptionsScreen / 5 - 1),
-                Color.SALMON, 93, 28, true);
+        arrowButton.drawAt(93, 21, Mirror.NONE);
+        arrowButton.drawAt(49, 21, Mirror.HORIZONTAL);
+        displayDifficultyBar();
+        game.print(difficultyName, Color.SALMON, 93, 28, true);
+
         game.print("покупка\nфлажков", 2, 40);
-        if (game.optionAutoBuyFlagsOn) {
-            IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.GREEN, 1);
-            IMAGES.get(Bitmap.MENU_SWITCH).drawAt(88, 40);
+        switchRail.drawAt(80, 42);
+        if (game.shop.autoBuyFlagsOptionOn) {
+            switchButton.replaceColor(Color.GREEN, 1);
+            switchButton.drawAt(88, 40);
             game.print("авто", Color.SALMON, 93, 48, true);
         } else {
-            IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.RED, 1);
-            IMAGES.get(Bitmap.MENU_SWITCH).drawAt(80, 40);
+            switchButton.replaceColor(Color.RED, 1);
+            switchButton.drawAt(80, 40);
             game.print("вручную", Color.SALMON, 91, 48, true);
 
         }
+
         game.print("игра на время", 2, 63);
+        switchRail.drawAt(80, 65);
         if (game.timer.optionIsOn) {
-            IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.GREEN, 1);
-            IMAGES.get(Bitmap.MENU_SWITCH).drawAt(88, 63);
+            switchButton.replaceColor(Color.GREEN, 1);
+            switchButton.drawAt(88, 63);
             game.print("да", Color.SALMON, 93, 71, true);
         } else {
-            IMAGES.get(Bitmap.MENU_SWITCH).replaceColor(Color.RED, 1);
-            IMAGES.get(Bitmap.MENU_SWITCH).drawAt(80, 63);
+            switchButton.replaceColor(Color.RED, 1);
+            switchButton.drawAt(80, 63);
             game.print("нет", Color.SALMON, 94, 71, true);
 
         }
+
         BUTTONS.get(ButtonID.BACK).draw();
     }
 
     private void displayDifficultyBar() {
-        LinkedList<Picture> difficulty = new LinkedList<>();
+        LinkedList<Picture> bars = new LinkedList<>();
         for (int i = 0; i < game.difficultyInOptionsScreen / 5; i++) {
             Picture bar = new Picture(Bitmap.MENU_DIFFICULTY_BAR, game, (i * 4) + 56, 21);
-            if (i > 1) {
-                bar.replaceColor(Color.YELLOW, 1);
-            }
-            if (i > 3) {
-                bar.replaceColor(Color.ORANGE, 1);
-            }
-            if (i > 5) {
-                bar.replaceColor(Color.RED, 1);
-            }
-            difficulty.add(bar);
+            if (i > 1) bar.replaceColor(Color.YELLOW, 1);
+            if (i > 3) bar.replaceColor(Color.ORANGE, 1);
+            if (i > 5) bar.replaceColor(Color.RED, 1);
+            bars.add(bar);
         }
-        for (Picture p : difficulty) {
-            p.draw();
-        }
+        bars.forEach(Image::draw);
     }
 
     final void changeDifficulty(boolean harder) {
-        if (harder) {
-            if (game.difficultyInOptionsScreen < 45) {
-                game.difficultyInOptionsScreen += 5;
-            }
-        } else {
-            if (game.difficultyInOptionsScreen > 5) {
-                game.difficultyInOptionsScreen -= 5;
-            }
+        if (harder && game.difficultyInOptionsScreen < 45) {
+            game.difficultyInOptionsScreen += 5;
+        } else if (!harder && game.difficultyInOptionsScreen > 5) {
+            game.difficultyInOptionsScreen -= 5;
         }
         displayOptions();
     }
 
     final void switchAutoBuyFlags() {
-        game.optionAutoBuyFlagsOn = !game.optionAutoBuyFlagsOn;
+        game.shop.autoBuyFlagsOptionOn = !game.shop.autoBuyFlagsOptionOn;
         displayOptions();
     }
 
@@ -255,7 +249,7 @@ class Menu {
         IMAGES.get(Bitmap.BOARD_FLAG).drawAt(39, 11);
         IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
-        game.print("" + game.countAllCells(MinesweeperGame.Filter.MINED_AND_CLOSED), 22, 12);
+        game.print("" + game.countAllCells(MinesweeperGame.Filter.DANGEROUS), 22, 12);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
         game.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
         game.print("* магазин *", Color.DARKSEAGREEN, 25, 22);
@@ -269,36 +263,24 @@ class Menu {
         int right = 30;
         int upper = 30;
         int bottom = 41;
+        Image frame;
+        Color frameColor;
         int currentFrame = -1; // to detect which frame is being drawn right now
         int shift;             // to shift pushed animation by this value when the button is pressed
+        boolean littleTimePassed = (new Date().getTime() - InputEvent.lastClickInShopTime < 100);
+
         for (int y = 0; y < 2; y++) {
             int dy = y * 25;
             for (int x = 0; x < 3; x++) {
                 int dx = x * 25;
-
                 ShopItem item = game.shop.allItems.get(x + y * 3);
-
                 currentFrame++;
-                Picture frame;
-                boolean lessThan100msPassed = (new Date().getTime() - InputEvent.lastClickInShopTime < 100);
-                if (currentFrame == lastClickedItemNumber && lessThan100msPassed) {
-                    frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME_PUSHED);
-                    shift = 1;
-                } else {
-                    frame = (Picture) IMAGES.get(Bitmap.ITEM_FRAME);
-                    shift = 0;
-                }
-
-                if (item.isUnobtainable()) {
-                    frame.replaceColor(Color.RED, 3);
-                } else {
-                    frame.replaceColor(Color.GREEN, 3);
-                }
-
-                if (item.isActivated()) {
-                    frame.replaceColor(Color.BLUE, 3);
-                }
-
+                boolean justClickedIt = (currentFrame == lastClickedItemNumber && littleTimePassed);
+                frame = justClickedIt ? IMAGES.get(Bitmap.ITEM_FRAME_PRESSED) : IMAGES.get(Bitmap.ITEM_FRAME);
+                shift = justClickedIt ? 1 : 0;
+                frameColor = (item.isUnobtainable()) ? Color.RED : Color.GREEN;
+                frameColor = (item.isActivated()) ? Color.BLUE : frameColor;
+                frame.replaceColor(frameColor, 3);
                 frame.drawAt(15 + dx + shift, 30 + dy + shift);
                 item.icon.drawAt(16 + dx + shift, 31 + dy + shift);
 
@@ -372,9 +354,7 @@ class Menu {
     final void displayGameOver(boolean victory, int delay) {
         Screen.setType(ScreenType.GAME_OVER);
         gameOverDisplayDelay = delay;
-        if (gameOverDisplayDelay > 0) {
-            return;
-        }
+        if (gameOverDisplayDelay > 0) return;
         if (victory) {
             IMAGES.get(Bitmap.WINDOW_VICTORY).drawAt(-1, -1);
             IMAGES.get(Bitmap.FACE_HAPPY).drawAt(-1, -1);
@@ -456,7 +436,7 @@ class Menu {
                 Bitmap.ITEM_DICE,
                 Bitmap.ITEM_FLAG,
                 Bitmap.ITEM_FRAME,
-                Bitmap.ITEM_FRAME_PUSHED,
+                Bitmap.ITEM_FRAME_PRESSED,
                 Bitmap.ITEM_SCANNER,
                 Bitmap.ITEM_SHIELD,
                 Bitmap.ITEM_SHOVEL,

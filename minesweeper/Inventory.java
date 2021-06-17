@@ -31,13 +31,11 @@ public class Inventory {
     }
 
     public void remove(ShopItem.ID itemID) {
-        if (this.items.get(itemID) <= 0) {
-            return;
-        }
+        if (this.items.get(itemID) <= 0) return;
         this.items.put(itemID, this.items.get(itemID) - 1);
     }
 
-    public int getCount(ShopItem.ID itemID){
+    public int getCount(ShopItem.ID itemID) {
         return this.items.get(itemID);
     }
 }

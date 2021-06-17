@@ -19,16 +19,12 @@ class InputEvent {
     }
 
     final void leftClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || game.menu.gameOverDisplayDelay > 0) {
-            return;
-        }
+        if (clickOutsideScreen(x, y) || game.menu.gameOverDisplayDelay > 0) return;
         leftClickAction(x, y, Screen.getType());
     }
 
     final void rightClick(int x, int y) {
-        if (clickOutsideScreen(x, y)) {
-            return;
-        }
+        if (clickOutsideScreen(x, y) || game.menu.gameOverDisplayDelay > 0) return;
         rightClickAction(x, y, Screen.getType());
         // System.out.printf("%d %d%n", x, y);
     }
@@ -150,8 +146,8 @@ class InputEvent {
     }
 
     final void keyPressAction(Key key) {
+        if (game.menu.gameOverDisplayDelay > 0) return;
         ScreenType screen = Screen.getType();
-
         switch (key) {
             case SPACE:
                 switch (screen) {

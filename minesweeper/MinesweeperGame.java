@@ -25,7 +25,7 @@ public class MinesweeperGame extends Game {
     public final Player player = new Player(this);
     public final Timer timer = new Timer(this);
     public final Cell[][] field = new Cell[10][10];
-    final private InputEvent ie = new InputEvent(this);
+    private final InputEvent ie = new InputEvent(this);
 
     // GAME STATE
     public static int staticDifficulty;
@@ -35,15 +35,12 @@ public class MinesweeperGame extends Game {
     // FLAGS
     public boolean evenTurn; // is now even turn or odd turn? helps with animation of certain elements
     private boolean isFirstMove;
-    boolean isStopped;
-    boolean lastResultIsVictory;
-    boolean optionAutoBuyFlagsOn;
     boolean allowCountMoves; // user clicked with mouse = not recursive action = allow to count as a move
     boolean allowFlagExplosion;
+    boolean lastResultIsVictory;
+    boolean isStopped;
 
-    public enum Filter {
-        NONE, CLOSED, OPEN, SAFE, MUST_CONTAIN_NUMBERS, FLAGGED_OR_REVEALED, MINED, MINED_AND_CLOSED
-    }
+    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED}
 
     // NEW GAME
 
@@ -78,15 +75,11 @@ public class MinesweeperGame extends Game {
                 }
                 break;
             case GAME_BOARD:
-                if (timeOutCheck()) {
-                    return;
-                }
+                if (timeOutCheck()) return;
                 menu.displayGameBoard();
                 break;
             case SHOP:
-                if (timeOutCheck()) {
-                    return;
-                }
+                if (timeOutCheck()) return;
                 menu.displayShop();
                 break;
             default:
@@ -96,7 +89,7 @@ public class MinesweeperGame extends Game {
     }
 
     void createGame() {
-        applyDifficulty(); // difficulty impacts the number of mines created below
+        applyOptions();    // difficulty impacts the number of mines created below
         createField();
         plantMines();      // number of mines define the number of flags given below
         resetValues();
@@ -114,10 +107,10 @@ public class MinesweeperGame extends Game {
         timer.restart();
     }
 
-    private void applyDifficulty() {
+    private void applyOptions() {
+        staticDifficulty = difficultyInOptionsScreen;
         difficulty = difficultyInOptionsScreen;
         timer.isOn = timer.optionIsOn;
-        staticDifficulty = difficultyInOptionsScreen;
     }
 
     public static int getDifficulty() {
@@ -136,9 +129,8 @@ public class MinesweeperGame extends Game {
         while (countAllCells(Filter.MINED) < difficulty / 1.5) { // fixed number of mines on field
             int x = getRandomNumber(10);
             int y = getRandomNumber(10);
-            if (!field[y][x].isMined && !field[y][x].isOpen) {
+            if (!field[y][x].isMined && !field[y][x].isOpen)
                 field[y][x] = new Cell(Bitmap.CELL_CLOSED, this, x, y, true);
-            }
         }
     }
 
@@ -168,7 +160,9 @@ public class MinesweeperGame extends Game {
             menu.displayGameOver(false, 30);
             return true;
         }
-        timer.countDown();
+        if (!isStopped) {
+            timer.countDown();
+        }
         return false;
     }
 
@@ -177,69 +171,48 @@ public class MinesweeperGame extends Game {
 
     void openCell(int x, int y) {
         Cell cell = field[y][x];
-        if (shop.miniBomb.use(cell) || shop.scanner.use(cell)) {
-            return;
-        }
 
-        if (allowCountMoves) { // non-recursive (manual) openCell
-            shop.dice.cell = cell;
-        }
+        if (shop.miniBomb.use(cell) || shop.scanner.use(cell)) return;
+        if (allowCountMoves) shop.dice.cell = cell;
+        if (isStopped || cell.isFlagged || cell.isOpen) return;
 
-        if (isStopped || cell.isFlagged || cell.isOpen) {
-            return;
-        }
+        pushCell(cell);                 // change visuals, set isOpen flag
+        onManualClick();                // do things that happen during real click only
+        if (!surviveMine(cell)) return; // stop processing if the player didn't survive
+        drawNumberOnCell(cell);         // show number since we know it's not a bomb (survived)
 
-        pushCell(cell);
-        onPlayerMove();   // count moves if opened not recursively (manually) and resets timer
-
-        if (!surviveMine(cell)) { // check if the player survived the mine, and stop doing things below if so
-            return;
-        }
-
-        drawNumberOnCell(cell);  // show number since we know it's not a bomb (survived)
         inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
-        addScore(shop.dice.cell.x, shop.dice.cell.y); // x and y of the clicked cell define where the dice will be drawn
-        setScore(player.score);         // JavaRushTV score
+        addScore(shop.dice.cell.x, shop.dice.cell.y); // cell.x, cell.y = dice display position
+        setScore(player.score);                       // JavaRushTV
         deactivateExpiredItems();
-        checkVictory();
 
-        isFirstMove = false; // protects from counting moves when opening cells in recursion
-        recursiveOpenCell(cell); // if there are empty cells around, start over this opening process without counting moves
+        checkVictory();
+        isFirstMove = false;
+        recursiveOpenEmpty(cell);                  // for surrounding empty cells, moved don't count
     }
 
-    private void recursiveOpenCell(Cell cell) {
-        // empty cells open cells near them, does not count as a move made by player
-        if (cell.countMinedNeighbors == 0 && !cell.isMined) {
-            allowCountMoves = false;
-            getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> {
-                if (!neighbor.isOpen) {
-                    openCell(neighbor.x, neighbor.y);
-                }
-            });
+    private void recursiveOpenEmpty(Cell cell) {
+        allowCountMoves = false;               // automatic opening doesn't count as a player move
+        if (cell.isEmpty()) {
+            getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
     }
 
     void openRest(int x, int y) {
         // attempts to open cells around if number of flags nearby equals the number on the cell
-        if (shop.scanner.isActivated() || shop.miniBomb.isActivated()) {
-            // don't do anything if item usage is pending
-            return;
-        }
+        if (shop.scanner.isActivated() || shop.miniBomb.isActivated()) return;
         Cell cell = field[y][x];
         if (cell.isOpen && !cell.isMined) {
-            if (cell.countMinedNeighbors == getNeighborCells(cell, Filter.FLAGGED_OR_REVEALED, false).size()) {
+            if (cell.countMinedNeighbors == getNeighborCells(cell, Filter.SUSPECTED, false).size()) {
                 getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
             }
         }
     }
 
     public void destroyCell(int x, int y) {
-        onPlayerMove();
+        onManualClick();
         Cell cell = field[y][x];
-
-        if (cellDestructionImpossible(cell)) {
-            return;
-        }
+        if (cellDestructionImpossible(cell)) return;
 
         cell.assignSprite(Bitmap.BOARD_NONE);
         cell.isDestroyed = true;
@@ -276,7 +249,7 @@ public class MinesweeperGame extends Game {
             cell.eraseSprite();
         } else {
             if (inventory.getCount(ShopItem.ID.FLAG) == 0) { // IN CASE OF NO FLAGS IN THE INVENTORY:
-                if (optionAutoBuyFlagsOn) {                  // if auto-buy is on
+                if (shop.autoBuyFlagsOptionOn) {             // if auto-buy is on
                     if (shop.flag.isUnobtainable()) {        //    but you can't buy
                         return;                              //        do nothing and return
                     }                                        //    but if you can
@@ -314,8 +287,8 @@ public class MinesweeperGame extends Game {
         List<Cell> neighbors = getNeighborCells(field[y][x], Filter.SAFE, true);
         if (neighbors.size() == 0) { // no safe cells
             getNeighborCells(field[y][x], Filter.CLOSED, true).forEach(closedCell -> {
-                if (inventory.getCount(ShopItem.ID.FLAG) == 0) { // get a free flag from the shop
-                    shop.give(shop.flag);
+                if (inventory.getCount(ShopItem.ID.FLAG) == 0) {
+                    shop.give(shop.flag); // get a free flag from the shop
                 }
                 setFlag(closedCell.x, closedCell.y, false); // set flag forcefully
             });
@@ -324,8 +297,7 @@ public class MinesweeperGame extends Game {
         Cell cell = neighbors.get(getRandomNumber(neighbors.size()));
         cell.isScanned = true;
         if (cell.isFlagged) {
-            // remove flag if it was placed wrong
-            setFlag(cell.x, cell.y, true);
+            setFlag(cell.x, cell.y, true); // remove flag if it was placed wrong
         }
         openCell(cell.x, cell.y);
     }
@@ -362,39 +334,32 @@ public class MinesweeperGame extends Game {
         list.forEach(cell -> {
             switch (filter) {
                 case CLOSED:
-                    if (!cell.isOpen) {
+                    if (!cell.isOpen)
                         result.add(cell);
-                    }
                     break;
                 case OPEN:
-                    if (cell.isOpen) {
+                    if (cell.isOpen)
                         result.add(cell);
-                    }
                     break;
                 case MINED:
-                    if (cell.isMined) {
+                    if (cell.isMined)
                         result.add(cell);
-                    }
                     break;
-                case MINED_AND_CLOSED:
-                    if (cell.isMined && !cell.isOpen) {
+                case DANGEROUS:
+                    if (cell.isDangerous())
                         result.add(cell);
-                    }
                     break;
-                case MUST_CONTAIN_NUMBERS:
-                    if (!cell.isDestroyed && !cell.isFlagged && !cell.isMined) {
+                case NUMERABLE:
+                    if (cell.isNumerable())
                         result.add(cell);
-                    }
                     break;
-                case FLAGGED_OR_REVEALED:
-                    if (cell.isFlagged || (cell.isOpen && cell.isMined)) {
+                case SUSPECTED:
+                    if (cell.isSuspected())
                         result.add(cell);
-                    }
                     break;
                 case SAFE:
-                    if (!cell.isOpen && !cell.isMined) {
+                    if (cell.isSafe())
                         result.add(cell);
-                    }
                     break;
                 case NONE:
                 default:
@@ -406,7 +371,7 @@ public class MinesweeperGame extends Game {
     }
 
     private void assignMineNumbersToCells() {
-        getAllCells(Filter.MUST_CONTAIN_NUMBERS).forEach(cell -> {
+        getAllCells(Filter.NUMERABLE).forEach(cell -> {
             cell.countMinedNeighbors = getNeighborCells(cell, Filter.MINED, false).size();
             cell.assignSprite(cell.countMinedNeighbors);
         });
@@ -420,9 +385,8 @@ public class MinesweeperGame extends Game {
         int randomNumber = getRandomNumber(6) + 1;
         shop.dice.setImage(randomNumber, x, y);
         player.score += difficulty * (shop.luckyDice.isActivated() ? randomNumber : 1);
-        if (shop.luckyDice.isActivated()) {
+        if (shop.luckyDice.isActivated())
             player.scoreDice += (player.score - scoreBeforeDice) - difficulty;
-        }
     }
 
     private void replantMine(Cell cell) {
@@ -443,29 +407,22 @@ public class MinesweeperGame extends Game {
 
     private void displayDice() {
         int diceTurns;
-        if (shop.luckyDice == null) {
-            diceTurns = -1;
-        } else {
-            diceTurns = shop.luckyDice.expireMove - player.countMoves;
-        }
-        if (diceTurns > -1 && diceTurns < 3 && player.countMoves != 0) {
+        diceTurns = (shop.luckyDice == null) ? -1 : shop.luckyDice.expireMove - player.countMoves;
+        if (diceTurns > -1 && diceTurns < 3 && player.countMoves != 0)
             shop.dice.draw();
-        }
     }
 
     void hideDice() {
-        if (shop.miniBomb != null) {
+        if (shop.miniBomb != null)
             shop.dice.isHidden = shop.miniBomb.isActivated();
-        }
     }
 
 
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
 
     public void checkVictory() {
-        if (countAllCells(Filter.CLOSED) == countAllCells(Filter.MINED_AND_CLOSED)) {
+        if (countAllCells(Filter.CLOSED) == countAllCells(Filter.DANGEROUS))
             win();
-        }
     }
 
     private boolean cellDestructionImpossible(Cell cell) {
@@ -474,7 +431,7 @@ public class MinesweeperGame extends Game {
         return (isStopped || activated || noFlagDestruction);
     }
 
-    private void onPlayerMove() {
+    private void onManualClick() {
         if (allowCountMoves) {
             player.countMoves++;
             player.score += timer.getScore();
@@ -494,7 +451,7 @@ public class MinesweeperGame extends Game {
         if (!cell.isFlagged && !cell.isMined) {
             cell.assignSprite(cell.countMinedNeighbors);
             if (shop.goldenShovel.isActivated()) {
-                cell.changeSpriteColor(Color.YELLOW);
+                cell.makeSpriteYellow();
             }
         }
         cell.drawSprite();

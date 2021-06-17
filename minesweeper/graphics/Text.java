@@ -10,14 +10,13 @@ import java.util.HashMap;
  */
 
 public class Text extends Image {
-    private static final HashMap<Character, Text> alphabet = new HashMap<>(); // pre-loaded alphabet goes here
+    private static final HashMap<Character, Text> ALPHABET = new HashMap<>(); // pre-loaded alphabet goes here
     private Text symbol;
 
     public Text(Bitmap bitmap, MinesweeperGame game) {
         super(bitmap, game);
     }
 
-    // command an object to draw
     public void write(String input, Color color, int drawX, int drawY, boolean alignRight) {
         char[] chars = input.toLowerCase().toCharArray();
         int caretX = drawX;
@@ -29,11 +28,11 @@ public class Text extends Image {
                     caretY += 9;
                     continue;
                 }
-                symbol = alphabet.get(chars[i]);
+                symbol = ALPHABET.get(chars[i]);
                 symbol.replaceColor(color, 1);
                 symbol.drawAt(caretX, caretY);
                 if (i > 0) { // move caret by the length of the NEXT letter
-                    caretX = caretX - (alphabet.get(chars[i - 1]).bitmapData[0].length + 1);
+                    caretX = caretX - (ALPHABET.get(chars[i - 1]).bitmapData[0].length + 1);
                 }
             }
         } else {
@@ -43,7 +42,7 @@ public class Text extends Image {
                     caretY = caretY + 9;
                     continue;
                 }
-                symbol = alphabet.get(c);
+                symbol = ALPHABET.get(c);
                 symbol.replaceColor(color, 1);
                 symbol.drawAt(caretX, caretY);
                 caretX += (symbol.bitmapData[0].length + 1);
@@ -56,7 +55,6 @@ public class Text extends Image {
         loadLetter('б', Bitmap.RU_LETTER_B);
         loadLetter('в', Bitmap.RU_LETTER_V);
         loadLetter('г', Bitmap.RU_LETTER_G);
-        loadLetter('д', Bitmap.RU_LETTER_D);
         loadLetter('д', Bitmap.RU_LETTER_D);
         loadLetter('е', Bitmap.RU_LETTER_YE);
         loadLetter('ё', Bitmap.RU_LETTER_YO);
@@ -136,14 +134,14 @@ public class Text extends Image {
     }
 
     private void loadLetter(Character c, Bitmap bitmap) {
-        alphabet.put(c, new Text(bitmap, game));
+        ALPHABET.put(c, new Text(bitmap, game));
     }
 
     int calculateLengthInPixels(String s) {
         int length = 0;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
-            symbol = alphabet.get(c);
+            symbol = ALPHABET.get(c);
             length += (symbol.bitmapData[0].length + 1);
         }
         return length;

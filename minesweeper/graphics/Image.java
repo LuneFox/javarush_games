@@ -43,10 +43,9 @@ public abstract class Image {
     public void draw(Mirror mirror) {
         for (int innerY = 0; innerY < bitmapData.length; innerY++) {
             for (int innerX = 0; innerX < bitmapData[0].length; innerX++) {
-
-                if (bitmapData[innerY][innerX] == 0 || colors[bitmapData[innerY][innerX]] == Color.NONE) {
-                    continue; // transparent color
-                }
+                int pixel = bitmapData[innerY][innerX];
+                boolean colorIsTransparent = (pixel == 0 || colors[pixel] == Color.NONE);
+                if (colorIsTransparent) continue;
 
                 switch (mirror) {
                     case HORIZONTAL:

@@ -5,7 +5,7 @@ import com.javarush.engine.cell.Color;
 import java.util.Date;
 
 public class Timer {
-    private MinesweeperGame game;
+    private final MinesweeperGame game;
     public float time;
     private final float TIME_LIMIT = 500;
     public boolean isOn;
@@ -22,7 +22,7 @@ public class Timer {
     }
 
     public void draw() {
-        if (isOn) {
+        if (isOn && !game.isStopped) {
             for (int i = 0; i < ((time / TIME_LIMIT) * 100); i++) {
                 game.display.setCellColor(i, 0, COLORS[0]);
             }

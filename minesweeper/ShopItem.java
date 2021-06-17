@@ -66,7 +66,7 @@ class ShopItem {
                 this.id = ID.DICE;
                 this.name = Strings.ITEM_DICE_NAME;
                 this.description = Strings.ITEM_DICE_DESCRIPTION;
-                this.canExpire = false;
+                this.canExpire = true;
                 this.shopFramePosition = new int[]{40, 59, 56, 75};
                 break;
             case 5:
@@ -117,8 +117,9 @@ class ShopItem {
                     game.checkVictory();
                     return true;
                 }
+            default:
+                return false;
         }
-        return false;
     }
 
     public void expireCheck() {
