@@ -7,7 +7,7 @@ public class Screen {
     private static final ArrayList<Screen> screens = new ArrayList<>();
 
     public enum ScreenType {
-        MAIN_MENU, GAME_OVER, SHOP, GAME_BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE_DETAIL, RECORDS
+        MAIN_MENU, GAME_OVER, SHOP, GAME_BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE, RECORDS
     }
 
     static {
@@ -18,7 +18,7 @@ public class Screen {
         screens.add(new Screen(ScreenType.OPTIONS));
         screens.add(new Screen(ScreenType.ABOUT));
         screens.add(new Screen(ScreenType.ITEM_HELP));
-        screens.add(new Screen(ScreenType.SCORE_DETAIL));
+        screens.add(new Screen(ScreenType.SCORE));
         screens.add(new Screen(ScreenType.RECORDS));
     }
 

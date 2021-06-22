@@ -5,6 +5,7 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Printer;
+import com.javarush.games.minesweeper.view.View;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,7 +20,7 @@ public class MinesweeperGame extends Game {
     // FINAL OBJECTS
     public final Printer printer = new Printer(this);
     public final Display display = new Display(this);
-    public final Menu menu = new Menu(this);
+    public final View view = new View(this);
     public final Inventory inventory = new Inventory();
     public final Shop shop = new Shop(this);
     public final Player player = new Player(this);
@@ -29,16 +30,16 @@ public class MinesweeperGame extends Game {
 
     // GAME STATE
     public static int staticDifficulty;
-    int difficulty = 10;
-    int difficultyInOptionsScreen = 10;
+    public int difficulty = 10;
+    public int difficultyInOptionsScreen = 10;
 
     // FLAGS
     public boolean evenTurn; // is now even turn or odd turn? helps with animation of certain elements
     private boolean isFirstMove;
-    boolean allowCountMoves; // user clicked with mouse = not recursive action = allow to count as a move
-    boolean allowFlagExplosion;
-    boolean lastResultIsVictory;
-    boolean isStopped;
+    public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow to count as a move
+    public boolean allowFlagExplosion;
+    public boolean lastResultIsVictory;
+    public boolean isStopped;
 
     public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED}
 
@@ -49,7 +50,8 @@ public class MinesweeperGame extends Game {
         showGrid(false);
         setScreenSize(100, 100);
         isStopped = true;
-        menu.displayMain();
+        view.createSubViews();
+        View.main.display();
         setTurnTimer(30);
     }
 
@@ -64,23 +66,23 @@ public class MinesweeperGame extends Game {
         // everything that happens with the flow of time on different screens
         switch (Screen.getType()) {
             case MAIN_MENU:
-                menu.displayMain();
+                View.main.display();
                 break;
             case GAME_OVER:
-                if (menu.gameOverDisplayDelay <= 0) {
-                    menu.displayGameBoard();
-                    menu.displayGameOver(lastResultIsVictory, 0);
+                if (View.gameOver.displayDelay <= 0) {
+                    View.board.display();
+                    View.gameOver.display(lastResultIsVictory, 0);
                 } else {
-                    menu.gameOverDisplayDelay--;
+                    View.gameOver.displayDelay--;
                 }
                 break;
             case GAME_BOARD:
                 if (timeOutCheck()) return;
-                menu.displayGameBoard();
+                View.board.display();
                 break;
             case SHOP:
                 if (timeOutCheck()) return;
-                menu.displayShop();
+                View.shop.display();
                 break;
             default:
                 break;
@@ -94,7 +96,7 @@ public class MinesweeperGame extends Game {
         plantMines();      // number of mines define the number of flags given below
         resetValues();
         assignMineNumbersToCells();
-        menu.displayGameBoard();
+        View.board.display();
         setScore(player.score);
     }
 
@@ -140,7 +142,7 @@ public class MinesweeperGame extends Game {
     private void lose() {
         lastResultIsVictory = false;
         isStopped = true;
-        menu.displayGameOver(false, 30);
+        View.gameOver.display(false, 30);
     }
 
     private void win() {
@@ -149,15 +151,15 @@ public class MinesweeperGame extends Game {
         setScore(player.score);
         player.registerTopScore();
         isStopped = true;
-        menu.displayGameOver(true, 30);
+        View.gameOver.display(true, 30);
     }
 
     private boolean timeOutCheck() {
         if (timer.isZero() && !isStopped) {
-            menu.displayGameBoard();
+            View.board.display();
             revealAllMines();
             lose();
-            menu.displayGameOver(false, 30);
+            View.gameOver.display(false, 30);
             return true;
         }
         if (!isStopped) {
@@ -255,7 +257,7 @@ public class MinesweeperGame extends Game {
                     }                                        //    but if you can
                     shop.sell(shop.flag);                    //        shop sells you one
                 } else {                                     // if auto-buy is off,
-                    menu.displayShop();                      //    proceed to shop
+                    View.shop.display();                     //    proceed to shop
                     return;
                 }
             }
@@ -462,7 +464,7 @@ public class MinesweeperGame extends Game {
         cell.push();
     }
 
-    void redrawAllCells() { // redraws all cells in current state to hide whatever was drawn over them
+    public void redrawAllCells() { // redraws all cells in current state to hide whatever was drawn over them
         getAllCells(Filter.NONE).forEach(cell -> {
             cell.draw();
             if (cell.isOpen || cell.isFlagged) {

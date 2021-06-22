@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper;
 
+import com.javarush.games.minesweeper.view.View;
+
 /**
  * Contains player data like score
  */
@@ -32,7 +34,7 @@ public class Player {
     public void registerTopScore() {
         if (score > topScore) {
             topScore = score;
-            topScoreTitle = Menu.DIFFICULTY_NAMES.get(game.difficulty / 5 - 1);
+            topScoreTitle = View.DIFFICULTY_NAMES.get(game.difficulty / 5 - 1);
         }
     }
 }

@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Image;
+import com.javarush.games.minesweeper.view.View;
 
 /**
  * Graphical dice that appears on screen when you use Lucky Dice
@@ -26,22 +27,22 @@ public class Dice {
         this.showDelay = 0;
         switch (number) {
             case 2:
-                image = Menu.IMAGES.get(Bitmap.DICE_2);
+                image = View.IMAGES.get(Bitmap.DICE_2);
                 break;
             case 3:
-                image = Menu.IMAGES.get(Bitmap.DICE_3);
+                image = View.IMAGES.get(Bitmap.DICE_3);
                 break;
             case 4:
-                image = Menu.IMAGES.get(Bitmap.DICE_4);
+                image = View.IMAGES.get(Bitmap.DICE_4);
                 break;
             case 5:
-                image = Menu.IMAGES.get(Bitmap.DICE_5);
+                image = View.IMAGES.get(Bitmap.DICE_5);
                 break;
             case 6:
-                image = Menu.IMAGES.get(Bitmap.DICE_6);
+                image = View.IMAGES.get(Bitmap.DICE_6);
                 break;
             default:
-                image = Menu.IMAGES.get(Bitmap.DICE_1);
+                image = View.IMAGES.get(Bitmap.DICE_1);
                 break;
         }
     }

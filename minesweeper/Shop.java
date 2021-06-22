@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Picture;
+import com.javarush.games.minesweeper.view.View;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -32,13 +33,13 @@ public class Shop {
     public void sell(ShopItem item) {
         if (item.isActivated()) {
             isAlreadyActivatedAnimationTrigger = true;
-            game.menu.shakeAnimationCountDown();
+            View.shop.shakeAnimationCountDown();
             return;
         } else if (item.inStock == 0) {
             return;
         } else if (item.isUnaffordable()) {
             isUnaffordableAnimationTrigger = true;
-            game.menu.shakeAnimationCountDown();
+            View.shop.shakeAnimationCountDown();
             return;
         } else {
             item.inStock--;
@@ -91,17 +92,17 @@ public class Shop {
 
     public void reset() {
         shield = new ShopItem(0, 13 + game.difficulty / 5, 1,
-                (Picture) Menu.IMAGES.get(Bitmap.ITEM_SHIELD), game);
+                (Picture) View.IMAGES.get(Bitmap.ITEM_SHIELD), game);
         scanner = new ShopItem(1, 8 + game.difficulty / 5, 1,
-                (Picture) Menu.IMAGES.get(Bitmap.ITEM_SCANNER), game);
+                (Picture) View.IMAGES.get(Bitmap.ITEM_SCANNER), game);
         flag = new ShopItem(2, 1, getFlagsAmount(),
-                (Picture) Menu.IMAGES.get(Bitmap.ITEM_FLAG), game);
+                (Picture) View.IMAGES.get(Bitmap.ITEM_FLAG), game);
         goldenShovel = new ShopItem(3, 9, 1,
-                (Picture) Menu.IMAGES.get(Bitmap.ITEM_SHOVEL), game);
+                (Picture) View.IMAGES.get(Bitmap.ITEM_SHOVEL), game);
         luckyDice = new ShopItem(4, 6, 1,
-                (Picture) Menu.IMAGES.get(Bitmap.ITEM_DICE), game);
+                (Picture) View.IMAGES.get(Bitmap.ITEM_DICE), game);
         miniBomb = new ShopItem(5, 6 + game.difficulty / 10, 1,
-                (Picture) Menu.IMAGES.get(Bitmap.ITEM_BOMB), game);
+                (Picture) View.IMAGES.get(Bitmap.ITEM_BOMB), game);
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
         dice = new Dice(1);
@@ -112,8 +113,8 @@ public class Shop {
     }
 
     private void drawColoredFrame(Color color) {
-        Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(color, 3);
-        Menu.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+        View.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(color, 3);
+        View.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
     }
 
     public ShopItem getClickedItem(int x, int y) {

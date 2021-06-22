@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.graphics.Picture;
  * Items you can buy in the shop and use in the game.
  */
 
-class ShopItem {
+public class ShopItem {
     private final MinesweeperGame game;
     public int cost;
     public boolean canExpire;
