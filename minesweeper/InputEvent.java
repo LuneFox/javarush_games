@@ -130,10 +130,9 @@ public class InputEvent {
                 if (game.isStopped) {
                     View.gameOver.display(game.lastResultIsVictory, 0);
                     Screen.setType(ScreenType.GAME_OVER);
-                } else {
+                } else { // only one will work - actions don't interfere
                     game.setFlag(x / 10, y / 10, true); // works only if tile is closed
                     game.openRest(x / 10, y / 10);                // works only if tile is open
-                    // above two actions don't interfere, only one will work
                 }
                 break;
             case SHOP:
@@ -229,8 +228,6 @@ public class InputEvent {
                 break;
         }
     }
-
-    // MISC
 
     private boolean clickOutsideScreen(int x, int y) {
         return (x > 99 || y > 99 || x < 0 || y < 0);

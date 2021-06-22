@@ -19,7 +19,7 @@ import java.util.LinkedList;
 public class View {
     protected MinesweeperGame game;
     public ScreenType screenType;
-    public static ViewMain main;
+    public static  ViewMain main;
     public static ViewAbout about;
     public static ViewRecords records;
     public static ViewOptions options;

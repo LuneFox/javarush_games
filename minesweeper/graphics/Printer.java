@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  */
 
 public class Printer {
-    public static Text writer;
+    private static Text writer;
 
     public Printer(MinesweeperGame game) {
         writer = new Text(Bitmap.NONE, game);
