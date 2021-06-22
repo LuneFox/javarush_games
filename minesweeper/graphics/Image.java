@@ -13,7 +13,6 @@ public abstract class Image {
     private int drawY;                        // real position in pixels
     protected int[][] bitmapData;             // matrix of color numbers
     protected Color[] colors;                 // an array to match colors and numbers
-    private int baseY;                        // initial position Y (anchor for animation)
     private float floatAnimationShift;        // difference between the anchor and current position
     private boolean floatAnimationGoesDown;
 
@@ -77,12 +76,11 @@ public abstract class Image {
 
     public final void floatAnimation(double height, int x, int y) {
         this.setPosition(x, y);
-        this.baseY = y;
         floatAnimationShift += (floatAnimationGoesDown ? 0.2 : -0.2);
         if (Math.abs(floatAnimationShift) > height) {
             floatAnimationGoesDown = !floatAnimationGoesDown;
         }
-        this.drawY = (int) (baseY + floatAnimationShift);
+        this.drawY = (int) (y + floatAnimationShift);
         this.draw();
     }
 
