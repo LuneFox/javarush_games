@@ -119,6 +119,7 @@ public class View {
         BUTTONS.put(ButtonID.OPTIONS, new Button(game, 61, 64, 36, 9, "опции"));
         BUTTONS.put(ButtonID.ABOUT, new Button(game, 61, 76, 36, 9, "об игре"));
         BUTTONS.put(ButtonID.START, new Button(game, 61, 88, 36, 9, "старт"));
+        BUTTONS.put(ButtonID.NEW_GAME, new Button(game, 61, 88, 36, 9, "заново"));
         BUTTONS.put(ButtonID.RECORDS, new Button(game, 2, 88, "рекорды"));
         BUTTONS.put(ButtonID.BACK, new Button(game, 61, 88, 36, 9, "назад"));
         BUTTONS.put(ButtonID.FORWARD, new Button(game, 3, 88, 36, 9, "далее"));

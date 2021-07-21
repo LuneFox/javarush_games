@@ -13,6 +13,7 @@ import java.util.LinkedList;
 
 public final class ViewMain extends View {
     private static String quote;
+    private final static String resume = "Игра приостановлена\nESC - продолжить";
     private static Date lastQuoteDate;
     private final static LinkedList<String> QUOTES = new LinkedList<>();
 
@@ -31,11 +32,16 @@ public final class ViewMain extends View {
         IMAGES.get(Bitmap.PICTURE_LOGO).floatAnimation(2.8, -1, 8);
         BUTTONS.get(Button.ButtonID.OPTIONS).draw();
         BUTTONS.get(Button.ButtonID.ABOUT).draw();
-        BUTTONS.get(Button.ButtonID.START).draw();
         BUTTONS.get(Button.ButtonID.RECORDS).draw();
         game.print(Strings.VERSION, Color.DARKRED, 85, 0);
         printTopScore();
-        printRandomQuote();
+        if (game.isStopped) {
+            printRandomQuote();
+            BUTTONS.get(Button.ButtonID.START).draw();
+        } else {
+            printResumeGame();
+            BUTTONS.get(Button.ButtonID.NEW_GAME).draw();
+        }
     }
 
     private void printRandomQuote() {
@@ -45,6 +51,11 @@ public final class ViewMain extends View {
         }
         game.print(quote, Color.DARKRED, 5, 44); // shadow
         game.print(quote, Color.SALMON, 4, 44);
+    }
+
+    private void printResumeGame(){
+        game.print(resume, Color.DARKRED, 5, 44); // shadow
+        game.print(resume, Color.YELLOW, 4, 44);
     }
 
     private void printTopScore() {

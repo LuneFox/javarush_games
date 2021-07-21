@@ -314,10 +314,6 @@ public class MinesweeperGame extends Game {
         return filterCells(all, filter);
     }
 
-    public int countAllCells(Filter filter) {
-        return getAllCells(filter).size();
-    }
-
     private List<Cell> getNeighborCells(Cell cell, Filter filter, boolean includeSelf) {
         List<Cell> neighbors = new ArrayList<>();
         for (int y = cell.y - 1; y <= cell.y + 1; y++) {
@@ -336,32 +332,25 @@ public class MinesweeperGame extends Game {
         list.forEach(cell -> {
             switch (filter) {
                 case CLOSED:
-                    if (!cell.isOpen)
-                        result.add(cell);
+                    if (!cell.isOpen) result.add(cell);
                     break;
                 case OPEN:
-                    if (cell.isOpen)
-                        result.add(cell);
+                    if (cell.isOpen) result.add(cell);
                     break;
                 case MINED:
-                    if (cell.isMined)
-                        result.add(cell);
+                    if (cell.isMined) result.add(cell);
                     break;
                 case DANGEROUS:
-                    if (cell.isDangerous())
-                        result.add(cell);
+                    if (cell.isDangerous()) result.add(cell);
                     break;
                 case NUMERABLE:
-                    if (cell.isNumerable())
-                        result.add(cell);
+                    if (cell.isNumerable()) result.add(cell);
                     break;
                 case SUSPECTED:
-                    if (cell.isSuspected())
-                        result.add(cell);
+                    if (cell.isSuspected()) result.add(cell);
                     break;
                 case SAFE:
-                    if (cell.isSafe())
-                        result.add(cell);
+                    if (cell.isSafe()) result.add(cell);
                     break;
                 case NONE:
                 default:
@@ -377,6 +366,10 @@ public class MinesweeperGame extends Game {
             cell.countMinedNeighbors = getNeighborCells(cell, Filter.MINED, false).size();
             cell.assignSprite(cell.countMinedNeighbors);
         });
+    }
+
+    public int countAllCells(Filter filter) {
+        return getAllCells(filter).size();
     }
 
     // UTILITIES
