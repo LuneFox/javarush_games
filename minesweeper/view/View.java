@@ -19,7 +19,7 @@ import java.util.LinkedList;
 public class View {
     protected MinesweeperGame game;
     public ScreenType screenType;
-    public static  ViewMain main;
+    public static ViewMain main;
     public static ViewAbout about;
     public static ViewRecords records;
     public static ViewOptions options;
@@ -31,18 +31,6 @@ public class View {
     public static final HashMap<Bitmap, Image> IMAGES = new HashMap<>();
     public static final HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
     public static final LinkedList<String> DIFFICULTY_NAMES = new LinkedList<>();
-
-    public static class Area {
-        private final int[] coords;
-
-        public Area(int[] coords) {
-            this.coords = coords;
-        }
-
-        public boolean covers(int x, int y) {
-            return (x >= coords[0] && x <= coords[1] && y >= coords[2] && y <= coords[3]);
-        }
-    }
 
     public View() {
 
@@ -139,4 +127,61 @@ public class View {
         BUTTONS.put(ButtonID.RETURN, new Button(game, 15, 69, "меню"));
         BUTTONS.put(ButtonID.CLOSE, new Button(game, 73, 35, "x"));
     }
+
+    public static class Area {
+        private final int[] coords;
+
+        public Area(int[] coords) {
+            this.coords = coords;
+        }
+
+        public boolean covers(int x, int y) {
+            return (x >= coords[0] && x <= coords[1] && y >= coords[2] && y <= coords[3]);
+        }
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
