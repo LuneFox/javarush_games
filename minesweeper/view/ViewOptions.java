@@ -36,7 +36,7 @@ public final class ViewOptions extends View {
         arrowButton.drawAt(93, 21, Image.Mirror.NONE);
         arrowButton.drawAt(49, 21, Image.Mirror.HORIZONTAL);
         displayDifficultyBar();
-        game.print(difficultyName, Color.SALMON, 93, 28, true);
+        game.print(difficultyName, Color.SALMON, 93, 29, true);
 
         game.print("покупка\nфлажков", 2, 40);
         switchRail.drawAt(80, 42);
