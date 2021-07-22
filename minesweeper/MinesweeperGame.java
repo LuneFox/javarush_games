@@ -183,6 +183,7 @@ public class MinesweeperGame extends Game {
         if (!surviveMine(cell)) return; // stop processing if the player didn't survive
         drawNumberOnCell(cell);         // show number since we know it's not a bomb (survived)
 
+        player.openedCells++;
         inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
         addScore(shop.dice.cell.x, shop.dice.cell.y); // cell.x, cell.y = dice display position
         setScore(player.score);                       // JavaRushTV
@@ -380,8 +381,9 @@ public class MinesweeperGame extends Game {
         int randomNumber = getRandomNumber(6) + 1;
         shop.dice.setImage(randomNumber, x, y);
         player.score += difficulty * (shop.luckyDice.isActivated() ? randomNumber : 1);
-        if (shop.luckyDice.isActivated())
+        if (shop.luckyDice.isActivated()) {
             player.scoreDice += (player.score - scoreBeforeDice) - difficulty;
+        }
     }
 
     private void replantMine(Cell cell) {

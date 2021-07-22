@@ -16,6 +16,7 @@ public class Player {
     public int scoreCell;
     public int scoreTimer;
     public int countMoves;
+    public int openedCells;
 
     public Player(MinesweeperGame game){
         this.game = game;
@@ -29,6 +30,7 @@ public class Player {
         scoreCell = 0;
         countMoves = 0;
         scoreTimer = 0;
+        openedCells = 0;
     }
 
     public void registerTopScore() {

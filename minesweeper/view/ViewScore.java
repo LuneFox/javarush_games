@@ -21,7 +21,7 @@ public final class ViewScore extends View {
         String minesScoreDetail = 20 * game.difficulty + "*" + minesCount + " = ";
         int moneyScore = game.inventory.money * game.difficulty;
         String moneyScoreDetail = game.inventory.money + "*" + game.difficulty + " = ";
-        String cellScoreDetail = game.countAllCells(MinesweeperGame.Filter.OPEN) + "*" + game.difficulty + " = ";
+        String cellScoreDetail = game.player.openedCells + "*" + game.difficulty + " = ";
 
         String youLost = "вы проиграли";
         game.print("подробно", Color.YELLOW, 29, 2);
