@@ -1,7 +1,5 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.games.minesweeper.view.View;
-
 /**
  * Contains player data like score
  */
@@ -18,12 +16,12 @@ public class Player {
     public int countMoves;
     public int openedCells;
 
-    public Player(MinesweeperGame game){
+    public Player(MinesweeperGame game) {
         this.game = game;
         reset();
     }
 
-    public void reset(){
+    public void reset() {
         score = 0;
         scoreLost = 0;
         scoreDice = 0;
@@ -36,7 +34,7 @@ public class Player {
     public void registerTopScore() {
         if (score > topScore) {
             topScore = score;
-            topScoreTitle = View.options.getDifficultyFormat().format(game.difficulty);
+            topScoreTitle = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(game.difficulty)];
         }
     }
 }

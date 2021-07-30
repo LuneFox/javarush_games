@@ -4,12 +4,12 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
+import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.graphics.Picture;
 
-import java.text.ChoiceFormat;
 import java.util.LinkedList;
 
 public final class ViewOptions extends View {
@@ -20,11 +20,7 @@ public final class ViewOptions extends View {
     public final Area switchGameTimerArea = new Area(new int[]{80, 91, 64, 70});
 
     public int difficultySetting;
-    public boolean timerEnabledSetting;
-
-    private final double[] difficultyRanges = {5d, 10d, 15d, 20d, 25d, 30d, 35d, 40d, 45d};
-    private final String[] difficultyNames = Strings.DIFFICULTY_NAMES;
-    private final ChoiceFormat difficultyFormat = new ChoiceFormat(difficultyRanges, difficultyNames);
+    public boolean timerEnabledSetting;а
 
     public ViewOptions(MinesweeperGame game) {
         this.game = game;
@@ -38,7 +34,7 @@ public final class ViewOptions extends View {
         Image arrowButton = IMAGES.get(Bitmap.MENU_ARROW);
         Image switchButton = IMAGES.get(Bitmap.MENU_SWITCH);
         Image switchRail = IMAGES.get(Bitmap.MENU_SWITCH_RAIL);
-        String difficultyName = difficultyFormat.format(difficultySetting);
+        String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(difficultySetting)];
 
 
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
@@ -109,9 +105,5 @@ public final class ViewOptions extends View {
     public void switchGameTimer() {
         timerEnabledSetting = !timerEnabledSetting;
         display();
-    }
-
-    public ChoiceFormat getDifficultyFormat() {
-        return difficultyFormat;
     }
 }
