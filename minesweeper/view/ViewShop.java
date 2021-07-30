@@ -1,10 +1,7 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.InputEvent;
-import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.ShopItem;
+import com.javarush.games.minesweeper.*;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Image;
 
@@ -33,7 +30,7 @@ public final class ViewShop extends View {
         IMAGES.get(Bitmap.BOARD_FLAG).drawAt(39, 11);
         IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
-        game.print("" + game.countAllCells(MinesweeperGame.Filter.DANGEROUS), 22, 12);
+        game.print("" + game.countAllCells(Util.Filter.DANGEROUS), 22, 12);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
         game.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
         game.print("* магазин *", Color.DARKSEAGREEN, 25, 22);

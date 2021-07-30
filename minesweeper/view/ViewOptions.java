@@ -25,6 +25,7 @@ public final class ViewOptions extends View {
     public ViewOptions(MinesweeperGame game) {
         this.game = game;
         this.difficultySetting = game.difficulty;
+        this.timerEnabledSetting = game.timer.enabled;
         this.screenType = Screen.ScreenType.OPTIONS;
     }
 
@@ -48,7 +49,7 @@ public final class ViewOptions extends View {
 
         game.print("покупка\nфлажков", 2, 40);
         switchRail.drawAt(80, 42);
-        if (game.shop.autoBuyFlagsOptionOn) {
+        if (game.shop.autoBuyFlagsEnabled) {
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(88, 40);
             game.print("авто", Color.SALMON, 93, 48, true);
@@ -98,7 +99,7 @@ public final class ViewOptions extends View {
     }
 
     public void switchAutoBuyFlags() {
-        game.shop.autoBuyFlagsOptionOn = !game.shop.autoBuyFlagsOptionOn;
+        game.shop.autoBuyFlagsEnabled = !game.shop.autoBuyFlagsEnabled;
         display();
     }
 

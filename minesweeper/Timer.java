@@ -16,7 +16,7 @@ public class Timer {
         this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         this.time = 0;
         this.game = game;
-        this.enabled = true;
+        this.enabled = false;
         this.lastTickTime = new Date();
     }
 

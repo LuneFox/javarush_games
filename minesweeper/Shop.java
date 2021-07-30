@@ -22,7 +22,7 @@ public class Shop {
     public ShopItem miniBomb;
     public final LinkedList<ShopItem> allItems = new LinkedList<>();
     public Dice dice;
-    public boolean autoBuyFlagsOptionOn;
+    public boolean autoBuyFlagsEnabled;
     public boolean isUnaffordableAnimationTrigger;
     public boolean isAlreadyActivatedAnimationTrigger;
 
@@ -109,7 +109,7 @@ public class Shop {
     }
 
     private int getFlagsAmount() {
-        return game.countAllCells(MinesweeperGame.Filter.MINED) - game.inventory.INIT_FLAGS;
+        return game.countAllCells(Util.Filter.MINED) - game.inventory.INIT_FLAGS;
     }
 
     private void drawColoredFrame(Color color) {

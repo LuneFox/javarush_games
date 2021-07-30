@@ -6,6 +6,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Printer;
 import com.javarush.games.minesweeper.view.View;
+import com.javarush.games.minesweeper.Util.Filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,8 +39,6 @@ public class MinesweeperGame extends Game {
     public boolean allowFlagExplosion;
     public boolean lastResultIsVictory;
     public boolean isStopped;
-
-    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED}
 
     // NEW GAME
 
@@ -240,28 +239,43 @@ public class MinesweeperGame extends Game {
         if (cell.isOpen) return;
 
         if (cell.isFlagged && canRemove) {
-            inventory.add(ShopItem.ID.FLAG);
-            cell.isFlagged = false;
-            cell.eraseSprite();
+            returnFlagToInventory(cell);
         } else {
-            if (inventory.getCount(ShopItem.ID.FLAG) == 0) { // IN CASE OF NO FLAGS IN THE INVENTORY:
-                if (shop.autoBuyFlagsOptionOn) {             // if auto-buy is on
-                    if (shop.flag.isUnobtainable()) {        //    but you can't buy
-                        return;                              //        do nothing and return
-                    }                                        //    but if you can
-                    shop.sell(shop.flag);                    //        shop sells you one
-                } else {                                     // if auto-buy is off,
-                    View.shop.display();                     //    proceed to shop
-                    return;
-                }
+            if (canPlaceFlag()) {
+                placeFlagFromInventory(cell);
             }
+        }
+    }
 
-            if (!cell.isFlagged) { // don't do anything to cells that have flags
-                inventory.remove(ShopItem.ID.FLAG);
-                cell.isFlagged = true;
-                cell.assignSprite(Bitmap.BOARD_FLAG);
-                cell.drawSprite();
+    private void returnFlagToInventory(Cell cell) {
+        inventory.add(ShopItem.ID.FLAG);
+        cell.isFlagged = false;
+        cell.eraseSprite();
+    }
+
+    private void placeFlagFromInventory(Cell cell) {
+        if (!cell.isFlagged) { // don't do anything to cells that have flags
+            inventory.remove(ShopItem.ID.FLAG);
+            cell.isFlagged = true;
+            cell.assignSprite(Bitmap.BOARD_FLAG);
+            cell.drawSprite();
+        }
+    }
+
+    private boolean canPlaceFlag() {
+        if (inventory.noFlags()) {
+            if (shop.autoBuyFlagsEnabled) {
+                if (shop.flag.isUnobtainable()) {
+                    return false;
+                }
+                shop.sell(shop.flag);
+                return true;
+            } else {
+                View.shop.display();
+                return false;
             }
+        } else {
+            return true;
         }
     }
 
@@ -283,7 +297,7 @@ public class MinesweeperGame extends Game {
         List<Cell> neighbors = getNeighborCells(field[y][x], Filter.SAFE, true);
         if (neighbors.size() == 0) { // no safe cells
             getNeighborCells(field[y][x], Filter.CLOSED, true).forEach(closedCell -> {
-                if (inventory.getCount(ShopItem.ID.FLAG) == 0) {
+                if (inventory.noFlags()) {
                     shop.give(shop.flag); // get a free flag from the shop
                 }
                 setFlag(closedCell.x, closedCell.y, false); // set flag forcefully
@@ -305,7 +319,7 @@ public class MinesweeperGame extends Game {
         for (int y = 0; y < 10; y++) {
             all.addAll(Arrays.asList(field[y]).subList(0, 10));
         }
-        return filterCells(all, filter);
+        return Util.filterCells(all, filter);
     }
 
     private List<Cell> getNeighborCells(Cell cell, Filter filter, boolean includeSelf) {
@@ -318,41 +332,7 @@ public class MinesweeperGame extends Game {
                 neighbors.add(field[y][x]);
             }
         }
-        return filterCells(neighbors, filter);
-    }
-
-    private List<Cell> filterCells(List<Cell> list, Filter filter) {
-        List<Cell> result = new ArrayList<>();
-        list.forEach(cell -> {
-            switch (filter) {
-                case CLOSED:
-                    if (!cell.isOpen) result.add(cell);
-                    break;
-                case OPEN:
-                    if (cell.isOpen) result.add(cell);
-                    break;
-                case MINED:
-                    if (cell.isMined) result.add(cell);
-                    break;
-                case DANGEROUS:
-                    if (cell.isDangerous()) result.add(cell);
-                    break;
-                case NUMERABLE:
-                    if (cell.isNumerable()) result.add(cell);
-                    break;
-                case SUSPECTED:
-                    if (cell.isSuspected()) result.add(cell);
-                    break;
-                case SAFE:
-                    if (cell.isSafe()) result.add(cell);
-                    break;
-                case NONE:
-                default:
-                    result.add(cell);
-                    break;
-            }
-        });
-        return result;
+        return Util.filterCells(neighbors, filter);
     }
 
     private void assignMineNumbersToCells() {
