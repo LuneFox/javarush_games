@@ -31,21 +31,7 @@ public class Shop {
     }
 
     public void sell(ShopItem item) {
-        if (item.isActivated()) {
-            isAlreadyActivatedAnimationTrigger = true;
-            View.shop.shakeAnimationCountDown();
-            return;
-        } else if (item.inStock == 0) {
-            return;
-        } else if (item.isUnaffordable()) {
-            isUnaffordableAnimationTrigger = true;
-            View.shop.shakeAnimationCountDown();
-            return;
-        } else {
-            item.inStock--;
-            game.inventory.money -= item.cost;
-            game.inventory.add(item.id);
-        }
+        if (!itemIsSold(item)) return;
         switch (item.id) {
             case SHIELD:
                 shield.activate();
@@ -72,6 +58,25 @@ public class Shop {
                 break;
             default:
                 break;
+        }
+    }
+
+    private boolean itemIsSold(ShopItem item) {
+        if (item.isActivated()) {
+            isAlreadyActivatedAnimationTrigger = true;
+            View.shop.shakeAnimationCountDown();
+            return false;
+        } else if (item.inStock == 0) {
+            return false;
+        } else if (item.isUnaffordable()) {
+            isUnaffordableAnimationTrigger = true;
+            View.shop.shakeAnimationCountDown();
+            return false;
+        } else {
+            item.inStock--;
+            game.inventory.money -= item.cost;
+            game.inventory.add(item.id);
+            return true;
         }
     }
 
