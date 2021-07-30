@@ -29,14 +29,12 @@ public class MinesweeperGame extends Game {
     private final InputEvent ie = new InputEvent(this);
 
     // GAME STATE
-    public static int staticDifficulty;
     public int difficulty = 10;
-    public int difficultyInOptionsScreen = 10;
 
     // FLAGS
     public boolean evenTurn; // is now even turn or odd turn? helps with animation of certain elements
     private boolean isFirstMove;
-    public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow to count as a move
+    public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
     public boolean allowFlagExplosion;
     public boolean lastResultIsVictory;
     public boolean isStopped;
@@ -110,13 +108,8 @@ public class MinesweeperGame extends Game {
     }
 
     private void applyOptions() {
-        staticDifficulty = difficultyInOptionsScreen;
-        difficulty = difficultyInOptionsScreen;
-        timer.isOn = timer.optionIsOn;
-    }
-
-    public static int getDifficulty() {
-        return staticDifficulty;
+        difficulty = View.options.difficultySetting;
+        timer.enabled = View.options.timerEnabledSetting;
     }
 
     private void createField() {

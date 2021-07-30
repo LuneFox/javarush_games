@@ -3,21 +3,32 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
+import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.graphics.Picture;
 
+import java.text.ChoiceFormat;
 import java.util.LinkedList;
 
 public final class ViewOptions extends View {
-    public Area difficultyDownArea = new Area(new int[]{49, 53, 22, 28});
-    public Area difficultyUpArea = new Area(new int[]{93, 97, 22, 28});
-    public Area autoBuyFlagsArea = new Area(new int[]{80, 91, 41, 47});
-    public Area switchGameTimerArea = new Area(new int[]{80, 91, 64, 70});
+
+    public final Area difficultyDownArea = new Area(new int[]{49, 53, 22, 28});
+    public final Area difficultyUpArea = new Area(new int[]{93, 97, 22, 28});
+    public final Area autoBuyFlagsArea = new Area(new int[]{80, 91, 41, 47});
+    public final Area switchGameTimerArea = new Area(new int[]{80, 91, 64, 70});
+
+    public int difficultySetting;
+    public boolean timerEnabledSetting;
+
+    private final double[] difficultyRanges = {5d, 10d, 15d, 20d, 25d, 30d, 35d, 40d, 45d};
+    private final String[] difficultyNames = Strings.DIFFICULTY_NAMES;
+    private final ChoiceFormat difficultyFormat = new ChoiceFormat(difficultyRanges, difficultyNames);
 
     public ViewOptions(MinesweeperGame game) {
         this.game = game;
+        this.difficultySetting = game.difficulty;
         this.screenType = Screen.ScreenType.OPTIONS;
     }
 
@@ -27,7 +38,8 @@ public final class ViewOptions extends View {
         Image arrowButton = IMAGES.get(Bitmap.MENU_ARROW);
         Image switchButton = IMAGES.get(Bitmap.MENU_SWITCH);
         Image switchRail = IMAGES.get(Bitmap.MENU_SWITCH_RAIL);
-        String difficultyName = DIFFICULTY_NAMES.get(game.difficultyInOptionsScreen / 5 - 1);
+        String difficultyName = difficultyFormat.format(difficultySetting);
+
 
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
         game.print("настройки", Color.YELLOW, 28, 2);
@@ -53,7 +65,7 @@ public final class ViewOptions extends View {
 
         game.print("игра на время", 2, 63);
         switchRail.drawAt(80, 65);
-        if (game.timer.optionIsOn) {
+        if (timerEnabledSetting) {
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(88, 63);
             game.print("да", Color.SALMON, 93, 71, true);
@@ -70,7 +82,7 @@ public final class ViewOptions extends View {
 
     private void displayDifficultyBar() {
         LinkedList<Picture> bars = new LinkedList<>();
-        for (int i = 0; i < game.difficultyInOptionsScreen / 5; i++) {
+        for (int i = 0; i < difficultySetting / 5; i++) {
             Picture bar = new Picture(Bitmap.MENU_DIFFICULTY_BAR, game, (i * 4) + 56, 21);
             if (i > 1) bar.replaceColor(Color.YELLOW, 1);
             if (i > 3) bar.replaceColor(Color.ORANGE, 1);
@@ -80,22 +92,26 @@ public final class ViewOptions extends View {
         bars.forEach(Image::draw);
     }
 
-    public final void changeDifficulty(boolean harder) {
-        if (harder && game.difficultyInOptionsScreen < 45) {
-            game.difficultyInOptionsScreen += 5;
-        } else if (!harder && game.difficultyInOptionsScreen > 5) {
-            game.difficultyInOptionsScreen -= 5;
+    public void changeDifficulty(boolean harder) {
+        if (harder && difficultySetting < 45) {
+            difficultySetting += 5;
+        } else if (!harder && difficultySetting > 5) {
+            difficultySetting -= 5;
         }
         display();
     }
 
-    public final void switchAutoBuyFlags() {
+    public void switchAutoBuyFlags() {
         game.shop.autoBuyFlagsOptionOn = !game.shop.autoBuyFlagsOptionOn;
         display();
     }
 
-    public final void switchGameTimer() {
-        game.timer.optionIsOn = !game.timer.optionIsOn;
+    public void switchGameTimer() {
+        timerEnabledSetting = !timerEnabledSetting;
         display();
+    }
+
+    public ChoiceFormat getDifficultyFormat() {
+        return difficultyFormat;
     }
 }

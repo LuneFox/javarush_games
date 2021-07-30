@@ -36,7 +36,7 @@ public class Player {
     public void registerTopScore() {
         if (score > topScore) {
             topScore = score;
-            topScoreTitle = View.DIFFICULTY_NAMES.get(game.difficulty / 5 - 1);
+            topScoreTitle = View.options.getDifficultyFormat().format(game.difficulty);
         }
     }
 }

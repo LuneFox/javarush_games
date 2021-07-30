@@ -3,14 +3,11 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Screen.ScreenType;
-import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 /**
  * Class for displaying various menus on the screen.
@@ -30,7 +27,6 @@ public class View {
     public static ViewScore score;
     public static final HashMap<Bitmap, Image> IMAGES = new HashMap<>();
     public static final HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
-    public static final LinkedList<String> DIFFICULTY_NAMES = new LinkedList<>();
 
     public View() {
 
@@ -40,7 +36,6 @@ public class View {
         this.game = game;
         loadImages();
         loadButtons();
-        Collections.addAll(DIFFICULTY_NAMES, Strings.DIFFICULTY_NAMES);
     }
 
     public void createSubViews() {
