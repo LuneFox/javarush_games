@@ -263,7 +263,7 @@ public class MinesweeperGame extends Game {
     }
 
     private boolean canPlaceFlag() {
-        if (inventory.noFlags()) {
+        if (inventory.hasNoFlags()) {
             if (shop.autoBuyFlagsEnabled) {
                 if (shop.flag.isUnobtainable()) {
                     return false;
@@ -295,15 +295,15 @@ public class MinesweeperGame extends Game {
 
     public void scanNeighbors(int x, int y) { // to use with a scanner item
         List<Cell> neighbors = getNeighborCells(field[y][x], Filter.SAFE, true);
+
         if (neighbors.size() == 0) { // no safe cells
             getNeighborCells(field[y][x], Filter.CLOSED, true).forEach(closedCell -> {
-                if (inventory.noFlags()) {
-                    shop.give(shop.flag); // get a free flag from the shop
-                }
+                if (inventory.hasNoFlags()) shop.give(shop.flag);
                 setFlag(closedCell.x, closedCell.y, false); // set flag forcefully
             });
             return;
         }
+
         Cell cell = neighbors.get(getRandomNumber(neighbors.size()));
         cell.isScanned = true;
         if (cell.isFlagged) {
@@ -311,8 +311,6 @@ public class MinesweeperGame extends Game {
         }
         openCell(cell.x, cell.y);
     }
-
-    // COLLECTING SURROUNDING CELLS & INFO
 
     private List<Cell> getAllCells(Filter filter) {
         List<Cell> all = new ArrayList<>();
@@ -326,8 +324,8 @@ public class MinesweeperGame extends Game {
         List<Cell> neighbors = new ArrayList<>();
         for (int y = cell.y - 1; y <= cell.y + 1; y++) {
             for (int x = cell.x - 1; x <= cell.x + 1; x++) {
-                if (y < 0 || y >= 10) continue;     // skip out of borders
-                if (x < 0 || x >= 10) continue;     // skip out of borders
+                if (y < 0 || y >= 10) continue;
+                if (x < 0 || x >= 10) continue;
                 if (field[y][x] == cell && !includeSelf) continue;  // skip center if not included
                 neighbors.add(field[y][x]);
             }
@@ -354,9 +352,7 @@ public class MinesweeperGame extends Game {
         int randomNumber = getRandomNumber(6) + 1;
         shop.dice.setImage(randomNumber, x, y);
         player.score += difficulty * (shop.luckyDice.isActivated() ? randomNumber : 1);
-        if (shop.luckyDice.isActivated()) {
-            player.scoreDice += (player.score - scoreBeforeDice) - difficulty;
-        }
+        if (shop.luckyDice.isActivated()) player.scoreDice += (player.score - scoreBeforeDice) - difficulty;
     }
 
     private void replantMine(Cell cell) {

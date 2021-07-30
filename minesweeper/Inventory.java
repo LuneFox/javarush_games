@@ -39,7 +39,7 @@ public class Inventory {
         return items.get(itemID);
     }
 
-    public boolean noFlags() {
+    public boolean hasNoFlags() {
         return items.get(ShopItem.ID.FLAG) == 0;
     }
 }
