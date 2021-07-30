@@ -20,7 +20,7 @@ public final class ViewOptions extends View {
     public final Area switchGameTimerArea = new Area(new int[]{80, 91, 64, 70});
 
     public int difficultySetting;
-    public boolean timerEnabledSetting;а
+    public boolean timerEnabledSetting;
 
     public ViewOptions(MinesweeperGame game) {
         this.game = game;
