@@ -7,13 +7,12 @@ import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Button;
 
 public final class ViewGameOver extends View {
-    public int displayDelay;  // defines how soon will game over screen show up
+    public int popUpTimer;  // defines how soon will game over screen show up
     public Area scoreArea = new Area(new int[]{18, 37, 60, 64});
 
     public ViewGameOver(MinesweeperGame game) {
         this.game = game;
         this.screenType = Screen.ScreenType.GAME_OVER;
-        this.displayDelay = 0;
     }
 
     @Override
@@ -21,10 +20,17 @@ public final class ViewGameOver extends View {
 
     }
 
-    public void display(boolean victory, int delay) {
+    public void display(boolean victory, int popUpDelay) {
+        if (popUpTimer > 0) {
+            popUpTimer--;
+            return;
+        }
+
+        View.board.display();
         super.display();
-        displayDelay = delay;
-        if (displayDelay > 0) return;
+        popUpTimer = popUpDelay;
+
+        if (popUpTimer > 0) return;
         if (victory) {
             IMAGES.get(Bitmap.WINDOW_VICTORY).drawAt(-1, -1);
             IMAGES.get(Bitmap.FACE_HAPPY).drawAt(-1, -1);

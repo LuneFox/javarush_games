@@ -66,20 +66,23 @@ public class MinesweeperGame extends Game {
                 View.main.display();
                 break;
             case GAME_OVER:
-                if (View.gameOver.displayDelay <= 0) {
-                    View.board.display();
-                    View.gameOver.display(lastResultIsVictory, 0);
-                } else {
-                    View.gameOver.displayDelay--;
-                }
+                View.gameOver.display(lastResultIsVictory, 0);
                 break;
             case GAME_BOARD:
-                if (timeOutCheck()) return;
-                View.board.display();
+                if (timeOut()) {
+                    loseByTimeOut();
+                    return;
+                } else {
+                    View.board.display();
+                }
                 break;
             case SHOP:
-                if (timeOutCheck()) return;
-                View.shop.display();
+                if (timeOut()) {
+                    loseByTimeOut();
+                    return;
+                } else {
+                    View.shop.display();
+                }
                 break;
             default:
                 break;
@@ -90,9 +93,9 @@ public class MinesweeperGame extends Game {
     void createGame() {
         applyOptions();    // difficulty impacts the number of mines created below
         createField();
-        plantMines();      // number of mines define the number of flags given below
+        plantMines();      // number of mines define the number of flags given out below
         resetValues();
-        assignMineNumbersToCells();
+        enumerateCells();
         View.board.display();
         setScore(player.score);
     }
@@ -146,20 +149,23 @@ public class MinesweeperGame extends Game {
         View.gameOver.display(true, 30);
     }
 
-    private boolean timeOutCheck() {
-        if (timer.isZero() && !isStopped) {
-            View.board.display();
-            revealAllMines();
-            lose();
-            View.gameOver.display(false, 30);
-            return true;
-        }
+    public boolean timeOut() {
         if (!isStopped) {
-            timer.countDown();
+            if (timer.isZero()) {
+                return true;
+            } else {
+                timer.countDown();
+            }
         }
         return false;
     }
 
+    public void loseByTimeOut() {
+        View.board.display();
+        revealAllMines();
+        lose();
+        View.gameOver.display(false, 30);
+    }
 
     // ACTIVE CELL OPERATIONS
 
@@ -228,7 +234,7 @@ public class MinesweeperGame extends Game {
                     destroyCell(neighbor.x, neighbor.y); // recursive call
                 }
             });
-            assignMineNumbersToCells();
+            enumerateCells();
             redrawAllCells();
         }
     }
@@ -333,7 +339,7 @@ public class MinesweeperGame extends Game {
         return Util.filterCells(neighbors, filter);
     }
 
-    private void assignMineNumbersToCells() {
+    private void enumerateCells() {
         getAllCells(Filter.NUMERABLE).forEach(cell -> {
             cell.countMinedNeighbors = getNeighborCells(cell, Filter.MINED, false).size();
             cell.assignSprite(cell.countMinedNeighbors);
@@ -359,7 +365,7 @@ public class MinesweeperGame extends Game {
         cell.eraseSprite();
         cell.isMined = false;
         plantMines();
-        assignMineNumbersToCells();
+        enumerateCells();
     }
 
     private void explodeAndGameOver(Cell cell) {

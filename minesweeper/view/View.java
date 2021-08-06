@@ -127,8 +127,8 @@ public class View {
     public static class Area {
         private final int[] coords;
 
-        public Area(int[] coords) {
-            this.coords = coords;
+        public Area(int[] coordinates) {
+            this.coords = coordinates;
         }
 
         public boolean covers(int x, int y) {

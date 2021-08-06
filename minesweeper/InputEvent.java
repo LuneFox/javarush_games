@@ -20,12 +20,12 @@ public class InputEvent {
     }
 
     final void leftClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || View.gameOver.displayDelay > 0) return;
+        if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
         leftClickAction(x, y, Screen.getType());
     }
 
     final void rightClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || View.gameOver.displayDelay > 0) return;
+        if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
         rightClickAction(x, y, Screen.getType());
         // System.out.printf("%d %d%n", x, y);
     }
@@ -146,7 +146,7 @@ public class InputEvent {
     }
 
     final void keyPressAction(Key key) {
-        if (View.gameOver.displayDelay > 0) return;
+        if (View.gameOver.popUpTimer > 0) return;
         ScreenType screen = Screen.getType();
         switch (key) {
             case SPACE:

@@ -12,7 +12,7 @@ public final class ViewBoard extends View {
     }
 
     @Override
-    public void display(){
+    public void display() {
         super.display();
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {

@@ -30,12 +30,12 @@ public final class ViewAbout extends View {
         game.print((currentAboutPage + 1) + " / " + Strings.ABOUT_HEAD.length, 20, 88);
     }
 
-    public final void prevPage() {
+    public void prevPage() {
         currentAboutPage = currentAboutPage <= 0 ? 0 : currentAboutPage - 1;
         display();
     }
 
-    public final void nextPage() {
+    public void nextPage() {
         int lastPage = Strings.ABOUT_HEAD.length - 1;
         currentAboutPage = currentAboutPage >= lastPage ? lastPage : currentAboutPage + 1;
         display();
