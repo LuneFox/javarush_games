@@ -1,25 +1,28 @@
 package com.javarush.games.minesweeper;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Screen {
     private final ScreenType screenType;
     private static final ArrayList<Screen> screens = new ArrayList<>();
 
     public enum ScreenType {
-        MAIN_MENU, GAME_OVER, SHOP, GAME_BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE, RECORDS
+        MAIN_MENU, GAME_OVER, SHOP, BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE, RECORDS
     }
 
     static {
-        screens.add(new Screen(ScreenType.MAIN_MENU));
-        screens.add(new Screen(ScreenType.GAME_BOARD));
-        screens.add(new Screen(ScreenType.GAME_OVER));
-        screens.add(new Screen(ScreenType.SHOP));
-        screens.add(new Screen(ScreenType.OPTIONS));
-        screens.add(new Screen(ScreenType.ABOUT));
-        screens.add(new Screen(ScreenType.ITEM_HELP));
-        screens.add(new Screen(ScreenType.SCORE));
-        screens.add(new Screen(ScreenType.RECORDS));
+        screens.addAll(Arrays.asList(
+                new Screen(ScreenType.MAIN_MENU),
+                new Screen(ScreenType.BOARD),
+                new Screen(ScreenType.GAME_OVER),
+                new Screen(ScreenType.SHOP),
+                new Screen(ScreenType.OPTIONS),
+                new Screen(ScreenType.ABOUT),
+                new Screen(ScreenType.ITEM_HELP),
+                new Screen(ScreenType.SCORE),
+                new Screen(ScreenType.RECORDS)
+        ));
     }
 
     private Screen(ScreenType screenType) {
@@ -28,11 +31,7 @@ public class Screen {
 
     public static void setType(ScreenType screenType) { // bringing active screen to the top of the list
         Screen screen = null;
-        for (Screen s : screens) {
-            if (s.screenType == screenType) {
-                screen = s;
-            }
-        }
+        for (Screen s : screens) if (s.screenType == screenType) screen = s;
         screens.remove(screen);
         screens.add(0, screen);
     }

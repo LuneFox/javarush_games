@@ -9,6 +9,8 @@ import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import static com.javarush.games.minesweeper.Util.inside;
+
 /**
  * Class for displaying various menus on the screen.
  */
@@ -132,7 +134,7 @@ public class View {
         }
 
         public boolean covers(int x, int y) {
-            return (x >= coords[0] && x <= coords[1] && y >= coords[2] && y <= coords[3]);
+            return inside(x, coords[0], coords[1]) && inside(y, coords[2], coords[3]);
         }
     }
 

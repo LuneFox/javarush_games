@@ -68,7 +68,7 @@ public class MinesweeperGame extends Game {
             case GAME_OVER:
                 View.gameOver.display(lastResultIsVictory, 0);
                 break;
-            case GAME_BOARD:
+            case BOARD:
                 if (timeOut()) {
                     loseByTimeOut();
                     return;
@@ -173,7 +173,7 @@ public class MinesweeperGame extends Game {
         Cell cell = field[y][x];
 
         if (shop.miniBomb.use(cell) || shop.scanner.use(cell)) return;
-        if (allowCountMoves) shop.dice.cell = cell;
+        if (allowCountMoves) shop.dice.appearCell = cell;
         if (isStopped || cell.isFlagged || cell.isOpen) return;
 
         pushCell(cell);                 // change visuals, set isOpen flag
@@ -183,8 +183,8 @@ public class MinesweeperGame extends Game {
 
         player.openedCells++;
         inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
-        addScore(shop.dice.cell.x, shop.dice.cell.y); // cell.x, cell.y = dice display position
-        setScore(player.score);                       // JavaRushTV
+        addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // cell.x, cell.y = dice display position
+        setScore(player.score);                                   // JavaRushTV
         deactivateExpiredItems();
 
         checkVictory();
@@ -378,15 +378,13 @@ public class MinesweeperGame extends Game {
     }
 
     private void displayDice() {
-        int diceTurns;
-        diceTurns = (shop.luckyDice == null) ? -1 : shop.luckyDice.expireMove - player.countMoves;
-        if (diceTurns > -1 && diceTurns < 3 && player.countMoves != 0)
-            shop.dice.draw();
+        if (shop.luckyDice == null) return;
+        int remainingTurns = shop.luckyDice.expireMove - player.countMoves;
+        if (Util.inside(remainingTurns, 0, 2) && player.countMoves != 0) shop.dice.draw();
     }
 
     void hideDice() {
-        if (shop.miniBomb != null)
-            shop.dice.isHidden = shop.miniBomb.isActivated();
+        if (shop.miniBomb != null) shop.dice.isHidden = shop.miniBomb.isActivated();
     }
 
 

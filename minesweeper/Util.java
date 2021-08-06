@@ -40,6 +40,18 @@ public class Util {
         return result;
     }
 
+    public static boolean inside(int number, int from, int to) {
+        return (number >= from && number <= to);
+    }
+
+    public static boolean outside(int number, int from, int to) {
+        return (number < from || number > to);
+    }
+
+    public static boolean isOnScreen(int x, int y){
+        return (x >= 0 && y >= 0 && x < 100 && y < 100);
+    }
+
     public static int getDifficultyIndex(int difficultyIndex) {
         return (difficultyIndex / 5 - 1);
     }

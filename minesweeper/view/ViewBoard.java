@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.graphics.Bitmap;
 public final class ViewBoard extends View {
     public ViewBoard(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.GAME_BOARD;
+        this.screenType = Screen.ScreenType.BOARD;
     }
 
     @Override

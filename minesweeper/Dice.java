@@ -9,12 +9,15 @@ import com.javarush.games.minesweeper.view.View;
  */
 
 public class Dice {
-    public Cell cell; // appears at this cell
+    public Cell appearCell;
+    public boolean isHidden;
     private int x;
     private int y;
-    private int showDelay;
+    private int onScreenTime;
     private Image image;
-    boolean isHidden;
+    private final Image[] images = {
+            View.IMAGES.get(Bitmap.DICE_1), View.IMAGES.get(Bitmap.DICE_2), View.IMAGES.get(Bitmap.DICE_3),
+            View.IMAGES.get(Bitmap.DICE_4), View.IMAGES.get(Bitmap.DICE_5), View.IMAGES.get(Bitmap.DICE_6)};
 
     public Dice(int number) {
         setImage(number, 0, 0);
@@ -24,33 +27,13 @@ public class Dice {
     public void setImage(int number, int x, int y) {
         this.x = x;
         this.y = y;
-        this.showDelay = 0;
-        switch (number) {
-            case 2:
-                image = View.IMAGES.get(Bitmap.DICE_2);
-                break;
-            case 3:
-                image = View.IMAGES.get(Bitmap.DICE_3);
-                break;
-            case 4:
-                image = View.IMAGES.get(Bitmap.DICE_4);
-                break;
-            case 5:
-                image = View.IMAGES.get(Bitmap.DICE_5);
-                break;
-            case 6:
-                image = View.IMAGES.get(Bitmap.DICE_6);
-                break;
-            default:
-                image = View.IMAGES.get(Bitmap.DICE_1);
-                break;
-        }
+        this.onScreenTime = 0;
+        image = images[number - 1];
     }
 
     public void draw() {
         if (!isHidden) {
-            if (showDelay < 20) {
-                showDelay++;
+            if (onScreenTime++ < 20) {
                 image.drawAt(this.x * 10 + 2, this.y * 10 + 2);
             }
         }

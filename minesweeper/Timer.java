@@ -30,12 +30,16 @@ public class Timer {
 
     public void countDown() {
         if (enabled && ((new Date().getTime() - lastTickTime.getTime()) >= 1000)) {
-            time = (time > 0) ? time -= game.difficulty : 0;
-            Color swap = COLORS[0];
-            COLORS[0] = COLORS[1];
-            COLORS[1] = swap;
+            time = (time > 0) ? time - game.difficulty : 0;
+            swapColor();
             lastTickTime = new Date();
         }
+    }
+
+    public void swapColor(){
+        Color swap = COLORS[0];
+        COLORS[0] = COLORS[1];
+        COLORS[1] = swap;
     }
 
     public void restart() {

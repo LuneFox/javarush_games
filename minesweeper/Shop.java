@@ -6,6 +6,7 @@ import com.javarush.games.minesweeper.graphics.Picture;
 import com.javarush.games.minesweeper.view.View;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -14,6 +15,8 @@ import java.util.LinkedList;
 
 public class Shop {
     final private MinesweeperGame game;
+    public double lastClickTime;
+    public int lastClickedItemNumber;
     public ShopItem shield;
     public ShopItem scanner;
     public ShopItem flag;
@@ -85,6 +88,13 @@ public class Shop {
             game.inventory.add(item.id);
             item.inStock--;
         }
+    }
+
+    public void sellAndRememberLastClick(ShopItem item) {
+        if (item == null) return;
+        lastClickTime = new Date().getTime();
+        lastClickedItemNumber = item.number;
+        sell(item);
     }
 
     public void restock(ShopItem item, int amount) {

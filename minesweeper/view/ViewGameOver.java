@@ -21,11 +21,7 @@ public final class ViewGameOver extends View {
     }
 
     public void display(boolean victory, int popUpDelay) {
-        if (popUpTimer > 0) {
-            popUpTimer--;
-            return;
-        }
-
+        if (popUpTimer-- > 0) return;
         View.board.display();
         super.display();
         popUpTimer = popUpDelay;

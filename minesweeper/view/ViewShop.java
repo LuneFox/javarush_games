@@ -11,7 +11,6 @@ public final class ViewShop extends View {
     public int moneyOnDisplay;                                            // for smooth animation, runs towards money
     public int shakingAnimationMaxTurns = 15;                             // number of turns to shake the item
     public int shakingAnimationCurrentTurn = shakingAnimationMaxTurns;    // counts towards zero
-    public int lastClickedItemNumber; // defines what frame in the shop was pushed last time
 
     public ViewShop(MinesweeperGame game) {
         this.game = game;
@@ -20,6 +19,9 @@ public final class ViewShop extends View {
 
     @Override
     public void display() {
+        if (Screen.getType() != Screen.ScreenType.SHOP) { // if changed from screen other than shop, don't animate money
+            View.shop.moneyOnDisplay = game.inventory.money;
+        }
         super.display();
         game.redrawAllCells();
         shakeAnimationCountDown();
@@ -48,7 +50,7 @@ public final class ViewShop extends View {
         Color frameColor;
         int currentFrame = -1; // to detect which frame is being drawn right now
         int shift;             // to shift pushed animation by this value when the button is pressed
-        boolean littleTimePassed = (new Date().getTime() - InputEvent.lastClickInShopTime < 100);
+        boolean littleTimePassed = (new Date().getTime() - game.shop.lastClickTime < 100);
 
         for (int y = 0; y < 2; y++) {
             int dy = y * 25;
@@ -56,7 +58,7 @@ public final class ViewShop extends View {
                 int dx = x * 25;
                 ShopItem item = game.shop.allItems.get(x + y * 3);
                 currentFrame++;
-                boolean justClickedIt = (currentFrame == lastClickedItemNumber && littleTimePassed);
+                boolean justClickedIt = (currentFrame == game.shop.lastClickedItemNumber && littleTimePassed);
                 frame = justClickedIt ? IMAGES.get(Bitmap.ITEM_FRAME_PRESSED) : IMAGES.get(Bitmap.ITEM_FRAME);
                 shift = justClickedIt ? 1 : 0;
                 frameColor = (item.isUnobtainable()) ? Color.RED : Color.GREEN;
@@ -95,7 +97,7 @@ public final class ViewShop extends View {
     }
 
     private int getActShakeValue(int currentFrame) { // to shake ACT sign if the item is activated
-        if (currentFrame != lastClickedItemNumber) { // shake only in current frame
+        if (currentFrame != game.shop.lastClickedItemNumber) { // shake only in current frame
             return 0;
         }
         if (game.shop.isAlreadyActivatedAnimationTrigger) {
