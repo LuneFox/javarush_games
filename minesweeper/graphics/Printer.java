@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
- * Global helper that draws any text on the screen.
+ * Global class that uses a text object to write anything on the screen.
  */
 
 public class Printer {

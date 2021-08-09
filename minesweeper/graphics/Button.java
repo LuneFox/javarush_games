@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
- * Allows to draw buttons with text wrapped in frames.
+ * Creates buttons with text wrapped in frames.
  */
 
 public class Button {

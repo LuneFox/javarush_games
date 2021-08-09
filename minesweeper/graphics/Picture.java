@@ -4,7 +4,7 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
- * Sub-class for creating big images that are not comfortable to draw as two-dimensional arrays.
+ * Big sized images.
  */
 
 public class Picture extends Image {

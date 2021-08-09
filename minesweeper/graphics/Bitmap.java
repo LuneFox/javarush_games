@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper.graphics;
 
 /**
- * A list of all available graphics (tiles, sprites and pictures) to use as words in the code
+ * Code names for all available graphic pieces in the game.
  */
 
 public enum Bitmap {
