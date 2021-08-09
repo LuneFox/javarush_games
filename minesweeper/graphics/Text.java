@@ -47,7 +47,7 @@ public class Text extends Image {
         Caret caret = new Caret(drawX, drawY);
         char[] chars = input.toLowerCase().toCharArray();
 
-        if (alignRight) { // reverse typing
+        if (alignRight) {
             for (int i = chars.length - 1; i >= 0; i--) {
                 if (caret.newLine(chars[i])) continue;
                 drawSymbol(chars[i], color, caret.x, caret.y);
@@ -55,7 +55,7 @@ public class Text extends Image {
                 caret.shift(true, nextSymbol);
             }
         } else {
-            for (char c : chars) { // straight typing
+            for (char c : chars) {
                 if (caret.newLine(c)) continue;
                 drawSymbol(c, color, caret.x, caret.y);
                 Text currentSymbol = ALPHABET.get(c);

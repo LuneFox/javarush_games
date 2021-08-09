@@ -3,6 +3,10 @@ package com.javarush.games.minesweeper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Util class for various operations.
+ */
+
 public class Util {
     public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED}
 

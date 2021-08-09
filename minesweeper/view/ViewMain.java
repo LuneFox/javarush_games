@@ -11,6 +11,10 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.LinkedList;
 
+/**
+ * Title (main) screen of the game.
+ */
+
 public final class ViewMain extends View {
     private static String quote;
     private final static String resume = "Игра приостановлена\nESC - продолжить";

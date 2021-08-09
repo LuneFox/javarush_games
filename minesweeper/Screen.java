@@ -3,6 +3,11 @@ package com.javarush.games.minesweeper;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+/**
+ * A class that keeps track of what screen is currently being used.
+ * Screen at the top of the list (at position 0) decides what happens in the game.
+ */
+
 public class Screen {
     private final ScreenType screenType;
     private static final ArrayList<Screen> screens = new ArrayList<>();

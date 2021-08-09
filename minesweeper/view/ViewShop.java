@@ -7,6 +7,10 @@ import com.javarush.games.minesweeper.graphics.Image;
 
 import java.util.Date;
 
+/**
+ * Shows the shop over the game board.
+ */
+
 public final class ViewShop extends View {
     public int moneyOnDisplay;                                            // for smooth animation, runs towards money
     public int shakingAnimationMaxTurns = 15;                             // number of turns to shake the item

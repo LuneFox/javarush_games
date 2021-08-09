@@ -10,6 +10,10 @@ public final class ViewGameOver extends View {
     public int popUpTimer;  // defines how soon will game over screen show up
     public Area scoreArea = new Area(new int[]{18, 37, 60, 64});
 
+    /**
+     * Displays the result of the game over the board.
+     */
+
     public ViewGameOver(MinesweeperGame game) {
         this.game = game;
         this.screenType = Screen.ScreenType.GAME_OVER;

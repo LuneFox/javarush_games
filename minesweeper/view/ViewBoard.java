@@ -5,6 +5,10 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 
+/**
+ * Shows the main game board.
+ */
+
 public final class ViewBoard extends View {
     public ViewBoard(MinesweeperGame game) {
         this.game = game;

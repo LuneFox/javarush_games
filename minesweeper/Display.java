@@ -2,6 +2,10 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
 
+/**
+ * Logical display to flatten layers and increase the drawing speed, allows making effects.
+ */
+
 public class Display {
     private final Game game;
     private final Pixel[][] matrix;

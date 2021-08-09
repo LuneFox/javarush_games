@@ -7,6 +7,10 @@ import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Button;
 
+/**
+ * Shows score details in the end of the game.
+ */
+
 public final class ViewScore extends View {
     public ViewScore(MinesweeperGame game) {
         this.game = game;
@@ -14,7 +18,7 @@ public final class ViewScore extends View {
     }
 
     @Override
-    public void display(){
+    public void display() {
         super.display();
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
         int minesCount = game.countAllCells(Util.Filter.MINED);

@@ -13,6 +13,10 @@ public final class ViewAbout extends View {
     public Area prevPageArrowArea = new Area(new int[]{5, 27, 88, 99});
     public Area nextPageArrowArea = new Area(new int[]{31, 54, 88, 99});
 
+    /**
+     * Shows the ABOUT section of the game.
+     */
+
     public ViewAbout(MinesweeperGame game) {
         this.game = game;
         this.screenType = Screen.ScreenType.ABOUT;

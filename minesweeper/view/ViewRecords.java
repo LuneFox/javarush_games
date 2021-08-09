@@ -8,6 +8,10 @@ import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Image;
 
+/**
+ * Shows players' high scores.
+ */
+
 public final class ViewRecords extends View {
 
     public ViewRecords(MinesweeperGame game) {
@@ -16,7 +20,7 @@ public final class ViewRecords extends View {
     }
 
     @Override
-    public void display(){
+    public void display() {
         super.display();
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
         game.print(Strings.RECORDS[0], Color.YELLOW, 17, 2);

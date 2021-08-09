@@ -4,6 +4,10 @@ import com.javarush.engine.cell.Color;
 
 import java.util.Date;
 
+/**
+ * Red timer stripe that appears at the top of the screen when you play in time attack mode.
+ */
+
 public class Timer {
     private final MinesweeperGame game;
     public float time;

@@ -12,6 +12,10 @@ import com.javarush.games.minesweeper.graphics.Picture;
 
 import java.util.LinkedList;
 
+/**
+ * Shows the OPTIONS screen.
+ */
+
 public final class ViewOptions extends View {
 
     public final Area difficultyDownArea = new Area(new int[]{49, 53, 22, 28});
