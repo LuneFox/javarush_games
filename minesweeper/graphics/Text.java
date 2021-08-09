@@ -38,33 +38,27 @@ public class Text extends Image {
                 return false;
             }
 
-            void shift(boolean reverse, Text letter) {
-                int shift = letter.bitmapData[0].length + 1;
+            void shift(boolean reverse, Text relativeSymbol) {
+                int shift = relativeSymbol.bitmapData[0].length + 1;
                 x = (reverse) ? x - shift : x + shift;
             }
         }
 
         Caret caret = new Caret(drawX, drawY);
-        char[] chars = input.toLowerCase().toCharArray();
+        char[] chars = (alignRight) ?
+                new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
+                input.toLowerCase().toCharArray();
 
-        if (alignRight) {
-            for (int i = chars.length - 1; i >= 0; i--) {
-                if (caret.newLine(chars[i])) continue;
-                drawSymbol(chars[i], color, caret.x, caret.y);
-                Text nextSymbol = (i > 0) ? ALPHABET.get(chars[i - 1]) : ALPHABET.get(chars[i]);
-                caret.shift(true, nextSymbol);
-            }
-        } else {
-            for (char c : chars) {
-                if (caret.newLine(c)) continue;
-                drawSymbol(c, color, caret.x, caret.y);
-                Text currentSymbol = ALPHABET.get(c);
-                caret.shift(false, currentSymbol);
-            }
+        for (int i = 0; i < chars.length; i++) {
+            if (caret.newLine(chars[i])) continue;
+            drawChar(chars[i], color, caret.x, caret.y);
+            int j = (i >= chars.length - 1 || !alignRight) ? 0 : 1;
+            Text relativeSymbol = ALPHABET.get(chars[i + j]);
+            caret.shift(alignRight, relativeSymbol);
         }
     }
 
-    private void drawSymbol(char c, Color color, int x, int y) {
+    private void drawChar(char c, Color color, int x, int y) {
         symbol = ALPHABET.get(c);
         symbol.replaceColor(color, 1);
         symbol.drawAt(x, y);
