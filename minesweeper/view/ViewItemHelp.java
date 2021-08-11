@@ -26,7 +26,7 @@ public final class ViewItemHelp extends View {
     public void display(ShopItem item){
         super.display();
         Strings.generateNewShieldDescription();
-        IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw();
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
         item.icon.setPosition(5, 5);
         item.icon.draw();
         if (item.id == ShopItem.ID.SHIELD) {

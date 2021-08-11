@@ -1,9 +1,7 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.graphics.Image;
-import com.javarush.games.minesweeper.graphics.Sprite;
+import com.javarush.games.minesweeper.graphics.*;
 
 import java.util.HashMap;
 
@@ -44,26 +42,38 @@ class Cell extends Image {
         this.y = y;
         this.isMined = isMined;
         this.sprite = (isMined) ? getSprite(Bitmap.BOARD_MINE) : getSprite(Bitmap.BOARD_NONE);
-        colors = new Color[]{Color.NONE, Color.SADDLEBROWN, Color.BLANCHEDALMOND, Color.BURLYWOOD, Color.BLACK, Color.GRAY};
+        fullRecolor();
         draw();
     }
 
     // draws a button in a pushed state and reveals its sprite (number or icon), used while opening a tile
-    void push() {
+    public void push() {
         bitmapData = (isDestroyed) ? assignBitmap(Bitmap.CELL_DESTROYED) : assignBitmap(Bitmap.CELL_OPENED);
         if (isFlaggedCorrectly()) {
             replaceColor(Color.GREEN, 3);
         } else if (isShielded) {
             replaceColor(Color.YELLOW, 3);
         } else if (isScanned) {
-            replaceColor(Color.ORANGE, 3);
+            replaceColor(Theme.current.getColor(ThemeElement.CELL_SCANNED), 3);
         } else if (isDestroyed) {
             replaceColor(Color.DARKSLATEGRAY, 3);
         } else {
-            replaceColor(Color.SANDYBROWN, 3);
+            replaceColor(Theme.current.getColor(ThemeElement.CELL_BG_DOWN), 3);
         }
         draw();
         drawSprite();
+    }
+
+    public void fullRecolor() {
+        colors = new Color[]{
+                Color.NONE,
+                Theme.current.getColor(ThemeElement.CELL_SHADOW),
+                Theme.current.getColor(ThemeElement.CELL_LIGHT),
+                Theme.current.getColor(ThemeElement.CELL_BG_UP),
+                Color.BLACK,
+                Color.GRAY
+        };
+        if (isOpen) push();
     }
 
 
@@ -114,7 +124,7 @@ class Cell extends Image {
         return (isFlagged || (isOpen && isMined));
     }
 
-    public boolean isSafe(){
+    public boolean isSafe() {
         // Cell is safe to click and open
         return (!isOpen && !isMined);
     }

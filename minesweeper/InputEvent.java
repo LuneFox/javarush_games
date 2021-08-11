@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
+import com.javarush.games.minesweeper.graphics.Theme;
 import com.javarush.games.minesweeper.view.View;
 
 import static com.javarush.games.minesweeper.Util.inside;
@@ -90,6 +91,15 @@ public class InputEvent {
                     View.options.switchAutoBuyFlags();
                 } else if (View.options.switchGameTimerArea.covers(x, y)) {
                     View.options.switchGameTimer();
+                } else if (View.options.redThemeArea.covers(x, y)) {
+                    Theme.current = new Theme(0);
+                    game.view.reload();
+                } else if (View.options.greenThemeArea.covers(x, y)) {
+                    Theme.current = new Theme(1);
+                    game.view.reload();
+                } else if (View.options.blueThemeArea.covers(x, y)) {
+                    Theme.current = new Theme(2);
+                    game.view.reload();
                 }
                 break;
             case SCORE:

@@ -72,7 +72,7 @@ public class View {
         Arrays.asList(bitmaps).forEach(this::loadPicture);
     }
 
-    final void loadImages() { // load images once at launch and just re-use them all the time
+    public final void loadImages() { // load images once at launch and just re-use them all the time
         loadSprite(
                 Bitmap.BOARD_FLAG,
                 Bitmap.BOARD_MINE);
@@ -103,16 +103,16 @@ public class View {
                 Bitmap.MENU_SWITCH,
                 Bitmap.MENU_SWITCH_RAIL,
                 Bitmap.PICTURE_LOGO,
+                Bitmap.THEME_PALETTE,
                 Bitmap.WINDOW_GAME_OVER,
-                Bitmap.WINDOW_ITEM_HELP,
                 Bitmap.WINDOW_MENU,
                 Bitmap.WINDOW_SHOP,
-                Bitmap.WINDOW_SHOP_PANEL,
+                Bitmap.WINDOW_SHOP_HEADER_FOOTER,
                 Bitmap.WINDOW_VICTORY
         );
     }
 
-    final void loadButtons() {
+    public final void loadButtons() {
         BUTTONS.put(ButtonID.OPTIONS, new Button(game, 61, 64, 36, 9, "опции"));
         BUTTONS.put(ButtonID.ABOUT, new Button(game, 61, 76, 36, 9, "об игре"));
         BUTTONS.put(ButtonID.START, new Button(game, 61, 88, 36, 9, "старт"));
@@ -124,6 +124,12 @@ public class View {
         BUTTONS.put(ButtonID.AGAIN, new Button(game, 57, 69, "снова"));
         BUTTONS.put(ButtonID.RETURN, new Button(game, 15, 69, "меню"));
         BUTTONS.put(ButtonID.CLOSE, new Button(game, 73, 35, "x"));
+    }
+
+    public final void reload() {
+        game.view.loadImages();
+        game.view.loadButtons();
+        game.recolorAllCells();
     }
 
     public static class Area {

@@ -4,6 +4,8 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.*;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Image;
+import com.javarush.games.minesweeper.graphics.Theme;
+import com.javarush.games.minesweeper.graphics.ThemeElement;
 
 import java.util.Date;
 
@@ -30,8 +32,8 @@ public final class ViewShop extends View {
         game.redrawAllCells();
         shakeAnimationCountDown();
         IMAGES.get(Bitmap.WINDOW_SHOP).drawAt(-1, -1);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 10);
-        IMAGES.get(Bitmap.WINDOW_SHOP_PANEL).drawAt(-1, 78);
+        IMAGES.get(Bitmap.WINDOW_SHOP_HEADER_FOOTER).drawAt(-1, 10);
+        IMAGES.get(Bitmap.WINDOW_SHOP_HEADER_FOOTER).drawAt(-1, 78);
         IMAGES.get(Bitmap.BOARD_MINE).drawAt(10, 10);
         IMAGES.get(Bitmap.BOARD_FLAG).drawAt(39, 11);
         IMAGES.get(Bitmap.BOARD_COIN).drawAt(69 + getMoneyShakeValue(), 13);
@@ -39,9 +41,9 @@ public final class ViewShop extends View {
         game.print("" + game.countAllCells(Util.Filter.DANGEROUS), 22, 12);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
         game.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
-        game.print("* магазин *", Color.DARKSEAGREEN, 25, 22);
-        game.print("очки:" + game.player.score, Color.LIGHTCYAN, 13, 80);
-        game.print("шаги:" + game.player.countMoves, Color.LIGHTBLUE, 84, 80, true);
+        game.print("* магазин *", Theme.current.getColor(ThemeElement.SHOP_TITLE), 25, 22);
+        game.print("очки:" + game.player.score, Theme.current.getColor(ThemeElement.SHOP_SCORE), 13, 80);
+        game.print("шаги:" + game.player.countMoves, Theme.current.getColor(ThemeElement.SHOP_MOVES), 84, 80, true);
         displayShopItems();
         game.timer.draw();
     }
@@ -57,7 +59,7 @@ public final class ViewShop extends View {
         boolean littleTimePassed = (new Date().getTime() - game.shop.lastClickTime < 100);
 
         for (int y = 0; y < 2; y++) {
-            int dy = y * 25;
+            int dy = y * 25 + 1;
             for (int x = 0; x < 3; x++) {
                 int dx = x * 25;
                 ShopItem item = game.shop.allItems.get(x + y * 3);
@@ -65,7 +67,7 @@ public final class ViewShop extends View {
                 boolean justClickedIt = (currentFrame == game.shop.lastClickedItemNumber && littleTimePassed);
                 frame = justClickedIt ? IMAGES.get(Bitmap.ITEM_FRAME_PRESSED) : IMAGES.get(Bitmap.ITEM_FRAME);
                 shift = justClickedIt ? 1 : 0;
-                frameColor = (item.isUnobtainable()) ? Color.RED : Color.GREEN;
+                frameColor = (item.isUnobtainable()) ? Color.RED : Theme.current.getColor(ThemeElement.SHOP_ITEM_FRAME_AVAILABLE);
                 frameColor = (item.isActivated()) ? Color.BLUE : frameColor;
                 frame.replaceColor(frameColor, 3);
                 frame.drawAt(15 + dx + shift, 30 + dy + shift);
@@ -79,7 +81,7 @@ public final class ViewShop extends View {
                     }
                     game.print("АКТ", Color.YELLOW, right + dx - getActShakeValue(currentFrame), bottom + dy, true);
                 } else {
-                    game.print("НЕТ", Color.RED, right + dx, bottom + dy, true);
+                    game.print("НЕТ", Theme.current.getColor(ThemeElement.SHOP_SIGN_NO), right + dx, bottom + dy, true);
                 }
             }
         }

@@ -34,11 +34,11 @@ public class MinesweeperGame extends Game {
 
     // FLAGS
     public boolean evenTurn; // is now even turn or odd turn? helps with animation of certain elements
-    private boolean isFirstMove;
     public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
     public boolean allowFlagExplosion;
     public boolean lastResultIsVictory;
     public boolean isStopped;
+    private boolean isFirstMove;
 
     // NEW GAME
 
@@ -64,6 +64,9 @@ public class MinesweeperGame extends Game {
         switch (Screen.getType()) {
             case MAIN_MENU:
                 View.main.display();
+                break;
+            case OPTIONS:
+                View.options.display();
                 break;
             case GAME_OVER:
                 View.gameOver.display(lastResultIsVictory, 0);
@@ -453,6 +456,15 @@ public class MinesweeperGame extends Game {
             }
         }
         timer.draw();
+    }
+
+    public void recolorAllCells() {
+        if (isStopped) return;
+        for (int posY = 0; posY < 10; posY++) {
+            for (int posX = 0; posX < 10; posX++) {
+                field[posY][posX].fullRecolor();
+            }
+        }
     }
 
     // PRINT

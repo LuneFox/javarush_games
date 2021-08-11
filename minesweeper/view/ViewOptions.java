@@ -5,10 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.graphics.Button;
-import com.javarush.games.minesweeper.graphics.Image;
-import com.javarush.games.minesweeper.graphics.Picture;
+import com.javarush.games.minesweeper.graphics.*;
 
 import java.util.LinkedList;
 
@@ -22,6 +19,9 @@ public final class ViewOptions extends View {
     public final Area difficultyUpArea = new Area(new int[]{93, 97, 22, 28});
     public final Area autoBuyFlagsArea = new Area(new int[]{80, 91, 41, 47});
     public final Area switchGameTimerArea = new Area(new int[]{80, 91, 64, 70});
+    public final Area redThemeArea = new Area(new int[]{2, 12, 88, 98});
+    public final Area greenThemeArea = new Area(new int[]{14, 24, 88, 98});
+    public final Area blueThemeArea = new Area(new int[]{26, 36, 88, 98});
 
     public int difficultySetting;
     public boolean timerEnabledSetting;
@@ -39,6 +39,7 @@ public final class ViewOptions extends View {
         Image arrowButton = IMAGES.get(Bitmap.MENU_ARROW);
         Image switchButton = IMAGES.get(Bitmap.MENU_SWITCH);
         Image switchRail = IMAGES.get(Bitmap.MENU_SWITCH_RAIL);
+        Image themePalette = IMAGES.get(Bitmap.THEME_PALETTE);
         String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(difficultySetting)];
 
 
@@ -49,18 +50,18 @@ public final class ViewOptions extends View {
         arrowButton.drawAt(93, 21, Image.Mirror.NONE);
         arrowButton.drawAt(49, 21, Image.Mirror.HORIZONTAL);
         displayDifficultyBar();
-        game.print(difficultyName, Color.SALMON, 93, 29, true);
+        game.print(difficultyName, Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 29, true);
 
         game.print("покупка\nфлажков", 2, 40);
         switchRail.drawAt(80, 42);
         if (game.shop.autoBuyFlagsEnabled) {
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(88, 40);
-            game.print("авто", Color.SALMON, 93, 48, true);
+            game.print("авто", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 48, true);
         } else {
             switchButton.replaceColor(Color.RED, 1);
             switchButton.drawAt(80, 40);
-            game.print("вручную", Color.SALMON, 91, 48, true);
+            game.print("вручную", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 91, 48, true);
 
         }
 
@@ -69,13 +70,24 @@ public final class ViewOptions extends View {
         if (timerEnabledSetting) {
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(88, 63);
-            game.print("да", Color.SALMON, 93, 71, true);
+            game.print("да", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 71, true);
         } else {
             switchButton.replaceColor(Color.RED, 1);
             switchButton.drawAt(80, 63);
-            game.print("нет", Color.SALMON, 94, 71, true);
+            game.print("нет", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 94, 71, true);
 
         }
+
+        game.print("тема:", 2, 78);
+        themePalette.replaceColor(Color.RED, 1);
+        themePalette.replaceColor(Theme.getCurrentNumber() == 0 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.drawAt(2, 87);
+        themePalette.replaceColor(Color.GREEN, 1);
+        themePalette.replaceColor(Theme.getCurrentNumber() == 1 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.drawAt(14, 87);
+        themePalette.replaceColor(Theme.getCurrentNumber() == 2 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.replaceColor(Color.BLUE, 1);
+        themePalette.drawAt(26, 87);
 
         BUTTONS.get(Button.ButtonID.BACK).draw();
     }

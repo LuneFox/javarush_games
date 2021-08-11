@@ -242,35 +242,56 @@ public class Picture extends Image {
                 return createBitmapFromStrings("020", "212", "212", "212", "212", "212", "020");
             }
             case WINDOW_MENU: {
-                colors = new Color[]{Color.NONE, Color.BROWN, Color.NONE, Color.DARKRED};
+                colors = new Color[]{
+                        Color.NONE,
+                        Theme.current.getColor(ThemeElement.MAIN_MENU_BG),
+                        Color.NONE,
+                        Theme.current.getColor(ThemeElement.MAIN_MENU_BORDER)
+                };
                 return createWindowBitmap(100, 100, false, true);
             }
             case WINDOW_SHOP: {
-                colors = new Color[]{Color.NONE, Color.DARKSLATEGRAY, Color.BLACK, Color.SLATEGRAY};
+                colors = new Color[]{
+                        Color.NONE,
+                        Theme.current.getColor(ThemeElement.SHOP_BG),
+                        Color.BLACK,
+                        Theme.current.getColor(ThemeElement.SHOP_BORDER)
+                };
                 return createWindowBitmap(80, 80, true, true);
             }
-            case WINDOW_SHOP_PANEL: {
-                colors = new Color[]{Color.NONE, Color.DARKSLATEBLUE, Color.BLACK, Color.SLATEGRAY};
+            case WINDOW_SHOP_HEADER_FOOTER: {
+                colors = new Color[]{
+                        Color.NONE,
+                        Theme.current.getColor(ThemeElement.SHOP_HEADER_FOOTER),
+                        Color.BLACK,
+                        Theme.current.getColor(ThemeElement.SHOP_BORDER)};
                 return createWindowBitmap(80, 12, false, true);
             }
             case ITEM_FRAME: {
-                colors = new Color[]{Color.NONE, Color.DARKGREEN, Color.BLACK, Color.GREEN};
+                colors = new Color[]{
+                        Color.NONE,
+                        Theme.current.getColor(ThemeElement.SHOP_ITEM_BG),
+                        Color.BLACK,
+                        Color.GREEN
+                };
                 return createWindowBitmap(20, 20, true, true);
             }
             case ITEM_FRAME_PRESSED: {
-                colors = new Color[]{Color.NONE, Color.DARKGREEN, Color.BLACK, Color.GREEN};
+                colors = new Color[]{
+                        Color.NONE,
+                        Theme.current.getColor(ThemeElement.SHOP_ITEM_BG),
+                        Color.BLACK,
+                        Color.GREEN
+                };
                 return createWindowBitmap(20, 20, false, true);
             }
-            case WINDOW_ITEM_HELP: {
-                colors = new Color[]{Color.NONE, Color.DARKGREEN, Color.NONE, Color.GREEN};
-                return createWindowBitmap(100, 100, false, true);
-            }
-            case WINDOW_VICTORY: {
-                colors = new Color[]{Color.NONE, Color.DARKGREEN, Color.BLACK, Color.GREEN};
-                return createWindowBitmap(70, 35, true, true);
-            }
+            case WINDOW_VICTORY:
             case WINDOW_GAME_OVER: {
-                colors = new Color[]{Color.NONE, Color.DARKRED, Color.BLACK, Color.RED};
+                colors = new Color[]{
+                        Color.NONE,
+                        Theme.current.getColor(ThemeElement.MAIN_MENU_BG),
+                        Color.BLACK,
+                        Theme.current.getColor(ThemeElement.BUTTON_BORDER)};
                 return createWindowBitmap(70, 35, true, true);
             }
             case BUTTON_OK: {
@@ -281,10 +302,6 @@ public class Picture extends Image {
                 colors = new Color[]{Color.NONE, Color.SADDLEBROWN, Color.BLACK, Color.BURLYWOOD};
                 return createWindowBitmap(9, 9, true, true);
             }
-            /* case BUTTON_MENU: {
-                colors = new Color[]{Color.NONE, Color.DARKRED, Color.BLACK, Color.SALMON};
-                return createWindowBitmap(36, 9, true, true);
-            } */
             case MENU_SWITCH: {
                 colors = new Color[]{Color.NONE, Color.RED, Color.BLACK, Color.YELLOW};
                 return createWindowBitmap(4, 7, false, true);
@@ -296,6 +313,10 @@ public class Picture extends Image {
             case BOARD_ACTIVE_FRAME: {
                 colors = new Color[]{Color.NONE, Color.NONE, Color.NONE, Color.BLUE};
                 return createWindowBitmap(100, 100, false, true);
+            }
+            case THEME_PALETTE:{
+                colors = new Color[]{Color.NONE, Color.GRAY, Color.BLACK, Color.WHITE};
+                return createWindowBitmap(10, 10, true, true);
             }
             case DICE_1: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.RED, Color.BLACK};

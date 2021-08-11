@@ -38,7 +38,11 @@ public class Button {
                 return createWindowBitmap(x2 - x1, y2 - y1, true, true);
             }
         };
-        this.body.colors = new Color[]{Color.NONE, Color.DARKRED, Color.BLACK, Color.SALMON};
+        this.body.colors = new Color[]{
+                Color.NONE,
+                Theme.current.getColor(ThemeElement.BUTTON_BACKGROUND),
+                Color.BLACK,
+                Theme.current.getColor(ThemeElement.BUTTON_BORDER)};
         body.assignBitmap(Bitmap.MENU_BUTTON);
     }
 
