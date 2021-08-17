@@ -23,7 +23,7 @@ public final class ViewScore extends View {
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
         int minesCount = game.countAllCells(Util.Filter.MINED);
         int minesScore = minesCount * 20 * game.difficulty;
-        String minesScoreDetail = 20 * game.difficulty + "*" + minesCount + " = ";
+        String minesScoreDetail = minesCount + "*" + 20 * game.difficulty + " = ";
         int moneyScore = game.inventory.money * game.difficulty;
         String moneyScoreDetail = game.inventory.money + "*" + game.difficulty + " = ";
         String cellScoreDetail = game.player.openedCells + "*" + game.difficulty + " = ";
