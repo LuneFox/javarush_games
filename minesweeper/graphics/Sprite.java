@@ -4,8 +4,7 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
- * Images of numbers and icons to draw over tiles, and not only tiles if needed.
- * Each sprite is 10x10 pixels.
+ * Small sized images (10x10 px). Mainly used to be drawn over tiles.
  */
 
 public class Sprite extends Image {

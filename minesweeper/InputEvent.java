@@ -3,9 +3,10 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
+import com.javarush.games.minesweeper.graphics.Theme;
 import com.javarush.games.minesweeper.view.View;
 
-import java.util.Date;
+import static com.javarush.games.minesweeper.Util.inside;
 
 /**
  * Separate class for processing various input events.
@@ -13,20 +14,20 @@ import java.util.Date;
 
 public class InputEvent {
     final private MinesweeperGame game;
-    public static double lastClickInShopTime;
 
     InputEvent(MinesweeperGame game) {
         this.game = game;
     }
 
     final void leftClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || View.gameOver.displayDelay > 0) return;
+        if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
         leftClickAction(x, y, Screen.getType());
     }
 
     final void rightClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || View.gameOver.displayDelay > 0) return;
+        if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
         rightClickAction(x, y, Screen.getType());
+        // Uncomment this to check click coordinates
         // System.out.printf("%d %d%n", x, y);
     }
 
@@ -46,7 +47,7 @@ public class InputEvent {
                     View.records.display();
                 }
                 break;
-            case GAME_BOARD:
+            case BOARD:
                 if (game.isStopped) {
                     View.gameOver.display(game.lastResultIsVictory, 0);
                     Screen.setType(ScreenType.GAME_OVER);
@@ -58,14 +59,9 @@ public class InputEvent {
                 }
                 break;
             case SHOP:
-                if (clickOutsideShop(x, y)) {
-                    View.board.display();
-                }
+                if (clickOutsideShop(x, y)) View.board.display();
                 ShopItem item = game.shop.getClickedItem(x, y);
-                if (item == null) return;
-                InputEvent.lastClickInShopTime = new Date().getTime();
-                game.shop.sell(item);
-                View.shop.lastClickedItemNumber = item.number;
+                game.shop.sellAndRememberLastClick(item);
                 break;
             case ITEM_HELP:
                 if (View.BUTTONS.get(ButtonID.CONFIRM).covers(x, y)) {
@@ -75,8 +71,7 @@ public class InputEvent {
                 break;
             case GAME_OVER:
                 if (View.BUTTONS.get(ButtonID.CLOSE).covers(x, y)) {
-                    game.redrawAllCells();
-                    Screen.setType(ScreenType.GAME_BOARD);
+                    View.board.display();
                 } else if (View.BUTTONS.get(ButtonID.RETURN).covers(x, y)) {
                     View.main.display();
                 } else if (View.BUTTONS.get(ButtonID.AGAIN).covers(x, y)) {
@@ -96,6 +91,15 @@ public class InputEvent {
                     View.options.switchAutoBuyFlags();
                 } else if (View.options.switchGameTimerArea.covers(x, y)) {
                     View.options.switchGameTimer();
+                } else if (View.options.redThemeArea.covers(x, y)) {
+                    Theme.current = new Theme(0);
+                    game.view.reload();
+                } else if (View.options.greenThemeArea.covers(x, y)) {
+                    Theme.current = new Theme(1);
+                    game.view.reload();
+                } else if (View.options.blueThemeArea.covers(x, y)) {
+                    Theme.current = new Theme(2);
+                    game.view.reload();
                 }
                 break;
             case SCORE:
@@ -126,7 +130,7 @@ public class InputEvent {
     private void rightClickAction(int x, int y, ScreenType screenType) {
         game.allowCountMoves = true;
         switch (screenType) {
-            case GAME_BOARD:
+            case BOARD:
                 if (game.isStopped) {
                     View.gameOver.display(game.lastResultIsVictory, 0);
                     Screen.setType(ScreenType.GAME_OVER);
@@ -146,22 +150,26 @@ public class InputEvent {
     }
 
     final void keyPressAction(Key key) {
-        if (View.gameOver.displayDelay > 0) return;
+        if (View.gameOver.popUpTimer > 0) return;
         ScreenType screen = Screen.getType();
         switch (key) {
             case SPACE:
                 switch (screen) {
-                    case GAME_BOARD:
+                    case BOARD:
                         if (!game.isStopped) {
                             View.shop.display();
-                            View.shop.moneyOnDisplay = game.inventory.money;
                         } else {
                             View.gameOver.display(game.lastResultIsVictory, 0);
-                            Screen.setType(ScreenType.GAME_OVER);
                         }
                         break;
                     case SHOP:
                         View.board.display();
+                        break;
+                    case GAME_OVER:
+                        View.score.display();
+                        break;
+                    case SCORE:
+                        View.gameOver.display(game.lastResultIsVictory, 0);
                         break;
                     default:
                         break;
@@ -169,12 +177,22 @@ public class InputEvent {
                 break;
             case ESCAPE:
                 switch (screen) {
-                    case GAME_BOARD:
+                    case BOARD:
                         if (game.isStopped) {
                             View.gameOver.display(game.lastResultIsVictory, 0);
                             Screen.setType(ScreenType.GAME_OVER);
-                            break;
+                        } else {
+                            View.main.display();
                         }
+                        break;
+                    case GAME_OVER:
+                    case SHOP:
+                        View.board.display();
+                        break;
+                    case SCORE:
+                        View.gameOver.display(game.lastResultIsVictory, 0);
+                        Screen.setType(ScreenType.GAME_OVER);
+                        break;
                     case OPTIONS:
                     case ABOUT:
                     case RECORDS:
@@ -184,9 +202,6 @@ public class InputEvent {
                         if (!game.isStopped) {
                             View.board.display();
                         }
-                        break;
-                    case SHOP:
-                        View.board.display();
                         break;
                     case ITEM_HELP:
                         View.board.display();
@@ -221,7 +236,7 @@ public class InputEvent {
                 }
                 break;
             default:
-                if (screen == ScreenType.GAME_BOARD && game.isStopped) {
+                if (screen == ScreenType.BOARD && game.isStopped) {
                     View.gameOver.display(game.lastResultIsVictory, 0);
                     Screen.setType(ScreenType.GAME_OVER);
                 }
@@ -230,12 +245,12 @@ public class InputEvent {
     }
 
     private boolean clickOutsideScreen(int x, int y) {
-        return (x > 99 || y > 99 || x < 0 || y < 0);
+        return (!Util.isOnScreen(x, y));
     }
 
     private boolean clickOutsideShop(int x, int y) {
-        boolean horizontal = (x >= 0 && x <= 9 || x >= 90 && x <= 99);
-        boolean vertical = (y >= 0 && y <= 10 || y >= 91 && y <= 99);
+        boolean horizontal = inside(x, 0, 9) || inside(x, 90, 99);
+        boolean vertical = inside(y, 0, 10) || inside(y, 91, 99);
         return (horizontal || vertical);
     }
 }

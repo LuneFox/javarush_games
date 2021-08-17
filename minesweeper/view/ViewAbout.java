@@ -13,6 +13,10 @@ public final class ViewAbout extends View {
     public Area prevPageArrowArea = new Area(new int[]{5, 27, 88, 99});
     public Area nextPageArrowArea = new Area(new int[]{31, 54, 88, 99});
 
+    /**
+     * Shows the ABOUT section of the game.
+     */
+
     public ViewAbout(MinesweeperGame game) {
         this.game = game;
         this.screenType = Screen.ScreenType.ABOUT;
@@ -30,12 +34,12 @@ public final class ViewAbout extends View {
         game.print((currentAboutPage + 1) + " / " + Strings.ABOUT_HEAD.length, 20, 88);
     }
 
-    public final void prevPage() {
+    public void prevPage() {
         currentAboutPage = currentAboutPage <= 0 ? 0 : currentAboutPage - 1;
         display();
     }
 
-    public final void nextPage() {
+    public void nextPage() {
         int lastPage = Strings.ABOUT_HEAD.length - 1;
         currentAboutPage = currentAboutPage >= lastPage ? lastPage : currentAboutPage + 1;
         display();

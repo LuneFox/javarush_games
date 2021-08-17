@@ -1,13 +1,19 @@
 package com.javarush.games.minesweeper;
 
+import com.javarush.games.minesweeper.view.View;
+
+/**
+ * Most part of the long strings goes here.
+ */
+
 public class Strings {
-    public static final String VERSION = "1.12";
+    public static final String VERSION = "1.13";
 
     public static final String[] RECORDS = new String[]{
             "Лучшие игроки",
-            "Pavlo\nPlynko", "37890",
-            "Станислав\nНикитин", "35955",
-            "Михаил\nВасильев", "35775"
+            "Dim\nID 2700224", "39888",
+            "Pavlo Plynko\nID 28219", "37890",
+            "Станислав\nID 2279313", "35955"
     };
 
     public static final String[] DIFFICULTY_NAMES = new String[]{
@@ -53,7 +59,7 @@ public class Strings {
             "Если около ячейки\nуже стоит нужное\nколичество флажков,\nправый клик по ней" +
                     "\nоткроет прилегающие\nячейки автоматом.\n",
             "Чтобы посмотреть\nподробности счёта\nв конце игры,\nнажмите на слово" +
-                    "\n-счёт- рядом со\nсмайликом.\n\n",
+                    "\n-счёт- рядом со\nсмайликом или на\nклавишу пробел.\n",
             "В игре на время\nнужно открывать\nновые ячейки, пока\nвремя вверху экрана" +
                     "\nне закончилось.\nЕсли время кончится,\nмины взорвутся.\nЗато больше очков!",
             "Чтобы попасть на\nстраницу рекордов,\nсделайте скриншот\nс вашим результатом" +
@@ -64,7 +70,7 @@ public class Strings {
 
     public static StringBuilder generateNewShieldDescription() {
         return new StringBuilder("Спасёт от взрыва\nпри открытии мины\nодин раз. Однако вы\n" +
-                "потеряете " + 150 * (MinesweeperGame.getDifficulty() / 5) + " очков.");
+                "потеряете " + 150 * (View.options.difficultySetting / 5) + " очков.");
     }
 
     public static final String ITEM_SCANNER_NAME = "Сканер";

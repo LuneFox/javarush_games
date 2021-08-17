@@ -1,12 +1,13 @@
 package com.javarush.games.minesweeper.graphics;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 import java.util.HashMap;
 
 /**
- * Special class for displaying text in game
+ * An image piece that can take a form of a letter.
+ * Private object "symbol" uses public "write" method to become every character of a string and draw itself in a cycle.
  */
 
 public class Text extends Image {
@@ -18,36 +19,49 @@ public class Text extends Image {
     }
 
     public void write(String input, Color color, int drawX, int drawY, boolean alignRight) {
-        char[] chars = input.toLowerCase().toCharArray();
-        int caretX = drawX;
-        int caretY = drawY;
-        if (alignRight) { // reverse typing
-            for (int i = chars.length - 1; i >= 0; i--) {
-                if (chars[i] == '\n') { // new line
-                    caretX = drawX;
-                    caretY += 9;
-                    continue;
-                }
-                symbol = ALPHABET.get(chars[i]);
-                symbol.replaceColor(color, 1);
-                symbol.drawAt(caretX, caretY);
-                if (i > 0) { // move caret by the length of the NEXT letter
-                    caretX = caretX - (ALPHABET.get(chars[i - 1]).bitmapData[0].length + 1);
-                }
+
+        class Caret { // a place where the symbol is drawn
+            int x;
+            int y;
+
+            Caret(int x, int y) {
+                this.x = x;
+                this.y = y;
             }
-        } else {
-            for (char c : chars) { // straight typing
-                if (c == '\n') { // new line
-                    caretX = drawX;
-                    caretY = caretY + 9;
-                    continue;
+
+            boolean newLine(char c) {
+                if (c == '\n') {
+                    x = drawX; // reset to start
+                    y += 9;    // go to next line
+                    return true;
                 }
-                symbol = ALPHABET.get(c);
-                symbol.replaceColor(color, 1);
-                symbol.drawAt(caretX, caretY);
-                caretX += (symbol.bitmapData[0].length + 1);
+                return false;
+            }
+
+            void shift(boolean reverse, Text relativeSymbol) {
+                int shift = relativeSymbol.bitmapData[0].length + 1;
+                x = (reverse) ? x - shift : x + shift;
             }
         }
+
+        Caret caret = new Caret(drawX, drawY);
+        char[] chars = (alignRight) ?
+                new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
+                input.toLowerCase().toCharArray();
+
+        for (int i = 0; i < chars.length; i++) {
+            if (caret.newLine(chars[i])) continue;
+            drawChar(chars[i], color, caret.x, caret.y);
+            int j = (i >= chars.length - 1 || !alignRight) ? 0 : 1;
+            Text relativeSymbol = ALPHABET.get(chars[i + j]);
+            caret.shift(alignRight, relativeSymbol);
+        }
+    }
+
+    private void drawChar(char c, Color color, int x, int y) {
+        symbol = ALPHABET.get(c);
+        symbol.replaceColor(color, 1);
+        symbol.drawAt(x, y);
     }
 
     public void loadAlphabet() {
@@ -137,7 +151,7 @@ public class Text extends Image {
         ALPHABET.put(c, new Text(bitmap, game));
     }
 
-    int calculateLengthInPixels(String s) {
+    public int calculateLengthInPixels(String s) {
         int length = 0;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
@@ -149,7 +163,7 @@ public class Text extends Image {
 
     @Override
     protected int[][] assignBitmap(Bitmap bitmap) {
-        switch (bitmap) { // y = 6 is base line, can be any px wide, max 8 px tall
+        switch (bitmap) { // 6 to 8 px tall, any px wide
             case RU_LETTER_A:
                 return new int[][]{
                         {0, 0, 0, 0},

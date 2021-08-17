@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
- * Allows to draw buttons with text wrapped in frames.
+ * Creates buttons with text wrapped in frames.
  */
 
 public class Button {
@@ -38,7 +38,11 @@ public class Button {
                 return createWindowBitmap(x2 - x1, y2 - y1, true, true);
             }
         };
-        this.body.colors = new Color[]{Color.NONE, Color.DARKRED, Color.BLACK, Color.SALMON};
+        this.body.colors = new Color[]{
+                Color.NONE,
+                Theme.current.getColor(ThemeElement.BUTTON_BACKGROUND),
+                Color.BLACK,
+                Theme.current.getColor(ThemeElement.BUTTON_BORDER)};
         body.assignBitmap(Bitmap.MENU_BUTTON);
     }
 

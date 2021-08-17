@@ -2,6 +2,10 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
 
+/**
+ * Logical display to flatten layers and increase the drawing speed, allows making effects.
+ */
+
 public class Display {
     private final Game game;
     private final Pixel[][] matrix;
@@ -19,7 +23,7 @@ public class Display {
     }
 
     public void draw() {
-        if (Screen.getType() == Screen.ScreenType.GAME_BOARD) {
+        if (Screen.getType() == Screen.ScreenType.BOARD) {
             if (interlace) {
                 for (int y = 0; y < matrix.length; y += 2) {
                     for (int x = 0; x < matrix[0].length; x++) {
@@ -46,9 +50,7 @@ public class Display {
     // OVERRIDES
 
     public void setCellColor(int x, int y, Color color) {
-        if (x >= 0 && y >= 0 && x < 100 && y < 100) {
-            this.matrix[y][x].cellColor = color;
-        }
+        if (Util.isOnScreen(x, y)) this.matrix[y][x].cellColor = color;
     }
 
     // INNER CLASSES

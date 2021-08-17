@@ -16,26 +16,30 @@ public class Inventory {
     }
 
     public void reset() {
-        this.money = 0;
-        this.items = new HashMap<>();
-        this.items.put(ShopItem.ID.SHIELD, 0);
-        this.items.put(ShopItem.ID.SCANNER, 0);
-        this.items.put(ShopItem.ID.FLAG, INIT_FLAGS);
-        this.items.put(ShopItem.ID.SHOVEL, 0);
-        this.items.put(ShopItem.ID.DICE, 0);
-        this.items.put(ShopItem.ID.BOMB, 0);
+        money = 0;
+        items = new HashMap<>();
+        items.put(ShopItem.ID.SHIELD, 0);
+        items.put(ShopItem.ID.SCANNER, 0);
+        items.put(ShopItem.ID.FLAG, INIT_FLAGS);
+        items.put(ShopItem.ID.SHOVEL, 0);
+        items.put(ShopItem.ID.DICE, 0);
+        items.put(ShopItem.ID.BOMB, 0);
     }
 
     public void add(ShopItem.ID itemID) {
-        this.items.put(itemID, this.items.get(itemID) + 1);
+        items.put(itemID, items.get(itemID) + 1);
     }
 
     public void remove(ShopItem.ID itemID) {
-        if (this.items.get(itemID) <= 0) return;
-        this.items.put(itemID, this.items.get(itemID) - 1);
+        if (items.get(itemID) <= 0) return;
+        items.put(itemID, items.get(itemID) - 1);
     }
 
     public int getCount(ShopItem.ID itemID) {
-        return this.items.get(itemID);
+        return items.get(itemID);
+    }
+
+    public boolean hasNoFlags() {
+        return items.get(ShopItem.ID.FLAG) == 0;
     }
 }

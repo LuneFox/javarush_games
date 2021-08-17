@@ -5,14 +5,18 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 
+/**
+ * Shows the main game board.
+ */
+
 public final class ViewBoard extends View {
     public ViewBoard(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.GAME_BOARD;
+        this.screenType = Screen.ScreenType.BOARD;
     }
 
     @Override
-    public void display(){
+    public void display() {
         super.display();
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {

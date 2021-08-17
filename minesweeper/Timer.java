@@ -4,12 +4,15 @@ import com.javarush.engine.cell.Color;
 
 import java.util.Date;
 
+/**
+ * Red timer stripe that appears at the top of the screen when you play in time attack mode.
+ */
+
 public class Timer {
     private final MinesweeperGame game;
     public float time;
     private final float TIME_LIMIT = 500;
-    public boolean isOn;
-    public boolean optionIsOn;
+    public boolean enabled;
     private Date lastTickTime;
     private final Color[] COLORS;
 
@@ -17,12 +20,12 @@ public class Timer {
         this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         this.time = 0;
         this.game = game;
-        this.isOn = true;
+        this.enabled = false;
         this.lastTickTime = new Date();
     }
 
     public void draw() {
-        if (isOn && !game.isStopped) {
+        if (enabled && !game.isStopped) {
             for (int i = 0; i < ((time / TIME_LIMIT) * 100); i++) {
                 game.display.setCellColor(i, 0, COLORS[0]);
             }
@@ -30,26 +33,30 @@ public class Timer {
     }
 
     public void countDown() {
-        if (isOn && ((new Date().getTime() - lastTickTime.getTime()) >= 1000)) {
-            time = (time > 0) ? time -= game.difficulty : 0;
-            Color swap = COLORS[0];
-            COLORS[0] = COLORS[1];
-            COLORS[1] = swap;
+        if (enabled && ((new Date().getTime() - lastTickTime.getTime()) >= 1000)) {
+            time = (time > 0) ? time - game.difficulty : 0;
+            swapColor();
             lastTickTime = new Date();
         }
     }
 
+    public void swapColor(){
+        Color swap = COLORS[0];
+        COLORS[0] = COLORS[1];
+        COLORS[1] = swap;
+    }
+
     public void restart() {
-        if (isOn) {
+        if (enabled) {
             time = TIME_LIMIT;
         }
     }
 
     public boolean isZero() {
-        return (isOn && time <= 0);
+        return (enabled && time <= 0);
     }
 
     public int getScore() {
-        return (isOn) ? ((int) (time / 100) * (game.difficulty / 5)) : 0;
+        return (enabled) ? ((int) (time / 100) * (game.difficulty / 5)) : 0;
     }
 }

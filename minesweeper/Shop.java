@@ -6,6 +6,7 @@ import com.javarush.games.minesweeper.graphics.Picture;
 import com.javarush.games.minesweeper.view.View;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.LinkedList;
 
 /**
@@ -14,6 +15,8 @@ import java.util.LinkedList;
 
 public class Shop {
     final private MinesweeperGame game;
+    public double lastClickTime;
+    public int lastClickedItemNumber;
     public ShopItem shield;
     public ShopItem scanner;
     public ShopItem flag;
@@ -22,7 +25,7 @@ public class Shop {
     public ShopItem miniBomb;
     public final LinkedList<ShopItem> allItems = new LinkedList<>();
     public Dice dice;
-    public boolean autoBuyFlagsOptionOn;
+    public boolean autoBuyFlagsEnabled;
     public boolean isUnaffordableAnimationTrigger;
     public boolean isAlreadyActivatedAnimationTrigger;
 
@@ -31,21 +34,7 @@ public class Shop {
     }
 
     public void sell(ShopItem item) {
-        if (item.isActivated()) {
-            isAlreadyActivatedAnimationTrigger = true;
-            View.shop.shakeAnimationCountDown();
-            return;
-        } else if (item.inStock == 0) {
-            return;
-        } else if (item.isUnaffordable()) {
-            isUnaffordableAnimationTrigger = true;
-            View.shop.shakeAnimationCountDown();
-            return;
-        } else {
-            item.inStock--;
-            game.inventory.money -= item.cost;
-            game.inventory.add(item.id);
-        }
+        if (!itemIsSold(item)) return;
         switch (item.id) {
             case SHIELD:
                 shield.activate();
@@ -75,11 +64,37 @@ public class Shop {
         }
     }
 
+    private boolean itemIsSold(ShopItem item) {
+        if (item.isActivated()) {
+            isAlreadyActivatedAnimationTrigger = true;
+            View.shop.shakeAnimationCountDown();
+            return false;
+        } else if (item.inStock == 0) {
+            return false;
+        } else if (item.isUnaffordable()) {
+            isUnaffordableAnimationTrigger = true;
+            View.shop.shakeAnimationCountDown();
+            return false;
+        } else {
+            item.inStock--;
+            game.inventory.money -= item.cost;
+            game.inventory.add(item.id);
+            return true;
+        }
+    }
+
     public void give(ShopItem item) {
         if (item.inStock > 0) {
             game.inventory.add(item.id);
             item.inStock--;
         }
+    }
+
+    public void sellAndRememberLastClick(ShopItem item) {
+        if (item == null) return;
+        lastClickTime = new Date().getTime();
+        lastClickedItemNumber = item.number;
+        sell(item);
     }
 
     public void restock(ShopItem item, int amount) {
@@ -109,7 +124,7 @@ public class Shop {
     }
 
     private int getFlagsAmount() {
-        return game.countAllCells(MinesweeperGame.Filter.MINED) - game.inventory.INIT_FLAGS;
+        return game.countAllCells(Util.Filter.MINED) - game.inventory.INIT_FLAGS;
     }
 
     private void drawColoredFrame(Color color) {

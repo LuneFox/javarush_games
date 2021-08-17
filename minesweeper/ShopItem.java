@@ -39,42 +39,42 @@ public class ShopItem {
                 this.name = Strings.ITEM_SHIELD_NAME;
                 this.description = Strings.generateNewShieldDescription().toString();
                 this.canExpire = false;
-                this.shopFramePosition = new int[]{15, 34, 31, 50};
+                this.shopFramePosition = new int[]{15, 34, 32, 51};
                 break;
             case 1:
                 this.id = ID.SCANNER;
                 this.name = Strings.ITEM_SCANNER_NAME;
                 this.description = Strings.ITEM_SCANNER_DESCRIPTION;
                 this.canExpire = false;
-                this.shopFramePosition = new int[]{40, 59, 31, 50};
+                this.shopFramePosition = new int[]{40, 59, 32, 51};
                 break;
             case 2:
                 this.id = ID.FLAG;
                 this.name = Strings.ITEM_FLAG_NAME;
                 this.description = Strings.ITEM_FLAG_DESCRIPTION;
                 this.canExpire = false;
-                this.shopFramePosition = new int[]{65, 84, 31, 50};
+                this.shopFramePosition = new int[]{65, 84, 32, 51};
                 break;
             case 3:
                 this.id = ID.SHOVEL;
                 this.name = Strings.ITEM_SHOVEL_NAME;
                 this.description = Strings.ITEM_SHOVEL_DESCRIPTION;
                 this.canExpire = true;
-                this.shopFramePosition = new int[]{15, 34, 56, 75};
+                this.shopFramePosition = new int[]{15, 34, 57, 76};
                 break;
             case 4:
                 this.id = ID.DICE;
                 this.name = Strings.ITEM_DICE_NAME;
                 this.description = Strings.ITEM_DICE_DESCRIPTION;
                 this.canExpire = true;
-                this.shopFramePosition = new int[]{40, 59, 56, 75};
+                this.shopFramePosition = new int[]{40, 59, 57, 76};
                 break;
             case 5:
                 this.id = ID.BOMB;
                 this.name = Strings.ITEM_BOMB_NAME;
                 this.description = Strings.ITEM_BOMB_DESCRIPTION;
                 this.canExpire = false;
-                this.shopFramePosition = new int[]{65, 84, 56, 75};
+                this.shopFramePosition = new int[]{65, 84, 57, 76};
                 break;
             default:
                 break;

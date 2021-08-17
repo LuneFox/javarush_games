@@ -1,0 +1,26 @@
+package com.javarush.games.minesweeper.graphics;
+
+public enum ThemeElement {
+    MAIN_MENU_BG,
+    MAIN_MENU_BORDER,
+    MAIN_MENU_QUOTE_FRONT,
+    MAIN_MENU_QUOTE_BACK,
+    MAIN_MENU_VERSION,
+    BUTTON_BACKGROUND,
+    BUTTON_BORDER,
+    LABEL,
+    SHOP_HEADER_FOOTER,
+    SHOP_BORDER,
+    SHOP_BG,
+    SHOP_TITLE,
+    SHOP_SCORE,
+    SHOP_MOVES,
+    SHOP_ITEM_BG,
+    SHOP_ITEM_FRAME_AVAILABLE,
+    SHOP_SIGN_NO,
+    CELL_LIGHT,
+    CELL_BG_DOWN,
+    CELL_BG_UP,
+    CELL_SHADOW,
+    CELL_SCANNED,
+}

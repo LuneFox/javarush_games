@@ -3,14 +3,13 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Screen.ScreenType;
-import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
+
+import static com.javarush.games.minesweeper.Util.inside;
 
 /**
  * Class for displaying various menus on the screen.
@@ -30,7 +29,6 @@ public class View {
     public static ViewScore score;
     public static final HashMap<Bitmap, Image> IMAGES = new HashMap<>();
     public static final HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
-    public static final LinkedList<String> DIFFICULTY_NAMES = new LinkedList<>();
 
     public View() {
 
@@ -40,7 +38,6 @@ public class View {
         this.game = game;
         loadImages();
         loadButtons();
-        Collections.addAll(DIFFICULTY_NAMES, Strings.DIFFICULTY_NAMES);
     }
 
     public void createSubViews() {
@@ -75,7 +72,7 @@ public class View {
         Arrays.asList(bitmaps).forEach(this::loadPicture);
     }
 
-    final void loadImages() { // load images once at launch and just re-use them all the time
+    public final void loadImages() { // load images once at launch and just re-use them all the time
         loadSprite(
                 Bitmap.BOARD_FLAG,
                 Bitmap.BOARD_MINE);
@@ -106,16 +103,16 @@ public class View {
                 Bitmap.MENU_SWITCH,
                 Bitmap.MENU_SWITCH_RAIL,
                 Bitmap.PICTURE_LOGO,
+                Bitmap.THEME_PALETTE,
                 Bitmap.WINDOW_GAME_OVER,
-                Bitmap.WINDOW_ITEM_HELP,
                 Bitmap.WINDOW_MENU,
                 Bitmap.WINDOW_SHOP,
-                Bitmap.WINDOW_SHOP_PANEL,
+                Bitmap.WINDOW_SHOP_HEADER_FOOTER,
                 Bitmap.WINDOW_VICTORY
         );
     }
 
-    final void loadButtons() {
+    public final void loadButtons() {
         BUTTONS.put(ButtonID.OPTIONS, new Button(game, 61, 64, 36, 9, "опции"));
         BUTTONS.put(ButtonID.ABOUT, new Button(game, 61, 76, 36, 9, "об игре"));
         BUTTONS.put(ButtonID.START, new Button(game, 61, 88, 36, 9, "старт"));
@@ -129,15 +126,21 @@ public class View {
         BUTTONS.put(ButtonID.CLOSE, new Button(game, 73, 35, "x"));
     }
 
+    public final void reload() {
+        game.view.loadImages();
+        game.view.loadButtons();
+        game.recolorAllCells();
+    }
+
     public static class Area {
         private final int[] coords;
 
-        public Area(int[] coords) {
-            this.coords = coords;
+        public Area(int[] coordinates) {
+            this.coords = coordinates;
         }
 
         public boolean covers(int x, int y) {
-            return (x >= coords[0] && x <= coords[1] && y >= coords[2] && y <= coords[3]);
+            return inside(x, coords[0], coords[1]) && inside(y, coords[2], coords[3]);
         }
     }
 

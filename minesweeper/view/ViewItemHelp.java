@@ -8,6 +8,10 @@ import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.graphics.Bitmap;
 import com.javarush.games.minesweeper.graphics.Button;
 
+/**
+ * Shows item help when you right-click an item in the shop.
+ */
+
 public final class ViewItemHelp extends View {
     public ViewItemHelp(MinesweeperGame game) {
         this.game = game;
@@ -22,7 +26,7 @@ public final class ViewItemHelp extends View {
     public void display(ShopItem item){
         super.display();
         Strings.generateNewShieldDescription();
-        IMAGES.get(Bitmap.WINDOW_ITEM_HELP).draw();
+        IMAGES.get(Bitmap.WINDOW_MENU).draw();
         item.icon.setPosition(5, 5);
         item.icon.draw();
         if (item.id == ShopItem.ID.SHIELD) {
