@@ -179,6 +179,10 @@ public class MinesweeperGame extends Game {
         if (allowCountMoves) shop.dice.appearCell = cell;
         if (isStopped || cell.isFlagged || cell.isOpen) return;
 
+        if (isFirstMove) {
+            ensureClickingOnBlankSpace(x, y);
+            cell = field[y][x];
+        }
         pushCell(cell);                 // change visuals, set isOpen flag
         onManualClick();                // do things that happen during real click only
         if (!surviveMine(cell)) return; // stop processing if the player didn't survive
@@ -191,7 +195,6 @@ public class MinesweeperGame extends Game {
         deactivateExpiredItems();
 
         checkVictory();
-        isFirstMove = false;
         recursiveOpenEmpty(cell);                  // for surrounding empty cells, moved don't count
     }
 
@@ -290,10 +293,9 @@ public class MinesweeperGame extends Game {
 
     private boolean surviveMine(Cell cell) {        // did the player survive the mine?
         if (cell.isMined) {
-            if (isFirstMove) {
-                replantMine(cell);                  // mine was replanted on first move - YES
-            } else if (shop.shield.isActivated()) {
+            if (shop.shield.isActivated()) {
                 shop.shield.use(cell);              // shield has worked - YES
+                return true;
             } else {
                 explodeAndGameOver(cell);           // nothing else saved the player - NO
                 return false;
@@ -364,11 +366,14 @@ public class MinesweeperGame extends Game {
         if (shop.luckyDice.isActivated()) player.scoreDice += (player.score - scoreBeforeDice) - difficulty;
     }
 
-    private void replantMine(Cell cell) {
-        cell.eraseSprite();
-        cell.isMined = false;
-        plantMines();
-        enumerateCells();
+    private void ensureClickingOnBlankSpace(int x, int y) {
+        Cell cell = field[y][x];
+        while (!cell.isEmpty()) {
+            createGame();
+            cell = field[y][x];
+        }
+        isFirstMove = false;
+        openCell(x, y);
     }
 
     private void explodeAndGameOver(Cell cell) {

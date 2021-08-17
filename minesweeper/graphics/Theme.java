@@ -19,7 +19,7 @@ public class Theme {
                 pattern.put(ThemeElement.MAIN_MENU_QUOTE_FRONT, Color.SALMON);
                 pattern.put(ThemeElement.MAIN_MENU_QUOTE_BACK, Color.DARKRED);
                 pattern.put(ThemeElement.MAIN_MENU_VERSION, Color.DARKRED);
-                pattern.put(ThemeElement.BUTTON_BACKGROUND, Color.DARKRED);
+                pattern.put(ThemeElement.BUTTON_BG, Color.DARKRED);
                 pattern.put(ThemeElement.BUTTON_BORDER, Color.SALMON);
                 pattern.put(ThemeElement.LABEL, Color.YELLOW);
                 pattern.put(ThemeElement.SHOP_TITLE, Color.SALMON);
@@ -44,7 +44,7 @@ public class Theme {
                 pattern.put(ThemeElement.MAIN_MENU_QUOTE_FRONT, Color.LIGHTGREEN);
                 pattern.put(ThemeElement.MAIN_MENU_QUOTE_BACK, Color.FORESTGREEN);
                 pattern.put(ThemeElement.MAIN_MENU_VERSION, Color.FORESTGREEN);
-                pattern.put(ThemeElement.BUTTON_BACKGROUND, Color.DARKGREEN);
+                pattern.put(ThemeElement.BUTTON_BG, Color.DARKGREEN);
                 pattern.put(ThemeElement.BUTTON_BORDER, Color.LIGHTGREEN);
                 pattern.put(ThemeElement.LABEL, Color.YELLOW);
                 pattern.put(ThemeElement.SHOP_TITLE, Color.SLATEGRAY);
@@ -68,7 +68,7 @@ public class Theme {
                 pattern.put(ThemeElement.MAIN_MENU_QUOTE_FRONT, Color.LIGHTSKYBLUE);
                 pattern.put(ThemeElement.MAIN_MENU_QUOTE_BACK, Color.DIMGRAY);
                 pattern.put(ThemeElement.MAIN_MENU_VERSION, Color.CORNFLOWERBLUE);
-                pattern.put(ThemeElement.BUTTON_BACKGROUND, Color.STEELBLUE);
+                pattern.put(ThemeElement.BUTTON_BG, Color.STEELBLUE);
                 pattern.put(ThemeElement.BUTTON_BORDER, Color.LIGHTSKYBLUE);
                 pattern.put(ThemeElement.LABEL, Color.YELLOW);
                 pattern.put(ThemeElement.SHOP_TITLE, Color.LIGHTSKYBLUE);

@@ -40,7 +40,7 @@ public class Button {
         };
         this.body.colors = new Color[]{
                 Color.NONE,
-                Theme.current.getColor(ThemeElement.BUTTON_BACKGROUND),
+                Theme.current.getColor(ThemeElement.BUTTON_BG),
                 Color.BLACK,
                 Theme.current.getColor(ThemeElement.BUTTON_BORDER)};
         body.assignBitmap(Bitmap.MENU_BUTTON);

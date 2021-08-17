@@ -291,7 +291,7 @@ public class Picture extends Image {
                         Color.NONE,
                         Theme.current.getColor(ThemeElement.MAIN_MENU_BG),
                         Color.BLACK,
-                        Theme.current.getColor(ThemeElement.BUTTON_BORDER)};
+                        Theme.current.getColor(ThemeElement.BUTTON_BG)};
                 return createWindowBitmap(70, 35, true, true);
             }
             case BUTTON_OK: {
