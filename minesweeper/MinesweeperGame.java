@@ -100,7 +100,7 @@ public class MinesweeperGame extends Game {
         resetValues();
         enumerateCells();
         View.board.display();
-        setScore(player.score);
+        setScore(player.getCurrentScore());
     }
 
     private void resetValues() {
@@ -145,8 +145,6 @@ public class MinesweeperGame extends Game {
 
     private void win() {
         lastResultIsVictory = true;
-        player.score += (countAllCells(Filter.MINED) * 20 * difficulty) + (inventory.money * difficulty);
-        setScore(player.score);
         player.registerTopScore();
         isStopped = true;
         View.gameOver.display(true, 30);
@@ -188,20 +186,19 @@ public class MinesweeperGame extends Game {
         if (!surviveMine(cell)) return; // stop processing if the player didn't survive
         drawNumberOnCell(cell);         // show number since we know it's not a bomb (survived)
 
-        player.openedCells++;
         inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
-        addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // cell.x, cell.y = dice display position
-        setScore(player.score);                                   // JavaRushTV
-        deactivateExpiredItems();
 
-        checkVictory();
+        addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // cell.x, cell.y = dice display position
+
         recursiveOpenEmpty(cell);                  // for surrounding empty cells, moved don't count
+        checkVictory();
     }
 
     private void recursiveOpenEmpty(Cell cell) {
         allowCountMoves = false;               // automatic opening doesn't count as a player move
         if (cell.isEmpty()) {
-            getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
+            List<Cell> neighbors = getNeighborCells(cell, Filter.NONE, false);
+            neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
     }
 
@@ -358,18 +355,22 @@ public class MinesweeperGame extends Game {
     // UTILITIES
 
     private void addScore(int x, int y) {
-        player.scoreCell += difficulty;
-        int scoreBeforeDice = player.score;
         int randomNumber = getRandomNumber(6) + 1;
         shop.dice.setImage(randomNumber, x, y);
-        player.score += difficulty * (shop.luckyDice.isActivated() ? randomNumber : 1);
-        if (shop.luckyDice.isActivated()) player.scoreDice += (player.score - scoreBeforeDice) - difficulty;
+
+        if (field[y][x].isMined) return;
+        if (shop.luckyDice.isActivated()) {
+            player.scoreDice += difficulty * randomNumber;
+        }
+        setScore(player.getCurrentScore());
     }
 
     private void ensureClickingOnBlankSpace(int x, int y) {
         Cell cell = field[y][x];
         while (!cell.isEmpty()) {
-            createGame();
+            createField();
+            plantMines();
+            enumerateCells();
             cell = field[y][x];
         }
         isFirstMove = false;
@@ -412,13 +413,12 @@ public class MinesweeperGame extends Game {
     private void onManualClick() {
         if (allowCountMoves) {
             player.countMoves++;
-            player.score += timer.getScore();
             player.scoreTimer += timer.getScore();
             timer.restart();
         }
     }
 
-    private void deactivateExpiredItems() {
+    public void deactivateExpiredItems() {
         shop.goldenShovel.expireCheck();
         shop.luckyDice.expireCheck();
     }

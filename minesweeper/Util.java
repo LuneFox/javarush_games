@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class Util {
-    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED}
+    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, OPEN_NOT_MINED}
 
     public static List<Cell> filterCells(List<Cell> list, Filter filter) {
         List<Cell> result = new ArrayList<>();
@@ -35,6 +35,12 @@ public class Util {
                 case SAFE:
                     if (cell.isSafe()) result.add(cell);
                     break;
+                case EMPTY:
+                    if (cell.isEmpty()) result.add(cell);
+                    break;
+                case OPEN_NOT_MINED:
+                    if (cell.isOpenAndNotMined()) result.add(cell);
+                    break;
                 case NONE:
                 default:
                     result.add(cell);
@@ -52,7 +58,7 @@ public class Util {
         return (number < from || number > to);
     }
 
-    public static boolean isOnScreen(int x, int y){
+    public static boolean isOnScreen(int x, int y) {
         return (x >= 0 && y >= 0 && x < 100 && y < 100);
     }
 

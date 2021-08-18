@@ -53,10 +53,14 @@ public class InputEvent {
                     Screen.setType(ScreenType.GAME_OVER);
                     return;
                 }
+
                 Cell cell = game.field[y / 10][x / 10];
                 if (!cell.isFlagged || game.shop.scanner.isActivated()) {
                     game.openCell(x / 10, y / 10);
                 }
+
+                game.deactivateExpiredItems();
+
                 break;
             case SHOP:
                 if (clickOutsideShop(x, y)) View.board.display();

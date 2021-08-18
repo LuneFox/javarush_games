@@ -92,10 +92,8 @@ public class ShopItem {
                     cell.drawSprite();
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);
-                    int scoreBefore = game.player.score;
-                    game.player.score = Math.max(game.player.score - 150 * (game.difficulty / 5), 0);
-                    game.player.scoreLost -= scoreBefore - game.player.score;
-                    game.setScore(game.player.score);
+                    game.player.scoreLost -= 150 * (game.difficulty / 5);
+                    game.player.countShields++;
                     return true;
                 }
             case SCANNER:
@@ -123,7 +121,7 @@ public class ShopItem {
     }
 
     public void expireCheck() {
-        if (game.player.countMoves >= this.expireMove) {
+        if (game.player.countMoves >= this.expireMove && this.isActivated) {
             this.deactivate();
             this.inStock = 1;
         }

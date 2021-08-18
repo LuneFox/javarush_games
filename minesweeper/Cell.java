@@ -129,9 +129,14 @@ class Cell extends Image {
         return (!isOpen && !isMined);
     }
 
+
     public boolean isDangerous() {
         // Cell contains unrevealed mine
         return (isMined && !isOpen);
+    }
+
+    public boolean isOpenAndNotMined(){
+        return (isOpen && !isMined);
     }
 
     @Override
