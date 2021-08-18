@@ -135,8 +135,8 @@ class Cell extends Image {
         return (isMined && !isOpen);
     }
 
-    public boolean isOpenAndNotMined(){
-        return (isOpen && !isMined);
+    public boolean isScored(){
+        return (isOpen && !isMined && !isDestroyed);
     }
 
     @Override

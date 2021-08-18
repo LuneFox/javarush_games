@@ -35,7 +35,7 @@ public class Player {
     }
 
     public int getCurrentScore() {
-        int score = game.countAllCells(Util.Filter.OPEN_NOT_MINED) * game.difficulty;
+        int score = game.countAllCells(Util.Filter.SCORED) * game.difficulty;
         return score + scoreDice + scoreTimer + scoreLost;
     }
 

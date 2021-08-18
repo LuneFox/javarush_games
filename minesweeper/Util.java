@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class Util {
-    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, OPEN_NOT_MINED}
+    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, SCORED}
 
     public static List<Cell> filterCells(List<Cell> list, Filter filter) {
         List<Cell> result = new ArrayList<>();
@@ -38,8 +38,8 @@ public class Util {
                 case EMPTY:
                     if (cell.isEmpty()) result.add(cell);
                     break;
-                case OPEN_NOT_MINED:
-                    if (cell.isOpenAndNotMined()) result.add(cell);
+                case SCORED:
+                    if (cell.isScored()) result.add(cell);
                     break;
                 case NONE:
                 default:

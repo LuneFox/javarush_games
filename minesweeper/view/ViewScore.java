@@ -23,11 +23,11 @@ public final class ViewScore extends View {
         IMAGES.get(Bitmap.WINDOW_MENU).draw();
 
         int minesCount = game.countAllCells(Util.Filter.MINED);
-        int openedCells = game.countAllCells(Util.Filter.OPEN_NOT_MINED);
+        int scoredCells = game.countAllCells(Util.Filter.SCORED);
 
         String minesScoreDetail = minesCount + "*" + 20 * game.difficulty + " = ";
         String moneyScoreDetail = game.inventory.money + "*" + game.difficulty + " = ";
-        String cellScoreDetail = openedCells + "*" + game.difficulty + " = ";
+        String cellScoreDetail = scoredCells + "*" + game.difficulty + " = ";
         String shieldScoreDetail = game.player.countShields == 0 ? "" :
                 game.player.countShields + "*-" + (150 * (game.difficulty / 5)) + " = ";
         String youLost = "вы проиграли";
@@ -42,7 +42,7 @@ public final class ViewScore extends View {
                         "\n" + (game.lastResultIsVictory ? (minesScoreDetail + game.player.getMinesScore()) : youLost) +
                         "\n" + (game.lastResultIsVictory ? (moneyScoreDetail + game.player.getMoneyScore()) : youLost) +
                         "\n" + game.player.scoreDice +
-                        "\n" + cellScoreDetail + openedCells * game.difficulty),
+                        "\n" + cellScoreDetail + scoredCells * game.difficulty),
                 Color.YELLOW, 94, 13, true);
 
         BUTTONS.get(Button.ButtonID.CONFIRM).draw();
