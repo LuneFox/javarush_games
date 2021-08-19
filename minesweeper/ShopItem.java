@@ -21,6 +21,7 @@ public class ShopItem {
     public Picture icon;
     public int number;
     public int[] shopFramePosition; // x1, x2, y1, y2
+    public VerticalStatusBar statusBar;
 
     public enum ID {
         SHIELD, SCANNER, FLAG, SHOVEL, DICE, BOMB
@@ -61,6 +62,7 @@ public class ShopItem {
                 this.description = Strings.ITEM_SHOVEL_DESCRIPTION;
                 this.canExpire = true;
                 this.shopFramePosition = new int[]{15, 34, 57, 76};
+                this.statusBar = new VerticalStatusBar(0, 99, Color.DARKORANGE, this);
                 break;
             case 4:
                 this.id = ID.DICE;
@@ -68,6 +70,7 @@ public class ShopItem {
                 this.description = Strings.ITEM_DICE_DESCRIPTION;
                 this.canExpire = true;
                 this.shopFramePosition = new int[]{40, 59, 57, 76};
+                this.statusBar = new VerticalStatusBar(0, 89, Color.GREEN, this);
                 break;
             case 5:
                 this.id = ID.BOMB;
@@ -127,8 +130,8 @@ public class ShopItem {
         }
     }
 
-    public String remainingMoves() {
-        return Integer.toString(expireMove - game.player.countMoves);
+    public int remainingMoves() {
+        return expireMove - game.player.countMoves;
     }
 
     public void activate() {
@@ -149,5 +152,25 @@ public class ShopItem {
 
     public boolean isUnobtainable() {
         return (game.inventory.money < this.cost || this.inStock <= 0);
+    }
+
+    public class VerticalStatusBar {
+        int posX;
+        int posY;
+        Color color;
+        ShopItem item;
+
+        VerticalStatusBar(int x, int y, Color color, ShopItem item) {
+            this.posX = x;
+            this.posY = y;
+            this.color = color;
+            this.item = item;
+        }
+
+        public void draw() {
+            for (int i = 0; i < item.remainingMoves(); i++) {
+                game.display.setCellColor(posX, posY - i, color);
+            }
+        }
     }
 }

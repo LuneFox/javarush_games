@@ -46,6 +46,8 @@ public final class ViewShop extends View {
         game.print("шаги:" + game.player.countMoves, Theme.current.getColor(ThemeElement.SHOP_MOVES), 84, 80, true);
         displayShopItems();
         game.timer.draw();
+        game.shop.goldenShovel.statusBar.draw();
+        game.shop.luckyDice.statusBar.draw();
     }
 
     private void displayShopItems() {
@@ -77,7 +79,7 @@ public final class ViewShop extends View {
                     game.print("" + item.cost, Color.YELLOW, right + dx, bottom + dy, true);
                 } else if (item.isActivated()) {
                     if (item.canExpire) {
-                        game.print(item.remainingMoves(), Color.MAGENTA, right + dx, upper + dy, true);
+                        game.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right + dx, upper + dy, true);
                     }
                     game.print("АКТ", Color.YELLOW, right + dx - getActShakeValue(currentFrame), bottom + dy, true);
                 } else {
