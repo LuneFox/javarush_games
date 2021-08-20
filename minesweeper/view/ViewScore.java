@@ -24,25 +24,36 @@ public final class ViewScore extends View {
 
         int minesCount = game.countAllCells(Util.Filter.MINED);
         int scoredCells = game.countAllCells(Util.Filter.SCORED);
+        int difficulty = game.difficulty;
+        int money = game.inventory.money;
+        int shields = game.player.countShields;
+        int luckyCells = game.shop.dice.totalCells;
+        int scoreDice = game.player.scoreDice;
+        int scoreLost = game.player.scoreLost;
+        int scoreTimer = game.player.scoreTimer;
+        int moneyScore = game.player.getMoneyScore();
+        int minesScore = game.player.getMinesScore();
+        double luck = game.shop.dice.getAverageLuck();
+        boolean victory = game.lastResultIsVictory;
 
-        String minesScoreDetail = minesCount + "*" + 20 * game.difficulty + " = ";
-        String moneyScoreDetail = game.inventory.money + "*" + game.difficulty + " = ";
+        String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
+        String moneyScoreDetail = money + "*" + difficulty + " = ";
         String cellScoreDetail = scoredCells + "*" + game.difficulty + " = ";
-        String shieldScoreDetail = game.player.countShields == 0 ? "" :
-                game.player.countShields + "*-" + (150 * (game.difficulty / 5)) + " = ";
-        String youLost = "вы проиграли";
+        String luckDetail = luck + "*" + luckyCells + "*" + difficulty + " = ";
+        String shieldScoreDetail = shields == 0 ? "" : shields + "*-" + (150 * (difficulty / 5)) + " = ";
+        String youLost = "не учтено";
 
         game.print("подробно", Color.YELLOW, 29, 2);
 
-        game.print("ячейки:\nкубик:\nзолото:\nмины:\nщиты:\nскорость:\n\nитого:", 3, 13);
+        game.print("ячейки:\nкуб:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", 3, 13);
         game.print(
                 (game.player.getTotalScore() +
-                        "\n\n" + game.player.scoreTimer +
-                        "\n" + (shieldScoreDetail + game.player.scoreLost) +
-                        "\n" + (game.lastResultIsVictory ? (minesScoreDetail + game.player.getMinesScore()) : youLost) +
-                        "\n" + (game.lastResultIsVictory ? (moneyScoreDetail + game.player.getMoneyScore()) : youLost) +
-                        "\n" + game.player.scoreDice +
-                        "\n" + cellScoreDetail + scoredCells * game.difficulty),
+                        "\n\n" + scoreTimer +
+                        "\n" + (shieldScoreDetail + scoreLost) +
+                        "\n" + (victory ? (moneyScoreDetail + moneyScore) : youLost) +
+                        "\n" + (victory ? (minesScoreDetail + minesScore) : youLost) +
+                        "\n" + (luckDetail + scoreDice) +
+                        "\n" + cellScoreDetail + scoredCells * difficulty),
                 Color.YELLOW, 94, 13, true);
 
         BUTTONS.get(Button.ButtonID.CONFIRM).draw();

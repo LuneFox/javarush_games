@@ -361,6 +361,8 @@ public class MinesweeperGame extends Game {
         if (field[y][x].isMined) return;
         if (shop.luckyDice.isActivated()) {
             player.scoreDice += difficulty * randomNumber;
+            shop.dice.totalCells++;
+            shop.dice.totalBonus+=randomNumber;
         }
         setScore(player.getCurrentScore());
     }

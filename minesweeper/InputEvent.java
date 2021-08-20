@@ -142,6 +142,7 @@ public class InputEvent {
                     game.setFlag(x / 10, y / 10, true); // works only if tile is closed
                     game.openRest(x / 10, y / 10);                // works only if tile is open
                 }
+                game.deactivateExpiredItems();
                 break;
             case SHOP:
                 ShopItem item = game.shop.getClickedItem(x, y);

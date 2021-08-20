@@ -11,6 +11,8 @@ import com.javarush.games.minesweeper.view.View;
 public class Dice {
     public Cell appearCell;
     public boolean isHidden;
+    public int totalBonus;
+    public int totalCells;
     private int x;
     private int y;
     private int onScreenTime;
@@ -21,7 +23,7 @@ public class Dice {
 
     public Dice(int number) {
         setImage(number, 0, 0);
-        isHidden = false;
+        reset();
     }
 
     public void setImage(int number, int x, int y) {
@@ -37,5 +39,15 @@ public class Dice {
                 image.drawAt(this.x * 10 + 2, this.y * 10 + 2);
             }
         }
+    }
+
+    public void reset() {
+        totalBonus = 0;
+        totalCells = 0;
+        isHidden = false;
+    }
+
+    public double getAverageLuck() {
+        return (Util.round((double) totalBonus / totalCells, 2));
     }
 }
