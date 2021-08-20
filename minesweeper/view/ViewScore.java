@@ -52,7 +52,7 @@ public final class ViewScore extends View {
                         "\n" + (shieldScoreDetail + scoreLost) +
                         "\n" + (victory ? (moneyScoreDetail + moneyScore) : youLost) +
                         "\n" + (victory ? (minesScoreDetail + minesScore) : youLost) +
-                        "\n" + (luckDetail + scoreDice) +
+                        "\n" + (scoreDice > 0 ? (luckDetail + scoreDice) : "0") +
                         "\n" + cellScoreDetail + scoredCells * difficulty),
                 Color.YELLOW, 94, 13, true);
 
