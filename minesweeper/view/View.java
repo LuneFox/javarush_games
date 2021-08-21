@@ -66,7 +66,9 @@ public class View {
     public final void preloadResources() { // load images once at launch and just re-use them all the time
         Bitmap.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_").forEach(this::preloadPicture);
         Bitmap.getBitmapsByPrefixes("SPR_").forEach(this::preloadSprite);
-        Arrays.stream(ButtonID.values()).forEach(b -> BUTTONS.put(b, new Button(game, b.posX, b.posY, b.sizeX, b.sizeY, b.label)));
+        for (ButtonID b : ButtonID.values()) {
+            BUTTONS.put(b, new Button(game, b.posX, b.posY, b.sizeX, b.sizeY, b.label));
+        }
     }
 
     public final void reload() {
