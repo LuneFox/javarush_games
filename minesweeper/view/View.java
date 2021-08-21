@@ -6,6 +6,7 @@ import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.javarush.games.minesweeper.Util.inside;
@@ -35,8 +36,7 @@ public class View {
 
     public View(MinesweeperGame game) {
         this.game = game;
-        preloadImages();
-        preloadButtons();
+        preloadResources();
     }
 
     public void createSubViews() {
@@ -63,28 +63,14 @@ public class View {
         IMAGES.put(bitmap, new Picture(bitmap, game, 0, 0));
     }
 
-    public final void preloadImages() { // load images once at launch and just re-use them all the time
+    public final void preloadResources() { // load images once at launch and just re-use them all the time
         Bitmap.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_").forEach(this::preloadPicture);
         Bitmap.getBitmapsByPrefixes("SPR_").forEach(this::preloadSprite);
-    }
-
-    public final void preloadButtons() {
-        BUTTONS.put(ButtonID.OPTIONS, new Button(game, 61, 64, 36, 9, "опции"));
-        BUTTONS.put(ButtonID.ABOUT, new Button(game, 61, 76, 36, 9, "об игре"));
-        BUTTONS.put(ButtonID.START, new Button(game, 61, 88, 36, 9, "старт"));
-        BUTTONS.put(ButtonID.NEW_GAME, new Button(game, 61, 88, 36, 9, "заново"));
-        BUTTONS.put(ButtonID.RECORDS, new Button(game, 2, 88, "рекорды"));
-        BUTTONS.put(ButtonID.BACK, new Button(game, 61, 88, 36, 9, "назад"));
-        BUTTONS.put(ButtonID.FORWARD, new Button(game, 3, 88, 36, 9, "далее"));
-        BUTTONS.put(ButtonID.CONFIRM, new Button(game, 61, 88, 36, 9, "ясно"));
-        BUTTONS.put(ButtonID.AGAIN, new Button(game, 57, 69, "снова"));
-        BUTTONS.put(ButtonID.RETURN, new Button(game, 15, 69, "меню"));
-        BUTTONS.put(ButtonID.CLOSE, new Button(game, 73, 35, "x"));
+        Arrays.stream(ButtonID.values()).forEach(b -> BUTTONS.put(b, new Button(game, b.posX, b.posY, b.sizeX, b.sizeY, b.label)));
     }
 
     public final void reload() {
-        game.view.preloadImages();
-        game.view.preloadButtons();
+        game.view.preloadResources();
         game.recolorAllCells();
     }
 

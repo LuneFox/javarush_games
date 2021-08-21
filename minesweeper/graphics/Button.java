@@ -19,7 +19,31 @@ public class Button {
     private final int textOffset;
 
     public enum ButtonID {
-        OPTIONS, ABOUT, START, CONFIRM, BACK, FORWARD, AGAIN, RETURN, CLOSE, RECORDS, NEW_GAME,
+        ABOUT(61, 76, 36, 9, "об игре"),
+        AGAIN(57, 69, 0, 0, "снова"),
+        BACK(61, 88, 36, 9, "назад"),
+        CLOSE(73, 35, 0, 0, "x"),
+        CONFIRM(61, 88, 36, 9, "ясно"),
+        FORWARD(3, 88, 36, 9, "далее"),
+        NEW_GAME(61, 88, 36, 9, "заново"),
+        RECORDS(2, 88, 0, 0, "рекорды"),
+        RETURN(15, 69, 0, 0, "меню"),
+        START(61, 88, 36, 9, "старт"),
+        OPTIONS(61, 64, 36, 9, "опции");
+
+        public int posX;
+        public int posY;
+        public int sizeX;
+        public int sizeY;
+        public String label;
+
+        ButtonID(int posX, int posY, int sizeX, int sizeY, String label) {
+            this.posX = posX;
+            this.posY = posY;
+            this.sizeX = sizeX;
+            this.sizeY = sizeY;
+            this.label = label;
+        }
     }
 
     public Button(MinesweeperGame game, int posX, int posY, int sizeX, int sizeY, String text) {
@@ -44,10 +68,6 @@ public class Button {
                 Color.BLACK,
                 Theme.current.getColor(ThemeElement.BUTTON_BORDER)};
         body.assignBitmap(Bitmap.MENU_BUTTON);
-    }
-
-    public Button(MinesweeperGame game, int posX, int posY, String text) {
-        this(game, posX, posY, 0, 0, text); // auto size
     }
 
     public void draw() {

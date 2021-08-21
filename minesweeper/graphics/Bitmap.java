@@ -155,6 +155,6 @@ public enum Bitmap {
     }
 
     Bitmap() {
-        this.characters = new char[]{'?'};
+
     }
 }
