@@ -107,17 +107,17 @@ public class Shop {
 
     public void reset() {
         shield = new ShopItem(0, 13 + game.difficulty / 5, 1,
-                (Picture) View.IMAGES.get(Bitmap.ITEM_SHIELD), game);
+                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_SHIELD), game);
         scanner = new ShopItem(1, 8 + game.difficulty / 5, 1,
-                (Picture) View.IMAGES.get(Bitmap.ITEM_SCANNER), game);
+                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_SCANNER), game);
         flag = new ShopItem(2, 1, getFlagsAmount(),
-                (Picture) View.IMAGES.get(Bitmap.ITEM_FLAG), game);
+                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_FLAG), game);
         goldenShovel = new ShopItem(3, 9, 1,
-                (Picture) View.IMAGES.get(Bitmap.ITEM_SHOVEL), game);
+                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_SHOVEL), game);
         luckyDice = new ShopItem(4, 6, 1,
-                (Picture) View.IMAGES.get(Bitmap.ITEM_DICE), game);
+                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_DICE), game);
         miniBomb = new ShopItem(5, 6 + game.difficulty / 10, 1,
-                (Picture) View.IMAGES.get(Bitmap.ITEM_BOMB), game);
+                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_BOMB), game);
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
         dice = new Dice(1);
@@ -128,8 +128,8 @@ public class Shop {
     }
 
     private void drawColoredFrame(Color color) {
-        View.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(color, 3);
-        View.IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+        View.IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(color, 3);
+        View.IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).draw();
     }
 
     public ShopItem getClickedItem(int x, int y) {

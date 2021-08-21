@@ -6,7 +6,6 @@ import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.javarush.games.minesweeper.Util.inside;
@@ -36,8 +35,8 @@ public class View {
 
     public View(MinesweeperGame game) {
         this.game = game;
-        loadImages();
-        loadButtons();
+        preloadImages();
+        preloadButtons();
     }
 
     public void createSubViews() {
@@ -56,63 +55,20 @@ public class View {
         Screen.setType(this.screenType);
     }
 
-    private void loadSprite(Bitmap bitmap) {
+    private void preloadSprite(Bitmap bitmap) {
         IMAGES.put(bitmap, new Sprite(bitmap, game, 0, 0));
     }
 
-    private void loadSprite(Bitmap... bitmaps) {
-        Arrays.asList(bitmaps).forEach(this::loadSprite);
-    }
-
-    private void loadPicture(Bitmap bitmap) {
+    private void preloadPicture(Bitmap bitmap) {
         IMAGES.put(bitmap, new Picture(bitmap, game, 0, 0));
     }
 
-    private void loadPicture(Bitmap... bitmaps) {
-        Arrays.asList(bitmaps).forEach(this::loadPicture);
+    public final void preloadImages() { // load images once at launch and just re-use them all the time
+        Bitmap.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_").forEach(this::preloadPicture);
+        Bitmap.getBitmapsByPrefixes("SPR_").forEach(this::preloadSprite);
     }
 
-    public final void loadImages() { // load images once at launch and just re-use them all the time
-        loadSprite(
-                Bitmap.BOARD_FLAG,
-                Bitmap.BOARD_MINE);
-        loadPicture(
-                Bitmap.BOARD_ACTIVE_FRAME,
-                Bitmap.BOARD_COIN,
-                Bitmap.BUTTON_CLOSE,
-                Bitmap.BUTTON_OK,
-                Bitmap.CUP,
-                Bitmap.DICE_1,
-                Bitmap.DICE_2,
-                Bitmap.DICE_3,
-                Bitmap.DICE_4,
-                Bitmap.DICE_5,
-                Bitmap.DICE_6,
-                Bitmap.FACE_HAPPY,
-                Bitmap.FACE_SAD,
-                Bitmap.ITEM_BOMB,
-                Bitmap.ITEM_DICE,
-                Bitmap.ITEM_FLAG,
-                Bitmap.ITEM_FRAME,
-                Bitmap.ITEM_FRAME_PRESSED,
-                Bitmap.ITEM_SCANNER,
-                Bitmap.ITEM_SHIELD,
-                Bitmap.ITEM_SHOVEL,
-                Bitmap.MENU_ARROW,
-                Bitmap.MENU_DIFFICULTY_BAR,
-                Bitmap.MENU_SWITCH,
-                Bitmap.MENU_SWITCH_RAIL,
-                Bitmap.PICTURE_LOGO,
-                Bitmap.THEME_PALETTE,
-                Bitmap.WINDOW_GAME_OVER,
-                Bitmap.WINDOW_MENU,
-                Bitmap.WINDOW_SHOP,
-                Bitmap.WINDOW_SHOP_HEADER_FOOTER,
-                Bitmap.WINDOW_VICTORY
-        );
-    }
-
-    public final void loadButtons() {
+    public final void preloadButtons() {
         BUTTONS.put(ButtonID.OPTIONS, new Button(game, 61, 64, 36, 9, "опции"));
         BUTTONS.put(ButtonID.ABOUT, new Button(game, 61, 76, 36, 9, "об игре"));
         BUTTONS.put(ButtonID.START, new Button(game, 61, 88, 36, 9, "старт"));
@@ -127,8 +83,8 @@ public class View {
     }
 
     public final void reload() {
-        game.view.loadImages();
-        game.view.loadButtons();
+        game.view.preloadImages();
+        game.view.preloadButtons();
         game.recolorAllCells();
     }
 

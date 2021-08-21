@@ -25,7 +25,7 @@ public final class ViewAbout extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(Bitmap.WINDOW_MENU).draw();
+        IMAGES.get(Bitmap.WIN_MENU).draw();
         game.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, 24, 2);
         game.print(Strings.ABOUT_BODY[currentAboutPage], 3, 13);
         BUTTONS.get(Button.ButtonID.BACK).draw();

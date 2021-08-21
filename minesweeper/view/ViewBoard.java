@@ -20,11 +20,11 @@ public final class ViewBoard extends View {
         super.display();
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.BLUE, 3);
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+            IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
+            IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).draw();
         } else if (game.shop.allItems.get(5).isActivated()) {
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).replaceColor(Color.RED, 3);
-            IMAGES.get(Bitmap.BOARD_ACTIVE_FRAME).draw();
+            IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.RED, 3);
+            IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).draw();
         }
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();

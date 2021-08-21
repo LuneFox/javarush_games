@@ -218,7 +218,7 @@ public class MinesweeperGame extends Game {
         Cell cell = field[y][x];
         if (cellDestructionImpossible(cell)) return;
 
-        cell.assignSprite(Bitmap.BOARD_NONE);
+        cell.assignSprite(Bitmap.SPR_BOARD_NONE);
         cell.isDestroyed = true;
         pushCell(cell);
         deactivateExpiredItems();
@@ -266,7 +266,7 @@ public class MinesweeperGame extends Game {
         if (!cell.isFlagged) { // don't do anything to cells that have flags
             inventory.remove(ShopItem.ID.FLAG);
             cell.isFlagged = true;
-            cell.assignSprite(Bitmap.BOARD_FLAG);
+            cell.assignSprite(Bitmap.SPR_BOARD_FLAG);
             cell.drawSprite();
         }
     }
@@ -457,7 +457,7 @@ public class MinesweeperGame extends Game {
                 Cell showCell = field[posY][posX];
                 if (showCell.isMined) {
                     showCell.isOpen = true;
-                    showCell.assignSprite(Bitmap.BOARD_MINE);
+                    showCell.assignSprite(Bitmap.SPR_BOARD_MINE);
                     showCell.push();
                 }
             }

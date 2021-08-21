@@ -65,89 +65,12 @@ public class Text extends Image {
     }
 
     public void loadAlphabet() {
-        loadLetter('а', Bitmap.RU_LETTER_A);
-        loadLetter('б', Bitmap.RU_LETTER_B);
-        loadLetter('в', Bitmap.RU_LETTER_V);
-        loadLetter('г', Bitmap.RU_LETTER_G);
-        loadLetter('д', Bitmap.RU_LETTER_D);
-        loadLetter('е', Bitmap.RU_LETTER_YE);
-        loadLetter('ё', Bitmap.RU_LETTER_YO);
-        loadLetter('ж', Bitmap.RU_LETTER_J);
-        loadLetter('з', Bitmap.RU_LETTER_Z);
-        loadLetter('и', Bitmap.RU_LETTER_I);
-        loadLetter('й', Bitmap.RU_LETTER_IKR);
-        loadLetter('к', Bitmap.RU_LETTER_K);
-        loadLetter('л', Bitmap.RU_LETTER_L);
-        loadLetter('м', Bitmap.RU_LETTER_M);
-        loadLetter('н', Bitmap.RU_LETTER_N);
-        loadLetter('о', Bitmap.RU_LETTER_O);
-        loadLetter('п', Bitmap.RU_LETTER_P);
-        loadLetter('р', Bitmap.RU_LETTER_R);
-        loadLetter('с', Bitmap.RU_LETTER_S);
-        loadLetter('т', Bitmap.RU_LETTER_T);
-        loadLetter('у', Bitmap.RU_LETTER_U);
-        loadLetter('ф', Bitmap.RU_LETTER_F);
-        loadLetter('х', Bitmap.RU_LETTER_H);
-        loadLetter('ц', Bitmap.RU_LETTER_C);
-        loadLetter('ч', Bitmap.RU_LETTER_CH);
-        loadLetter('ш', Bitmap.RU_LETTER_SHA);
-        loadLetter('щ', Bitmap.RU_LETTER_SCHA);
-        loadLetter('ь', Bitmap.RU_LETTER_SOFT);
-        loadLetter('ы', Bitmap.RU_LETTER_Y);
-        loadLetter('ъ', Bitmap.RU_LETTER_HARD);
-        loadLetter('э', Bitmap.RU_LETTER_E);
-        loadLetter('ю', Bitmap.RU_LETTER_YU);
-        loadLetter('я', Bitmap.RU_LETTER_YA);
-        loadLetter('a', Bitmap.RU_LETTER_A);
-        loadLetter('b', Bitmap.RU_LETTER_V);
-        loadLetter('c', Bitmap.RU_LETTER_S);
-        loadLetter('d', Bitmap.EN_LETTER_D);
-        loadLetter('e', Bitmap.RU_LETTER_YE);
-        loadLetter('f', Bitmap.EN_LETTER_F);
-        loadLetter('g', Bitmap.EN_LETTER_G);
-        loadLetter('h', Bitmap.RU_LETTER_N);
-        loadLetter('i', Bitmap.EN_LETTER_I);
-        loadLetter('j', Bitmap.EN_LETTER_J);
-        loadLetter('k', Bitmap.RU_LETTER_K);
-        loadLetter('l', Bitmap.EN_LETTER_L);
-        loadLetter('m', Bitmap.RU_LETTER_M);
-        loadLetter('n', Bitmap.EN_LETTER_N);
-        loadLetter('o', Bitmap.RU_LETTER_O);
-        loadLetter('p', Bitmap.RU_LETTER_R);
-        loadLetter('q', Bitmap.EN_LETTER_Q);
-        loadLetter('r', Bitmap.EN_LETTER_R);
-        loadLetter('s', Bitmap.EN_LETTER_S);
-        loadLetter('t', Bitmap.RU_LETTER_T);
-        loadLetter('u', Bitmap.EN_LETTER_U);
-        loadLetter('v', Bitmap.EN_LETTER_V);
-        loadLetter('w', Bitmap.EN_LETTER_W);
-        loadLetter('x', Bitmap.EN_LETTER_X);
-        loadLetter('y', Bitmap.EN_LETTER_Y);
-        loadLetter('z', Bitmap.EN_LETTER_Z);
-        loadLetter('0', Bitmap.DIGIT_0);
-        loadLetter('1', Bitmap.DIGIT_1);
-        loadLetter('2', Bitmap.DIGIT_2);
-        loadLetter('3', Bitmap.DIGIT_3);
-        loadLetter('4', Bitmap.DIGIT_4);
-        loadLetter('5', Bitmap.DIGIT_5);
-        loadLetter('6', Bitmap.DIGIT_6);
-        loadLetter('7', Bitmap.DIGIT_7);
-        loadLetter('8', Bitmap.DIGIT_8);
-        loadLetter('9', Bitmap.DIGIT_9);
-        loadLetter(' ', Bitmap.SYMBOL_SPACE);
-        loadLetter('.', Bitmap.SYMBOL_DOT);
-        loadLetter(',', Bitmap.SYMBOL_COMMA);
-        loadLetter(':', Bitmap.SYMBOL_COLON);
-        loadLetter('-', Bitmap.SYMBOL_DASH);
-        loadLetter('=', Bitmap.SYMBOL_EQUALS);
-        loadLetter('!', Bitmap.SYMBOL_EXCLAMATION);
-        loadLetter('?', Bitmap.SYMBOL_QUESTION);
-        loadLetter('*', Bitmap.SYMBOL_ASTERISK);
-        loadLetter('/', Bitmap.SYMBOL_SLASH);
-        loadLetter('\n', Bitmap.SYMBOL_NEWLINE);
+        Bitmap.getBitmapsByPrefixes("SYM_").forEach(symbol -> {
+            for (char c : symbol.characters) loadSymbol(c, symbol);
+        });
     }
 
-    private void loadLetter(Character c, Bitmap bitmap) {
+    private void loadSymbol(Character c, Bitmap bitmap) {
         ALPHABET.put(c, new Text(bitmap, game));
     }
 
@@ -164,7 +87,7 @@ public class Text extends Image {
     @Override
     protected int[][] assignBitmap(Bitmap bitmap) {
         switch (bitmap) { // 6 to 8 px tall, any px wide
-            case RU_LETTER_A:
+            case SYM_RU_LETTER_A:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -174,7 +97,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_B:
+            case SYM_RU_LETTER_B:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -184,7 +107,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case RU_LETTER_V:
+            case SYM_RU_LETTER_V:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -194,7 +117,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case RU_LETTER_G:
+            case SYM_RU_LETTER_G:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -204,7 +127,7 @@ public class Text extends Image {
                         {1, 0, 0},
                         {1, 0, 0}
                 };
-            case RU_LETTER_D:
+            case SYM_RU_LETTER_D:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -215,7 +138,7 @@ public class Text extends Image {
                         {1, 1, 1, 1, 1},
                         {1, 0, 0, 0, 1}
                 };
-            case RU_LETTER_YE:
+            case SYM_RU_LETTER_YE:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -225,7 +148,7 @@ public class Text extends Image {
                         {1, 0, 0, 0},
                         {1, 1, 1, 1}
                 };
-            case RU_LETTER_YO:
+            case SYM_RU_LETTER_YO:
                 return new int[][]{
                         {1, 0, 1, 0},
                         {0, 0, 0, 0},
@@ -235,7 +158,7 @@ public class Text extends Image {
                         {1, 0, 0, 0},
                         {1, 1, 1, 1}
                 };
-            case RU_LETTER_J:
+            case SYM_RU_LETTER_J:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -245,7 +168,7 @@ public class Text extends Image {
                         {1, 0, 1, 0, 1},
                         {1, 0, 1, 0, 1}
                 };
-            case RU_LETTER_Z:
+            case SYM_RU_LETTER_Z:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -255,7 +178,7 @@ public class Text extends Image {
                         {0, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case RU_LETTER_I:
+            case SYM_RU_LETTER_I:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -265,7 +188,7 @@ public class Text extends Image {
                         {1, 1, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_IKR:
+            case SYM_RU_LETTER_IKR:
                 return new int[][]{
                         {0, 1, 1, 0},
                         {0, 0, 0, 0},
@@ -275,7 +198,7 @@ public class Text extends Image {
                         {1, 1, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_K:
+            case SYM_RU_LETTER_K:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -285,7 +208,7 @@ public class Text extends Image {
                         {1, 0, 1, 0},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_L:
+            case SYM_RU_LETTER_L:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -295,7 +218,7 @@ public class Text extends Image {
                         {0, 1, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_M:
+            case SYM_RU_LETTER_M:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -305,7 +228,7 @@ public class Text extends Image {
                         {1, 0, 0, 0, 1},
                         {1, 0, 0, 0, 1}
                 };
-            case RU_LETTER_N:
+            case SYM_RU_LETTER_N:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -315,7 +238,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_O:
+            case SYM_RU_LETTER_O:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -325,7 +248,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {0, 1, 1, 0}
                 };
-            case RU_LETTER_P:
+            case SYM_RU_LETTER_P:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -335,7 +258,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_R:
+            case SYM_RU_LETTER_R:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -345,7 +268,7 @@ public class Text extends Image {
                         {1, 0, 0, 0},
                         {1, 0, 0, 0}
                 };
-            case RU_LETTER_S:
+            case SYM_RU_LETTER_S:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -355,7 +278,7 @@ public class Text extends Image {
                         {1, 0, 0, 0},
                         {0, 1, 1, 1}
                 };
-            case RU_LETTER_T:
+            case SYM_RU_LETTER_T:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -365,7 +288,7 @@ public class Text extends Image {
                         {0, 1, 0},
                         {0, 1, 0}
                 };
-            case RU_LETTER_U:
+            case SYM_RU_LETTER_U:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -375,7 +298,7 @@ public class Text extends Image {
                         {0, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case RU_LETTER_F:
+            case SYM_RU_LETTER_F:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -385,7 +308,7 @@ public class Text extends Image {
                         {0, 1, 1, 1, 0},
                         {0, 0, 1, 0, 0}
                 };
-            case RU_LETTER_H:
+            case SYM_RU_LETTER_H:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -395,7 +318,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case RU_LETTER_C:
+            case SYM_RU_LETTER_C:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -406,7 +329,7 @@ public class Text extends Image {
                         {1, 1, 1, 1, 1},
                         {0, 0, 0, 0, 1}
                 };
-            case RU_LETTER_CH:
+            case SYM_RU_LETTER_CH:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -416,7 +339,7 @@ public class Text extends Image {
                         {0, 0, 0, 1},
                         {0, 0, 0, 1}
                 };
-            case RU_LETTER_SHA:
+            case SYM_RU_LETTER_SHA:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -426,7 +349,7 @@ public class Text extends Image {
                         {1, 0, 1, 0, 1},
                         {1, 1, 1, 1, 1}
                 };
-            case RU_LETTER_SCHA:
+            case SYM_RU_LETTER_SCHA:
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0},
@@ -437,7 +360,7 @@ public class Text extends Image {
                         {1, 1, 1, 1, 1, 1},
                         {0, 0, 0, 0, 0, 1}
                 };
-            case RU_LETTER_SOFT:
+            case SYM_RU_LETTER_SOFT:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -447,7 +370,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case RU_LETTER_Y:
+            case SYM_RU_LETTER_Y:
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0},
@@ -457,7 +380,7 @@ public class Text extends Image {
                         {1, 0, 0, 1, 0, 1},
                         {1, 1, 1, 0, 0, 1}
                 };
-            case RU_LETTER_HARD:
+            case SYM_RU_LETTER_HARD:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -467,7 +390,7 @@ public class Text extends Image {
                         {0, 1, 0, 0, 1},
                         {0, 1, 1, 1, 0}
                 };
-            case RU_LETTER_E:
+            case SYM_RU_LETTER_E:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -477,7 +400,7 @@ public class Text extends Image {
                         {0, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case RU_LETTER_YU:
+            case SYM_RU_LETTER_YU:
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0},
@@ -487,7 +410,7 @@ public class Text extends Image {
                         {1, 0, 1, 0, 0, 1},
                         {1, 0, 0, 1, 1, 0}
                 };
-            case RU_LETTER_YA:
+            case SYM_RU_LETTER_YA:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -497,7 +420,7 @@ public class Text extends Image {
                         {0, 1, 0, 1},
                         {1, 0, 0, 1}
                 };
-            case EN_LETTER_D:
+            case SYM_EN_LETTER_D:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -507,7 +430,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case EN_LETTER_F:
+            case SYM_EN_LETTER_F:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -517,7 +440,7 @@ public class Text extends Image {
                         {1, 0, 0, 0},
                         {1, 0, 0, 0}
                 };
-            case EN_LETTER_G:
+            case SYM_EN_LETTER_G:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -527,7 +450,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {0, 1, 1, 0}
                 };
-            case EN_LETTER_I:
+            case SYM_EN_LETTER_I:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -537,7 +460,7 @@ public class Text extends Image {
                         {0, 1, 0},
                         {1, 1, 1}
                 };
-            case EN_LETTER_J:
+            case SYM_EN_LETTER_J:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -547,7 +470,7 @@ public class Text extends Image {
                         {1, 0, 1, 0},
                         {0, 1, 0, 0}
                 };
-            case EN_LETTER_L:
+            case SYM_EN_LETTER_L:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -557,7 +480,7 @@ public class Text extends Image {
                         {1, 0, 0},
                         {1, 1, 1}
                 };
-            case EN_LETTER_N:
+            case SYM_EN_LETTER_N:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -567,7 +490,7 @@ public class Text extends Image {
                         {1, 0, 1, 1},
                         {1, 0, 0, 1}
                 };
-            case EN_LETTER_Q:
+            case SYM_EN_LETTER_Q:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -577,7 +500,7 @@ public class Text extends Image {
                         {1, 0, 1, 0},
                         {0, 1, 0, 1}
                 };
-            case EN_LETTER_R:
+            case SYM_EN_LETTER_R:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -587,7 +510,7 @@ public class Text extends Image {
                         {1, 0, 1, 0},
                         {1, 0, 0, 1}
                 };
-            case EN_LETTER_S:
+            case SYM_EN_LETTER_S:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -597,7 +520,7 @@ public class Text extends Image {
                         {0, 0, 0, 1},
                         {1, 1, 1, 0}
                 };
-            case EN_LETTER_U:
+            case SYM_EN_LETTER_U:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -607,7 +530,7 @@ public class Text extends Image {
                         {1, 0, 0, 1},
                         {0, 1, 1, 0}
                 };
-            case EN_LETTER_V:
+            case SYM_EN_LETTER_V:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -617,7 +540,7 @@ public class Text extends Image {
                         {0, 1, 0, 1, 0},
                         {0, 0, 1, 0, 0}
                 };
-            case EN_LETTER_W:
+            case SYM_EN_LETTER_W:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -627,7 +550,7 @@ public class Text extends Image {
                         {1, 1, 0, 1, 1},
                         {1, 0, 0, 0, 1}
                 };
-            case EN_LETTER_X:
+            case SYM_EN_LETTER_X:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -637,7 +560,7 @@ public class Text extends Image {
                         {0, 1, 0, 1, 0},
                         {1, 0, 0, 0, 1}
                 };
-            case EN_LETTER_Y:
+            case SYM_EN_LETTER_Y:
                 return new int[][]{
                         {0, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0},
@@ -647,7 +570,7 @@ public class Text extends Image {
                         {0, 0, 1, 0, 0},
                         {0, 0, 1, 0, 0}
                 };
-            case EN_LETTER_Z:
+            case SYM_EN_LETTER_Z:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -657,7 +580,7 @@ public class Text extends Image {
                         {1, 0, 0, 0},
                         {1, 1, 1, 1}
                 };
-            case SYMBOL_DOT:
+            case SYM_SYMBOL_DOT:
                 return new int[][]{
                         {0},
                         {0},
@@ -667,7 +590,7 @@ public class Text extends Image {
                         {0},
                         {1}
                 };
-            case SYMBOL_COMMA:
+            case SYM_SYMBOL_COMMA:
                 return new int[][]{
                         {0, 0},
                         {0, 0},
@@ -678,7 +601,7 @@ public class Text extends Image {
                         {0, 1},
                         {1, 0}
                 };
-            case SYMBOL_COLON:
+            case SYM_SYMBOL_COLON:
                 return new int[][]{
                         {0},
                         {0},
@@ -688,7 +611,7 @@ public class Text extends Image {
                         {1},
                         {0}
                 };
-            case SYMBOL_EXCLAMATION:
+            case SYM_SYMBOL_EXCLAMATION:
                 return new int[][]{
                         {0},
                         {0},
@@ -698,7 +621,7 @@ public class Text extends Image {
                         {0},
                         {1}
                 };
-            case SYMBOL_QUESTION:
+            case SYM_SYMBOL_QUESTION:
                 return new int[][]{
                         {0, 0, 0, 0},
                         {0, 0, 0, 0},
@@ -708,7 +631,7 @@ public class Text extends Image {
                         {0, 0, 0, 0},
                         {0, 1, 0, 0}
                 };
-            case SYMBOL_SLASH:
+            case SYM_SYMBOL_SLASH:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 1},
@@ -718,7 +641,7 @@ public class Text extends Image {
                         {1, 0, 0},
                         {1, 0, 0}
                 };
-            case SYMBOL_DASH:
+            case SYM_SYMBOL_DASH:
                 return new int[][]{
                         {0, 0},
                         {0, 0},
@@ -728,7 +651,7 @@ public class Text extends Image {
                         {0, 0},
                         {0, 0}
                 };
-            case SYMBOL_EQUALS:
+            case SYM_SYMBOL_EQUALS:
                 return new int[][]{
                         {0, 0},
                         {0, 0},
@@ -738,7 +661,7 @@ public class Text extends Image {
                         {1, 1},
                         {0, 0}
                 };
-            case SYMBOL_ASTERISK:
+            case SYM_SYMBOL_ASTERISK:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -748,7 +671,7 @@ public class Text extends Image {
                         {1, 0, 1},
                         {0, 0, 0}
                 };
-            case SYMBOL_SPACE:
+            case SYM_SYMBOL_SPACE:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -758,7 +681,7 @@ public class Text extends Image {
                         {0, 0, 0},
                         {0, 0, 0}
                 };
-            case DIGIT_0:
+            case SYM_DIGIT_0:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -768,7 +691,7 @@ public class Text extends Image {
                         {1, 0, 1},
                         {1, 1, 1}
                 };
-            case DIGIT_1:
+            case SYM_DIGIT_1:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -778,7 +701,7 @@ public class Text extends Image {
                         {0, 1, 0},
                         {1, 1, 1}
                 };
-            case DIGIT_2:
+            case SYM_DIGIT_2:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -788,7 +711,7 @@ public class Text extends Image {
                         {1, 0, 0},
                         {1, 1, 1}
                 };
-            case DIGIT_3:
+            case SYM_DIGIT_3:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -798,7 +721,7 @@ public class Text extends Image {
                         {0, 0, 1},
                         {1, 1, 1}
                 };
-            case DIGIT_4:
+            case SYM_DIGIT_4:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -808,7 +731,7 @@ public class Text extends Image {
                         {0, 0, 1},
                         {0, 0, 1}
                 };
-            case DIGIT_5:
+            case SYM_DIGIT_5:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -818,7 +741,7 @@ public class Text extends Image {
                         {0, 0, 1},
                         {1, 1, 1}
                 };
-            case DIGIT_6:
+            case SYM_DIGIT_6:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -828,7 +751,7 @@ public class Text extends Image {
                         {1, 0, 1},
                         {1, 1, 1}
                 };
-            case DIGIT_7:
+            case SYM_DIGIT_7:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -838,7 +761,7 @@ public class Text extends Image {
                         {0, 0, 1},
                         {0, 0, 1}
                 };
-            case DIGIT_8:
+            case SYM_DIGIT_8:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},
@@ -848,7 +771,7 @@ public class Text extends Image {
                         {1, 0, 1},
                         {1, 1, 1}
                 };
-            case DIGIT_9:
+            case SYM_DIGIT_9:
                 return new int[][]{
                         {0, 0, 0},
                         {0, 0, 0},

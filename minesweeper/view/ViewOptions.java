@@ -39,11 +39,11 @@ public final class ViewOptions extends View {
         Image arrowButton = IMAGES.get(Bitmap.MENU_ARROW);
         Image switchButton = IMAGES.get(Bitmap.MENU_SWITCH);
         Image switchRail = IMAGES.get(Bitmap.MENU_SWITCH_RAIL);
-        Image themePalette = IMAGES.get(Bitmap.THEME_PALETTE);
+        Image themePalette = IMAGES.get(Bitmap.MENU_THEME_PALETTE);
         String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(difficultySetting)];
 
 
-        IMAGES.get(Bitmap.WINDOW_MENU).draw();
+        IMAGES.get(Bitmap.WIN_MENU).draw();
         game.print("настройки", Color.YELLOW, 28, 2);
 
         game.print("сложность", 2, 20);

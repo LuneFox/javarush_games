@@ -15,7 +15,7 @@ public class Picture extends Image {
 
     public int[][] assignBitmap(Bitmap bitmap) {
         switch (bitmap) {
-            case PICTURE_LOGO: {
+            case PIC_LOGO: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.DARKSLATEGRAY,
                         Color.SANDYBROWN, Color.RED, Color.YELLOW};
                 return createBitmapFromStrings(
@@ -53,7 +53,7 @@ public class Picture extends Image {
                         "00011111111100000000000000000000000000000000000000000000000000000000"
                 );
             }
-            case FACE_HAPPY: {
+            case PIC_FACE_HAPPY: {
                 colors = new Color[]{Color.NONE, Color.YELLOW, Color.BLACK};
                 return createBitmapFromStrings(
                         "2222002222002222",
@@ -72,7 +72,7 @@ public class Picture extends Image {
                         "0000002222000000"
                 );
             }
-            case FACE_SAD: {
+            case PIC_FACE_SAD: {
                 colors = new Color[]{Color.NONE, Color.YELLOW, Color.BLACK};
                 return createBitmapFromStrings(
                         "2222002222002222",
@@ -91,7 +91,7 @@ public class Picture extends Image {
                         "0000002222000000"
                 );
             }
-            case ITEM_SHIELD: {
+            case SHOP_ITEM_SHIELD: {
                 colors = new Color[]{Color.NONE, Color.DARKGRAY, Color.LIGHTBLUE, Color.LIGHTGRAY, Color.GRAY};
                 return createBitmapFromStrings(
                         "000000000000000000",
@@ -114,7 +114,7 @@ public class Picture extends Image {
                         "000000000000000000"
                 );
             }
-            case ITEM_SCANNER: {
+            case SHOP_ITEM_SCANNER: {
                 colors = new Color[]{Color.NONE, Color.BLACK, Color.GRAY, Color.MEDIUMPURPLE, Color.RED, Color.WHITE};
                 return createBitmapFromStrings(
                         "000000000000000000",
@@ -137,7 +137,7 @@ public class Picture extends Image {
                         "000000000000000000"
                 );
             }
-            case ITEM_FLAG: {
+            case SHOP_ITEM_FLAG: {
                 colors = new Color[]{Color.NONE, Color.BLACK, Color.RED, Color.DARKRED, Color.YELLOW};
                 return createBitmapFromStrings(
                         "000000000000000000",
@@ -160,7 +160,7 @@ public class Picture extends Image {
                         "001100000000000000"
                 );
             }
-            case ITEM_SHOVEL: {
+            case SHOP_ITEM_SHOVEL: {
                 colors = new Color[]{Color.NONE, Color.DARKORANGE, Color.WHITE, Color.YELLOW, Color.ORANGE, Color.SADDLEBROWN};
                 return createBitmapFromStrings(
                         "000000000000000000",
@@ -183,7 +183,7 @@ public class Picture extends Image {
                         "000000000000000000"
                 );
             }
-            case ITEM_DICE: {
+            case SHOP_ITEM_DICE: {
                 colors = new Color[]{Color.NONE, Color.DARKGRAY, Color.LIGHTGRAY, Color.RED, Color.BLACK};
                 return createBitmapFromStrings(
                         "000000000000000000",
@@ -206,7 +206,7 @@ public class Picture extends Image {
                         "000000000000000000"
                 );
             }
-            case ITEM_BOMB: {
+            case SHOP_ITEM_BOMB: {
                 colors = new Color[]{Color.NONE, Color.BLACK, Color.GRAY, Color.LIGHTGRAY, Color.RED, Color.YELLOW};
                 return createBitmapFromStrings(
                         "000505000000000000",
@@ -229,7 +229,7 @@ public class Picture extends Image {
                         "000000000000000000"
                 );
             }
-            case BOARD_COIN: {
+            case SHOP_COIN: {
                 colors = new Color[]{Color.NONE, Color.YELLOW, Color.ORANGE};
                 return createBitmapFromStrings("0110", "1112", "1112", "1112", "1122", "0220");
             }
@@ -241,7 +241,7 @@ public class Picture extends Image {
                 colors = new Color[]{Color.NONE, Color.GREEN, Color.BLACK};
                 return createBitmapFromStrings("020", "212", "212", "212", "212", "212", "020");
             }
-            case WINDOW_MENU: {
+            case WIN_MENU: {
                 colors = new Color[]{
                         Color.NONE,
                         Theme.current.getColor(ThemeElement.MAIN_MENU_BG),
@@ -250,7 +250,7 @@ public class Picture extends Image {
                 };
                 return createWindowBitmap(100, 100, false, true);
             }
-            case WINDOW_SHOP: {
+            case WIN_SHOP: {
                 colors = new Color[]{
                         Color.NONE,
                         Theme.current.getColor(ThemeElement.SHOP_BG),
@@ -259,7 +259,7 @@ public class Picture extends Image {
                 };
                 return createWindowBitmap(80, 80, true, true);
             }
-            case WINDOW_SHOP_HEADER_FOOTER: {
+            case WIN_SHOP_HEADER_FOOTER: {
                 colors = new Color[]{
                         Color.NONE,
                         Theme.current.getColor(ThemeElement.SHOP_HEADER_FOOTER),
@@ -267,7 +267,7 @@ public class Picture extends Image {
                         Theme.current.getColor(ThemeElement.SHOP_BORDER)};
                 return createWindowBitmap(80, 12, false, true);
             }
-            case ITEM_FRAME: {
+            case SHOP_ITEM_FRAME: {
                 colors = new Color[]{
                         Color.NONE,
                         Theme.current.getColor(ThemeElement.SHOP_ITEM_BG),
@@ -276,7 +276,7 @@ public class Picture extends Image {
                 };
                 return createWindowBitmap(20, 20, true, true);
             }
-            case ITEM_FRAME_PRESSED: {
+            case SHOP_ITEM_FRAME_PRESSED: {
                 colors = new Color[]{
                         Color.NONE,
                         Theme.current.getColor(ThemeElement.SHOP_ITEM_BG),
@@ -285,8 +285,8 @@ public class Picture extends Image {
                 };
                 return createWindowBitmap(20, 20, false, true);
             }
-            case WINDOW_VICTORY:
-            case WINDOW_GAME_OVER: {
+            case WIN_VICTORY:
+            case WIN_GAME_OVER: {
                 colors = new Color[]{
                         Color.NONE,
                         Theme.current.getColor(ThemeElement.MAIN_MENU_BG),
@@ -310,15 +310,15 @@ public class Picture extends Image {
                 colors = new Color[]{Color.NONE, Color.BLACK, Color.NONE, Color.NONE};
                 return createWindowBitmap(12, 3, false, false);
             }
-            case BOARD_ACTIVE_FRAME: {
+            case WIN_BOARD_TRANSPARENT_FRAME: {
                 colors = new Color[]{Color.NONE, Color.NONE, Color.NONE, Color.BLUE};
                 return createWindowBitmap(100, 100, false, true);
             }
-            case THEME_PALETTE:{
+            case MENU_THEME_PALETTE:{
                 colors = new Color[]{Color.NONE, Color.GRAY, Color.BLACK, Color.WHITE};
                 return createWindowBitmap(10, 10, true, true);
             }
-            case DICE_1: {
+            case SHOP_DICE_1: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.RED, Color.BLACK};
                 return createBitmapFromStrings(
                         "11111110",
@@ -330,7 +330,7 @@ public class Picture extends Image {
                         "11111113",
                         "03333333");
             }
-            case DICE_2: {
+            case SHOP_DICE_2: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
                 return createBitmapFromStrings(
                         "11111110",
@@ -342,7 +342,7 @@ public class Picture extends Image {
                         "11111113",
                         "03333333");
             }
-            case DICE_3: {
+            case SHOP_DICE_3: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
                 return createBitmapFromStrings(
                         "11111110",
@@ -354,7 +354,7 @@ public class Picture extends Image {
                         "11111113",
                         "03333333");
             }
-            case DICE_4: {
+            case SHOP_DICE_4: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
                 return createBitmapFromStrings(
                         "11111110",
@@ -366,7 +366,7 @@ public class Picture extends Image {
                         "11111113",
                         "03333333");
             }
-            case DICE_5: {
+            case SHOP_DICE_5: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
                 return createBitmapFromStrings(
                         "11111110",
@@ -378,7 +378,7 @@ public class Picture extends Image {
                         "11111113",
                         "03333333");
             }
-            case DICE_6: {
+            case SHOP_DICE_6: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.BLACK, Color.BLACK};
                 return createBitmapFromStrings(
                         "11111110",
@@ -390,7 +390,7 @@ public class Picture extends Image {
                         "11111113",
                         "03333333");
             }
-            case CUP: {
+            case MENU_CUP: {
                 colors = new Color[]{Color.NONE, Color.GOLD, Color.WHITE, Color.MAROON, Color.KHAKI};
                 return createBitmapFromStrings(
                         "000111111111000",

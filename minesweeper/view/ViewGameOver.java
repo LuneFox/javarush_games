@@ -32,12 +32,12 @@ public final class ViewGameOver extends View {
 
         if (popUpTimer > 0) return;
         if (victory) {
-            IMAGES.get(Bitmap.WINDOW_VICTORY).drawAt(-1, -1);
-            IMAGES.get(Bitmap.FACE_HAPPY).drawAt(-1, -1);
+            IMAGES.get(Bitmap.WIN_VICTORY).drawAt(-1, -1);
+            IMAGES.get(Bitmap.PIC_FACE_HAPPY).drawAt(-1, -1);
             game.print("победа!", Color.YELLOW, 18, 33);
         } else {
-            IMAGES.get(Bitmap.WINDOW_GAME_OVER).drawAt(-1, -1);
-            IMAGES.get(Bitmap.FACE_SAD).drawAt(-1, -1);
+            IMAGES.get(Bitmap.WIN_GAME_OVER).drawAt(-1, -1);
+            IMAGES.get(Bitmap.PIC_FACE_SAD).drawAt(-1, -1);
             game.print("не повезло!", Color.YELLOW, 18, 33);
         }
         game.print("счёт: " + game.player.getTotalScore(), Color.LIGHTGOLDENRODYELLOW, 18, 57);

@@ -89,7 +89,7 @@ public class ShopItem {
             case SHIELD:
                 if (this.isActivated) {
                     this.deactivate();
-                    cell.assignSprite(Bitmap.BOARD_MINE);
+                    cell.assignSprite(Bitmap.SPR_BOARD_MINE);
                     cell.replaceColor(Color.YELLOW, 3);
                     cell.draw();
                     cell.drawSprite();

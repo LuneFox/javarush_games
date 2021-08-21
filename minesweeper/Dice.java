@@ -18,8 +18,8 @@ public class Dice {
     private int onScreenTime;
     private Image image;
     private final Image[] images = {
-            View.IMAGES.get(Bitmap.DICE_1), View.IMAGES.get(Bitmap.DICE_2), View.IMAGES.get(Bitmap.DICE_3),
-            View.IMAGES.get(Bitmap.DICE_4), View.IMAGES.get(Bitmap.DICE_5), View.IMAGES.get(Bitmap.DICE_6)};
+            View.IMAGES.get(Bitmap.SHOP_DICE_1), View.IMAGES.get(Bitmap.SHOP_DICE_2), View.IMAGES.get(Bitmap.SHOP_DICE_3),
+            View.IMAGES.get(Bitmap.SHOP_DICE_4), View.IMAGES.get(Bitmap.SHOP_DICE_5), View.IMAGES.get(Bitmap.SHOP_DICE_6)};
 
     public Dice(int number) {
         setImage(number, 0, 0);

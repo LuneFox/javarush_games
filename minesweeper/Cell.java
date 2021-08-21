@@ -24,16 +24,16 @@ class Cell extends Image {
     int countMinedNeighbors;        // how many neighboring tiles have mines
 
     static {
-        SPRITE_NUMBERS.put(0, Bitmap.BOARD_NONE);
-        SPRITE_NUMBERS.put(1, Bitmap.BOARD_1);
-        SPRITE_NUMBERS.put(2, Bitmap.BOARD_2);
-        SPRITE_NUMBERS.put(3, Bitmap.BOARD_3);
-        SPRITE_NUMBERS.put(4, Bitmap.BOARD_4);
-        SPRITE_NUMBERS.put(5, Bitmap.BOARD_5);
-        SPRITE_NUMBERS.put(6, Bitmap.BOARD_6);
-        SPRITE_NUMBERS.put(7, Bitmap.BOARD_7);
-        SPRITE_NUMBERS.put(8, Bitmap.BOARD_8);
-        SPRITE_NUMBERS.put(9, Bitmap.BOARD_9);
+        SPRITE_NUMBERS.put(0, Bitmap.SPR_BOARD_NONE);
+        SPRITE_NUMBERS.put(1, Bitmap.SPR_BOARD_1);
+        SPRITE_NUMBERS.put(2, Bitmap.SPR_BOARD_2);
+        SPRITE_NUMBERS.put(3, Bitmap.SPR_BOARD_3);
+        SPRITE_NUMBERS.put(4, Bitmap.SPR_BOARD_4);
+        SPRITE_NUMBERS.put(5, Bitmap.SPR_BOARD_5);
+        SPRITE_NUMBERS.put(6, Bitmap.SPR_BOARD_6);
+        SPRITE_NUMBERS.put(7, Bitmap.SPR_BOARD_7);
+        SPRITE_NUMBERS.put(8, Bitmap.SPR_BOARD_8);
+        SPRITE_NUMBERS.put(9, Bitmap.SPR_BOARD_9);
     }
 
     Cell(Bitmap bitmap, MinesweeperGame game, int x, int y, boolean isMined) {
@@ -41,7 +41,7 @@ class Cell extends Image {
         this.x = x;
         this.y = y;
         this.isMined = isMined;
-        this.sprite = (isMined) ? getSprite(Bitmap.BOARD_MINE) : getSprite(Bitmap.BOARD_NONE);
+        this.sprite = (isMined) ? getSprite(Bitmap.SPR_BOARD_MINE) : getSprite(Bitmap.SPR_BOARD_NONE);
         fullRecolor();
         draw();
     }
@@ -92,7 +92,7 @@ class Cell extends Image {
     }
 
     void eraseSprite() {
-        this.sprite = new Sprite(Bitmap.BOARD_NONE, game, x * 10, y * 10);
+        this.sprite = new Sprite(Bitmap.SPR_BOARD_NONE, game, x * 10, y * 10);
         draw();
     }
 

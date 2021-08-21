@@ -14,7 +14,7 @@ public class Sprite extends Image {
 
     protected int[][] assignBitmap(Bitmap bitmap) {
         switch (bitmap) {
-            case BOARD_1: {
+            case SPR_BOARD_1: {
                 colors[1] = Color.DARKGREEN;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -30,7 +30,7 @@ public class Sprite extends Image {
 
                 };
             }
-            case BOARD_2: {
+            case SPR_BOARD_2: {
                 colors[1] = Color.DARKBLUE;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -45,7 +45,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_3: {
+            case SPR_BOARD_3: {
                 colors[1] = Color.DARKRED;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -60,7 +60,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_4: {
+            case SPR_BOARD_4: {
                 colors[1] = Color.PURPLE;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -75,7 +75,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_5: {
+            case SPR_BOARD_5: {
                 colors[1] = Color.DARKSLATEGRAY;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -90,7 +90,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_6: {
+            case SPR_BOARD_6: {
                 colors[1] = Color.DARKSLATEBLUE;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -105,7 +105,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_7: {
+            case SPR_BOARD_7: {
                 colors[1] = Color.FORESTGREEN;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -120,7 +120,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_8: {
+            case SPR_BOARD_8: {
                 colors[1] = Color.RED;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -135,7 +135,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_9: {
+            case SPR_BOARD_9: {
                 colors[1] = Color.WHITE;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -150,7 +150,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_0: {
+            case SPR_BOARD_0: {
                 colors[1] = Color.WHITE;
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -165,7 +165,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_FLAG: {
+            case SPR_BOARD_FLAG: {
                 colors = new Color[]{Color.NONE, Color.BLACK, Color.RED, Color.DARKRED, Color.YELLOW};
                 return new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -180,7 +180,7 @@ public class Sprite extends Image {
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                 };
             }
-            case BOARD_MINE: {
+            case SPR_BOARD_MINE: {
                 colors = new Color[]{
                         Color.NONE,
                         Color.BLACK,

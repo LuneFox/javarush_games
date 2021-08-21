@@ -20,7 +20,7 @@ public final class ViewScore extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(Bitmap.WINDOW_MENU).draw();
+        IMAGES.get(Bitmap.WIN_MENU).draw();
 
         int minesCount = game.countAllCells(Util.Filter.MINED);
         int scoredCells = game.countAllCells(Util.Filter.SCORED);
