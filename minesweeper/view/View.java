@@ -6,7 +6,6 @@ import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
-import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.javarush.games.minesweeper.Util.inside;
@@ -55,6 +54,8 @@ public class View {
         Screen.setType(this.screenType);
     }
 
+    // Load constant stuff into static hashmaps once, no need to generate all these images again
+
     private void preloadSprite(Bitmap bitmap) {
         IMAGES.put(bitmap, new Sprite(bitmap, game, 0, 0));
     }
@@ -71,7 +72,7 @@ public class View {
         }
     }
 
-    public final void reload() {
+    public final void reload() {  // generates and loads all images again, used to change color theme
         game.view.preloadResources();
         game.recolorAllCells();
     }

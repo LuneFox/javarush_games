@@ -132,7 +132,7 @@ public class Shop {
         View.IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).draw();
     }
 
-    public ShopItem getClickedItem(int x, int y) {
+    public ShopItem getClickedItem(int x, int y) { // checks click coordinates and if item has them, returns it
         ShopItem[] result = new ShopItem[1];
         allItems.forEach(shopItem -> {
             boolean isAtX = (x >= shopItem.shopFramePosition[0] && x <= shopItem.shopFramePosition[1]);
