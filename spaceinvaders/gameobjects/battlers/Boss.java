@@ -26,7 +26,7 @@ public class Boss extends EnemyShip {
         if (!isAlive) {
             return null;
         }
-        return new Bullet(x + 6, y + height, Direction.DOWN) {
+        return new Bullet(x + 3, y + height, Direction.DOWN) {
             {
                 setStaticView(ObjectShape.BOSS_TANK_AMMO);
             }

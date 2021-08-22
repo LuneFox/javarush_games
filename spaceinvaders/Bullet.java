@@ -15,7 +15,7 @@ public class Bullet extends GameObject {
     public Bullet(double x, double y, Direction direction) {
         super(x, y);
         dy = (direction == Direction.UP) ? -1 : 1;
-        setStaticView(ObjectShape.BULLET);
+        setStaticView(ObjectShape.getRandomTetrisBullet());
         collisionDate = new Date();
     }
 

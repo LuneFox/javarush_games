@@ -16,7 +16,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * VERSION 1.02
+ * VERSION 1.03
  */
 
 public class SpaceInvadersGame extends Game {
@@ -48,6 +48,7 @@ public class SpaceInvadersGame extends Game {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         display = new Display(this);
+        ObjectShape.setGame(this);
         createGame();
     }
 
