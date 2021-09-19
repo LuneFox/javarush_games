@@ -28,7 +28,7 @@ public class Player {
     }
 
     public void registerTopScore() {
-        if (getCurrentScore() > topScore) {
+        if (getTotalScore() > topScore) {
             topScore = getTotalScore();
             topScoreTitle = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(game.difficulty)];
         }

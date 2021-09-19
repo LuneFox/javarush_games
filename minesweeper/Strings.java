@@ -13,7 +13,7 @@ public class Strings {
             "Лучшие игроки",
             "Dim\nID 2700224", "43263",
             "Pavlo Plynko\nID 28219", "37890",
-            "Станислав\nID 2279313", "35955"
+            "Mark Cain\nID 730699", "36405"
     };
 
     public static final String[] DIFFICULTY_NAMES = new String[]{

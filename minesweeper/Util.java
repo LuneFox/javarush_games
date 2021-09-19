@@ -8,7 +8,7 @@ import java.util.List;
  */
 
 public class Util {
-    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, SCORED}
+    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, SCORED, FLAGGED}
 
     public static List<Cell> filterCells(List<Cell> list, Filter filter) {
         List<Cell> result = new ArrayList<>();
@@ -40,6 +40,9 @@ public class Util {
                     break;
                 case SCORED:
                     if (cell.isScored()) result.add(cell);
+                    break;
+                case FLAGGED:
+                    if (cell.isFlagged) result.add(cell);
                     break;
                 case NONE:
                 default:

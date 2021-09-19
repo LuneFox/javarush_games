@@ -171,6 +171,7 @@ public class MinesweeperGame extends Game {
     // ACTIVE CELL OPERATIONS
 
     void openCell(int x, int y) {
+
         Cell cell = field[y][x];
 
         if (shop.miniBomb.use(cell) || shop.scanner.use(cell)) return;
@@ -244,7 +245,9 @@ public class MinesweeperGame extends Game {
 
     void setFlag(int x, int y, boolean canRemove) {
         if (isStopped) return;
+
         Cell cell = field[y][x];
+
         if (cell.isOpen) return;
 
         if (cell.isFlagged && canRemove) {
@@ -263,12 +266,11 @@ public class MinesweeperGame extends Game {
     }
 
     private void placeFlagFromInventory(Cell cell) {
-        if (!cell.isFlagged) { // don't do anything to cells that have flags
-            inventory.remove(ShopItem.ID.FLAG);
-            cell.isFlagged = true;
-            cell.assignSprite(Bitmap.SPR_BOARD_FLAG);
-            cell.drawSprite();
-        }
+        if (cell.isFlagged) return;
+        inventory.remove(ShopItem.ID.FLAG);
+        cell.isFlagged = true;
+        cell.assignSprite(Bitmap.SPR_BOARD_FLAG);
+        cell.drawSprite();
     }
 
     private boolean canPlaceFlag() {
@@ -362,19 +364,28 @@ public class MinesweeperGame extends Game {
         if (shop.luckyDice.isActivated()) {
             player.scoreDice += difficulty * randomNumber;
             shop.dice.totalCells++;
-            shop.dice.totalBonus+=randomNumber;
+            shop.dice.totalBonus += randomNumber;
         }
         setScore(player.getCurrentScore());
     }
 
     private void ensureClickingOnBlankSpace(int x, int y) {
         Cell cell = field[y][x];
-        while (!cell.isEmpty()) {
+
+        List<Cell> flaggedCells = getAllCells(Filter.FLAGGED); // get flagged items
+        flaggedCells.forEach(fc -> returnFlagToInventory(field[fc.y][fc.x])); // collect flags
+
+        while (!cell.isEmpty()) { // create new game until the clicked cell is empty
             createField();
             plantMines();
             enumerateCells();
             cell = field[y][x];
         }
+
+        flaggedCells.forEach(oldFlaggedCell -> { // put flags back
+            setFlag(oldFlaggedCell.x, oldFlaggedCell.y, false);
+        });
+
         isFirstMove = false;
         openCell(x, y);
     }
