@@ -13,10 +13,13 @@ public class Button {
     private final int x2;
     private final int y1;
     private final int y2;
-    private final Image body;
     private final Color textColor;
-    private final String text;
-    private final int textOffset;
+    private Image body;
+    private String text;
+    private int textOffset;
+    private boolean isPressed;
+    public static int pressedTime;
+    public static int startTimeOut; // to avoid showing AGAIN when you start the game
 
     public enum ButtonID {
         ABOUT(61, 76, 36, 9, "об игре"),
@@ -33,15 +36,15 @@ public class Button {
 
         public int posX;
         public int posY;
-        public int sizeX;
-        public int sizeY;
+        public int width;
+        public int height;
         public String label;
 
-        ButtonID(int posX, int posY, int sizeX, int sizeY, String label) {
+        ButtonID(int posX, int posY, int width, int height, String label) {
             this.posX = posX;
             this.posY = posY;
-            this.sizeX = sizeX;
-            this.sizeY = sizeY;
+            this.width = width;
+            this.height = height;
             this.label = label;
         }
     }
@@ -56,10 +59,23 @@ public class Button {
         this.y2 = (sizeY == 0) ? (posY + 9) : (posY + sizeY);
         this.textOffset = (sizeX == 0) ? 2 : ((sizeX - textLength) / 2) + 1;
         this.textColor = Color.WHITE;
+        setBody(posX, posY, true);
+    }
+
+    public void draw() {
+        if (pressedTime == 0) isPressed = false;
+        int drawX = (isPressed) ? x1 + 1 : x1;
+        int drawY = (isPressed) ? y1 + 1 : y1;
+        setBody(drawX, drawY, !isPressed);
+        this.body.draw();
+        game.print(text, textColor, drawX + textOffset, drawY);
+    }
+
+    public void setBody(int posX, int posY, boolean shadow) {
         this.body = new Image(Bitmap.MENU_BUTTON, game, posX, posY) {
             @Override
             protected int[][] assignBitmap(Bitmap bitmap) {
-                return createWindowBitmap(x2 - x1, y2 - y1, true, true);
+                return createWindowBitmap(x2 - x1, y2 - y1, shadow, true);
             }
         };
         this.body.colors = new Color[]{
@@ -70,12 +86,18 @@ public class Button {
         body.assignBitmap(Bitmap.MENU_BUTTON);
     }
 
-    public void draw() {
-        this.body.draw();
-        game.print(text, textColor, x1 + textOffset, y1);
+    public void replaceText(int width, String label) {
+        int textLength = Printer.getWriter().calculateLengthInPixels(label);
+        this.text = label;
+        this.textOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
     }
 
     public boolean covers(int x, int y) {
-        return (x >= x1 && x <= x2 && y >= y1 && y <= y2);
+        boolean covers = (x >= x1 && x <= x2 && y >= y1 && y <= y2);
+        if (covers) {
+            isPressed = true;
+            pressedTime = 5;
+        }
+        return covers;
     }
 }

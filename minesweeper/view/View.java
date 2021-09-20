@@ -17,6 +17,7 @@ import static com.javarush.games.minesweeper.Util.inside;
 public class View {
     protected MinesweeperGame game;
     public ScreenType screenType;
+    public static ScreenType pendingScreenType;
     public static ViewMain main;
     public static ViewAbout about;
     public static ViewRecords records;
@@ -51,6 +52,12 @@ public class View {
     }
 
     public void display() {
+        if (Button.pressedTime > 0) {
+            if (Button.pressedTime == 5) pendingScreenType = this.screenType;
+            Button.pressedTime--;
+            if (Button.pressedTime <= 0) Screen.setType(pendingScreenType);
+            return;
+        }
         Screen.setType(this.screenType);
     }
 
@@ -68,7 +75,7 @@ public class View {
         Bitmap.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_").forEach(this::preloadPicture);
         Bitmap.getBitmapsByPrefixes("SPR_").forEach(this::preloadSprite);
         for (ButtonID b : ButtonID.values()) {
-            BUTTONS.put(b, new Button(game, b.posX, b.posY, b.sizeX, b.sizeY, b.label));
+            BUTTONS.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
         }
     }
 

@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Printer;
 import com.javarush.games.minesweeper.view.View;
 import com.javarush.games.minesweeper.Util.Filter;
@@ -68,8 +69,20 @@ public class MinesweeperGame extends Game {
             case OPTIONS:
                 View.options.display();
                 break;
+            case RECORDS:
+                View.records.display();
+                break;
+            case ABOUT:
+                View.about.display();
+                break;
+            case SCORE:
+                View.score.display();
+                break;
+            case ITEM_HELP:
+                View.itemHelp.display();
+                break;
             case GAME_OVER:
-                View.gameOver.display(lastResultIsVictory, 0);
+                View.gameOver.display();
                 break;
             case BOARD:
                 if (timeOut()) {

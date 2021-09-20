@@ -29,7 +29,7 @@ public final class ViewShop extends View {
             View.shop.moneyOnDisplay = game.inventory.money;
         }
         super.display();
-        game.redrawAllCells();
+        View.board.refresh();
         shakeAnimationCountDown();
         IMAGES.get(Bitmap.WIN_SHOP).drawAt(-1, -1);
         IMAGES.get(Bitmap.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 10);

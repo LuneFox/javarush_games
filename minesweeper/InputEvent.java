@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.Screen.ScreenType;
+import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 import com.javarush.games.minesweeper.graphics.Theme;
 import com.javarush.games.minesweeper.view.View;
@@ -38,6 +39,7 @@ public class InputEvent {
         switch (screenType) {
             case MAIN_MENU:
                 if (View.BUTTONS.get(ButtonID.START).covers(x, y)) {
+                    Button.startTimeOut = 5;
                     game.createGame();
                 } else if (View.BUTTONS.get(ButtonID.OPTIONS).covers(x, y)) {
                     View.options.display();
@@ -69,7 +71,7 @@ public class InputEvent {
                 break;
             case ITEM_HELP:
                 if (View.BUTTONS.get(ButtonID.CONFIRM).covers(x, y)) {
-                    View.board.display();
+                    View.board.refresh();
                     View.shop.display();
                 }
                 break;
@@ -108,7 +110,7 @@ public class InputEvent {
                 break;
             case SCORE:
                 if (View.BUTTONS.get(ButtonID.CONFIRM).covers(x, y)) {
-                    View.board.display();
+                    View.board.refresh();
                     View.gameOver.display(game.lastResultIsVictory, 0);
                 }
                 break;

@@ -21,12 +21,12 @@ public final class ViewGameOver extends View {
 
     @Override
     public void display() {
-
+        display(game.lastResultIsVictory, 0);
     }
 
     public void display(boolean victory, int popUpDelay) {
         if (popUpTimer-- > 0) return;
-        View.board.display();
+        View.board.refresh();
         super.display();
         popUpTimer = popUpDelay;
 

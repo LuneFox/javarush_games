@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
@@ -41,13 +42,16 @@ public final class ViewMain extends View {
         BUTTONS.get(Button.ButtonID.RECORDS).draw();
         game.print(Strings.VERSION, Theme.current.getColor(ThemeElement.MAIN_MENU_VERSION), 85, 0);
         printTopScore();
-        if (game.isStopped) {
+        if (game.isStopped || Button.startTimeOut > 0) {
+            if (Button.startTimeOut > 0) Button.startTimeOut--;
             printRandomQuote();
-            BUTTONS.get(Button.ButtonID.START).draw();
+            BUTTONS.get(Button.ButtonID.START).replaceText(36, "старт");
         } else {
             printResumeGame();
-            BUTTONS.get(Button.ButtonID.NEW_GAME).draw();
+            BUTTONS.get(Button.ButtonID.START).replaceText(36, "заново");
+            ;
         }
+        BUTTONS.get(Button.ButtonID.START).draw();
     }
 
     private void printRandomQuote() {
@@ -59,7 +63,7 @@ public final class ViewMain extends View {
         game.print(quote, Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 4, 44);
     }
 
-    private void printResumeGame(){
+    private void printResumeGame() {
         game.print(resume, Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_BACK), 5, 44); // shadow
         game.print(resume, Theme.current.getColor(ThemeElement.LABEL), 4, 44);
     }

@@ -13,6 +13,8 @@ import com.javarush.games.minesweeper.graphics.Button;
  */
 
 public final class ViewItemHelp extends View {
+    private ShopItem currentItem;
+
     public ViewItemHelp(MinesweeperGame game) {
         this.game = game;
         this.screenType = Screen.ScreenType.ITEM_HELP;
@@ -20,10 +22,11 @@ public final class ViewItemHelp extends View {
 
     @Override
     public void display() {
-
+        display(currentItem);
     }
 
-    public void display(ShopItem item){
+    public void display(ShopItem item) {
+        currentItem = item;
         super.display();
         Strings.generateNewShieldDescription();
         IMAGES.get(Bitmap.WIN_MENU).draw();

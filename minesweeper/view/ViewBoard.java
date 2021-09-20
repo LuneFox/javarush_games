@@ -18,6 +18,10 @@ public final class ViewBoard extends View {
     @Override
     public void display() {
         super.display();
+        refresh();
+    }
+
+    public void refresh() {
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {
             IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
