@@ -91,16 +91,27 @@ public final class ViewOptions extends View {
 
         }
 
-        game.print("тема:", 2, 78);
+        switch (Theme.getCurrentNumber()) {
+            case 0:
+                game.print("тема: ссср", 2, 78);
+                break;
+            case 1:
+                game.print("тема: мята", 2, 78);
+                break;
+            case 2:
+                game.print("тема: небо", 2, 78);
+                break;
+        }
+
         themePalette.replaceColor(Color.RED, 1);
         themePalette.replaceColor(Theme.getCurrentNumber() == 0 ? Color.YELLOW : Color.WHITE, 3);
-        themePalette.drawAt(2, 87);
+        themePalette.drawAt(2, 88);
         themePalette.replaceColor(Color.GREEN, 1);
         themePalette.replaceColor(Theme.getCurrentNumber() == 1 ? Color.YELLOW : Color.WHITE, 3);
-        themePalette.drawAt(14, 87);
+        themePalette.drawAt(14, 88);
         themePalette.replaceColor(Theme.getCurrentNumber() == 2 ? Color.YELLOW : Color.WHITE, 3);
         themePalette.replaceColor(Color.BLUE, 1);
-        themePalette.drawAt(26, 87);
+        themePalette.drawAt(26, 88);
 
         BUTTONS.get(Button.ButtonID.BACK).draw();
     }

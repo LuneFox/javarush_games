@@ -25,7 +25,7 @@ public class Timer {
     }
 
     public void draw() {
-        if (enabled && !game.isStopped) {
+        if (enabled && !game.isStopped && !game.isFirstMove) {
             for (int i = 0; i < ((time / TIME_LIMIT) * 100); i++) {
                 game.display.setCellColor(i, 0, COLORS[0]);
             }

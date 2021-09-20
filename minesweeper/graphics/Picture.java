@@ -316,7 +316,7 @@ public class Picture extends Image {
             }
             case MENU_THEME_PALETTE:{
                 colors = new Color[]{Color.NONE, Color.GRAY, Color.BLACK, Color.WHITE};
-                return createWindowBitmap(10, 10, true, true);
+                return createWindowBitmap(10, 10, false, true);
             }
             case SHOP_DICE_1: {
                 colors = new Color[]{Color.NONE, Color.WHITE, Color.RED, Color.BLACK};
