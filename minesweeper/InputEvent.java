@@ -90,8 +90,10 @@ public class InputEvent {
                     View.main.display();
                 } else if (View.options.difficultyDownArea.covers(x, y)) {
                     View.options.changeDifficulty(false);
+                    View.options.animateLeftArrow();
                 } else if (View.options.difficultyUpArea.covers(x, y)) {
                     View.options.changeDifficulty(true);
+                    View.options.animateRightArrow();
                 } else if (View.options.autoBuyFlagsArea.covers(x, y)) {
                     View.options.switchAutoBuyFlags();
                 } else if (View.options.switchGameTimerArea.covers(x, y)) {
@@ -118,8 +120,10 @@ public class InputEvent {
                     View.main.display();
                 } else if (View.about.prevPageArrowArea.covers(x, y)) {
                     View.about.prevPage();
+                    View.options.animateLeftArrow();
                 } else if (View.about.nextPageArrowArea.covers(x, y)) {
                     View.about.nextPage();
+                    View.options.animateRightArrow();
                 }
                 break;
             case RECORDS:
@@ -221,9 +225,11 @@ public class InputEvent {
                 switch (screen) {
                     case ABOUT:
                         View.about.prevPage();
+                        View.options.animateLeftArrow();
                         break;
                     case OPTIONS:
                         View.options.changeDifficulty(false);
+                        View.options.animateLeftArrow();
                         break;
                     default:
                         break;
@@ -233,9 +239,11 @@ public class InputEvent {
                 switch (screen) {
                     case ABOUT:
                         View.about.nextPage();
+                        View.options.animateRightArrow();
                         break;
                     case OPTIONS:
                         View.options.changeDifficulty(true);
+                        View.options.animateRightArrow();
                         break;
                     default:
                         break;

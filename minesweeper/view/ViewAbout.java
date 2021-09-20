@@ -29,8 +29,11 @@ public final class ViewAbout extends View {
         game.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, 24, 2);
         game.print(Strings.ABOUT_BODY[currentAboutPage], 3, 13);
         BUTTONS.get(Button.ButtonID.BACK).draw();
-        IMAGES.get(Bitmap.MENU_ARROW).drawAt(7, 89, Image.Mirror.HORIZONTAL);
-        IMAGES.get(Bitmap.MENU_ARROW).drawAt(47, 89);
+        Image arrowButton = IMAGES.get(Bitmap.MENU_ARROW);
+
+        arrowButton.drawAt((ViewOptions.clickedArrowTimeoutL-- > 0) ? 6 : 7, 89, Image.Mirror.HORIZONTAL);
+        arrowButton.drawAt((ViewOptions.clickedArrowTimeoutR-- > 0) ? 48 : 47, 89);
+
         game.print((currentAboutPage + 1) + " / " + Strings.ABOUT_HEAD.length, 20, 88);
     }
 

@@ -15,6 +15,15 @@ import java.util.LinkedList;
 
 public final class ViewOptions extends View {
 
+    public static final int CLICKED_ARROW_DURATION = 2;
+    public static int clickedArrowTimeoutL;
+    public static int clickedArrowTimeoutR;
+
+    private static final int SWITCH_LEFTMOST_POSITION = 80;
+    private static final int SWITCH_RIGHTMOST_POSITION = 88;
+    private int switchFlagsPosition = SWITCH_LEFTMOST_POSITION;
+    private int switchTimePosition = SWITCH_LEFTMOST_POSITION;
+
     public final Area difficultyDownArea = new Area(new int[]{49, 53, 22, 28});
     public final Area difficultyUpArea = new Area(new int[]{93, 97, 22, 28});
     public final Area autoBuyFlagsArea = new Area(new int[]{80, 91, 41, 47});
@@ -47,33 +56,37 @@ public final class ViewOptions extends View {
         game.print("настройки", Color.YELLOW, 28, 2);
 
         game.print("сложность", 2, 20);
-        arrowButton.drawAt(93, 21, Image.Mirror.NONE);
-        arrowButton.drawAt(49, 21, Image.Mirror.HORIZONTAL);
+        arrowButton.drawAt((clickedArrowTimeoutL-- > 0) ? 48 : 49, 21, Image.Mirror.HORIZONTAL);
+        arrowButton.drawAt((clickedArrowTimeoutR-- > 0) ? 94 : 93, 21, Image.Mirror.NONE);
+
         displayDifficultyBar();
         game.print(difficultyName, Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 29, true);
 
         game.print("покупка\nфлажков", 2, 40);
         switchRail.drawAt(80, 42);
         if (game.shop.autoBuyFlagsEnabled) {
+            if (switchFlagsPosition < SWITCH_RIGHTMOST_POSITION) switchFlagsPosition++;
             switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.drawAt(88, 40);
+            switchButton.drawAt(switchFlagsPosition, 40);
             game.print("авто", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 48, true);
         } else {
+            if (switchFlagsPosition > SWITCH_LEFTMOST_POSITION) switchFlagsPosition--;
             switchButton.replaceColor(Color.RED, 1);
-            switchButton.drawAt(80, 40);
+            switchButton.drawAt(switchFlagsPosition, 40);
             game.print("вручную", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 91, 48, true);
-
         }
 
         game.print("игра на время", 2, 63);
         switchRail.drawAt(80, 65);
         if (timerEnabledSetting) {
+            if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
             switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.drawAt(88, 63);
+            switchButton.drawAt(switchTimePosition, 63);
             game.print("да", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 71, true);
         } else {
+            if (switchTimePosition > SWITCH_LEFTMOST_POSITION) switchTimePosition--;
             switchButton.replaceColor(Color.RED, 1);
-            switchButton.drawAt(80, 63);
+            switchButton.drawAt(switchTimePosition, 63);
             game.print("нет", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 94, 71, true);
 
         }
@@ -122,5 +135,13 @@ public final class ViewOptions extends View {
     public void switchGameTimer() {
         timerEnabledSetting = !timerEnabledSetting;
         display();
+    }
+
+    public void animateLeftArrow() {
+        clickedArrowTimeoutL = CLICKED_ARROW_DURATION;
+    }
+
+    public void animateRightArrow() {
+        clickedArrowTimeoutR = CLICKED_ARROW_DURATION;
     }
 }

@@ -53,7 +53,7 @@ public class View {
 
     public void display() {
         if (Button.pressedTime > 0) {
-            if (Button.pressedTime == 5) pendingScreenType = this.screenType;
+            if (Button.pressedTime == Button.PRESS_DURATION) pendingScreenType = this.screenType;
             Button.pressedTime--;
             if (Button.pressedTime <= 0) Screen.setType(pendingScreenType);
             return;

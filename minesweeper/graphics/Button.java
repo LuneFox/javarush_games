@@ -10,6 +10,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 public class Button {
 
     public static int pressedTime;
+    public static final int PRESS_DURATION = 5;
 
     private final MinesweeperGame game;
     private final int x1;
@@ -98,7 +99,7 @@ public class Button {
         boolean covers = (x >= x1 && x <= x2 && y >= y1 && y <= y2);
         if (covers) {
             isPressed = true;
-            pressedTime = 5;
+            pressedTime = PRESS_DURATION;
         }
         return covers;
     }
