@@ -42,15 +42,16 @@ public final class ViewMain extends View {
         BUTTONS.get(Button.ButtonID.RECORDS).draw();
         game.print(Strings.VERSION, Theme.current.getColor(ThemeElement.MAIN_MENU_VERSION), 85, 0);
         printTopScore();
-        if (game.isStopped || Button.startTimeOut > 0) {
-            if (Button.startTimeOut > 0) Button.startTimeOut--;
+
+        Button startButton = BUTTONS.get(Button.ButtonID.START);
+        if (game.isStopped || game.isFirstMove) {
             printRandomQuote();
-            BUTTONS.get(Button.ButtonID.START).replaceText(36, "старт");
+            if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
         } else {
             printResumeGame();
-            BUTTONS.get(Button.ButtonID.START).replaceText(36, "заново");
-            ;
+            if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
         }
+
         BUTTONS.get(Button.ButtonID.START).draw();
     }
 

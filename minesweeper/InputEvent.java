@@ -39,7 +39,6 @@ public class InputEvent {
         switch (screenType) {
             case MAIN_MENU:
                 if (View.BUTTONS.get(ButtonID.START).covers(x, y)) {
-                    Button.startTimeOut = 5;
                     game.createGame();
                 } else if (View.BUTTONS.get(ButtonID.OPTIONS).covers(x, y)) {
                     View.options.display();

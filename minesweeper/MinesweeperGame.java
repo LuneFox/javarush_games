@@ -38,8 +38,8 @@ public class MinesweeperGame extends Game {
     public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
     public boolean allowFlagExplosion;
     public boolean lastResultIsVictory;
-    public boolean isStopped;
-    private boolean isFirstMove;
+    public boolean isStopped = true;
+    public boolean isFirstMove = true;
 
     // NEW GAME
 

@@ -8,6 +8,9 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  */
 
 public class Button {
+
+    public static int pressedTime;
+
     private final MinesweeperGame game;
     private final int x1;
     private final int x2;
@@ -18,8 +21,7 @@ public class Button {
     private String text;
     private int textOffset;
     private boolean isPressed;
-    public static int pressedTime;
-    public static int startTimeOut; // to avoid showing AGAIN when you start the game
+
 
     public enum ButtonID {
         ABOUT(61, 76, 36, 9, "об игре"),
@@ -99,5 +101,9 @@ public class Button {
             pressedTime = 5;
         }
         return covers;
+    }
+
+    public String getText() {
+        return text;
     }
 }
