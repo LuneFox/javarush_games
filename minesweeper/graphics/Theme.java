@@ -115,10 +115,10 @@ public enum Theme {
             Color.DEEPSKYBLUE
     });
 
-    private static int currentNumber = MinesweeperGame.getInstance().getRandomNumber(3);
     public static final int USSR = 0;
     public static final int MINT = 1;
     public static final int SKY = 2;
+    private static int currentNumber = USSR;
     Color[] colors;
 
     Theme(Color[] colors) {
