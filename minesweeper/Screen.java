@@ -8,7 +8,7 @@ import java.util.Arrays;
  * Screen at the top of the list (at position 0) decides what happens in the game.
  */
 
-public class Screen {
+public class Screen { // TODO: Make screen an ENUM, don't need inner enum, there's a finite number of screens
     private final ScreenType screenType;
     private static final ArrayList<Screen> screens = new ArrayList<>();
 

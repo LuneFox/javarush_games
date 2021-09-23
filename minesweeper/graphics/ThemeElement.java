@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.graphics;
 
-public enum ThemeElement {
+public enum ThemeElement { // TODO: add colors directly to theme elements, remove separate theme selector
     MAIN_MENU_BG,
     MAIN_MENU_BORDER,
     MAIN_MENU_QUOTE_FRONT,

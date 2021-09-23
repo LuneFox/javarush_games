@@ -14,16 +14,16 @@ public enum Bitmap {
     CELL_CLOSED,
     CELL_DESTROYED,
 
-    SPR_BOARD_1,
-    SPR_BOARD_2,
-    SPR_BOARD_3,
-    SPR_BOARD_4,
-    SPR_BOARD_5,
-    SPR_BOARD_6,
-    SPR_BOARD_7,
-    SPR_BOARD_8,
-    SPR_BOARD_9,
-    SPR_BOARD_0,
+    SPR_BOARD_0(0),
+    SPR_BOARD_1(1),
+    SPR_BOARD_2(2),
+    SPR_BOARD_3(3),
+    SPR_BOARD_4(4),
+    SPR_BOARD_5(5),
+    SPR_BOARD_6(6),
+    SPR_BOARD_7(7),
+    SPR_BOARD_8(8),
+    SPR_BOARD_9(9),
     SPR_BOARD_NONE,
     SPR_BOARD_FLAG,
     SPR_BOARD_MINE,
@@ -138,7 +138,20 @@ public enum Bitmap {
     SYM_SYMBOL_SLASH(new char[]{'/'}),
     SYM_SYMBOL_NEWLINE(new char[]{'\n'});
 
+    static final List<Bitmap> SPRITES = getBitmapsByPrefixes("SPR_");
     char[] characters;
+    int number;
+
+    Bitmap() {
+    }
+
+    Bitmap(char[] characters) {
+        this.characters = characters;
+    }
+
+    Bitmap(int number) {
+        this.number = number;
+    }
 
     public static List<Bitmap> getBitmapsByPrefixes(String... prefixes) {
         ArrayList<Bitmap> result = new ArrayList<>();
@@ -150,11 +163,7 @@ public enum Bitmap {
         return result;
     }
 
-    Bitmap() {
-
-    }
-
-    Bitmap(char[] characters) {
-        this.characters = characters;
+    public static Bitmap getSpriteByNumber(int number) {
+        return (number == 0) ? NONE : SPRITES.get(number);
     }
 }

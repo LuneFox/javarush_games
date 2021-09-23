@@ -11,7 +11,6 @@ import java.util.HashMap;
  */
 
 class Cell extends Image {
-    private static final HashMap<Integer, Bitmap> SPRITE_NUMBERS = new HashMap<>();
     int x;
     int y;                          // logical position
     private Sprite sprite;          // a sprite can be assigned to a tile to be drawn over it
@@ -22,19 +21,6 @@ class Cell extends Image {
     boolean isFlagged;              // this tile was flagged by player
     boolean isDestroyed;            // who did this? :(
     int countMinedNeighbors;        // how many neighboring tiles have mines
-
-    static {
-        SPRITE_NUMBERS.put(0, Bitmap.SPR_BOARD_NONE);
-        SPRITE_NUMBERS.put(1, Bitmap.SPR_BOARD_1);
-        SPRITE_NUMBERS.put(2, Bitmap.SPR_BOARD_2);
-        SPRITE_NUMBERS.put(3, Bitmap.SPR_BOARD_3);
-        SPRITE_NUMBERS.put(4, Bitmap.SPR_BOARD_4);
-        SPRITE_NUMBERS.put(5, Bitmap.SPR_BOARD_5);
-        SPRITE_NUMBERS.put(6, Bitmap.SPR_BOARD_6);
-        SPRITE_NUMBERS.put(7, Bitmap.SPR_BOARD_7);
-        SPRITE_NUMBERS.put(8, Bitmap.SPR_BOARD_8);
-        SPRITE_NUMBERS.put(9, Bitmap.SPR_BOARD_9);
-    }
 
     Cell(Bitmap bitmap, int x, int y, boolean isMined) {
         super(bitmap, x * 10, y * 10);
@@ -88,7 +74,7 @@ class Cell extends Image {
 
     // assigns a number sprite to this tile, used to draw the number of mines nearby
     void assignSprite(int number) {
-        this.sprite = new Sprite(SPRITE_NUMBERS.get(number), x * 10, y * 10);
+        this.sprite = new Sprite(Bitmap.getSpriteByNumber(number), x * 10, y * 10);
     }
 
     void eraseSprite() {
