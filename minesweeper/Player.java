@@ -5,52 +5,44 @@ package com.javarush.games.minesweeper;
  */
 
 public class Player {
-    public final MinesweeperGame game;
-    public String topScoreTitle = "";
-    public int topScore = 0;
-    public int scoreLost;
-    public int scoreDice;
-    public int scoreTimer;
-    public int countMoves;
-    public int countShields;
+    public Score score;
+    private String title;
+    private int moves;
+    private int brokenShields;
 
     public Player(MinesweeperGame game) {
-        this.game = game;
+        this.score = new Score(game, this);
+        this.title = "";
         reset();
     }
 
     public void reset() {
-        scoreLost = 0;
-        scoreDice = 0;
-        countMoves = 0;
-        countShields = 0;
-        scoreTimer = 0;
+        moves = 0;
+        brokenShields = 0;
+        score.reset();
     }
 
-    public void registerTopScore() {
-        if (getTotalScore() > topScore) {
-            topScore = getTotalScore();
-            topScoreTitle = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(game.difficulty)];
-        }
+    public void incMoves() {
+        this.moves++;
     }
 
-    public int getCurrentScore() {
-        int score = game.countAllCells(Util.Filter.SCORED) * game.difficulty;
-        return score + scoreDice + scoreTimer + scoreLost;
+    public void incBrokenShields() {
+        this.brokenShields++;
     }
 
-    public int getMoneyScore() {
-        if (!game.lastResultIsVictory) return 0;
-        return game.inventory.money * game.difficulty;
+    public String getTitle() {
+        return title;
     }
 
-    public int getMinesScore() {
-        if (!game.lastResultIsVictory) return 0;
-        int minesCount = game.countAllCells(Util.Filter.MINED);
-        return minesCount * 20 * game.difficulty;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public int getTotalScore() {
-        return getCurrentScore() + getMinesScore() + getMoneyScore();
+    public int getMoves() {
+        return moves;
+    }
+
+    public int getBrokenShields() {
+        return brokenShields;
     }
 }

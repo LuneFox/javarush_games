@@ -26,13 +26,13 @@ public final class ViewScore extends View {
         int scoredCells = game.countAllCells(Util.Filter.SCORED);
         int difficulty = game.difficulty;
         int money = game.inventory.money;
-        int shields = game.player.countShields;
+        int shields = game.player.getBrokenShields();
         int luckyCells = game.shop.dice.totalCells;
-        int scoreDice = game.player.scoreDice;
-        int scoreLost = game.player.scoreLost;
-        int scoreTimer = game.player.scoreTimer;
-        int moneyScore = game.player.getMoneyScore();
-        int minesScore = game.player.getMinesScore();
+        int scoreDice = game.player.score.getDiceScore();
+        int scoreLost = game.player.score.getLostScore();
+        int scoreTimer = game.player.score.getTimerScore();
+        int moneyScore = game.player.score.getMoneyScore();
+        int minesScore = game.player.score.getMinesScore();
         double luck = game.shop.dice.getAverageLuck();
         boolean victory = game.lastResultIsVictory;
 
@@ -47,7 +47,7 @@ public final class ViewScore extends View {
 
         game.print("ячейки:\nкуб:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", 3, 13);
         game.print(
-                (game.player.getTotalScore() +
+                (game.player.score.getTotalScore() +
                         "\n\n" + scoreTimer +
                         "\n" + (shieldScoreDetail + scoreLost) +
                         "\n" + (victory ? (moneyScoreDetail + moneyScore) : youLost) +

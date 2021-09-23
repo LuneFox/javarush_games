@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.graphics.Drawable;
 
 import java.util.Date;
 
@@ -8,7 +9,7 @@ import java.util.Date;
  * Red timer stripe that appears at the top of the screen when you play in time attack mode.
  */
 
-public class Timer {
+public class Timer implements Drawable {
     private final MinesweeperGame game;
     public float time;
     private final float TIME_LIMIT = 500;

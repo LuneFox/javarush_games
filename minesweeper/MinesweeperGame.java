@@ -3,9 +3,7 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
-import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.graphics.Button;
-import com.javarush.games.minesweeper.graphics.Printer;
+import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.view.View;
 import com.javarush.games.minesweeper.Util.Filter;
 
@@ -113,7 +111,7 @@ public class MinesweeperGame extends Game {
         resetValues();
         enumerateCells();
         View.board.display();
-        setScore(player.getCurrentScore());
+        setScore(player.score.getCurrentScore());
     }
 
     private void resetValues() {
@@ -158,7 +156,7 @@ public class MinesweeperGame extends Game {
 
     private void win() {
         lastResultIsVictory = true;
-        player.registerTopScore();
+        player.score.registerTopScore();
         isStopped = true;
         View.gameOver.display(true, 30);
     }
@@ -195,6 +193,7 @@ public class MinesweeperGame extends Game {
             ensureClickingOnBlankSpace(x, y);
             cell = field[y][x];
         }
+
         pushCell(cell);                 // change visuals, set isOpen flag
         onManualClick();                // do things that happen during real click only
         if (!surviveMine(cell)) return; // stop processing if the player didn't survive
@@ -375,11 +374,11 @@ public class MinesweeperGame extends Game {
 
         if (field[y][x].isMined) return;
         if (shop.luckyDice.isActivated()) {
-            player.scoreDice += difficulty * randomNumber;
+            player.score.setDiceScore(player.score.getDiceScore() + difficulty * randomNumber);
             shop.dice.totalCells++;
             shop.dice.totalBonus += randomNumber;
         }
-        setScore(player.getCurrentScore());
+        setScore(player.score.getCurrentScore());
     }
 
     private void ensureClickingOnBlankSpace(int x, int y) {
@@ -414,8 +413,8 @@ public class MinesweeperGame extends Game {
 
     private void displayDice() {
         if (shop.luckyDice == null) return;
-        int remainingTurns = shop.luckyDice.expireMove - player.countMoves;
-        if (Util.inside(remainingTurns, 0, 2) && player.countMoves != 0) shop.dice.draw();
+        int remainingTurns = shop.luckyDice.expireMove - player.getMoves();
+        if (Util.inside(remainingTurns, 0, 2) && player.getMoves() != 0) shop.dice.draw();
     }
 
     void hideDice() {
@@ -438,8 +437,8 @@ public class MinesweeperGame extends Game {
 
     private void onManualClick() {
         if (allowCountMoves) {
-            player.countMoves++;
-            player.scoreTimer += timer.getScore();
+            player.incMoves();
+            player.score.setTimerScore(player.score.getTimerScore() + timer.getScore());
             timer.restart();
         }
     }

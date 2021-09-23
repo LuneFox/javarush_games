@@ -1,17 +1,19 @@
-package com.javarush.games.minesweeper;
+package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.Screen;
+import com.javarush.games.minesweeper.Util;
 
 /**
  * Logical display to flatten layers and increase the drawing speed, allows making effects.
  */
 
-public class Display {
+public class Display implements Drawable {
     private final Game game;
     private final Pixel[][] matrix;
     private boolean interlace;
 
-    Display(Game game) {
+    public Display(Game game) {
         this.game = game;
         this.matrix = new Pixel[100][100];
         for (int y = 0; y < matrix.length; y++) {

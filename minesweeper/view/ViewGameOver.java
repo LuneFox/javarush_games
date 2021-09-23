@@ -40,7 +40,7 @@ public final class ViewGameOver extends View {
             IMAGES.get(Bitmap.PIC_FACE_SAD).drawAt(-1, -1);
             game.print("не повезло!", Color.YELLOW, 18, 33);
         }
-        game.print("счёт: " + game.player.getTotalScore(), Color.LIGHTGOLDENRODYELLOW, 18, 57);
+        game.print("счёт: " + game.player.score.getTotalScore(), Color.LIGHTGOLDENRODYELLOW, 18, 57);
         BUTTONS.get(Button.ButtonID.AGAIN).draw();
         BUTTONS.get(Button.ButtonID.RETURN).draw();
         BUTTONS.get(Button.ButtonID.CLOSE).draw();

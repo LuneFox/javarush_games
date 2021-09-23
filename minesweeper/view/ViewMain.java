@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.engine.cell.Game;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
@@ -70,8 +69,8 @@ public final class ViewMain extends View {
     }
 
     private void printTopScore() {
-        if (game.player.topScore > 0) {
-            game.print("счёт: " + game.player.topScore + "\n" + game.player.topScoreTitle,
+        if (game.player.score.getTopScore() > 0) {
+            game.print("счёт: " + game.player.score.getTopScore() + "\n" + game.player.getTitle(),
                     Color.LIGHTGOLDENRODYELLOW, 4, 65);
         }
     }

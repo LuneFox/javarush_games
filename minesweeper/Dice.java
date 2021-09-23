@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.Drawable;
 import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.view.View;
 
@@ -8,7 +9,7 @@ import com.javarush.games.minesweeper.view.View;
  * Graphical dice that appears on screen when you use Lucky Dice
  */
 
-public class Dice {
+public class Dice implements Drawable {
     public Cell appearCell;
     public boolean isHidden;
     public int totalBonus;

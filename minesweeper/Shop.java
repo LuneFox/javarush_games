@@ -47,11 +47,11 @@ public class Shop {
                 break;
             case SHOVEL:
                 goldenShovel.activate();
-                goldenShovel.expireMove = game.player.countMoves + 5;
+                goldenShovel.expireMove = game.player.getMoves() + 5;
                 break;
             case DICE:
                 luckyDice.activate();
-                luckyDice.expireMove = game.player.countMoves + 3;
+                luckyDice.expireMove = game.player.getMoves() + 3;
                 break;
             case BOMB:
                 if (scanner.isActivated()) return;

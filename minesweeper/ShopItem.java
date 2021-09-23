@@ -95,8 +95,8 @@ public class ShopItem {
                     cell.drawSprite();
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);
-                    game.player.scoreLost -= 150 * (game.difficulty / 5);
-                    game.player.countShields++;
+                    game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (game.difficulty / 5));
+                    game.player.incBrokenShields();
                     return true;
                 }
             case SCANNER:
@@ -124,14 +124,14 @@ public class ShopItem {
     }
 
     public void expireCheck() {
-        if (game.player.countMoves >= this.expireMove && this.isActivated) {
+        if (game.player.getMoves() >= this.expireMove && this.isActivated) {
             this.deactivate();
             this.inStock = 1;
         }
     }
 
     public int remainingMoves() {
-        return expireMove - game.player.countMoves;
+        return expireMove - game.player.getMoves();
     }
 
     public void activate() {

@@ -7,7 +7,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  * Creates buttons with text wrapped in frames.
  */
 
-public class Button {
+public class Button implements Drawable {
 
     public static int pressedTime;
     public static final int PRESS_DURATION = 5;
