@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class Inventory {
     public int money;
-    public final int INIT_FLAGS = 3;
+    public static final int INIT_FLAGS = 3;
     public HashMap<ShopItem.ID, Integer> items;
 
     public Inventory() {
