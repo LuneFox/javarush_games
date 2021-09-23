@@ -8,8 +8,8 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  */
 
 public class Sprite extends Image {
-    public Sprite(Bitmap bitmap, MinesweeperGame game, int x, int y) { // creates a sprite in a logical position
-        super(bitmap, game, x, y);
+    public Sprite(Bitmap bitmap, int x, int y) { // creates a sprite in a logical position
+        super(bitmap, x, y);
     }
 
     protected int[][] assignBitmap(Bitmap bitmap) {

@@ -1,5 +1,6 @@
 package com.javarush.games.minesweeper;
 
+import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.Button;
@@ -14,11 +15,7 @@ import static com.javarush.games.minesweeper.Util.inside;
  */
 
 public class InputEvent {
-    final private MinesweeperGame game;
-
-    InputEvent(MinesweeperGame game) {
-        this.game = game;
-    }
+    final private MinesweeperGame game = MinesweeperGame.getInstance();
 
     final void leftClick(int x, int y) {
         if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;

@@ -36,8 +36,8 @@ class Cell extends Image {
         SPRITE_NUMBERS.put(9, Bitmap.SPR_BOARD_9);
     }
 
-    Cell(Bitmap bitmap, MinesweeperGame game, int x, int y, boolean isMined) {
-        super(bitmap, game, x * 10, y * 10);
+    Cell(Bitmap bitmap, int x, int y, boolean isMined) {
+        super(bitmap, x * 10, y * 10);
         this.x = x;
         this.y = y;
         this.isMined = isMined;
@@ -78,7 +78,7 @@ class Cell extends Image {
 
 
     Sprite getSprite(Bitmap bitmap) {
-        return new Sprite(bitmap, game, x * 10, y * 10);
+        return new Sprite(bitmap, x * 10, y * 10);
     }
 
     // assigns a sprite to this tile by its name
@@ -88,11 +88,11 @@ class Cell extends Image {
 
     // assigns a number sprite to this tile, used to draw the number of mines nearby
     void assignSprite(int number) {
-        this.sprite = new Sprite(SPRITE_NUMBERS.get(number), game, x * 10, y * 10);
+        this.sprite = new Sprite(SPRITE_NUMBERS.get(number), x * 10, y * 10);
     }
 
     void eraseSprite() {
-        this.sprite = new Sprite(Bitmap.SPR_BOARD_NONE, game, x * 10, y * 10);
+        this.sprite = new Sprite(Bitmap.SPR_BOARD_NONE, x * 10, y * 10);
         draw();
     }
 
@@ -135,7 +135,7 @@ class Cell extends Image {
         return (isMined && !isOpen);
     }
 
-    public boolean isScored(){
+    public boolean isScored() {
         return (isOpen && !isMined && !isDestroyed);
     }
 

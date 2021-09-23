@@ -10,7 +10,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 public class Picture extends Image {
 
     public Picture(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) {
-        super(bitmap, game, drawX, drawY);
+        super(bitmap, drawX, drawY);
     }
 
     public int[][] assignBitmap(Bitmap bitmap) {

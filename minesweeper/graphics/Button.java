@@ -75,7 +75,7 @@ public class Button implements Drawable {
     }
 
     public void setBody(int posX, int posY, boolean shadow) {
-        this.body = new Image(Bitmap.MENU_BUTTON, game, posX, posY) {
+        this.body = new Image(Bitmap.MENU_BUTTON, posX, posY) {
             @Override
             protected int[][] assignBitmap(Bitmap bitmap) {
                 return createWindowBitmap(x2 - x1, y2 - y1, shadow, true);

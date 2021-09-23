@@ -150,11 +150,11 @@ public enum Bitmap {
         return result;
     }
 
-    Bitmap(char[] characters) {
-        this.characters = characters;
-    }
-
     Bitmap() {
 
+    }
+
+    Bitmap(char[] characters) {
+        this.characters = characters;
     }
 }

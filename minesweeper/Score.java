@@ -8,8 +8,8 @@ public class Score {
     private int timerScore;  // score from time bonus
     private int topScore;    // top score
 
-    public Score(MinesweeperGame game, Player player) {
-        this.game = game;
+    public Score(Player player) {
+        this.game = MinesweeperGame.getInstance();
         this.player = player;
     }
 

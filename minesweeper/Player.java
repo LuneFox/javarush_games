@@ -10,8 +10,8 @@ public class Player {
     private int moves;
     private int brokenShields;
 
-    public Player(MinesweeperGame game) {
-        this.score = new Score(game, this);
+    public Player() {
+        this.score = new Score(this);
         this.title = "";
         reset();
     }

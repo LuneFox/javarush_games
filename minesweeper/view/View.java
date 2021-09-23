@@ -15,7 +15,7 @@ import static com.javarush.games.minesweeper.Util.inside;
  */
 
 public class View {
-    protected MinesweeperGame game;
+    protected MinesweeperGame game = MinesweeperGame.getInstance();
     public ScreenType screenType;
     public static ScreenType pendingScreenType;
     public static ViewMain main;
@@ -31,11 +31,6 @@ public class View {
     public static final HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
 
     public View() {
-
-    }
-
-    public View(MinesweeperGame game) {
-        this.game = game;
         preloadResources();
     }
 
@@ -64,7 +59,7 @@ public class View {
     // Load constant stuff into static hashmaps once, no need to generate all these images again
 
     private void preloadSprite(Bitmap bitmap) {
-        IMAGES.put(bitmap, new Sprite(bitmap, game, 0, 0));
+        IMAGES.put(bitmap, new Sprite(bitmap, 0, 0));
     }
 
     private void preloadPicture(Bitmap bitmap) {

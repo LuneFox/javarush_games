@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Util;
 
@@ -9,12 +10,11 @@ import com.javarush.games.minesweeper.Util;
  */
 
 public class Display implements Drawable {
-    private final Game game;
+    private final Game game = MinesweeperGame.getInstance();
     private final Pixel[][] matrix;
     private boolean interlace;
 
-    public Display(Game game) {
-        this.game = game;
+    public Display() {
         this.matrix = new Pixel[100][100];
         for (int y = 0; y < matrix.length; y++) {
             for (int x = 0; x < matrix[0].length; x++) {

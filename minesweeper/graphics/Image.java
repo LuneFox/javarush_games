@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  */
 
 public abstract class Image implements Drawable {
-    final protected MinesweeperGame game;     // game instance to be drawn into
+    protected MinesweeperGame game = MinesweeperGame.getInstance();     // game instance to be drawn into
     private int drawX;
     private int drawY;                        // real position in pixels
     protected int[][] bitmapData;             // matrix of color numbers
@@ -16,19 +16,17 @@ public abstract class Image implements Drawable {
     private float floatAnimationShift;        // difference between the anchor and current position
     private boolean floatAnimationGoesDown;
 
-    protected Image(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) { // constructor with setting position at once
+    protected Image(Bitmap bitmap, int drawX, int drawY) { // constructor with setting position at once
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
-        this.game = game;
         setPosition(drawX, drawY);
         floatAnimationShift = 0;
         floatAnimationGoesDown = true;
     }
 
-    Image(Bitmap bitmap, MinesweeperGame game) { // constructor without setting position (for loading images in memory)
+    Image(Bitmap bitmap) { // constructor without setting position (for loading images in memory)
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
-        this.game = game;
     }
 
     public enum Mirror {

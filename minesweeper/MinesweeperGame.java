@@ -17,22 +17,23 @@ import java.util.List;
 
 public class MinesweeperGame extends Game {
 
-    // FINAL OBJECTS
-    public final Printer printer = new Printer(this);
-    public final Display display = new Display(this);
-    public final View view = new View(this);
-    public final Inventory inventory = new Inventory();
-    public final Shop shop = new Shop(this);
-    public final Player player = new Player(this);
-    public final Timer timer = new Timer(this);
-    public final Cell[][] field = new Cell[10][10];
-    private final InputEvent ie = new InputEvent(this);
+    private static MinesweeperGame instance;
+
+    public Printer printer;
+    public Display display;
+    public View view;
+    public Inventory inventory;
+    public Shop shop;
+    public Player player;
+    public Timer timer;
+    public Cell[][] field = new Cell[10][10];
+    private InputEvent ie;
 
     // GAME STATE
     public int difficulty = 10;
 
     // FLAGS
-    public boolean evenTurn; // is now even turn or odd turn? helps with animation of certain elements
+    public boolean evenTurn;        // is now even turn or odd turn? helps with animation of certain elements
     public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
     public boolean allowFlagExplosion;
     public boolean lastResultIsVictory;
@@ -43,6 +44,16 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void initialize() {
+        instance = this;            // must come first, new objects before use this instance at creation time
+        display = new Display();
+        printer = new Printer();
+        ie = new InputEvent();
+        timer = new Timer();
+        view = new View();
+        shop = new Shop();
+        player = new Player();
+        inventory = new Inventory();
+
         showGrid(false);
         setScreenSize(100, 100);
         isStopped = true;
@@ -131,7 +142,7 @@ public class MinesweeperGame extends Game {
     private void createField() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
-                field[y][x] = new Cell(Bitmap.CELL_CLOSED, this, x, y, false);
+                field[y][x] = new Cell(Bitmap.CELL_CLOSED, x, y, false);
             }
         }
     }
@@ -141,7 +152,7 @@ public class MinesweeperGame extends Game {
             int x = getRandomNumber(10);
             int y = getRandomNumber(10);
             if (!field[y][x].isMined && !field[y][x].isOpen)
-                field[y][x] = new Cell(Bitmap.CELL_CLOSED, this, x, y, true);
+                field[y][x] = new Cell(Bitmap.CELL_CLOSED, x, y, true);
         }
     }
 
@@ -526,5 +537,9 @@ public class MinesweeperGame extends Game {
     @Override
     public void onKeyPress(Key key) {
         ie.keyPressAction(key);
+    }
+
+    public static MinesweeperGame getInstance() {
+        return instance;
     }
 }

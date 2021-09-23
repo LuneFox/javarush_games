@@ -14,7 +14,7 @@ import java.util.LinkedList;
  */
 
 public class Shop {
-    final private MinesweeperGame game;
+    final private MinesweeperGame game = MinesweeperGame.getInstance();
     public double lastClickTime;
     public int lastClickedItemNumber;
     public ShopItem shield;
@@ -28,10 +28,6 @@ public class Shop {
     public boolean autoBuyFlagsEnabled;
     public boolean isUnaffordableAnimationTrigger;
     public boolean isAlreadyActivatedAnimationTrigger;
-
-    public Shop(MinesweeperGame game) {
-        this.game = game;
-    }
 
     public void sell(ShopItem item) {
         if (!itemIsSold(item)) return;

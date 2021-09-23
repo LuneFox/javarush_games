@@ -10,17 +10,16 @@ import java.util.Date;
  */
 
 public class Timer implements Drawable {
-    private final MinesweeperGame game;
+    private final MinesweeperGame game = MinesweeperGame.getInstance();
     public float time;
     private final float TIME_LIMIT = 500;
     public boolean enabled;
     private Date lastTickTime;
     private final Color[] COLORS;
 
-    public Timer(MinesweeperGame game) {
+    public Timer() {
         this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         this.time = 0;
-        this.game = game;
         this.enabled = false;
         this.lastTickTime = new Date();
     }

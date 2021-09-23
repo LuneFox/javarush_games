@@ -14,8 +14,8 @@ public class Text extends Image {
     private static final HashMap<Character, Text> ALPHABET = new HashMap<>(); // pre-loaded alphabet goes here
     private Text symbol;
 
-    public Text(Bitmap bitmap, MinesweeperGame game) {
-        super(bitmap, game);
+    public Text(Bitmap bitmap) {
+        super(bitmap);
     }
 
     public void write(String input, Color color, int drawX, int drawY, boolean alignRight) {
@@ -71,7 +71,7 @@ public class Text extends Image {
     }
 
     private void loadSymbol(Character c, Bitmap bitmap) {
-        ALPHABET.put(c, new Text(bitmap, game));
+        ALPHABET.put(c, new Text(bitmap));
     }
 
     public int calculateLengthInPixels(String s) {
