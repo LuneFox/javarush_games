@@ -1,101 +1,139 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 
-import java.util.HashMap;
+public enum Theme {
+    MAIN_MENU_BG(new Color[]{
+            Color.BROWN,
+            Color.MEDIUMSEAGREEN,
+            Color.ROYALBLUE
+    }),
+    MAIN_MENU_BORDER(new Color[]{
+            Color.DARKRED,
+            Color.DARKGREEN,
+            Color.STEELBLUE
+    }),
+    MAIN_MENU_QUOTE_FRONT(new Color[]{
+            Color.SALMON,
+            Color.LIGHTGREEN,
+            Color.LIGHTSKYBLUE
+    }),
+    MAIN_MENU_QUOTE_BACK(new Color[]{
+            Color.DARKRED,
+            Color.FORESTGREEN,
+            Color.DIMGRAY
+    }),
+    MAIN_MENU_VERSION(new Color[]{
+            Color.DARKRED,
+            Color.FORESTGREEN,
+            Color.CORNFLOWERBLUE
+    }),
+    BUTTON_BG(new Color[]{
+            Color.DARKRED,
+            Color.DARKGREEN,
+            Color.STEELBLUE
+    }),
+    BUTTON_BORDER(new Color[]{
+            Color.SALMON,
+            Color.LIGHTGREEN,
+            Color.LIGHTSKYBLUE
+    }),
+    LABEL(new Color[]{
+            Color.YELLOW,
+            Color.YELLOW,
+            Color.YELLOW,
+    }),
+    SHOP_HEADER_FOOTER(new Color[]{
+            Color.MAROON,
+            Color.MEDIUMSEAGREEN,
+            Color.ROYALBLUE
+    }),
+    SHOP_BORDER(new Color[]{
+            Color.SALMON,
+            Color.DARKGREEN,
+            Color.DODGERBLUE
+    }),
+    SHOP_BG(new Color[]{
+            Color.BROWN,
+            Color.DARKSLATEGRAY,
+            Color.CORNFLOWERBLUE
+    }),
+    SHOP_TITLE(new Color[]{
+            Color.SALMON,
+            Color.SLATEGRAY,
+            Color.LIGHTSKYBLUE
+    }),
+    SHOP_SCORE(new Color[]{
+            Color.SALMON,
+            Color.LIGHTGREEN,
+            Color.LIGHTSKYBLUE
+    }),
+    SHOP_MOVES(new Color[]{
+            Color.INDIANRED,
+            Color.PALEGREEN,
+            Color.CORNFLOWERBLUE
+    }),
+    SHOP_ITEM_BG(new Color[]{
+            Color.DARKSALMON,
+            Color.SEAGREEN,
+            Color.STEELBLUE
+    }),
+    SHOP_ITEM_FRAME_AVAILABLE(new Color[]{
+            Color.ANTIQUEWHITE,
+            Color.LIGHTGREEN,
+            Color.LIGHTBLUE
+    }),
+    SHOP_SIGN_NO(new Color[]{
+            Color.ANTIQUEWHITE,
+            Color.PINK,
+            Color.PINK
+    }),
+    CELL_LIGHT(new Color[]{
+            Color.BLANCHEDALMOND,
+            Color.HONEYDEW,
+            Color.LIGHTBLUE
+    }),
+    CELL_BG_DOWN(new Color[]{
+            Color.SANDYBROWN,
+            Color.DARKSEAGREEN,
+            Color.CORNFLOWERBLUE
+    }),
+    CELL_BG_UP(new Color[]{
+            Color.BURLYWOOD,
+            Color.LIGHTGREEN,
+            Color.LIGHTSKYBLUE
+    }),
+    CELL_SHADOW(new Color[]{
+            Color.SADDLEBROWN,
+            Color.SEAGREEN,
+            Color.STEELBLUE
+    }),
+    CELL_SCANNED(new Color[]{
+            Color.ORANGE,
+            Color.MEDIUMSPRINGGREEN,
+            Color.DEEPSKYBLUE
+    });
 
-public class Theme {
-    public static Theme current = new Theme(0);
-    private static int currentNumber;
+    private static int currentNumber = MinesweeperGame.getInstance().getRandomNumber(3);
+    public static final int USSR = 0;
+    public static final int MINT = 1;
+    public static final int SKY = 2;
+    Color[] colors;
 
-    private HashMap<ThemeElement, Color> pattern = new HashMap<>();
-
-    public Theme(int number) {
-        currentNumber = number;
-        switch (number) {
-            case 0:
-                pattern.put(ThemeElement.MAIN_MENU_BG, Color.BROWN);
-                pattern.put(ThemeElement.MAIN_MENU_BORDER, Color.DARKRED);
-                pattern.put(ThemeElement.MAIN_MENU_QUOTE_FRONT, Color.SALMON);
-                pattern.put(ThemeElement.MAIN_MENU_QUOTE_BACK, Color.DARKRED);
-                pattern.put(ThemeElement.MAIN_MENU_VERSION, Color.DARKRED);
-                pattern.put(ThemeElement.BUTTON_BG, Color.DARKRED);
-                pattern.put(ThemeElement.BUTTON_BORDER, Color.SALMON);
-                pattern.put(ThemeElement.LABEL, Color.YELLOW);
-                pattern.put(ThemeElement.SHOP_TITLE, Color.SALMON);
-                pattern.put(ThemeElement.SHOP_HEADER_FOOTER, Color.MAROON);
-                pattern.put(ThemeElement.SHOP_BG, Color.BROWN);
-                pattern.put(ThemeElement.SHOP_BORDER, Color.SALMON);
-                pattern.put(ThemeElement.SHOP_SCORE, Color.SALMON);
-                pattern.put(ThemeElement.SHOP_MOVES, Color.INDIANRED);
-                pattern.put(ThemeElement.SHOP_ITEM_BG, Color.DARKSALMON);
-                pattern.put(ThemeElement.SHOP_ITEM_FRAME_AVAILABLE, Color.ANTIQUEWHITE);
-                pattern.put(ThemeElement.SHOP_SIGN_NO, Color.ANTIQUEWHITE);
-                pattern.put(ThemeElement.CELL_BG_UP, Color.BURLYWOOD);
-                pattern.put(ThemeElement.CELL_BG_DOWN, Color.SANDYBROWN);
-                pattern.put(ThemeElement.CELL_LIGHT, Color.BLANCHEDALMOND);
-                pattern.put(ThemeElement.CELL_SHADOW, Color.SADDLEBROWN);
-                pattern.put(ThemeElement.CELL_SCANNED, Color.ORANGE);
-
-                break;
-            case 1:
-                pattern.put(ThemeElement.MAIN_MENU_BG, Color.MEDIUMSEAGREEN);
-                pattern.put(ThemeElement.MAIN_MENU_BORDER, Color.DARKGREEN);
-                pattern.put(ThemeElement.MAIN_MENU_QUOTE_FRONT, Color.LIGHTGREEN);
-                pattern.put(ThemeElement.MAIN_MENU_QUOTE_BACK, Color.FORESTGREEN);
-                pattern.put(ThemeElement.MAIN_MENU_VERSION, Color.FORESTGREEN);
-                pattern.put(ThemeElement.BUTTON_BG, Color.DARKGREEN);
-                pattern.put(ThemeElement.BUTTON_BORDER, Color.LIGHTGREEN);
-                pattern.put(ThemeElement.LABEL, Color.YELLOW);
-                pattern.put(ThemeElement.SHOP_TITLE, Color.SLATEGRAY);
-                pattern.put(ThemeElement.SHOP_HEADER_FOOTER, Color.MEDIUMSEAGREEN);
-                pattern.put(ThemeElement.SHOP_BG, Color.DARKSLATEGRAY);
-                pattern.put(ThemeElement.SHOP_BORDER, Color.DARKGREEN);
-                pattern.put(ThemeElement.SHOP_SCORE, Color.LIGHTGREEN);
-                pattern.put(ThemeElement.SHOP_MOVES, Color.PALEGREEN);
-                pattern.put(ThemeElement.SHOP_ITEM_BG, Color.SEAGREEN);
-                pattern.put(ThemeElement.SHOP_ITEM_FRAME_AVAILABLE, Color.LIGHTGREEN);
-                pattern.put(ThemeElement.SHOP_SIGN_NO, Color.PINK);
-                pattern.put(ThemeElement.CELL_BG_UP, Color.LIGHTGREEN);
-                pattern.put(ThemeElement.CELL_BG_DOWN, Color.DARKSEAGREEN);
-                pattern.put(ThemeElement.CELL_LIGHT, Color.HONEYDEW);
-                pattern.put(ThemeElement.CELL_SHADOW, Color.SEAGREEN);
-                pattern.put(ThemeElement.CELL_SCANNED, Color.MEDIUMSPRINGGREEN);
-                break;
-            case 2:
-                pattern.put(ThemeElement.MAIN_MENU_BG, Color.ROYALBLUE);
-                pattern.put(ThemeElement.MAIN_MENU_BORDER, Color.STEELBLUE);
-                pattern.put(ThemeElement.MAIN_MENU_QUOTE_FRONT, Color.LIGHTSKYBLUE);
-                pattern.put(ThemeElement.MAIN_MENU_QUOTE_BACK, Color.DIMGRAY);
-                pattern.put(ThemeElement.MAIN_MENU_VERSION, Color.CORNFLOWERBLUE);
-                pattern.put(ThemeElement.BUTTON_BG, Color.STEELBLUE);
-                pattern.put(ThemeElement.BUTTON_BORDER, Color.LIGHTSKYBLUE);
-                pattern.put(ThemeElement.LABEL, Color.YELLOW);
-                pattern.put(ThemeElement.SHOP_TITLE, Color.LIGHTSKYBLUE);
-                pattern.put(ThemeElement.SHOP_HEADER_FOOTER, Color.ROYALBLUE);
-                pattern.put(ThemeElement.SHOP_BG, Color.CORNFLOWERBLUE);
-                pattern.put(ThemeElement.SHOP_BORDER, Color.DODGERBLUE);
-                pattern.put(ThemeElement.SHOP_SCORE, Color.LIGHTSKYBLUE);
-                pattern.put(ThemeElement.SHOP_MOVES, Color.CORNFLOWERBLUE);
-                pattern.put(ThemeElement.SHOP_ITEM_BG, Color.STEELBLUE);
-                pattern.put(ThemeElement.SHOP_ITEM_FRAME_AVAILABLE, Color.LIGHTBLUE);
-                pattern.put(ThemeElement.SHOP_SIGN_NO, Color.PINK);
-                pattern.put(ThemeElement.CELL_BG_UP, Color.LIGHTSKYBLUE);
-                pattern.put(ThemeElement.CELL_BG_DOWN, Color.CORNFLOWERBLUE);
-                pattern.put(ThemeElement.CELL_LIGHT, Color.LIGHTBLUE);
-                pattern.put(ThemeElement.CELL_SHADOW, Color.STEELBLUE);
-                pattern.put(ThemeElement.CELL_SCANNED, Color.DEEPSKYBLUE);
-                break;
-            default:
-                break;
-        }
+    Theme(Color[] colors) {
+        this.colors = colors;
     }
 
-    public static int getCurrentNumber() {
+    public Color getColor(){
+        return this.colors[currentNumber];
+    }
+
+    public static void set(int themeNumber) {
+        Theme.currentNumber = themeNumber;
+    }
+
+    public static int get() {
         return currentNumber;
-    }
-
-    public Color getColor(ThemeElement themeElement) {
-        return pattern.get(themeElement);
     }
 }

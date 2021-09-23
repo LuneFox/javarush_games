@@ -244,33 +244,33 @@ public class Picture extends Image {
             case WIN_MENU: {
                 colors = new Color[]{
                         Color.NONE,
-                        Theme.current.getColor(ThemeElement.MAIN_MENU_BG),
+                        Theme.MAIN_MENU_BG.getColor(),
                         Color.NONE,
-                        Theme.current.getColor(ThemeElement.MAIN_MENU_BORDER)
+                        Theme.MAIN_MENU_BORDER.getColor()
                 };
                 return createWindowBitmap(100, 100, false, true);
             }
             case WIN_SHOP: {
                 colors = new Color[]{
                         Color.NONE,
-                        Theme.current.getColor(ThemeElement.SHOP_BG),
+                        Theme.SHOP_BG.getColor(),
                         Color.BLACK,
-                        Theme.current.getColor(ThemeElement.SHOP_BORDER)
+                        Theme.SHOP_BORDER.getColor()
                 };
                 return createWindowBitmap(80, 80, true, true);
             }
             case WIN_SHOP_HEADER_FOOTER: {
                 colors = new Color[]{
                         Color.NONE,
-                        Theme.current.getColor(ThemeElement.SHOP_HEADER_FOOTER),
+                        Theme.SHOP_HEADER_FOOTER.getColor(),
                         Color.BLACK,
-                        Theme.current.getColor(ThemeElement.SHOP_BORDER)};
+                        Theme.SHOP_BORDER.getColor()};
                 return createWindowBitmap(80, 12, false, true);
             }
             case SHOP_ITEM_FRAME: {
                 colors = new Color[]{
                         Color.NONE,
-                        Theme.current.getColor(ThemeElement.SHOP_ITEM_BG),
+                        Theme.SHOP_ITEM_BG.getColor(),
                         Color.BLACK,
                         Color.GREEN
                 };
@@ -279,7 +279,7 @@ public class Picture extends Image {
             case SHOP_ITEM_FRAME_PRESSED: {
                 colors = new Color[]{
                         Color.NONE,
-                        Theme.current.getColor(ThemeElement.SHOP_ITEM_BG),
+                        Theme.SHOP_ITEM_BG.getColor(),
                         Color.BLACK,
                         Color.GREEN
                 };
@@ -289,9 +289,9 @@ public class Picture extends Image {
             case WIN_GAME_OVER: {
                 colors = new Color[]{
                         Color.NONE,
-                        Theme.current.getColor(ThemeElement.MAIN_MENU_BG),
+                        Theme.MAIN_MENU_BG.getColor(),
                         Color.BLACK,
-                        Theme.current.getColor(ThemeElement.BUTTON_BG)};
+                        Theme.BUTTON_BG.getColor()};
                 return createWindowBitmap(70, 35, true, true);
             }
             case BUTTON_OK: {

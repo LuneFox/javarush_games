@@ -83,9 +83,9 @@ public class Button implements Drawable {
         };
         this.body.colors = new Color[]{
                 Color.NONE,
-                Theme.current.getColor(ThemeElement.BUTTON_BG),
+                Theme.BUTTON_BG.getColor(),
                 Color.BLACK,
-                Theme.current.getColor(ThemeElement.BUTTON_BORDER)};
+                Theme.BUTTON_BORDER.getColor()};
         body.assignBitmap(Bitmap.MENU_BUTTON);
     }
 

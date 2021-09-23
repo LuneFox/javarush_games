@@ -60,7 +60,7 @@ public final class ViewOptions extends View {
         arrowButton.drawAt((clickedArrowTimeoutR-- > 0) ? 94 : 93, 21, Image.Mirror.NONE);
 
         displayDifficultyBar();
-        game.print(difficultyName, Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 29, true);
+        game.print(difficultyName, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, 29, true);
 
         game.print("покупка\nфлажков", 2, 40);
         switchRail.drawAt(80, 42);
@@ -68,12 +68,12 @@ public final class ViewOptions extends View {
             if (switchFlagsPosition < SWITCH_RIGHTMOST_POSITION) switchFlagsPosition++;
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(switchFlagsPosition, 40);
-            game.print("авто", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 48, true);
+            game.print("авто", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, 48, true);
         } else {
             if (switchFlagsPosition > SWITCH_LEFTMOST_POSITION) switchFlagsPosition--;
             switchButton.replaceColor(Color.RED, 1);
             switchButton.drawAt(switchFlagsPosition, 40);
-            game.print("вручную", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 91, 48, true);
+            game.print("вручную", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 91, 48, true);
         }
 
         game.print("игра на время", 2, 63);
@@ -82,16 +82,16 @@ public final class ViewOptions extends View {
             if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(switchTimePosition, 63);
-            game.print("да", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 93, 71, true);
+            game.print("да", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, 71, true);
         } else {
             if (switchTimePosition > SWITCH_LEFTMOST_POSITION) switchTimePosition--;
             switchButton.replaceColor(Color.RED, 1);
             switchButton.drawAt(switchTimePosition, 63);
-            game.print("нет", Theme.current.getColor(ThemeElement.MAIN_MENU_QUOTE_FRONT), 94, 71, true);
+            game.print("нет", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 94, 71, true);
 
         }
 
-        switch (Theme.getCurrentNumber()) {
+        switch (Theme.get()) {
             case 0:
                 game.print("тема: ссср", 2, 78);
                 break;
@@ -104,12 +104,12 @@ public final class ViewOptions extends View {
         }
 
         themePalette.replaceColor(Color.RED, 1);
-        themePalette.replaceColor(Theme.getCurrentNumber() == 0 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.replaceColor(Theme.get() == 0 ? Color.YELLOW : Color.WHITE, 3);
         themePalette.drawAt(2, 88);
         themePalette.replaceColor(Color.GREEN, 1);
-        themePalette.replaceColor(Theme.getCurrentNumber() == 1 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.replaceColor(Theme.get() == 1 ? Color.YELLOW : Color.WHITE, 3);
         themePalette.drawAt(14, 88);
-        themePalette.replaceColor(Theme.getCurrentNumber() == 2 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.replaceColor(Theme.get() == 2 ? Color.YELLOW : Color.WHITE, 3);
         themePalette.replaceColor(Color.BLUE, 1);
         themePalette.drawAt(26, 88);
 

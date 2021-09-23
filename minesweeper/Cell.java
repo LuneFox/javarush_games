@@ -3,8 +3,6 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.graphics.*;
 
-import java.util.HashMap;
-
 /**
  * Logical game element and a cell for drawing sprites inside.
  * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
@@ -40,11 +38,11 @@ class Cell extends Image {
         } else if (isShielded) {
             replaceColor(Color.YELLOW, 3);
         } else if (isScanned) {
-            replaceColor(Theme.current.getColor(ThemeElement.CELL_SCANNED), 3);
+            replaceColor(Theme.CELL_SCANNED.getColor(), 3);
         } else if (isDestroyed) {
             replaceColor(Color.DARKSLATEGRAY, 3);
         } else {
-            replaceColor(Theme.current.getColor(ThemeElement.CELL_BG_DOWN), 3);
+            replaceColor(Theme.CELL_BG_DOWN.getColor(), 3);
         }
         draw();
         drawSprite();
@@ -53,9 +51,9 @@ class Cell extends Image {
     public void fullRecolor() {
         colors = new Color[]{
                 Color.NONE,
-                Theme.current.getColor(ThemeElement.CELL_SHADOW),
-                Theme.current.getColor(ThemeElement.CELL_LIGHT),
-                Theme.current.getColor(ThemeElement.CELL_BG_UP),
+                Theme.CELL_SHADOW.getColor(),
+                Theme.CELL_LIGHT.getColor(),
+                Theme.CELL_BG_UP.getColor(),
                 Color.BLACK,
                 Color.GRAY
         };
