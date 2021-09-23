@@ -71,7 +71,7 @@ public class MinesweeperGame extends Game {
 
     private void onTurnAction() {
         // everything that happens with the flow of time on different screens
-        switch (Screen.getType()) {
+        switch (Screen.get()) {
             case MAIN_MENU:
                 View.main.display();
                 break;

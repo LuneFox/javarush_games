@@ -16,7 +16,7 @@ public final class ViewRecords extends View {
 
     public ViewRecords(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.RECORDS;
+        this.screen = Screen.RECORDS;
     }
 
     @Override

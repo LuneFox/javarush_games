@@ -1,9 +1,6 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
-import com.javarush.games.minesweeper.Screen.ScreenType;
-import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 import com.javarush.games.minesweeper.graphics.Theme;
 import com.javarush.games.minesweeper.view.View;
@@ -19,21 +16,21 @@ public class InputEvent {
 
     final void leftClick(int x, int y) {
         if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
-        leftClickAction(x, y, Screen.getType());
+        leftClickAction(x, y, Screen.get());
     }
 
     final void rightClick(int x, int y) {
         if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
-        rightClickAction(x, y, Screen.getType());
+        rightClickAction(x, y, Screen.get());
         // Uncomment this to check click coordinates
         // System.out.printf("%d %d%n", x, y);
     }
 
-    private void leftClickAction(int x, int y, ScreenType screenType) {
+    private void leftClickAction(int x, int y, Screen screen) {
         game.allowCountMoves = true;
         game.allowFlagExplosion = false;
         game.hideDice();
-        switch (screenType) {
+        switch (screen) {
             case MAIN_MENU:
                 if (View.BUTTONS.get(ButtonID.START).covers(x, y)) {
                     game.createGame();
@@ -48,7 +45,7 @@ public class InputEvent {
             case BOARD:
                 if (game.isStopped) {
                     View.gameOver.display(game.lastResultIsVictory, 0);
-                    Screen.setType(ScreenType.GAME_OVER);
+                    Screen.set(Screen.GAME_OVER);
                     return;
                 }
 
@@ -133,13 +130,13 @@ public class InputEvent {
         }
     }
 
-    private void rightClickAction(int x, int y, ScreenType screenType) {
+    private void rightClickAction(int x, int y, Screen screen) {
         game.allowCountMoves = true;
-        switch (screenType) {
+        switch (screen) {
             case BOARD:
                 if (game.isStopped) {
                     View.gameOver.display(game.lastResultIsVictory, 0);
-                    Screen.setType(ScreenType.GAME_OVER);
+                    Screen.set(Screen.GAME_OVER);
                 } else { // only one will work - actions don't interfere
                     game.setFlag(x / 10, y / 10, true); // works only if tile is closed
                     game.openRest(x / 10, y / 10);                // works only if tile is open
@@ -158,7 +155,7 @@ public class InputEvent {
 
     final void keyPressAction(Key key) {
         if (View.gameOver.popUpTimer > 0) return;
-        ScreenType screen = Screen.getType();
+        Screen screen = Screen.get();
         switch (key) {
             case SPACE:
                 switch (screen) {
@@ -187,7 +184,7 @@ public class InputEvent {
                     case BOARD:
                         if (game.isStopped) {
                             View.gameOver.display(game.lastResultIsVictory, 0);
-                            Screen.setType(ScreenType.GAME_OVER);
+                            Screen.set(Screen.GAME_OVER);
                         } else {
                             View.main.display();
                         }
@@ -198,7 +195,7 @@ public class InputEvent {
                         break;
                     case SCORE:
                         View.gameOver.display(game.lastResultIsVictory, 0);
-                        Screen.setType(ScreenType.GAME_OVER);
+                        Screen.set(Screen.GAME_OVER);
                         break;
                     case OPTIONS:
                     case ABOUT:
@@ -247,9 +244,9 @@ public class InputEvent {
                 }
                 break;
             default:
-                if (screen == ScreenType.BOARD && game.isStopped) {
+                if (screen == Screen.BOARD && game.isStopped) {
                     View.gameOver.display(game.lastResultIsVictory, 0);
-                    Screen.setType(ScreenType.GAME_OVER);
+                    Screen.set(Screen.GAME_OVER);
                 }
                 break;
         }

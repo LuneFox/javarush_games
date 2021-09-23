@@ -16,7 +16,7 @@ public final class ViewGameOver extends View {
 
     public ViewGameOver(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.GAME_OVER;
+        this.screen = Screen.GAME_OVER;
     }
 
     @Override

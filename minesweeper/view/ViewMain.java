@@ -25,7 +25,7 @@ public final class ViewMain extends View {
 
     public ViewMain(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.MAIN_MENU;
+        this.screen = Screen.MAIN_MENU;
         Collections.addAll(QUOTES, Strings.QUOTES);
         lastQuoteDate = new Date();
         quote = QUOTES.get(0);

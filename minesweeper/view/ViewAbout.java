@@ -19,7 +19,7 @@ public final class ViewAbout extends View {
 
     public ViewAbout(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.ABOUT;
+        this.screen = Screen.ABOUT;
     }
 
     @Override

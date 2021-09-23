@@ -39,7 +39,7 @@ public final class ViewOptions extends View {
         this.game = game;
         this.difficultySetting = game.difficulty;
         this.timerEnabledSetting = game.timer.enabled;
-        this.screenType = Screen.ScreenType.OPTIONS;
+        this.screen = Screen.OPTIONS;
     }
 
     @Override

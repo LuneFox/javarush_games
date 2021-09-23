@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.Screen.ScreenType;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
@@ -16,8 +15,8 @@ import static com.javarush.games.minesweeper.Util.inside;
 
 public class View {
     protected MinesweeperGame game = MinesweeperGame.getInstance();
-    public ScreenType screenType;
-    public static ScreenType pendingScreenType;
+    public Screen screen;
+    public static Screen pendingScreen;
     public static ViewMain main;
     public static ViewAbout about;
     public static ViewRecords records;
@@ -48,12 +47,12 @@ public class View {
 
     public void display() {
         if (Button.pressedTime > 0) {
-            if (Button.pressedTime == Button.PRESS_DURATION) pendingScreenType = this.screenType;
+            if (Button.pressedTime == Button.PRESS_DURATION) pendingScreen = this.screen;
             Button.pressedTime--;
-            if (Button.pressedTime <= 0) Screen.setType(pendingScreenType);
+            if (Button.pressedTime <= 0) Screen.set(pendingScreen);
             return;
         }
-        Screen.setType(this.screenType);
+        Screen.set(this.screen);
     }
 
     // Load constant stuff into static hashmaps once, no need to generate all these images again

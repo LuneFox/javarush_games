@@ -25,7 +25,7 @@ public class Display implements Drawable {
     }
 
     public void draw() {
-        if (Screen.getType() == Screen.ScreenType.BOARD) {
+        if (Screen.get() == Screen.BOARD) {
             if (interlace) {
                 for (int y = 0; y < matrix.length; y += 2) {
                     for (int x = 0; x < matrix[0].length; x++) {

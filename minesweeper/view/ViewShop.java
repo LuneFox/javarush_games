@@ -20,12 +20,12 @@ public final class ViewShop extends View {
 
     public ViewShop(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.SHOP;
+        this.screen = Screen.SHOP;
     }
 
     @Override
     public void display() {
-        if (Screen.getType() != Screen.ScreenType.SHOP) { // if changed from screen other than shop, don't animate money
+        if (Screen.get() != Screen.SHOP) { // if changed from screen other than shop, don't animate money
             View.shop.moneyOnDisplay = game.inventory.money;
         }
         super.display();

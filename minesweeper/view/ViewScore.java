@@ -14,7 +14,7 @@ import com.javarush.games.minesweeper.graphics.Button;
 public final class ViewScore extends View {
     public ViewScore(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.SCORE;
+        this.screen = Screen.SCORE;
     }
 
     @Override

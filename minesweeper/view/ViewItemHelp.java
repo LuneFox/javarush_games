@@ -17,7 +17,7 @@ public final class ViewItemHelp extends View {
 
     public ViewItemHelp(MinesweeperGame game) {
         this.game = game;
-        this.screenType = Screen.ScreenType.ITEM_HELP;
+        this.screen = Screen.ITEM_HELP;
     }
 
     @Override
