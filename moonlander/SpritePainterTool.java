@@ -14,6 +14,7 @@ public class SpritePainterTool {
     private int[][] sprite;
     boolean fillSelected = false;
     boolean replaceSelected = false;
+    boolean showNumbers = true;
 
     SpritePainterTool(MoonLanderGame game) {
         this.game = game;
@@ -59,12 +60,13 @@ public class SpritePainterTool {
 
     private void drawColorPalette() {
         int colorValue = 0;
-        for (int x = 1; x < 6; x++) {
-            for (int y = 8; y < MoonLanderGame.HEIGHT; y++) {
+        for (int x = 1; x < 7; x++) {
+            for (int y = 8; y < MoonLanderGame.HEIGHT - 2; y++) {
                 if (colorValue > 148) {
                     continue;
                 }
-                game.setCellValueEx(x, y, Color.values()[colorValue], String.valueOf(colorValue), Color.WHITE);
+                String shownNumber = showNumbers ? String.valueOf(colorValue) : "";
+                game.setCellValueEx(x, y, Color.values()[colorValue], shownNumber, Color.WHITE);
                 colorValue++;
             }
         }
@@ -77,7 +79,7 @@ public class SpritePainterTool {
                 int value = sprite[y][x];
                 game.setCellValueEx(x + 8, y + 8,
                         Color.values()[value],
-                        value == 0 ? "" : String.valueOf(sprite[y][x]),
+                        value == 0 ? "" : showNumbers ? String.valueOf(sprite[y][x]) : "",
                         Color.WHITE);
             }
         }
@@ -117,6 +119,7 @@ public class SpritePainterTool {
         new Message("CLEAR", Color.RED).draw(game, 34, 2);
         new Message("EXPORT", Color.LAWNGREEN).draw(game, 33, 4);
         new Message("UNDO", (savedStates.size() == 0 ? Color.GRAY : Color.YELLOW)).draw(game, 35, 6);
+        new Message(showNumbers ? "HIDE" : "SHOW", Color.WHITE).draw(game, 1, MoonLanderGame.HEIGHT - 1);
     }
 
 

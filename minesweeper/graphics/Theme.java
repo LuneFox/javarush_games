@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 
 public enum Theme {
     MAIN_MENU_BG(new Color[]{
@@ -115,6 +114,7 @@ public enum Theme {
             Color.DEEPSKYBLUE
     });
 
+    private static final int THEMES_COUNT = MAIN_MENU_BG.colors.length;
     public static final int USSR = 0;
     public static final int MINT = 1;
     public static final int SKY = 2;
@@ -125,7 +125,8 @@ public enum Theme {
         this.colors = colors;
     }
 
-    public Color getColor(){
+    public Color getColor() {
+        if (this.colors.length != THEMES_COUNT) return Color.WHITE;
         return this.colors[currentNumber];
     }
 

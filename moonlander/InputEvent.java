@@ -90,8 +90,11 @@ public class InputEvent {
                 } else if (y == 6) {
                     game.showMessageDialog(Color.YELLOW, "This is current color. Use LEFT CLICK to paint a cell.\n" +
                             "Use ENTER for fill tool. Use ESC for replace tool.", Color.BLACK, 20);
-                } else if (x > 1 && x < 7 && y > 7) {
+                } else if (x > 1 && x < 7 && y > 7 && y < MoonLanderGame.HEIGHT - 2) {
                     game.showMessageDialog(Color.YELLOW, "Use RIGHT CLICK to copy any color on the screen.", Color.BLACK, 20);
+                } else if (x > 1 && x < 7 && y == MoonLanderGame.HEIGHT - 1) {
+                    game.spritePainterTool.showNumbers = !game.spritePainterTool.showNumbers;
+                    game.spritePainterTool.display();
                 } else if (y == 0) {
                     game.showMessageDialog(Color.ORANGE, "Thanks for using this tool! Hope you like it!\n-- LuneFox. (version: 0.91)", Color.WHITE, 20);
                 }
