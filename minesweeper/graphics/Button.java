@@ -74,11 +74,11 @@ public class Button implements Drawable {
         game.print(text, textColor, drawX + textOffset, drawY);
     }
 
-    public void setBody(int posX, int posY, boolean shadow) {
+    public void setBody(int posX, int posY, boolean addShadow) {
         this.body = new Image(Bitmap.MENU_BUTTON, posX, posY) {
             @Override
             protected int[][] assignBitmap(Bitmap bitmap) {
-                return createWindowBitmap(x2 - x1, y2 - y1, shadow, true);
+                return ImageCreator.createWindowBitmap(x2 - x1, y2 - y1, addShadow, true);
             }
         };
         this.body.colors = new Color[]{

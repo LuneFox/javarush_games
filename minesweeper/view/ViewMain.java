@@ -34,7 +34,7 @@ public final class ViewMain extends View {
     public void display() {
         super.display();
         IMAGES.get(Bitmap.WIN_MENU).draw();
-        IMAGES.get(Bitmap.PIC_LOGO).floatAnimation(2.8, -1, 8);
+        IMAGES.get(Bitmap.PIC_LOGO).animateFloating(2.8, -1, 8);
         BUTTONS.get(Button.ButtonID.OPTIONS).draw();
         BUTTONS.get(Button.ButtonID.ABOUT).draw();
         BUTTONS.get(Button.ButtonID.RECORDS).draw();

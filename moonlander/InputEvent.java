@@ -96,7 +96,7 @@ public class InputEvent {
                     game.spritePainterTool.showNumbers = !game.spritePainterTool.showNumbers;
                     game.spritePainterTool.display();
                 } else if (y == 0) {
-                    game.showMessageDialog(Color.ORANGE, "Thanks for using this tool! Hope you like it!\n-- LuneFox. (version: 0.91)", Color.WHITE, 20);
+                    game.showMessageDialog(Color.ORANGE, "Thanks for using this tool! Hope you like it!\n-- LuneFox. (version: 0.92)", Color.WHITE, 20);
                 }
                 break;
             }

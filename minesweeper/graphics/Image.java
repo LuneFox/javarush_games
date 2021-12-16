@@ -16,6 +16,10 @@ public abstract class Image implements Drawable {
     private float floatAnimationShift;        // difference between the anchor and current position
     private boolean floatAnimationGoesDown;
 
+    public enum Mirror {
+        HORIZONTAL, VERTICAL, NONE
+    }
+
     protected Image(Bitmap bitmap, int drawX, int drawY) { // constructor with setting position at once
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
@@ -27,10 +31,6 @@ public abstract class Image implements Drawable {
     Image(Bitmap bitmap) { // constructor without setting position (for loading images in memory)
         this.colors = new Color[2];
         this.bitmapData = assignBitmap(bitmap);
-    }
-
-    public enum Mirror {
-        HORIZONTAL, VERTICAL, NONE
     }
 
     public void draw() {
@@ -72,7 +72,7 @@ public abstract class Image implements Drawable {
         }
     }
 
-    public final void floatAnimation(double height, int x, int y) {
+    public final void animateFloating(double height, int x, int y) {
         this.setPosition(x, y);
         floatAnimationShift += (floatAnimationGoesDown ? 0.2 : -0.2);
         if (Math.abs(floatAnimationShift) > height) {
@@ -104,68 +104,4 @@ public abstract class Image implements Drawable {
     }
 
     protected abstract int[][] assignBitmap(Bitmap bitmap); // subclasses' individual pictures go here
-
-
-    // IMAGE GENERATION
-
-    final int[][] createBitmapFromStrings(String... strings) {
-        int sizeX = strings[0].length();
-        int sizeY = strings.length;
-        int[][] result = new int[sizeY][sizeX];
-        for (int y = 0; y < sizeY; y++) {
-            char[] row = strings[y].toCharArray();
-            for (int x = 0; x < sizeX; x++) {
-                result[y][x] = row[x] - 48; // - 48 to convert chars into ints
-            }
-        }
-        return result;
-    }
-
-
-    // WINDOW GENERATION
-
-    final int[][] createWindowBitmap(int sizeX, int sizeY, boolean shadow, boolean frame) {
-        if (shadow) { // if shadow is ON, image is 1 px taller and wider
-            sizeX++;
-            sizeY++;
-        }
-
-        int[][] window = new int[sizeY][sizeX];
-        generateWindowBackground(window, sizeX, sizeY);
-        if (shadow) generateWindowShadow(window, sizeX, sizeY);
-        if (frame) generateWindowFrame(window, sizeX, sizeY, shadow);
-        return window;
-    }
-
-    private void generateWindowShadow(int[][] window, int sizeX, int sizeY) {
-        for (int x = 0; x < sizeX; x++) {
-            window[sizeY - 1][x] = (x == 0) ? 0 : 2;
-        }
-        for (int y = 0; y < sizeY; y++) {
-            window[y][sizeX - 1] = (y == 0) ? 0 : 2;
-        }
-    }
-
-    private void generateWindowFrame(int[][] window, int sizeX, int sizeY, boolean shadow) {
-        if (shadow) { // if shadow is drawn, shrink the drawing zone back to normal window
-            sizeX--;
-            sizeY--;
-        }
-        for (int x = 0; x < sizeX; x++) {
-            window[0][x] = 3;
-            window[sizeY - 1][x] = 3;
-        }
-        for (int y = 0; y < sizeY; y++) {
-            window[y][0] = 3;
-            window[y][sizeX - 1] = 3;
-        }
-    }
-
-    private void generateWindowBackground(int[][] window, int sizeX, int sizeY) {
-        for (int y = 0; y < sizeY; y++) {
-            for (int x = 0; x < sizeX; x++) {
-                window[y][x] = 1;
-            }
-        }
-    }
 }
