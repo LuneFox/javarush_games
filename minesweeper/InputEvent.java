@@ -15,12 +15,12 @@ public class InputEvent {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
 
     final void leftClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
+        if (clickedOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
         leftClickAction(x, y, Screen.get());
     }
 
     final void rightClick(int x, int y) {
-        if (clickOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
+        if (clickedOutsideScreen(x, y) || View.gameOver.popUpTimer > 0) return;
         rightClickAction(x, y, Screen.get());
         // Uncomment this to check click coordinates
         // System.out.printf("%d %d%n", x, y);
@@ -58,7 +58,7 @@ public class InputEvent {
 
                 break;
             case SHOP:
-                if (clickOutsideShop(x, y)) View.board.display();
+                if (clickedOutsideShop(x, y)) View.board.display();
                 ShopItem item = game.shop.getClickedItem(x, y);
                 game.shop.sellAndRememberLastClick(item);
                 break;
@@ -252,11 +252,11 @@ public class InputEvent {
         }
     }
 
-    private boolean clickOutsideScreen(int x, int y) {
+    private boolean clickedOutsideScreen(int x, int y) {
         return (!Util.isOnScreen(x, y));
     }
 
-    private boolean clickOutsideShop(int x, int y) {
+    private boolean clickedOutsideShop(int x, int y) {
         boolean horizontal = inside(x, 0, 9) || inside(x, 90, 99);
         boolean vertical = inside(y, 0, 10) || inside(y, 91, 99);
         return (horizontal || vertical);
