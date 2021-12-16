@@ -167,7 +167,7 @@ public class ShopItem {
         }
 
         public void draw() {
-            for (int i = 0; i < item.remainingMoves(); i++) {
+            for (int i = 0; i < item.remainingMoves() * 2; i += 2) {
                 game.display.setCellColor(posX, posY - i, color);
             }
         }

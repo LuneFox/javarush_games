@@ -35,9 +35,10 @@ public class Dice implements Drawable {
     }
 
     public void draw() {
-        if (!isHidden) {
-            if (onScreenTime++ < 20) {
+        if (!isHidden && Screen.get() == Screen.BOARD) {
+            if (onScreenTime < 20) {
                 image.drawAt(this.x * 10 + 2, this.y * 10 + 2);
+                onScreenTime++;
             }
         }
     }
