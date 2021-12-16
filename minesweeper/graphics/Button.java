@@ -75,10 +75,10 @@ public class Button implements Drawable {
     }
 
     public void setBody(int posX, int posY, boolean addShadow) {
-        this.body = new Image(Bitmap.MENU_BUTTON, posX, posY) {
+        this.body = new Image(VisualElement.MENU_BUTTON, posX, posY) {
             @Override
-            protected int[][] assignBitmap(Bitmap bitmap) {
-                return ImageDataCreator.createWindowBitmap(x2 - x1, y2 - y1, addShadow, true);
+            protected int[][] assignMatrix(VisualElement visualElement) {
+                return ImageCreator.createWindowBitmap(x2 - x1, y2 - y1, addShadow, true);
             }
         };
         this.body.colors = new Color[]{
@@ -86,7 +86,7 @@ public class Button implements Drawable {
                 Theme.BUTTON_BG.getColor(),
                 Color.BLACK,
                 Theme.BUTTON_BORDER.getColor()};
-        body.assignBitmap(Bitmap.MENU_BUTTON);
+        body.assignMatrix(VisualElement.MENU_BUTTON);
     }
 
     public void replaceText(int width, String label) {

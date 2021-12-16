@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
-import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.VisualElement;
 import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Image;
 
@@ -22,7 +22,7 @@ public final class ViewRecords extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(Bitmap.WIN_MENU).draw();
+        IMAGES.get(VisualElement.WIN_MENU).draw();
         game.print(Strings.RECORDS[0], Color.YELLOW, 17, 2);
         BUTTONS.get(Button.ButtonID.BACK).draw();
         drawPrizeCups();
@@ -30,7 +30,7 @@ public final class ViewRecords extends View {
     }
 
     final void drawPrizeCups() {
-        Image prizeCup = IMAGES.get(Bitmap.MENU_CUP);
+        Image prizeCup = IMAGES.get(VisualElement.MENU_CUP);
         Color[] colors;
         for (int i = 0; i < 3; i++) {
             switch (i) {

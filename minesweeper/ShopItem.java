@@ -1,8 +1,8 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.graphics.Picture;
+import com.javarush.games.minesweeper.graphics.VisualElement;
+import com.javarush.games.minesweeper.graphics.Image;
 
 /**
  * Items you can buy in the shop and use in the game.
@@ -18,7 +18,7 @@ public class ShopItem {
     public ID id;
     public String name;
     public String description;
-    public Picture icon;
+    public Image icon;
     public int number;
     public int[] shopFramePosition; // x1, x2, y1, y2
     public VerticalStatusBar statusBar;
@@ -27,7 +27,7 @@ public class ShopItem {
         SHIELD, SCANNER, FLAG, SHOVEL, DICE, BOMB
     }
 
-    ShopItem(int slot, int cost, int inStock, Picture icon, MinesweeperGame game) {
+    ShopItem(int slot, int cost, int inStock, Image icon, MinesweeperGame game) {
         this.game = game;
         this.icon = icon;
         this.cost = cost;
@@ -89,7 +89,7 @@ public class ShopItem {
             case SHIELD:
                 if (this.isActivated) {
                     this.deactivate();
-                    cell.assignSprite(Bitmap.SPR_BOARD_MINE);
+                    cell.assignSprite(VisualElement.SPR_BOARD_MINE);
                     cell.replaceColor(Color.YELLOW, 3);
                     cell.draw();
                     cell.drawSprite();

@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
-import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.VisualElement;
 import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Theme;
 
@@ -33,8 +33,8 @@ public final class ViewMain extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(Bitmap.WIN_MENU).draw();
-        IMAGES.get(Bitmap.PIC_LOGO).animateFloating(2.8, -1, 8);
+        IMAGES.get(VisualElement.WIN_MENU).draw();
+        IMAGES.get(VisualElement.PIC_LOGO).animateFloating(2.8, -1, 8);
         BUTTONS.get(Button.ButtonID.OPTIONS).draw();
         BUTTONS.get(Button.ButtonID.ABOUT).draw();
         BUTTONS.get(Button.ButtonID.RECORDS).draw();

@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.VisualElement;
 import com.javarush.games.minesweeper.graphics.Button;
 
 /**
@@ -20,7 +20,7 @@ public final class ViewScore extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(Bitmap.WIN_MENU).draw();
+        IMAGES.get(VisualElement.WIN_MENU).draw();
 
         int minesCount = game.countAllCells(Util.Filter.MINED);
         int scoredCells = game.countAllCells(Util.Filter.SCORED);

@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
  * Global class that uses a text object to write anything on the screen.
@@ -11,7 +10,7 @@ public class Printer {
     private static Text writer;
 
     public Printer() {
-        writer = new Text(Bitmap.NONE);
+        writer = new Text(VisualElement.NONE);
         writer.loadAlphabet();
     }
 

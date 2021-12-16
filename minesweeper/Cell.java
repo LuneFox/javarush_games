@@ -11,8 +11,8 @@ import com.javarush.games.minesweeper.graphics.*;
 class Cell extends Image {
     int x;
     int y;                          // logical position
-    private Sprite sprite;          // a sprite can be assigned to a tile to be drawn over it
-    private Bitmap bitmap;
+    private Image sprite;          // a sprite can be assigned to a tile to be drawn over it
+    private VisualElement visualElement;
     boolean isMined;                // this tile contains mine
     boolean isOpen;                 // this tile has been revealed
     boolean isShielded;             // this tile has been blocked with shield
@@ -21,20 +21,20 @@ class Cell extends Image {
     boolean isDestroyed;            // who did this? :(
     int countMinedNeighbors;        // how many neighboring tiles have mines
 
-    Cell(Bitmap bitmap, int x, int y, boolean isMined) {
-        super(bitmap, x * 10, y * 10);
-        this.bitmap = bitmap;
+    Cell(VisualElement visualElement, int x, int y, boolean isMined) {
+        super(visualElement, x * 10, y * 10);
+        this.visualElement = visualElement;
         this.x = x;
         this.y = y;
         this.isMined = isMined;
-        this.sprite = (isMined) ? getSprite(Bitmap.SPR_BOARD_MINE) : getSprite(Bitmap.SPR_BOARD_NONE);
+        this.sprite = (isMined) ? getSprite(VisualElement.SPR_BOARD_MINE) : getSprite(VisualElement.SPR_BOARD_NONE);
         fullRecolor();
         draw();
     }
 
     // draws a button in a pushed state and reveals its sprite (number or icon), used while opening a tile
     public void push() {
-        bitmapData = (isDestroyed) ? assignBitmap(Bitmap.CELL_DESTROYED) : assignBitmap(Bitmap.CELL_OPENED);
+        matrix = (isDestroyed) ? assignMatrix(VisualElement.CELL_DESTROYED) : assignMatrix(VisualElement.CELL_OPENED);
         if (isFlaggedCorrectly()) {
             replaceColor(Color.GREEN, 3);
         } else if (isShielded) {
@@ -51,27 +51,27 @@ class Cell extends Image {
     }
 
     public void fullRecolor() {
-        colors = new ImageDataStorage(bitmap).getColors();
+        colors = new ImageStorage(visualElement).getColors();
         if (isOpen) push();
     }
 
 
-    Sprite getSprite(Bitmap bitmap) {
-        return new Sprite(bitmap, x * 10, y * 10);
+    Image getSprite(VisualElement visualElement) {
+        return new Image(visualElement, x * 10, y * 10);
     }
 
     // assigns a sprite to this tile by its name
-    void assignSprite(Bitmap bitmap) {
-        this.sprite = getSprite(bitmap);
+    void assignSprite(VisualElement visualElement) {
+        this.sprite = getSprite(visualElement);
     }
 
     // assigns a number sprite to this tile, used to draw the number of mines nearby
     void assignSprite(int number) {
-        this.sprite = new Sprite(Bitmap.getSpriteByNumber(number), x * 10, y * 10);
+        this.sprite = new Image(VisualElement.getSpriteByNumber(number), x * 10, y * 10);
     }
 
     void eraseSprite() {
-        this.sprite = new Sprite(Bitmap.SPR_BOARD_NONE, x * 10, y * 10);
+        this.sprite = new Image(VisualElement.SPR_BOARD_NONE, x * 10, y * 10);
         draw();
     }
 

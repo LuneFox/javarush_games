@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.VisualElement;
 import com.javarush.games.minesweeper.graphics.Drawable;
 import com.javarush.games.minesweeper.graphics.Image;
 import com.javarush.games.minesweeper.view.View;
@@ -19,8 +19,8 @@ public class Dice implements Drawable {
     private int onScreenTime;
     private Image image;
     private final Image[] images = {
-            View.IMAGES.get(Bitmap.SHOP_DICE_1), View.IMAGES.get(Bitmap.SHOP_DICE_2), View.IMAGES.get(Bitmap.SHOP_DICE_3),
-            View.IMAGES.get(Bitmap.SHOP_DICE_4), View.IMAGES.get(Bitmap.SHOP_DICE_5), View.IMAGES.get(Bitmap.SHOP_DICE_6)};
+            View.IMAGES.get(VisualElement.SHOP_DICE_1), View.IMAGES.get(VisualElement.SHOP_DICE_2), View.IMAGES.get(VisualElement.SHOP_DICE_3),
+            View.IMAGES.get(VisualElement.SHOP_DICE_4), View.IMAGES.get(VisualElement.SHOP_DICE_5), View.IMAGES.get(VisualElement.SHOP_DICE_6)};
 
     public Dice(int number) {
         setImage(number, 0, 0);

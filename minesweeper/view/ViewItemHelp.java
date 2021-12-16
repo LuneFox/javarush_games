@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.ShopItem;
 import com.javarush.games.minesweeper.Strings;
-import com.javarush.games.minesweeper.graphics.Bitmap;
+import com.javarush.games.minesweeper.graphics.VisualElement;
 import com.javarush.games.minesweeper.graphics.Button;
 
 /**
@@ -29,7 +29,7 @@ public final class ViewItemHelp extends View {
         currentItem = item;
         super.display();
         Strings.generateNewShieldDescription();
-        IMAGES.get(Bitmap.WIN_MENU).draw();
+        IMAGES.get(VisualElement.WIN_MENU).draw();
         item.icon.setPosition(5, 5);
         item.icon.draw();
         if (item.id == ShopItem.ID.SHIELD) {

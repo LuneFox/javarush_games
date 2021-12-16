@@ -45,14 +45,14 @@ public final class ViewOptions extends View {
     @Override
     public void display() {
         super.display();
-        Image arrowButton = IMAGES.get(Bitmap.MENU_ARROW);
-        Image switchButton = IMAGES.get(Bitmap.MENU_SWITCH);
-        Image switchRail = IMAGES.get(Bitmap.MENU_SWITCH_RAIL);
-        Image themePalette = IMAGES.get(Bitmap.MENU_THEME_PALETTE);
+        Image arrowButton = IMAGES.get(VisualElement.MENU_ARROW);
+        Image switchButton = IMAGES.get(VisualElement.MENU_SWITCH);
+        Image switchRail = IMAGES.get(VisualElement.MENU_SWITCH_RAIL);
+        Image themePalette = IMAGES.get(VisualElement.MENU_THEME_PALETTE);
         String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(difficultySetting)];
 
 
-        IMAGES.get(Bitmap.WIN_MENU).draw();
+        IMAGES.get(VisualElement.WIN_MENU).draw();
         game.print("настройки", Color.YELLOW, 28, 2);
 
         game.print("сложность", 2, 20);
@@ -118,9 +118,9 @@ public final class ViewOptions extends View {
 
 
     private void displayDifficultyBar() {
-        LinkedList<Picture> bars = new LinkedList<>();
+        LinkedList<Image> bars = new LinkedList<>();
         for (int i = 0; i < difficultySetting / 5; i++) {
-            Picture bar = new Picture(Bitmap.MENU_DIFFICULTY_BAR, game, (i * 4) + 56, 21);
+            Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR, (i * 4) + 56, 21);
             if (i > 1) bar.replaceColor(Color.YELLOW, 1);
             if (i > 3) bar.replaceColor(Color.ORANGE, 1);
             if (i > 5) bar.replaceColor(Color.RED, 1);

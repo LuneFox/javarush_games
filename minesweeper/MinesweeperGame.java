@@ -142,7 +142,7 @@ public class MinesweeperGame extends Game {
     private void createField() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
-                field[y][x] = new Cell(Bitmap.CELL_CLOSED, x, y, false);
+                field[y][x] = new Cell(VisualElement.CELL_CLOSED, x, y, false);
             }
         }
     }
@@ -152,7 +152,7 @@ public class MinesweeperGame extends Game {
             int x = getRandomNumber(10);
             int y = getRandomNumber(10);
             if (!field[y][x].isMined && !field[y][x].isOpen)
-                field[y][x] = new Cell(Bitmap.CELL_CLOSED, x, y, true);
+                field[y][x] = new Cell(VisualElement.CELL_CLOSED, x, y, true);
         }
     }
 
@@ -242,7 +242,7 @@ public class MinesweeperGame extends Game {
         Cell cell = field[y][x];
         if (cellDestructionImpossible(cell)) return;
 
-        cell.assignSprite(Bitmap.SPR_BOARD_NONE);
+        cell.assignSprite(VisualElement.SPR_BOARD_NONE);
         cell.isDestroyed = true;
         pushCell(cell);
         deactivateExpiredItems();
@@ -292,7 +292,7 @@ public class MinesweeperGame extends Game {
         if (cell.isFlagged) return;
         inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
-        cell.assignSprite(Bitmap.SPR_BOARD_FLAG);
+        cell.assignSprite(VisualElement.SPR_BOARD_FLAG);
         cell.drawSprite();
     }
 
@@ -491,7 +491,7 @@ public class MinesweeperGame extends Game {
                 Cell showCell = field[posY][posX];
                 if (showCell.isMined) {
                     showCell.isOpen = true;
-                    showCell.assignSprite(Bitmap.SPR_BOARD_MINE);
+                    showCell.assignSprite(VisualElement.SPR_BOARD_MINE);
                     showCell.push();
                 }
             }

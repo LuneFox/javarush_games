@@ -1,8 +1,7 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.graphics.Bitmap;
-import com.javarush.games.minesweeper.graphics.Picture;
+import com.javarush.games.minesweeper.graphics.VisualElement;
 import com.javarush.games.minesweeper.view.View;
 
 import java.util.Arrays;
@@ -103,17 +102,17 @@ public class Shop {
 
     public void reset() {
         shield = new ShopItem(0, 13 + game.difficulty / 5, 1,
-                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_SHIELD), game);
+                View.IMAGES.get(VisualElement.SHOP_ITEM_SHIELD), game);
         scanner = new ShopItem(1, 8 + game.difficulty / 5, 1,
-                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_SCANNER), game);
+                View.IMAGES.get(VisualElement.SHOP_ITEM_SCANNER), game);
         flag = new ShopItem(2, 1, getFlagsAmount(),
-                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_FLAG), game);
+                View.IMAGES.get(VisualElement.SHOP_ITEM_FLAG), game);
         goldenShovel = new ShopItem(3, 9, 1,
-                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_SHOVEL), game);
+                View.IMAGES.get(VisualElement.SHOP_ITEM_SHOVEL), game);
         luckyDice = new ShopItem(4, 6, 1,
-                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_DICE), game);
+                View.IMAGES.get(VisualElement.SHOP_ITEM_DICE), game);
         miniBomb = new ShopItem(5, 6 + game.difficulty / 10, 1,
-                (Picture) View.IMAGES.get(Bitmap.SHOP_ITEM_BOMB), game);
+                View.IMAGES.get(VisualElement.SHOP_ITEM_BOMB), game);
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
         dice = new Dice(1);
@@ -124,8 +123,8 @@ public class Shop {
     }
 
     private void drawColoredFrame(Color color) {
-        View.IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(color, 3);
-        View.IMAGES.get(Bitmap.WIN_BOARD_TRANSPARENT_FRAME).draw();
+        View.IMAGES.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(color, 3);
+        View.IMAGES.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();
     }
 
     public ShopItem getClickedItem(int x, int y) { // checks click coordinates and if item has them, returns it

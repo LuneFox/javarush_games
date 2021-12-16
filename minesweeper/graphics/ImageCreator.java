@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.graphics;
 
-public class ImageDataCreator {
+public class ImageCreator {
     public static final int CHAR_AND_INT_DIFFERENCE = 48;
 
     // IMAGE GENERATION

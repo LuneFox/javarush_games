@@ -7,7 +7,7 @@ import java.util.List;
  * Code names for all available graphic pieces in the game.
  */
 
-public enum Bitmap {
+public enum VisualElement {
     NONE,
 
     CELL_OPENED,
@@ -138,32 +138,32 @@ public enum Bitmap {
     SYM_SYMBOL_SLASH(new char[]{'/'}),
     SYM_SYMBOL_NEWLINE(new char[]{'\n'});
 
-    static final List<Bitmap> SPRITES = getBitmapsByPrefixes("SPR_");
+    static final List<VisualElement> SPRITES = getBitmapsByPrefixes("SPR_");
     char[] characters;
     int number;
 
-    Bitmap() {
+    VisualElement() {
     }
 
-    Bitmap(char[] characters) {
+    VisualElement(char[] characters) {
         this.characters = characters;
     }
 
-    Bitmap(int number) {
+    VisualElement(int number) {
         this.number = number;
     }
 
-    public static List<Bitmap> getBitmapsByPrefixes(String... prefixes) {
-        ArrayList<Bitmap> result = new ArrayList<>();
-        for (Bitmap bitmap : Bitmap.values()) {
+    public static List<VisualElement> getBitmapsByPrefixes(String... prefixes) {
+        ArrayList<VisualElement> result = new ArrayList<>();
+        for (VisualElement visualElement : VisualElement.values()) {
             for (String prefix : prefixes) {
-                if (bitmap.name().startsWith(prefix)) result.add(bitmap);
+                if (visualElement.name().startsWith(prefix)) result.add(visualElement);
             }
         }
         return result;
     }
 
-    public static Bitmap getSpriteByNumber(int number) {
+    public static VisualElement getSpriteByNumber(int number) {
         return (number == 0) ? SPR_BOARD_NONE : SPRITES.get(number);
     }
 }

@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 
 import java.util.HashMap;
 
@@ -12,10 +11,10 @@ import java.util.HashMap;
 
 public class Text extends Image {
     private static final HashMap<Character, Text> ALPHABET = new HashMap<>(); // pre-loaded alphabet goes here
-    private Text symbol;
+    private Image symbol;
 
-    public Text(Bitmap bitmap) {
-        super(bitmap);
+    public Text(VisualElement visualElement) {
+        super(visualElement);
     }
 
     public void write(String input, Color color, int drawX, int drawY, boolean alignRight) {
@@ -39,7 +38,7 @@ public class Text extends Image {
             }
 
             void shift(boolean reverse, Text relativeSymbol) {
-                int shift = relativeSymbol.bitmapData[0].length + 1;
+                int shift = relativeSymbol.matrix[0].length + 1;
                 x = (reverse) ? x - shift : x + shift;
             }
         }
@@ -65,13 +64,13 @@ public class Text extends Image {
     }
 
     public void loadAlphabet() {
-        Bitmap.getBitmapsByPrefixes("SYM_").forEach(symbol -> {
+        VisualElement.getBitmapsByPrefixes("SYM_").forEach(symbol -> {
             for (char c : symbol.characters) loadSymbol(c, symbol);
         });
     }
 
-    private void loadSymbol(Character c, Bitmap bitmap) {
-        ALPHABET.put(c, new Text(bitmap));
+    private void loadSymbol(Character c, VisualElement visualElement) {
+        ALPHABET.put(c, new Text(visualElement));
     }
 
     public int calculateLengthInPixels(String s) {
@@ -79,7 +78,7 @@ public class Text extends Image {
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
             symbol = ALPHABET.get(c);
-            length += (symbol.bitmapData[0].length + 1);
+            length += (symbol.matrix[0].length + 1);
         }
         return length;
     }

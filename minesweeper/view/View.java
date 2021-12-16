@@ -26,7 +26,7 @@ public class View {
     public static ViewItemHelp itemHelp;
     public static ViewGameOver gameOver;
     public static ViewScore score;
-    public static final HashMap<Bitmap, Image> IMAGES = new HashMap<>();
+    public static final HashMap<VisualElement, Image> IMAGES = new HashMap<>();
     public static final HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
 
     public View() {
@@ -57,17 +57,12 @@ public class View {
 
     // Load constant stuff into static hashmaps once, no need to generate all these images again
 
-    private void preloadSprite(Bitmap bitmap) {
-        IMAGES.put(bitmap, new Sprite(bitmap, 0, 0));
-    }
-
-    private void preloadPicture(Bitmap bitmap) {
-        IMAGES.put(bitmap, new Picture(bitmap, game, 0, 0));
+    private void preloadImage(VisualElement visualElement) {
+        IMAGES.put(visualElement, new Image(visualElement, 0, 0));
     }
 
     public final void preloadResources() { // load images once at launch and just re-use them all the time
-        Bitmap.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_").forEach(this::preloadPicture);
-        Bitmap.getBitmapsByPrefixes("SPR_").forEach(this::preloadSprite);
+        VisualElement.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::preloadImage);
         for (ButtonID b : ButtonID.values()) {
             BUTTONS.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
         }
