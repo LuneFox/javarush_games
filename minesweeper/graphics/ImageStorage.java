@@ -2,6 +2,10 @@ package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
 
+/**
+ * All images' body data and colors are stored here. Each image corresponds a visual element.
+ */
+
 public class ImageStorage {
     private Color[] colors;
     private final int[][] data;

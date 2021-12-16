@@ -2,6 +2,10 @@ package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
 
+/**
+ * Theme configurator with all variable colors.
+ */
+
 public enum Theme {
     MAIN_MENU_BG(new Color[]{
             Color.BROWN,

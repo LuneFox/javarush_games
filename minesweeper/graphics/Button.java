@@ -53,7 +53,7 @@ public class Button implements Drawable {
     }
 
     public Button(MinesweeperGame game, int posX, int posY, int sizeX, int sizeY, String text) {
-        int textLength = Printer.getWriter().calculateLengthInPixels(text);
+        int textLength = Printer.calculateLengthInPixels(text);
         this.text = text;
         this.game = game;
         this.x1 = posX;
@@ -90,7 +90,7 @@ public class Button implements Drawable {
     }
 
     public void replaceText(int width, String label) {
-        int textLength = Printer.getWriter().calculateLengthInPixels(label);
+        int textLength = Printer.calculateLengthInPixels(label);
         this.text = label;
         this.textOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
     }

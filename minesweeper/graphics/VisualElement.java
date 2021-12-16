@@ -5,6 +5,7 @@ import java.util.List;
 
 /**
  * Code names for all available graphic pieces in the game.
+ * Some elements have auxiliary variables for comfortable usage.
  */
 
 public enum VisualElement {

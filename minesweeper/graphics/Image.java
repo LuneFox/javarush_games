@@ -4,7 +4,7 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
- * Abstract class that allows drawing stuff using colored cells.
+ * An image that is drawn using colors and the number matrix. Can be mirrored, recolored etc.
  */
 
 public class Image implements Drawable {

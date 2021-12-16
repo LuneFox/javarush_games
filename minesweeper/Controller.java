@@ -11,7 +11,7 @@ import static com.javarush.games.minesweeper.Util.inside;
  * Separate class for processing various input events.
  */
 
-public class InputEvent {
+public class Controller {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
 
     final void leftClick(int x, int y) {

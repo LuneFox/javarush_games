@@ -19,7 +19,6 @@ public class MinesweeperGame extends Game {
 
     private static MinesweeperGame instance;
 
-    public Printer printer;
     public Display display;
     public View view;
     public Inventory inventory;
@@ -27,7 +26,7 @@ public class MinesweeperGame extends Game {
     public Player player;
     public Timer timer;
     public Cell[][] field = new Cell[10][10];
-    private InputEvent ie;
+    private Controller controller;
 
     // GAME STATE
     public int difficulty = 10;
@@ -46,10 +45,9 @@ public class MinesweeperGame extends Game {
     public void initialize() {
         instance = this;            // must come first, new objects before use this instance at creation time
         display = new Display();
-        printer = new Printer();
-        ie = new InputEvent();
-        timer = new Timer();
+        controller = new Controller();
         view = new View();
+        timer = new Timer();
         shop = new Shop();
         player = new Player();
         inventory = new Inventory();
@@ -511,32 +509,32 @@ public class MinesweeperGame extends Game {
     // PRINT
 
     public void print(String text, Color color, int x, int y, boolean right) {
-        printer.print(text, color, x, y, right);
+        Printer.print(text, color, x, y, right);
     }
 
     public void print(String text, Color color, int x, int y) {
-        print(text, color, x, y, false);
+        Printer.print(text, color, x, y, false);
     }
 
     public void print(String text, int x, int y) {
-        print(text, Color.WHITE, x, y, false);
+        Printer.print(text, Color.WHITE, x, y, false);
     }
 
     // CONTROLS
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        ie.leftClick(x, y);
+        controller.leftClick(x, y);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        ie.rightClick(x, y);
+        controller.rightClick(x, y);
     }
 
     @Override
     public void onKeyPress(Key key) {
-        ie.keyPressAction(key);
+        controller.keyPressAction(key);
     }
 
     public static MinesweeperGame getInstance() {
