@@ -30,7 +30,7 @@ public class View {
     public static final HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
 
     public View() {
-        preloadResources();
+        loadStaticImages();
     }
 
     public void createSubViews() {
@@ -57,19 +57,19 @@ public class View {
 
     // Load constant stuff into static hashmaps once, no need to generate all these images again
 
-    private void preloadImage(VisualElement visualElement) {
+    private void loadImage(VisualElement visualElement) {
         IMAGES.put(visualElement, new Image(visualElement, 0, 0));
     }
 
-    public final void preloadResources() { // load images once at launch and just re-use them all the time
-        VisualElement.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::preloadImage);
+    public final void loadStaticImages() { // load images once at launch and just re-use them all the time
+        VisualElement.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::loadImage);
         for (ButtonID b : ButtonID.values()) {
             BUTTONS.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
         }
     }
 
     public final void reload() {  // generates and loads all images again, used to change color theme
-        game.view.preloadResources();
+        game.view.loadStaticImages();
         game.recolorAllCells();
     }
 

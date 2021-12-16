@@ -8,11 +8,12 @@ import com.javarush.games.minesweeper.graphics.*;
  * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
  */
 
-class Cell extends Image {
+class Cell {
     int x;
     int y;                          // logical position
-    private Image sprite;          // a sprite can be assigned to a tile to be drawn over it
-    private VisualElement visualElement;
+    private final VisualElement visualElement;
+    private final Image background; // the body of a cell
+    private Image sprite;           // a sprite can be assigned to a tile to be drawn over it
     boolean isMined;                // this tile contains mine
     boolean isOpen;                 // this tile has been revealed
     boolean isShielded;             // this tile has been blocked with shield
@@ -22,47 +23,44 @@ class Cell extends Image {
     int countMinedNeighbors;        // how many neighboring tiles have mines
 
     Cell(VisualElement visualElement, int x, int y, boolean isMined) {
-        super(visualElement, x * 10, y * 10);
+        this.background = new Image(visualElement, x * 10, y * 10);
         this.visualElement = visualElement;
         this.x = x;
         this.y = y;
         this.isMined = isMined;
-        this.sprite = (isMined) ? getSprite(VisualElement.SPR_BOARD_MINE) : getSprite(VisualElement.SPR_BOARD_NONE);
+        this.sprite = (isMined) ? createSprite(VisualElement.SPR_BOARD_MINE) : createSprite(VisualElement.SPR_BOARD_NONE);
         fullRecolor();
-        draw();
+        background.draw();
     }
 
     // draws a button in a pushed state and reveals its sprite (number or icon), used while opening a tile
     public void push() {
-        matrix = (isDestroyed) ? assignMatrix(VisualElement.CELL_DESTROYED) : assignMatrix(VisualElement.CELL_OPENED);
+        background.matrix = (isDestroyed) ? background.assignMatrix(VisualElement.CELL_DESTROYED) : background.assignMatrix(VisualElement.CELL_OPENED);
         if (isFlaggedCorrectly()) {
-            replaceColor(Color.GREEN, 3);
+            drawBackground(Color.GREEN);
         } else if (isShielded) {
-            replaceColor(Color.YELLOW, 3);
+            drawBackground(Color.YELLOW);
         } else if (isScanned) {
-            replaceColor(Theme.CELL_SCANNED.getColor(), 3);
+            drawBackground(Theme.CELL_SCANNED.getColor());
         } else if (isDestroyed) {
-            replaceColor(Color.DARKSLATEGRAY, 3);
+            drawBackground(Color.DARKSLATEGRAY);
         } else {
-            replaceColor(Theme.CELL_BG_DOWN.getColor(), 3);
+            drawBackground(Theme.CELL_BG_DOWN.getColor());
         }
-        draw();
         drawSprite();
     }
 
     public void fullRecolor() {
-        colors = new ImageStorage(visualElement).getColors();
+        background.colors = new ImageStorage(visualElement).getColors();
         if (isOpen) push();
     }
 
-
-    Image getSprite(VisualElement visualElement) {
+    Image createSprite(VisualElement visualElement) { // returns a new sprite at the physical position of the cell
         return new Image(visualElement, x * 10, y * 10);
     }
 
-    // assigns a sprite to this tile by its name
-    void assignSprite(VisualElement visualElement) {
-        this.sprite = getSprite(visualElement);
+    void assignSprite(VisualElement visualElement) { // assigns a sprite to this tile by its name
+        this.sprite = createSprite(visualElement);
     }
 
     // assigns a number sprite to this tile, used to draw the number of mines nearby
@@ -72,15 +70,20 @@ class Cell extends Image {
 
     void eraseSprite() {
         this.sprite = new Image(VisualElement.SPR_BOARD_NONE, x * 10, y * 10);
-        draw();
+        background.draw();
     }
 
-    void makeSpriteYellow() {
-        sprite.replaceColor(Color.YELLOW, 1);
+    void drawBackground(Color color) {
+        if (color != Color.NONE) background.replaceColor(color, 3);
+        background.draw();
     }
 
     void drawSprite() {
         sprite.draw();
+    }
+
+    void changeSpriteColor(Color color) {
+        sprite.replaceColor(color, 1);
     }
 
     public boolean isEmpty() {

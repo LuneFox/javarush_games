@@ -11,8 +11,8 @@ public class Image implements Drawable {
     protected MinesweeperGame game = MinesweeperGame.getInstance();     // game instance to be drawn into
     private int drawX;
     private int drawY;                        // real position in pixels
-    protected int[][] matrix;                 // matrix of color numbers
-    protected Color[] colors;                 // an array to match colors and numbers
+    public int[][] matrix;                 // matrix of color numbers
+    public Color[] colors;                 // an array to match colors and numbers
     private float floatAnimationShift;        // difference between the anchor and current position
     private boolean floatAnimationGoesDown;
 
@@ -101,7 +101,7 @@ public class Image implements Drawable {
         draw(mirror);
     }
 
-    protected int[][] assignMatrix(VisualElement visualElement) {
+    public int[][] assignMatrix(VisualElement visualElement) {
         ImageStorage storage = new ImageStorage(visualElement);
         colors = storage.getColors();
         return storage.getData();

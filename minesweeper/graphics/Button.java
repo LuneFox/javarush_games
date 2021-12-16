@@ -77,7 +77,7 @@ public class Button implements Drawable {
     public void setBody(int posX, int posY, boolean addShadow) {
         this.body = new Image(VisualElement.MENU_BUTTON, posX, posY) {
             @Override
-            protected int[][] assignMatrix(VisualElement visualElement) {
+            public int[][] assignMatrix(VisualElement visualElement) {
                 return ImageCreator.createWindowBitmap(x2 - x1, y2 - y1, addShadow, true);
             }
         };

@@ -90,8 +90,7 @@ public class ShopItem {
                 if (this.isActivated) {
                     this.deactivate();
                     cell.assignSprite(VisualElement.SPR_BOARD_MINE);
-                    cell.replaceColor(Color.YELLOW, 3);
-                    cell.draw();
+                    cell.drawBackground(Color.YELLOW);
                     cell.drawSprite();
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);

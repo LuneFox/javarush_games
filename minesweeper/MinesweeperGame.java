@@ -413,8 +413,7 @@ public class MinesweeperGame extends Game {
 
     private void explodeAndGameOver(Cell cell) {
         revealAllMines();
-        cell.replaceColor(Color.RED, 3); // highlight mine that caused game over
-        cell.draw();
+        cell.drawBackground(Color.RED); // highlight mine that caused game over
         cell.drawSprite();
         shop.dice.isHidden = true;
         lose();
@@ -463,7 +462,7 @@ public class MinesweeperGame extends Game {
         if (!cell.isFlagged && !cell.isMined) {
             cell.assignSprite(cell.countMinedNeighbors);
             if (shop.goldenShovel.isActivated()) {
-                cell.makeSpriteYellow();
+                cell.changeSpriteColor(Color.YELLOW);
             }
         }
         cell.drawSprite();
@@ -476,7 +475,7 @@ public class MinesweeperGame extends Game {
 
     public void redrawAllCells() { // redraws all cells in current state to hide whatever was drawn over them
         getAllCells(Filter.NONE).forEach(cell -> {
-            cell.draw();
+            cell.drawBackground(Color.NONE);
             if (cell.isOpen || cell.isFlagged) {
                 cell.drawSprite();
             }
