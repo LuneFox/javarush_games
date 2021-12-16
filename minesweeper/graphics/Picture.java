@@ -11,10 +11,4 @@ public class Picture extends Image {
     public Picture(Bitmap bitmap, MinesweeperGame game, int drawX, int drawY) {
         super(bitmap, drawX, drawY);
     }
-
-    public int[][] assignBitmap(Bitmap bitmap) {
-        ImageDataStorage imageData = new ImageDataStorage(bitmap);
-        colors = imageData.getColors();
-        return imageData.getData();
-    }
 }

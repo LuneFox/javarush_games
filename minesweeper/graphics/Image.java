@@ -7,7 +7,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  * Abstract class that allows drawing stuff using colored cells.
  */
 
-public abstract class Image implements Drawable {
+public class Image implements Drawable {
     protected MinesweeperGame game = MinesweeperGame.getInstance();     // game instance to be drawn into
     private int drawX;
     private int drawY;                        // real position in pixels
@@ -21,7 +21,7 @@ public abstract class Image implements Drawable {
     }
 
     protected Image(Bitmap bitmap, int drawX, int drawY) { // constructor with setting position at once
-        this.colors = new Color[2];
+        this.colors = new Color[2];                        // image is monochrome by default
         this.bitmapData = assignBitmap(bitmap);
         setPosition(drawX, drawY);
         floatAnimationShift = 0;
@@ -103,5 +103,9 @@ public abstract class Image implements Drawable {
         draw(mirror);
     }
 
-    protected abstract int[][] assignBitmap(Bitmap bitmap); // subclasses' individual pictures go here
+    protected int[][] assignBitmap(Bitmap bitmap) {
+        ImageDataStorage storage = new ImageDataStorage(bitmap);
+        colors = storage.getColors();
+        return storage.getData();
+    }
 }

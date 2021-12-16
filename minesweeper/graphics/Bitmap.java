@@ -164,6 +164,6 @@ public enum Bitmap {
     }
 
     public static Bitmap getSpriteByNumber(int number) {
-        return (number == 0) ? NONE : SPRITES.get(number);
+        return (number == 0) ? SPR_BOARD_NONE : SPRITES.get(number);
     }
 }

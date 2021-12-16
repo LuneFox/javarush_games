@@ -12,6 +12,7 @@ class Cell extends Image {
     int x;
     int y;                          // logical position
     private Sprite sprite;          // a sprite can be assigned to a tile to be drawn over it
+    private Bitmap bitmap;
     boolean isMined;                // this tile contains mine
     boolean isOpen;                 // this tile has been revealed
     boolean isShielded;             // this tile has been blocked with shield
@@ -22,6 +23,7 @@ class Cell extends Image {
 
     Cell(Bitmap bitmap, int x, int y, boolean isMined) {
         super(bitmap, x * 10, y * 10);
+        this.bitmap = bitmap;
         this.x = x;
         this.y = y;
         this.isMined = isMined;
@@ -49,14 +51,7 @@ class Cell extends Image {
     }
 
     public void fullRecolor() {
-        colors = new Color[]{
-                Color.NONE,
-                Theme.CELL_SHADOW.getColor(),
-                Theme.CELL_LIGHT.getColor(),
-                Theme.CELL_BG_UP.getColor(),
-                Color.BLACK,
-                Color.GRAY
-        };
+        colors = new ImageDataStorage(bitmap).getColors();
         if (isOpen) push();
     }
 
@@ -121,52 +116,5 @@ class Cell extends Image {
 
     public boolean isScored() {
         return (isOpen && !isMined && !isDestroyed);
-    }
-
-    @Override
-    protected int[][] assignBitmap(Bitmap bitmap) {
-        switch (bitmap) {
-            case CELL_CLOSED:
-                return new int[][]{
-                        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 3, 3, 3, 3, 3, 3, 3, 3, 1},
-                        {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                };
-            case CELL_OPENED:
-                return new int[][]{
-                        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-                        {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                        {2, 1, 3, 3, 3, 3, 3, 3, 3, 3},
-                };
-            case CELL_DESTROYED:
-                return new int[][]{
-                        {2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-                        {2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-                        {2, 1, 5, 3, 3, 3, 5, 3, 3, 5},
-                        {2, 1, 3, 5, 4, 3, 5, 3, 5, 3},
-                        {2, 1, 5, 3, 3, 4, 4, 3, 4, 3},
-                        {2, 1, 5, 4, 5, 4, 4, 3, 5, 3},
-                        {2, 1, 3, 5, 3, 5, 3, 5, 3, 3},
-                        {2, 1, 3, 5, 4, 3, 5, 4, 5, 5},
-                        {2, 1, 3, 5, 3, 3, 3, 5, 3, 3},
-                        {2, 1, 5, 3, 3, 3, 3, 5, 3, 3},
-                };
-            default:
-                return new int[10][10];
-        }
     }
 }
