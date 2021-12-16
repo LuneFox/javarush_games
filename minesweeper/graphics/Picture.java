@@ -13,7 +13,7 @@ public class Picture extends Image {
     }
 
     public int[][] assignBitmap(Bitmap bitmap) {
-        ImageData imageData = new ImageData(bitmap);
+        ImageDataStorage imageData = new ImageDataStorage(bitmap);
         colors = imageData.getColors();
         return imageData.getData();
     }

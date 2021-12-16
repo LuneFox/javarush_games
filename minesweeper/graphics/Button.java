@@ -78,7 +78,7 @@ public class Button implements Drawable {
         this.body = new Image(Bitmap.MENU_BUTTON, posX, posY) {
             @Override
             protected int[][] assignBitmap(Bitmap bitmap) {
-                return ImageCreator.createWindowBitmap(x2 - x1, y2 - y1, addShadow, true);
+                return ImageDataCreator.createWindowBitmap(x2 - x1, y2 - y1, addShadow, true);
             }
         };
         this.body.colors = new Color[]{
