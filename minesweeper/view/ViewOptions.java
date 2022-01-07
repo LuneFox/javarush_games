@@ -115,12 +115,12 @@ public final class ViewOptions extends View {
         }
 
         themePalette.replaceColor(Color.RED, 1);
-        themePalette.replaceColor(Theme.get() == 0 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.replaceColor(Theme.get() == 0 ? Color.YELLOW : Color.BLACK, 3);
         themePalette.drawAt(THEME_PALETTE_X, THEME_PALETTE_Y);
         themePalette.replaceColor(Color.GREEN, 1);
-        themePalette.replaceColor(Theme.get() == 1 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.replaceColor(Theme.get() == 1 ? Color.YELLOW : Color.BLACK, 3);
         themePalette.drawAt(THEME_PALETTE_X + 12, THEME_PALETTE_Y);
-        themePalette.replaceColor(Theme.get() == 2 ? Color.YELLOW : Color.WHITE, 3);
+        themePalette.replaceColor(Theme.get() == 2 ? Color.YELLOW : Color.BLACK, 3);
         themePalette.replaceColor(Color.BLUE, 1);
         themePalette.drawAt(THEME_PALETTE_X + 24, THEME_PALETTE_Y);
 
