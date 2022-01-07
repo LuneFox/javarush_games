@@ -10,8 +10,8 @@ import com.javarush.games.minesweeper.graphics.Image;
 
 public final class ViewAbout extends View {
     public static int currentAboutPage = 0;
-    public Area prevPageArrowArea = new Area(new int[]{5, 27, 88, 99});
-    public Area nextPageArrowArea = new Area(new int[]{31, 54, 88, 99});
+    public Area prevPageArrowArea = new Area(5, 27, 88, 99);
+    public Area nextPageArrowArea = new Area(31, 54, 88, 99);
 
     /**
      * Shows the ABOUT section of the game.

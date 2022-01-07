@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.graphics.Button;
 
 public final class ViewGameOver extends View {
     public int popUpTimer;  // defines how soon will game over screen show up
-    public Area scoreArea = new Area(new int[]{18, 37, 60, 64});
+    public Area scoreArea = new Area(18, 37, 60, 64);
 
     /**
      * Displays the result of the game over the board.

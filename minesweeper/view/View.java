@@ -2,12 +2,11 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
+import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
 import java.util.HashMap;
-
-import static com.javarush.games.minesweeper.Util.inside;
 
 /**
  * Class for displaying various menus on the screen.
@@ -76,12 +75,12 @@ public class View {
     public static class Area {
         private final int[] coords;
 
-        public Area(int[] coordinates) {
-            this.coords = coordinates;
+        public Area(int left, int right, int top, int bottom) {
+            this.coords = new int[]{left, right, top, bottom};
         }
 
         public boolean covers(int x, int y) {
-            return inside(x, coords[0], coords[1]) && inside(y, coords[2], coords[3]);
+            return Util.inside(x, coords[0], coords[1]) && Util.inside(y, coords[2], coords[3]);
         }
     }
 
