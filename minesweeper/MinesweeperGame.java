@@ -415,7 +415,7 @@ public class MinesweeperGame extends Game {
         revealAllMines();
         cell.drawBackground(Color.RED); // highlight mine that caused game over
         cell.drawSprite();
-        shop.dice.isHidden = true;
+        shop.dice.hide();
         lose();
     }
 
@@ -424,11 +424,6 @@ public class MinesweeperGame extends Game {
         int remainingTurns = shop.luckyDice.expireMove - player.getMoves();
         if (Util.inside(remainingTurns, 0, 2) && player.getMoves() != 0) shop.dice.draw();
     }
-
-    void hideDice() {
-        if (shop.miniBomb != null) shop.dice.isHidden = shop.miniBomb.isActivated();
-    }
-
 
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
 

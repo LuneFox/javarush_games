@@ -63,7 +63,7 @@ public class Printer {
     }
 
     public static void loadAlphabet() {
-        VisualElement.getBitmapsByPrefixes("SYM_").forEach(symbol -> {
+        VisualElement.getElementsByPrefixes("SYM_").forEach(symbol -> {
             for (char c : symbol.characters) loadSymbol(c, symbol);
         });
     }

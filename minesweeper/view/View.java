@@ -62,7 +62,7 @@ public class View {
     }
 
     public final void loadStaticImages() { // load images once at launch and just re-use them all the time
-        VisualElement.getBitmapsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::loadImage);
+        VisualElement.getElementsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::loadImage);
         for (ButtonID b : ButtonID.values()) {
             BUTTONS.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
         }

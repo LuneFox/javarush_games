@@ -139,7 +139,7 @@ public enum VisualElement {
     SYM_SYMBOL_SLASH(new char[]{'/'}),
     SYM_SYMBOL_NEWLINE(new char[]{'\n'});
 
-    static final List<VisualElement> SPRITES = getBitmapsByPrefixes("SPR_");
+    static final List<VisualElement> SPRITES = getElementsByPrefixes("SPR_");
     char[] characters;
     int number;
 
@@ -154,7 +154,7 @@ public enum VisualElement {
         this.number = number;
     }
 
-    public static List<VisualElement> getBitmapsByPrefixes(String... prefixes) {
+    public static List<VisualElement> getElementsByPrefixes(String... prefixes) {
         ArrayList<VisualElement> result = new ArrayList<>();
         for (VisualElement visualElement : VisualElement.values()) {
             for (String prefix : prefixes) {

@@ -24,7 +24,7 @@ public final class ViewShop extends View {
 
     @Override
     public void display() {
-        if (Screen.get() != Screen.SHOP) { // if changed from screen other than shop, don't animate money
+        if (!Screen.is(Screen.SHOP)) { // if changed from screen other than shop, don't animate money
             View.shop.moneyOnDisplay = game.inventory.money;
         }
         super.display();

@@ -29,7 +29,6 @@ public class Controller {
     private void leftClickAction(int x, int y, Screen screen) {
         game.allowCountMoves = true;
         game.allowFlagExplosion = false;
-        game.hideDice();
         switch (screen) {
             case MAIN_MENU:
                 if (View.BUTTONS.get(ButtonID.START).covers(x, y)) {

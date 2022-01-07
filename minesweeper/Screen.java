@@ -9,12 +9,19 @@ public enum Screen {
 
     private static final List<Screen> screens = new ArrayList<>(Arrays.asList(Screen.values()));
 
-    public static void set(Screen screen){
-        screens.remove(screen);
-        screens.add(0, screen);
+    // Screen at index 0 is considered active
+    public static void set(Screen screen) {
+        screens.remove(screen);         // remove it from the list
+        screens.add(0, screen);    // insert it at index 0
     }
 
-    public static Screen get(){
+    // Get active screen
+    public static Screen get() {
         return screens.get(0);
+    }
+
+    // Check if a screen is active
+    public static boolean is(Screen screen) {
+        return (screens.get(0) == screen);
     }
 }
