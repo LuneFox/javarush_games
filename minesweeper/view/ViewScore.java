@@ -20,7 +20,7 @@ public final class ViewScore extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(VisualElement.WIN_MENU).draw();
+        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
 
         int minesCount = game.countAllCells(Util.Filter.MINED);
         int scoredCells = game.countAllCells(Util.Filter.SCORED);
@@ -56,6 +56,6 @@ public final class ViewScore extends View {
                         "\n" + cellScoreDetail + scoredCells * difficulty),
                 Color.YELLOW, 94, 13, true);
 
-        BUTTONS.get(Button.ButtonID.CONFIRM).draw();
+        BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).draw();
     }
 }

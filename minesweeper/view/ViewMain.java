@@ -33,15 +33,15 @@ public final class ViewMain extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(VisualElement.WIN_MENU).draw();
-        IMAGES.get(VisualElement.PIC_LOGO).animateFloating(2.8, -1, 8);
-        BUTTONS.get(Button.ButtonID.OPTIONS).draw();
-        BUTTONS.get(Button.ButtonID.ABOUT).draw();
-        BUTTONS.get(Button.ButtonID.RECORDS).draw();
+        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
+        IMAGES_CACHE.get(VisualElement.PIC_LOGO).animateFloating(2.8, -1, 8);
+        BUTTONS_CACHE.get(Button.ButtonID.OPTIONS).draw();
+        BUTTONS_CACHE.get(Button.ButtonID.ABOUT).draw();
+        BUTTONS_CACHE.get(Button.ButtonID.RECORDS).draw();
         game.print(Strings.VERSION, Theme.MAIN_MENU_VERSION.getColor(), 85, 0);
         printTopScore();
 
-        Button startButton = BUTTONS.get(Button.ButtonID.START);
+        Button startButton = BUTTONS_CACHE.get(Button.ButtonID.START);
         if (game.isStopped || game.isFirstMove) {
             printRandomQuote();
             if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
@@ -50,7 +50,7 @@ public final class ViewMain extends View {
             if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
         }
 
-        BUTTONS.get(Button.ButtonID.START).draw();
+        BUTTONS_CACHE.get(Button.ButtonID.START).draw();
     }
 
     private void printRandomQuote() {

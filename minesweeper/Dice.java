@@ -12,13 +12,13 @@ import com.javarush.games.minesweeper.view.View;
 public class Dice implements Drawable {
 
     // Images to draw over cells, one for each side of the dice, null at 0 align numbers
-    private final static Image[] SIDES = {null,
-            View.IMAGES.get(VisualElement.SHOP_DICE_1),
-            View.IMAGES.get(VisualElement.SHOP_DICE_2),
-            View.IMAGES.get(VisualElement.SHOP_DICE_3),
-            View.IMAGES.get(VisualElement.SHOP_DICE_4),
-            View.IMAGES.get(VisualElement.SHOP_DICE_5),
-            View.IMAGES.get(VisualElement.SHOP_DICE_6)};
+    private final static Image[] SIDES_CACHE = {null,
+            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_1),
+            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_2),
+            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_3),
+            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_4),
+            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_5),
+            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_6)};
     private final static int DISPLAY_DURATION = 20;
 
     public Cell appearCell;     // cell at which the dice appears after click
@@ -38,7 +38,7 @@ public class Dice implements Drawable {
     public void setImage(int number, int x, int y) {
         this.x = x;
         this.y = y;
-        this.image = SIDES[number];
+        this.image = SIDES_CACHE[number];
         this.onScreenTime = 0;
     }
 

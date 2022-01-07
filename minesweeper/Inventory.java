@@ -15,7 +15,16 @@ public class Inventory {
         reset();
     }
 
-    public void reset() {
+    public void add(ShopItem.ID itemID) {
+        items.put(itemID, items.get(itemID) + 1);
+    }
+
+    public void remove(ShopItem.ID itemID) {
+        if (items.get(itemID) <= 0) return;
+        items.put(itemID, items.get(itemID) - 1);
+    }
+
+    public void reset(){
         money = 0;
         items = new HashMap<>();
         items.put(ShopItem.ID.SHIELD, 0);
@@ -24,15 +33,6 @@ public class Inventory {
         items.put(ShopItem.ID.SHOVEL, 0);
         items.put(ShopItem.ID.DICE, 0);
         items.put(ShopItem.ID.BOMB, 0);
-    }
-
-    public void add(ShopItem.ID itemID) {
-        items.put(itemID, items.get(itemID) + 1);
-    }
-
-    public void remove(ShopItem.ID itemID) {
-        if (items.get(itemID) <= 0) return;
-        items.put(itemID, items.get(itemID) - 1);
     }
 
     public int getCount(ShopItem.ID itemID) {

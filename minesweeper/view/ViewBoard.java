@@ -24,11 +24,11 @@ public final class ViewBoard extends View {
     public void refresh() {
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {
-            IMAGES.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
-            IMAGES.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();
+            IMAGES_CACHE.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
+            IMAGES_CACHE.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();
         } else if (game.shop.allItems.get(5).isActivated()) {
-            IMAGES.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.RED, 3);
-            IMAGES.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();
+            IMAGES_CACHE.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.RED, 3);
+            IMAGES_CACHE.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();
         }
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();

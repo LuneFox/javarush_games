@@ -45,14 +45,14 @@ public final class ViewOptions extends View {
     @Override
     public void display() {
         super.display();
-        Image arrowButton = IMAGES.get(VisualElement.MENU_ARROW);
-        Image switchButton = IMAGES.get(VisualElement.MENU_SWITCH);
-        Image switchRail = IMAGES.get(VisualElement.MENU_SWITCH_RAIL);
-        Image themePalette = IMAGES.get(VisualElement.MENU_THEME_PALETTE);
+        Image arrowButton = IMAGES_CACHE.get(VisualElement.MENU_ARROW);
+        Image switchButton = IMAGES_CACHE.get(VisualElement.MENU_SWITCH);
+        Image switchRail = IMAGES_CACHE.get(VisualElement.MENU_SWITCH_RAIL);
+        Image themePalette = IMAGES_CACHE.get(VisualElement.MENU_THEME_PALETTE);
         String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(difficultySetting)];
 
 
-        IMAGES.get(VisualElement.WIN_MENU).draw();
+        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
         game.print("настройки", Color.YELLOW, 28, 2);
 
         game.print("сложность", 2, 20);
@@ -113,7 +113,7 @@ public final class ViewOptions extends View {
         themePalette.replaceColor(Color.BLUE, 1);
         themePalette.drawAt(26, 88);
 
-        BUTTONS.get(Button.ButtonID.BACK).draw();
+        BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
     }
 
 

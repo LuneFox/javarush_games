@@ -26,11 +26,11 @@ public class View {
     public static ViewItemHelp itemHelp;
     public static ViewGameOver gameOver;
     public static ViewScore score;
-    public static final HashMap<VisualElement, Image> IMAGES = new HashMap<>();
-    public static final HashMap<ButtonID, Button> BUTTONS = new HashMap<>();
+    public static final HashMap<VisualElement, Image> IMAGES_CACHE = new HashMap<>();
+    public static final HashMap<ButtonID, Button> BUTTONS_CACHE = new HashMap<>();
 
     public View() {
-        loadStaticImages();
+        cacheStaticElements();
     }
 
     public void createSubViews() {
@@ -57,19 +57,19 @@ public class View {
 
     // Load constant stuff into static hashmaps once, no need to generate all these images again
 
-    private void loadImage(VisualElement visualElement) {
-        IMAGES.put(visualElement, new Image(visualElement, 0, 0));
+    private void cacheImage(VisualElement visualElement) {
+        IMAGES_CACHE.put(visualElement, new Image(visualElement, 0, 0));
     }
 
-    public final void loadStaticImages() { // load images once at launch and just re-use them all the time
-        VisualElement.getElementsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::loadImage);
+    public final void cacheStaticElements() { // load images once at launch and just re-use them all the time
+        VisualElement.getElementsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::cacheImage);
         for (ButtonID b : ButtonID.values()) {
-            BUTTONS.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
+            BUTTONS_CACHE.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
         }
     }
 
-    public final void reload() {  // generates and loads all images again, used to change color theme
-        game.view.loadStaticImages();
+    public final void rebuildCache() {  // generates and loads all images again, used to change color theme
+        cacheStaticElements();
         game.recolorAllCells();
     }
 

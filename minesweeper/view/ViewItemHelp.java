@@ -29,7 +29,7 @@ public final class ViewItemHelp extends View {
         currentItem = item;
         super.display();
         Strings.generateNewShieldDescription();
-        IMAGES.get(VisualElement.WIN_MENU).draw();
+        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
         item.icon.setPosition(5, 5);
         item.icon.draw();
         if (item.id == ShopItem.ID.SHIELD) {
@@ -37,6 +37,6 @@ public final class ViewItemHelp extends View {
         }
         game.print(item.name, Color.YELLOW, 25, 9);
         game.print(item.description, 4, 25);
-        BUTTONS.get(Button.ButtonID.CONFIRM).draw();
+        BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).draw();
     }
 }

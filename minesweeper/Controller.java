@@ -31,13 +31,13 @@ public class Controller {
         game.allowFlagExplosion = false;
         switch (screen) {
             case MAIN_MENU:
-                if (View.BUTTONS.get(ButtonID.START).covers(x, y)) {
+                if (View.BUTTONS_CACHE.get(ButtonID.START).covers(x, y)) {
                     game.createGame();
-                } else if (View.BUTTONS.get(ButtonID.OPTIONS).covers(x, y)) {
+                } else if (View.BUTTONS_CACHE.get(ButtonID.OPTIONS).covers(x, y)) {
                     View.options.display();
-                } else if (View.BUTTONS.get(ButtonID.ABOUT).covers(x, y)) {
+                } else if (View.BUTTONS_CACHE.get(ButtonID.ABOUT).covers(x, y)) {
                     View.about.display();
-                } else if (View.BUTTONS.get(ButtonID.RECORDS).covers(x, y)) {
+                } else if (View.BUTTONS_CACHE.get(ButtonID.RECORDS).covers(x, y)) {
                     View.records.display();
                 }
                 break;
@@ -62,24 +62,24 @@ public class Controller {
                 game.shop.sellAndRememberLastClick(item);
                 break;
             case ITEM_HELP:
-                if (View.BUTTONS.get(ButtonID.CONFIRM).covers(x, y)) {
+                if (View.BUTTONS_CACHE.get(ButtonID.CONFIRM).covers(x, y)) {
                     View.board.refresh();
                     View.shop.display();
                 }
                 break;
             case GAME_OVER:
-                if (View.BUTTONS.get(ButtonID.CLOSE).covers(x, y)) {
+                if (View.BUTTONS_CACHE.get(ButtonID.CLOSE).covers(x, y)) {
                     View.board.display();
-                } else if (View.BUTTONS.get(ButtonID.RETURN).covers(x, y)) {
+                } else if (View.BUTTONS_CACHE.get(ButtonID.RETURN).covers(x, y)) {
                     View.main.display();
-                } else if (View.BUTTONS.get(ButtonID.AGAIN).covers(x, y)) {
+                } else if (View.BUTTONS_CACHE.get(ButtonID.AGAIN).covers(x, y)) {
                     game.createGame();
                 } else if (View.gameOver.scoreArea.covers(x, y)) {
                     View.score.display();
                 }
                 break;
             case OPTIONS:
-                if (View.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
+                if (View.BUTTONS_CACHE.get(ButtonID.BACK).covers(x, y)) {
                     View.main.display();
                 } else if (View.options.difficultyDownArea.covers(x, y)) {
                     View.options.changeDifficulty(false);
@@ -93,23 +93,23 @@ public class Controller {
                     View.options.switchGameTimer();
                 } else if (View.options.redThemeArea.covers(x, y)) {
                     Theme.set(Theme.USSR);
-                    game.view.reload();
+                    game.view.rebuildCache();
                 } else if (View.options.greenThemeArea.covers(x, y)) {
                     Theme.set(Theme.MINT);
-                    game.view.reload();
+                    game.view.rebuildCache();
                 } else if (View.options.blueThemeArea.covers(x, y)) {
                     Theme.set(Theme.SKY);
-                    game.view.reload();
+                    game.view.rebuildCache();
                 }
                 break;
             case SCORE:
-                if (View.BUTTONS.get(ButtonID.CONFIRM).covers(x, y)) {
+                if (View.BUTTONS_CACHE.get(ButtonID.CONFIRM).covers(x, y)) {
                     View.board.refresh();
                     View.gameOver.display(game.lastResultIsVictory, 0);
                 }
                 break;
             case ABOUT:
-                if (View.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
+                if (View.BUTTONS_CACHE.get(ButtonID.BACK).covers(x, y)) {
                     View.main.display();
                 } else if (View.about.prevPageArrowArea.covers(x, y)) {
                     View.about.prevPage();
@@ -120,7 +120,7 @@ public class Controller {
                 }
                 break;
             case RECORDS:
-                if (View.BUTTONS.get(ButtonID.BACK).covers(x, y)) {
+                if (View.BUTTONS_CACHE.get(ButtonID.BACK).covers(x, y)) {
                     View.main.display();
                 }
                 break;

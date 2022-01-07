@@ -27,8 +27,8 @@ public class ShopItem {
         SHIELD, SCANNER, FLAG, SHOVEL, DICE, BOMB
     }
 
-    ShopItem(int slot, int cost, int inStock, Image icon, MinesweeperGame game) {
-        this.game = game;
+    ShopItem(int slot, int cost, int inStock, Image icon) {
+        this.game = MinesweeperGame.getInstance();
         this.icon = icon;
         this.cost = cost;
         this.number = slot;

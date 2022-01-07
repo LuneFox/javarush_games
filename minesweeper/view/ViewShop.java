@@ -30,12 +30,12 @@ public final class ViewShop extends View {
         super.display();
         View.board.refresh();
         shakeAnimationCountDown();
-        IMAGES.get(VisualElement.WIN_SHOP).drawAt(-1, -1);
-        IMAGES.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 10);
-        IMAGES.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 78);
-        IMAGES.get(VisualElement.SPR_BOARD_MINE).drawAt(10, 10);
-        IMAGES.get(VisualElement.SPR_BOARD_FLAG).drawAt(39, 11);
-        IMAGES.get(VisualElement.SHOP_COIN).drawAt(69 + getMoneyShakeValue(), 13);
+        IMAGES_CACHE.get(VisualElement.WIN_SHOP).drawAt(-1, -1);
+        IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 10);
+        IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 78);
+        IMAGES_CACHE.get(VisualElement.SPR_BOARD_MINE).drawAt(10, 10);
+        IMAGES_CACHE.get(VisualElement.SPR_BOARD_FLAG).drawAt(39, 11);
+        IMAGES_CACHE.get(VisualElement.SHOP_COIN).drawAt(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
         game.print("" + game.countAllCells(Util.Filter.DANGEROUS), 22, 12);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
@@ -66,7 +66,7 @@ public final class ViewShop extends View {
                 ShopItem item = game.shop.allItems.get(x + y * 3);
                 currentFrame++;
                 boolean justClickedIt = (currentFrame == game.shop.lastClickedItemNumber && littleTimePassed);
-                frame = justClickedIt ? IMAGES.get(VisualElement.SHOP_ITEM_FRAME_PRESSED) : IMAGES.get(VisualElement.SHOP_ITEM_FRAME);
+                frame = justClickedIt ? IMAGES_CACHE.get(VisualElement.SHOP_ITEM_FRAME_PRESSED) : IMAGES_CACHE.get(VisualElement.SHOP_ITEM_FRAME);
                 shift = justClickedIt ? 1 : 0;
                 frameColor = (item.isUnobtainable()) ? Color.RED : Theme.SHOP_ITEM_FRAME_AVAILABLE.getColor();
                 frameColor = (item.isActivated()) ? Color.BLUE : frameColor;

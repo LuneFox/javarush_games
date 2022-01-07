@@ -5,80 +5,93 @@ import com.javarush.engine.cell.Color;
 import java.util.HashMap;
 
 /**
- * Utility class for drawing letters on screen.
+ * Utility class for drawing text information using symbol images.
  */
 
 public class Printer {
-    private static final HashMap<Character, Image> ALPHABET = new HashMap<>(); // pre-loaded alphabet goes here
-    private static Image symbol;
+    private static final HashMap<Character, Image> SYMBOLS_CACHE = new HashMap<>();
+    private static final int CHAR_SPACING = 1;
+    private static final int LINE_SPACING = 9;
 
     static {
-        loadAlphabet();
+        cacheAllSymbols();
     }
 
     public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
 
-        class Caret { // a place where the symbol is drawn
-            int x;
-            int y;
+        // A caret marks the place where the next symbol is going to be drawn
+        class Caret {
+            int x, y;
 
             Caret(int x, int y) {
                 this.x = x;
                 this.y = y;
             }
 
-            boolean newLine(char c) {
+            // Return the caret to the beginning of the next line if the char is '\n'
+            boolean isAtNewLine(char c) {
                 if (c == '\n') {
-                    x = drawX; // reset to start
-                    y += 9;    // go to next line
+                    x = drawX;
+                    y += LINE_SPACING;
                     return true;
                 }
                 return false;
             }
 
-            void shift(boolean reverse, Image relativeSymbol) {
-                int shift = relativeSymbol.matrix[0].length + 1;
-                x = (reverse) ? x - shift : x + shift;
+            // Move the caret by the width of the symbol + spacing, direction depends on the alignment
+            void shift(boolean alignRight, char c) {
+                int shift = calculateWidth(Character.toString(c));
+                x = (alignRight) ? x - shift : x + shift;
             }
         }
 
         Caret caret = new Caret(drawX, drawY);
+
+        // Choosing between normal order or reversed order of chars to draw from right to left
         char[] chars = (alignRight) ?
                 new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
                 input.toLowerCase().toCharArray();
 
+        // For each char in the array
         for (int i = 0; i < chars.length; i++) {
-            if (caret.newLine(chars[i])) continue;
-            drawChar(chars[i], color, caret.x, caret.y);
+            // If it equals '\n' move the caret to the new line and skip the rest
+            if (caret.isAtNewLine(chars[i])) continue;
+            // Draw symbol on the screen
+            drawSymbol(chars[i], color, caret.x, caret.y);
+            // j = 0 means we take the CURRENT symbol, j = 1 means we take the NEXT symbol to calculate the shift
+            // We need to take the next symbol only when typing from right to left and if there is one
             int j = (i >= chars.length - 1 || !alignRight) ? 0 : 1;
-            Image relativeSymbol = ALPHABET.get(chars[i + j]);
-            caret.shift(alignRight, relativeSymbol);
+            char relativeChar = (chars[i + j]);
+            caret.shift(alignRight, relativeChar);
         }
     }
 
-    private static void drawChar(char c, Color color, int x, int y) {
-        symbol = ALPHABET.get(c);
+    private static void drawSymbol(char c, Color color, int x, int y) {
+        Image symbol = SYMBOLS_CACHE.get(c);
         symbol.replaceColor(color, 1);
         symbol.drawAt(x, y);
     }
 
-    public static void loadAlphabet() {
+    public static void cacheAllSymbols() {
+        // For all elements that are marked as symbols
         VisualElement.getElementsByPrefixes("SYM_").forEach(symbol -> {
-            for (char c : symbol.characters) loadSymbol(c, symbol);
+            // For every char that is assigned to a symbol
+            for (char c : symbol.characters) {
+                // Cache a pair <char, image> for frequent reuse
+                SYMBOLS_CACHE.put(c, new Image(symbol));
+            }
         });
     }
 
-    private static void loadSymbol(Character c, VisualElement visualElement) {
-        ALPHABET.put(c, new Image(visualElement));
-    }
-
-    public static int calculateLengthInPixels(String s) {
-        int length = 0;
+    // Calculates the width in pixels of the text that comes as an argument
+    public static int calculateWidth(String s) {
+        int width = 0;
+        Image symbol;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
-            symbol = ALPHABET.get(c);
-            length += (symbol.matrix[0].length + 1);
+            symbol = SYMBOLS_CACHE.get(c);
+            width += (symbol.matrix[0].length + CHAR_SPACING);
         }
-        return length;
+        return width;
     }
 }

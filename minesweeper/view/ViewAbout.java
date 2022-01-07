@@ -25,11 +25,11 @@ public final class ViewAbout extends View {
     @Override
     public void display() {
         super.display();
-        IMAGES.get(VisualElement.WIN_MENU).draw();
+        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
         game.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, 24, 2);
         game.print(Strings.ABOUT_BODY[currentAboutPage], 3, 13);
-        BUTTONS.get(Button.ButtonID.BACK).draw();
-        Image arrowButton = IMAGES.get(VisualElement.MENU_ARROW);
+        BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
+        Image arrowButton = IMAGES_CACHE.get(VisualElement.MENU_ARROW);
 
         arrowButton.drawAt((ViewOptions.clickedArrowTimeoutL-- > 0) ? 6 : 7, 89, Image.Mirror.HORIZONTAL);
         arrowButton.drawAt((ViewOptions.clickedArrowTimeoutR-- > 0) ? 48 : 47, 89);
