@@ -26,7 +26,7 @@ public class Printer {
             drawX = 50 - width / 2;
         }
         // Must be effectively final for inner Caret class
-        int finalDrawX = drawX;
+        int caretStartPosition = drawX;
 
         // Don't allow printing outside screen
         if (drawY < 0 || drawY > 99) {
@@ -45,7 +45,7 @@ public class Printer {
             // Return the caret to the beginning of the next line if the char is '\n'
             boolean isAtNewLine(char c) {
                 if (c == '\n') {
-                    x = finalDrawX;
+                    x = caretStartPosition;
                     y += LINE_SPACING;
                     return true;
                 }
