@@ -92,14 +92,11 @@ public class Controller {
                 } else if (View.options.switchGameTimerArea.covers(x, y)) {
                     View.options.switchGameTimer();
                 } else if (View.options.redThemeArea.covers(x, y)) {
-                    Theme.setThemeNumber(Theme.USSR);
-                    game.view.rebuildCache();
+                    Theme.setTheme(Theme.USSR);
                 } else if (View.options.greenThemeArea.covers(x, y)) {
-                    Theme.setThemeNumber(Theme.MINT);
-                    game.view.rebuildCache();
+                    Theme.setTheme(Theme.MINT);
                 } else if (View.options.blueThemeArea.covers(x, y)) {
-                    Theme.setThemeNumber(Theme.SKY);
-                    game.view.rebuildCache();
+                    Theme.setTheme(Theme.SKY);
                 }
                 break;
             case SCORE:
