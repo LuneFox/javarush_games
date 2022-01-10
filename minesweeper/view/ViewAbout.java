@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
+import com.javarush.games.minesweeper.graphics.Printer;
 import com.javarush.games.minesweeper.graphics.VisualElement;
 import com.javarush.games.minesweeper.graphics.Button;
 import com.javarush.games.minesweeper.graphics.Image;
@@ -26,7 +27,7 @@ public final class ViewAbout extends View {
     public void display() {
         super.display();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
-        game.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, 24, 2);
+        game.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, -1, 2);
         game.print(Strings.ABOUT_BODY[currentAboutPage], 3, 13);
         BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
         Image arrowButton = IMAGES_CACHE.get(VisualElement.MENU_ARROW);

@@ -43,7 +43,7 @@ public final class ViewScore extends View {
         String shieldScoreDetail = shields == 0 ? "" : shields + "*-" + (150 * (difficulty / 5)) + " = ";
         String youLost = "не учтено";
 
-        game.print("подробно", Color.YELLOW, 29, 2);
+        game.print("подробности счёта", Color.YELLOW, -1, 2);
 
         game.print("ячейки:\nкуб:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", 3, 13);
         game.print(

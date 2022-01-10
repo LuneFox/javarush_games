@@ -23,7 +23,7 @@ public final class ViewRecords extends View {
     public void display() {
         super.display();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
-        game.print(Strings.RECORDS[0], Color.YELLOW, 17, 2);
+        game.print(Strings.RECORDS[0], Color.YELLOW, -1, 2);
         BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
         drawPrizeCups();
         drawEntries();

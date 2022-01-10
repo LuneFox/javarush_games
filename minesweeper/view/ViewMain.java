@@ -34,6 +34,7 @@ public final class ViewMain extends View {
     public void display() {
         super.display();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
+        game.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), -1, 2);
         IMAGES_CACHE.get(VisualElement.PIC_LOGO).animateFloating(2.8, -1, 8);
         BUTTONS_CACHE.get(Button.ButtonID.OPTIONS).draw();
         BUTTONS_CACHE.get(Button.ButtonID.ABOUT).draw();

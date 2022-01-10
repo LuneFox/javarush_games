@@ -65,92 +65,101 @@ public enum VisualElement {
     WIN_SHOP_HEADER_FOOTER,
     WIN_BOARD_TRANSPARENT_FRAME,
 
-    SYM_RU_LETTER_A(new char[]{'а', 'a'}),
-    SYM_RU_LETTER_B(new char[]{'б'}),
-    SYM_RU_LETTER_V(new char[]{'в', 'b'}),
-    SYM_RU_LETTER_G(new char[]{'г'}),
-    SYM_RU_LETTER_D(new char[]{'д'}),
-    SYM_RU_LETTER_YE(new char[]{'е', 'e'}),
-    SYM_RU_LETTER_YO(new char[]{'ё'}),
-    SYM_RU_LETTER_J(new char[]{'ж'}),
-    SYM_RU_LETTER_Z(new char[]{'з'}),
-    SYM_RU_LETTER_I(new char[]{'и'}),
-    SYM_RU_LETTER_IKR(new char[]{'й'}),
-    SYM_RU_LETTER_K(new char[]{'к', 'k'}),
-    SYM_RU_LETTER_L(new char[]{'л'}),
-    SYM_RU_LETTER_M(new char[]{'м', 'm'}),
-    SYM_RU_LETTER_N(new char[]{'н', 'h'}),
-    SYM_RU_LETTER_O(new char[]{'о', 'o'}),
-    SYM_RU_LETTER_P(new char[]{'п'}),
-    SYM_RU_LETTER_R(new char[]{'р', 'p'}),
-    SYM_RU_LETTER_S(new char[]{'с', 'c'}),
-    SYM_RU_LETTER_T(new char[]{'т', 't'}),
-    SYM_RU_LETTER_U(new char[]{'у'}),
-    SYM_RU_LETTER_F(new char[]{'ф'}),
-    SYM_RU_LETTER_H(new char[]{'х'}),
-    SYM_RU_LETTER_C(new char[]{'ц'}),
-    SYM_RU_LETTER_CH(new char[]{'ч'}),
-    SYM_RU_LETTER_SHA(new char[]{'ш'}),
-    SYM_RU_LETTER_SCHA(new char[]{'щ'}),
-    SYM_RU_LETTER_SOFT(new char[]{'ь'}),
-    SYM_RU_LETTER_Y(new char[]{'ы'}),
-    SYM_RU_LETTER_HARD(new char[]{'ъ'}),
-    SYM_RU_LETTER_E(new char[]{'э'}),
-    SYM_RU_LETTER_YU(new char[]{'ю'}),
-    SYM_RU_LETTER_YA(new char[]{'я'}),
-    SYM_EN_LETTER_D(new char[]{'d'}),
-    SYM_EN_LETTER_F(new char[]{'f'}),
-    SYM_EN_LETTER_G(new char[]{'g'}),
-    SYM_EN_LETTER_I(new char[]{'i'}),
-    SYM_EN_LETTER_J(new char[]{'j'}),
-    SYM_EN_LETTER_L(new char[]{'l'}),
-    SYM_EN_LETTER_N(new char[]{'n'}),
-    SYM_EN_LETTER_Q(new char[]{'q'}),
-    SYM_EN_LETTER_R(new char[]{'r'}),
-    SYM_EN_LETTER_S(new char[]{'s'}),
-    SYM_EN_LETTER_U(new char[]{'u'}),
-    SYM_EN_LETTER_V(new char[]{'v'}),
-    SYM_EN_LETTER_W(new char[]{'w'}),
-    SYM_EN_LETTER_X(new char[]{'x'}),
-    SYM_EN_LETTER_Y(new char[]{'y'}),
-    SYM_EN_LETTER_Z(new char[]{'z'}),
-    SYM_DIGIT_0(new char[]{'0'}),
-    SYM_DIGIT_1(new char[]{'1'}),
-    SYM_DIGIT_2(new char[]{'2'}),
-    SYM_DIGIT_3(new char[]{'3'}),
-    SYM_DIGIT_4(new char[]{'4'}),
-    SYM_DIGIT_5(new char[]{'5'}),
-    SYM_DIGIT_6(new char[]{'6'}),
-    SYM_DIGIT_7(new char[]{'7'}),
-    SYM_DIGIT_8(new char[]{'8'}),
-    SYM_DIGIT_9(new char[]{'9'}),
-    SYM_SYMBOL_COMMA(new char[]{','}),
-    SYM_SYMBOL_DOT(new char[]{'.'}),
-    SYM_SYMBOL_COLON(new char[]{':'}),
-    SYM_SYMBOL_EXCLAMATION(new char[]{'!'}),
-    SYM_SYMBOL_QUESTION(new char[]{'?'}),
-    SYM_SYMBOL_SPACE(new char[]{' '}),
-    SYM_SYMBOL_DASH(new char[]{'-'}),
-    SYM_SYMBOL_EQUALS(new char[]{'='}),
-    SYM_SYMBOL_ASTERISK(new char[]{'*'}),
-    SYM_SYMBOL_SLASH(new char[]{'/'}),
-    SYM_SYMBOL_NEWLINE(new char[]{'\n'});
+    SYM_RU_LETTER_A('а', 'a'),
+    SYM_RU_LETTER_B('б'),
+    SYM_RU_LETTER_V('в', 'b'),
+    SYM_RU_LETTER_G('г'),
+    SYM_RU_LETTER_D('д'),
+    SYM_RU_LETTER_YE('е', 'e'),
+    SYM_RU_LETTER_YO('ё'),
+    SYM_RU_LETTER_J('ж'),
+    SYM_RU_LETTER_Z('з'),
+    SYM_RU_LETTER_I('и'),
+    SYM_RU_LETTER_IKR('й'),
+    SYM_RU_LETTER_K('к', 'k'),
+    SYM_RU_LETTER_L('л'),
+    SYM_RU_LETTER_M('м', 'm'),
+    SYM_RU_LETTER_N('н', 'h'),
+    SYM_RU_LETTER_O('о', 'o'),
+    SYM_RU_LETTER_P('п'),
+    SYM_RU_LETTER_R('р', 'p'),
+    SYM_RU_LETTER_S('с', 'c'),
+    SYM_RU_LETTER_T('т', 't'),
+    SYM_RU_LETTER_U('у'),
+    SYM_RU_LETTER_F('ф'),
+    SYM_RU_LETTER_H('х'),
+    SYM_RU_LETTER_C('ц'),
+    SYM_RU_LETTER_CH('ч'),
+    SYM_RU_LETTER_SHA('ш'),
+    SYM_RU_LETTER_SCHA('щ'),
+    SYM_RU_LETTER_SOFT('ь'),
+    SYM_RU_LETTER_Y('ы'),
+    SYM_RU_LETTER_HARD('ъ'),
+    SYM_RU_LETTER_E('э'),
+    SYM_RU_LETTER_YU('ю'),
+    SYM_RU_LETTER_YA('я'),
+    SYM_EN_LETTER_D('d'),
+    SYM_EN_LETTER_F('f'),
+    SYM_EN_LETTER_G('g'),
+    SYM_EN_LETTER_I('i'),
+    SYM_EN_LETTER_J('j'),
+    SYM_EN_LETTER_L('l'),
+    SYM_EN_LETTER_N('n'),
+    SYM_EN_LETTER_Q('q'),
+    SYM_EN_LETTER_R('r'),
+    SYM_EN_LETTER_S('s'),
+    SYM_EN_LETTER_U('u'),
+    SYM_EN_LETTER_V('v'),
+    SYM_EN_LETTER_W('w'),
+    SYM_EN_LETTER_X('x'),
+    SYM_EN_LETTER_Y('y'),
+    SYM_EN_LETTER_Z('z'),
+    SYM_DIGIT_0('0'),
+    SYM_DIGIT_1('1'),
+    SYM_DIGIT_2('2'),
+    SYM_DIGIT_3('3'),
+    SYM_DIGIT_4('4'),
+    SYM_DIGIT_5('5'),
+    SYM_DIGIT_6('6'),
+    SYM_DIGIT_7('7'),
+    SYM_DIGIT_8('8'),
+    SYM_DIGIT_9('9'),
+    SYM_SYMBOL_COMMA(','),
+    SYM_SYMBOL_DOT('.'),
+    SYM_SYMBOL_COLON(':'),
+    SYM_SYMBOL_EXCLAMATION('!'),
+    SYM_SYMBOL_QUESTION('?'),
+    SYM_SYMBOL_SPACE(' '),
+    SYM_SYMBOL_DASH('-'),
+    SYM_SYMBOL_EQUALS('='),
+    SYM_SYMBOL_ASTERISK('*'),
+    SYM_SYMBOL_SLASH('/'),
+    SYM_SYMBOL_SQ_BRACKET_L('['),
+    SYM_SYMBOL_SQ_BRACKET_R(']'),
+    SYM_SYMBOL_NEWLINE('\n');
 
-    static final List<VisualElement> SPRITES = getElementsByPrefixes("SPR_");
+
     char[] characters;
     int number;
 
     VisualElement() {
     }
 
-    VisualElement(char[] characters) {
+    // Constructor for symbols
+    VisualElement(char... characters) {
         this.characters = characters;
     }
 
+    VisualElement(char c) {
+        this.characters = new char[]{c};
+    }
+
+    // Constructor for number sprites
     VisualElement(int number) {
         this.number = number;
     }
 
+    // Return a list of all elements starting with the same text (SPR_, SYM_, etc.)
     public static List<VisualElement> getElementsByPrefixes(String... prefixes) {
         ArrayList<VisualElement> result = new ArrayList<>();
         for (VisualElement visualElement : VisualElement.values()) {
@@ -159,9 +168,5 @@ public enum VisualElement {
             }
         }
         return result;
-    }
-
-    public static VisualElement getSpriteByNumber(int number) {
-        return (number == 0) ? SPR_BOARD_NONE : SPRITES.get(number);
     }
 }

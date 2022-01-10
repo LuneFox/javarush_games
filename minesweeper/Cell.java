@@ -3,6 +3,8 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.graphics.*;
 
+import java.util.List;
+
 /**
  * Logical game element and a cell for drawing sprites inside.
  * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
@@ -21,6 +23,7 @@ class Cell {
     boolean isFlagged;              // this tile was flagged by player
     boolean isDestroyed;            // who did this? :(
     int countMinedNeighbors;        // how many neighboring tiles have mines
+    private static final List<VisualElement> SPRITES = VisualElement.getElementsByPrefixes("SPR_");
 
     Cell(VisualElement visualElement, int x, int y, boolean isMined) {
         this.background = new Image(visualElement, x * 10, y * 10);
@@ -55,19 +58,22 @@ class Cell {
         if (isOpen) push();
     }
 
-    Image createSprite(VisualElement visualElement) { // returns a new sprite at the physical position of the cell
+    // Return a new sprite at the physical position of the cell
+    Image createSprite(VisualElement visualElement) {
         return new Image(visualElement, x * 10, y * 10);
     }
 
-    void assignSprite(VisualElement visualElement) { // assigns a sprite to this tile by its name
+    // Assign a sprite to this tile by its name
+    void attachSprite(VisualElement visualElement) {
         this.sprite = createSprite(visualElement);
     }
 
-    // assigns a number sprite to this tile, used to draw the number of mines nearby
-    void assignSprite(int number) {
-        this.sprite = new Image(VisualElement.getSpriteByNumber(number), x * 10, y * 10);
+    // Assign a number sprite to this tile
+    void attachSprite(int number) {
+        this.sprite = new Image(getSpriteByNumber(number), x * 10, y * 10);
     }
 
+    // Actually replace it with a 1x1 transparent sprite
     void eraseSprite() {
         this.sprite = new Image(VisualElement.SPR_BOARD_NONE, x * 10, y * 10);
         background.draw();
@@ -78,12 +84,17 @@ class Cell {
         background.draw();
     }
 
+    // Display the sprite over the cell
     void drawSprite() {
         sprite.draw();
     }
 
     void changeSpriteColor(Color color) {
         sprite.replaceColor(color, 1);
+    }
+
+    public static VisualElement getSpriteByNumber(int number) {
+        return (number == 0) ? VisualElement.SPR_BOARD_NONE : SPRITES.get(number);
     }
 
     public boolean isEmpty() {
@@ -111,9 +122,8 @@ class Cell {
         return (!isOpen && !isMined);
     }
 
-
     public boolean isDangerous() {
-        // Cell contains unrevealed mine
+        // Cell contains unrevealed mine, opposite of "safe", added just for semantics
         return (isMined && !isOpen);
     }
 

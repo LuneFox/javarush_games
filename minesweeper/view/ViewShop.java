@@ -40,7 +40,7 @@ public final class ViewShop extends View {
         game.print("" + game.countAllCells(Util.Filter.DANGEROUS), 22, 12);
         game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
         game.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
-        game.print("* магазин *", Theme.SHOP_TITLE.getColor(), 25, 22);
+        game.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), -1, 22);
         game.print("очки:" + game.player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
         game.print("шаги:" + game.player.getMoves(), Theme.SHOP_MOVES.getColor(), 84, 80, true);
         displayShopItems();

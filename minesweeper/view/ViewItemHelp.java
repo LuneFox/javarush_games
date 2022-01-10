@@ -35,7 +35,7 @@ public final class ViewItemHelp extends View {
         if (item.id == ShopItem.ID.SHIELD) {
             item.description = Strings.generateNewShieldDescription().toString();
         }
-        game.print(item.name, Color.YELLOW, 25, 9);
+        game.print("[" + item.name + "]", Color.YELLOW, 25, 9);
         game.print(item.description, 4, 25);
         BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).draw();
     }

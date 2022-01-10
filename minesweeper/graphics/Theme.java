@@ -134,11 +134,24 @@ public enum Theme {
         return this.colors[currentNumber];
     }
 
-    public static void set(int themeNumber) {
+    public static void setThemeNumber(int themeNumber) {
         Theme.currentNumber = themeNumber;
     }
 
-    public static int get() {
+    public static int getCurrentNumber() {
         return currentNumber;
+    }
+
+    public static String getCurrentName() {
+        switch (currentNumber) {
+            case USSR:
+                return "ссср";
+            case MINT:
+                return "мята";
+            case SKY:
+                return "небо";
+            default:
+                return "???";
+        }
     }
 }

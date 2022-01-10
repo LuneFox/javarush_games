@@ -24,22 +24,21 @@ public final class ViewOptions extends View {
     private int switchFlagsPosition = SWITCH_LEFTMOST_POSITION;
     private int switchTimePosition = SWITCH_LEFTMOST_POSITION;
 
-    private final static int TEXT_LEFT_PADDING = 2;
-    private final static int DIFF_OPTION_Y = 16;
-    private final static int FLAG_OPTION_Y = 35;
-    private final static int TIME_OPTION_Y = 54;
-    private final static int SUB_TEXT_SHIFT_Y = 8;
-    private final static int THEME_TEXT_Y = 73;
-    private final static int THEME_PALETTE_X = 63;
-    private final static int THEME_PALETTE_Y = 73;
+    private final static int TEXT_PADDING_L = 2;
+    private final static int SUB_TEXT_SHIFT = 8;
+    private final static int DIFF_ANCHOR = 16;
+    private final static int FLAG_ANCHOR = 35;
+    private final static int TIME_ANCHOR = 54;
+    private final static int THEME_ANCHOR = 73;
+    private final static int THEME_PADDING_L = 63;
 
-    public final Area difficultyDownArea = new Area(49, 53, DIFF_OPTION_Y + 1, DIFF_OPTION_Y + 7);
-    public final Area difficultyUpArea = new Area(93, 97, DIFF_OPTION_Y + 1, DIFF_OPTION_Y + 7);
-    public final Area autoBuyFlagsArea = new Area(SWITCH_LEFTMOST_POSITION, SWITCH_RIGHTMOST_POSITION + 4, FLAG_OPTION_Y + 1, FLAG_OPTION_Y + 7);
-    public final Area switchGameTimerArea = new Area(SWITCH_LEFTMOST_POSITION, SWITCH_RIGHTMOST_POSITION + 4, TIME_OPTION_Y + 1, TIME_OPTION_Y + 7);
-    public final Area redThemeArea = new Area(THEME_PALETTE_X, THEME_PALETTE_X + 10, THEME_PALETTE_Y, THEME_PALETTE_Y + 10);
-    public final Area greenThemeArea = new Area(THEME_PALETTE_X + 12, THEME_PALETTE_X + 22, THEME_PALETTE_Y, THEME_PALETTE_Y + 10);
-    public final Area blueThemeArea = new Area(THEME_PALETTE_X + 24, THEME_PALETTE_X + 34, THEME_PALETTE_Y, THEME_PALETTE_Y + 10);
+    public final Area difficultyDownArea = new Area(49, 53, DIFF_ANCHOR + 1, DIFF_ANCHOR + 7);
+    public final Area difficultyUpArea = new Area(93, 97, DIFF_ANCHOR + 1, DIFF_ANCHOR + 7);
+    public final Area autoBuyFlagsArea = new Area(SWITCH_LEFTMOST_POSITION, SWITCH_RIGHTMOST_POSITION + 4, FLAG_ANCHOR + 1, FLAG_ANCHOR + 7);
+    public final Area switchGameTimerArea = new Area(SWITCH_LEFTMOST_POSITION, SWITCH_RIGHTMOST_POSITION + 4, TIME_ANCHOR + 1, TIME_ANCHOR + 7);
+    public final Area redThemeArea = new Area(THEME_PADDING_L, THEME_PADDING_L + 10, THEME_ANCHOR, THEME_ANCHOR + 10);
+    public final Area greenThemeArea = new Area(THEME_PADDING_L + 12, THEME_PADDING_L + 22, THEME_ANCHOR, THEME_ANCHOR + 10);
+    public final Area blueThemeArea = new Area(THEME_PADDING_L + 24, THEME_PADDING_L + 34, THEME_ANCHOR, THEME_ANCHOR + 10);
 
     public int difficultySetting;
     public boolean timerEnabledSetting;
@@ -62,67 +61,56 @@ public final class ViewOptions extends View {
 
 
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
-        game.print("настройки", Color.YELLOW, 28, 2);
+        game.print("настройки", Color.YELLOW, -1, 2);
 
-        game.print("сложность", TEXT_LEFT_PADDING, DIFF_OPTION_Y - 1);
-        arrowButton.drawAt((clickedArrowTimeoutL-- > 0) ? 48 : 49, DIFF_OPTION_Y, Image.Mirror.HORIZONTAL);
-        arrowButton.drawAt((clickedArrowTimeoutR-- > 0) ? 94 : 93, DIFF_OPTION_Y, Image.Mirror.NONE);
+        game.print("сложность", TEXT_PADDING_L, DIFF_ANCHOR - 1);
+        arrowButton.drawAt((clickedArrowTimeoutL-- > 0) ? 48 : 49, DIFF_ANCHOR, Image.Mirror.HORIZONTAL);
+        arrowButton.drawAt((clickedArrowTimeoutR-- > 0) ? 94 : 93, DIFF_ANCHOR, Image.Mirror.NONE);
 
         displayDifficultyBar();
-        game.print(difficultyName, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, DIFF_OPTION_Y + SUB_TEXT_SHIFT_Y, true);
+        game.print(difficultyName, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, DIFF_ANCHOR + SUB_TEXT_SHIFT, true);
 
-        game.print("покупка флажков", TEXT_LEFT_PADDING, FLAG_OPTION_Y - 1);
-        switchRail.drawAt(SWITCH_LEFTMOST_POSITION, FLAG_OPTION_Y + 2);
+        game.print("покупка флажков", TEXT_PADDING_L, FLAG_ANCHOR - 1);
+        switchRail.drawAt(SWITCH_LEFTMOST_POSITION, FLAG_ANCHOR + 2);
         if (game.shop.autoBuyFlagsEnabled) {
             if (switchFlagsPosition < SWITCH_RIGHTMOST_POSITION) switchFlagsPosition++;
             switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.drawAt(switchFlagsPosition, FLAG_OPTION_Y);
-            game.print("авто", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, FLAG_OPTION_Y + SUB_TEXT_SHIFT_Y, true);
+            switchButton.drawAt(switchFlagsPosition, FLAG_ANCHOR);
+            game.print("авто", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
         } else {
             if (switchFlagsPosition > SWITCH_LEFTMOST_POSITION) switchFlagsPosition--;
             switchButton.replaceColor(Color.RED, 1);
-            switchButton.drawAt(switchFlagsPosition, FLAG_OPTION_Y);
-            game.print("вручную", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 91, FLAG_OPTION_Y + SUB_TEXT_SHIFT_Y, true);
+            switchButton.drawAt(switchFlagsPosition, FLAG_ANCHOR);
+            game.print("вручную", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 91, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
         }
 
 
-        game.print("игра на время", TEXT_LEFT_PADDING, TIME_OPTION_Y - 1);
-        switchRail.drawAt(SWITCH_LEFTMOST_POSITION, TIME_OPTION_Y + 2);
+        game.print("игра на время", TEXT_PADDING_L, TIME_ANCHOR - 1);
+        switchRail.drawAt(SWITCH_LEFTMOST_POSITION, TIME_ANCHOR + 2);
         if (timerEnabledSetting) {
             if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
             switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.drawAt(switchTimePosition, TIME_OPTION_Y);
-            game.print("да", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, TIME_OPTION_Y + SUB_TEXT_SHIFT_Y, true);
+            switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
+            game.print("да", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
         } else {
             if (switchTimePosition > SWITCH_LEFTMOST_POSITION) switchTimePosition--;
             switchButton.replaceColor(Color.RED, 1);
-            switchButton.drawAt(switchTimePosition, TIME_OPTION_Y);
-            game.print("нет", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 94, TIME_OPTION_Y + SUB_TEXT_SHIFT_Y, true);
+            switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
+            game.print("нет", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 94, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
 
         }
 
-
-        switch (Theme.get()) {
-            case 0:
-                game.print("тема: ссср", TEXT_LEFT_PADDING, THEME_TEXT_Y);
-                break;
-            case 1:
-                game.print("тема: мята", TEXT_LEFT_PADDING, THEME_TEXT_Y);
-                break;
-            case 2:
-                game.print("тема: небо", TEXT_LEFT_PADDING, THEME_TEXT_Y);
-                break;
-        }
+        game.print("тема: " + Theme.getCurrentName(), TEXT_PADDING_L, THEME_ANCHOR);
 
         themePalette.replaceColor(Color.RED, 1);
-        themePalette.replaceColor(Theme.get() == 0 ? Color.YELLOW : Color.BLACK, 3);
-        themePalette.drawAt(THEME_PALETTE_X, THEME_PALETTE_Y);
+        themePalette.replaceColor(Theme.getCurrentNumber() == 0 ? Color.YELLOW : Color.BLACK, 3);
+        themePalette.drawAt(THEME_PADDING_L, THEME_ANCHOR);
         themePalette.replaceColor(Color.GREEN, 1);
-        themePalette.replaceColor(Theme.get() == 1 ? Color.YELLOW : Color.BLACK, 3);
-        themePalette.drawAt(THEME_PALETTE_X + 12, THEME_PALETTE_Y);
-        themePalette.replaceColor(Theme.get() == 2 ? Color.YELLOW : Color.BLACK, 3);
+        themePalette.replaceColor(Theme.getCurrentNumber() == 1 ? Color.YELLOW : Color.BLACK, 3);
+        themePalette.drawAt(THEME_PADDING_L + 12, THEME_ANCHOR);
+        themePalette.replaceColor(Theme.getCurrentNumber() == 2 ? Color.YELLOW : Color.BLACK, 3);
         themePalette.replaceColor(Color.BLUE, 1);
-        themePalette.drawAt(THEME_PALETTE_X + 24, THEME_PALETTE_Y);
+        themePalette.drawAt(THEME_PADDING_L + 24, THEME_ANCHOR);
 
         BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
     }
@@ -131,7 +119,7 @@ public final class ViewOptions extends View {
     private void displayDifficultyBar() {
         LinkedList<Image> bars = new LinkedList<>();
         for (int i = 0; i < difficultySetting / 5; i++) {
-            Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR, (i * 4) + 56, DIFF_OPTION_Y);
+            Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR, (i * 4) + 56, DIFF_ANCHOR);
             if (i > 1) bar.replaceColor(Color.YELLOW, 1);
             if (i > 3) bar.replaceColor(Color.ORANGE, 1);
             if (i > 5) bar.replaceColor(Color.RED, 1);

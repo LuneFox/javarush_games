@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 
 import java.util.HashMap;
 
@@ -19,6 +20,19 @@ public class Printer {
 
     public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
 
+        // If drawX is negative, print in the middle
+        if (drawX < 0 || drawX > 99) {
+            int width = calculateWidth(input);
+            drawX = 50 - width / 2;
+        }
+        // Must be effectively final for inner Caret class
+        int finalDrawX = drawX;
+
+        // Don't allow printing outside screen
+        if (drawY < 0 || drawY > 99) {
+            drawY = 0;
+        }
+
         // A caret marks the place where the next symbol is going to be drawn
         class Caret {
             int x, y;
@@ -31,7 +45,7 @@ public class Printer {
             // Return the caret to the beginning of the next line if the char is '\n'
             boolean isAtNewLine(char c) {
                 if (c == '\n') {
-                    x = drawX;
+                    x = finalDrawX;
                     y += LINE_SPACING;
                     return true;
                 }
