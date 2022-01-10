@@ -61,7 +61,7 @@ public class View {
     }
 
     public final void cacheStaticElements() { // load images once at launch and just re-use them all the time
-        VisualElement.getElementsByPrefixes("BUTTON_", "MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::cacheImage);
+        VisualElement.getElementsByPrefixes("MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::cacheImage);
         for (ButtonID b : ButtonID.values()) {
             BUTTONS_CACHE.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
         }

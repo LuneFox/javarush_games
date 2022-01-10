@@ -65,9 +65,6 @@ public enum VisualElement {
     WIN_SHOP_HEADER_FOOTER,
     WIN_BOARD_TRANSPARENT_FRAME,
 
-    BUTTON_OK,
-    BUTTON_CLOSE,
-
     SYM_RU_LETTER_A(new char[]{'а', 'a'}),
     SYM_RU_LETTER_B(new char[]{'б'}),
     SYM_RU_LETTER_V(new char[]{'в', 'b'}),
