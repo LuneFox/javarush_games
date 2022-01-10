@@ -11,12 +11,16 @@ public class ImageCreator {
 
     // Fill the array with numbers from strings
     public static int[][] makeArray(String... strings) {
-        int width = strings[0].length();
         int height = strings.length;
+        int width = 0;
+        for (String s : strings) {
+            if (s.length() > width) width = s.length();
+        }
         int[][] result = new int[height][width];
         for (int y = 0; y < height; y++) {
             char[] row = strings[y].toCharArray();
-            for (int x = 0; x < width; x++) {
+            for (int x = 0; x < row.length; x++) {
+                if (row[x] == ' ') row[x] = '0';
                 result[y][x] = row[x] - CHAR_AND_INT_DIFFERENCE;
             }
         }
