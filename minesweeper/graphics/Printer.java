@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.graphics;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 
 import java.util.HashMap;
 

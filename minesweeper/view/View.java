@@ -6,7 +6,7 @@ import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.graphics.Button.ButtonID;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 
 /**
  * Class for displaying various menus on the screen.
@@ -25,8 +25,8 @@ public class View {
     public static ViewItemHelp itemHelp;
     public static ViewGameOver gameOver;
     public static ViewScore score;
-    public static final HashMap<VisualElement, Image> IMAGES_CACHE = new HashMap<>();
-    public static final HashMap<ButtonID, Button> BUTTONS_CACHE = new HashMap<>();
+    public static final EnumMap<VisualElement, Image> IMAGES_CACHE = new EnumMap<>(VisualElement.class);
+    public static final EnumMap<ButtonID, Button> BUTTONS_CACHE = new EnumMap<>(ButtonID.class);
 
     public View() {
         cacheStaticElements();
