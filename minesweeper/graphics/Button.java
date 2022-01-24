@@ -77,7 +77,7 @@ public class Button implements Drawable {
     public void setBody(int posX, int posY, boolean addShadow) {
         this.body = new Image(VisualElement.MENU_BUTTON, posX, posY) {
             @Override
-            public int[][] assignMatrix(VisualElement visualElement) {
+            public int[][] getMatrix(VisualElement visualElement) {
                 return ImageCreator.createWindow(x2 - x1, y2 - y1, addShadow, true);
             }
         };
@@ -86,7 +86,7 @@ public class Button implements Drawable {
                 Theme.BUTTON_BG.getColor(),
                 Color.BLACK,
                 Theme.BUTTON_BORDER.getColor()};
-        body.assignMatrix(VisualElement.MENU_BUTTON);
+        body.getMatrix(VisualElement.MENU_BUTTON);
     }
 
     public void replaceText(int width, String label) {

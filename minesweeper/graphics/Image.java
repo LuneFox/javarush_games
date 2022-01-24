@@ -21,14 +21,14 @@ public class Image implements Drawable {
     }
 
     public Image(VisualElement visualElement, int drawX, int drawY) { // constructor with setting position at once
-        this.matrix = assignMatrix(visualElement);
+        this.matrix = getMatrix(visualElement);
         setPosition(drawX, drawY);
         floatAnimationShift = 0;
         floatAnimationGoesDown = true;
     }
 
     Image(VisualElement visualElement) { // constructor without setting position (for loading images in memory)
-        this.matrix = assignMatrix(visualElement);
+        this.matrix = getMatrix(visualElement);
     }
 
     public void draw() {
@@ -101,7 +101,7 @@ public class Image implements Drawable {
         draw(mirror);
     }
 
-    public int[][] assignMatrix(VisualElement visualElement) {
+    public int[][] getMatrix(VisualElement visualElement) {
         ImageStorage storage = new ImageStorage(visualElement);
         colors = storage.getColors();
         return storage.getData();

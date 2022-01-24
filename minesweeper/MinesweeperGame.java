@@ -240,7 +240,7 @@ public class MinesweeperGame extends Game {
         Cell cell = field[y][x];
         if (cellDestructionImpossible(cell)) return;
 
-        cell.attachSprite(VisualElement.SPR_BOARD_NONE);
+        cell.setSprite(VisualElement.SPR_BOARD_NONE);
         cell.isDestroyed = true;
         pushCell(cell);
         deactivateExpiredItems();
@@ -290,7 +290,7 @@ public class MinesweeperGame extends Game {
         if (cell.isFlagged) return;
         inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
-        cell.attachSprite(VisualElement.SPR_BOARD_FLAG);
+        cell.setSprite(VisualElement.SPR_BOARD_FLAG);
         cell.drawSprite();
     }
 
@@ -367,7 +367,7 @@ public class MinesweeperGame extends Game {
     private void enumerateCells() {
         getAllCells(Filter.NUMERABLE).forEach(cell -> {
             cell.countMinedNeighbors = getNeighborCells(cell, Filter.MINED, false).size();
-            cell.attachSprite(cell.countMinedNeighbors);
+            cell.setSprite(cell.countMinedNeighbors);
         });
     }
 
@@ -455,7 +455,7 @@ public class MinesweeperGame extends Game {
 
     private void drawNumberOnCell(Cell cell) {
         if (!cell.isFlagged && !cell.isMined) {
-            cell.attachSprite(cell.countMinedNeighbors);
+            cell.setSprite(cell.countMinedNeighbors);
             if (shop.goldenShovel.isActivated()) {
                 cell.changeSpriteColor(Color.YELLOW);
             }
@@ -483,7 +483,7 @@ public class MinesweeperGame extends Game {
                 Cell showCell = field[posY][posX];
                 if (showCell.isMined) {
                     showCell.isOpen = true;
-                    showCell.attachSprite(VisualElement.SPR_BOARD_MINE);
+                    showCell.setSprite(VisualElement.SPR_BOARD_MINE);
                     showCell.push();
                 }
             }

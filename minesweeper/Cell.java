@@ -11,21 +11,23 @@ import java.util.List;
  */
 
 class Cell {
-    int x;
-    int y;                          // logical position
-    private final VisualElement visualElement;
-    private final Image background; // the body of a cell
-    private Image sprite;           // a sprite can be assigned to a tile to be drawn over it
-    boolean isMined;                // this tile contains mine
-    boolean isOpen;                 // this tile has been revealed
-    boolean isShielded;             // this tile has been blocked with shield
-    boolean isScanned;              // this tile has been revealed with scanner
-    boolean isFlagged;              // this tile was flagged by player
-    boolean isDestroyed;            // who did this? :(
-    int countMinedNeighbors;        // how many neighboring tiles have mines
     private static final List<VisualElement> SPRITES = VisualElement.getElementsByPrefixes("SPR_");
 
-    Cell(VisualElement visualElement, int x, int y, boolean isMined) {
+    protected final int x;                    // logical position on a 10x10 grid
+    protected final int y;
+    protected boolean isMined;                // contains a mine
+    protected boolean isOpen;                 // revealed
+    protected boolean isScanned;              // revealed using a scanner
+    protected boolean isShielded;             // revealed using a shield
+    protected boolean isFlagged;              // flagged by player
+    protected boolean isDestroyed;            // blown up by the bomb
+    protected int countMinedNeighbors;        // number of adjacent mines
+
+    private final VisualElement visualElement;// visual element assigned to the body: opened, closed or destroyed
+    private final Image background;           // the "body" of the cell
+    private Image sprite;                     // foreground image (number, flag or mine)
+
+    protected Cell(VisualElement visualElement, int x, int y, boolean isMined) {
         this.background = new Image(visualElement, x * 10, y * 10);
         this.visualElement = visualElement;
         this.x = x;
@@ -38,7 +40,7 @@ class Cell {
 
     // draws a button in a pushed state and reveals its sprite (number or icon), used while opening a tile
     public void push() {
-        background.matrix = (isDestroyed) ? background.assignMatrix(VisualElement.CELL_DESTROYED) : background.assignMatrix(VisualElement.CELL_OPENED);
+        background.matrix = (isDestroyed) ? background.getMatrix(VisualElement.CELL_DESTROYED) : background.getMatrix(VisualElement.CELL_OPENED);
         if (isFlaggedCorrectly()) {
             drawBackground(Color.GREEN);
         } else if (isShielded) {
@@ -59,37 +61,37 @@ class Cell {
     }
 
     // Return a new sprite at the physical position of the cell
-    Image createSprite(VisualElement visualElement) {
+    protected Image createSprite(VisualElement visualElement) {
         return new Image(visualElement, x * 10, y * 10);
     }
 
     // Assign a sprite to this tile by its name
-    void attachSprite(VisualElement visualElement) {
+    protected void setSprite(VisualElement visualElement) {
         this.sprite = createSprite(visualElement);
     }
 
     // Assign a number sprite to this tile
-    void attachSprite(int number) {
+    protected void setSprite(int number) {
         this.sprite = new Image(getSpriteByNumber(number), x * 10, y * 10);
     }
 
     // Actually replace it with a 1x1 transparent sprite
-    void eraseSprite() {
+    protected void eraseSprite() {
         this.sprite = new Image(VisualElement.SPR_BOARD_NONE, x * 10, y * 10);
         background.draw();
     }
 
-    void drawBackground(Color color) {
+    protected void drawBackground(Color color) {
         if (color != Color.NONE) background.replaceColor(color, 3);
         background.draw();
     }
 
     // Display the sprite over the cell
-    void drawSprite() {
+    protected void drawSprite() {
         sprite.draw();
     }
 
-    void changeSpriteColor(Color color) {
+    protected void changeSpriteColor(Color color) {
         sprite.replaceColor(color, 1);
     }
 
