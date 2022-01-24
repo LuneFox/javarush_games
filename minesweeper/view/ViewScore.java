@@ -4,8 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.graphics.VisualElement;
-import com.javarush.games.minesweeper.graphics.Button;
+import com.javarush.games.minesweeper.graphics.*;
 
 /**
  * Shows score details in the end of the game.
@@ -43,10 +42,10 @@ public final class ViewScore extends View {
         String shieldScoreDetail = shields == 0 ? "" : shields + "*-" + (150 * (difficulty / 5)) + " = ";
         String youLost = "не учтено";
 
-        game.print("подробности счёта", Color.YELLOW, -1, 2);
+        Printer.print("подробности счёта", Color.YELLOW, -1, 2);
 
-        game.print("ячейки:\nкуб:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", 3, 13);
-        game.print(
+        Printer.print("ячейки:\nкуб:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", 3, 13);
+        Printer.print(
                 (game.player.score.getTotalScore() +
                         "\n\n" + scoreTimer +
                         "\n" + (shieldScoreDetail + scoreLost) +

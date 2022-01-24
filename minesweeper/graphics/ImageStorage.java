@@ -226,44 +226,44 @@ public class ImageStorage {
                 break;
             case WIN_MENU:
                 setColors(Theme.MAIN_MENU_BG.getColor(), Color.NONE, Theme.MAIN_MENU_BORDER.getColor());
-                data = ImageCreator.createWindowBitmap(100, 100, false, true);
+                data = ImageCreator.createWindow(100, 100, false, true);
                 break;
             case WIN_SHOP:
                 setColors(Theme.SHOP_BG.getColor(), Color.BLACK, Theme.SHOP_BORDER.getColor());
-                data = ImageCreator.createWindowBitmap(80, 80, true, true);
+                data = ImageCreator.createWindow(80, 80, true, true);
                 break;
             case WIN_SHOP_HEADER_FOOTER:
                 setColors(Theme.SHOP_HEADER_FOOTER.getColor(), Color.BLACK, Theme.SHOP_BORDER.getColor());
-                data = ImageCreator.createWindowBitmap(80, 12, false, true);
+                data = ImageCreator.createWindow(80, 12, false, true);
                 break;
             case SHOP_ITEM_FRAME:
                 setColors(Theme.SHOP_ITEM_BG.getColor(), Color.BLACK, Color.GREEN);
-                data = ImageCreator.createWindowBitmap(20, 20, true, true);
+                data = ImageCreator.createWindow(20, 20, true, true);
                 break;
             case SHOP_ITEM_FRAME_PRESSED:
                 setColors(Theme.SHOP_ITEM_BG.getColor(), Color.BLACK, Color.GREEN);
-                data = ImageCreator.createWindowBitmap(20, 20, false, true);
+                data = ImageCreator.createWindow(20, 20, false, true);
                 break;
             case WIN_VICTORY:
             case WIN_GAME_OVER:
                 setColors(Theme.MAIN_MENU_BG.getColor(), Color.BLACK, Theme.BUTTON_BG.getColor());
-                data = ImageCreator.createWindowBitmap(70, 35, true, true);
+                data = ImageCreator.createWindow(70, 35, true, true);
                 break;
             case MENU_SWITCH:
                 setColors(Color.RED, Color.BLACK, Color.YELLOW);
-                data = ImageCreator.createWindowBitmap(4, 7, false, true);
+                data = ImageCreator.createWindow(4, 7, false, true);
                 break;
             case MENU_SWITCH_RAIL:
                 setColors(Color.BLACK, Color.NONE, Color.NONE);
-                data = ImageCreator.createWindowBitmap(12, 3, false, false);
+                data = ImageCreator.createWindow(12, 3, false, false);
                 break;
             case WIN_BOARD_TRANSPARENT_FRAME:
                 setColors(Color.NONE, Color.NONE, Color.BLUE);
-                data = ImageCreator.createWindowBitmap(100, 100, false, true);
+                data = ImageCreator.createWindow(100, 100, false, true);
                 break;
             case MENU_THEME_PALETTE:
                 setColors(Color.GRAY, Color.BLACK, Color.WHITE);
-                data = ImageCreator.createWindowBitmap(10, 10, false, true);
+                data = ImageCreator.createWindow(10, 10, false, true);
                 break;
             case SHOP_DICE_1:
                 setColors(Color.WHITE, Color.RED, Color.BLACK);

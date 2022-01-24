@@ -3,8 +3,7 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.graphics.VisualElement;
-import com.javarush.games.minesweeper.graphics.Button;
+import com.javarush.games.minesweeper.graphics.*;
 
 public final class ViewGameOver extends View {
     public int popUpTimer;  // defines how soon will game over screen show up
@@ -34,13 +33,13 @@ public final class ViewGameOver extends View {
         if (victory) {
             IMAGES_CACHE.get(VisualElement.WIN_VICTORY).drawAt(-1, -1);
             IMAGES_CACHE.get(VisualElement.PIC_FACE_HAPPY).drawAt(-1, -1);
-            game.print("победа!", Color.YELLOW, 18, 33);
+            Printer.print("победа!", Color.YELLOW, 18, 33);
         } else {
             IMAGES_CACHE.get(VisualElement.WIN_GAME_OVER).drawAt(-1, -1);
             IMAGES_CACHE.get(VisualElement.PIC_FACE_SAD).drawAt(-1, -1);
-            game.print("не повезло!", Color.YELLOW, 18, 33);
+            Printer.print("не повезло!", Color.YELLOW, 18, 33);
         }
-        game.print("счёт: " + game.player.score.getTotalScore(), Color.LIGHTGOLDENRODYELLOW, 18, 57);
+        Printer.print("счёт: " + game.player.score.getTotalScore(), Color.LIGHTGOLDENRODYELLOW, 18, 57);
         BUTTONS_CACHE.get(Button.ButtonID.AGAIN).draw();
         BUTTONS_CACHE.get(Button.ButtonID.RETURN).draw();
         BUTTONS_CACHE.get(Button.ButtonID.CLOSE).draw();

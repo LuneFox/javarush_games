@@ -2,9 +2,7 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.*;
-import com.javarush.games.minesweeper.graphics.VisualElement;
-import com.javarush.games.minesweeper.graphics.Image;
-import com.javarush.games.minesweeper.graphics.Theme;
+import com.javarush.games.minesweeper.graphics.*;
 
 import java.util.Date;
 
@@ -37,12 +35,12 @@ public final class ViewShop extends View {
         IMAGES_CACHE.get(VisualElement.SPR_BOARD_FLAG).drawAt(39, 11);
         IMAGES_CACHE.get(VisualElement.SHOP_COIN).drawAt(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
-        game.print("" + game.countAllCells(Util.Filter.DANGEROUS), 22, 12);
-        game.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
-        game.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
-        game.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), -1, 22);
-        game.print("очки:" + game.player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
-        game.print("шаги:" + game.player.getMoves(), Theme.SHOP_MOVES.getColor(), 84, 80, true);
+        Printer.print("" + game.countAllCells(Util.Filter.DANGEROUS), 22, 12);
+        Printer.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
+        Printer.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
+        Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), -1, 22);
+        Printer.print("очки:" + game.player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
+        Printer.print("шаги:" + game.player.getMoves(), Theme.SHOP_MOVES.getColor(), 84, 80, true);
         displayShopItems();
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
@@ -75,14 +73,14 @@ public final class ViewShop extends View {
                 item.icon.drawAt(16 + dx + shift, 31 + dy + shift);
 
                 if (item.inStock > 0 && !item.isActivated()) {
-                    game.print("" + item.cost, Color.YELLOW, right + dx, bottom + dy, true);
+                    Printer.print("" + item.cost, Color.YELLOW, right + dx, bottom + dy, true);
                 } else if (item.isActivated()) {
                     if (item.canExpire) {
-                        game.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right + dx, upper + dy, true);
+                        Printer.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right + dx, upper + dy, true);
                     }
-                    game.print("АКТ", Color.YELLOW, right + dx - getActShakeValue(currentFrame), bottom + dy, true);
+                    Printer.print("АКТ", Color.YELLOW, right + dx - getActShakeValue(currentFrame), bottom + dy, true);
                 } else {
-                    game.print("НЕТ", Theme.SHOP_SIGN_NO.getColor(), right + dx, bottom + dy, true);
+                    Printer.print("НЕТ", Theme.SHOP_SIGN_NO.getColor(), right + dx, bottom + dy, true);
                 }
             }
         }

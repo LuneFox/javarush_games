@@ -4,9 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
-import com.javarush.games.minesweeper.graphics.VisualElement;
-import com.javarush.games.minesweeper.graphics.Button;
-import com.javarush.games.minesweeper.graphics.Image;
+import com.javarush.games.minesweeper.graphics.*;
 
 /**
  * Shows players' high scores.
@@ -23,7 +21,7 @@ public final class ViewRecords extends View {
     public void display() {
         super.display();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
-        game.print(Strings.RECORDS[0], Color.YELLOW, -1, 2);
+        Printer.print(Strings.RECORDS[0], Color.YELLOW, -1, 2);
         BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
         drawPrizeCups();
         drawEntries();
@@ -54,11 +52,11 @@ public final class ViewRecords extends View {
 
     final void drawEntries() {
         Color[] colors = new Color[]{Color.WHITE, Color.GOLD, Color.SILVER, Color.PALEGOLDENROD};
-        game.print(Strings.RECORDS[1], colors[1], 18, 18);
-        game.print(Strings.RECORDS[2], colors[0], 94, 27, true);
-        game.print(Strings.RECORDS[3], colors[2], 18, 38);
-        game.print(Strings.RECORDS[4], colors[0], 94, 47, true);
-        game.print(Strings.RECORDS[5], colors[3], 18, 58);
-        game.print(Strings.RECORDS[6], colors[0], 94, 67, true);
+        Printer.print(Strings.RECORDS[1], colors[1], 18, 18);
+        Printer.print(Strings.RECORDS[2], colors[0], 94, 27, true);
+        Printer.print(Strings.RECORDS[3], colors[2], 18, 38);
+        Printer.print(Strings.RECORDS[4], colors[0], 94, 47, true);
+        Printer.print(Strings.RECORDS[5], colors[3], 18, 58);
+        Printer.print(Strings.RECORDS[6], colors[0], 94, 67, true);
     }
 }

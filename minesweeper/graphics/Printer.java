@@ -79,6 +79,14 @@ public class Printer {
         }
     }
 
+    public static void print(String text, Color color, int x, int y) {
+        print(text, color, x, y, false);
+    }
+
+    public static void print(String text, int x, int y) {
+        print(text, Color.WHITE, x, y, false);
+    }
+
     private static void drawSymbol(char c, Color color, int x, int y) {
         Image symbol = SYMBOLS_CACHE.get(c);
         symbol.replaceColor(color, 1);

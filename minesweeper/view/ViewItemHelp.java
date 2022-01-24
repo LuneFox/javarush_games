@@ -5,8 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.ShopItem;
 import com.javarush.games.minesweeper.Strings;
-import com.javarush.games.minesweeper.graphics.VisualElement;
-import com.javarush.games.minesweeper.graphics.Button;
+import com.javarush.games.minesweeper.graphics.*;
 
 /**
  * Shows item help when you right-click an item in the shop.
@@ -35,8 +34,8 @@ public final class ViewItemHelp extends View {
         if (item.id == ShopItem.ID.SHIELD) {
             item.description = Strings.generateNewShieldDescription().toString();
         }
-        game.print("[" + item.name + "]", Color.YELLOW, 25, 9);
-        game.print(item.description, 4, 25);
+        Printer.print("[" + item.name + "]", Color.YELLOW, 25, 9);
+        Printer.print(item.description, 4, 25);
         BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).draw();
     }
 }

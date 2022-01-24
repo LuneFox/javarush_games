@@ -61,46 +61,46 @@ public final class ViewOptions extends View {
 
 
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
-        game.print("настройки", Color.YELLOW, -1, 2);
+        Printer.print("настройки", Color.YELLOW, -1, 2);
 
-        game.print("сложность", TEXT_PADDING_L, DIFF_ANCHOR - 1);
+        Printer.print("сложность", TEXT_PADDING_L, DIFF_ANCHOR - 1);
         arrowButton.drawAt((clickedArrowTimeoutL-- > 0) ? 48 : 49, DIFF_ANCHOR, Image.Mirror.HORIZONTAL);
         arrowButton.drawAt((clickedArrowTimeoutR-- > 0) ? 94 : 93, DIFF_ANCHOR, Image.Mirror.NONE);
 
         displayDifficultyBar();
-        game.print(difficultyName, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, DIFF_ANCHOR + SUB_TEXT_SHIFT, true);
+        Printer.print(difficultyName, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, DIFF_ANCHOR + SUB_TEXT_SHIFT, true);
 
-        game.print("покупка флажков", TEXT_PADDING_L, FLAG_ANCHOR - 1);
+        Printer.print("покупка флажков", TEXT_PADDING_L, FLAG_ANCHOR - 1);
         switchRail.drawAt(SWITCH_LEFTMOST_POSITION, FLAG_ANCHOR + 2);
         if (game.shop.autoBuyFlagsEnabled) {
             if (switchFlagsPosition < SWITCH_RIGHTMOST_POSITION) switchFlagsPosition++;
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(switchFlagsPosition, FLAG_ANCHOR);
-            game.print("авто", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
+            Printer.print("авто", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
         } else {
             if (switchFlagsPosition > SWITCH_LEFTMOST_POSITION) switchFlagsPosition--;
             switchButton.replaceColor(Color.RED, 1);
             switchButton.drawAt(switchFlagsPosition, FLAG_ANCHOR);
-            game.print("вручную", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 91, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
+            Printer.print("вручную", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 91, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
         }
 
 
-        game.print("игра на время", TEXT_PADDING_L, TIME_ANCHOR - 1);
+        Printer.print("игра на время", TEXT_PADDING_L, TIME_ANCHOR - 1);
         switchRail.drawAt(SWITCH_LEFTMOST_POSITION, TIME_ANCHOR + 2);
         if (timerEnabledSetting) {
             if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
-            game.print("да", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
+            Printer.print("да", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
         } else {
             if (switchTimePosition > SWITCH_LEFTMOST_POSITION) switchTimePosition--;
             switchButton.replaceColor(Color.RED, 1);
             switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
-            game.print("нет", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 94, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
+            Printer.print("нет", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 94, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
 
         }
 
-        game.print("тема: " + Theme.getCurrentName(), TEXT_PADDING_L, THEME_ANCHOR);
+        Printer.print("тема: " + Theme.getCurrentName(), TEXT_PADDING_L, THEME_ANCHOR);
 
         themePalette.replaceColor(Color.RED, 1);
         themePalette.replaceColor(Theme.getCurrentNumber() == 0 ? Color.YELLOW : Color.BLACK, 3);

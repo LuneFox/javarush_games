@@ -71,14 +71,14 @@ public class Button implements Drawable {
         int drawY = (isPressed) ? y1 + 1 : y1;
         setBody(drawX, drawY, !isPressed);
         this.body.draw();
-        game.print(text, textColor, drawX + textOffset, drawY);
+        Printer.print(text, textColor, drawX + textOffset, drawY);
     }
 
     public void setBody(int posX, int posY, boolean addShadow) {
         this.body = new Image(VisualElement.MENU_BUTTON, posX, posY) {
             @Override
             public int[][] assignMatrix(VisualElement visualElement) {
-                return ImageCreator.createWindowBitmap(x2 - x1, y2 - y1, addShadow, true);
+                return ImageCreator.createWindow(x2 - x1, y2 - y1, addShadow, true);
             }
         };
         this.body.colors = new Color[]{

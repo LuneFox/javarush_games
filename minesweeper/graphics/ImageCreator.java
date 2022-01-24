@@ -56,7 +56,7 @@ public class ImageCreator {
 
     // WINDOW GENERATION
 
-    public static int[][] createWindowBitmap(int sizeX, int sizeY, boolean addShadow, boolean addFrame) {
+    public static int[][] createWindow(int sizeX, int sizeY, boolean addShadow, boolean addFrame) {
         // Image with shadow is 1 px taller and wider
         if (addShadow) {
             sizeX++;
@@ -64,7 +64,7 @@ public class ImageCreator {
         }
 
         int[][] window = new int[sizeY][sizeX];
-        fillWindowBackground(window, sizeX, sizeY);
+        addWindowBackground(window, sizeX, sizeY);
         if (addShadow) addWindowShadow(window, sizeX, sizeY);
         if (addFrame) addWindowFrame(window, sizeX, sizeY, addShadow);
         return window;
@@ -94,7 +94,7 @@ public class ImageCreator {
         }
     }
 
-    private static void fillWindowBackground(int[][] window, int sizeX, int sizeY) {
+    private static void addWindowBackground(int[][] window, int sizeX, int sizeY) {
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
                 window[y][x] = 1;

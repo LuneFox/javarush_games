@@ -500,18 +500,8 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    // PRINT
-
-    public void print(String text, Color color, int x, int y, boolean right) {
-        Printer.print(text, color, x, y, right);
-    }
-
-    public void print(String text, Color color, int x, int y) {
-        Printer.print(text, color, x, y, false);
-    }
-
-    public void print(String text, int x, int y) {
-        Printer.print(text, Color.WHITE, x, y, false);
+    public static MinesweeperGame getInstance() {
+        return instance;
     }
 
     // CONTROLS
@@ -529,9 +519,5 @@ public class MinesweeperGame extends Game {
     @Override
     public void onKeyPress(Key key) {
         controller.keyPressAction(key);
-    }
-
-    public static MinesweeperGame getInstance() {
-        return instance;
     }
 }
