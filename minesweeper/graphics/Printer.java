@@ -9,7 +9,7 @@ import java.util.HashMap;
  */
 
 public class Printer {
-    private static final HashMap<Character, Image> SYMBOLS_CACHE = new HashMap<>();
+    private static final HashMap<Character, Image> SYMBOLS_CACHE = new HashMap<>(128);
     private static final int CHAR_SPACING = 1;
     private static final int LINE_SPACING = 9;
 
