@@ -35,7 +35,7 @@ public class Controller {
     }
 
     public final void pressKey(Key key) {
-        selectStrategy();
+        selectStrategy(0, 0);
         switch (key) {
             case UP:
                 strategy.pressUp();
@@ -105,9 +105,5 @@ public class Controller {
                 setStrategy(controlDisabled);
                 break;
         }
-    }
-
-    private void selectStrategy() {
-        selectStrategy(0, 0);
     }
 }
