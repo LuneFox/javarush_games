@@ -21,41 +21,6 @@ public class ControlGameOver implements ControlStrategy {
     }
 
     @Override
-    public void rightClick(int x, int y) {
-
-    }
-
-    @Override
-    public void pressUp() {
-
-    }
-
-    @Override
-    public void pressDown() {
-
-    }
-
-    @Override
-    public void pressRight() {
-
-    }
-
-    @Override
-    public void pressLeft() {
-
-    }
-
-    @Override
-    public void pressEnter() {
-
-    }
-
-    @Override
-    public void pressPause() {
-
-    }
-
-    @Override
     public void pressSpace() {
         View.score.display();
     }
@@ -65,8 +30,4 @@ public class ControlGameOver implements ControlStrategy {
         View.board.display();
     }
 
-    @Override
-    public void pressOther() {
-
-    }
 }

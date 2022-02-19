@@ -4,7 +4,6 @@ import com.javarush.games.minesweeper.view.graphics.Button;
 import com.javarush.games.minesweeper.view.View;
 
 public class ControlAbout implements ControlStrategy {
-
     @Override
     public void leftClick(int x, int y) {
         if (View.BUTTONS_CACHE.get(Button.ButtonID.BACK).covers(x, y)) {
@@ -19,23 +18,8 @@ public class ControlAbout implements ControlStrategy {
     }
 
     @Override
-    public void rightClick(int x, int y) {
-
-    }
-
-    @Override
-    public void pressUp() {
-
-    }
-
-    @Override
-    public void pressDown() {
-
-    }
-
-    @Override
     public void pressRight() {
-        View.options.changeDifficulty(false);
+        View.about.nextPage();
         View.options.animateLeftArrow();
     }
 
@@ -46,27 +30,7 @@ public class ControlAbout implements ControlStrategy {
     }
 
     @Override
-    public void pressEnter() {
-
-    }
-
-    @Override
-    public void pressPause() {
-
-    }
-
-    @Override
-    public void pressSpace() {
-
-    }
-
-    @Override
     public void pressEsc() {
         View.main.display();
-    }
-
-    @Override
-    public void pressOther() {
-
     }
 }

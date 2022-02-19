@@ -11,7 +11,7 @@ public class ControlShop implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (clickedOutsideShop(x, y)) View.board.display();
+        if (clickedOutsideShopWindow(x, y)) View.board.display();
         ShopItem item = game.shop.getClickedItem(x, y);
         game.shop.sellAndRememberLastClick(item);
     }
@@ -24,36 +24,6 @@ public class ControlShop implements ControlStrategy {
     }
 
     @Override
-    public void pressUp() {
-
-    }
-
-    @Override
-    public void pressDown() {
-
-    }
-
-    @Override
-    public void pressRight() {
-
-    }
-
-    @Override
-    public void pressLeft() {
-
-    }
-
-    @Override
-    public void pressEnter() {
-
-    }
-
-    @Override
-    public void pressPause() {
-
-    }
-
-    @Override
     public void pressSpace() {
         View.board.display();
     }
@@ -63,12 +33,7 @@ public class ControlShop implements ControlStrategy {
         View.board.display();
     }
 
-    @Override
-    public void pressOther() {
-
-    }
-
-    private boolean clickedOutsideShop(int x, int y) {
+    private boolean clickedOutsideShopWindow(int x, int y) {
         boolean horizontal = inside(x, 0, 9) || inside(x, 90, 99);
         boolean vertical = inside(y, 0, 10) || inside(y, 91, 99);
         return (horizontal || vertical);

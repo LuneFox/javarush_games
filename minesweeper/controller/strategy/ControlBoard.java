@@ -35,36 +35,6 @@ public class ControlBoard implements ControlStrategy {
     }
 
     @Override
-    public void pressUp() {
-
-    }
-
-    @Override
-    public void pressDown() {
-
-    }
-
-    @Override
-    public void pressRight() {
-
-    }
-
-    @Override
-    public void pressLeft() {
-
-    }
-
-    @Override
-    public void pressEnter() {
-
-    }
-
-    @Override
-    public void pressPause() {
-
-    }
-
-    @Override
     public void pressSpace() {
         if (!game.isStopped) {
             View.shop.display();

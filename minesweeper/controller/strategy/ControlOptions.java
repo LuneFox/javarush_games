@@ -30,21 +30,6 @@ public class ControlOptions implements ControlStrategy {
     }
 
     @Override
-    public void rightClick(int x, int y) {
-
-    }
-
-    @Override
-    public void pressUp() {
-
-    }
-
-    @Override
-    public void pressDown() {
-
-    }
-
-    @Override
     public void pressRight() {
         View.options.changeDifficulty(true);
         View.options.animateRightArrow();
@@ -57,27 +42,7 @@ public class ControlOptions implements ControlStrategy {
     }
 
     @Override
-    public void pressEnter() {
-
-    }
-
-    @Override
-    public void pressPause() {
-
-    }
-
-    @Override
-    public void pressSpace() {
-
-    }
-
-    @Override
     public void pressEsc() {
         View.main.display();
-    }
-
-    @Override
-    public void pressOther() {
-
     }
 }

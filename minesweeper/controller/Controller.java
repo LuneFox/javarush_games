@@ -12,7 +12,6 @@ import com.javarush.games.minesweeper.view.View;
 
 public class Controller {
     private ControlStrategy strategy;
-    private static final ControlStrategy CONTROL_DISABLED = new ControlDisabled();
     private static final ControlStrategy CONTROL_ABOUT = new ControlAbout();
     private static final ControlStrategy CONTROL_BOARD = new ControlBoard();
     private static final ControlStrategy CONTROL_GAME_OVER = new ControlGameOver();
@@ -22,6 +21,8 @@ public class Controller {
     private static final ControlStrategy CONTROL_RECORDS = new ControlRecords();
     private static final ControlStrategy CONTROL_SCORE = new ControlScore();
     private static final ControlStrategy CONTROL_SHOP = new ControlShop();
+    private static final ControlStrategy CONTROL_DISABLED = new ControlStrategy() {
+    };
 
     public final void leftClick(int x, int y) {
         selectStrategy(x, y);
@@ -36,6 +37,7 @@ public class Controller {
     }
 
     public final void pressKey(Key key) {
+        // Keyboard presses always pass the outside screen check
         selectStrategy(0, 0);
         switch (key) {
             case UP:

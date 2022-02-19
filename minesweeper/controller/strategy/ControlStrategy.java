@@ -1,25 +1,41 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
+/**
+ * Strategy pattern for different controls on different screens.
+ */
+
 public interface ControlStrategy {
-    void leftClick(int x, int y);
+    default void leftClick(int x, int y) {
+    }
 
-    void rightClick(int x, int y);
+    default void rightClick(int x, int y) {
+    }
 
-    void pressUp();
+    default void pressUp() {
+    }
 
-    void pressDown();
+    default void pressDown() {
+    }
 
-    void pressRight();
+    default void pressRight() {
+    }
 
-    void pressLeft();
+    default void pressLeft() {
+    }
 
-    void pressEnter();
+    default void pressEnter() {
+    }
 
-    void pressPause();
+    default void pressPause() {
+    }
 
-    void pressSpace();
+    default void pressSpace() {
+    }
 
-    void pressEsc();
+    default void pressEsc() {
+    }
 
-    void pressOther();
+    default void pressOther() {
+    }
+
 }

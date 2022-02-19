@@ -17,41 +17,6 @@ public class ControlScore implements ControlStrategy {
     }
 
     @Override
-    public void rightClick(int x, int y) {
-
-    }
-
-    @Override
-    public void pressUp() {
-
-    }
-
-    @Override
-    public void pressDown() {
-
-    }
-
-    @Override
-    public void pressRight() {
-
-    }
-
-    @Override
-    public void pressLeft() {
-
-    }
-
-    @Override
-    public void pressEnter() {
-
-    }
-
-    @Override
-    public void pressPause() {
-
-    }
-
-    @Override
     public void pressSpace() {
         View.gameOver.display(game.lastResultIsVictory, 0);
         Screen.set(Screen.GAME_OVER);
@@ -61,10 +26,5 @@ public class ControlScore implements ControlStrategy {
     public void pressEsc() {
         View.gameOver.display(game.lastResultIsVictory, 0);
         Screen.set(Screen.GAME_OVER);
-    }
-
-    @Override
-    public void pressOther() {
-
     }
 }
