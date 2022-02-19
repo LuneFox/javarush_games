@@ -4,8 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.Cell;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.graphics.*;
+import com.javarush.games.minesweeper.view.graphics.*;
 
 /**
  * Shows score details in the end of the game.

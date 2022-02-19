@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.graphics.VisualElement;
+import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
 /**
  * Shows the main game board.

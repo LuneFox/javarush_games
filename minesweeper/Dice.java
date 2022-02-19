@@ -1,8 +1,9 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.games.minesweeper.graphics.VisualElement;
-import com.javarush.games.minesweeper.graphics.Drawable;
-import com.javarush.games.minesweeper.graphics.Image;
+import com.javarush.games.minesweeper.utility.Util;
+import com.javarush.games.minesweeper.view.graphics.VisualElement;
+import com.javarush.games.minesweeper.view.graphics.Drawable;
+import com.javarush.games.minesweeper.view.graphics.Image;
 import com.javarush.games.minesweeper.view.View;
 
 /**

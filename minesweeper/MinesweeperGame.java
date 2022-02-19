@@ -4,7 +4,8 @@ import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
-import com.javarush.games.minesweeper.graphics.*;
+import com.javarush.games.minesweeper.utility.Util;
+import com.javarush.games.minesweeper.view.graphics.*;
 import com.javarush.games.minesweeper.view.View;
 import com.javarush.games.minesweeper.Cell.Filter;
 

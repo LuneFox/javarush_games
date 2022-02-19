@@ -1,8 +1,8 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.graphics.VisualElement;
-import com.javarush.games.minesweeper.graphics.Image;
+import com.javarush.games.minesweeper.view.graphics.VisualElement;
+import com.javarush.games.minesweeper.view.graphics.Image;
 
 /**
  * Items you can buy in the shop and use in the game.

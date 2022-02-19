@@ -1,9 +1,9 @@
-package com.javarush.games.minesweeper.graphics;
+package com.javarush.games.minesweeper.view.graphics;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.Util;
+import com.javarush.games.minesweeper.utility.Util;
 
 /**
  * Logical display to flatten layers and increase the drawing speed, allows making effects.

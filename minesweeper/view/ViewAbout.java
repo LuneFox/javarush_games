@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
-import com.javarush.games.minesweeper.graphics.*;
+import com.javarush.games.minesweeper.view.graphics.*;
 
 public final class ViewAbout extends View {
     public static int currentAboutPage = 0;

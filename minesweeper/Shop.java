@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.graphics.VisualElement;
+import com.javarush.games.minesweeper.view.graphics.VisualElement;
 import com.javarush.games.minesweeper.view.View;
 
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.graphics;
+package com.javarush.games.minesweeper.view.graphics;
 
 import java.util.ArrayList;
 import java.util.List;

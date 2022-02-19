@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.minesweeper.graphics.*;
+import com.javarush.games.minesweeper.view.graphics.*;
 
 import java.util.ArrayList;
 import java.util.List;

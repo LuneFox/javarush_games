@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
-import com.javarush.games.minesweeper.graphics.Button;
-import com.javarush.games.minesweeper.graphics.Theme;
+import com.javarush.games.minesweeper.view.graphics.Button;
+import com.javarush.games.minesweeper.view.graphics.Theme;
 import com.javarush.games.minesweeper.view.View;
 
 public class ControlOptions implements ControlStrategy {

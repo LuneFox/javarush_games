@@ -4,7 +4,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.ShopItem;
 import com.javarush.games.minesweeper.view.View;
 
-import static com.javarush.games.minesweeper.Util.inside;
+import static com.javarush.games.minesweeper.utility.Util.inside;
 
 public class ControlShop implements ControlStrategy {
     final private MinesweeperGame game = MinesweeperGame.getInstance();

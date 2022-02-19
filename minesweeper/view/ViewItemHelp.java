@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.ShopItem;
 import com.javarush.games.minesweeper.Strings;
-import com.javarush.games.minesweeper.graphics.*;
+import com.javarush.games.minesweeper.view.graphics.*;
 
 /**
  * Shows item help when you right-click an item in the shop.

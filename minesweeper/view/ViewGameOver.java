@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.graphics.*;
+import com.javarush.games.minesweeper.view.graphics.*;
 
 public final class ViewGameOver extends View {
     public int popUpTimer;  // defines how soon will game over screen show up

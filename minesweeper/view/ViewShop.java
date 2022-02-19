@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.*;
-import com.javarush.games.minesweeper.graphics.*;
+import com.javarush.games.minesweeper.view.graphics.*;
 
 import java.util.Date;
 

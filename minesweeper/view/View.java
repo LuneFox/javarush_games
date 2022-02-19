@@ -2,9 +2,8 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.graphics.*;
-import com.javarush.games.minesweeper.graphics.Button.ButtonID;
+import com.javarush.games.minesweeper.utility.Util;
+import com.javarush.games.minesweeper.view.graphics.*;
 
 import java.util.EnumMap;
 
@@ -26,7 +25,7 @@ public class View {
     public static ViewGameOver gameOver;
     public static ViewScore score;
     public static final EnumMap<VisualElement, Image> IMAGES_CACHE = new EnumMap<>(VisualElement.class);
-    public static final EnumMap<ButtonID, Button> BUTTONS_CACHE = new EnumMap<>(ButtonID.class);
+    public static final EnumMap<Button.ButtonID, Button> BUTTONS_CACHE = new EnumMap<>(Button.ButtonID.class);
 
     public View() {
         cacheStaticElements();
@@ -62,7 +61,7 @@ public class View {
 
     public final void cacheStaticElements() { // load images once at launch and just re-use them all the time
         VisualElement.getElementsByPrefixes("MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::cacheImage);
-        for (ButtonID b : ButtonID.values()) {
+        for (Button.ButtonID b : Button.ButtonID.values()) {
             BUTTONS_CACHE.put(b, new Button(game, b.posX, b.posY, b.width, b.height, b.label));
         }
     }

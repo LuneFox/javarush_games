@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper;
 
+import com.javarush.games.minesweeper.utility.Util;
+
 public class Score {
     private final MinesweeperGame game;
     private final Player player;
