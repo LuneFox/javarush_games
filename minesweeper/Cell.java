@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.graphics.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,8 @@ public class Cell {
     private final VisualElement visualElement;// visual element assigned to the body: opened, closed or destroyed
     private final Image background;           // the "body" of the cell
     private Image sprite;                     // foreground image (number, flag or mine)
+
+    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, SCORED, FLAGGED}
 
     protected Cell(VisualElement visualElement, int x, int y, boolean isMined) {
         this.background = new Image(visualElement, x * 10, y * 10);
@@ -131,5 +134,48 @@ public class Cell {
 
     public boolean isScored() {
         return (isOpen && !isMined && !isDestroyed);
+    }
+
+    public static List<Cell> filterCells(List<Cell> list, Filter filter) {
+        List<Cell> result = new ArrayList<>();
+        list.forEach(cell -> {
+            switch (filter) {
+                case CLOSED:
+                    if (!cell.isOpen) result.add(cell);
+                    break;
+                case OPEN:
+                    if (cell.isOpen) result.add(cell);
+                    break;
+                case MINED:
+                    if (cell.isMined) result.add(cell);
+                    break;
+                case DANGEROUS:
+                    if (cell.isDangerous()) result.add(cell);
+                    break;
+                case NUMERABLE:
+                    if (cell.isNumerable()) result.add(cell);
+                    break;
+                case SUSPECTED:
+                    if (cell.isSuspected()) result.add(cell);
+                    break;
+                case SAFE:
+                    if (cell.isSafe()) result.add(cell);
+                    break;
+                case EMPTY:
+                    if (cell.isEmpty()) result.add(cell);
+                    break;
+                case SCORED:
+                    if (cell.isScored()) result.add(cell);
+                    break;
+                case FLAGGED:
+                    if (cell.isFlagged) result.add(cell);
+                    break;
+                case NONE:
+                default:
+                    result.add(cell);
+                    break;
+            }
+        });
+        return result;
     }
 }

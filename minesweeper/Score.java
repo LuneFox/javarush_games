@@ -14,7 +14,7 @@ public class Score {
     }
 
     public int getCurrentScore() {
-        int score = game.countAllCells(Util.Filter.SCORED) * game.difficulty;
+        int score = game.countAllCells(Cell.Filter.SCORED) * game.difficulty;
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
@@ -25,7 +25,7 @@ public class Score {
 
     public int getMinesScore() {
         if (!game.lastResultIsVictory) return 0;
-        int minesCount = game.countAllCells(Util.Filter.MINED);
+        int minesCount = game.countAllCells(Cell.Filter.MINED);
         return minesCount * 20 * game.difficulty;
     }
 

@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.Cell;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Util;
@@ -21,8 +22,8 @@ public final class ViewScore extends View {
         super.display();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
 
-        int minesCount = game.countAllCells(Util.Filter.MINED);
-        int scoredCells = game.countAllCells(Util.Filter.SCORED);
+        int minesCount = game.countAllCells(Cell.Filter.MINED);
+        int scoredCells = game.countAllCells(Cell.Filter.SCORED);
         int difficulty = game.difficulty;
         int money = game.inventory.money;
         int shields = game.player.getBrokenShields();

@@ -6,7 +6,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.view.View;
-import com.javarush.games.minesweeper.Util.Filter;
+import com.javarush.games.minesweeper.Cell.Filter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -349,7 +349,7 @@ public class MinesweeperGame extends Game {
         for (int y = 0; y < 10; y++) {
             all.addAll(Arrays.asList(field[y]).subList(0, 10));
         }
-        return Util.filterCells(all, filter);
+        return Cell.filterCells(all, filter);
     }
 
     private List<Cell> getNeighborCells(Cell cell, Filter filter, boolean includeSelf) {
@@ -362,7 +362,7 @@ public class MinesweeperGame extends Game {
                 neighbors.add(field[y][x]);
             }
         }
-        return Util.filterCells(neighbors, filter);
+        return Cell.filterCells(neighbors, filter);
     }
 
     private void enumerateCells() {
