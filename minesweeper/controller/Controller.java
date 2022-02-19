@@ -102,6 +102,7 @@ public class Controller {
                 setStrategy(controlShop);
                 break;
             default:
+                setStrategy(controlDisabled);
                 break;
         }
     }
