@@ -14,6 +14,7 @@ public class Timer implements Drawable {
     public float time;
     private final float TIME_LIMIT = 500;
     public boolean enabled;
+    public boolean enabledSetting;
     private Date lastTickTime;
     private final Color[] COLORS;
 

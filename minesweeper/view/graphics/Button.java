@@ -12,7 +12,6 @@ public class Button implements Drawable {
     public static int pressedTime;
     public static final int PRESS_DURATION = 5;
 
-    private final MinesweeperGame game;
     private final int x1;
     private final int x2;
     private final int y1;
@@ -37,11 +36,11 @@ public class Button implements Drawable {
         START(61, 88, 36, 9, "старт"),
         OPTIONS(61, 64, 36, 9, "опции");
 
-        public int posX;
-        public int posY;
-        public int width;
-        public int height;
-        public String label;
+        public final int posX;
+        public final int posY;
+        public final int width;
+        public final int height;
+        public final String label;
 
         ButtonID(int posX, int posY, int width, int height, String label) {
             this.posX = posX;
@@ -52,10 +51,9 @@ public class Button implements Drawable {
         }
     }
 
-    public Button(MinesweeperGame game, int posX, int posY, int sizeX, int sizeY, String text) {
+    public Button(int posX, int posY, int sizeX, int sizeY, String text) {
         int textLength = Printer.calculateWidth(text);
         this.text = text;
-        this.game = game;
         this.x1 = posX;
         this.y1 = posY;
         this.x2 = (sizeX == 0) ? (posX + textLength + 3) : (posX + sizeX);

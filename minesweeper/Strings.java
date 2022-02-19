@@ -70,7 +70,7 @@ public class Strings {
 
     public static StringBuilder generateNewShieldDescription() {
         return new StringBuilder("Спасёт от взрыва\nпри открытии мины\nодин раз. Однако вы\n" +
-                "потеряете " + 150 * (View.options.difficultySetting / 5) + " очков.");
+                "потеряете " + 150 * (MinesweeperGame.getInstance().difficultySetting / 5) + " очков.");
     }
 
     public static final String ITEM_SCANNER_NAME = "Сканер";

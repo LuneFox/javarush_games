@@ -40,13 +40,10 @@ public final class ViewOptions extends View {
     public final Area greenThemeArea = new Area(THEME_PADDING_L + 12, THEME_PADDING_L + 22, THEME_ANCHOR, THEME_ANCHOR + 10);
     public final Area blueThemeArea = new Area(THEME_PADDING_L + 24, THEME_PADDING_L + 34, THEME_ANCHOR, THEME_ANCHOR + 10);
 
-    public int difficultySetting;
-    public boolean timerEnabledSetting;
+
 
     public ViewOptions(MinesweeperGame game) {
         this.game = game;
-        this.difficultySetting = game.difficulty;
-        this.timerEnabledSetting = game.timer.enabled;
         this.screen = Screen.OPTIONS;
     }
 
@@ -57,7 +54,7 @@ public final class ViewOptions extends View {
         Image switchButton = IMAGES_CACHE.get(VisualElement.MENU_SWITCH);
         Image switchRail = IMAGES_CACHE.get(VisualElement.MENU_SWITCH_RAIL);
         Image themePalette = IMAGES_CACHE.get(VisualElement.MENU_THEME_PALETTE);
-        String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(difficultySetting)];
+        String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(game.difficultySetting)];
 
 
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
@@ -87,7 +84,7 @@ public final class ViewOptions extends View {
 
         Printer.print("игра на время", TEXT_PADDING_L, TIME_ANCHOR - 1);
         switchRail.drawAt(SWITCH_LEFTMOST_POSITION, TIME_ANCHOR + 2);
-        if (timerEnabledSetting) {
+        if (game.timer.enabledSetting) {
             if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
@@ -118,7 +115,7 @@ public final class ViewOptions extends View {
 
     private void displayDifficultyBar() {
         LinkedList<Image> bars = new LinkedList<>();
-        for (int i = 0; i < difficultySetting / 5; i++) {
+        for (int i = 0; i < game.difficultySetting / 5; i++) {
             Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR, (i * 4) + 56, DIFF_ANCHOR);
             if (i > 1) bar.replaceColor(Color.YELLOW, 1);
             if (i > 3) bar.replaceColor(Color.ORANGE, 1);
@@ -126,25 +123,6 @@ public final class ViewOptions extends View {
             bars.add(bar);
         }
         bars.forEach(Image::draw);
-    }
-
-    public void changeDifficulty(boolean harder) {
-        if (harder && difficultySetting < 45) {
-            difficultySetting += 5;
-        } else if (!harder && difficultySetting > 5) {
-            difficultySetting -= 5;
-        }
-        display();
-    }
-
-    public void switchAutoBuyFlags() {
-        game.shop.autoBuyFlagsEnabled = !game.shop.autoBuyFlagsEnabled;
-        display();
-    }
-
-    public void switchGameTimer() {
-        timerEnabledSetting = !timerEnabledSetting;
-        display();
     }
 
     public void animateLeftArrow() {

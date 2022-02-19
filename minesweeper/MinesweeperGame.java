@@ -30,8 +30,9 @@ public class MinesweeperGame extends Game {
     public Cell[][] field = new Cell[10][10];
     private Controller controller;
 
-    // GAME STATE
-    public int difficulty = 10;
+    // GAME OPTIONS
+    public int difficulty = 10;                // current difficulty
+    public int difficultySetting = difficulty; // in the options, applied for the new game
 
     // FLAGS
     public boolean evenTurn;        // is now even turn or odd turn? helps with animation of certain elements
@@ -40,6 +41,10 @@ public class MinesweeperGame extends Game {
     public boolean lastResultIsVictory;
     public boolean isStopped = true;
     public boolean isFirstMove = true;
+
+    public static MinesweeperGame getInstance() {
+        return instance;
+    }
 
     // NEW GAME
 
@@ -135,8 +140,8 @@ public class MinesweeperGame extends Game {
     }
 
     private void applyOptions() {
-        difficulty = View.options.difficultySetting;
-        timer.enabled = View.options.timerEnabledSetting;
+        difficulty = difficultySetting;
+        timer.enabled = timer.enabledSetting;
     }
 
     private void createField() {
@@ -427,6 +432,32 @@ public class MinesweeperGame extends Game {
         if (Util.inside(remainingTurns, 0, 2) && player.getMoves() != 0) shop.dice.draw();
     }
 
+    // OPTION SETTINGS
+
+    public void changeDifficultySetting(boolean harder) {
+        // Does not affect the current game, applied to the new game
+        if (harder && difficultySetting < 45) {
+            difficultySetting += 5;
+            View.options.animateRightArrow();
+        } else if (!harder && difficultySetting > 5) {
+            difficultySetting -= 5;
+            View.options.animateLeftArrow();
+        }
+        View.options.display();
+    }
+
+    public void switchAutoBuyFlags() {
+        // Affects the current game
+        shop.autoBuyFlagsEnabled = !shop.autoBuyFlagsEnabled;
+        View.options.display();
+    }
+
+    public void switchTimerSetting() {
+        // Does not affect the current game, applied to the new game
+        timer.enabledSetting = !timer.enabledSetting;
+        View.options.display();
+    }
+
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
 
     public void checkVictory() {
@@ -500,10 +531,6 @@ public class MinesweeperGame extends Game {
                 field[posY][posX].fullRecolor();
             }
         }
-    }
-
-    public static MinesweeperGame getInstance() {
-        return instance;
     }
 
     // CONTROLS

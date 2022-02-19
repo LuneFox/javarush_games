@@ -37,12 +37,14 @@ public final class ViewAbout extends View {
 
     public void prevPage() {
         currentAboutPage = currentAboutPage <= 0 ? 0 : currentAboutPage - 1;
+        View.options.animateLeftArrow();
         display();
     }
 
     public void nextPage() {
         int lastPage = Strings.ABOUT_HEAD.length - 1;
         currentAboutPage = currentAboutPage >= lastPage ? lastPage : currentAboutPage + 1;
+        View.options.animateRightArrow();
         display();
     }
 }

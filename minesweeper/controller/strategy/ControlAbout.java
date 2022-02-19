@@ -4,29 +4,26 @@ import com.javarush.games.minesweeper.view.graphics.Button;
 import com.javarush.games.minesweeper.view.View;
 
 public class ControlAbout implements ControlStrategy {
+
     @Override
     public void leftClick(int x, int y) {
         if (View.BUTTONS_CACHE.get(Button.ButtonID.BACK).covers(x, y)) {
             View.main.display();
         } else if (View.about.prevPageArrowArea.covers(x, y)) {
             View.about.prevPage();
-            View.options.animateLeftArrow();
         } else if (View.about.nextPageArrowArea.covers(x, y)) {
             View.about.nextPage();
-            View.options.animateRightArrow();
         }
     }
 
     @Override
     public void pressRight() {
         View.about.nextPage();
-        View.options.animateLeftArrow();
     }
 
     @Override
     public void pressLeft() {
         View.about.prevPage();
-        View.options.animateLeftArrow();
     }
 
     @Override
