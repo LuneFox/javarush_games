@@ -10,7 +10,7 @@ import java.util.List;
  * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
  */
 
-class Cell {
+public class Cell {
     private static final List<VisualElement> SPRITES = VisualElement.getElementsByPrefixes("SPR_");
 
     protected final int x;                    // logical position on a 10x10 grid
@@ -19,7 +19,7 @@ class Cell {
     protected boolean isOpen;                 // revealed
     protected boolean isScanned;              // revealed using a scanner
     protected boolean isShielded;             // revealed using a shield
-    protected boolean isFlagged;              // flagged by player
+    public boolean isFlagged;              // flagged by player
     protected boolean isDestroyed;            // blown up by the bomb
     protected int countMinedNeighbors;        // number of adjacent mines
 

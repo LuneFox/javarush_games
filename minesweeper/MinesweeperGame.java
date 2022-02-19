@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
+import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.graphics.*;
 import com.javarush.games.minesweeper.view.View;
 import com.javarush.games.minesweeper.Util.Filter;
@@ -113,7 +114,7 @@ public class MinesweeperGame extends Game {
         displayDice();
     }
 
-    void createGame() {
+    public void createGame() {
         applyOptions();    // difficulty impacts the number of mines created below
         createField();
         plantMines();      // number of mines define the number of flags given out below
@@ -190,7 +191,7 @@ public class MinesweeperGame extends Game {
 
     // ACTIVE CELL OPERATIONS
 
-    void openCell(int x, int y) {
+    public void openCell(int x, int y) {
 
         Cell cell = field[y][x];
 
@@ -224,7 +225,7 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    void openRest(int x, int y) {
+    public void openRest(int x, int y) {
         // attempts to open cells around if number of flags nearby equals the number on the cell
         if (shop.scanner.isActivated() || shop.miniBomb.isActivated()) return;
         Cell cell = field[y][x];
@@ -264,7 +265,7 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    void setFlag(int x, int y, boolean canRemove) {
+    public void setFlag(int x, int y, boolean canRemove) {
         if (isStopped) return;
 
         Cell cell = field[y][x];
@@ -508,16 +509,19 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseLeftClick(int x, int y) {
+        allowCountMoves = true;
+        allowFlagExplosion = false;
         controller.leftClick(x, y);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
+        allowCountMoves = true;
         controller.rightClick(x, y);
     }
 
     @Override
     public void onKeyPress(Key key) {
-        controller.keyPressAction(key);
+        controller.pressKey(key);
     }
 }

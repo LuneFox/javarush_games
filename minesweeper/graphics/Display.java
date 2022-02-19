@@ -52,7 +52,7 @@ public class Display implements Drawable {
     // OVERRIDES
 
     public void setCellColor(int x, int y, Color color) {
-        if (Util.isOnScreen(x, y)) this.matrix[y][x].cellColor = color;
+        if (Util.isWithinScreen(x, y)) this.matrix[y][x].cellColor = color;
     }
 
     // INNER CLASSES
