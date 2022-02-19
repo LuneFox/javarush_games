@@ -11,16 +11,16 @@ import com.javarush.games.minesweeper.view.View;
 
 public class Controller {
     private ControlStrategy strategy;
-    private final ControlStrategy controlDisabled = new ControlDisabled();
-    private final ControlStrategy controlAbout = new ControlAbout();
-    private final ControlStrategy controlBoard = new ControlBoard();
-    private final ControlStrategy controlGameOver = new ControlGameOver();
-    private final ControlStrategy controlItemHelp = new ControlItemHelp();
-    private final ControlStrategy controlMain = new ControlMain();
-    private final ControlStrategy controlOptions = new ControlOptions();
-    private final ControlStrategy controlRecords = new ControlRecords();
-    private final ControlStrategy controlScore = new ControlScore();
-    private final ControlStrategy controlShop = new ControlShop();
+    private static final ControlStrategy CONTROL_DISABLED = new ControlDisabled();
+    private static final ControlStrategy CONTROL_ABOUT = new ControlAbout();
+    private static final ControlStrategy CONTROL_BOARD = new ControlBoard();
+    private static final ControlStrategy CONTROL_GAME_OVER = new ControlGameOver();
+    private static final ControlStrategy CONTROL_ITEM_HELP = new ControlItemHelp();
+    private static final ControlStrategy CONTROL_MAIN = new ControlMain();
+    private static final ControlStrategy CONTROL_OPTIONS = new ControlOptions();
+    private static final ControlStrategy CONTROL_RECORDS = new ControlRecords();
+    private static final ControlStrategy CONTROL_SCORE = new ControlScore();
+    private static final ControlStrategy CONTROL_SHOP = new ControlShop();
 
     public final void leftClick(int x, int y) {
         selectStrategy(x, y);
@@ -69,40 +69,40 @@ public class Controller {
 
         // Disable controls under these conditions
         if (!Util.isWithinScreen(x, y) || View.gameOver.popUpTimer > 0) {
-            setStrategy(controlDisabled);
+            setStrategy(CONTROL_DISABLED);
             return;
         }
 
         switch (Screen.get()) {
             case ABOUT:
-                setStrategy(controlAbout);
+                setStrategy(CONTROL_ABOUT);
                 break;
             case BOARD:
-                setStrategy(controlBoard);
+                setStrategy(CONTROL_BOARD);
                 break;
             case GAME_OVER:
-                setStrategy(controlGameOver);
+                setStrategy(CONTROL_GAME_OVER);
                 break;
             case ITEM_HELP:
-                setStrategy(controlItemHelp);
+                setStrategy(CONTROL_ITEM_HELP);
                 break;
-            case MAIN_MENU:
-                setStrategy(controlMain);
+            case MAIN:
+                setStrategy(CONTROL_MAIN);
                 break;
             case OPTIONS:
-                setStrategy(controlOptions);
+                setStrategy(CONTROL_OPTIONS);
                 break;
             case RECORDS:
-                setStrategy(controlRecords);
+                setStrategy(CONTROL_RECORDS);
                 break;
             case SCORE:
-                setStrategy(controlScore);
+                setStrategy(CONTROL_SCORE);
                 break;
             case SHOP:
-                setStrategy(controlShop);
+                setStrategy(CONTROL_SHOP);
                 break;
             default:
-                setStrategy(controlDisabled);
+                setStrategy(CONTROL_DISABLED);
                 break;
         }
     }

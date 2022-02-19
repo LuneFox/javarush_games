@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public enum Screen {
-    MAIN_MENU, GAME_OVER, SHOP, BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE, RECORDS;
+    MAIN, GAME_OVER, SHOP, BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE, RECORDS;
 
     private static final List<Screen> screens = new ArrayList<>(Arrays.asList(Screen.values()));
 
