@@ -13,6 +13,10 @@ public interface ControlStrategy {
 
     void pressLeft();
 
+    void pressEnter();
+
+    void pressPause();
+
     void pressSpace();
 
     void pressEsc();

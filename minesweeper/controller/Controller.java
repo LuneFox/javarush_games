@@ -50,6 +50,12 @@ public class Controller {
             case RIGHT:
                 strategy.pressRight();
                 break;
+            case ENTER:
+                strategy.pressEnter();
+                break;
+            case PAUSE:
+                strategy.pressPause();
+                break;
             case SPACE:
                 strategy.pressSpace();
                 break;

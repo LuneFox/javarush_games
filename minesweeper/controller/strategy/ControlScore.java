@@ -42,6 +42,16 @@ public class ControlScore implements ControlStrategy {
     }
 
     @Override
+    public void pressEnter() {
+
+    }
+
+    @Override
+    public void pressPause() {
+
+    }
+
+    @Override
     public void pressSpace() {
         View.gameOver.display(game.lastResultIsVictory, 0);
         Screen.set(Screen.GAME_OVER);

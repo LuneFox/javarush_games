@@ -46,6 +46,16 @@ public class ControlAbout implements ControlStrategy {
     }
 
     @Override
+    public void pressEnter() {
+
+    }
+
+    @Override
+    public void pressPause() {
+
+    }
+
+    @Override
     public void pressSpace() {
 
     }
