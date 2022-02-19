@@ -12,4 +12,4 @@
 
 [Racer](https://javarush.ru/projects/apps/36456) - по мотивам фильма "Назад в будущее"
 
-[Space Invaders](https://javarush.ru/projects/apps/50729) - микс из Space Invaders, Маро, Танчиков и Тетриса
+[Space Invaders](https://javarush.ru/projects/apps/50729) - микс из Space Invaders, Марио, Танчиков и Тетриса
