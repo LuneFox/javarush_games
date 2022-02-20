@@ -84,7 +84,6 @@ public class MinesweeperGame extends Game {
         plantMines();      // number of mines define the number of flags given out below
         resetValues();
         enumerateCells();
-        Screen.board.update();
         setScore(player.score.getCurrentScore());
     }
 
@@ -269,7 +268,7 @@ public class MinesweeperGame extends Game {
                 shop.sell(shop.flag);
                 return true;
             } else {
-                Screen.shop.update();
+                Screen.set(Screen.SHOP);
                 return false;
             }
         } else {
@@ -401,17 +400,14 @@ public class MinesweeperGame extends Game {
             difficultySetting -= 5;
             Screen.options.animateLeftArrow();
         }
-        Screen.options.update();
     }
 
     public void switchAutoBuyFlags() {
         shop.autoBuyFlagsEnabled = !shop.autoBuyFlagsEnabled;
-        Screen.options.update();
     }
 
     public void switchTimerSetting() {
         timer.enabledSetting = !timer.enabledSetting;
-        Screen.options.update();
     }
 
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
