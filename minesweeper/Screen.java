@@ -22,7 +22,7 @@ public enum Screen {
     public static final ViewShop shop = new ViewShop();
     public static final View[] VIEWS = new View[]{about, board, gameOver, itemHelp, main, options, records, score, shop};
     private static View pendingView;
-    private static View currentView = pendingView;
+    private static View currentView;
     public static boolean evenFrame;    // helps to animate shaking elements
 
     // Screen at index 0 is considered active
