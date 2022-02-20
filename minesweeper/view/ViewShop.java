@@ -23,6 +23,7 @@ public final class ViewShop extends View {
     public void update() {
         super.update();
         Screen.board.update();
+
         game.checkTimeOut();
 
         shakeAnimationCountDown();

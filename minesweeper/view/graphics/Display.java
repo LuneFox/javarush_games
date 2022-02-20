@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper.view.graphics;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.utility.Util;
 
 /**
@@ -12,7 +11,12 @@ import com.javarush.games.minesweeper.utility.Util;
 public class Display implements Drawable {
     private final Game game = MinesweeperGame.getInstance();
     private final Pixel[][] matrix;
-    private boolean interlace;
+    private boolean interlacePhase;
+    private boolean interlaceEnabled;
+
+    public void setInterlaceEnabled(boolean interlaceEnabled) {
+        this.interlaceEnabled = interlaceEnabled;
+    }
 
     public Display() {
         this.matrix = new Pixel[100][100];
@@ -21,30 +25,40 @@ public class Display implements Drawable {
                 matrix[y][x] = new Pixel();
             }
         }
-        interlace = false;
     }
 
     public void draw() {
-        if (Screen.is(Screen.BOARD)) {
-            if (interlace) {
-                for (int y = 0; y < matrix.length; y += 2) {
-                    for (int x = 0; x < matrix[0].length; x++) {
-                        game.setCellColor(x, y, matrix[y][x].cellColor);
-                    }
-                }
-            } else {
-                for (int y = 1; y < matrix.length; y += 2) {
-                    for (int x = 0; x < matrix[0].length; x++) {
-                        game.setCellColor(x, y, matrix[y][x].cellColor);
-                    }
-                }
-            }
-            interlace = !interlace;
+        if (interlaceEnabled) {
+            interlacedDraw();
         } else {
-            for (int y = 0; y < matrix.length; y++) {
+            simpleDraw();
+        }
+    }
+
+    private void interlacedDraw() {
+        if (interlacePhase) {
+            // Phase 1
+            for (int y = 0; y < matrix.length; y += 2) {
                 for (int x = 0; x < matrix[0].length; x++) {
                     game.setCellColor(x, y, matrix[y][x].cellColor);
                 }
+            }
+        } else {
+            // Phase 2
+            for (int y = 1; y < matrix.length; y += 2) {
+                for (int x = 0; x < matrix[0].length; x++) {
+                    game.setCellColor(x, y, matrix[y][x].cellColor);
+                }
+            }
+        }
+        // Switch phase
+        interlacePhase = !interlacePhase;
+    }
+
+    private void simpleDraw() {
+        for (int y = 0; y < matrix.length; y++) {
+            for (int x = 0; x < matrix[0].length; x++) {
+                game.setCellColor(x, y, matrix[y][x].cellColor);
             }
         }
     }

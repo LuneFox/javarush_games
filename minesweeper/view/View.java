@@ -24,6 +24,7 @@ public class View {
 
     // Global updates go into this parent method, other views start updating by calling super
     public void update() {
+        game.display.setInterlaceEnabled(false);
         if (!Screen.is(Screen.SHOP)) { // animate money only when buying items
             Screen.shop.moneyOnDisplay = game.inventory.money;
         }

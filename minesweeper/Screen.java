@@ -10,7 +10,6 @@ import java.util.List;
 public enum Screen {
     MAIN, GAME_OVER, SHOP, BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE, RECORDS;
 
-    private static final List<Screen> screens = new LinkedList<>(Arrays.asList(Screen.values()));
     public static final ViewAbout about = new ViewAbout();
     public static final ViewBoard board = new ViewBoard();
     public static final ViewGameOver gameOver = new ViewGameOver();
@@ -20,7 +19,8 @@ public enum Screen {
     public static final ViewRecords records = new ViewRecords();
     public static final ViewScore score = new ViewScore();
     public static final ViewShop shop = new ViewShop();
-    public static final View[] VIEWS = new View[]{about, board, gameOver, itemHelp, main, options, records, score, shop};
+    public static final View[] views = new View[]{about, board, gameOver, itemHelp, main, options, records, score, shop};
+    private static final List<Screen> screens = new LinkedList<>(Arrays.asList(Screen.values()));
     private static View pendingView;
     private static View currentView;
 
@@ -29,7 +29,7 @@ public enum Screen {
     public static void set(Screen screen) {
         screens.remove(screen);         // remove it from the list
         screens.add(0, screen);         // insert it at index 0
-        for (View view : VIEWS) {
+        for (View view : views) {
             if (view.screen == screen) {
                 if (currentView == null) currentView = view;
                 pendingView = view;
@@ -38,13 +38,12 @@ public enum Screen {
     }
 
     public static void updateView() {
-        // Show pending view only after the button was fully animated, controls are disabled before that
         if (Button.pressedTime > Button.POST_PRESS_DELAY) Button.pressedTime--;
-        if (Button.pressedTime <= Button.POST_PRESS_DELAY) {
+        if (Button.pressedTime <= Button.POST_PRESS_DELAY) { // when the button is done animating, apply pending view
             currentView = pendingView;
         }
         View.evenFrame = !View.evenFrame;
-        currentView.update();
+        currentView.update(); // keeps updating previous view if the button isn't done animating
     }
 
     // Get active screen

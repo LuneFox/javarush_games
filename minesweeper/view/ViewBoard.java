@@ -15,6 +15,7 @@ public final class ViewBoard extends View {
 
     public void update() {
         super.update();
+        if (!(Screen.is(Screen.SHOP))) game.display.setInterlaceEnabled(true);
         game.checkTimeOut();
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {
