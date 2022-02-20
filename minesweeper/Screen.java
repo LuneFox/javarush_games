@@ -12,7 +12,7 @@ public enum Screen {
     // Screen at index 0 is considered active
     public static void set(Screen screen) {
         screens.remove(screen);         // remove it from the list
-        screens.add(0, screen);    // insert it at index 0
+        screens.add(0, screen);         // insert it at index 0
     }
 
     // Get active screen

@@ -99,7 +99,7 @@ public class MinesweeperGame extends Game {
                 View.gameOver.display();
                 break;
             case BOARD:
-                if (timeOut()) {
+                if (countDownAndCheckTimeOut()) {
                     loseByTimeOut();
                     return;
                 } else {
@@ -107,7 +107,7 @@ public class MinesweeperGame extends Game {
                 }
                 break;
             case SHOP:
-                if (timeOut()) {
+                if (countDownAndCheckTimeOut()) {
                     loseByTimeOut();
                     return;
                 } else {
@@ -177,7 +177,7 @@ public class MinesweeperGame extends Game {
         View.gameOver.display(true, 30);
     }
 
-    public boolean timeOut() {
+    public boolean countDownAndCheckTimeOut() {
         if (!isStopped) {
             if (timer.isZero()) {
                 return true;
@@ -435,7 +435,6 @@ public class MinesweeperGame extends Game {
     // OPTION SETTINGS
 
     public void changeDifficultySetting(boolean harder) {
-        // Does not affect the current game, applied to the new game
         if (harder && difficultySetting < 45) {
             difficultySetting += 5;
             View.options.animateRightArrow();
@@ -447,13 +446,11 @@ public class MinesweeperGame extends Game {
     }
 
     public void switchAutoBuyFlags() {
-        // Affects the current game
         shop.autoBuyFlagsEnabled = !shop.autoBuyFlagsEnabled;
         View.options.display();
     }
 
     public void switchTimerSetting() {
-        // Does not affect the current game, applied to the new game
         timer.enabledSetting = !timer.enabledSetting;
         View.options.display();
     }

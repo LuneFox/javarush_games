@@ -22,6 +22,7 @@ public class Timer implements Drawable {
         this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         this.time = 0;
         this.enabled = false;
+        this.enabledSetting = false;
         this.lastTickTime = new Date();
     }
 
