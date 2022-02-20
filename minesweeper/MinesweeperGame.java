@@ -35,12 +35,11 @@ public class MinesweeperGame extends Game {
     public int difficultySetting = difficulty; // in the options, applied for the new game
 
     // FLAGS
-    public boolean evenTurn;        // is now even turn or odd turn? helps with animation of certain elements
     public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
     public boolean allowFlagExplosion;
-    public boolean lastResultIsVictory;
     public boolean isStopped = true;
     public boolean isFirstMove = true;
+    public boolean isVictory = false;
 
     public static MinesweeperGame getInstance() {
         return instance;
@@ -62,62 +61,21 @@ public class MinesweeperGame extends Game {
         showGrid(false);
         setScreenSize(100, 100);
         isStopped = true;
-        view.createSubViews();
-        View.main.display();
+        Screen.set(Screen.MAIN);
         setTurnTimer(30);
     }
 
     @Override
     public void onTurn(int step) {
-        evenTurn = (!evenTurn);
-        onTurnAction();
-        display.draw();
-    }
-
-    private void onTurnAction() {
-        // everything that happens with the flow of time on different screens
-        switch (Screen.get()) {
-            case MAIN:
-                View.main.display();
-                break;
-            case OPTIONS:
-                View.options.display();
-                break;
-            case RECORDS:
-                View.records.display();
-                break;
-            case ABOUT:
-                View.about.display();
-                break;
-            case SCORE:
-                View.score.display();
-                break;
-            case ITEM_HELP:
-                View.itemHelp.display();
-                break;
-            case GAME_OVER:
-                View.gameOver.display();
-                break;
-            case BOARD:
-                if (countDownAndCheckTimeOut()) {
-                    loseByTimeOut();
-                    return;
-                } else {
-                    View.board.display();
-                }
-                break;
-            case SHOP:
-                if (countDownAndCheckTimeOut()) {
-                    loseByTimeOut();
-                    return;
-                } else {
-                    View.shop.display();
-                }
-                break;
-            default:
-                break;
+        if (Button.pressedTime > Button.POST_PRESS_DELAY) Button.pressedTime--; // button press animation counter
+        if (Screen.is(Screen.BOARD) || Screen.is(Screen.SHOP)) { // intercept running game if the time is out
+            if (countDownAndCheckTimeOut()) {
+                loseByTimeOut();
+                return;
+            }
         }
-        displayDice();
+        Screen.update();
+        display.draw();
     }
 
     public void createGame() {
@@ -126,7 +84,7 @@ public class MinesweeperGame extends Game {
         plantMines();      // number of mines define the number of flags given out below
         resetValues();
         enumerateCells();
-        View.board.display();
+        Screen.board.update();
         setScore(player.score.getCurrentScore());
     }
 
@@ -165,16 +123,18 @@ public class MinesweeperGame extends Game {
     // WIN AND LOSE
 
     private void lose() {
-        lastResultIsVictory = false;
         isStopped = true;
-        View.gameOver.display(false, 30);
+        isVictory = false;
+        Screen.gameOver.setShowDelay(30);
+        Screen.set(Screen.GAME_OVER);
     }
 
     private void win() {
-        lastResultIsVictory = true;
         player.score.registerTopScore();
         isStopped = true;
-        View.gameOver.display(true, 30);
+        isVictory = true;
+        Screen.gameOver.setShowDelay(30);
+        Screen.set(Screen.GAME_OVER);
     }
 
     public boolean countDownAndCheckTimeOut() {
@@ -189,10 +149,9 @@ public class MinesweeperGame extends Game {
     }
 
     public void loseByTimeOut() {
-        View.board.display();
+        Screen.set(Screen.BOARD);
         revealAllMines();
         lose();
-        View.gameOver.display(false, 30);
     }
 
     // ACTIVE CELL OPERATIONS
@@ -310,7 +269,7 @@ public class MinesweeperGame extends Game {
                 shop.sell(shop.flag);
                 return true;
             } else {
-                View.shop.display();
+                Screen.shop.update();
                 return false;
             }
         } else {
@@ -426,7 +385,7 @@ public class MinesweeperGame extends Game {
         lose();
     }
 
-    private void displayDice() {
+    public void displayDice() {
         if (shop.luckyDice == null) return;
         int remainingTurns = shop.luckyDice.expireMove - player.getMoves();
         if (Util.inside(remainingTurns, 0, 2) && player.getMoves() != 0) shop.dice.draw();
@@ -437,22 +396,22 @@ public class MinesweeperGame extends Game {
     public void changeDifficultySetting(boolean harder) {
         if (harder && difficultySetting < 45) {
             difficultySetting += 5;
-            View.options.animateRightArrow();
+            Screen.options.animateRightArrow();
         } else if (!harder && difficultySetting > 5) {
             difficultySetting -= 5;
-            View.options.animateLeftArrow();
+            Screen.options.animateLeftArrow();
         }
-        View.options.display();
+        Screen.options.update();
     }
 
     public void switchAutoBuyFlags() {
         shop.autoBuyFlagsEnabled = !shop.autoBuyFlagsEnabled;
-        View.options.display();
+        Screen.options.update();
     }
 
     public void switchTimerSetting() {
         timer.enabledSetting = !timer.enabledSetting;
-        View.options.display();
+        Screen.options.update();
     }
 
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
@@ -521,7 +480,8 @@ public class MinesweeperGame extends Game {
         timer.draw();
     }
 
-    public void recolorAllCells() {
+    public final void recolorInterface() {
+        view.cacheStaticElements();
         if (isStopped) return;
         for (int posY = 0; posY < 10; posY++) {
             for (int posX = 0; posX < 10; posX++) {

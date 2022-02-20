@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.view.graphics.Button;
 import com.javarush.games.minesweeper.view.View;
 
@@ -9,25 +10,26 @@ public class ControlGameOver implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (View.BUTTONS_CACHE.get(Button.ButtonID.CLOSE).covers(x, y)) {
-            View.board.display();
-        } else if (View.BUTTONS_CACHE.get(Button.ButtonID.RETURN).covers(x, y)) {
-            View.main.display();
-        } else if (View.BUTTONS_CACHE.get(Button.ButtonID.AGAIN).covers(x, y)) {
+        if (View.BUTTONS_CACHE.get(Button.ButtonID.CLOSE).tryToPress(x, y)) {
+            Screen.set(Screen.BOARD);
+        } else if (View.BUTTONS_CACHE.get(Button.ButtonID.RETURN).tryToPress(x, y)) {
+            Screen.set(Screen.MAIN);
+        } else if (View.BUTTONS_CACHE.get(Button.ButtonID.AGAIN).tryToPress(x, y)) {
             game.createGame();
-        } else if (View.gameOver.scoreArea.covers(x, y)) {
-            View.score.display();
+            Screen.set(Screen.BOARD);
+        } else if (Screen.gameOver.scoreArea.covers(x, y)) {
+            Screen.set(Screen.SCORE);
         }
     }
 
     @Override
     public void pressSpace() {
-        View.score.display();
+        Screen.set(Screen.SCORE);
     }
 
     @Override
     public void pressEsc() {
-        View.board.display();
+        Screen.set(Screen.BOARD);
     }
 
 }

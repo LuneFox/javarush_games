@@ -1,36 +1,31 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.view.graphics.*;
 
 public final class ViewGameOver extends View {
-    public int popUpTimer;  // defines how soon will game over screen show up
     public Area scoreArea = new Area(18, 37, 60, 64);
+    private int showDelay;
 
     /**
      * Displays the result of the game over the board.
      */
 
-    public ViewGameOver(MinesweeperGame game) {
-        this.game = game;
+    public ViewGameOver() {
         this.screen = Screen.GAME_OVER;
     }
 
-    @Override
-    public void display() {
-        display(game.lastResultIsVictory, 0);
-    }
+    public void update() {
+        super.update();
 
-    public void display(boolean victory, int popUpDelay) {
-        if (popUpTimer-- > 0) return;
-        View.board.refresh();
-        super.display();
-        popUpTimer = popUpDelay;
+        if (showDelay > 0) {
+            Screen.board.update();
+            showDelay--;
+            return;
+        }
 
-        if (popUpTimer > 0) return;
-        if (victory) {
+        if (game.isVictory) {
             IMAGES_CACHE.get(VisualElement.WIN_VICTORY).drawAt(-1, -1);
             IMAGES_CACHE.get(VisualElement.PIC_FACE_HAPPY).drawAt(-1, -1);
             Printer.print("победа!", Color.YELLOW, 18, 33);
@@ -45,4 +40,11 @@ public final class ViewGameOver extends View {
         BUTTONS_CACHE.get(Button.ButtonID.CLOSE).draw();
     }
 
+    public void setShowDelay(int showDelay) {
+        this.showDelay = showDelay;
+    }
+
+    public int getShowDelay() {
+        return showDelay;
+    }
 }

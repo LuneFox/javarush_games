@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.ShopItem;
 import com.javarush.games.minesweeper.Strings;
@@ -12,30 +11,27 @@ import com.javarush.games.minesweeper.view.graphics.*;
  */
 
 public final class ViewItemHelp extends View {
-    private ShopItem currentItem;
+    private ShopItem displayItem;
 
-    public ViewItemHelp(MinesweeperGame game) {
-        this.game = game;
+    public ViewItemHelp() {
         this.screen = Screen.ITEM_HELP;
     }
 
-    @Override
-    public void display() {
-        display(currentItem);
-    }
-
-    public void display(ShopItem item) {
-        currentItem = item;
-        super.display();
+    public void update() {
+        super.update();
         Strings.generateNewShieldDescription();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
-        item.icon.setPosition(5, 5);
-        item.icon.draw();
-        if (item.id == ShopItem.ID.SHIELD) {
-            item.description = Strings.generateNewShieldDescription().toString();
+        displayItem.icon.setPosition(5, 5);
+        displayItem.icon.draw();
+        if (displayItem.id == ShopItem.ID.SHIELD) {
+            displayItem.description = Strings.generateNewShieldDescription().toString();
         }
-        Printer.print("[" + item.name + "]", Color.YELLOW, 25, 9);
-        Printer.print(item.description, 4, 25);
+        Printer.print("[" + displayItem.name + "]", Color.YELLOW, 25, 9);
+        Printer.print(displayItem.description, 4, 25);
         BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).draw();
+    }
+
+    public void setDisplayItem(ShopItem item) {
+        this.displayItem = item;
     }
 }

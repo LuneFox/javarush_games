@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.*;
 import com.javarush.games.minesweeper.controller.strategy.*;
 import com.javarush.games.minesweeper.utility.Util;
 import com.javarush.games.minesweeper.view.View;
+import com.javarush.games.minesweeper.view.graphics.Button;
 
 /**
  * Separate class for processing various input events.
@@ -77,7 +78,9 @@ public class Controller {
     private void selectStrategy(int x, int y) {
 
         // Disable controls under these conditions
-        if (!Util.isWithinScreen(x, y) || View.gameOver.popUpTimer > 0) {
+        if (!Util.isWithinScreen(x, y)
+                || Screen.gameOver.getShowDelay() > 0
+                || Button.pressedTime > Button.POST_PRESS_DELAY) {
             setStrategy(CONTROL_DISABLED);
             return;
         }

@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.view.graphics.*;
@@ -12,14 +11,13 @@ import com.javarush.games.minesweeper.view.graphics.*;
 
 public final class ViewRecords extends View {
 
-    public ViewRecords(MinesweeperGame game) {
-        this.game = game;
+    public ViewRecords() {
         this.screen = Screen.RECORDS;
     }
 
     @Override
-    public void display() {
-        super.display();
+    public void update() {
+        super.update();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
         Printer.print(Strings.RECORDS[0], Color.YELLOW, -1, 2);
         BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();

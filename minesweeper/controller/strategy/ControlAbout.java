@@ -1,5 +1,6 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
+import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.view.graphics.Button;
 import com.javarush.games.minesweeper.view.View;
 
@@ -7,27 +8,27 @@ public class ControlAbout implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (View.BUTTONS_CACHE.get(Button.ButtonID.BACK).covers(x, y)) {
-            View.main.display();
-        } else if (View.about.prevPageArrowArea.covers(x, y)) {
-            View.about.prevPage();
-        } else if (View.about.nextPageArrowArea.covers(x, y)) {
-            View.about.nextPage();
+        if (View.BUTTONS_CACHE.get(Button.ButtonID.BACK).tryToPress(x, y)) {
+            Screen.set(Screen.MAIN);
+        } else if (Screen.about.prevPageArrowArea.covers(x, y)) {
+            Screen.about.prevPage();
+        } else if (Screen.about.nextPageArrowArea.covers(x, y)) {
+            Screen.about.nextPage();
         }
     }
 
     @Override
     public void pressRight() {
-        View.about.nextPage();
+        Screen.about.nextPage();
     }
 
     @Override
     public void pressLeft() {
-        View.about.prevPage();
+        Screen.about.prevPage();
     }
 
     @Override
     public void pressEsc() {
-        View.main.display();
+        Screen.set(Screen.MAIN);
     }
 }

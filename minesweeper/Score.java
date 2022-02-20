@@ -21,12 +21,12 @@ public class Score {
     }
 
     public int getMoneyScore() {
-        if (!game.lastResultIsVictory) return 0;
+        if (!game.isVictory) return 0;
         return game.inventory.money * game.difficulty;
     }
 
     public int getMinesScore() {
-        if (!game.lastResultIsVictory) return 0;
+        if (!game.isVictory) return 0;
         int minesCount = game.countAllCells(Cell.Filter.MINED);
         return minesCount * 20 * game.difficulty;
     }

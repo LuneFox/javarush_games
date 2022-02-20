@@ -15,18 +15,15 @@ public final class ViewShop extends View {
     public int shakingAnimationMaxTurns = 15;                             // number of turns to shake the item
     public int shakingAnimationCurrentTurn = shakingAnimationMaxTurns;    // counts towards zero
 
-    public ViewShop(MinesweeperGame game) {
-        this.game = game;
+    public ViewShop() {
         this.screen = Screen.SHOP;
     }
 
     @Override
-    public void display() {
-        if (!Screen.is(Screen.SHOP)) { // if changed from screen other than shop, don't animate money
-            View.shop.moneyOnDisplay = game.inventory.money;
-        }
-        super.display();
-        View.board.refresh();
+    public void update() {
+        super.update();
+
+        Screen.board.update();
         shakeAnimationCountDown();
         IMAGES_CACHE.get(VisualElement.WIN_SHOP).drawAt(-1, -1);
         IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 10);
@@ -45,6 +42,7 @@ public final class ViewShop extends View {
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
+        game.displayDice();
     }
 
     private void displayShopItems() {
@@ -96,7 +94,7 @@ public final class ViewShop extends View {
 
     private int getMoneyShakeValue() { // to shake money when you can't afford an item
         if (game.shop.isUnaffordableAnimationTrigger) {
-            return (game.evenTurn) ? 1 : 0;
+            return (Screen.evenFrame) ? 1 : 0;
         }
         return 0;
     }
@@ -106,7 +104,7 @@ public final class ViewShop extends View {
             return 0;
         }
         if (game.shop.isAlreadyActivatedAnimationTrigger) {
-            return (game.evenTurn) ? 1 : 0;
+            return (Screen.evenFrame) ? 1 : 0;
         }
         return 0;
     }

@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.utility.Util;
@@ -42,14 +41,13 @@ public final class ViewOptions extends View {
 
 
 
-    public ViewOptions(MinesweeperGame game) {
-        this.game = game;
+    public ViewOptions() {
         this.screen = Screen.OPTIONS;
     }
 
     @Override
-    public void display() {
-        super.display();
+    public void update() {
+        super.update();
         Image arrowButton = IMAGES_CACHE.get(VisualElement.MENU_ARROW);
         Image switchButton = IMAGES_CACHE.get(VisualElement.MENU_SWITCH);
         Image switchRail = IMAGES_CACHE.get(VisualElement.MENU_SWITCH_RAIL);

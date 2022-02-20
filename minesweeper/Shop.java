@@ -62,13 +62,13 @@ public class Shop {
     private boolean itemIsSold(ShopItem item) {
         if (item.isActivated()) {
             isAlreadyActivatedAnimationTrigger = true;
-            View.shop.shakeAnimationCountDown();
+            Screen.shop.shakeAnimationCountDown();
             return false;
         } else if (item.inStock == 0) {
             return false;
         } else if (item.isUnaffordable()) {
             isUnaffordableAnimationTrigger = true;
-            View.shop.shakeAnimationCountDown();
+            Screen.shop.shakeAnimationCountDown();
             return false;
         } else {
             item.inStock--;

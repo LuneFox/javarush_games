@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.Cell;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.view.graphics.*;
 
@@ -11,14 +10,13 @@ import com.javarush.games.minesweeper.view.graphics.*;
  */
 
 public final class ViewScore extends View {
-    public ViewScore(MinesweeperGame game) {
-        this.game = game;
+    public ViewScore() {
         this.screen = Screen.SCORE;
     }
 
     @Override
-    public void display() {
-        super.display();
+    public void update() {
+        super.update();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
 
         int minesCount = game.countAllCells(Cell.Filter.MINED);
@@ -33,7 +31,7 @@ public final class ViewScore extends View {
         int moneyScore = game.player.score.getMoneyScore();
         int minesScore = game.player.score.getMinesScore();
         double luck = game.shop.dice.getAverageLuck();
-        boolean victory = game.lastResultIsVictory;
+        boolean victory = game.isVictory;
 
         String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
         String moneyScoreDetail = money + "*" + difficulty + " = ";

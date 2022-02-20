@@ -11,7 +11,7 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (game.isStopped) {
-            View.gameOver.display(game.lastResultIsVictory, 0);
+            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
             return;
         }
@@ -25,7 +25,7 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void rightClick(int x, int y) {
         if (game.isStopped) {
-            View.gameOver.display(game.lastResultIsVictory, 0);
+            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
         } else { // only one will work - actions don't interfere
             game.setFlag(x / 10, y / 10, true);           // works only if tile is closed
@@ -37,26 +37,27 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void pressSpace() {
         if (!game.isStopped) {
-            View.shop.display();
+            Screen.set(Screen.SHOP);
         } else {
-            View.gameOver.display(game.lastResultIsVictory, 0);
+            Screen.gameOver.setShowDelay(0);
+            Screen.set(Screen.GAME_OVER);
         }
     }
 
     @Override
     public void pressEsc() {
         if (game.isStopped) {
-            View.gameOver.display(game.lastResultIsVictory, 0);
+            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
         } else {
-            View.main.display();
+            Screen.set(Screen.MAIN);
         }
     }
 
     @Override
     public void pressOther() {
         if (game.isStopped) {
-            View.gameOver.display(game.lastResultIsVictory, 0);
+            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
         }
     }

@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
@@ -10,18 +9,12 @@ import com.javarush.games.minesweeper.view.graphics.VisualElement;
  */
 
 public final class ViewBoard extends View {
-    public ViewBoard(MinesweeperGame game) {
-        this.game = game;
+    public ViewBoard() {
         this.screen = Screen.BOARD;
     }
 
-    @Override
-    public void display() {
-        super.display();
-        refresh();
-    }
-
-    public void refresh() {
+    public void update() {
+        super.update();
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {
             IMAGES_CACHE.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
@@ -33,5 +26,6 @@ public final class ViewBoard extends View {
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
+        game.displayDice();
     }
 }

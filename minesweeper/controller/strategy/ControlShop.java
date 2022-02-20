@@ -1,8 +1,8 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.ShopItem;
-import com.javarush.games.minesweeper.view.View;
 
 import static com.javarush.games.minesweeper.utility.Util.inside;
 
@@ -11,7 +11,7 @@ public class ControlShop implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (clickedOutsideShopWindow(x, y)) View.board.display();
+        if (clickedOutsideShopWindow(x, y)) Screen.board.update();
         ShopItem item = game.shop.getClickedItem(x, y);
         game.shop.sellAndRememberLastClick(item);
     }
@@ -20,17 +20,18 @@ public class ControlShop implements ControlStrategy {
     public void rightClick(int x, int y) {
         ShopItem item = game.shop.getClickedItem(x, y);
         if (item == null) return;
-        View.itemHelp.display(item);
+        Screen.itemHelp.setDisplayItem(item);
+        Screen.set(Screen.ITEM_HELP);
     }
 
     @Override
     public void pressSpace() {
-        View.board.display();
+        Screen.set(Screen.BOARD);
     }
 
     @Override
     public void pressEsc() {
-        View.board.display();
+        Screen.set(Screen.BOARD);
     }
 
     private boolean clickedOutsideShopWindow(int x, int y) {

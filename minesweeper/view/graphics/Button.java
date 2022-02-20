@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view.graphics;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
  * Creates buttons with text wrapped in frames.
@@ -9,8 +8,9 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 
 public class Button implements Drawable {
 
-    public static int pressedTime;
-    public static final int PRESS_DURATION = 5;
+    public static int pressedTime = -2;           // this timer counts towards 0, then the press animation stops
+    public static final int PRESS_DURATION = 5;   // for how long buttons stay pressed
+    public static final int POST_PRESS_DELAY = -2;// for how long buttons display unpressed before moving to next screen
 
     private final int x1;
     private final int x2;
@@ -64,7 +64,8 @@ public class Button implements Drawable {
     }
 
     public void draw() {
-        if (pressedTime == 0) isPressed = false;
+        // Is drawn as pressed only when pressed time > 0, otherwise is drawn normal
+        if (pressedTime <= 0) isPressed = false;
         int drawX = (isPressed) ? x1 + 1 : x1;
         int drawY = (isPressed) ? y1 + 1 : y1;
         setBody(drawX, drawY, !isPressed);
@@ -93,13 +94,15 @@ public class Button implements Drawable {
         this.textOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
     }
 
-    public boolean covers(int x, int y) {
+    public boolean tryToPress(int x, int y) {
         boolean covers = (x >= x1 && x <= x2 && y >= y1 && y <= y2);
-        if (covers) {
-            isPressed = true;
-            pressedTime = PRESS_DURATION;
-        }
+        if (covers) press();
         return covers;
+    }
+
+    private void press() {
+        isPressed = true;
+        pressedTime = PRESS_DURATION;
     }
 
     public String getText() {

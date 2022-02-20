@@ -10,21 +10,24 @@ public class ControlScore implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (View.BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).covers(x, y)) {
-            View.board.refresh();
-            View.gameOver.display(game.lastResultIsVictory, 0);
+        if (View.BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).tryToPress(x, y)) {
+            Screen.board.update();
+            Screen.gameOver.setShowDelay(0);
+            Screen.set(Screen.GAME_OVER);
         }
     }
 
     @Override
     public void pressSpace() {
-        View.gameOver.display(game.lastResultIsVictory, 0);
+        Screen.board.update();
+        Screen.gameOver.setShowDelay(0);
         Screen.set(Screen.GAME_OVER);
     }
 
     @Override
     public void pressEsc() {
-        View.gameOver.display(game.lastResultIsVictory, 0);
+        Screen.board.update();
+        Screen.gameOver.setShowDelay(0);
         Screen.set(Screen.GAME_OVER);
     }
 }

@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.view.graphics.*;
@@ -20,8 +19,7 @@ public final class ViewMain extends View {
     private static Date lastQuoteDate;
     private final static LinkedList<String> QUOTES = new LinkedList<>();
 
-    public ViewMain(MinesweeperGame game) {
-        this.game = game;
+    public ViewMain() {
         this.screen = Screen.MAIN;
         Collections.addAll(QUOTES, Strings.QUOTES);
         lastQuoteDate = new Date();
@@ -29,8 +27,8 @@ public final class ViewMain extends View {
     }
 
     @Override
-    public void display() {
-        super.display();
+    public void update() {
+        super.update();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
         Printer.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), -1, 2);
         IMAGES_CACHE.get(VisualElement.PIC_LOGO).animateFloating(2.8, -1, 8);

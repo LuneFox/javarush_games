@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.Strings;
 import com.javarush.games.minesweeper.view.graphics.*;
@@ -15,14 +14,13 @@ public final class ViewAbout extends View {
      * Shows the ABOUT section of the game.
      */
 
-    public ViewAbout(MinesweeperGame game) {
-        this.game = game;
+    public ViewAbout() {
         this.screen = Screen.ABOUT;
     }
 
     @Override
-    public void display() {
-        super.display();
+    public void update() {
+        super.update();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
         Printer.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, -1, 2);
         Printer.print(Strings.ABOUT_BODY[currentAboutPage], 3, 13);
@@ -37,14 +35,14 @@ public final class ViewAbout extends View {
 
     public void prevPage() {
         currentAboutPage = currentAboutPage <= 0 ? 0 : currentAboutPage - 1;
-        View.options.animateLeftArrow();
-        display();
+        Screen.options.animateLeftArrow();
+        update();
     }
 
     public void nextPage() {
         int lastPage = Strings.ABOUT_HEAD.length - 1;
         currentAboutPage = currentAboutPage >= lastPage ? lastPage : currentAboutPage + 1;
-        View.options.animateRightArrow();
-        display();
+        Screen.options.animateRightArrow();
+        update();
     }
 }
