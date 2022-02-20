@@ -14,7 +14,7 @@ import java.util.EnumMap;
 public class View {
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public Screen screen;
-    public static Screen pendingScreen;
+    public static boolean evenFrame;    // helps to animate shaking elements
     public static final EnumMap<VisualElement, Image> IMAGES_CACHE = new EnumMap<>(VisualElement.class);
     public static final EnumMap<Button.ButtonID, Button> BUTTONS_CACHE = new EnumMap<>(Button.ButtonID.class);
 

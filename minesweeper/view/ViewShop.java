@@ -22,8 +22,9 @@ public final class ViewShop extends View {
     @Override
     public void update() {
         super.update();
-
         Screen.board.update();
+        game.checkTimeOut();
+
         shakeAnimationCountDown();
         IMAGES_CACHE.get(VisualElement.WIN_SHOP).drawAt(-1, -1);
         IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 10);
@@ -94,7 +95,7 @@ public final class ViewShop extends View {
 
     private int getMoneyShakeValue() { // to shake money when you can't afford an item
         if (game.shop.isUnaffordableAnimationTrigger) {
-            return (Screen.evenFrame) ? 1 : 0;
+            return (evenFrame) ? 1 : 0;
         }
         return 0;
     }
@@ -104,7 +105,7 @@ public final class ViewShop extends View {
             return 0;
         }
         if (game.shop.isAlreadyActivatedAnimationTrigger) {
-            return (Screen.evenFrame) ? 1 : 0;
+            return (evenFrame) ? 1 : 0;
         }
         return 0;
     }

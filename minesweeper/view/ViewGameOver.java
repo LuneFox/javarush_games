@@ -40,8 +40,8 @@ public final class ViewGameOver extends View {
         BUTTONS_CACHE.get(Button.ButtonID.CLOSE).draw();
     }
 
-    public void setShowDelay(int showDelay) {
-        this.showDelay = showDelay;
+    public void setShowDelay() {
+        this.showDelay = 30;
     }
 
     public int getShowDelay() {

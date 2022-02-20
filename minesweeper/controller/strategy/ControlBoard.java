@@ -3,7 +3,6 @@ package com.javarush.games.minesweeper.controller.strategy;
 import com.javarush.games.minesweeper.Cell;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.view.View;
 
 public class ControlBoard implements ControlStrategy {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
@@ -11,7 +10,6 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (game.isStopped) {
-            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
             return;
         }
@@ -25,7 +23,6 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void rightClick(int x, int y) {
         if (game.isStopped) {
-            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
         } else { // only one will work - actions don't interfere
             game.setFlag(x / 10, y / 10, true);           // works only if tile is closed
@@ -39,7 +36,6 @@ public class ControlBoard implements ControlStrategy {
         if (!game.isStopped) {
             Screen.set(Screen.SHOP);
         } else {
-            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
         }
     }
@@ -47,7 +43,6 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void pressEsc() {
         if (game.isStopped) {
-            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
         } else {
             Screen.set(Screen.MAIN);
@@ -57,7 +52,6 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void pressOther() {
         if (game.isStopped) {
-            Screen.gameOver.setShowDelay(0);
             Screen.set(Screen.GAME_OVER);
         }
     }

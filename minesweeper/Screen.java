@@ -23,7 +23,7 @@ public enum Screen {
     public static final View[] VIEWS = new View[]{about, board, gameOver, itemHelp, main, options, records, score, shop};
     private static View pendingView;
     private static View currentView;
-    public static boolean evenFrame;    // helps to animate shaking elements
+
 
     // Screen at index 0 is considered active
     public static void set(Screen screen) {
@@ -37,13 +37,14 @@ public enum Screen {
         }
     }
 
-    public static void update() {
+    public static void updateView() {
         // Show pending view only after the button was fully animated, controls are disabled before that
+        if (Button.pressedTime > Button.POST_PRESS_DELAY) Button.pressedTime--;
         if (Button.pressedTime <= Button.POST_PRESS_DELAY) {
             currentView = pendingView;
         }
+        View.evenFrame = !View.evenFrame;
         currentView.update();
-        evenFrame = !evenFrame;
     }
 
     // Get active screen

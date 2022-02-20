@@ -18,32 +18,22 @@ import java.util.List;
  */
 
 public class MinesweeperGame extends Game {
-
     private static MinesweeperGame instance;
-
+    private View view;
+    private Controller controller;
     public Display display;
-    public View view;
     public Inventory inventory;
     public Shop shop;
     public Player player;
     public Timer timer;
     public Cell[][] field = new Cell[10][10];
-    private Controller controller;
-
-    // GAME OPTIONS
     public int difficulty = 10;                // current difficulty
     public int difficultySetting = difficulty; // in the options, applied for the new game
-
-    // FLAGS
-    public boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
-    public boolean allowFlagExplosion;
+    private boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
+    private boolean allowFlagExplosion;
     public boolean isStopped = true;
     public boolean isFirstMove = true;
     public boolean isVictory = false;
-
-    public static MinesweeperGame getInstance() {
-        return instance;
-    }
 
     // NEW GAME
 
@@ -67,14 +57,7 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        if (Button.pressedTime > Button.POST_PRESS_DELAY) Button.pressedTime--; // button press animation counter
-        if (Screen.is(Screen.BOARD) || Screen.is(Screen.SHOP)) { // intercept running game if the time is out
-            if (countDownAndCheckTimeOut()) {
-                loseByTimeOut();
-                return;
-            }
-        }
-        Screen.update();
+        Screen.updateView();
         display.draw();
     }
 
@@ -124,7 +107,7 @@ public class MinesweeperGame extends Game {
     private void lose() {
         isStopped = true;
         isVictory = false;
-        Screen.gameOver.setShowDelay(30);
+        Screen.gameOver.setShowDelay();
         Screen.set(Screen.GAME_OVER);
     }
 
@@ -132,25 +115,18 @@ public class MinesweeperGame extends Game {
         player.score.registerTopScore();
         isStopped = true;
         isVictory = true;
-        Screen.gameOver.setShowDelay(30);
+        Screen.gameOver.setShowDelay();
         Screen.set(Screen.GAME_OVER);
     }
 
-    public boolean countDownAndCheckTimeOut() {
-        if (!isStopped) {
-            if (timer.isZero()) {
-                return true;
-            } else {
-                timer.countDown();
-            }
+    public void checkTimeOut() {
+        if (!isStopped && timer.isZero()) {
+            Screen.set(Screen.BOARD);
+            revealAllMines();
+            lose();
+        } else {
+            timer.countDown();
         }
-        return false;
-    }
-
-    public void loseByTimeOut() {
-        Screen.set(Screen.BOARD);
-        revealAllMines();
-        lose();
     }
 
     // ACTIVE CELL OPERATIONS
@@ -504,5 +480,11 @@ public class MinesweeperGame extends Game {
     @Override
     public void onKeyPress(Key key) {
         controller.pressKey(key);
+    }
+
+    // GETTERS
+
+    public static MinesweeperGame getInstance() {
+        return instance;
     }
 }
