@@ -11,7 +11,7 @@ public class ControlShop implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (clickedOutsideShopWindow(x, y)) Screen.board.update();
+        if (clickedOutsideShopWindow(x, y)) Screen.set(Screen.BOARD);
         ShopItem item = game.shop.getClickedItem(x, y);
         game.shop.sellAndRememberLastClick(item);
     }

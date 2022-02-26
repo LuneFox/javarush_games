@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view.graphics;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -56,7 +57,6 @@ public enum VisualElement {
     SHOP_DICE_4,
     SHOP_DICE_5,
     SHOP_DICE_6,
-
 
     WIN_MENU,
     WIN_SHOP,
@@ -138,7 +138,6 @@ public enum VisualElement {
     SYM_SYMBOL_SQ_BRACKET_R(']'),
     SYM_SYMBOL_NEWLINE('\n');
 
-
     char[] characters;
     int number;
 
@@ -161,7 +160,7 @@ public enum VisualElement {
 
     // Return a list of all elements starting with the same text (SPR_, SYM_, etc.)
     public static List<VisualElement> getElementsByPrefixes(String... prefixes) {
-        ArrayList<VisualElement> result = new ArrayList<>();
+        List<VisualElement> result = new LinkedList<>();
         for (VisualElement visualElement : VisualElement.values()) {
             for (String prefix : prefixes) {
                 if (visualElement.name().startsWith(prefix)) result.add(visualElement);
