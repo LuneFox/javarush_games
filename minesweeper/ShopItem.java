@@ -11,7 +11,8 @@ import com.javarush.games.minesweeper.view.graphics.Image;
 public class ShopItem {
     private final MinesweeperGame game;
     public int cost;
-    public boolean canExpire;
+    public final boolean canExpire;
+    public final int effectDuration;
     public int expireMove;
     public int inStock;
     private boolean isActivated;
@@ -39,47 +40,55 @@ public class ShopItem {
                 this.id = ID.SHIELD;
                 this.name = Strings.ITEM_SHIELD_NAME;
                 this.description = Strings.generateNewShieldDescription().toString();
-                this.canExpire = false;
                 this.shopFramePosition = new int[]{15, 34, 32, 51};
+                this.canExpire = false;
+                effectDuration = 0;
                 break;
             case 1:
                 this.id = ID.SCANNER;
                 this.name = Strings.ITEM_SCANNER_NAME;
                 this.description = Strings.ITEM_SCANNER_DESCRIPTION;
-                this.canExpire = false;
                 this.shopFramePosition = new int[]{40, 59, 32, 51};
+                this.canExpire = false;
+                effectDuration = 0;
                 break;
             case 2:
                 this.id = ID.FLAG;
                 this.name = Strings.ITEM_FLAG_NAME;
                 this.description = Strings.ITEM_FLAG_DESCRIPTION;
-                this.canExpire = false;
                 this.shopFramePosition = new int[]{65, 84, 32, 51};
+                this.canExpire = false;
+                effectDuration = 0;
                 break;
             case 3:
                 this.id = ID.SHOVEL;
                 this.name = Strings.ITEM_SHOVEL_NAME;
                 this.description = Strings.ITEM_SHOVEL_DESCRIPTION;
-                this.canExpire = true;
                 this.shopFramePosition = new int[]{15, 34, 57, 76};
                 this.statusBar = new VerticalStatusBar(0, 99, Color.DARKORANGE, this);
+                this.canExpire = true;
+                effectDuration = 5;
                 break;
             case 4:
                 this.id = ID.DICE;
                 this.name = Strings.ITEM_DICE_NAME;
                 this.description = Strings.ITEM_DICE_DESCRIPTION;
-                this.canExpire = true;
                 this.shopFramePosition = new int[]{40, 59, 57, 76};
                 this.statusBar = new VerticalStatusBar(0, 89, Color.GREEN, this);
+                this.canExpire = true;
+                effectDuration = 3;
                 break;
             case 5:
                 this.id = ID.BOMB;
                 this.name = Strings.ITEM_BOMB_NAME;
                 this.description = Strings.ITEM_BOMB_DESCRIPTION;
-                this.canExpire = false;
                 this.shopFramePosition = new int[]{65, 84, 57, 76};
+                this.canExpire = false;
+                effectDuration = 0;
                 break;
             default:
+                canExpire = false;
+                effectDuration = 0;
                 break;
         }
     }

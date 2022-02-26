@@ -7,6 +7,7 @@ import com.javarush.games.minesweeper.view.View;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Sells various items.
@@ -16,64 +17,67 @@ public class Shop {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
     public double lastClickTime;
     public int lastClickedItemNumber;
+    public boolean autoBuyFlagsEnabled;
+    public final List<ShopItem> allItems = new LinkedList<>();
     public ShopItem shield;
     public ShopItem scanner;
     public ShopItem flag;
     public ShopItem goldenShovel;
     public ShopItem luckyDice;
     public ShopItem miniBomb;
-    public final LinkedList<ShopItem> allItems = new LinkedList<>();
     public Dice dice;
-    public boolean autoBuyFlagsEnabled;
-    public boolean isUnaffordableAnimationTrigger;
-    public boolean isAlreadyActivatedAnimationTrigger;
+
 
     public void sell(ShopItem item) {
-        if (!itemIsSold(item)) return;
-        switch (item.id) {
-            case SHIELD:
-                shield.activate();
-                break;
-            case SCANNER:
-                if (miniBomb.isActivated()) return;
-                scanner.activate();
-                purge(miniBomb);
-                drawColoredFrame(Color.BLUE);
-                break;
-            case SHOVEL:
-                goldenShovel.activate();
-                goldenShovel.expireMove = game.player.getMoves() + 5;
-                break;
-            case DICE:
-                luckyDice.activate();
-                luckyDice.expireMove = game.player.getMoves() + 3;
-                break;
-            case BOMB:
-                if (scanner.isActivated()) return;
-                miniBomb.activate();
-                purge(scanner);
-                drawColoredFrame(Color.RED);
-                break;
-            default:
-                break;
+        if (item != null && isPurchasable(item)) {
+            // Make transaction
+            item.inStock--;
+            game.inventory.money -= item.cost;
+            game.inventory.add(item.id);
+            // Apply item effect
+            switch (item.id) {
+                case SHIELD:
+                    shield.activate();
+                    break;
+                case SCANNER:
+                    if (miniBomb.isActivated()) return;
+                    scanner.activate();
+                    purge(miniBomb);
+                    drawColoredFrame(Color.BLUE);
+                    break;
+                case SHOVEL:
+                    goldenShovel.activate();
+                    goldenShovel.expireMove = game.player.getMoves() + goldenShovel.effectDuration;
+                    break;
+                case DICE:
+                    luckyDice.activate();
+                    luckyDice.expireMove = game.player.getMoves() + luckyDice.effectDuration;
+                    break;
+                case BOMB:
+                    if (scanner.isActivated()) return;
+                    miniBomb.activate();
+                    purge(scanner);
+                    drawColoredFrame(Color.RED);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
-    private boolean itemIsSold(ShopItem item) {
+    private boolean isPurchasable(ShopItem item) {
+        // Item is not activated, affordable and exists in stock
         if (item.isActivated()) {
-            isAlreadyActivatedAnimationTrigger = true;
+            Screen.shop.isAlreadyActivatedAnimationTrigger = true;
             Screen.shop.shakeAnimationCountDown();
             return false;
         } else if (item.inStock == 0) {
             return false;
         } else if (item.isUnaffordable()) {
-            isUnaffordableAnimationTrigger = true;
+            Screen.shop.isUnaffordableAnimationTrigger = true;
             Screen.shop.shakeAnimationCountDown();
             return false;
         } else {
-            item.inStock--;
-            game.inventory.money -= item.cost;
-            game.inventory.add(item.id);
             return true;
         }
     }
@@ -85,11 +89,10 @@ public class Shop {
         }
     }
 
-    public void sellAndRememberLastClick(ShopItem item) {
+    public void rememberLastClickOnItem(ShopItem item) {
         if (item == null) return;
         lastClickTime = new Date().getTime();
         lastClickedItemNumber = item.number;
-        sell(item);
     }
 
     public void restock(ShopItem item, int amount) {
@@ -101,18 +104,12 @@ public class Shop {
     }
 
     public void reset() {
-        shield = new ShopItem(0, 13 + game.difficulty / 5, 1,
-                View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_SHIELD));
-        scanner = new ShopItem(1, 8 + game.difficulty / 5, 1,
-                View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_SCANNER));
-        flag = new ShopItem(2, 1, getFlagsAmount(),
-                View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_FLAG));
-        goldenShovel = new ShopItem(3, 9, 1,
-                View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_SHOVEL));
-        luckyDice = new ShopItem(4, 6, 1,
-                View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_DICE));
-        miniBomb = new ShopItem(5, 6 + game.difficulty / 10, 1,
-                View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_BOMB));
+        shield = new ShopItem(0, 13 + game.difficulty / 5, 1, View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_SHIELD));
+        scanner = new ShopItem(1, 8 + game.difficulty / 5, 1, View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_SCANNER));
+        flag = new ShopItem(2, 1, getFlagsAmount(), View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_FLAG));
+        goldenShovel = new ShopItem(3, 9, 1, View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_SHOVEL));
+        luckyDice = new ShopItem(4, 6, 1, View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_DICE));
+        miniBomb = new ShopItem(5, 6 + game.difficulty / 10, 1, View.IMAGES_CACHE.get(VisualElement.SHOP_ITEM_BOMB));
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
         dice = new Dice(1);

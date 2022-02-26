@@ -14,6 +14,8 @@ public final class ViewShop extends View {
     public int moneyOnDisplay;                                            // for smooth animation, runs towards money
     public int shakingAnimationMaxTurns = 15;                             // number of turns to shake the item
     public int shakingAnimationCurrentTurn = shakingAnimationMaxTurns;    // counts towards zero
+    public boolean isUnaffordableAnimationTrigger;
+    public boolean isAlreadyActivatedAnimationTrigger;
 
     public ViewShop() {
         this.screen = Screen.SHOP;
@@ -95,7 +97,7 @@ public final class ViewShop extends View {
     }
 
     private int getMoneyShakeValue() { // to shake money when you can't afford an item
-        if (game.shop.isUnaffordableAnimationTrigger) {
+        if (isUnaffordableAnimationTrigger) {
             return (evenFrame) ? 1 : 0;
         }
         return 0;
@@ -105,19 +107,18 @@ public final class ViewShop extends View {
         if (currentFrame != game.shop.lastClickedItemNumber) { // shake only in current frame
             return 0;
         }
-        if (game.shop.isAlreadyActivatedAnimationTrigger) {
+        if (isAlreadyActivatedAnimationTrigger) {
             return (evenFrame) ? 1 : 0;
         }
         return 0;
     }
 
     public void shakeAnimationCountDown() { // helps to shake elements only for a certain amount of time
-        if (shakingAnimationCurrentTurn > 0 && (game.shop.isAlreadyActivatedAnimationTrigger
-                || game.shop.isUnaffordableAnimationTrigger)) {
+        if (shakingAnimationCurrentTurn > 0 && (isAlreadyActivatedAnimationTrigger || isUnaffordableAnimationTrigger)) {
             shakingAnimationCurrentTurn--;
         } else {
-            game.shop.isUnaffordableAnimationTrigger = false;
-            game.shop.isAlreadyActivatedAnimationTrigger = false;
+            isUnaffordableAnimationTrigger = false;
+            isAlreadyActivatedAnimationTrigger = false;
             shakingAnimationCurrentTurn = shakingAnimationMaxTurns;
         }
     }

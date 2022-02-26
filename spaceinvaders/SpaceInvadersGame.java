@@ -12,7 +12,6 @@ import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 /**
