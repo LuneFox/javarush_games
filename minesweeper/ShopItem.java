@@ -99,8 +99,6 @@ public class ShopItem {
                 if (this.isActivated) {
                     this.deactivate();
                     cell.setSprite(VisualElement.SPR_BOARD_MINE);
-                    cell.drawBackground(Color.YELLOW);
-                    cell.drawSprite();
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);
                     game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (game.difficulty / 5));
@@ -113,7 +111,7 @@ public class ShopItem {
                     game.shop.restock(game.shop.scanner, 1);
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.scanNeighbors(cell.x, cell.y);
-                    game.redrawAllCells();
+                    game.drawAllCells();
                     return true;
                 }
             case BOMB:
@@ -123,7 +121,7 @@ public class ShopItem {
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.shop.restock(game.shop.scanner, 1);
                     game.destroyCell(cell.x, cell.y);
-                    game.redrawAllCells();
+                    game.drawAllCells();
                     game.checkVictory();
                     return true;
                 }

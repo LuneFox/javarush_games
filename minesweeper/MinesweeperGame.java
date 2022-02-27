@@ -1,6 +1,5 @@
 package com.javarush.games.minesweeper;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
@@ -88,6 +87,7 @@ public class MinesweeperGame extends Game {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
                 field[y][x] = new Cell(VisualElement.CELL_CLOSED, x, y, false);
+                field[y][x].setSprite(VisualElement.SPR_BOARD_NONE);
             }
         }
     }
@@ -96,8 +96,10 @@ public class MinesweeperGame extends Game {
         while (countAllCells(Filter.MINED) < difficulty / 1.5) { // fixed number of mines on field
             int x = getRandomNumber(10);
             int y = getRandomNumber(10);
-            if (!field[y][x].isMined && !field[y][x].isOpen)
+            if (!field[y][x].isMined && !field[y][x].isOpen) {
                 field[y][x] = new Cell(VisualElement.CELL_CLOSED, x, y, true);
+                field[y][x].setSprite(VisualElement.SPR_BOARD_MINE);
+            }
         }
     }
 
@@ -144,10 +146,10 @@ public class MinesweeperGame extends Game {
             cell = field[y][x];
         }
 
-        pushCell(cell);                 // change visuals, set isOpen flag
+        cell.isOpen = true;             // change visuals, set isOpen flag
         onManualClick();                // do things that happen during real click only
         if (!surviveMine(cell)) return; // stop processing if the player didn't survive
-        drawNumberOnCell(cell);         // show number since we know it's not a bomb (survived)
+        applyNumberToCell(cell);         // show number since we know it's not a bomb (survived)
 
         inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
 
@@ -184,7 +186,7 @@ public class MinesweeperGame extends Game {
 
         cell.setSprite(VisualElement.SPR_BOARD_NONE);
         cell.isDestroyed = true;
-        pushCell(cell);
+        cell.isOpen = true;
         deactivateExpiredItems();
 
         if (cell.isFlagged) {
@@ -202,7 +204,7 @@ public class MinesweeperGame extends Game {
                 }
             });
             enumerateCells();
-            redrawAllCells();
+            drawAllCells();
         }
     }
 
@@ -220,7 +222,7 @@ public class MinesweeperGame extends Game {
     private void returnFlagToInventory(Cell cell) {
         inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
-        cell.eraseSprite();
+        cell.setSprite(VisualElement.SPR_BOARD_NONE);
     }
 
     private void placeFlagFromInventory(Cell cell) {
@@ -332,8 +334,7 @@ public class MinesweeperGame extends Game {
 
     private void explodeAndGameOver(Cell cell) {
         revealAllMines();
-        cell.drawBackground(Color.RED); // highlight mine that caused game over
-        cell.drawSprite();
+        cell.isGameOverCause = true; // highlight mine that caused game over
         shop.dice.hide();
         lose();
     }
@@ -367,8 +368,7 @@ public class MinesweeperGame extends Game {
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
 
     public void checkVictory() {
-        if (countAllCells(Filter.CLOSED) == countAllCells(Filter.DANGEROUS))
-            win();
+        if (countAllCells(Filter.CLOSED) == countAllCells(Filter.DANGEROUS)) win();
     }
 
     private boolean cellDestructionImpossible(Cell cell) {
@@ -391,28 +391,18 @@ public class MinesweeperGame extends Game {
 
     // ANIMATIONS
 
-    private void drawNumberOnCell(Cell cell) {
-        if (!cell.isFlagged && !cell.isMined) {
-            cell.setSprite(cell.countMinedNeighbors);
-            if (shop.goldenShovel.isActivated()) {
-                cell.changeSpriteColor(Color.YELLOW);
-            }
+    private void applyNumberToCell(Cell cell) {
+        if (cell.isFlagged) return;
+        if (cell.isMined) return;
+
+        cell.setSprite(cell.countMinedNeighbors);
+        if (shop.goldenShovel.isActivated()) {
+            cell.makeSpriteYellow();
         }
-        cell.drawSprite();
     }
 
-    private void pushCell(Cell cell) {
-        cell.isOpen = true;
-        cell.push();
-    }
-
-    public void redrawAllCells() { // redraws all cells in current state to hide whatever was drawn over them
-        getAllCells(Filter.NONE).forEach(cell -> {
-            cell.drawBackground(Color.NONE);
-            if (cell.isOpen || cell.isFlagged) {
-                cell.drawSprite();
-            }
-        });
+    public void drawAllCells() {
+        getAllCells(Filter.NONE).forEach(Cell::draw);
     }
 
     private void revealAllMines() {
@@ -421,12 +411,9 @@ public class MinesweeperGame extends Game {
                 Cell showCell = field[posY][posX];
                 if (showCell.isMined) {
                     showCell.isOpen = true;
-                    showCell.setSprite(VisualElement.SPR_BOARD_MINE);
-                    showCell.push();
                 }
             }
         }
-        timer.draw();
     }
 
     public final void recolorInterface() {
@@ -434,7 +421,7 @@ public class MinesweeperGame extends Game {
         if (isStopped) return;
         for (int posY = 0; posY < 10; posY++) {
             for (int posX = 0; posX < 10; posX++) {
-                field[posY][posX].fullRecolor();
+                field[posY][posX].updateColors();
             }
         }
     }
