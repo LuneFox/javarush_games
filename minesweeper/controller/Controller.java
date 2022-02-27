@@ -7,23 +7,30 @@ import com.javarush.games.minesweeper.utility.Util;
 import com.javarush.games.minesweeper.view.View;
 import com.javarush.games.minesweeper.view.graphics.Button;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Separate class for processing various input events.
  */
 
 public class Controller {
     private ControlStrategy strategy;
-    private static final ControlStrategy CONTROL_ABOUT = new ControlAbout();
-    private static final ControlStrategy CONTROL_BOARD = new ControlBoard();
-    private static final ControlStrategy CONTROL_GAME_OVER = new ControlGameOver();
-    private static final ControlStrategy CONTROL_ITEM_HELP = new ControlItemHelp();
-    private static final ControlStrategy CONTROL_MAIN = new ControlMain();
-    private static final ControlStrategy CONTROL_OPTIONS = new ControlOptions();
-    private static final ControlStrategy CONTROL_RECORDS = new ControlRecords();
-    private static final ControlStrategy CONTROL_SCORE = new ControlScore();
-    private static final ControlStrategy CONTROL_SHOP = new ControlShop();
-    private static final ControlStrategy CONTROL_DISABLED = new ControlStrategy() {
-    };
+    private static final Map<Screen, ControlStrategy> strategyMap = new HashMap<>();
+
+    static {
+        strategyMap.put(Screen.ABOUT, new ControlAbout());
+        strategyMap.put(Screen.BOARD, new ControlBoard());
+        strategyMap.put(Screen.GAME_OVER, new ControlGameOver());
+        strategyMap.put(Screen.ITEM_HELP, new ControlItemHelp());
+        strategyMap.put(Screen.MAIN, new ControlMain());
+        strategyMap.put(Screen.OPTIONS, new ControlOptions());
+        strategyMap.put(Screen.RECORDS, new ControlRecords());
+        strategyMap.put(Screen.SCORE, new ControlScore());
+        strategyMap.put(Screen.SHOP, new ControlShop());
+        strategyMap.put(null, new ControlStrategy() {
+        });
+    }
 
     public final void leftClick(int x, int y) {
         selectStrategy(x, y);
@@ -38,8 +45,7 @@ public class Controller {
     }
 
     public final void pressKey(Key key) {
-        // Keyboard presses always pass the outside screen check
-        selectStrategy(0, 0);
+        selectStrategy(0, 0); // Keyboard presses always pass the outside screen check
         switch (key) {
             case UP:
                 strategy.pressUp();
@@ -71,51 +77,13 @@ public class Controller {
         }
     }
 
-    public void setStrategy(ControlStrategy strategy) {
-        this.strategy = strategy;
-    }
-
     private void selectStrategy(int x, int y) {
-
-        // Disable controls under these conditions
-        if (!Util.isWithinScreen(x, y)
+        if (!Util.isWithinScreen(x, y) // Disable controls under these conditions
                 || Screen.gameOver.getShowDelay() > 0
                 || Button.pressedTime > Button.POST_PRESS_DELAY) {
-            setStrategy(CONTROL_DISABLED);
+            this.strategy = strategyMap.get(null);
             return;
         }
-
-        switch (Screen.get()) {
-            case ABOUT:
-                setStrategy(CONTROL_ABOUT);
-                break;
-            case BOARD:
-                setStrategy(CONTROL_BOARD);
-                break;
-            case GAME_OVER:
-                setStrategy(CONTROL_GAME_OVER);
-                break;
-            case ITEM_HELP:
-                setStrategy(CONTROL_ITEM_HELP);
-                break;
-            case MAIN:
-                setStrategy(CONTROL_MAIN);
-                break;
-            case OPTIONS:
-                setStrategy(CONTROL_OPTIONS);
-                break;
-            case RECORDS:
-                setStrategy(CONTROL_RECORDS);
-                break;
-            case SCORE:
-                setStrategy(CONTROL_SCORE);
-                break;
-            case SHOP:
-                setStrategy(CONTROL_SHOP);
-                break;
-            default:
-                setStrategy(CONTROL_DISABLED);
-                break;
-        }
+        this.strategy = strategyMap.get(Screen.get());
     }
 }

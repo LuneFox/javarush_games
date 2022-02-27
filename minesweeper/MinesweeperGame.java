@@ -405,6 +405,7 @@ public class MinesweeperGame extends Game {
 
     public final void recolorInterface() {
         view.cacheStaticElements();
+        if (isStopped) return; // No cells to color yet
         getAllCells(Filter.NONE).forEach(Cell::updateColors);
     }
 
