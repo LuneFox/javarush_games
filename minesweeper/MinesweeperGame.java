@@ -195,7 +195,6 @@ public class MinesweeperGame extends Game {
                 }
             });
             enumerateCells();
-            drawAllCells();
         }
     }
 

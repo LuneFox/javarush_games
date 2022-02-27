@@ -111,7 +111,6 @@ public class ShopItem {
                     game.shop.restock(game.shop.scanner, 1);
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.scanNeighbors(cell.x, cell.y);
-                    game.drawAllCells();
                     return true;
                 }
             case BOMB:
@@ -121,7 +120,6 @@ public class ShopItem {
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.shop.restock(game.shop.scanner, 1);
                     game.destroyCell(cell.x, cell.y);
-                    game.drawAllCells();
                     game.checkVictory();
                     return true;
                 }
