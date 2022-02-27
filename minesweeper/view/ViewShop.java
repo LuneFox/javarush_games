@@ -26,7 +26,7 @@ public final class ViewShop extends View {
         super.update();
         Screen.board.update();
 
-        game.checkTimeOut();
+        game.timerAction();
 
         shakeAnimationCountDown();
         IMAGES_CACHE.get(VisualElement.WIN_SHOP).drawAt(-1, -1);

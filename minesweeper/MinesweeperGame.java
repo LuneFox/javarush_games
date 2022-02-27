@@ -81,7 +81,7 @@ public class MinesweeperGame extends Game {
 
     private void applyOptions() {
         difficulty = difficultySetting;
-        timer.enabled = timer.enabledSetting;
+        timer.isEnabled = timer.isEnabledSetting;
     }
 
     private void createField() {
@@ -119,7 +119,7 @@ public class MinesweeperGame extends Game {
         Screen.set(Screen.GAME_OVER);
     }
 
-    public void checkTimeOut() {
+    public void timerAction() {
         if (!isStopped && timer.isZero()) {
             Screen.set(Screen.BOARD);
             revealAllMines();
@@ -167,7 +167,8 @@ public class MinesweeperGame extends Game {
 
     public void openRest(int x, int y) {
         // attempts to open cells around if number of flags nearby equals the number on the cell
-        if (shop.scanner.isActivated() || shop.miniBomb.isActivated()) return;
+        if (shop.scanner.isActivated()) return;
+        if (shop.miniBomb.isActivated()) return;
         Cell cell = field[y][x];
         if (cell.isOpen && !cell.isMined) {
             if (cell.countMinedNeighbors == getNeighborCells(cell, Filter.SUSPECTED, false).size()) {
@@ -383,7 +384,7 @@ public class MinesweeperGame extends Game {
     }
 
     public void switchTimerSetting() {
-        timer.enabledSetting = !timer.enabledSetting;
+        timer.isEnabledSetting = !timer.isEnabledSetting;
     }
 
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
@@ -400,11 +401,10 @@ public class MinesweeperGame extends Game {
     }
 
     private void onManualClick() {
-        if (allowCountMoves) {
-            player.incMoves();
-            player.score.setTimerScore(player.score.getTimerScore() + timer.getScore());
-            timer.restart();
-        }
+        if (!allowCountMoves) return;
+        player.incMoves();
+        player.score.setTimerScore(player.score.getTimerScore() + timer.getScore());
+        timer.restart();
     }
 
     public void deactivateExpiredItems() {

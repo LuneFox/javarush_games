@@ -16,7 +16,7 @@ public final class ViewBoard extends View {
     public void update() {
         super.update();
         if (!(Screen.is(Screen.SHOP))) game.display.setInterlaceEnabled(true);
-        game.checkTimeOut();
+        game.timerAction();
         game.redrawAllCells();
         if (game.shop.allItems.get(1).isActivated()) {
             IMAGES_CACHE.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);

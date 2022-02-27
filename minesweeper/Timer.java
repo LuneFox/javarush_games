@@ -13,52 +13,53 @@ public class Timer implements Drawable {
     private final MinesweeperGame game = MinesweeperGame.getInstance();
     public float time;
     private final float TIME_LIMIT = 500;
-    public boolean enabled;
-    public boolean enabledSetting;
+    public boolean isEnabled;
+    public boolean isEnabledSetting;
     private Date lastTickTime;
     private final Color[] COLORS;
 
     public Timer() {
         this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         this.time = 0;
-        this.enabled = false;
-        this.enabledSetting = false;
+        this.isEnabled = false;
+        this.isEnabledSetting = false;
         this.lastTickTime = new Date();
     }
 
     public void draw() {
-        if (enabled && !game.isStopped && !game.isFirstMove) {
-            for (int i = 0; i < ((time / TIME_LIMIT) * 100); i++) {
-                game.display.setCellColor(i, 0, COLORS[0]);
-            }
+        if (!isEnabled) return;
+        if (game.isStopped) return;
+        if (game.isFirstMove) return;
+        for (int i = 0; i < ((time / TIME_LIMIT) * 100); i++) {
+            game.display.setCellColor(i, 0, COLORS[0]);
         }
     }
 
     public void countDown() {
-        if (enabled && ((new Date().getTime() - lastTickTime.getTime()) >= 1000)) {
+        if (!isEnabled) return;
+        if (new Date().getTime() - lastTickTime.getTime() >= 1000) {
             time = (time > 0) ? time - game.difficulty : 0;
             swapColor();
             lastTickTime = new Date();
         }
     }
 
-    public void swapColor(){
+    public void swapColor() {
         Color swap = COLORS[0];
         COLORS[0] = COLORS[1];
         COLORS[1] = swap;
     }
 
     public void restart() {
-        if (enabled) {
+        if (isEnabled)
             time = TIME_LIMIT;
-        }
     }
 
     public boolean isZero() {
-        return (enabled && time <= 0);
+        return (isEnabled && time <= 0);
     }
 
     public int getScore() {
-        return (enabled) ? ((int) (time / 100) * (game.difficulty / 5)) : 0;
+        return (isEnabled) ? ((int) (time / 100) * (game.difficulty / 5)) : 0;
     }
 }

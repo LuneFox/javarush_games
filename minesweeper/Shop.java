@@ -29,39 +29,40 @@ public class Shop {
 
 
     public void sell(ShopItem item) {
-        if (item != null && isPurchasable(item)) {
-            // Make transaction
-            item.inStock--;
-            game.inventory.money -= item.cost;
-            game.inventory.add(item.id);
-            // Apply item effect
-            switch (item.id) {
-                case SHIELD:
-                    shield.activate();
-                    break;
-                case SCANNER:
-                    if (miniBomb.isActivated()) return;
-                    scanner.activate();
-                    purge(miniBomb);
-                    drawColoredFrame(Color.BLUE);
-                    break;
-                case SHOVEL:
-                    goldenShovel.activate();
-                    goldenShovel.expireMove = game.player.getMoves() + goldenShovel.effectDuration;
-                    break;
-                case DICE:
-                    luckyDice.activate();
-                    luckyDice.expireMove = game.player.getMoves() + luckyDice.effectDuration;
-                    break;
-                case BOMB:
-                    if (scanner.isActivated()) return;
-                    miniBomb.activate();
-                    purge(scanner);
-                    drawColoredFrame(Color.RED);
-                    break;
-                default:
-                    break;
-            }
+        if (item == null) return;
+        if (!isPurchasable(item)) return;
+        // Make transaction
+        item.inStock--;
+        game.inventory.money -= item.cost;
+        game.inventory.add(item.id);
+        // Apply item effect
+        switch (item.id) {
+            case SHIELD:
+                shield.activate();
+                break;
+            case SCANNER:
+                if (miniBomb.isActivated()) return;
+                scanner.activate();
+                purge(miniBomb);
+                drawColoredFrame(Color.BLUE);
+                break;
+            case SHOVEL:
+                goldenShovel.activate();
+                goldenShovel.expireMove = game.player.getMoves() + goldenShovel.effectDuration;
+                break;
+            case DICE:
+                luckyDice.activate();
+                luckyDice.expireMove = game.player.getMoves() + luckyDice.effectDuration;
+                break;
+            case BOMB:
+                if (scanner.isActivated()) return;
+                miniBomb.activate();
+                purge(scanner);
+                drawColoredFrame(Color.RED);
+                break;
+            default:
+                break;
+
         }
     }
 

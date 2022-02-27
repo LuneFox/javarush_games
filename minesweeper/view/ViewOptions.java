@@ -82,7 +82,7 @@ public final class ViewOptions extends View {
 
         Printer.print("игра на время", TEXT_PADDING_L, TIME_ANCHOR - 1);
         switchRail.drawAt(SWITCH_LEFTMOST_POSITION, TIME_ANCHOR + 2);
-        if (game.timer.enabledSetting) {
+        if (game.timer.isEnabledSetting) {
             if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
             switchButton.replaceColor(Color.GREEN, 1);
             switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
