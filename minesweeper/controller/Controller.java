@@ -45,36 +45,16 @@ public class Controller {
     }
 
     public final void pressKey(Key key) {
-        selectStrategy(0, 0); // Keyboard presses always pass the outside screen check
-        switch (key) {
-            case UP:
-                strategy.pressUp();
-                break;
-            case DOWN:
-                strategy.pressDown();
-                break;
-            case LEFT:
-                strategy.pressLeft();
-                break;
-            case RIGHT:
-                strategy.pressRight();
-                break;
-            case ENTER:
-                strategy.pressEnter();
-                break;
-            case PAUSE:
-                strategy.pressPause();
-                break;
-            case SPACE:
-                strategy.pressSpace();
-                break;
-            case ESCAPE:
-                strategy.pressEsc();
-                break;
-            default:
-                strategy.pressOther();
-                break;
-        }
+        selectStrategy(0, 0); // Keyboard buttons never miss the screen
+        if (key == Key.UP) strategy.pressUp();
+        else if (key == Key.DOWN) strategy.pressDown();
+        else if (key == Key.LEFT) strategy.pressLeft();
+        else if (key == Key.RIGHT) strategy.pressRight();
+        else if (key == Key.ENTER) strategy.pressEnter();
+        else if (key == Key.PAUSE) strategy.pressPause();
+        else if (key == Key.SPACE) strategy.pressSpace();
+        else if (key == Key.ESCAPE) strategy.pressEsc();
+        else strategy.pressOther();
     }
 
     private void selectStrategy(int x, int y) {
