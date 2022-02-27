@@ -206,19 +206,14 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    public void setFlag(int x, int y, boolean canRemove) {
+    public void setFlag(int x, int y, boolean flagIsRemovable) {
         if (isStopped) return;
-
         Cell cell = field[y][x];
-
         if (cell.isOpen) return;
-
-        if (cell.isFlagged && canRemove) {
+        if (cell.isFlagged && flagIsRemovable) {
             returnFlagToInventory(cell);
         } else {
-            if (canPlaceFlag()) {
-                placeFlagFromInventory(cell);
-            }
+            placeFlagFromInventory(cell);
         }
     }
 
@@ -229,41 +224,23 @@ public class MinesweeperGame extends Game {
     }
 
     private void placeFlagFromInventory(Cell cell) {
+        if (inventory.hasNoFlags()) shop.offerFlag();
+        if (inventory.hasNoFlags()) return;
         if (cell.isFlagged) return;
         inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
         cell.setSprite(VisualElement.SPR_BOARD_FLAG);
-        cell.drawSprite();
-    }
-
-    private boolean canPlaceFlag() {
-        if (inventory.hasNoFlags()) {
-            if (shop.autoBuyFlagsEnabled) {
-                if (shop.flag.isUnobtainable()) {
-                    return false;
-                }
-                shop.sell(shop.flag);
-                return true;
-            } else {
-                Screen.set(Screen.SHOP);
-                return false;
-            }
-        } else {
-            return true;
-        }
     }
 
     private boolean surviveMine(Cell cell) {        // did the player survive the mine?
-        if (cell.isMined) {
-            if (shop.shield.isActivated()) {
-                shop.shield.use(cell);              // shield has worked - YES
-                return true;
-            } else {
-                explodeAndGameOver(cell);           // nothing else saved the player - NO
-                return false;
-            }
+        if (!cell.isMined) return true;
+        if (shop.shield.isActivated()) {
+            shop.shield.use(cell);              // shield has worked - YES
+            return true;
+        } else {
+            explodeAndGameOver(cell);           // nothing else saved the player - NO
+            return false;
         }
-        return true;
     }
 
     public void scanNeighbors(int x, int y) { // to use with a scanner item

@@ -66,6 +66,17 @@ public class Shop {
         }
     }
 
+    public void offerFlag() {
+        if (!autoBuyFlagsEnabled && flag.inStock > 0) {
+            Screen.set(Screen.SHOP);
+            return;
+        }
+        if (flag.isUnobtainable()) {
+            return;
+        }
+        sell(flag);
+    }
+
     private boolean isPurchasable(ShopItem item) {
         // Item is not activated, affordable and exists in stock
         if (item.isActivated()) {
