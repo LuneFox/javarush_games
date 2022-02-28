@@ -40,7 +40,6 @@ public class Controller {
     public final void rightClick(int x, int y) {
         selectStrategy(x, y);
         strategy.rightClick(x, y);
-        // Uncomment this to check click coordinates
         // System.out.printf("%d %d%n", x, y);
     }
 
@@ -58,7 +57,7 @@ public class Controller {
     }
 
     private void selectStrategy(int x, int y) {
-        if (!Util.isWithinScreen(x, y) // Disable controls under these conditions
+        if (!Util.isWithinScreen(x, y) // Disable controls during awaiting of the next screen
                 || Screen.gameOver.getShowDelay() > 0
                 || Button.pressedTime > Button.POST_PRESS_DELAY) {
             this.strategy = strategyMap.get(null);

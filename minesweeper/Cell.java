@@ -50,6 +50,7 @@ public class Cell implements Drawable {
 
         if (isFlaggedCorrectly() && game.isStopped && !game.isVictory) {
             background.replaceColor(Color.GREEN, 3);
+            setSprite(VisualElement.SPR_BOARD_MINE);
         } else if (isShielded) {
             background.replaceColor(Color.YELLOW, 3);
         } else if (isScanned) {

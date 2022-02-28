@@ -142,7 +142,7 @@ public class MinesweeperGame extends Game {
         }
         cell.isOpen = true;
         onManualClick();                // do things that happen during real click only
-        if (!surviveMine(cell)) return; // stop processing if the player didn't survive
+        if (!trySurviving(cell)) return; // stop processing if the player didn't survive
         applyNumberToCell(cell);        // set number since we know it's not a bomb (survived)
         inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
         addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // cell.x, cell.y = dice display position
@@ -224,7 +224,7 @@ public class MinesweeperGame extends Game {
         cell.setSprite(VisualElement.SPR_BOARD_FLAG);
     }
 
-    private boolean surviveMine(Cell cell) {        // did the player survive the mine?
+    private boolean trySurviving(Cell cell) {   // did the player survive the mine?
         if (!cell.isMined) return true;
         if (shop.shield.isActivated()) {
             shop.shield.use(cell);              // shield has worked - YES
@@ -339,11 +339,11 @@ public class MinesweeperGame extends Game {
 
     // OPTION SETTINGS
 
-    public void changeDifficultySetting(boolean harder) {
-        if (harder && difficultySetting < 45) {
+    public void changeDifficultySetting(boolean makeHarder) {
+        if (makeHarder && difficultySetting < 45) {
             difficultySetting += 5;
             Screen.options.animateRightArrow();
-        } else if (!harder && difficultySetting > 5) {
+        } else if (!makeHarder && difficultySetting > 5) {
             difficultySetting -= 5;
             Screen.options.animateLeftArrow();
         }

@@ -9,25 +9,31 @@ public class ControlBoard implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
+        int gridX = x / 10;
+        int gridY = y / 10;
+
         if (game.isStopped) {
             Screen.set(Screen.GAME_OVER);
             return;
         }
-        Cell cell = game.field[y / 10][x / 10];
+        Cell cell = game.field[gridY][gridX];
         if (!cell.isFlagged || game.shop.scanner.isActivated()) {
-            game.openCell(x / 10, y / 10);
+            game.openCell(gridX, gridY);
         }
         game.deactivateExpiredItems();
     }
 
     @Override
     public void rightClick(int x, int y) {
+        int gridX = x / 10;
+        int gridY = y / 10;
+
         if (game.isStopped) {
             Screen.set(Screen.GAME_OVER);
-        } else { // only one will work - actions don't interfere
-            game.setFlag(x / 10, y / 10, true);           // works only if tile is closed
-            game.openRest(x / 10, y / 10);                // works only if tile is open
+            return;
         }
+        game.setFlag(gridX, gridY, true);  // works only on closed tiles
+        game.openRest(gridX, gridY);       // works only on open tiles
         game.deactivateExpiredItems();
     }
 
