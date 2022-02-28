@@ -141,12 +141,12 @@ public class MinesweeperGame extends Game {
             cell = field[y][x];
         }
         cell.isOpen = true;
-        onManualClick();                // do things that happen during real click only
-        if (!trySurviving(cell)) return; // stop processing if the player didn't survive
-        applyNumberToCell(cell);        // set number since we know it's not a bomb (survived)
+        onManualClick();                  // do things that happen during real click only
+        if (!trySurviving(cell)) return;  // stop processing if the player didn't survive
+        applyNumberToCell(cell);          // set number since we know it's not a bomb (survived)
         inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
-        addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // cell.x, cell.y = dice display position
-        recursiveOpenEmpty(cell);                  // for surrounding empty cells, moved don't count
+        addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // x,y = dice display position
+        recursiveOpenEmpty(cell);         // for surrounding empty cells, moves don't count
         checkVictory();
     }
 
@@ -266,7 +266,7 @@ public class MinesweeperGame extends Game {
     private List<Cell> getAllCells(Filter filter) {
         List<Cell> all = new ArrayList<>();
         for (int y = 0; y < 10; y++) {
-            all.addAll(Arrays.asList(field[y]).subList(0, 10));
+            all.addAll(Arrays.asList(field[y]));
         }
         return Cell.filterCells(all, filter);
     }

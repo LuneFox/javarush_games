@@ -11,26 +11,25 @@ import java.util.HashMap;
 public class Printer {
     private static final HashMap<Character, Image> SYMBOLS_CACHE = new HashMap<>(128);
     private static final int CHAR_SPACING = 1;
-    private static final int LINE_SPACING = 9;
+    private static final int LINE_HEIGHT = 9;
 
     static {
         cacheAllSymbols();
     }
 
     public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
-
-        // If drawX is negative, print in the middle
+        // If drawX is outside bounds,
         if (drawX < 0 || drawX > 99) {
             int width = calculateWidth(input);
             drawX = 50 - width / 2;
         }
-        // Must be effectively final for inner Caret class
-        int caretStartPosition = drawX;
-
         // Don't allow printing outside screen
         if (drawY < 0 || drawY > 99) {
             drawY = 0;
         }
+
+        final int finalDrawX = drawX;
+
 
         // A caret marks the place where the next symbol is going to be drawn
         class Caret {
@@ -44,8 +43,8 @@ public class Printer {
             // Return the caret to the beginning of the next line if the char is '\n'
             boolean isAtNewLine(char c) {
                 if (c == '\n') {
-                    x = caretStartPosition;
-                    y += LINE_SPACING;
+                    x = finalDrawX;
+                    y += LINE_HEIGHT;
                     return true;
                 }
                 return false;
@@ -93,18 +92,20 @@ public class Printer {
         symbol.drawAt(x, y);
     }
 
+    /**
+     * Cache generated symbol images into a map to avoid generating new images each time we need to take a letter
+     */
     public static void cacheAllSymbols() {
-        // For all elements that are marked as symbols
         VisualElement.getElementsByPrefixes("SYM_").forEach(symbol -> {
-            // For every char that is assigned to a symbol
             for (char c : symbol.characters) {
-                // Cache a pair <char, image> for frequent reuse
                 SYMBOLS_CACHE.put(c, new Image(symbol));
             }
         });
     }
 
-    // Calculates the width in pixels of the text that comes as an argument
+    /**
+     * Calculates the width in pixels of the text that comes as an argument
+     */
     public static int calculateWidth(String s) {
         int width = 0;
         Image symbol;
