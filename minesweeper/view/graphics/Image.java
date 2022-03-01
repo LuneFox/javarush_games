@@ -10,25 +10,25 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 public class Image implements Drawable {
     protected MinesweeperGame game = MinesweeperGame.getInstance();     // game instance to be drawn into
     private int drawX;
-    private int drawY;                        // real position in pixels
+    private int drawY;                     // real position in pixels
     public int[][] matrix;                 // matrix of color numbers
     public Color[] colors;                 // an array to match colors and numbers
-    private float floatAnimationShift;        // difference between the anchor and current position
+    private float floatAnimationShift;     // difference between the anchor and current position
     private boolean floatAnimationGoesDown;
 
     public enum Mirror {
         HORIZONTAL, VERTICAL, NONE
     }
 
-    public Image(VisualElement visualElement, int drawX, int drawY) { // constructor with setting position at once
+    public Image(VisualElement visualElement) { // constructor without setting position (for loading images in memory)
         this.matrix = getMatrix(visualElement);
+    }
+
+    public Image(VisualElement visualElement, int drawX, int drawY) { // constructor with setting position at once
+        this(visualElement);
         setPosition(drawX, drawY);
         floatAnimationShift = 0;
         floatAnimationGoesDown = true;
-    }
-
-    Image(VisualElement visualElement) { // constructor without setting position (for loading images in memory)
-        this.matrix = getMatrix(visualElement);
     }
 
     public void draw() {
