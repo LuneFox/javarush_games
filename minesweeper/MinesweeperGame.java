@@ -210,7 +210,7 @@ public class MinesweeperGame extends Game {
     private void returnFlagToInventory(Cell cell) {
         inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
-        cell.setSprite(VisualElement.NONE);
+        cell.setSprite(cell.isMined ? VisualElement.SPR_BOARD_MINE : VisualElement.NONE);
     }
 
     private void placeFlagFromInventory(Cell cell) {

@@ -26,8 +26,7 @@ public class Inventory {
 
     public void reset() {
         for (ShopItem.ID item : ShopItem.ID.values()) {
-            if (item == ShopItem.ID.FLAG) items.put(item, INIT_FLAG_NUMBER);
-            else items.put(item, 0);
+            items.put(item, (item == ShopItem.ID.FLAG) ? INIT_FLAG_NUMBER : 0);
         }
         money = 0;
     }
