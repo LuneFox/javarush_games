@@ -1,6 +1,8 @@
 package com.javarush.games.minesweeper.model;
 
-import java.util.HashMap;
+import java.util.EnumMap;
+
+import java.util.Map;
 
 /**
  * Keeps track of what player currently has in his bag. Can add, remove, reset items or check their count.
@@ -9,7 +11,7 @@ import java.util.HashMap;
 public class Inventory {
     public int money;
     public static final int INIT_FLAG_NUMBER = 3;
-    public HashMap<ShopItem.ID, Integer> items = new HashMap<>();
+    public Map<ShopItem.ID, Integer> items = new EnumMap<>(ShopItem.ID.class);
 
     public Inventory() {
         reset();
