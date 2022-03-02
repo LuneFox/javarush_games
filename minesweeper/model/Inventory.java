@@ -8,8 +8,8 @@ import java.util.HashMap;
 
 public class Inventory {
     public int money;
-    public static final int INIT_FLAGS = 3;
-    public HashMap<ShopItem.ID, Integer> items;
+    public static final int INIT_FLAG_NUMBER = 3;
+    public HashMap<ShopItem.ID, Integer> items = new HashMap<>();
 
     public Inventory() {
         reset();
@@ -24,15 +24,12 @@ public class Inventory {
         items.put(itemID, items.get(itemID) - 1);
     }
 
-    public void reset(){
+    public void reset() {
+        for (ShopItem.ID item : ShopItem.ID.values()) {
+            if (item == ShopItem.ID.FLAG) items.put(item, INIT_FLAG_NUMBER);
+            else items.put(item, 0);
+        }
         money = 0;
-        items = new HashMap<>();
-        items.put(ShopItem.ID.SHIELD, 0);
-        items.put(ShopItem.ID.SCANNER, 0);
-        items.put(ShopItem.ID.FLAG, INIT_FLAGS);
-        items.put(ShopItem.ID.SHOVEL, 0);
-        items.put(ShopItem.ID.DICE, 0);
-        items.put(ShopItem.ID.BOMB, 0);
     }
 
     public int getCount(ShopItem.ID itemID) {

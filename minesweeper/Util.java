@@ -1,8 +1,5 @@
 package com.javarush.games.minesweeper;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Util class for various operations.
  */
