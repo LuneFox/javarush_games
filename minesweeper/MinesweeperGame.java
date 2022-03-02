@@ -21,7 +21,7 @@ public class MinesweeperGame extends Game {
     public Inventory inventory;
     public Shop shop;
     public Player player;
-    public com.javarush.games.minesweeper.model.Timer timer;
+    public Timer timer;
     public Cell[][] field = new Cell[10][10];
     public int difficulty = 10;                // current difficulty
     public int difficultySetting = difficulty; // in the options, applied for the new game
