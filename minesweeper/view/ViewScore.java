@@ -1,8 +1,8 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.Cell;
-import com.javarush.games.minesweeper.Screen;
+import com.javarush.games.minesweeper.model.Cell;
+import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.view.graphics.*;
 
 /**

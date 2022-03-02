@@ -1,8 +1,8 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
-import com.javarush.games.minesweeper.Cell;
+import com.javarush.games.minesweeper.model.Cell;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.Screen;
+import com.javarush.games.minesweeper.model.Screen;
 
 public class ControlBoard implements ControlStrategy {
     final private MinesweeperGame game = MinesweeperGame.getInstance();

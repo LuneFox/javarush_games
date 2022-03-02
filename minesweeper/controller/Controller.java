@@ -1,10 +1,9 @@
 package com.javarush.games.minesweeper.controller;
 
 import com.javarush.engine.cell.Key;
-import com.javarush.games.minesweeper.*;
 import com.javarush.games.minesweeper.controller.strategy.*;
-import com.javarush.games.minesweeper.utility.Util;
-import com.javarush.games.minesweeper.view.View;
+import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.view.graphics.Button;
 
 import java.util.HashMap;

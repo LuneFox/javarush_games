@@ -1,5 +1,6 @@
-package com.javarush.games.minesweeper;
+package com.javarush.games.minesweeper.model;
 
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.view.View;
 
 /**

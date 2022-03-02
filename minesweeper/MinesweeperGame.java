@@ -3,10 +3,10 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
-import com.javarush.games.minesweeper.utility.Util;
+import com.javarush.games.minesweeper.model.*;
+import com.javarush.games.minesweeper.model.Timer;
 import com.javarush.games.minesweeper.view.graphics.*;
-import com.javarush.games.minesweeper.view.View;
-import com.javarush.games.minesweeper.Cell.Filter;
+import com.javarush.games.minesweeper.model.Cell.Filter;
 
 import java.util.*;
 
@@ -16,13 +16,12 @@ import java.util.*;
 
 public class MinesweeperGame extends Game {
     private static MinesweeperGame instance;
-    private View view;
     private Controller controller;
     public Display display;
     public Inventory inventory;
     public Shop shop;
     public Player player;
-    public Timer timer;
+    public com.javarush.games.minesweeper.model.Timer timer;
     public Cell[][] field = new Cell[10][10];
     public int difficulty = 10;                // current difficulty
     public int difficultySetting = difficulty; // in the options, applied for the new game
@@ -39,7 +38,6 @@ public class MinesweeperGame extends Game {
         instance = this;            // must come first, new objects before use this instance at creation time
         display = new Display();
         controller = new Controller();
-        view = new View();
         timer = new Timer();
         shop = new Shop();
         player = new Player();

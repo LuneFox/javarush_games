@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.utility;
+package com.javarush.games.minesweeper;
 
 import java.util.ArrayList;
 import java.util.List;

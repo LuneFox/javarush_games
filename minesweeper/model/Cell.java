@@ -1,6 +1,7 @@
-package com.javarush.games.minesweeper;
+package com.javarush.games.minesweeper.model;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.view.graphics.*;
 
 import java.util.ArrayList;
@@ -17,20 +18,20 @@ public class Cell implements Drawable {
     private static final MinesweeperGame game = MinesweeperGame.getInstance();
     private static final Map<Integer, VisualElement> sprites = new HashMap<>();
 
-    protected final int x;                    // logical position on a 10x10 grid
-    protected final int y;
-    protected boolean isMined;                // contains a mine
-    protected boolean isOpen;                 // revealed
-    protected boolean isScanned;              // revealed using a scanner
-    protected boolean isShielded;             // revealed using a shield
-    protected boolean isGameOverCause;        // was clicked last before game over
-    public boolean isFlagged;                 // flagged by player
-    protected boolean isDestroyed;            // blown up by the bomb
-    protected int countMinedNeighbors;        // number of adjacent mines
+    public final int x;                    // logical position on a 10x10 grid
+    public final int y;
+    public boolean isMined;                // contains a mine
+    public boolean isOpen;                 // revealed
+    public boolean isScanned;              // revealed using a scanner
+    protected boolean isShielded;          // revealed using a shield
+    public boolean isGameOverCause;        // was clicked last before game over
+    public boolean isFlagged;              // flagged by player
+    public boolean isDestroyed;            // blown up by the bomb
+    public int countMinedNeighbors;        // number of adjacent mines
 
-    private final VisualElement visualElement;// visual element assigned to the body: opened, closed or destroyed
-    private final Image background;           // the "body" of the cell
-    private Image sprite;                     // foreground image (number, flag or mine)
+    private final VisualElement visualElement; // visual element assigned to the body: opened, closed or destroyed
+    private final Image background;            // the "body" of the cell
+    private Image sprite;                      // foreground image (number, flag or mine)
 
     static {
         sprites.put(0, VisualElement.NONE);
@@ -45,7 +46,7 @@ public class Cell implements Drawable {
         sprites.put(9, VisualElement.SPR_BOARD_9);
     }
 
-    protected Cell(VisualElement visualElement, int x, int y, boolean isMined) {
+    public Cell(VisualElement visualElement, int x, int y, boolean isMined) {
         this.background = new Image(visualElement, x * 10, y * 10);
         this.visualElement = visualElement;
         this.x = x;
@@ -86,16 +87,16 @@ public class Cell implements Drawable {
         background.colors = new ImageStorage(visualElement).getColors();
     }
 
-    protected void setSprite(VisualElement visualElement) {
+    public void setSprite(VisualElement visualElement) {
         this.sprite = new Image(visualElement, x * 10, y * 10);
     }
 
-    protected void setSprite(int number) {
+    public void setSprite(int number) {
         if (number < 0 || number > 9) throw new IllegalArgumentException("Sprites numbers must be from 0 to 9");
         this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
 
-    protected void makeSpriteYellow() {
+    public void makeSpriteYellow() {
         sprite.replaceColor(Color.YELLOW, 1);
     }
 

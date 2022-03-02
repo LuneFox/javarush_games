@@ -1,11 +1,8 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.utility.Util;
-import com.javarush.games.minesweeper.view.graphics.*;
-
-import java.util.EnumMap;
+import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.Util;
 
 /**
  * Class for displaying various menus on the screen.

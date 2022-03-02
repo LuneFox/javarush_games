@@ -1,10 +1,10 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.Screen;
-import com.javarush.games.minesweeper.ShopItem;
+import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.ShopItem;
 
-import static com.javarush.games.minesweeper.utility.Util.inside;
+import static com.javarush.games.minesweeper.Util.inside;
 
 public class ControlShop implements ControlStrategy {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
