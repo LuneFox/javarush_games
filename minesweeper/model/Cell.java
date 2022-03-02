@@ -96,8 +96,13 @@ public class Cell implements Drawable {
         this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
 
-    public void makeSpriteYellow() {
-        sprite.replaceColor(Color.YELLOW, 1);
+    public void attachNumber() {
+        if (!isNumerable()) return;
+
+        setSprite(countMinedNeighbors);
+        if (game.shop.goldenShovel.isActivated()) {
+            sprite.replaceColor(Color.YELLOW, 1);
+        }
     }
 
     // Combined states
@@ -128,6 +133,12 @@ public class Cell implements Drawable {
 
     public boolean isScored() {
         return (isOpen && !isMined && !isDestroyed);     // Is counted while calculating score
+    }
+
+    public boolean isIndestructible() {                  // Cannot be exploded with a bomb
+        boolean activated = (isOpen || isDestroyed);
+        boolean noFlagDestruction = (isFlagged && !game.allowFlagExplosion);
+        return (game.isStopped || activated || noFlagDestruction);
     }
 
 

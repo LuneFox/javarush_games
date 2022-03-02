@@ -55,4 +55,8 @@ public enum Screen {
     public static boolean is(Screen screen) {
         return (screens.get(0) == screen);
     }
+
+    public static void setCurrentView(View currentView) {
+        Screen.currentView = currentView;
+    }
 }

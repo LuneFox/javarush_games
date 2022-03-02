@@ -82,4 +82,39 @@ public class Score {
     public void setTimerScore(int timerScore) {
         this.timerScore = timerScore;
     }
+
+    public static class Table {
+        public static int total;
+        public static int minesCount;
+        public static int scoredCells;
+        public static int difficulty;
+        public static int money;
+        public static int shields;
+        public static int luckyCells;
+        public static int scoreDice;
+        public static int scoreLost;
+        public static int scoreTimer;
+        public static int moneyScore;
+        public static int minesScore;
+        public static double luck;
+        public static boolean victory;
+
+        public void update() {
+            MinesweeperGame game = MinesweeperGame.getInstance();
+            total = game.player.score.getTotalScore();
+            minesCount = game.field.countAllCells(Cell.Filter.MINED);
+            scoredCells = game.field.countAllCells(Cell.Filter.SCORED);
+            difficulty = game.difficulty;
+            money = game.inventory.money;
+            shields = game.player.getBrokenShields();
+            luckyCells = game.shop.dice.totalCells;
+            scoreDice = game.player.score.getDiceScore();
+            scoreLost = game.player.score.getLostScore();
+            scoreTimer = game.player.score.getTimerScore();
+            moneyScore = game.player.score.getMoneyScore();
+            minesScore = game.player.score.getMinesScore();
+            luck = game.shop.dice.getAverageLuck();
+            victory = game.isVictory;
+        }
+    }
 }

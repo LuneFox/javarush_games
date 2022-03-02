@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.model.Score;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.view.graphics.*;
 
@@ -34,13 +35,13 @@ public final class ViewGameOver extends View {
             Cache.get(VisualElement.FACE_SAD).draw(-1, -1);
             Printer.print("не повезло!", Color.YELLOW, 18, 33);
         }
-        Printer.print("счёт: " + game.player.score.getTotalScore(), Color.LIGHTGOLDENRODYELLOW, 18, 57);
+        Printer.print("счёт: " + Score.Table.total, Color.LIGHTGOLDENRODYELLOW, 18, 57);
         Cache.get(Button.ButtonID.GAME_OVER_AGAIN).draw();
         Cache.get(Button.ButtonID.GAME_OVER_RETURN).draw();
         Cache.get(Button.ButtonID.GAME_OVER_HIDE).draw();
     }
 
-    public void setShowDelay() {
+    public void setDelay() {
         this.showDelay = 30;
     }
 

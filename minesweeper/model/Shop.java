@@ -146,4 +146,9 @@ public class Shop {
         });
         return result[0];
     }
+
+    public void deactivateExpiredItems() {
+        goldenShovel.expireCheck();
+        luckyDice.expireCheck();
+    }
 }

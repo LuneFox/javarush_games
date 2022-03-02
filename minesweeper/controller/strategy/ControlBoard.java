@@ -20,7 +20,7 @@ public class ControlBoard implements ControlStrategy {
         if (!cell.isFlagged || game.shop.scanner.isActivated()) {
             game.openCell(gridX, gridY);
         }
-        game.deactivateExpiredItems();
+        game.shop.deactivateExpiredItems();
     }
 
     @Override
@@ -34,7 +34,7 @@ public class ControlBoard implements ControlStrategy {
         }
         game.setFlag(gridX, gridY, true);  // works only on closed tiles
         game.openRest(gridX, gridY);       // works only on open tiles
-        game.deactivateExpiredItems();
+        game.shop.deactivateExpiredItems();
     }
 
     @Override

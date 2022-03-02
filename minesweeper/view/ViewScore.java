@@ -1,9 +1,22 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.model.Cell;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.view.graphics.*;
+
+import static com.javarush.games.minesweeper.model.Score.Table.minesCount;
+import static com.javarush.games.minesweeper.model.Score.Table.difficulty;
+import static com.javarush.games.minesweeper.model.Score.Table.money;
+import static com.javarush.games.minesweeper.model.Score.Table.scoredCells;
+import static com.javarush.games.minesweeper.model.Score.Table.luck;
+import static com.javarush.games.minesweeper.model.Score.Table.luckyCells;
+import static com.javarush.games.minesweeper.model.Score.Table.shields;
+import static com.javarush.games.minesweeper.model.Score.Table.scoreTimer;
+import static com.javarush.games.minesweeper.model.Score.Table.scoreLost;
+import static com.javarush.games.minesweeper.model.Score.Table.moneyScore;
+import static com.javarush.games.minesweeper.model.Score.Table.minesScore;
+import static com.javarush.games.minesweeper.model.Score.Table.scoreDice;
+import static com.javarush.games.minesweeper.model.Score.Table.victory;
 
 /**
  * Shows score details in the end of the game.
@@ -18,21 +31,6 @@ public final class ViewScore extends View {
     public void update() {
         super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
-
-        int minesCount = game.field.countAllCells(Cell.Filter.MINED);
-        int scoredCells = game.field.countAllCells(Cell.Filter.SCORED);
-        int difficulty = game.difficulty;
-        int money = game.inventory.money;
-        int shields = game.player.getBrokenShields();
-        int luckyCells = game.shop.dice.totalCells;
-        int scoreDice = game.player.score.getDiceScore();
-        int scoreLost = game.player.score.getLostScore();
-        int scoreTimer = game.player.score.getTimerScore();
-        int moneyScore = game.player.score.getMoneyScore();
-        int minesScore = game.player.score.getMinesScore();
-        double luck = game.shop.dice.getAverageLuck();
-        boolean victory = game.isVictory;
-
         String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
         String moneyScoreDetail = money + "*" + difficulty + " = ";
         String cellScoreDetail = scoredCells + "*" + game.difficulty + " = ";

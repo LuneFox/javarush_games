@@ -9,19 +9,22 @@ public class ControlScore implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GENERAL_CONFIRM).tryToPress(x, y)) {
-            Screen.board.update();
-            Screen.set(Screen.GAME_OVER);
+            Screen.setCurrentView(Screen.board); // crutch
+            goBack();
         }
     }
 
     @Override
     public void pressSpace() {
-        Screen.board.update();
-        Screen.set(Screen.GAME_OVER);
+        goBack();
     }
 
     @Override
     public void pressEsc() {
+        goBack();
+    }
+
+    private void goBack() {
         Screen.board.update();
         Screen.set(Screen.GAME_OVER);
     }

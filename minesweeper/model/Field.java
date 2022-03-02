@@ -23,9 +23,11 @@ public class Field implements Drawable {
                 field[y][x].setSprite(VisualElement.NONE);
             }
         }
+        plantMines();
+        attachNumbers();
     }
 
-    public void plantMines() {
+    private void plantMines() {
         while (countAllCells(Cell.Filter.MINED) < game.difficulty / 1.5) { // fixed number of mines on field
             int x = game.getRandomNumber(10);
             int y = game.getRandomNumber(10);
@@ -61,7 +63,7 @@ public class Field implements Drawable {
         return Cell.filterCells(neighbors, filter);
     }
 
-    public void enumerate() {
+    public void attachNumbers() {
         getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
             cell.countMinedNeighbors = getNeighborCells(cell, Cell.Filter.MINED, false).size();
             cell.setSprite(cell.countMinedNeighbors);
@@ -74,6 +76,11 @@ public class Field implements Drawable {
         });
     }
 
+    public void recolor() {
+        if (game.isStopped) return; // no cells to color yet
+        getAllCells(Cell.Filter.NONE).forEach(Cell::updateColors);
+    }
+
     @Override
     public void draw() {
         getAllCells(Cell.Filter.NONE).forEach(Cell::draw);
@@ -81,5 +88,9 @@ public class Field implements Drawable {
 
     public Cell[][] get() {
         return field;
+    }
+
+    public Cell getCell(int x, int y) {
+        return field[y][x];
     }
 }
