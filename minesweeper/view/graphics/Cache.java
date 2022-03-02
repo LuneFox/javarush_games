@@ -33,8 +33,9 @@ public class Cache {
         if (element.name().startsWith("FLO_")) {
             images.put(element, new FloatingImage(element));
         } else if (element.name().startsWith("SYM_")) {
-            for (char c : element.characters) symbols.put(c, new Image(element));
-            images.put(element, new Image(element));
+            Image symbol = new Image(element);
+            for (char c : element.characters) symbols.put(c, symbol);
+            images.put(element, symbol);
         } else {
             images.put(element, new Image(element));
         }
