@@ -18,7 +18,7 @@ public final class ViewBoard extends View {
         super.update();
         if (!(Screen.is(Screen.SHOP))) game.display.setInterlaceEnabled(true);
         game.timerAction();
-        game.drawAllCells();
+        game.field.draw();
         if (game.shop.allItems.get(1).isActivated()) {
             Cache.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
             Cache.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();

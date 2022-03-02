@@ -16,7 +16,7 @@ public class ControlBoard implements ControlStrategy {
             Screen.set(Screen.GAME_OVER);
             return;
         }
-        Cell cell = game.field[gridY][gridX];
+        Cell cell = game.field.get()[gridY][gridX];
         if (!cell.isFlagged || game.shop.scanner.isActivated()) {
             game.openCell(gridX, gridY);
         }

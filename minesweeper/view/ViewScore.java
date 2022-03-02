@@ -19,8 +19,8 @@ public final class ViewScore extends View {
         super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
 
-        int minesCount = game.countAllCells(Cell.Filter.MINED);
-        int scoredCells = game.countAllCells(Cell.Filter.SCORED);
+        int minesCount = game.field.countAllCells(Cell.Filter.MINED);
+        int scoredCells = game.field.countAllCells(Cell.Filter.SCORED);
         int difficulty = game.difficulty;
         int money = game.inventory.money;
         int shields = game.player.getBrokenShields();

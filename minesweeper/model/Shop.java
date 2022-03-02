@@ -129,7 +129,7 @@ public class Shop {
     }
 
     private int getFlagsAmount() {
-        return game.countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
+        return game.field.countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
     }
 
     private void drawColoredFrame(Color color) {

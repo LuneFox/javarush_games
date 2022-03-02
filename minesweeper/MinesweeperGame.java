@@ -22,7 +22,8 @@ public class MinesweeperGame extends Game {
     public Shop shop;
     public Player player;
     public Timer timer;
-    public Cell[][] field = new Cell[10][10];
+    public Field field;
+    // public Cell[][] field = new Cell[10][10];
     public int difficulty = 10;                // current difficulty
     public int difficultySetting = difficulty; // in the options, applied for the new game
     private boolean allowCountMoves; // user clicked with mouse = not recursive action = allow counting as a move
@@ -38,6 +39,7 @@ public class MinesweeperGame extends Game {
         instance = this;            // must come first, new objects before use this instance at creation time
         display = new Display();
         controller = new Controller();
+        field = new Field();
         timer = new Timer();
         shop = new Shop();
         player = new Player();
@@ -58,10 +60,10 @@ public class MinesweeperGame extends Game {
 
     public void createGame() {
         applyOptions();    // difficulty impacts the number of mines created below
-        createField();
-        plantMines();      // number of mines define the number of flags given out below
+        field.create();
+        field.plantMines();      // number of mines define the number of flags given out below
         resetValues();
-        enumerateCells();
+        field.enumerate();
         setScore(player.score.getCurrentScore());
     }
 
@@ -78,27 +80,6 @@ public class MinesweeperGame extends Game {
         difficulty = difficultySetting;
         timer.isEnabled = timer.isEnabledSetting;
     }
-
-    private void createField() {
-        for (int y = 0; y < 10; y++) {
-            for (int x = 0; x < 10; x++) {
-                field[y][x] = new Cell(VisualElement.CELL_CLOSED, x, y, false);
-                field[y][x].setSprite(VisualElement.NONE);
-            }
-        }
-    }
-
-    private void plantMines() {
-        while (countAllCells(Filter.MINED) < difficulty / 1.5) { // fixed number of mines on field
-            int x = getRandomNumber(10);
-            int y = getRandomNumber(10);
-            if (!field[y][x].isMined && !field[y][x].isOpen) {
-                field[y][x] = new Cell(VisualElement.CELL_CLOSED, x, y, true);
-                field[y][x].setSprite(VisualElement.SPR_BOARD_MINE);
-            }
-        }
-    }
-
 
     // WIN AND LOSE
 
@@ -120,7 +101,7 @@ public class MinesweeperGame extends Game {
     public void timerAction() {
         if (!isStopped && timer.isZero()) {
             Screen.set(Screen.BOARD);
-            revealAllMines();
+            field.revealMines();
             lose();
         } else {
             timer.countDown();
@@ -130,13 +111,13 @@ public class MinesweeperGame extends Game {
     // ACTIVE CELL OPERATIONS
 
     public void openCell(int x, int y) {
-        Cell cell = field[y][x];
+        Cell cell = field.get()[y][x];
         if (shop.miniBomb.use(cell) || shop.scanner.use(cell)) return;
         if (allowCountMoves) shop.dice.appearCell = cell;
         if (isStopped || cell.isFlagged || cell.isOpen) return;
         if (isFirstMove) {
             ensureClickingOnBlankSpace(x, y);
-            cell = field[y][x];
+            cell = field.get()[y][x];
         }
         cell.isOpen = true;
         onManualClick();                  // do things that happen during real click only
@@ -151,7 +132,7 @@ public class MinesweeperGame extends Game {
     private void recursiveOpenEmpty(Cell cell) {
         allowCountMoves = false;               // automatic opening doesn't count as a player move
         if (cell.isEmpty()) {
-            List<Cell> neighbors = getNeighborCells(cell, Filter.NONE, false);
+            List<Cell> neighbors = field.getNeighborCells(cell, Filter.NONE, false);
             neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
     }
@@ -160,17 +141,17 @@ public class MinesweeperGame extends Game {
         // attempts to open cells around if number of flags nearby equals the number on the cell
         if (shop.scanner.isActivated()) return;
         if (shop.miniBomb.isActivated()) return;
-        Cell cell = field[y][x];
+        Cell cell = field.get()[y][x];
         if (cell.isOpen && !cell.isMined) {
-            if (cell.countMinedNeighbors == getNeighborCells(cell, Filter.SUSPECTED, false).size()) {
-                getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
+            if (cell.countMinedNeighbors == field.getNeighborCells(cell, Filter.SUSPECTED, false).size()) {
+                field.getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
             }
         }
     }
 
     public void destroyCell(int x, int y) {
         onManualClick();
-        Cell cell = field[y][x];
+        Cell cell = field.get()[y][x];
         if (cellDestructionImpossible(cell)) return;
 
         cell.setSprite(VisualElement.NONE);
@@ -187,18 +168,18 @@ public class MinesweeperGame extends Game {
             cell.isMined = false;
             allowCountMoves = false;
             allowFlagExplosion = true;
-            getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> {
+            field.getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> {
                 if (neighbor.isMined) {
                     destroyCell(neighbor.x, neighbor.y); // recursive call
                 }
             });
-            enumerateCells();
+            field.enumerate();
         }
     }
 
     public void setFlag(int x, int y, boolean flagIsRemovable) {
         if (isStopped) return;
-        Cell cell = field[y][x];
+        Cell cell = field.get()[y][x];
         if (cell.isOpen) return;
         if (cell.isFlagged && flagIsRemovable) {
             returnFlagToInventory(cell);
@@ -234,10 +215,10 @@ public class MinesweeperGame extends Game {
     }
 
     public void scanNeighbors(int x, int y) { // to use with a scanner item
-        List<Cell> neighbors = getNeighborCells(field[y][x], Filter.SAFE, true);
+        List<Cell> neighbors = field.getNeighborCells(field.get()[y][x], Filter.SAFE, true);
 
         if (neighbors.size() == 0) { // no safe cells
-            getNeighborCells(field[y][x], Filter.CLOSED, true).forEach(closedCell -> {
+            field.getNeighborCells(field.get()[y][x], Filter.CLOSED, true).forEach(closedCell -> {
                 if (inventory.hasNoFlags()) shop.give(shop.flag);
                 setFlag(closedCell.x, closedCell.y, false); // set flag forcefully
             });
@@ -252,39 +233,6 @@ public class MinesweeperGame extends Game {
         openCell(cell.x, cell.y);
     }
 
-    private void enumerateCells() {
-        getAllCells(Filter.NUMERABLE).forEach(cell -> {
-            cell.countMinedNeighbors = getNeighborCells(cell, Filter.MINED, false).size();
-            cell.setSprite(cell.countMinedNeighbors);
-        });
-    }
-
-    // CELL COLLECTIONS
-
-    private List<Cell> getAllCells(Filter filter) {
-        List<Cell> all = new ArrayList<>();
-        for (int y = 0; y < 10; y++) {
-            all.addAll(Arrays.asList(field[y]));
-        }
-        return Cell.filterCells(all, filter);
-    }
-
-    public int countAllCells(Filter filter) {
-        return getAllCells(filter).size();
-    }
-
-    private List<Cell> getNeighborCells(Cell cell, Filter filter, boolean includeSelf) {
-        List<Cell> neighbors = new ArrayList<>();
-        for (int y = cell.y - 1; y <= cell.y + 1; y++) {
-            for (int x = cell.x - 1; x <= cell.x + 1; x++) {
-                if (y < 0 || y >= 10) continue;
-                if (x < 0 || x >= 10) continue;
-                if (field[y][x] == cell && !includeSelf) continue;  // skip center if not included
-                neighbors.add(field[y][x]);
-            }
-        }
-        return Cell.filterCells(neighbors, filter);
-    }
 
     // UTILITIES
 
@@ -292,7 +240,7 @@ public class MinesweeperGame extends Game {
         int randomNumber = getRandomNumber(6) + 1;
         shop.dice.setImage(randomNumber, x, y);
 
-        if (field[y][x].isMined) return;
+        if (field.get()[y][x].isMined) return;
         if (shop.luckyDice.isActivated()) {
             player.score.setDiceScore(player.score.getDiceScore() + difficulty * randomNumber);
             shop.dice.totalCells++;
@@ -302,16 +250,16 @@ public class MinesweeperGame extends Game {
     }
 
     private void ensureClickingOnBlankSpace(int x, int y) {
-        Cell cell = field[y][x];
+        Cell cell = field.get()[y][x];
 
-        List<Cell> flaggedCells = getAllCells(Filter.FLAGGED);                // get flagged cells
-        flaggedCells.forEach(fc -> returnFlagToInventory(field[fc.y][fc.x])); // collect flags
+        List<Cell> flaggedCells = field.getAllCells(Filter.FLAGGED);                // get flagged cells
+        flaggedCells.forEach(fc -> returnFlagToInventory(field.get()[fc.y][fc.x])); // collect flags
 
         while (!cell.isEmpty()) { // create new game until the clicked cell is empty
-            createField();
-            plantMines();
-            enumerateCells();
-            cell = field[y][x];
+            field.create();
+            field.plantMines();
+            field.enumerate();
+            cell = field.get()[y][x];
         }
 
         flaggedCells.forEach(oldFlaggedCell -> {                             // put flags back
@@ -323,7 +271,7 @@ public class MinesweeperGame extends Game {
     }
 
     private void explodeAndGameOver(Cell cell) {
-        revealAllMines();
+        field.revealMines();
         cell.isGameOverCause = true; // highlight mine that caused game over
         shop.dice.hide();
         lose();
@@ -358,7 +306,7 @@ public class MinesweeperGame extends Game {
     // VARIOUS CHECKS WITH CORRESPONDING ACTIONS
 
     public void checkVictory() {
-        if (countAllCells(Filter.CLOSED) == countAllCells(Filter.DANGEROUS)) win();
+        if (field.countAllCells(Filter.CLOSED) == field.countAllCells(Filter.DANGEROUS)) win();
     }
 
     private boolean cellDestructionImpossible(Cell cell) {
@@ -391,20 +339,10 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    public void drawAllCells() {
-        getAllCells(Filter.NONE).forEach(Cell::draw);
-    }
-
-    private void revealAllMines() {
-        getAllCells(Filter.NONE).forEach(cell -> {
-            if (cell.isMined) cell.isOpen = true;
-        });
-    }
-
     public final void recolorInterface() {
         Cache.fill();
         if (isStopped) return; // No cells to color yet
-        getAllCells(Filter.NONE).forEach(Cell::updateColors);
+        field.getAllCells(Filter.NONE).forEach(Cell::updateColors);
     }
 
     // CONTROLS

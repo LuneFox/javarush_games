@@ -38,7 +38,7 @@ public final class ViewShop extends View {
         Cache.get(VisualElement.SPR_BOARD_FLAG).draw(39, 11);
         Cache.get(VisualElement.SHOP_COIN).draw(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
-        Printer.print("" + game.countAllCells(Cell.Filter.DANGEROUS), 22, 12);
+        Printer.print("" + game.field.countAllCells(Cell.Filter.DANGEROUS), 22, 12);
         Printer.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
         Printer.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), -1, 22);
