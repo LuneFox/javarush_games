@@ -1,11 +1,9 @@
 package com.javarush.games.minesweeper.view.graphics;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Code names for all available graphic pieces in the game.
- * Some elements have auxiliary variables for comfortable usage.
+ * Name prefixes are important because they're used in caching elements to different maps.
+ * For example, everything that starts with SYM_ goes to symbols cache.
  */
 
 public enum VisualElement {
@@ -15,23 +13,22 @@ public enum VisualElement {
     CELL_CLOSED,
     CELL_DESTROYED,
 
-    SPR_BOARD_0(0),
-    SPR_BOARD_1(1),
-    SPR_BOARD_2(2),
-    SPR_BOARD_3(3),
-    SPR_BOARD_4(4),
-    SPR_BOARD_5(5),
-    SPR_BOARD_6(6),
-    SPR_BOARD_7(7),
-    SPR_BOARD_8(8),
-    SPR_BOARD_9(9),
-    SPR_BOARD_NONE,
+    SPR_BOARD_0,
+    SPR_BOARD_1,
+    SPR_BOARD_2,
+    SPR_BOARD_3,
+    SPR_BOARD_4,
+    SPR_BOARD_5,
+    SPR_BOARD_6,
+    SPR_BOARD_7,
+    SPR_BOARD_8,
+    SPR_BOARD_9,
     SPR_BOARD_FLAG,
     SPR_BOARD_MINE,
 
-    ANI_LOGO,
-    PIC_FACE_HAPPY,
-    PIC_FACE_SAD,
+    FLO_LOGO,
+    FACE_HAPPY,
+    FACE_SAD,
 
     MENU_ARROW,
     MENU_DIFFICULTY_BAR,
@@ -138,7 +135,6 @@ public enum VisualElement {
     SYM_SYMBOL_NEWLINE('\n');
 
     char[] characters;
-    int number;
 
     VisualElement() {
     }
@@ -146,25 +142,5 @@ public enum VisualElement {
     // Constructor for symbols
     VisualElement(char... characters) {
         this.characters = characters;
-    }
-
-    VisualElement(char c) {
-        this.characters = new char[]{c};
-    }
-
-    // Constructor for number sprites
-    VisualElement(int number) {
-        this.number = number;
-    }
-
-    // Return a list of all elements starting with the same text (SPR_, SYM_, etc.)
-    public static List<VisualElement> getElementsByPrefixes(String... prefixes) {
-        List<VisualElement> result = new LinkedList<>();
-        for (VisualElement visualElement : VisualElement.values()) {
-            for (String prefix : prefixes) {
-                if (visualElement.name().startsWith(prefix)) result.add(visualElement);
-            }
-        }
-        return result;
     }
 }

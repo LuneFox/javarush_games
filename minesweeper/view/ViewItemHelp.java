@@ -20,7 +20,7 @@ public final class ViewItemHelp extends View {
     public void update() {
         super.update();
         Strings.generateNewShieldDescription();
-        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
+        Cache.get(VisualElement.WIN_MENU).draw();
         displayItem.icon.setPosition(5, 5);
         displayItem.icon.draw();
         if (displayItem.id == ShopItem.ID.SHIELD) {
@@ -28,7 +28,7 @@ public final class ViewItemHelp extends View {
         }
         Printer.print("[" + displayItem.name + "]", Color.YELLOW, 25, 9);
         Printer.print(displayItem.description, 4, 25);
-        BUTTONS_CACHE.get(Button.ButtonID.CONFIRM).draw();
+        Cache.get(Button.ButtonID.GENERAL_CONFIRM).draw();
     }
 
     public void setDisplayItem(ShopItem item) {

@@ -21,11 +21,11 @@ public final class ViewAbout extends View {
     @Override
     public void update() {
         super.update();
-        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
+        Cache.get(VisualElement.WIN_MENU).draw();
         Printer.print(Strings.ABOUT_HEAD[currentAboutPage], Color.YELLOW, -1, 2);
         Printer.print(Strings.ABOUT_BODY[currentAboutPage], 3, 13);
-        BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
-        Image arrowButton = IMAGES_CACHE.get(VisualElement.MENU_ARROW);
+        Cache.get(Button.ButtonID.GENERAL_BACK).draw();
+        Image arrowButton = Cache.get(VisualElement.MENU_ARROW);
 
         arrowButton.draw((ViewOptions.clickedArrowTimeoutL-- > 0) ? 6 : 7, 89, Image.Mirror.HORIZONTAL);
         arrowButton.draw((ViewOptions.clickedArrowTimeoutR-- > 0) ? 48 : 47, 89);

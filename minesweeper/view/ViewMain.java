@@ -29,16 +29,16 @@ public final class ViewMain extends View {
     @Override
     public void update() {
         super.update();
-        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
+        Cache.get(VisualElement.WIN_MENU).draw();
         Printer.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), -1, 2);
-        ((FloatingImage) IMAGES_CACHE.get(VisualElement.ANI_LOGO)).draw(2.8, -1, 8);
-        BUTTONS_CACHE.get(Button.ButtonID.OPTIONS).draw();
-        BUTTONS_CACHE.get(Button.ButtonID.ABOUT).draw();
-        BUTTONS_CACHE.get(Button.ButtonID.RECORDS).draw();
+        ((FloatingImage) Cache.get(VisualElement.FLO_LOGO)).draw(2.8, -1, 8);
+        Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).draw();
+        Cache.get(Button.ButtonID.MAIN_MENU_ABOUT).draw();
+        Cache.get(Button.ButtonID.MAIN_MENU_RECORDS).draw();
         Printer.print(Strings.VERSION, Theme.MAIN_MENU_VERSION.getColor(), 85, 0);
         printTopScore();
 
-        Button startButton = BUTTONS_CACHE.get(Button.ButtonID.START);
+        Button startButton = Cache.get(Button.ButtonID.MAIN_MENU_START);
         if (game.isStopped || game.isFirstMove) {
             printRandomQuote();
             if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
@@ -47,7 +47,7 @@ public final class ViewMain extends View {
             if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
         }
 
-        BUTTONS_CACHE.get(Button.ButtonID.START).draw();
+        Cache.get(Button.ButtonID.MAIN_MENU_START).draw();
     }
 
     private void printRandomQuote() {

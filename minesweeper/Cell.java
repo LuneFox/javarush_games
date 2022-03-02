@@ -4,7 +4,9 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.view.graphics.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Logical game element and a cell for drawing sprites inside.
@@ -13,7 +15,7 @@ import java.util.List;
 
 public class Cell implements Drawable {
     private static final MinesweeperGame game = MinesweeperGame.getInstance();
-    private static final List<VisualElement> SPRITES = VisualElement.getElementsByPrefixes("SPR_");
+    private static final Map<Integer, VisualElement> sprites = new HashMap<>();
 
     protected final int x;                    // logical position on a 10x10 grid
     protected final int y;
@@ -29,6 +31,19 @@ public class Cell implements Drawable {
     private final VisualElement visualElement;// visual element assigned to the body: opened, closed or destroyed
     private final Image background;           // the "body" of the cell
     private Image sprite;                     // foreground image (number, flag or mine)
+
+    static {
+        sprites.put(0, VisualElement.NONE);
+        sprites.put(1, VisualElement.SPR_BOARD_1);
+        sprites.put(2, VisualElement.SPR_BOARD_2);
+        sprites.put(3, VisualElement.SPR_BOARD_3);
+        sprites.put(4, VisualElement.SPR_BOARD_4);
+        sprites.put(5, VisualElement.SPR_BOARD_5);
+        sprites.put(6, VisualElement.SPR_BOARD_6);
+        sprites.put(7, VisualElement.SPR_BOARD_7);
+        sprites.put(8, VisualElement.SPR_BOARD_8);
+        sprites.put(9, VisualElement.SPR_BOARD_9);
+    }
 
     protected Cell(VisualElement visualElement, int x, int y, boolean isMined) {
         this.background = new Image(visualElement, x * 10, y * 10);
@@ -77,15 +92,11 @@ public class Cell implements Drawable {
 
     protected void setSprite(int number) {
         if (number < 0 || number > 9) throw new IllegalArgumentException("Sprites numbers must be from 0 to 9");
-        this.sprite = new Image(getSpriteByNumber(number), x * 10, y * 10);
+        this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
 
     protected void makeSpriteYellow() {
         sprite.replaceColor(Color.YELLOW, 1);
-    }
-
-    public static VisualElement getSpriteByNumber(int number) {
-        return (number == 0) ? VisualElement.SPR_BOARD_NONE : SPRITES.get(number);
     }
 
     // Combined states
@@ -118,7 +129,10 @@ public class Cell implements Drawable {
         return (isOpen && !isMined && !isDestroyed);     // Is counted while calculating score
     }
 
-    // Filters
+
+    /**
+     * Any list of cells can be filtered by some criteria.
+     */
 
     public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, SCORED, FLAGGED}
 

@@ -16,7 +16,7 @@ public class ImageStorage {
 
             // BIG PICTURES
 
-            case ANI_LOGO:
+            case FLO_LOGO:
                 setColors(Color.WHITE, Color.BLACK, Color.DARKSLATEGRAY, Color.SANDYBROWN, Color.RED, Color.YELLOW);
                 data = ImageCreator.makeArray(
                         "       1111111",
@@ -52,7 +52,7 @@ public class ImageStorage {
                         "  1222222221",
                         "   111111111");
                 break;
-            case PIC_FACE_HAPPY:
+            case FACE_HAPPY:
                 colors = Color.values();
                 data = new int[][]{
                         {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
@@ -70,7 +70,7 @@ public class ImageStorage {
                         {0, 0, 0, 0, 1, 1, 4, 4, 4, 4, 1, 1, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}};
                 break;
-            case PIC_FACE_SAD:
+            case FACE_SAD:
                 colors = Color.values();
                 data = new int[][]{
                         {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
@@ -604,7 +604,6 @@ public class ImageStorage {
             case SYM_SYMBOL_SPACE:
                 data = new int[1][3];
                 break;
-            case SPR_BOARD_NONE:
             case NONE:
             default:
                 setColors(Color.WHITE);

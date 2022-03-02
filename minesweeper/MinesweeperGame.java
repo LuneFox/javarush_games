@@ -85,7 +85,7 @@ public class MinesweeperGame extends Game {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
                 field[y][x] = new Cell(VisualElement.CELL_CLOSED, x, y, false);
-                field[y][x].setSprite(VisualElement.SPR_BOARD_NONE);
+                field[y][x].setSprite(VisualElement.NONE);
             }
         }
     }
@@ -175,7 +175,7 @@ public class MinesweeperGame extends Game {
         Cell cell = field[y][x];
         if (cellDestructionImpossible(cell)) return;
 
-        cell.setSprite(VisualElement.SPR_BOARD_NONE);
+        cell.setSprite(VisualElement.NONE);
         cell.isDestroyed = true;
         cell.isOpen = true;
         deactivateExpiredItems();
@@ -212,7 +212,7 @@ public class MinesweeperGame extends Game {
     private void returnFlagToInventory(Cell cell) {
         inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
-        cell.setSprite(VisualElement.SPR_BOARD_NONE);
+        cell.setSprite(VisualElement.NONE);
     }
 
     private void placeFlagFromInventory(Cell cell) {
@@ -404,7 +404,7 @@ public class MinesweeperGame extends Game {
     }
 
     public final void recolorInterface() {
-        view.cacheStaticElements();
+        Cache.fill();
         if (isStopped) return; // No cells to color yet
         getAllCells(Filter.NONE).forEach(Cell::updateColors);
     }

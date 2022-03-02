@@ -9,13 +9,8 @@ import java.util.HashMap;
  */
 
 public class Printer {
-    private static final HashMap<Character, Image> SYMBOLS_CACHE = new HashMap<>(128);
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
-
-    static {
-        cacheAllSymbols();
-    }
 
     public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
         // If drawX is outside bounds,
@@ -87,20 +82,9 @@ public class Printer {
     }
 
     private static void drawSymbol(char c, Color color, int x, int y) {
-        Image symbol = SYMBOLS_CACHE.get(c);
+        Image symbol = Cache.get(c);
         symbol.replaceColor(color, 1);
         symbol.draw(x, y);
-    }
-
-    /**
-     * Cache generated symbol images into a map to avoid generating new images each time we need to take a letter
-     */
-    public static void cacheAllSymbols() {
-        VisualElement.getElementsByPrefixes("SYM_").forEach(symbol -> {
-            for (char c : symbol.characters) {
-                SYMBOLS_CACHE.put(c, new Image(symbol));
-            }
-        });
     }
 
     /**
@@ -111,7 +95,7 @@ public class Printer {
         Image symbol;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
-            symbol = SYMBOLS_CACHE.get(c);
+            symbol = Cache.get(c);
             width += (symbol.matrix[0].length + CHAR_SPACING);
         }
         return width;

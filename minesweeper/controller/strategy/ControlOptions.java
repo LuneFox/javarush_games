@@ -3,15 +3,15 @@ package com.javarush.games.minesweeper.controller.strategy;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.view.graphics.Button;
+import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.Theme;
-import com.javarush.games.minesweeper.view.View;
 
 public class ControlOptions implements ControlStrategy {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
 
     @Override
     public void leftClick(int x, int y) {
-        if (View.BUTTONS_CACHE.get(Button.ButtonID.BACK).tryToPress(x, y)) {
+        if (Cache.get(Button.ButtonID.GENERAL_BACK).tryToPress(x, y)) {
             Screen.set(Screen.MAIN);
         } else if (Screen.options.difficultyDownArea.covers(x, y)) {
             game.changeDifficultySetting(false);

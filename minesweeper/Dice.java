@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper;
 
 import com.javarush.games.minesweeper.utility.Util;
+import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 import com.javarush.games.minesweeper.view.graphics.Drawable;
 import com.javarush.games.minesweeper.view.graphics.Image;
@@ -11,15 +12,6 @@ import com.javarush.games.minesweeper.view.View;
  */
 
 public class Dice implements Drawable {
-
-    // Images to draw over cells, one for each side of the dice, null at 0 align numbers
-    private final static Image[] SIDES_CACHE = {null,
-            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_1),
-            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_2),
-            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_3),
-            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_4),
-            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_5),
-            View.IMAGES_CACHE.get(VisualElement.SHOP_DICE_6)};
     private final static int DISPLAY_DURATION = 20;
 
     public Cell appearCell;     // cell at which the dice appears after click
@@ -39,7 +31,12 @@ public class Dice implements Drawable {
     public void setImage(int number, int x, int y) {
         this.x = x;
         this.y = y;
-        this.image = SIDES_CACHE[number];
+        if (number == 1) this.image = Cache.get(VisualElement.SHOP_DICE_1);
+        else if (number == 2) this.image = Cache.get(VisualElement.SHOP_DICE_2);
+        else if (number == 3) this.image = Cache.get(VisualElement.SHOP_DICE_3);
+        else if (number == 4) this.image = Cache.get(VisualElement.SHOP_DICE_4);
+        else if (number == 5) this.image = Cache.get(VisualElement.SHOP_DICE_5);
+        else if (number == 6) this.image = Cache.get(VisualElement.SHOP_DICE_6);
         this.onScreenTime = 0;
     }
 

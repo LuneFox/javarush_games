@@ -3,21 +3,21 @@ package com.javarush.games.minesweeper.controller.strategy;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Screen;
 import com.javarush.games.minesweeper.view.graphics.Button;
-import com.javarush.games.minesweeper.view.View;
+import com.javarush.games.minesweeper.view.graphics.Cache;
 
 public class ControlMain implements ControlStrategy {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
 
     @Override
     public void leftClick(int x, int y) {
-        if (View.BUTTONS_CACHE.get(Button.ButtonID.START).tryToPress(x, y)) {
+        if (Cache.get(Button.ButtonID.MAIN_MENU_START).tryToPress(x, y)) {
             game.createGame();
             Screen.set(Screen.BOARD);
-        } else if (View.BUTTONS_CACHE.get(Button.ButtonID.OPTIONS).tryToPress(x, y)) {
+        } else if (Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).tryToPress(x, y)) {
             Screen.set(Screen.OPTIONS);
-        } else if (View.BUTTONS_CACHE.get(Button.ButtonID.ABOUT).tryToPress(x, y)) {
+        } else if (Cache.get(Button.ButtonID.MAIN_MENU_ABOUT).tryToPress(x, y)) {
             Screen.set(Screen.ABOUT);
-        } else if (View.BUTTONS_CACHE.get(Button.ButtonID.RECORDS).tryToPress(x, y)) {
+        } else if (Cache.get(Button.ButtonID.MAIN_MENU_RECORDS).tryToPress(x, y)) {
             Screen.set(Screen.RECORDS);
         }
     }

@@ -9,14 +9,23 @@ public class ImageCreator {
 
     // IMAGE GENERATION
 
-    // Fill the array with numbers from strings
+    /**
+     * Fill an array with one-digit numbers from strings.
+     */
     public static int[][] makeArray(String... strings) {
+        // Detect height
         int height = strings.length;
+
+        // Detect width
         int width = 0;
         for (String s : strings) {
             if (s.length() > width) width = s.length();
         }
+
+        // Create container
         int[][] result = new int[height][width];
+
+        // Copy data
         for (int y = 0; y < height; y++) {
             char[] row = strings[y].toCharArray();
             for (int x = 0; x < row.length; x++) {
@@ -27,7 +36,10 @@ public class ImageCreator {
         return result;
     }
 
-    // Split string by width and fill the array with numbers
+    /**
+     * Split string by width and fill the array with numbers.
+     * e.g. String with length=12 and width=3 will make a 3x4 array.
+     */
     public static int[][] makeArray(int width, String string) {
         int height = string.length() / width;
         int[][] result = new int[height][width];
@@ -41,7 +53,10 @@ public class ImageCreator {
         return result;
     }
 
-    // Place a sprite over an empty 10x10 grid, top and left are paddings
+    /**
+     * Place a sprite over an empty 10x10 grid, top and left are paddings.
+     * Useful to place and align small images over 10x10 pixel cells without filling empty spaces with zeros.
+     **/
     public static int[][] makeSprite(String string, int width, int top, int left) {
         int height = string.length() / width;
         if ((width + left > 10) || (height + top > 10)) throw new IllegalArgumentException("Sprite is too big!");

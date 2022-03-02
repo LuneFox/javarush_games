@@ -8,11 +8,11 @@ import com.javarush.games.minesweeper.MinesweeperGame;
  */
 
 public class Image implements Drawable {
-    protected MinesweeperGame game = MinesweeperGame.getInstance();     // game instance to be drawn into
-    protected int drawX;                   // real position in pixels
+    protected MinesweeperGame game = MinesweeperGame.getInstance();
+    protected int drawX;    // real position in pixels
     protected int drawY;
-    public int[][] matrix;                 // matrix of color numbers
-    public Color[] colors;                 // an array to match colors and numbers
+    public int[][] matrix;  // matrix of color numbers
+    public Color[] colors;  // an array to match colors and numbers
 
     public enum Mirror {
         HORIZONTAL, VERTICAL, NONE

@@ -18,15 +18,15 @@ public final class ViewRecords extends View {
     @Override
     public void update() {
         super.update();
-        IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
+        Cache.get(VisualElement.WIN_MENU).draw();
         Printer.print(Strings.RECORDS[0], Color.YELLOW, -1, 2);
-        BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
+        Cache.get(Button.ButtonID.GENERAL_BACK).draw();
         drawPrizeCups();
         drawEntries();
     }
 
     final void drawPrizeCups() {
-        Image prizeCup = IMAGES_CACHE.get(VisualElement.MENU_CUP);
+        Image prizeCup = Cache.get(VisualElement.MENU_CUP);
         Color[] colors;
         for (int i = 0; i < 3; i++) {
             switch (i) {

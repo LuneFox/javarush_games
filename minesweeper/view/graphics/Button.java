@@ -24,17 +24,18 @@ public class Button implements Drawable {
 
 
     public enum ButtonID {
-        ABOUT(61, 76, 36, 9, "об игре"),
-        AGAIN(57, 69, 0, 0, "снова"),
-        BACK(61, 88, 36, 9, "назад"),
-        CLOSE(73, 35, 0, 0, "x"),
-        CONFIRM(61, 88, 36, 9, "ясно"),
-        FORWARD(3, 88, 36, 9, "далее"),
-        NEW_GAME(61, 88, 36, 9, "заново"),
-        RECORDS(2, 88, 0, 0, "рекорды"),
-        RETURN(15, 69, 0, 0, "меню"),
-        START(61, 88, 36, 9, "старт"),
-        OPTIONS(61, 64, 36, 9, "опции");
+        GENERAL_BACK(61, 88, 36, 9, "назад"),
+        GENERAL_CONFIRM(61, 88, 36, 9, "ясно"),
+
+        MAIN_MENU_START(61, 88, 36, 9, "старт"),
+        MAIN_MENU_NEW_RESTART(61, 88, 36, 9, "заново"),
+        MAIN_MENU_OPTIONS(61, 64, 36, 9, "опции"),
+        MAIN_MENU_ABOUT(61, 76, 36, 9, "об игре"),
+        MAIN_MENU_RECORDS(2, 88, 0, 0, "рекорды"),
+
+        GAME_OVER_HIDE(73, 35, 0, 0, "x"),
+        GAME_OVER_AGAIN(57, 69, 0, 0, "снова"),
+        GAME_OVER_RETURN(15, 69, 0, 0, "меню");
 
         public final int posX;
         public final int posY;
