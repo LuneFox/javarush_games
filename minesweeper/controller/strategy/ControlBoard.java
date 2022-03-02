@@ -33,7 +33,7 @@ public class ControlBoard implements ControlStrategy {
             return;
         }
         game.setFlag(gridX, gridY, true);  // works only on closed tiles
-        game.openRest(gridX, gridY);       // works only on open tiles
+        game.openSurroundingCells(gridX, gridY);       // works only on open tiles
         game.shop.deactivateExpiredItems();
     }
 

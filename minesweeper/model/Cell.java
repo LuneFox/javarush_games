@@ -96,11 +96,8 @@ public class Cell implements Drawable {
         this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
 
-    public void attachNumber() {
-        if (!isNumerable()) return;
-
-        setSprite(countMinedNeighbors);
-        if (game.shop.goldenShovel.isActivated()) {
+    public void makeNumberGold() {
+        if (isNumerable() && game.shop.goldenShovel.isActivated()) {
             sprite.replaceColor(Color.YELLOW, 1);
         }
     }

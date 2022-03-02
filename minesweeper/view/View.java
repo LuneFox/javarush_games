@@ -22,6 +22,12 @@ public class View {
         }
     }
 
+    protected void displayDice() {
+        if (game.shop.luckyDice == null) return;
+        int diceRemainingTurns = game.shop.luckyDice.expireMove - game.player.getMoves();
+        if (Util.inside(diceRemainingTurns, 0, 2) && game.player.getMoves() != 0) game.shop.dice.draw();
+    }
+
     public static class Area {
         private final int[] coords;
 

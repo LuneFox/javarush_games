@@ -11,7 +11,7 @@ public class ControlMain implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.MAIN_MENU_START).tryToPress(x, y)) {
-            game.createGame();
+            game.startNewGame();
             Screen.set(Screen.BOARD);
         } else if (Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).tryToPress(x, y)) {
             Screen.set(Screen.OPTIONS);

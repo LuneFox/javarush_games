@@ -83,6 +83,10 @@ public class Score {
         this.timerScore = timerScore;
     }
 
+    public void addTimerScore(int score) {
+        this.timerScore += score;
+    }
+
     public static class Table {
         public static int total;
         public static int minesCount;
@@ -99,7 +103,7 @@ public class Score {
         public static double luck;
         public static boolean victory;
 
-        public void update() {
+        public static void update() {
             MinesweeperGame game = MinesweeperGame.getInstance();
             total = game.player.score.getTotalScore();
             minesCount = game.field.countAllCells(Cell.Filter.MINED);

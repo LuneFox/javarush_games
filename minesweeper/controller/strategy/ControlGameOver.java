@@ -15,7 +15,7 @@ public class ControlGameOver implements ControlStrategy {
         } else if (Cache.get(Button.ButtonID.GAME_OVER_RETURN).tryToPress(x, y)) {
             Screen.set(Screen.MAIN);
         } else if (Cache.get(Button.ButtonID.GAME_OVER_AGAIN).tryToPress(x, y)) {
-            game.createGame();
+            game.startNewGame();
             Screen.set(Screen.BOARD);
         } else if (Screen.gameOver.scoreArea.covers(x, y)) {
             Screen.set(Screen.SCORE);

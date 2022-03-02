@@ -28,7 +28,7 @@ public final class ViewShop extends View {
         super.update();
         Screen.board.update();
 
-        game.timerAction();
+        game.checkTimeOut();
 
         shakeAnimationCountDown();
         Cache.get(VisualElement.WIN_SHOP).draw(-1, -1);
@@ -48,7 +48,7 @@ public final class ViewShop extends View {
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
-        game.displayDice();
+        super.displayDice();
     }
 
     private void displayShopItems() {
