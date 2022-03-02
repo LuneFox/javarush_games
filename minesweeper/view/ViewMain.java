@@ -31,7 +31,7 @@ public final class ViewMain extends View {
         super.update();
         IMAGES_CACHE.get(VisualElement.WIN_MENU).draw();
         Printer.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), -1, 2);
-        IMAGES_CACHE.get(VisualElement.PIC_LOGO).animateFloating(2.8, -1, 8);
+        ((FloatingImage) IMAGES_CACHE.get(VisualElement.ANI_LOGO)).draw(2.8, -1, 8);
         BUTTONS_CACHE.get(Button.ButtonID.OPTIONS).draw();
         BUTTONS_CACHE.get(Button.ButtonID.ABOUT).draw();
         BUTTONS_CACHE.get(Button.ButtonID.RECORDS).draw();

@@ -89,7 +89,7 @@ public class Printer {
     private static void drawSymbol(char c, Color color, int x, int y) {
         Image symbol = SYMBOLS_CACHE.get(c);
         symbol.replaceColor(color, 1);
-        symbol.drawAt(x, y);
+        symbol.draw(x, y);
     }
 
     /**

@@ -46,7 +46,7 @@ public class Dice implements Drawable {
     // Draw dice over the cell until is exceeds display duration, onScreenTime counts with every game step (frame)
     public void draw() {
         if (onScreenTime < DISPLAY_DURATION) {
-            image.drawAt(this.x * 10 + 2, this.y * 10 + 2);
+            image.draw(this.x * 10 + 2, this.y * 10 + 2);
             onScreenTime++;
         }
     }

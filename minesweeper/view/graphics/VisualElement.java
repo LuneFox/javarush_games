@@ -1,6 +1,5 @@
 package com.javarush.games.minesweeper.view.graphics;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +29,7 @@ public enum VisualElement {
     SPR_BOARD_FLAG,
     SPR_BOARD_MINE,
 
-    PIC_LOGO,
+    ANI_LOGO,
     PIC_FACE_HAPPY,
     PIC_FACE_SAD,
 

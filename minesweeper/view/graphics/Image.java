@@ -9,30 +9,22 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 
 public class Image implements Drawable {
     protected MinesweeperGame game = MinesweeperGame.getInstance();     // game instance to be drawn into
-    private int drawX;
-    private int drawY;                     // real position in pixels
+    protected int drawX;                   // real position in pixels
+    protected int drawY;
     public int[][] matrix;                 // matrix of color numbers
     public Color[] colors;                 // an array to match colors and numbers
-    private float floatAnimationShift;     // difference between the anchor and current position
-    private boolean floatAnimationGoesDown;
 
     public enum Mirror {
         HORIZONTAL, VERTICAL, NONE
     }
 
     public Image(VisualElement visualElement) { // constructor without setting position (for loading images in memory)
-        this.matrix = getMatrix(visualElement);
+        this.matrix = getMatrixFromStorage(visualElement);
     }
 
     public Image(VisualElement visualElement, int drawX, int drawY) { // constructor with setting position at once
         this(visualElement);
         setPosition(drawX, drawY);
-        floatAnimationShift = 0;
-        floatAnimationGoesDown = true;
-    }
-
-    public void draw() {
-        draw(Mirror.NONE);
     }
 
     public void draw(Mirror mirror) {
@@ -70,14 +62,22 @@ public class Image implements Drawable {
         }
     }
 
-    public final void animateFloating(double height, int x, int y) {
-        this.setPosition(x, y);
-        floatAnimationShift += (floatAnimationGoesDown ? 0.2 : -0.2);
-        if (Math.abs(floatAnimationShift) > height) {
-            floatAnimationGoesDown = !floatAnimationGoesDown;
-        }
-        this.drawY = (int) (y + floatAnimationShift);
-        this.draw();
+    public final void draw(int x, int y, Mirror mirror) {
+        setPosition(x, y);
+        draw(mirror);
+    }
+
+    public final void draw(int x, int y) {
+        draw(x, y, Mirror.NONE);
+    }
+
+    public void draw() {
+        draw(Mirror.NONE);
+    }
+
+    public final void setPosition(int drawX, int drawY) { // negative value = middle
+        this.drawX = (drawX < 0) ? (50 - matrix[0].length / 2) : drawX;
+        this.drawY = (drawY < 0) ? (50 - matrix.length / 2) : drawY;
     }
 
     public final void replaceColor(Color color, int number) {
@@ -87,21 +87,7 @@ public class Image implements Drawable {
         }
     }
 
-    public final void setPosition(int drawX, int drawY) { // negative value = middle
-        this.drawX = (drawX < 0) ? (50 - matrix[0].length / 2) : drawX;
-        this.drawY = (drawY < 0) ? (50 - matrix.length / 2) : drawY;
-    }
-
-    public final void drawAt(int x, int y) {
-        drawAt(x, y, Mirror.NONE);
-    }
-
-    public final void drawAt(int x, int y, Mirror mirror) {
-        setPosition(x, y);
-        draw(mirror);
-    }
-
-    public int[][] getMatrix(VisualElement visualElement) {
+    public int[][] getMatrixFromStorage(VisualElement visualElement) {
         ImageStorage storage = new ImageStorage(visualElement);
         colors = storage.getColors();
         return storage.getData();

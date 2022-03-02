@@ -59,38 +59,38 @@ public final class ViewOptions extends View {
         Printer.print("настройки", Color.YELLOW, -1, 2);
 
         Printer.print("сложность", TEXT_PADDING_L, DIFF_ANCHOR - 1);
-        arrowButton.drawAt((clickedArrowTimeoutL-- > 0) ? 48 : 49, DIFF_ANCHOR, Image.Mirror.HORIZONTAL);
-        arrowButton.drawAt((clickedArrowTimeoutR-- > 0) ? 94 : 93, DIFF_ANCHOR, Image.Mirror.NONE);
+        arrowButton.draw((clickedArrowTimeoutL-- > 0) ? 48 : 49, DIFF_ANCHOR, Image.Mirror.HORIZONTAL);
+        arrowButton.draw((clickedArrowTimeoutR-- > 0) ? 94 : 93, DIFF_ANCHOR, Image.Mirror.NONE);
 
         displayDifficultyBar();
         Printer.print(difficultyName, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, DIFF_ANCHOR + SUB_TEXT_SHIFT, true);
 
         Printer.print("покупка флажков", TEXT_PADDING_L, FLAG_ANCHOR - 1);
-        switchRail.drawAt(SWITCH_LEFTMOST_POSITION, FLAG_ANCHOR + 2);
+        switchRail.draw(SWITCH_LEFTMOST_POSITION, FLAG_ANCHOR + 2);
         if (game.shop.autoBuyFlagsEnabled) {
             if (switchFlagsPosition < SWITCH_RIGHTMOST_POSITION) switchFlagsPosition++;
             switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.drawAt(switchFlagsPosition, FLAG_ANCHOR);
+            switchButton.draw(switchFlagsPosition, FLAG_ANCHOR);
             Printer.print("авто", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
         } else {
             if (switchFlagsPosition > SWITCH_LEFTMOST_POSITION) switchFlagsPosition--;
             switchButton.replaceColor(Color.RED, 1);
-            switchButton.drawAt(switchFlagsPosition, FLAG_ANCHOR);
+            switchButton.draw(switchFlagsPosition, FLAG_ANCHOR);
             Printer.print("вручную", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 91, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
         }
 
 
         Printer.print("игра на время", TEXT_PADDING_L, TIME_ANCHOR - 1);
-        switchRail.drawAt(SWITCH_LEFTMOST_POSITION, TIME_ANCHOR + 2);
+        switchRail.draw(SWITCH_LEFTMOST_POSITION, TIME_ANCHOR + 2);
         if (game.timer.isEnabledSetting) {
             if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
             switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
+            switchButton.draw(switchTimePosition, TIME_ANCHOR);
             Printer.print("да", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
         } else {
             if (switchTimePosition > SWITCH_LEFTMOST_POSITION) switchTimePosition--;
             switchButton.replaceColor(Color.RED, 1);
-            switchButton.drawAt(switchTimePosition, TIME_ANCHOR);
+            switchButton.draw(switchTimePosition, TIME_ANCHOR);
             Printer.print("нет", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 94, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
 
         }
@@ -99,13 +99,13 @@ public final class ViewOptions extends View {
 
         themePalette.replaceColor(Color.RED, 1);
         themePalette.replaceColor(Theme.getCurrentNumber() == 0 ? Color.YELLOW : Color.BLACK, 3);
-        themePalette.drawAt(THEME_PADDING_L, THEME_ANCHOR);
+        themePalette.draw(THEME_PADDING_L, THEME_ANCHOR);
         themePalette.replaceColor(Color.GREEN, 1);
         themePalette.replaceColor(Theme.getCurrentNumber() == 1 ? Color.YELLOW : Color.BLACK, 3);
-        themePalette.drawAt(THEME_PADDING_L + 12, THEME_ANCHOR);
+        themePalette.draw(THEME_PADDING_L + 12, THEME_ANCHOR);
         themePalette.replaceColor(Theme.getCurrentNumber() == 2 ? Color.YELLOW : Color.BLACK, 3);
         themePalette.replaceColor(Color.BLUE, 1);
-        themePalette.drawAt(THEME_PADDING_L + 24, THEME_ANCHOR);
+        themePalette.draw(THEME_PADDING_L + 24, THEME_ANCHOR);
 
         BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
     }

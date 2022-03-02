@@ -29,12 +29,12 @@ public final class ViewShop extends View {
         game.timerAction();
 
         shakeAnimationCountDown();
-        IMAGES_CACHE.get(VisualElement.WIN_SHOP).drawAt(-1, -1);
-        IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 10);
-        IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).drawAt(-1, 78);
-        IMAGES_CACHE.get(VisualElement.SPR_BOARD_MINE).drawAt(10, 10);
-        IMAGES_CACHE.get(VisualElement.SPR_BOARD_FLAG).drawAt(39, 11);
-        IMAGES_CACHE.get(VisualElement.SHOP_COIN).drawAt(69 + getMoneyShakeValue(), 13);
+        IMAGES_CACHE.get(VisualElement.WIN_SHOP).draw(-1, -1);
+        IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).draw(-1, 10);
+        IMAGES_CACHE.get(VisualElement.WIN_SHOP_HEADER_FOOTER).draw(-1, 78);
+        IMAGES_CACHE.get(VisualElement.SPR_BOARD_MINE).draw(10, 10);
+        IMAGES_CACHE.get(VisualElement.SPR_BOARD_FLAG).draw(39, 11);
+        IMAGES_CACHE.get(VisualElement.SHOP_COIN).draw(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
         Printer.print("" + game.countAllCells(Cell.Filter.DANGEROUS), 22, 12);
         Printer.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
@@ -71,8 +71,8 @@ public final class ViewShop extends View {
                 frameColor = (item.isUnobtainable()) ? Color.RED : Theme.SHOP_ITEM_FRAME_AVAILABLE.getColor();
                 frameColor = (item.isActivated()) ? Color.BLUE : frameColor;
                 frame.replaceColor(frameColor, 3);
-                frame.drawAt(15 + dx + shift, 30 + dy + shift);
-                item.icon.drawAt(16 + dx + shift, 31 + dy + shift);
+                frame.draw(15 + dx + shift, 30 + dy + shift);
+                item.icon.draw(16 + dx + shift, 31 + dy + shift);
 
                 if (item.inStock > 0 && !item.isActivated()) {
                     Printer.print("" + item.cost, Color.YELLOW, right + dx, bottom + dy, true);

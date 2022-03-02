@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 
 /**
  * All images' body data and colors are stored here. Each image corresponds a visual element.
+ * To get matrix and colors you need to create a storage with a given element.
  */
 
 public class ImageStorage {
@@ -15,7 +16,7 @@ public class ImageStorage {
 
             // BIG PICTURES
 
-            case PIC_LOGO:
+            case ANI_LOGO:
                 setColors(Color.WHITE, Color.BLACK, Color.DARKSLATEGRAY, Color.SANDYBROWN, Color.RED, Color.YELLOW);
                 data = ImageCreator.makeArray(
                         "       1111111",

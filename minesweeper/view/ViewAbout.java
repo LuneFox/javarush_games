@@ -27,8 +27,8 @@ public final class ViewAbout extends View {
         BUTTONS_CACHE.get(Button.ButtonID.BACK).draw();
         Image arrowButton = IMAGES_CACHE.get(VisualElement.MENU_ARROW);
 
-        arrowButton.drawAt((ViewOptions.clickedArrowTimeoutL-- > 0) ? 6 : 7, 89, Image.Mirror.HORIZONTAL);
-        arrowButton.drawAt((ViewOptions.clickedArrowTimeoutR-- > 0) ? 48 : 47, 89);
+        arrowButton.draw((ViewOptions.clickedArrowTimeoutL-- > 0) ? 6 : 7, 89, Image.Mirror.HORIZONTAL);
+        arrowButton.draw((ViewOptions.clickedArrowTimeoutR-- > 0) ? 48 : 47, 89);
 
         Printer.print((currentAboutPage + 1) + " / " + Strings.ABOUT_HEAD.length, 20, 88);
     }

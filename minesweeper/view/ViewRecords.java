@@ -44,7 +44,7 @@ public final class ViewRecords extends View {
             }
             prizeCup.replaceColor(colors[0], 1);
             prizeCup.replaceColor(colors[1], 2);
-            prizeCup.drawAt(2, 20 + (20 * i));
+            prizeCup.draw(2, 20 + (20 * i));
         }
     }
 

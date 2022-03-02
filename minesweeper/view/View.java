@@ -37,6 +37,7 @@ public class View {
 
     public final void cacheStaticElements() { // load images once at launch and just re-use them all the time
         VisualElement.getElementsByPrefixes("MENU_", "PIC_", "SHOP_", "WIN_", "SPR_").forEach(this::cacheImage);
+        IMAGES_CACHE.put(VisualElement.ANI_LOGO, new FloatingImage(VisualElement.ANI_LOGO, 0, 0));
         for (Button.ButtonID b : Button.ButtonID.values()) {
             BUTTONS_CACHE.put(b, new Button(b.posX, b.posY, b.width, b.height, b.label));
         }

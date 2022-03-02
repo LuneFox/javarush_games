@@ -43,8 +43,8 @@ public class Cell implements Drawable {
     public void draw() {
         if (isOpen) {
             background.matrix = isDestroyed ?
-                    background.getMatrix(VisualElement.CELL_DESTROYED) :
-                    background.getMatrix(VisualElement.CELL_OPENED);
+                    background.getMatrixFromStorage(VisualElement.CELL_DESTROYED) :
+                    background.getMatrixFromStorage(VisualElement.CELL_OPENED);
             background.replaceColor(Theme.CELL_BG_DOWN.getColor(), 3);
         }
 
