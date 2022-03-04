@@ -1,27 +1,23 @@
 package com.javarush.games.minesweeper.view.graphics;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.model.DrawableObject;
 
 /**
  * Creates buttons with text wrapped in frames.
  */
 
-public class Button implements Drawable {
+public class Button extends DrawableObject {
 
     public static int pressedTime = -2;           // this timer counts towards 0, then the press animation stops
     public static final int PRESS_DURATION = 5;   // for how long buttons stay pressed
     public static final int POST_PRESS_DELAY = -2;// for how long buttons display unpressed before moving to next screen
 
-    private final int x1;
-    private final int x2;
-    private final int y1;
-    private final int y2;
     private final Color textColor;
     private Image body;
     private String text;
     private int textOffset;
     private boolean isPressed;
-
 
     public enum ButtonID {
         GENERAL_BACK(61, 88, 36, 9, "назад"),
@@ -37,28 +33,27 @@ public class Button implements Drawable {
         GAME_OVER_AGAIN(57, 69, 0, 0, "снова"),
         GAME_OVER_RETURN(15, 69, 0, 0, "меню");
 
-        public final int posX;
-        public final int posY;
+        public final int x;
+        public final int y;
         public final int width;
         public final int height;
         public final String label;
 
-        ButtonID(int posX, int posY, int width, int height, String label) {
-            this.posX = posX;
-            this.posY = posY;
+        ButtonID(int x, int y, int width, int height, String label) {
+            this.x = x;
+            this.y = y;
             this.width = width;
             this.height = height;
             this.label = label;
         }
     }
 
-    public Button(int posX, int posY, int sizeX, int sizeY, String text) {
+    public Button(int posX, int posY, int sizeX, int sizeY, String text) { // size 0 = auto size;
+        super(posX, posY);
         int textLength = Printer.calculateWidth(text);
         this.text = text;
-        this.x1 = posX;
-        this.y1 = posY;
-        this.x2 = (sizeX == 0) ? (posX + textLength + 3) : (posX + sizeX);
-        this.y2 = (sizeY == 0) ? (posY + 9) : (posY + sizeY);
+        this.width = (sizeX == 0) ? (textLength + 3) : sizeX;
+        this.height = (sizeY == 0) ? 9 : sizeY;
         this.textOffset = (sizeX == 0) ? 2 : ((sizeX - textLength) / 2) + 1;
         this.textColor = Color.WHITE;
         setBody(posX, posY, true);
@@ -67,8 +62,8 @@ public class Button implements Drawable {
     public void draw() {
         // Is drawn as pressed only when pressed time > 0, otherwise is drawn normal
         if (pressedTime <= 0) isPressed = false;
-        int drawX = (isPressed) ? x1 + 1 : x1;
-        int drawY = (isPressed) ? y1 + 1 : y1;
+        int drawX = (isPressed) ? x + 1 : x;
+        int drawY = (isPressed) ? y + 1 : y;
         setBody(drawX, drawY, !isPressed);
         this.body.draw();
         Printer.print(text, textColor, drawX + textOffset, drawY);
@@ -78,7 +73,7 @@ public class Button implements Drawable {
         this.body = new Image(VisualElement.MENU_BUTTON, posX, posY) {
             @Override
             public int[][] getMatrixFromStorage(VisualElement visualElement) {
-                return ImageCreator.createWindow(x2 - x1, y2 - y1, addShadow, true);
+                return ImageCreator.createWindow(Button.this.width, Button.this.height, addShadow, true);
             }
         };
         this.body.colors = new Color[]{
@@ -95,8 +90,8 @@ public class Button implements Drawable {
         this.textOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
     }
 
-    public boolean tryToPress(int x, int y) {
-        boolean covers = (x >= x1 && x <= x2 && y >= y1 && y <= y2);
+    public boolean tryToPress(int hitX, int hitY) {
+        boolean covers = (hitX >= x && hitX <= x + width && hitY >= y && hitY <= y + height);
         if (covers) press();
         return covers;
     }

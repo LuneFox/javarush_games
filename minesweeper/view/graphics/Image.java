@@ -2,15 +2,14 @@ package com.javarush.games.minesweeper.view.graphics;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.DrawableObject;
 
 /**
  * An image that is drawn using colors and the number matrix. Can be mirrored, recolored etc.
  */
 
-public class Image implements Drawable {
+public class Image extends DrawableObject {
     protected MinesweeperGame game = MinesweeperGame.getInstance();
-    protected int drawX;    // real position in pixels
-    protected int drawY;
     public int[][] matrix;  // matrix of color numbers
     public Color[] colors;  // an array to match colors and numbers
 
@@ -19,12 +18,13 @@ public class Image implements Drawable {
     }
 
     public Image(VisualElement visualElement) { // constructor without setting position (for loading images in memory)
+        super();
         this.matrix = getMatrixFromStorage(visualElement);
     }
 
-    public Image(VisualElement visualElement, int drawX, int drawY) { // constructor with setting position at once
-        this(visualElement);
-        setPosition(drawX, drawY);
+    public Image(VisualElement visualElement, int x, int y) { // constructor with setting position at once
+        super(x, y);
+        this.matrix = getMatrixFromStorage(visualElement);
     }
 
     public void draw(Mirror mirror) {
@@ -37,23 +37,23 @@ public class Image implements Drawable {
                 switch (mirror) {
                     case HORIZONTAL:
                         game.display.setCellColor(
-                                drawX + (matrix[0].length - 1 - innerX),
-                                drawY + innerY,
+                                x + (matrix[0].length - 1 - innerX),
+                                y + innerY,
                                 colors[matrix[innerY][innerX]]
                         );
                         break;
                     case VERTICAL:
                         game.display.setCellColor(
-                                drawX + innerX,
-                                drawY + (matrix.length - 1 - innerY),
+                                x + innerX,
+                                y + (matrix.length - 1 - innerY),
                                 colors[matrix[innerY][innerX]]
                         );
                         break;
                     case NONE:
                     default:
                         game.display.setCellColor(
-                                drawX + innerX,
-                                drawY + innerY,
+                                x + innerX,
+                                y + innerY,
                                 colors[matrix[innerY][innerX]]
                         );
                         break;
@@ -76,8 +76,8 @@ public class Image implements Drawable {
     }
 
     public final void setPosition(int drawX, int drawY) { // negative value = middle
-        this.drawX = (drawX < 0) ? (50 - matrix[0].length / 2) : drawX;
-        this.drawY = (drawY < 0) ? (50 - matrix.length / 2) : drawY;
+        this.x = (drawX < 0) ? (50 - matrix[0].length / 2) : drawX;
+        this.y = (drawY < 0) ? (50 - matrix.length / 2) : drawY;
     }
 
     public final void replaceColor(Color color, int number) {

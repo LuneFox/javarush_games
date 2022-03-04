@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.view.graphics.*;
 
 import java.util.ArrayList;
@@ -14,16 +15,14 @@ import java.util.Map;
  * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
  */
 
-public class Cell implements Drawable {
+public class Cell extends DrawableObject {
     private static final MinesweeperGame game = MinesweeperGame.getInstance();
     private static final Map<Integer, VisualElement> sprites = new HashMap<>();
 
-    public final int x;                    // logical position on a 10x10 grid
-    public final int y;
     public boolean isMined;                // contains a mine
     public boolean isOpen;                 // revealed
     public boolean isScanned;              // revealed using a scanner
-    public boolean isShielded;          // revealed using a shield
+    public boolean isShielded;             // revealed using a shield
     public boolean isGameOverCause;        // was clicked last before game over
     public boolean isFlagged;              // flagged by player
     public boolean isDestroyed;            // blown up by the bomb

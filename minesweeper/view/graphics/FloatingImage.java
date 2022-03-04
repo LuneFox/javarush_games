@@ -19,7 +19,7 @@ public class FloatingImage extends Image {
         shift += (phase ? 0.2 : -0.2);
         if (Math.abs(shift) > height)
             phase = !phase;
-        this.drawY = (int) (y + shift);
+        this.y = (int) (y + shift);
         super.draw();
     }
 }

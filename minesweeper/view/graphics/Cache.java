@@ -48,7 +48,7 @@ public class Cache {
     // Buttons
 
     private static void put(Button.ButtonID id) {
-        buttons.put(id, new Button(id.posX, id.posY, id.width, id.height, id.label));
+        buttons.put(id, new Button(id.x, id.y, id.width, id.height, id.label));
     }
 
     public static Button get(Button.ButtonID id) {

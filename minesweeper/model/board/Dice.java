@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.Util;
+import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
@@ -11,13 +12,11 @@ import com.javarush.games.minesweeper.view.graphics.Image;
  * Graphical dice that appears on screen when you use Lucky Dice
  */
 
-public class Dice implements Drawable {
+public class Dice extends DrawableObject {
     private final static int DISPLAY_DURATION = 20;
 
     public Cell appearCell;     // cell at which the dice appears after click
     private Image image;
-    private int x;
-    private int y;
     public int totalBonus;      // sum of all sides on every affected cell (memory field)
     public int totalCells;      // total number of cells affected by the dice (memory field)
     private int onScreenTime;   // number of frames that have passed since it was displayed
@@ -29,8 +28,7 @@ public class Dice implements Drawable {
     }
 
     public void setImage(int number, int x, int y) {
-        this.x = x;
-        this.y = y;
+        setPosition(x, y);
         if (number == 1) this.image = Cache.get(VisualElement.SHOP_DICE_1);
         else if (number == 2) this.image = Cache.get(VisualElement.SHOP_DICE_2);
         else if (number == 3) this.image = Cache.get(VisualElement.SHOP_DICE_3);
