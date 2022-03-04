@@ -39,7 +39,7 @@ public final class ViewShop extends View {
         Cache.get(VisualElement.SHOP_COIN).draw(69 + getMoneyShakeValue(), 13);
         makeDisplayMoneyApproachRealMoney();
         Printer.print("" + game.field.countAllCells(Cell.Filter.DANGEROUS), 22, 12);
-        Printer.print("" + game.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
+        Printer.print("" + game.player.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
         Printer.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), -1, 22);
         Printer.print("очки:" + game.player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
@@ -91,9 +91,9 @@ public final class ViewShop extends View {
     }
 
     private void makeDisplayMoneyApproachRealMoney() {
-        if (moneyOnDisplay < game.inventory.money) {
+        if (moneyOnDisplay < game.player.inventory.money) {
             moneyOnDisplay++;
-        } else if (moneyOnDisplay > game.inventory.money) {
+        } else if (moneyOnDisplay > game.player.inventory.money) {
             moneyOnDisplay--;
         }
     }

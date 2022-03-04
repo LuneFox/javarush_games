@@ -18,7 +18,7 @@ public class View {
         game.display.setInterlaceEnabled(false);
 
         if (!Screen.is(Screen.SHOP)) { // animate money only when buying items
-            Screen.shop.moneyOnDisplay = game.inventory.money;
+            Screen.shop.moneyOnDisplay = game.player.inventory.money;
         }
     }
 

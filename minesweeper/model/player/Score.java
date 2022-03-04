@@ -4,7 +4,6 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.player.Player;
 
 public class Score {
     private final MinesweeperGame game;
@@ -26,7 +25,7 @@ public class Score {
 
     public int getMoneyScore() {
         if (!game.isVictory) return 0;
-        return game.inventory.money * game.difficulty;
+        return game.player.inventory.money * game.difficulty;
     }
 
     public int getMinesScore() {
@@ -112,7 +111,7 @@ public class Score {
             minesCount = game.field.countAllCells(Cell.Filter.MINED);
             scoredCells = game.field.countAllCells(Cell.Filter.SCORED);
             difficulty = game.difficulty;
-            money = game.inventory.money;
+            money = game.player.inventory.money;
             shields = game.player.getBrokenShields();
             luckyCells = game.shop.dice.totalCells;
             scoreDice = game.player.score.getDiceScore();

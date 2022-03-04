@@ -25,7 +25,6 @@ public class MinesweeperGame extends Game {
     private static MinesweeperGame instance;
     private Controller controller;
     public Display display;
-    public Inventory inventory;
     public Shop shop;
     public Player player;
     public Timer timer;
@@ -47,7 +46,6 @@ public class MinesweeperGame extends Game {
         timer = new Timer();
         shop = new Shop();
         player = new Player();
-        inventory = new Inventory();
 
         showGrid(false);
         setScreenSize(100, 100);
@@ -70,7 +68,7 @@ public class MinesweeperGame extends Game {
         isFirstMove = true;
         player.reset();
         shop.reset();
-        inventory.reset();
+        player.inventory.reset();
         timer.restart();
         setScore(player.score.getCurrentScore());
     }
@@ -142,7 +140,7 @@ public class MinesweeperGame extends Game {
             return;
         }
 
-        inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
+        player.inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
         cell.makeNumberGold();            // make golden if the shovel is in use
 
         addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // x,y = dice display position
@@ -180,16 +178,16 @@ public class MinesweeperGame extends Game {
     }
 
     private void returnFlagToInventory(Cell cell) {
-        inventory.add(ShopItem.ID.FLAG);
+        player.inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
         cell.setSprite(cell.isMined ? VisualElement.SPR_BOARD_MINE : VisualElement.NONE);
     }
 
     private void placeFlagFromInventory(Cell cell) {
-        if (inventory.hasNoFlags()) shop.offerFlag();
-        if (inventory.hasNoFlags()) return;
+        if ( player.inventory.hasNoFlags()) shop.offerFlag();
+        if (player.inventory.hasNoFlags()) return;
         if (cell.isFlagged) return;
-        inventory.remove(ShopItem.ID.FLAG);
+        player.inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
         cell.setSprite(VisualElement.SPR_BOARD_FLAG);
     }
@@ -247,7 +245,7 @@ public class MinesweeperGame extends Game {
 
         if (safeNeighbors.size() == 0) {       // no safe cells, place free flags over closed ones
             field.getNeighborCells(field.getCell(x, y), Filter.CLOSED, true).forEach(closedCell -> {
-                if (inventory.hasNoFlags()) shop.give(shop.flag);
+                if (player.inventory.hasNoFlags()) shop.give(shop.flag);
                 setFlag(closedCell.x, closedCell.y, false);
             });
         } else {                               // open random safe cell

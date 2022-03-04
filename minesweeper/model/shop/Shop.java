@@ -38,8 +38,8 @@ public class Shop {
         if (!isPurchasable(item)) return;
         // Make transaction
         item.inStock--;
-        game.inventory.money -= item.cost;
-        game.inventory.add(item.id);
+        game.player.inventory.money -= item.cost;
+        game.player.inventory.add(item.id);
         // Apply item effect
         switch (item.id) {
             case SHIELD:
@@ -101,7 +101,7 @@ public class Shop {
 
     public void give(ShopItem item) {
         if (item.inStock > 0) {
-            game.inventory.add(item.id);
+            game.player.inventory.add(item.id);
             item.inStock--;
         }
     }

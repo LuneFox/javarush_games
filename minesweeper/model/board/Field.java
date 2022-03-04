@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.view.graphics.Drawable;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 

@@ -155,11 +155,11 @@ public class ShopItem {
     }
 
     public boolean isUnaffordable() {
-        return (game.inventory.money < this.cost);
+        return (game.player.inventory.money < this.cost);
     }
 
     public boolean isUnobtainable() {
-        return (game.inventory.money < this.cost || this.inStock <= 0);
+        return (game.player.inventory.money < this.cost || this.inStock <= 0);
     }
 
     public class VerticalStatusBar {

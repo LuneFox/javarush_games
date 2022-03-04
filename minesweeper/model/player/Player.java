@@ -6,12 +6,14 @@ package com.javarush.games.minesweeper.model.player;
 
 public class Player {
     public Score score;
+    public Inventory inventory;
     private String title;
     private int moves;
     private int brokenShields;
 
     public Player() {
         this.score = new Score(this);
+        this.inventory = new Inventory();
         this.title = "";
         reset();
     }
