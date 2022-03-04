@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
-import com.javarush.games.minesweeper.model.Cell;
+import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Screen;
 

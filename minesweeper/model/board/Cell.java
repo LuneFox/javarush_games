@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model;
+package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
@@ -23,7 +23,7 @@ public class Cell implements Drawable {
     public boolean isMined;                // contains a mine
     public boolean isOpen;                 // revealed
     public boolean isScanned;              // revealed using a scanner
-    protected boolean isShielded;          // revealed using a shield
+    public boolean isShielded;          // revealed using a shield
     public boolean isGameOverCause;        // was clicked last before game over
     public boolean isFlagged;              // flagged by player
     public boolean isDestroyed;            // blown up by the bomb

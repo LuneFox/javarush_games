@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.controller.strategy;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Screen;
-import com.javarush.games.minesweeper.model.ShopItem;
+import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 import static com.javarush.games.minesweeper.Util.inside;
 

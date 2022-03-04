@@ -4,9 +4,16 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.model.*;
-import com.javarush.games.minesweeper.model.Timer;
+import com.javarush.games.minesweeper.model.board.Timer;
+import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.Field;
+import com.javarush.games.minesweeper.model.player.Inventory;
+import com.javarush.games.minesweeper.model.player.Player;
+import com.javarush.games.minesweeper.model.player.Score;
+import com.javarush.games.minesweeper.model.shop.Shop;
+import com.javarush.games.minesweeper.model.shop.ShopItem;
 import com.javarush.games.minesweeper.view.graphics.*;
-import com.javarush.games.minesweeper.model.Cell.Filter;
+import com.javarush.games.minesweeper.model.board.Cell.Filter;
 
 import java.util.*;
 

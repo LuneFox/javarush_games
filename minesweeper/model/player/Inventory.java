@@ -1,4 +1,6 @@
-package com.javarush.games.minesweeper.model;
+package com.javarush.games.minesweeper.model.player;
+
+import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 import java.util.EnumMap;
 

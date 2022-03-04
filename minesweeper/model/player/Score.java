@@ -1,7 +1,10 @@
-package com.javarush.games.minesweeper.model;
+package com.javarush.games.minesweeper.model.player;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
+import com.javarush.games.minesweeper.model.Strings;
+import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.player.Player;
 
 public class Score {
     private final MinesweeperGame game;

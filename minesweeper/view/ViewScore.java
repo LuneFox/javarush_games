@@ -4,19 +4,19 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.view.graphics.*;
 
-import static com.javarush.games.minesweeper.model.Score.Table.minesCount;
-import static com.javarush.games.minesweeper.model.Score.Table.difficulty;
-import static com.javarush.games.minesweeper.model.Score.Table.money;
-import static com.javarush.games.minesweeper.model.Score.Table.scoredCells;
-import static com.javarush.games.minesweeper.model.Score.Table.luck;
-import static com.javarush.games.minesweeper.model.Score.Table.luckyCells;
-import static com.javarush.games.minesweeper.model.Score.Table.shields;
-import static com.javarush.games.minesweeper.model.Score.Table.scoreTimer;
-import static com.javarush.games.minesweeper.model.Score.Table.scoreLost;
-import static com.javarush.games.minesweeper.model.Score.Table.moneyScore;
-import static com.javarush.games.minesweeper.model.Score.Table.minesScore;
-import static com.javarush.games.minesweeper.model.Score.Table.scoreDice;
-import static com.javarush.games.minesweeper.model.Score.Table.victory;
+import static com.javarush.games.minesweeper.model.player.Score.Table.minesCount;
+import static com.javarush.games.minesweeper.model.player.Score.Table.difficulty;
+import static com.javarush.games.minesweeper.model.player.Score.Table.money;
+import static com.javarush.games.minesweeper.model.player.Score.Table.scoredCells;
+import static com.javarush.games.minesweeper.model.player.Score.Table.luck;
+import static com.javarush.games.minesweeper.model.player.Score.Table.luckyCells;
+import static com.javarush.games.minesweeper.model.player.Score.Table.shields;
+import static com.javarush.games.minesweeper.model.player.Score.Table.scoreTimer;
+import static com.javarush.games.minesweeper.model.player.Score.Table.scoreLost;
+import static com.javarush.games.minesweeper.model.player.Score.Table.moneyScore;
+import static com.javarush.games.minesweeper.model.player.Score.Table.minesScore;
+import static com.javarush.games.minesweeper.model.player.Score.Table.scoreDice;
+import static com.javarush.games.minesweeper.model.player.Score.Table.victory;
 
 /**
  * Shows score details in the end of the game.

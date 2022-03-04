@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model;
+package com.javarush.games.minesweeper.model.player;
 
 /**
  * Contains player data like score
