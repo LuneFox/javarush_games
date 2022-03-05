@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.*;
 
 import static com.javarush.games.minesweeper.model.player.Score.Table.minesCount;
@@ -33,12 +34,12 @@ public final class ViewScore extends View {
         Cache.get(VisualElement.WIN_MENU).draw();
         String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
         String moneyScoreDetail = money + "*" + difficulty + " = ";
-        String cellScoreDetail = scoredCells + "*" + game.difficulty + " = ";
+        String cellScoreDetail = scoredCells + "*" + Options.difficulty + " = ";
         String luckDetail = luck + "*" + luckyCells + "*" + difficulty + " = ";
         String shieldScoreDetail = shields == 0 ? "" : shields + "*-" + (150 * (difficulty / 5)) + " = ";
         String youLost = "не учтено";
 
-        Printer.print("подробности счёта", Color.YELLOW, -1, 2);
+        Printer.print("подробности счёта", Color.YELLOW, Printer.CENTER, 2);
 
         Printer.print("ячейки:\nкуб:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", 3, 13);
         Printer.print(

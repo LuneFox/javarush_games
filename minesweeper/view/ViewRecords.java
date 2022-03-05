@@ -19,7 +19,7 @@ public final class ViewRecords extends View {
     public void update() {
         super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
-        Printer.print(Strings.RECORDS[0], Color.YELLOW, -1, 2);
+        Printer.print(Strings.RECORDS[0], Color.YELLOW, Printer.CENTER, 2);
         Cache.get(Button.ButtonID.GENERAL_BACK).draw();
         drawPrizeCups();
         drawEntries();

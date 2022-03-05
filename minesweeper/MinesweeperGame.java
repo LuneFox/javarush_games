@@ -7,7 +7,7 @@ import com.javarush.games.minesweeper.model.*;
 import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.board.Field;
-import com.javarush.games.minesweeper.model.player.Inventory;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
@@ -29,8 +29,6 @@ public class MinesweeperGame extends Game {
     public Player player;
     public Timer timer;
     public Field field;
-    public int difficulty = 10;                // current difficulty
-    public int difficultySetting = difficulty; // in the options, applied for the new game
     private boolean allowCountingPlayerMoves;  // sometimes cells are opened by recursion, don't count it as moves
     public boolean allowFlagExplosion;         // allows destroying flags during chain explosions
     public boolean isStopped = true;
@@ -46,6 +44,7 @@ public class MinesweeperGame extends Game {
         timer = new Timer();
         shop = new Shop();
         player = new Player();
+        Options.initialize();
 
         showGrid(false);
         setScreenSize(100, 100);
@@ -61,8 +60,7 @@ public class MinesweeperGame extends Game {
     }
 
     public void startNewGame() {
-        difficulty = difficultySetting;            // impacts the number of created mines
-        timer.isEnabled = timer.isEnabledSetting;
+        Options.apply();
         field.create();
         isStopped = false;
         isFirstMove = true;
@@ -208,7 +206,7 @@ public class MinesweeperGame extends Game {
 
         if (field.getCell(x, y).isMined) return;
         if (shop.luckyDice.isActivated()) {
-            player.score.setDiceScore(player.score.getDiceScore() + difficulty * randomNumber);
+            player.score.setDiceScore(player.score.getDiceScore() + Options.difficulty * randomNumber);
             shop.dice.totalCells++;
             shop.dice.totalBonus += randomNumber;
         }
@@ -286,28 +284,6 @@ public class MinesweeperGame extends Game {
             field.attachNumbers();
         }
     }
-
-
-    // OPTIONS
-
-    public void changeDifficultySetting(boolean makeHarder) {
-        if (makeHarder && difficultySetting < 45) {
-            difficultySetting += 5;
-            Screen.options.animateRightArrow();
-        } else if (!makeHarder && difficultySetting > 5) {
-            difficultySetting -= 5;
-            Screen.options.animateLeftArrow();
-        }
-    }
-
-    public void switchAutoBuyFlags() {
-        shop.autoBuyFlagsEnabled = !shop.autoBuyFlagsEnabled;
-    }
-
-    public void switchTimerSetting() {
-        timer.isEnabledSetting = !timer.isEnabledSetting;
-    }
-
 
     // CONTROLS
 

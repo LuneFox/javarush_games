@@ -9,6 +9,7 @@ import com.javarush.games.minesweeper.model.DrawableObject;
  */
 
 public class Image extends DrawableObject {
+    public static final int CENTER = -1;
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public int[][] matrix;  // matrix of color numbers
     public Color[] colors;  // an array to match colors and numbers
@@ -18,13 +19,14 @@ public class Image extends DrawableObject {
     }
 
     public Image(VisualElement visualElement) { // constructor without setting position (for loading images in memory)
-        super();
-        this.matrix = getMatrixFromStorage(visualElement);
+        this(visualElement, 0, 0);
     }
 
     public Image(VisualElement visualElement, int x, int y) { // constructor with setting position at once
         super(x, y);
         this.matrix = getMatrixFromStorage(visualElement);
+        this.height = matrix.length;
+        this.width = matrix[0].length;
     }
 
     public void draw(Mirror mirror) {

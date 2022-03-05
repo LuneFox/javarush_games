@@ -90,13 +90,7 @@ public class Button extends DrawableObject {
         this.textOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
     }
 
-    public boolean tryToPress(int hitX, int hitY) {
-        boolean covers = (hitX >= x && hitX <= x + width && hitY >= y && hitY <= y + height);
-        if (covers) press();
-        return covers;
-    }
-
-    private void press() {
+    protected void onTouch() {
         isPressed = true;
         pressedTime = PRESS_DURATION;
     }

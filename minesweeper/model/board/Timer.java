@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper.model.board;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.Drawable;
 
 import java.util.Date;
@@ -15,8 +16,6 @@ public class Timer extends DrawableObject {
     private final MinesweeperGame game = MinesweeperGame.getInstance();
     public float time;
     private final float TIME_LIMIT = 500;
-    public boolean isEnabled;
-    public boolean isEnabledSetting;
     private Date lastTickTime;
     private final Color[] COLORS;
 
@@ -24,13 +23,11 @@ public class Timer extends DrawableObject {
         super();
         this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         this.time = 0;
-        this.isEnabled = false;
-        this.isEnabledSetting = false;
         this.lastTickTime = new Date();
     }
 
     public void draw() {
-        if (!isEnabled) return;
+        if (!Options.timerEnabled) return;
         if (game.isStopped) return;
         if (game.isFirstMove) return;
         for (int i = x; i < ((time / TIME_LIMIT) * 100); i++) {
@@ -39,9 +36,9 @@ public class Timer extends DrawableObject {
     }
 
     public void countDown() {
-        if (!isEnabled) return;
+        if (!Options.timerEnabled) return;
         if (new Date().getTime() - lastTickTime.getTime() >= 1000) {
-            time = (time > 0) ? time - game.difficulty : 0;
+            time = (time > 0) ? time - Options.difficulty : 0;
             swapColor();
             lastTickTime = new Date();
         }
@@ -54,15 +51,15 @@ public class Timer extends DrawableObject {
     }
 
     public void restart() {
-        if (isEnabled)
+        if (Options.timerEnabled)
             time = TIME_LIMIT;
     }
 
     public boolean isZero() {
-        return (isEnabled && time <= 0);
+        return (Options.timerEnabled && time <= 0);
     }
 
     public int getScore() {
-        return (isEnabled) ? ((int) (time / 100) * (game.difficulty / 5)) : 0;
+        return (Options.timerEnabled) ? ((int) (time / 100) * (Options.difficulty / 5)) : 0;
     }
 }

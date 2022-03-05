@@ -31,9 +31,9 @@ public final class ViewShop extends View {
         game.checkTimeOut();
 
         shakeAnimationCountDown();
-        Cache.get(VisualElement.WIN_SHOP).draw(-1, -1);
-        Cache.get(VisualElement.WIN_SHOP_HEADER_FOOTER).draw(-1, 10);
-        Cache.get(VisualElement.WIN_SHOP_HEADER_FOOTER).draw(-1, 78);
+        Cache.get(VisualElement.WIN_SHOP).draw(Image.CENTER, Image.CENTER);
+        Cache.get(VisualElement.WIN_SHOP_HEADER_FOOTER).draw(Image.CENTER, 10);
+        Cache.get(VisualElement.WIN_SHOP_HEADER_FOOTER).draw(Image.CENTER, 78);
         Cache.get(VisualElement.SPR_BOARD_MINE).draw(10, 10);
         Cache.get(VisualElement.SPR_BOARD_FLAG).draw(39, 11);
         Cache.get(VisualElement.SHOP_COIN).draw(69 + getMoneyShakeValue(), 13);
@@ -41,7 +41,7 @@ public final class ViewShop extends View {
         Printer.print("" + game.field.countAllCells(Cell.Filter.DANGEROUS), 22, 12);
         Printer.print("" + game.player.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
         Printer.print("" + moneyOnDisplay, 75 + getMoneyShakeValue(), 12);
-        Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), -1, 22);
+        Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
         Printer.print("очки:" + game.player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
         Printer.print("шаги:" + game.player.getMoves(), Theme.SHOP_MOVES.getColor(), 84, 80, true);
         displayShopItems();

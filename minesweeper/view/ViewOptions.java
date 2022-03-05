@@ -2,45 +2,14 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.Screen;
-import com.javarush.games.minesweeper.model.Strings;
-import com.javarush.games.minesweeper.Util;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.*;
-
-import java.util.LinkedList;
 
 /**
  * Shows the OPTIONS screen.
  */
 
 public final class ViewOptions extends View {
-
-    public static final int CLICKED_ARROW_DURATION = 2;
-    public static int clickedArrowTimeoutL;
-    public static int clickedArrowTimeoutR;
-
-    private static final int SWITCH_LEFTMOST_POSITION = 85;
-    private static final int SWITCH_RIGHTMOST_POSITION = 93;
-    private int switchFlagsPosition = SWITCH_LEFTMOST_POSITION;
-    private int switchTimePosition = SWITCH_LEFTMOST_POSITION;
-
-    private final static int TEXT_PADDING_L = 2;
-    private final static int SUB_TEXT_SHIFT = 8;
-    private final static int DIFF_ANCHOR = 16;
-    private final static int FLAG_ANCHOR = 35;
-    private final static int TIME_ANCHOR = 54;
-    private final static int THEME_ANCHOR = 73;
-    private final static int THEME_PADDING_L = 63;
-
-    public final Area difficultyDownArea = new Area(49, 53, DIFF_ANCHOR + 1, DIFF_ANCHOR + 7);
-    public final Area difficultyUpArea = new Area(93, 97, DIFF_ANCHOR + 1, DIFF_ANCHOR + 7);
-    public final Area autoBuyFlagsArea = new Area(SWITCH_LEFTMOST_POSITION, SWITCH_RIGHTMOST_POSITION + 4, FLAG_ANCHOR + 1, FLAG_ANCHOR + 7);
-    public final Area switchGameTimerArea = new Area(SWITCH_LEFTMOST_POSITION, SWITCH_RIGHTMOST_POSITION + 4, TIME_ANCHOR + 1, TIME_ANCHOR + 7);
-    public final Area redThemeArea = new Area(THEME_PADDING_L, THEME_PADDING_L + 10, THEME_ANCHOR, THEME_ANCHOR + 10);
-    public final Area greenThemeArea = new Area(THEME_PADDING_L + 12, THEME_PADDING_L + 22, THEME_ANCHOR, THEME_ANCHOR + 10);
-    public final Area blueThemeArea = new Area(THEME_PADDING_L + 24, THEME_PADDING_L + 34, THEME_ANCHOR, THEME_ANCHOR + 10);
-
-
-
     public ViewOptions() {
         this.screen = Screen.OPTIONS;
     }
@@ -48,86 +17,22 @@ public final class ViewOptions extends View {
     @Override
     public void update() {
         super.update();
-        Image arrowButton = Cache.get(VisualElement.MENU_ARROW);
-        Image switchButton = Cache.get(VisualElement.MENU_SWITCH);
-        Image switchRail = Cache.get(VisualElement.MENU_SWITCH_RAIL);
-        Image themePalette = Cache.get(VisualElement.MENU_THEME_PALETTE);
-        String difficultyName = Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(game.difficultySetting)];
-
 
         Cache.get(VisualElement.WIN_MENU).draw();
-        Printer.print("настройки", Color.YELLOW, -1, 2);
+        Printer.print("настройки", Color.YELLOW, Printer.CENTER, 2);
 
-        Printer.print("сложность", TEXT_PADDING_L, DIFF_ANCHOR - 1);
-        arrowButton.draw((clickedArrowTimeoutL-- > 0) ? 48 : 49, DIFF_ANCHOR, Image.Mirror.HORIZONTAL);
-        arrowButton.draw((clickedArrowTimeoutR-- > 0) ? 94 : 93, DIFF_ANCHOR, Image.Mirror.NONE);
+        Printer.print("сложность", 2, Options.difficultySelector.y - 1);
+        Options.difficultySelector.draw();
 
-        displayDifficultyBar();
-        Printer.print(difficultyName, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, DIFF_ANCHOR + SUB_TEXT_SHIFT, true);
+        Printer.print("покупка флажков", 2, Options.autoBuyFlagsSelector.y - 1);
+        Options.autoBuyFlagsSelector.draw();
 
-        Printer.print("покупка флажков", TEXT_PADDING_L, FLAG_ANCHOR - 1);
-        switchRail.draw(SWITCH_LEFTMOST_POSITION, FLAG_ANCHOR + 2);
-        if (game.shop.autoBuyFlagsEnabled) {
-            if (switchFlagsPosition < SWITCH_RIGHTMOST_POSITION) switchFlagsPosition++;
-            switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.draw(switchFlagsPosition, FLAG_ANCHOR);
-            Printer.print("авто", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
-        } else {
-            if (switchFlagsPosition > SWITCH_LEFTMOST_POSITION) switchFlagsPosition--;
-            switchButton.replaceColor(Color.RED, 1);
-            switchButton.draw(switchFlagsPosition, FLAG_ANCHOR);
-            Printer.print("вручную", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 91, FLAG_ANCHOR + SUB_TEXT_SHIFT, true);
-        }
+        Printer.print("игра на время", 2, Options.timerEnabledSelector.y - 1);
+        Options.timerEnabledSelector.draw();
 
-
-        Printer.print("игра на время", TEXT_PADDING_L, TIME_ANCHOR - 1);
-        switchRail.draw(SWITCH_LEFTMOST_POSITION, TIME_ANCHOR + 2);
-        if (game.timer.isEnabledSetting) {
-            if (switchTimePosition < SWITCH_RIGHTMOST_POSITION) switchTimePosition++;
-            switchButton.replaceColor(Color.GREEN, 1);
-            switchButton.draw(switchTimePosition, TIME_ANCHOR);
-            Printer.print("да", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 93, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
-        } else {
-            if (switchTimePosition > SWITCH_LEFTMOST_POSITION) switchTimePosition--;
-            switchButton.replaceColor(Color.RED, 1);
-            switchButton.draw(switchTimePosition, TIME_ANCHOR);
-            Printer.print("нет", Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 94, TIME_ANCHOR + SUB_TEXT_SHIFT, true);
-
-        }
-
-        Printer.print("тема: " + Theme.getCurrentName(), TEXT_PADDING_L, THEME_ANCHOR);
-
-        themePalette.replaceColor(Color.RED, 1);
-        themePalette.replaceColor(Theme.getCurrentNumber() == 0 ? Color.YELLOW : Color.BLACK, 3);
-        themePalette.draw(THEME_PADDING_L, THEME_ANCHOR);
-        themePalette.replaceColor(Color.GREEN, 1);
-        themePalette.replaceColor(Theme.getCurrentNumber() == 1 ? Color.YELLOW : Color.BLACK, 3);
-        themePalette.draw(THEME_PADDING_L + 12, THEME_ANCHOR);
-        themePalette.replaceColor(Theme.getCurrentNumber() == 2 ? Color.YELLOW : Color.BLACK, 3);
-        themePalette.replaceColor(Color.BLUE, 1);
-        themePalette.draw(THEME_PADDING_L + 24, THEME_ANCHOR);
+        Printer.print("тема: " + Theme.getCurrentName(), 2, Options.themeSelector.y);
+        Options.themeSelector.draw();
 
         Cache.get(Button.ButtonID.GENERAL_BACK).draw();
-    }
-
-
-    private void displayDifficultyBar() {
-        LinkedList<Image> bars = new LinkedList<>();
-        for (int i = 0; i < game.difficultySetting / 5; i++) {
-            Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR, (i * 4) + 56, DIFF_ANCHOR);
-            if (i > 1) bar.replaceColor(Color.YELLOW, 1);
-            if (i > 3) bar.replaceColor(Color.ORANGE, 1);
-            if (i > 5) bar.replaceColor(Color.RED, 1);
-            bars.add(bar);
-        }
-        bars.forEach(Image::draw);
-    }
-
-    public void animateLeftArrow() {
-        clickedArrowTimeoutL = CLICKED_ARROW_DURATION;
-    }
-
-    public void animateRightArrow() {
-        clickedArrowTimeoutR = CLICKED_ARROW_DURATION;
     }
 }

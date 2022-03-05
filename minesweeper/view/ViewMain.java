@@ -30,8 +30,8 @@ public final class ViewMain extends View {
     public void update() {
         super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
-        Printer.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), -1, 2);
-        ((FloatingImage) Cache.get(VisualElement.FLO_LOGO)).draw(2.8, -1, 8);
+        Printer.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
+        ((FloatingImage) Cache.get(VisualElement.FLO_LOGO)).draw(2.8, Image.CENTER, 8);
         Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).draw();
         Cache.get(Button.ButtonID.MAIN_MENU_ABOUT).draw();
         Cache.get(Button.ButtonID.MAIN_MENU_RECORDS).draw();

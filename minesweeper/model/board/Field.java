@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.Drawable;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
@@ -28,7 +29,7 @@ public class Field implements Drawable {
     }
 
     private void plantMines() {
-        while (countAllCells(Cell.Filter.MINED) < game.difficulty / 1.5) { // fixed number of mines on field
+        while (countAllCells(Cell.Filter.MINED) < Options.difficulty / 1.5) { // fixed number of mines on field
             int x = game.getRandomNumber(10);
             int y = game.getRandomNumber(10);
             if (!field[y][x].isMined && !field[y][x].isOpen) {

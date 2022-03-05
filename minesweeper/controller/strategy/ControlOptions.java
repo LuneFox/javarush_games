@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.controller.strategy;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.Button;
 import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.Theme;
@@ -11,33 +12,23 @@ public class ControlOptions implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (Cache.get(Button.ButtonID.GENERAL_BACK).tryToPress(x, y)) {
+        if (Cache.get(Button.ButtonID.GENERAL_BACK).checkTouch(x, y)) {
             Screen.set(Screen.MAIN);
-        } else if (Screen.options.difficultyDownArea.covers(x, y)) {
-            game.changeDifficultySetting(false);
-        } else if (Screen.options.difficultyUpArea.covers(x, y)) {
-            game.changeDifficultySetting(true);
-        } else if (Screen.options.autoBuyFlagsArea.covers(x, y)) {
-            game.switchAutoBuyFlags();
-        } else if (Screen.options.switchGameTimerArea.covers(x, y)) {
-            game.switchTimerSetting();
-        } else if (Screen.options.redThemeArea.covers(x, y)) {
-            Theme.set(Theme.USSR);
-        } else if (Screen.options.greenThemeArea.covers(x, y)) {
-            Theme.set(Theme.MINT);
-        } else if (Screen.options.blueThemeArea.covers(x, y)) {
-            Theme.set(Theme.SKY);
         }
+        Options.difficultySelector.checkTouch(x, y);
+        Options.autoBuyFlagsSelector.checkTouch(x, y);
+        Options.timerEnabledSelector.checkTouch(x, y);
+        Options.themeSelector.checkTouch(x, y);
     }
 
     @Override
     public void pressRight() {
-        game.changeDifficultySetting(true);
+        Options.difficultySelector.difficultyUp();
     }
 
     @Override
     public void pressLeft() {
-        game.changeDifficultySetting(false);
+        Options.difficultySelector.difficultyDown();
     }
 
     @Override

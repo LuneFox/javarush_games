@@ -9,6 +9,7 @@ import java.util.HashMap;
  */
 
 public class Printer {
+    public static final int CENTER = -1;
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
 
@@ -64,6 +65,7 @@ public class Printer {
             // If it equals '\n' move the caret to the new line and skip the rest
             if (caret.isAtNewLine(chars[i])) continue;
             // Draw symbol on the screen
+            if (alignRight && i == 0) caret.x -= Cache.get(chars[0]).width - 4; // first letter position fix
             drawSymbol(chars[i], color, caret.x, caret.y);
             // j = 0 means we take the CURRENT symbol, j = 1 means we take the NEXT symbol to calculate the shift
             // We need to take the next symbol only when typing from right to left and if there is one

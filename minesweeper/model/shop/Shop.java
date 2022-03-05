@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.board.Dice;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
@@ -22,7 +23,6 @@ public class Shop {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
     public double lastClickTime;
     public int lastClickedItemNumber;
-    public boolean autoBuyFlagsEnabled;
     public final List<ShopItem> allItems = new LinkedList<>();
     public ShopItem shield;
     public ShopItem scanner;
@@ -72,7 +72,7 @@ public class Shop {
     }
 
     public void offerFlag() {
-        if (!autoBuyFlagsEnabled && flag.inStock > 0) {
+        if (!Options.autoBuyFlagsEnabled && flag.inStock > 0) {
             Screen.set(Screen.SHOP);
             return;
         }
@@ -121,12 +121,12 @@ public class Shop {
     }
 
     public void reset() {
-        shield = new ShopItem(0, 13 + game.difficulty / 5, 1, Cache.get(VisualElement.SHOP_ITEM_SHIELD));
-        scanner = new ShopItem(1, 8 + game.difficulty / 5, 1, Cache.get(VisualElement.SHOP_ITEM_SCANNER));
+        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Cache.get(VisualElement.SHOP_ITEM_SHIELD));
+        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Cache.get(VisualElement.SHOP_ITEM_SCANNER));
         flag = new ShopItem(2, 1, getFlagsAmount(), Cache.get(VisualElement.SHOP_ITEM_FLAG));
         goldenShovel = new ShopItem(3, 9, 1, Cache.get(VisualElement.SHOP_ITEM_SHOVEL));
         luckyDice = new ShopItem(4, 6, 1, Cache.get(VisualElement.SHOP_ITEM_DICE));
-        miniBomb = new ShopItem(5, 6 + game.difficulty / 10, 1, Cache.get(VisualElement.SHOP_ITEM_BOMB));
+        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Cache.get(VisualElement.SHOP_ITEM_BOMB));
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
         dice = new Dice(1);

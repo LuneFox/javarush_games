@@ -7,8 +7,8 @@ public abstract class DrawableObject implements Drawable {
     public int y;
     public int width;
     public int height;
-
-    private boolean isHidden = false;
+    public int lastClickX; // remember where it was touched last time, useful if this drawable contains other drawables
+    public int lastClickY;
 
     public DrawableObject() {
         this.x = 0;
@@ -25,11 +25,18 @@ public abstract class DrawableObject implements Drawable {
         this.y = y;
     }
 
-    public boolean isHidden() {
-        return isHidden;
+    // Check if click coordinates are on top of this object and, if so, fire and action
+    public boolean checkTouch(int hitX, int hitY) {
+        boolean covers = (hitX >= x && hitX <= x + width && hitY >= y && hitY <= y + height);
+        if (covers) {
+            lastClickX = hitX;
+            lastClickY = hitY;
+            onTouch();
+        }
+        return covers;
     }
 
-    public void setHidden(boolean hidden) {
-        isHidden = hidden;
+    protected void onTouch() {
+        // Do nothing by default, override to assign some action
     }
 }

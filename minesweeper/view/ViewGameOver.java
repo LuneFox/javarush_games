@@ -27,12 +27,12 @@ public final class ViewGameOver extends View {
         }
 
         if (game.isVictory) {
-            Cache.get(VisualElement.WIN_VICTORY).draw(-1, -1);
-            Cache.get(VisualElement.FACE_HAPPY).draw(-1, -1);
+            Cache.get(VisualElement.WIN_VICTORY).draw(Image.CENTER, Image.CENTER);
+            Cache.get(VisualElement.FACE_HAPPY).draw(Image.CENTER, Image.CENTER);
             Printer.print("победа!", Color.YELLOW, 18, 33);
         } else {
-            Cache.get(VisualElement.WIN_GAME_OVER).draw(-1, -1);
-            Cache.get(VisualElement.FACE_SAD).draw(-1, -1);
+            Cache.get(VisualElement.WIN_GAME_OVER).draw(Image.CENTER, Image.CENTER);
+            Cache.get(VisualElement.FACE_SAD).draw(Image.CENTER, Image.CENTER);
             Printer.print("не повезло!", Color.YELLOW, 18, 33);
         }
         Printer.print("счёт: " + Score.Table.total, Color.LIGHTGOLDENRODYELLOW, 18, 57);

@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 import com.javarush.games.minesweeper.view.graphics.Image;
 
@@ -104,7 +105,7 @@ public class ShopItem {
                     cell.setSprite(VisualElement.SPR_BOARD_MINE);
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);
-                    game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (game.difficulty / 5));
+                    game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (Options.difficulty / 5));
                     game.player.incBrokenShields();
                     return true;
                 }

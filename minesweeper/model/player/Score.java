@@ -4,6 +4,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.options.Options;
 
 public class Score {
     private final MinesweeperGame game;
@@ -19,19 +20,19 @@ public class Score {
     }
 
     public int getCurrentScore() {
-        int score = game.field.countAllCells(Cell.Filter.SCORED) * game.difficulty;
+        int score = game.field.countAllCells(Cell.Filter.SCORED) * Options.difficulty;
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
     public int getMoneyScore() {
         if (!game.isVictory) return 0;
-        return game.player.inventory.money * game.difficulty;
+        return game.player.inventory.money * Options.difficulty;
     }
 
     public int getMinesScore() {
         if (!game.isVictory) return 0;
         int minesCount = game.field.countAllCells(Cell.Filter.MINED);
-        return minesCount * 20 * game.difficulty;
+        return minesCount * 20 * Options.difficulty;
     }
 
     public int getTotalScore() {
@@ -41,7 +42,7 @@ public class Score {
     public void registerTopScore() {
         if (getTotalScore() > getTopScore()) {
             setTopScore(getTotalScore());
-            player.setTitle(Strings.DIFFICULTY_NAMES[Util.getDifficultyIndex(game.difficulty)]);
+            player.setTitle(Strings.DIFFICULTY_NAMES[Options.difficulty / 5 - 1]);
         }
     }
 
@@ -110,7 +111,7 @@ public class Score {
             total = game.player.score.getTotalScore();
             minesCount = game.field.countAllCells(Cell.Filter.MINED);
             scoredCells = game.field.countAllCells(Cell.Filter.SCORED);
-            difficulty = game.difficulty;
+            difficulty = Options.difficulty;
             money = game.player.inventory.money;
             shields = game.player.getBrokenShields();
             luckyCells = game.shop.dice.totalCells;
