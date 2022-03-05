@@ -1,6 +1,5 @@
 package com.javarush.games.minesweeper.model.shop;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.board.Cell;
@@ -20,6 +19,7 @@ import java.util.List;
 
 public class Shop {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
+
     public final List<ShopItem> allItems = new LinkedList<>();
     public ShopItem shield;
     public ShopItem scanner;
@@ -48,7 +48,6 @@ public class Shop {
                 if (miniBomb.isActivated()) return;
                 scanner.activate();
                 purge(miniBomb);
-                drawItemActivationFrame(Color.BLUE);
                 break;
             case SHOVEL:
                 goldenShovel.activate();
@@ -62,11 +61,9 @@ public class Shop {
                 if (scanner.isActivated()) return;
                 miniBomb.activate();
                 purge(scanner);
-                drawItemActivationFrame(Color.RED);
                 break;
             default:
                 break;
-
         }
     }
 
@@ -113,11 +110,6 @@ public class Shop {
 
     private int getFlagsAmount() {
         return game.field.countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
-    }
-
-    private void drawItemActivationFrame(Color color) {
-        Cache.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(color, 3);
-        Cache.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();
     }
 
     public void deactivateExpiredItems() {
