@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model.shop;
+package com.javarush.games.minesweeper.model.shop.overlay;
 
 /**
  * Use getShift to quickly shake the X coordinate of anything you want.

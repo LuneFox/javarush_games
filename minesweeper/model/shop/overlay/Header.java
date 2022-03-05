@@ -1,7 +1,8 @@
-package com.javarush.games.minesweeper.model.shop;
+package com.javarush.games.minesweeper.model.shop.overlay;
 
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.shop.ShopItem;
 import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.Image;
 import com.javarush.games.minesweeper.view.graphics.Printer;

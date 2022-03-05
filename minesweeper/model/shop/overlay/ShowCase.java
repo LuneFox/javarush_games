@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model.shop;
+package com.javarush.games.minesweeper.model.shop.overlay;
 
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.view.graphics.*;

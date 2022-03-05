@@ -6,6 +6,9 @@ import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.board.Dice;
 import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
+import com.javarush.games.minesweeper.model.shop.overlay.Footer;
+import com.javarush.games.minesweeper.model.shop.overlay.Header;
+import com.javarush.games.minesweeper.model.shop.overlay.ShowCase;
 import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
