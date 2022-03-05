@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.view.graphics.Printer;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
 public class Header extends DrawableObject {
-    private final Image panel;
+    private Image panel;
     private int displayMoney;
     public Shaker moneyShaker = new Shaker();
 
@@ -22,6 +22,7 @@ public class Header extends DrawableObject {
 
     @Override
     public void draw() {
+        panel = Cache.get(VisualElement.WIN_SHOP_HEADER_FOOTER);
         // Draw header background
         panel.draw(x, y);
         // Draw number of mines on the field

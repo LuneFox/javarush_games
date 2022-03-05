@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowCase extends DrawableObject {
-    private final Image panel;
+    private Image panel;
     private final List<Slot> slots = new ArrayList<>();
 
     public ShowCase() {
@@ -31,6 +31,7 @@ public class ShowCase extends DrawableObject {
 
     @Override
     public void draw() {
+        panel = Cache.get(VisualElement.WIN_SHOP_SHOWCASE);
         panel.draw(x, y);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, y + 12);
         slots.forEach(DrawableObject::draw);
