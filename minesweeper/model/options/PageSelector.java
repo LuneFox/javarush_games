@@ -21,13 +21,13 @@ public class PageSelector extends DrawableObject {
     }
 
     public void prevPage() {
-        prevPageArrow.onTouch();
+        prevPageArrow.onLeftTouch();
         if (currentPage > 0)
             currentPage--;
     }
 
     public void nextPage() {
-        nextPageArrow.onTouch();
+        nextPageArrow.onLeftTouch();
         if (currentPage < maxPage)
             currentPage++;
     }
@@ -46,7 +46,7 @@ public class PageSelector extends DrawableObject {
     }
 
     @Override
-    protected void onTouch() {
+    protected void onLeftTouch() {
         // Click on left half = page back, click on right half = page forward
         if (lastClickX < x + width / 2) {
             prevPage();

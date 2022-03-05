@@ -50,22 +50,22 @@ public class DifficultySelector extends DrawableObject {
     }
 
     @Override
-    protected void onTouch() {
-        if (difficultyDownArrow.checkTouch(lastClickX, lastClickY)) {
+    protected void onLeftTouch() {
+        if (difficultyDownArrow.checkLeftTouch(lastClickX, lastClickY)) {
             difficultyDown();
-        } else if (difficultyUpArrow.checkTouch(lastClickX, lastClickY)) {
+        } else if (difficultyUpArrow.checkLeftTouch(lastClickX, lastClickY)) {
             difficultyUp();
         }
     }
 
     public void difficultyUp() {
-        difficultyUpArrow.onTouch();
+        difficultyUpArrow.onLeftTouch();
         if (difficultySetting < MAX_DIFFICULTY)
             difficultySetting += 5;
     }
 
     public void difficultyDown() {
-        difficultyDownArrow.onTouch();
+        difficultyDownArrow.onLeftTouch();
         if (difficultySetting > MIN_DIFFICULTY)
             difficultySetting -= 5;
     }

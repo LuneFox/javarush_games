@@ -38,7 +38,7 @@ public class MenuArrow extends DrawableObject {
     }
 
     @Override
-    protected void onTouch() {
+    protected void onLeftTouch() {
         pressedCountDown = PRESSED_DURATION;
     }
 }

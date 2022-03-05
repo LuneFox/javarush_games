@@ -90,7 +90,7 @@ public class Button extends DrawableObject {
         this.textOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
     }
 
-    protected void onTouch() {
+    protected void onLeftTouch() {
         isPressed = true;
         pressedTime = PRESS_DURATION;
     }

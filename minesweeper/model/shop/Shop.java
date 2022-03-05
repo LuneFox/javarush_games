@@ -11,7 +11,6 @@ import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -21,8 +20,6 @@ import java.util.List;
 
 public class Shop {
     final private MinesweeperGame game = MinesweeperGame.getInstance();
-    public double lastClickTime;
-    public int lastClickedItemNumber;
     public final List<ShopItem> allItems = new LinkedList<>();
     public ShopItem shield;
     public ShopItem scanner;
@@ -32,10 +29,12 @@ public class Shop {
     public ShopItem miniBomb;
     public Dice dice;
 
+    public Header header = new Header();
+    public Footer footer = new Footer();
+    public ShowCase showCase;
 
     public void sell(ShopItem item) {
         if (item == null) return;
-        if (!isPurchasable(item)) return;
         // Make transaction
         item.inStock--;
         game.player.inventory.money -= item.cost;
@@ -49,7 +48,7 @@ public class Shop {
                 if (miniBomb.isActivated()) return;
                 scanner.activate();
                 purge(miniBomb);
-                drawColoredFrame(Color.BLUE);
+                drawItemActivationFrame(Color.BLUE);
                 break;
             case SHOVEL:
                 goldenShovel.activate();
@@ -63,7 +62,7 @@ public class Shop {
                 if (scanner.isActivated()) return;
                 miniBomb.activate();
                 purge(scanner);
-                drawColoredFrame(Color.RED);
+                drawItemActivationFrame(Color.RED);
                 break;
             default:
                 break;
@@ -82,34 +81,11 @@ public class Shop {
         sell(flag);
     }
 
-    private boolean isPurchasable(ShopItem item) {
-        // Item is not activated, affordable and exists in stock
-        if (item.isActivated()) {
-            Screen.shop.isAlreadyActivatedAnimationTrigger = true;
-            Screen.shop.shakeAnimationCountDown();
-            return false;
-        } else if (item.inStock == 0) {
-            return false;
-        } else if (item.isUnaffordable()) {
-            Screen.shop.isUnaffordableAnimationTrigger = true;
-            Screen.shop.shakeAnimationCountDown();
-            return false;
-        } else {
-            return true;
-        }
-    }
-
     public void give(ShopItem item) {
         if (item.inStock > 0) {
             game.player.inventory.add(item.id);
             item.inStock--;
         }
-    }
-
-    public void rememberLastClickOnItem(ShopItem item) {
-        if (item == null) return;
-        lastClickTime = new Date().getTime();
-        lastClickedItemNumber = item.number;
     }
 
     public void restock(ShopItem item, int amount) {
@@ -127,28 +103,21 @@ public class Shop {
         goldenShovel = new ShopItem(3, 9, 1, Cache.get(VisualElement.SHOP_ITEM_SHOVEL));
         luckyDice = new ShopItem(4, 6, 1, Cache.get(VisualElement.SHOP_ITEM_DICE));
         miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Cache.get(VisualElement.SHOP_ITEM_BOMB));
+
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
         dice = new Dice(1);
+
+        showCase = new ShowCase();
     }
 
     private int getFlagsAmount() {
         return game.field.countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
     }
 
-    private void drawColoredFrame(Color color) {
+    private void drawItemActivationFrame(Color color) {
         Cache.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(color, 3);
         Cache.get(VisualElement.WIN_BOARD_TRANSPARENT_FRAME).draw();
-    }
-
-    public ShopItem getClickedItem(int x, int y) { // checks click coordinates and if item has them, returns it
-        ShopItem[] result = new ShopItem[1];
-        allItems.forEach(shopItem -> {
-            boolean isAtX = (x >= shopItem.shopFramePosition[0] && x <= shopItem.shopFramePosition[1]);
-            boolean isAtY = (y >= shopItem.shopFramePosition[2] && y <= shopItem.shopFramePosition[3]);
-            if (isAtX && isAtY) result[0] = shopItem;
-        });
-        return result[0];
     }
 
     public void deactivateExpiredItems() {

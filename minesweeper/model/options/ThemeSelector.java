@@ -44,9 +44,9 @@ public class ThemeSelector extends DrawableObject {
     }
 
     @Override
-    protected void onTouch() {
+    protected void onLeftTouch() {
         for (int i = 0; i < themePalettes.length; i++) {
-            if (themePalettes[i].checkTouch(lastClickX, lastClickY)) {
+            if (themePalettes[i].checkLeftTouch(lastClickX, lastClickY)) {
                 Theme.set(i);
             }
         }

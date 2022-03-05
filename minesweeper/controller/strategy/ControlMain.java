@@ -11,15 +11,15 @@ public class ControlMain implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (Cache.get(Button.ButtonID.MAIN_MENU_START).checkTouch(x, y)) {
+        if (Cache.get(Button.ButtonID.MAIN_MENU_START).checkLeftTouch(x, y)) {
             game.startNewGame();
             Screen.set(Screen.BOARD);
-        } else if (Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).checkTouch(x, y)) {
+        } else if (Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).checkLeftTouch(x, y)) {
             Screen.set(Screen.OPTIONS);
-        } else if (Cache.get(Button.ButtonID.MAIN_MENU_ABOUT).checkTouch(x, y)) {
+        } else if (Cache.get(Button.ButtonID.MAIN_MENU_ABOUT).checkLeftTouch(x, y)) {
             Options.aboutPageSelector.reset();
             Screen.set(Screen.ABOUT);
-        } else if (Cache.get(Button.ButtonID.MAIN_MENU_RECORDS).checkTouch(x, y)) {
+        } else if (Cache.get(Button.ButtonID.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
             Screen.set(Screen.RECORDS);
         }
     }

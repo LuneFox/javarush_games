@@ -229,7 +229,7 @@ public class ImageStorage {
                 setColors(Theme.MAIN_MENU_BG.getColor(), Color.NONE, Theme.MAIN_MENU_BORDER.getColor());
                 data = ImageCreator.createWindow(100, 100, false, true);
                 break;
-            case WIN_SHOP:
+            case WIN_SHOP_SHOWCASE:
                 setColors(Theme.SHOP_BG.getColor(), Color.BLACK, Theme.SHOP_BORDER.getColor());
                 data = ImageCreator.createWindow(80, 80, true, true);
                 break;

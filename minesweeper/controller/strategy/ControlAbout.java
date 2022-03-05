@@ -9,10 +9,10 @@ public class ControlAbout implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (Cache.get(Button.ButtonID.GENERAL_BACK).checkTouch(x, y)) {
+        if (Cache.get(Button.ButtonID.GENERAL_BACK).checkLeftTouch(x, y)) {
             Screen.set(Screen.MAIN);
         }
-        Options.aboutPageSelector.checkTouch(x, y);
+        Options.aboutPageSelector.checkLeftTouch(x, y);
     }
 
     @Override

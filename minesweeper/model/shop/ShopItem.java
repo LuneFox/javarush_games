@@ -25,7 +25,6 @@ public class ShopItem {
     public String description;
     public Image icon;
     public int number;
-    public int[] shopFramePosition; // x1, x2, y1, y2
     public VerticalStatusBar statusBar;
 
     public enum ID {
@@ -44,7 +43,6 @@ public class ShopItem {
                 this.id = ID.SHIELD;
                 this.name = Strings.ITEM_SHIELD_NAME;
                 this.description = Strings.generateNewShieldDescription().toString();
-                this.shopFramePosition = new int[]{15, 34, 32, 51};
                 this.canExpire = false;
                 effectDuration = 0;
                 break;
@@ -52,7 +50,6 @@ public class ShopItem {
                 this.id = ID.SCANNER;
                 this.name = Strings.ITEM_SCANNER_NAME;
                 this.description = Strings.ITEM_SCANNER_DESCRIPTION;
-                this.shopFramePosition = new int[]{40, 59, 32, 51};
                 this.canExpire = false;
                 effectDuration = 0;
                 break;
@@ -60,7 +57,6 @@ public class ShopItem {
                 this.id = ID.FLAG;
                 this.name = Strings.ITEM_FLAG_NAME;
                 this.description = Strings.ITEM_FLAG_DESCRIPTION;
-                this.shopFramePosition = new int[]{65, 84, 32, 51};
                 this.canExpire = false;
                 effectDuration = 0;
                 break;
@@ -68,7 +64,6 @@ public class ShopItem {
                 this.id = ID.SHOVEL;
                 this.name = Strings.ITEM_SHOVEL_NAME;
                 this.description = Strings.ITEM_SHOVEL_DESCRIPTION;
-                this.shopFramePosition = new int[]{15, 34, 57, 76};
                 this.statusBar = new VerticalStatusBar(0, 99, Color.DARKORANGE, this);
                 this.canExpire = true;
                 effectDuration = 5;
@@ -77,7 +72,6 @@ public class ShopItem {
                 this.id = ID.DICE;
                 this.name = Strings.ITEM_DICE_NAME;
                 this.description = Strings.ITEM_DICE_DESCRIPTION;
-                this.shopFramePosition = new int[]{40, 59, 57, 76};
                 this.statusBar = new VerticalStatusBar(0, 89, Color.GREEN, this);
                 this.canExpire = true;
                 effectDuration = 3;
@@ -86,7 +80,6 @@ public class ShopItem {
                 this.id = ID.BOMB;
                 this.name = Strings.ITEM_BOMB_NAME;
                 this.description = Strings.ITEM_BOMB_DESCRIPTION;
-                this.shopFramePosition = new int[]{65, 84, 57, 76};
                 this.canExpire = false;
                 effectDuration = 0;
                 break;

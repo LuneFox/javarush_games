@@ -17,8 +17,8 @@ public class View {
     public void update() {
         game.display.setInterlaceEnabled(false);
 
-        if (!Screen.is(Screen.SHOP)) { // animate money only when buying items
-            Screen.shop.moneyOnDisplay = game.player.inventory.money;
+        if (!Screen.is(Screen.SHOP)) { // money approach slowly only when they change at shop screen
+            game.shop.header.setDisplayMoney(game.player.inventory.money);
         }
     }
 

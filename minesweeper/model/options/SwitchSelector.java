@@ -52,7 +52,7 @@ public class SwitchSelector extends DrawableObject {
         Printer.print(enabled ? textOn : textOff, helpColor, rightStopper, y + height + 1, true);
     }
 
-    protected void onTouch() {
+    protected void onLeftTouch() {
         enabled = !enabled;
     }
 
