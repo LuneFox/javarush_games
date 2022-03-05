@@ -263,7 +263,7 @@ public class ImageStorage {
                 data = ImageCreator.createWindow(100, 100, false, true);
                 break;
             case MENU_THEME_PALETTE:
-                setColors(Color.GRAY, Color.BLACK, Color.WHITE);
+                setColors(Color.GRAY, Color.WHITE, Color.BLACK);
                 data = ImageCreator.createWindow(10, 10, false, true);
                 break;
             case SHOP_DICE_1:

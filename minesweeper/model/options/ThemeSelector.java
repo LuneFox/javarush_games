@@ -8,9 +8,11 @@ import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
 public class ThemeSelector extends DrawableObject {
     private final Image[] themePalettes;
+    private final Image themeCursor;
 
     public ThemeSelector(int x, int y) {
         super(x, y);
+        this.themeCursor = new Image(VisualElement.MENU_THEME_PALETTE);
         themePalettes = new Image[3];
         for (int i = 0; i < themePalettes.length; i++) {
             themePalettes[i] = new Image(VisualElement.MENU_THEME_PALETTE);
@@ -18,17 +20,27 @@ public class ThemeSelector extends DrawableObject {
             this.width += themePalettes[i].width + 2;
         }
         this.height = themePalettes[0].height;
+
         themePalettes[0].replaceColor(Color.RED, 1);
         themePalettes[1].replaceColor(Color.GREEN, 1);
         themePalettes[2].replaceColor(Color.BLUE, 1);
+
+        this.themeCursor.replaceColor(Color.NONE, 1);
+        this.themeCursor.replaceColor(Color.NONE, 2);
+        this.themeCursor.replaceColor(Color.YELLOW, 3);
+        themeCursor.setPosition(themePalettes[Theme.getCurrentNumber()].x, themePalettes[Theme.getCurrentNumber()].y);
     }
 
     @Override
     public void draw() {
-        for (int i = 0; i < themePalettes.length; i++) {
-            themePalettes[i].replaceColor(Theme.getCurrentNumber() == i ? Color.YELLOW : Color.BLACK, 3);
-            themePalettes[i].draw();
+        for (Image themePalette : themePalettes) {
+            themePalette.draw();
         }
+        if (themeCursor.x < themePalettes[Theme.getCurrentNumber()].x)
+            themeCursor.x++;
+        else if (themeCursor.x > themePalettes[Theme.getCurrentNumber()].x)
+            themeCursor.x--;
+        themeCursor.draw();
     }
 
     @Override
