@@ -9,6 +9,7 @@ public abstract class DrawableObject implements Drawable {
     public int height;
     public int lastClickX; // remember where it was touched last time, useful if this drawable contains other drawables
     public int lastClickY;
+    private boolean isHidden;
 
     public DrawableObject() {
         this.x = 0;
@@ -34,6 +35,14 @@ public abstract class DrawableObject implements Drawable {
             onTouch();
         }
         return covers;
+    }
+
+    public boolean isHidden() {
+        return isHidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        isHidden = hidden;
     }
 
     protected void onTouch() {

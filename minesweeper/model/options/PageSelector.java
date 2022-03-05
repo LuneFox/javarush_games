@@ -34,16 +34,20 @@ public class PageSelector extends DrawableObject {
 
     @Override
     public void draw() {
+        // Page index
         String text = ((currentPage + 1) + " / " + (maxPage + 1));
         int textLength = Printer.calculateWidth(text);
         int textPosition = x + (width / 2) - (textLength / 2);
         Printer.print(text, Color.WHITE, textPosition, y - 1, false);
+
+        // Arrow buttons
         prevPageArrow.draw();
         nextPageArrow.draw();
     }
 
     @Override
     protected void onTouch() {
+        // Click on left half = page back, click on right half = page forward
         if (lastClickX < x + width / 2) {
             prevPage();
         } else {

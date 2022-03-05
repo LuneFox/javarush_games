@@ -8,12 +8,13 @@ import com.javarush.games.minesweeper.view.graphics.Printer;
 import com.javarush.games.minesweeper.view.graphics.Theme;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
-import java.util.LinkedList;
-
 public class DifficultySelector extends DrawableObject {
+    private static final int MAX_DIFFICULTY = 45;
+    private static final int MIN_DIFFICULTY = 5;
     private int difficultySetting;
     private final MenuArrow difficultyDownArrow;
     private final MenuArrow difficultyUpArrow;
+    private final Image[] bars = new Image[MAX_DIFFICULTY / 5];
 
     public DifficultySelector(int x, int y) {
         super(x, y);
@@ -22,29 +23,30 @@ public class DifficultySelector extends DrawableObject {
         difficultyDownArrow = new MenuArrow(x, y, false);
         difficultyUpArrow = new MenuArrow(x + width - difficultyDownArrow.width, y, true);
         this.height = difficultyDownArrow.height;
+
+        for (int i = 0; i < bars.length; i++) {
+            Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR, (i * 4) + this.x + difficultyDownArrow.width + 2, this.y);
+            if (i > 2) bar.replaceColor(Color.YELLOW, 1);
+            if (i > 4) bar.replaceColor(Color.ORANGE, 1);
+            if (i > 6) bar.replaceColor(Color.RED, 1);
+            bars[i] = bar;
+        }
     }
 
     @Override
     public void draw() {
-        drawDifficultyBars();
+        // Draw bars
+        for (int i = 0; i < difficultySetting / 5; i++)
+            bars[i].draw();
+
+        // Draw arrows
         difficultyDownArrow.draw();
         difficultyUpArrow.draw();
+
+        // Draw difficulty name
         String difficultyName = Strings.DIFFICULTY_NAMES[(difficultySetting / 5) - 1];
         Color nameColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(difficultyName, nameColor, x + width - difficultyUpArrow.width, y + height + 1, true);
-    }
-
-    private void drawDifficultyBars() {
-        LinkedList<Image> bars = new LinkedList<>();
-        for (int i = 0; i < difficultySetting / 5; i++) {
-            Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR,
-                    (i * 4) + this.x + difficultyDownArrow.width + 2, this.y);
-            if (i > 1) bar.replaceColor(Color.YELLOW, 1);
-            if (i > 3) bar.replaceColor(Color.ORANGE, 1);
-            if (i > 5) bar.replaceColor(Color.RED, 1);
-            bars.add(bar);
-        }
-        bars.forEach(Image::draw);
     }
 
     @Override
@@ -58,13 +60,13 @@ public class DifficultySelector extends DrawableObject {
 
     public void difficultyUp() {
         difficultyUpArrow.onTouch();
-        if (difficultySetting < 45)
+        if (difficultySetting < MAX_DIFFICULTY)
             difficultySetting += 5;
     }
 
     public void difficultyDown() {
         difficultyDownArrow.onTouch();
-        if (difficultySetting > 5)
+        if (difficultySetting > MIN_DIFFICULTY)
             difficultySetting -= 5;
     }
 
