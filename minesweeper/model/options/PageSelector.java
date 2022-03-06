@@ -4,6 +4,12 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.view.graphics.Printer;
 
+/**
+ * Simple page selector that looks like this: <   1/12   >
+ * Arrow buttons change current page, getCurrentPage method returns current page to be used elsewhere.
+ * Constructor accepts maximum number of pages, although they're counted from 0 to MAX-1 to complement arrays.
+ */
+
 public class PageSelector extends DrawableObject {
     private final int maxPage;
     private int currentPage;

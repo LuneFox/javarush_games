@@ -113,28 +113,11 @@ public class Cell extends DrawableObject {
         return (isFlagged && isMined && !isDestroyed);   // Is mined, marked with a flag and is not destroyed
     }
 
-    public boolean isSuspected() {
-        return (isFlagged || (isOpen && isMined));       // Is flagged or revealed after shield
-    }
-
-    public boolean isSafe() {
-        return (!isOpen && !isMined);                    // Is safe to click and open
-    }
-
-    public boolean isDangerous() {
-        return (isMined && !isOpen);                     // Contains unrevealed mine, opposite of "safe"
-    }
-
-    public boolean isScored() {
-        return (isOpen && !isMined && !isDestroyed);     // Is counted while calculating score
-    }
-
     public boolean isIndestructible() {                  // Cannot be exploded with a bomb
         boolean activated = (isOpen || isDestroyed);
         boolean noFlagDestruction = (isFlagged && !game.allowFlagExplosion);
         return (game.isStopped || activated || noFlagDestruction);
     }
-
 
     /**
      * Any list of cells can be filtered by some criteria.
@@ -155,26 +138,32 @@ public class Cell extends DrawableObject {
                 case MINED:
                     if (cell.isMined) result.add(cell);
                     break;
+                case FLAGGED:
+                    if (cell.isFlagged) result.add(cell);
+                    break;
+                case SAFE:
+                    // Unrevealed cell that is safe to click
+                    if (!cell.isOpen && !cell.isMined) result.add(cell);
+                    break;
                 case DANGEROUS:
-                    if (cell.isDangerous()) result.add(cell);
+                    // Unrevealed cell that is not safe to click
+                    if (!cell.isOpen & cell.isMined) result.add(cell);
                     break;
                 case NUMERABLE:
+                    // Cell that must have number over it
                     if (cell.isNumerable()) result.add(cell);
                     break;
                 case SUSPECTED:
-                    if (cell.isSuspected()) result.add(cell);
-                    break;
-                case SAFE:
-                    if (cell.isSafe()) result.add(cell);
+                    // Is flagged or revealed with shield (for auto-opening surrounding cells)
+                    if (cell.isFlagged || (cell.isOpen && cell.isMined)) result.add(cell);
                     break;
                 case EMPTY:
+                    // Does not contain mines or numbers
                     if (cell.isEmpty()) result.add(cell);
                     break;
                 case SCORED:
-                    if (cell.isScored()) result.add(cell);
-                    break;
-                case FLAGGED:
-                    if (cell.isFlagged) result.add(cell);
+                    // Is counted when calculating score
+                    if (cell.isOpen && !cell.isMined && !cell.isDestroyed) result.add(cell);
                     break;
                 case NONE:
                 default:

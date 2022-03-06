@@ -158,6 +158,7 @@ public class MinesweeperGame extends Game {
         if (shop.miniBomb.isActivated()) return;
         Cell cell = field.getCell(x, y);
         if (cell.isOpen && !cell.isMined) {
+            // If mined neighbors = number of neighbor flags + opened mines
             if (cell.countMinedNeighbors == field.getNeighborCells(cell, Filter.SUSPECTED, false).size()) {
                 field.getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
             }
