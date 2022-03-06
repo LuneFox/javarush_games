@@ -23,8 +23,7 @@ public class ShowCase extends DrawableObject {
             for (int row = 0; row < 3; row++) {
                 int dx = 5 + 25 * row;
                 int dy = 21 + 25 * column;
-                slots.add(new Slot(x + dx, y + dy, game.shop.allItems.get(i)));
-                i++;
+                slots.add(new Slot(x + dx, y + dy, game.shop.allItems.get(i++)));
             }
         }
     }
