@@ -13,7 +13,7 @@ import com.javarush.games.minesweeper.view.graphics.Image;
  */
 
 public class ShopItem {
-    private final MinesweeperGame game;
+    private static final MinesweeperGame game = MinesweeperGame.getInstance();
     public int cost;
     public final boolean canExpire;
     public final int effectDuration;
@@ -32,7 +32,6 @@ public class ShopItem {
     }
 
     ShopItem(int slot, int cost, int inStock, Image icon) {
-        this.game = MinesweeperGame.getInstance();
         this.icon = icon;
         this.cost = cost;
         this.number = slot;

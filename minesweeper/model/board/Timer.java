@@ -13,7 +13,6 @@ import java.util.Date;
  */
 
 public class Timer extends DrawableObject {
-    private final MinesweeperGame game = MinesweeperGame.getInstance();
     public float time;
     private final float TIME_LIMIT = 500;
     private Date lastTickTime;

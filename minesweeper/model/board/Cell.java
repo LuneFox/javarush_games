@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.view.graphics.*;
 
@@ -16,7 +15,6 @@ import java.util.Map;
  */
 
 public class Cell extends DrawableObject {
-    private static final MinesweeperGame game = MinesweeperGame.getInstance();
     private static final Map<Integer, VisualElement> sprites = new HashMap<>();
 
     public boolean isMined;                // contains a mine

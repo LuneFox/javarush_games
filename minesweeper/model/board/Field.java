@@ -1,8 +1,7 @@
 package com.javarush.games.minesweeper.model.board;
 
-import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.model.options.Options;
-import com.javarush.games.minesweeper.view.graphics.Drawable;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
 import java.util.ArrayList;
@@ -13,8 +12,7 @@ import java.util.List;
  * This class contains the game field itself and global actions that operate it.
  */
 
-public class Field implements Drawable {
-    private static final MinesweeperGame game = MinesweeperGame.getInstance();
+public class Field extends DrawableObject {
     private final Cell[][] field = new Cell[10][10];
 
     public void create() {

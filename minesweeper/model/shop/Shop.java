@@ -21,7 +21,7 @@ import java.util.List;
  */
 
 public class Shop {
-    final private MinesweeperGame game = MinesweeperGame.getInstance();
+    final static private MinesweeperGame game = MinesweeperGame.getInstance();
 
     public final List<ShopItem> allItems = new LinkedList<>();
     public ShopItem shield;
