@@ -20,7 +20,6 @@ public class Cache {
     // Images
 
     private static Image put(VisualElement element) {
-        if (element.name().startsWith("SYM_")) return null; // Symbols are cached in another method
         Image result;
         if (element.name().startsWith("FLO_")) {
             result = new FloatingImage(element);
