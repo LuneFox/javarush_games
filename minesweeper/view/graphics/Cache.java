@@ -14,50 +14,67 @@ public class Cache {
     private static final Map<Character, Image> symbols = new HashMap<>(128);
 
     static {
-        fill();
-    }
-
-    public static void fill() {
-        // Update maps with fresh data (generate all elements again). Useful when changing themes.
-        for (VisualElement element : VisualElement.values()) {
-            put(element);
-        }
-        for (Button.ButtonID id : Button.ButtonID.values()) {
-            put(id);
-        }
+        loadFont();
     }
 
     // Images
 
-    private static void put(VisualElement element) {
+    private static Image put(VisualElement element) {
+        if (element.name().startsWith("SYM_")) return null; // Symbols are cached in another method
+        Image result;
         if (element.name().startsWith("FLO_")) {
-            images.put(element, new FloatingImage(element));
-        } else if (element.name().startsWith("SYM_")) {
-            Image symbol = new Image(element);
-            for (char c : element.characters) symbols.put(c, symbol);
-            images.put(element, symbol);
+            result = new FloatingImage(element);
+            images.put(element, result);
         } else {
-            images.put(element, new Image(element));
+            result = new Image(element);
+            images.put(element, result);
         }
+        return result;
     }
 
     public static Image get(VisualElement element) {
-        return images.get(element);
+        Image image = images.get(element);
+        if (image == null) image = put(element);
+        return image;
     }
 
     // Buttons
 
-    private static void put(Button.ButtonID id) {
-        buttons.put(id, new Button(id.x, id.y, id.width, id.height, id.label));
+    private static Button put(Button.ButtonID id) {
+        Button button = new Button(id.x, id.y, id.width, id.height, id.label);
+        buttons.put(id, button);
+        return button;
     }
 
     public static Button get(Button.ButtonID id) {
-        return buttons.get(id);
+        Button button = buttons.get(id);
+        if (button == null) button = put(id);
+        return button;
     }
 
     // Symbols
 
+    private static void loadFont() {
+        for (VisualElement element : VisualElement.values()) {
+            if (element.name().startsWith("SYM_")) {
+                for (char c : element.characters) {
+                    symbols.put(c, new Image(element));
+                }
+            }
+        }
+    }
+
     public static Image get(Character c) {
         return symbols.get(c);
+    }
+
+    // Utility
+
+    public static void refresh() {
+        // Reload data for existing cache from Image Storage. Useful when changing themes.
+        for (VisualElement element : images.keySet())
+            put(element);
+        for (Button.ButtonID id : buttons.keySet())
+            put(id);
     }
 }

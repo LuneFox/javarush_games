@@ -18,7 +18,9 @@ public class View {
         game.display.setInterlaceEnabled(false);
 
         if (!Screen.is(Screen.SHOP)) { // money approach slowly only when they change at shop screen
-            game.shop.header.setDisplayMoney(game.player.inventory.money);
+            if (game.shop.header != null) {
+                game.shop.header.setDisplayMoney(game.player.inventory.money);
+            }
         }
     }
 

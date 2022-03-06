@@ -137,7 +137,7 @@ public enum Theme {
 
     public static void set(int themeNumber) {
         Theme.currentNumber = themeNumber;
-        Cache.fill();
+        Cache.refresh();
         MinesweeperGame.getInstance().field.recolor();
     }
 

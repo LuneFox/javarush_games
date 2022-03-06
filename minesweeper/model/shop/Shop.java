@@ -32,8 +32,8 @@ public class Shop {
     public ShopItem miniBomb;
     public Dice dice;
 
-    public Header header = new Header();
-    public Footer footer = new Footer();
+    public Header header;
+    public Footer footer;
     public ShowCase showCase;
 
     public void sell(ShopItem item) {
@@ -108,6 +108,8 @@ public class Shop {
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
         dice = new Dice(1);
 
+        header = new Header();
+        footer = new Footer();
         showCase = new ShowCase();
     }
 
