@@ -155,7 +155,7 @@ public class ShopItem {
         return (game.player.inventory.money < this.cost || this.inStock <= 0);
     }
 
-    public class VerticalStatusBar {
+    public static class VerticalStatusBar {
         int posX;
         int posY;
         Color color;

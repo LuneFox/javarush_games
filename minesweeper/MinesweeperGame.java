@@ -183,7 +183,7 @@ public class MinesweeperGame extends Game {
     }
 
     private void placeFlagFromInventory(Cell cell) {
-        if ( player.inventory.hasNoFlags()) shop.offerFlag();
+        if (player.inventory.hasNoFlags()) shop.offerFlag();
         if (player.inventory.hasNoFlags()) return;
         if (cell.isFlagged) return;
         player.inventory.remove(ShopItem.ID.FLAG);
@@ -217,16 +217,11 @@ public class MinesweeperGame extends Game {
     private void forceClickOnBlank(Cell cell) {
         List<Cell> flaggedCells = field.getAllCells(Filter.FLAGGED);                  // get flagged cells
         flaggedCells.forEach(fc -> returnFlagToInventory(field.getCell(fc.x, fc.y))); // collect flags
-
-        while (!cell.isEmpty()) { // create new game until the clicked cell is empty
-            field.create();
+        while (!cell.isEmpty()) {                                                     // until cell is empty here
+            field.create();                                                           // recreate field
             cell = field.getCell(cell.x, cell.y);
         }
-
-        flaggedCells.forEach(oldFlaggedCell -> {                                      // put flags back
-            setFlag(oldFlaggedCell.x, oldFlaggedCell.y, false);
-        });
-
+        flaggedCells.forEach(fc -> setFlag(fc.x, fc.y, false));                       // put flags back
         isFirstMove = false;
         openCell(cell.x, cell.y);
     }

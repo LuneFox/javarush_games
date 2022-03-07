@@ -11,7 +11,6 @@ import com.javarush.games.minesweeper.Util;
 public class View {
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public Screen screen;
-    public static boolean evenFrame;    // helps to animate shaking elements
 
     // Global updates go into this parent method, other views start updating by calling super
     public void update() {

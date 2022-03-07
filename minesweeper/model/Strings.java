@@ -1,8 +1,6 @@
 package com.javarush.games.minesweeper.model;
 
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.options.Options;
-import com.javarush.games.minesweeper.view.View;
 
 /**
  * Most part of the long strings goes here.

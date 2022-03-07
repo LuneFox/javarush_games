@@ -32,21 +32,17 @@ public class ShowCase extends DrawableObject {
     public void draw() {
         panel = Cache.get(VisualElement.WIN_SHOP_SHOWCASE);
         panel.draw(x, y);
-        Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, y + 12);
         slots.forEach(DrawableObject::draw);
+        Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, y + 12);
     }
 
     @Override
     protected void onLeftTouch() {
-        for (Slot slot : slots) {
-            slot.checkLeftTouch(lastClickX, lastClickY);
-        }
+        slots.forEach(slot -> slot.checkLeftTouch(lastClickX, lastClickY));
     }
 
     @Override
     public void onRightTouch() {
-        for (Slot slot : slots) {
-            slot.checkRightTouch(lastClickX, lastClickY);
-        }
+        slots.forEach(slot -> slot.checkRightTouch(lastClickX, lastClickY));
     }
 }

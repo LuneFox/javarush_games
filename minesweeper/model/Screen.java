@@ -22,19 +22,15 @@ public enum Screen {
     public static final View[] views = new View[]{about, board, gameOver, itemHelp, main, options, records, score, shop};
     private static final List<Screen> screens = new LinkedList<>(Arrays.asList(Screen.values()));
     private static View pendingView;
-    private static View currentView;
+    private static View currentView = main;
 
 
     // Screen at index 0 is considered active
     public static void set(Screen screen) {
         screens.remove(screen);         // remove it from the list
         screens.add(0, screen);         // insert it at index 0
-        for (View view : views) {
-            if (view.screen == screen) {
-                if (currentView == null) currentView = view;
-                pendingView = view;
-            }
-        }
+        // Pending view is a view that is associated with this screen
+        Arrays.stream(views).filter(view -> view.screen == screen).forEach(view -> pendingView = view);
     }
 
     public static void updateView() {
@@ -42,7 +38,6 @@ public enum Screen {
         if (Button.pressedTime <= Button.POST_PRESS_DELAY) { // when the button is done animating, apply pending view
             currentView = pendingView;
         }
-        View.evenFrame = !View.evenFrame;
         currentView.update(); // keeps updating previous view if the button isn't done animating
     }
 

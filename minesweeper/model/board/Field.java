@@ -7,6 +7,7 @@ import com.javarush.games.minesweeper.view.graphics.VisualElement;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * This class contains the game field itself and global actions that operate it.
@@ -38,11 +39,7 @@ public class Field extends DrawableObject {
     }
 
     public List<Cell> getAllCells(Cell.Filter filter) {
-        List<Cell> all = new ArrayList<>();
-        for (int y = 0; y < 10; y++) {
-            all.addAll(Arrays.asList(field[y]));
-        }
-        return Cell.filterCells(all, filter);
+        return Cell.filterCells(Arrays.stream(field).flatMap(Arrays::stream).collect(Collectors.toList()), filter);
     }
 
     public int countAllCells(Cell.Filter filter) {

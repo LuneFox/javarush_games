@@ -6,6 +6,8 @@ import com.javarush.games.minesweeper.view.graphics.Image;
 import com.javarush.games.minesweeper.view.graphics.Theme;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
 
+import java.util.Arrays;
+
 public class ThemeSelector extends DrawableObject {
     private final Image[] themePalettes;
     private final Image themeCursor;
@@ -33,9 +35,7 @@ public class ThemeSelector extends DrawableObject {
 
     @Override
     public void draw() {
-        for (Image themePalette : themePalettes) {
-            themePalette.draw();
-        }
+        Arrays.stream(themePalettes).forEach(Image::draw);
         if (themeCursor.x < themePalettes[Theme.getCurrentNumber()].x)
             themeCursor.x++;
         else if (themeCursor.x > themePalettes[Theme.getCurrentNumber()].x)

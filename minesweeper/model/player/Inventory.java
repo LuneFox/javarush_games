@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.model.player;
 
 import com.javarush.games.minesweeper.model.shop.ShopItem;
 
+import java.util.Arrays;
 import java.util.EnumMap;
 
 import java.util.Map;
@@ -29,9 +30,8 @@ public class Inventory {
     }
 
     public void reset() {
-        for (ShopItem.ID item : ShopItem.ID.values()) {
-            items.put(item, (item == ShopItem.ID.FLAG) ? INIT_FLAG_NUMBER : 0);
-        }
+        Arrays.stream(ShopItem.ID.values())
+                .forEach(id -> items.put(id, (id == ShopItem.ID.FLAG) ? INIT_FLAG_NUMBER : 0));
         money = 0;
     }
 
