@@ -69,11 +69,8 @@ public class Cache {
 
     // Utility
 
-    public static void refresh() {
-        // Reload data for existing cache from Image Storage. Useful when changing themes.
-        for (VisualElement element : images.keySet())
-            put(element);
-        for (Button.ButtonID id : buttons.keySet())
-            put(id);
+    public static void refresh() { // Reload existing cache data from Image Storage. Useful when changing themes.
+        images.keySet().forEach(Cache::put);
+        buttons.keySet().forEach(Cache::put);
     }
 }
