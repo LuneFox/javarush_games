@@ -62,6 +62,6 @@ public class Controller {
             this.strategy = strategyMap.get(null);
             return;
         }
-        this.strategy = strategyMap.get(Screen.get());
+        this.strategy = strategyMap.get(Screen.getActive());
     }
 }

@@ -1,6 +1,5 @@
 package com.javarush.games.minesweeper.controller.strategy;
 
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.Button;
@@ -13,7 +12,7 @@ public class ControlOptions implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GENERAL_BACK).checkLeftTouch(x, y)) {
-            Screen.set(Screen.MAIN);
+            Screen.setActive(Screen.MAIN);
         }
 
         Stream.of(
@@ -36,6 +35,6 @@ public class ControlOptions implements ControlStrategy {
 
     @Override
     public void pressEsc() {
-        Screen.set(Screen.MAIN);
+        Screen.setActive(Screen.MAIN);
     }
 }

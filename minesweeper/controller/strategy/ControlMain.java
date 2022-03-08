@@ -13,21 +13,20 @@ public class ControlMain implements ControlStrategy {
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.MAIN_MENU_START).checkLeftTouch(x, y)) {
             game.startNewGame();
-            Screen.set(Screen.BOARD);
         } else if (Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).checkLeftTouch(x, y)) {
-            Screen.set(Screen.OPTIONS);
+            Screen.setActive(Screen.OPTIONS);
         } else if (Cache.get(Button.ButtonID.MAIN_MENU_ABOUT).checkLeftTouch(x, y)) {
             Options.aboutPageSelector.reset();
-            Screen.set(Screen.ABOUT);
+            Screen.setActive(Screen.ABOUT);
         } else if (Cache.get(Button.ButtonID.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
-            Screen.set(Screen.RECORDS);
+            Screen.setActive(Screen.RECORDS);
         }
     }
 
     @Override
     public void pressEsc() {
         if (!game.isStopped) {
-            Screen.set(Screen.BOARD);
+            Screen.setActive(Screen.BOARD);
         }
     }
 

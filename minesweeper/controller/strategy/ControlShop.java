@@ -11,7 +11,7 @@ public class ControlShop implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (clickedOutsideShopWindow(x, y)) {
-            Screen.set(Screen.BOARD);
+            Screen.setActive(Screen.BOARD);
             return;
         }
         game.shop.showCase.checkLeftTouch(x, y);
@@ -24,12 +24,12 @@ public class ControlShop implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        Screen.set(Screen.BOARD);
+        Screen.setActive(Screen.BOARD);
     }
 
     @Override
     public void pressEsc() {
-        Screen.set(Screen.BOARD);
+        Screen.setActive(Screen.BOARD);
     }
 
     private boolean clickedOutsideShopWindow(int x, int y) {

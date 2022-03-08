@@ -60,17 +60,23 @@ public class Printer {
                 new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
                 input.toLowerCase().toCharArray();
 
-        // For each char in the array
         for (int i = 0; i < chars.length; i++) {
-            // If it equals '\n' move the caret to the new line and skip the rest
-            if (caret.isAtNewLine(chars[i])) continue;
-            // Draw symbol on the screen
-            if (alignRight && i == 0) caret.x -= Cache.get(chars[0]).width - 4; // first letter position fix
+            if (caret.isAtNewLine(chars[i])) continue; // Return caret to new line at "\n" symbol, don't draw it
+
+            if (alignRight && i == 0) {
+                int width1st = Cache.get(chars[0]).width;
+                if (width1st > 4) {
+                    caret.x -= width1st - 4; // First letter position fix
+                }
+            }
+
             drawSymbol(chars[i], color, caret.x, caret.y);
+
             // j = 0 means we take the CURRENT symbol, j = 1 means we take the NEXT symbol to calculate the shift
             // We need to take the next symbol only when typing from right to left and if there is one
             int j = (i >= chars.length - 1 || !alignRight) ? 0 : 1;
             char relativeChar = (chars[i + j]);
+
             caret.shift(alignRight, relativeChar);
         }
     }

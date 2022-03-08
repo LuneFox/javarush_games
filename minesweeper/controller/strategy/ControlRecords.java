@@ -8,13 +8,13 @@ public class ControlRecords implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GENERAL_BACK).checkLeftTouch(x, y)) {
-            Screen.set(Screen.MAIN);
+            Screen.setActive(Screen.MAIN);
         }
     }
 
     @Override
     public void pressEsc() {
-        Screen.set(Screen.MAIN);
+        Screen.setActive(Screen.MAIN);
     }
 
 }

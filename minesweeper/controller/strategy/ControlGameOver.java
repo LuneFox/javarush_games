@@ -11,25 +11,23 @@ public class ControlGameOver implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GAME_OVER_HIDE).checkLeftTouch(x, y)) {
-            Screen.set(Screen.BOARD);
+            Screen.setActive(Screen.BOARD);
         } else if (Cache.get(Button.ButtonID.GAME_OVER_RETURN).checkLeftTouch(x, y)) {
-            Screen.set(Screen.MAIN);
+            Screen.setActive(Screen.MAIN);
+        } else if (Cache.get(Button.ButtonID.GAME_OVER_QUESTION).checkLeftTouch(x, y)) {
+            Screen.setActive(Screen.SCORE);
         } else if (Cache.get(Button.ButtonID.GAME_OVER_AGAIN).checkLeftTouch(x, y)) {
             game.startNewGame();
-            Screen.set(Screen.BOARD);
-        } else if (Screen.gameOver.scoreArea.covers(x, y)) {
-            Screen.set(Screen.SCORE);
         }
     }
 
     @Override
     public void pressSpace() {
-        Screen.set(Screen.SCORE);
+        Screen.setActive(Screen.SCORE);
     }
 
     @Override
     public void pressEsc() {
-        Screen.set(Screen.BOARD);
+        Screen.setActive(Screen.BOARD);
     }
-
 }

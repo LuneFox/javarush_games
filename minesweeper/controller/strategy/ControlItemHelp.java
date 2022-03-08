@@ -9,12 +9,12 @@ public class ControlItemHelp implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GENERAL_CONFIRM).checkLeftTouch(x, y)) {
-            Screen.set(Screen.SHOP);
+            Screen.setActive(Screen.SHOP);
         }
     }
 
     @Override
     public void pressEsc() {
-        Screen.set(Screen.SHOP);
+        Screen.setActive(Screen.SHOP);
     }
 }

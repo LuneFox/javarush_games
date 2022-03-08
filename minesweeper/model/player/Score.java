@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.model.player;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.options.Options;
@@ -114,13 +113,13 @@ public class Score {
             difficulty = Options.difficulty;
             money = game.player.inventory.money;
             shields = game.player.getBrokenShields();
-            luckyCells = game.shop.dice.totalCells;
             scoreDice = game.player.score.getDiceScore();
             scoreLost = game.player.score.getLostScore();
             scoreTimer = game.player.score.getTimerScore();
             moneyScore = game.player.score.getMoneyScore();
             minesScore = game.player.score.getMinesScore();
-            luck = game.shop.dice.getAverageLuck();
+            luckyCells = game.field.dice.totalCells;
+            luck = game.field.dice.getAverageLuck();
             victory = game.isVictory;
         }
     }

@@ -22,6 +22,5 @@ public final class ViewShop extends View {
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
-        super.displayDice();
     }
 }

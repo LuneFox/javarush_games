@@ -3,7 +3,6 @@ package com.javarush.games.minesweeper.model.shop;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.board.Dice;
 import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.shop.overlay.Footer;
@@ -23,6 +22,7 @@ import java.util.List;
 public class Shop {
     final static private MinesweeperGame game = MinesweeperGame.getInstance();
 
+    // Usable items on sale
     public final List<ShopItem> allItems = new LinkedList<>();
     public ShopItem shield;
     public ShopItem scanner;
@@ -30,8 +30,8 @@ public class Shop {
     public ShopItem goldenShovel;
     public ShopItem luckyDice;
     public ShopItem miniBomb;
-    public Dice dice;
 
+    // Window components
     public Header header;
     public Footer footer;
     public ShowCase showCase;
@@ -72,7 +72,7 @@ public class Shop {
 
     public void offerFlag() {
         if (!Options.autoBuyFlagsEnabled && flag.inStock > 0) {
-            Screen.set(Screen.SHOP);
+            Screen.setActive(Screen.SHOP);
             return;
         }
         if (flag.isUnobtainable()) {
@@ -106,7 +106,6 @@ public class Shop {
 
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
-        dice = new Dice(1);
 
         header = new Header();
         footer = new Footer();

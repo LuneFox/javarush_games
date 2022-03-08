@@ -2,10 +2,8 @@ package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.view.graphics.Cache;
 import com.javarush.games.minesweeper.view.graphics.VisualElement;
-import com.javarush.games.minesweeper.view.graphics.Drawable;
 import com.javarush.games.minesweeper.view.graphics.Image;
 
 /**
@@ -54,5 +52,17 @@ public class Dice extends DrawableObject {
     // Instantly skip display time
     public void hide() {
         onScreenTime = DISPLAY_DURATION;
+    }
+
+    public void displayIfActive() {
+        if (game.shop.luckyDice == null) {
+            return;
+        }
+
+        int diceRemainingTurns = game.shop.luckyDice.expireMove - game.player.getMoves();
+
+        if (Util.inside(diceRemainingTurns, 0, 2) && game.player.getMoves() != 0) {
+            draw();
+        }
     }
 }

@@ -30,6 +30,7 @@ public class Button extends DrawableObject {
         MAIN_MENU_RECORDS(2, 88, 0, 0, "рекорды"),
 
         GAME_OVER_HIDE(73, 35, 0, 0, "x"),
+        GAME_OVER_QUESTION(17, 56, 0, 0, "?"),
         GAME_OVER_AGAIN(57, 69, 0, 0, "снова"),
         GAME_OVER_RETURN(15, 69, 0, 0, "меню");
 

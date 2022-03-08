@@ -49,7 +49,7 @@ public class MinesweeperGame extends Game {
         showGrid(false);
         setScreenSize(100, 100);
         isStopped = true;
-        Screen.set(Screen.MAIN);
+        Screen.setActive(Screen.MAIN);
         setTurnTimer(30);
     }
 
@@ -69,6 +69,7 @@ public class MinesweeperGame extends Game {
         player.inventory.reset();
         timer.restart();
         setScore(player.score.getCurrentScore());
+        Screen.setActive(Screen.BOARD);
     }
 
 
@@ -76,7 +77,7 @@ public class MinesweeperGame extends Game {
 
     private void lose() {
         finish(false);
-        shop.dice.hide();
+        field.dice.hide();
         field.revealMines();
     }
 
@@ -89,7 +90,7 @@ public class MinesweeperGame extends Game {
         this.isStopped = true;
         this.isVictory = isVictory;
         Screen.gameOver.setDelay();
-        Screen.set(Screen.GAME_OVER);
+        Screen.setActive(Screen.GAME_OVER);
         setScore(player.score.getTotalScore());
         Score.Table.update();
     }
@@ -102,7 +103,7 @@ public class MinesweeperGame extends Game {
 
     public void checkTimeOut() {
         if (!isStopped && timer.isZero()) {
-            Screen.set(Screen.BOARD);
+            Screen.setActive(Screen.BOARD);
             lose();
         } else {
             timer.countDown();
@@ -121,7 +122,7 @@ public class MinesweeperGame extends Game {
         Cell cell = field.getCell(x, y);
 
         if (shop.miniBomb.use(cell) || shop.scanner.use(cell)) return; // try using items and return if they were used
-        if (allowCountingPlayerMoves) shop.dice.appearCell = cell;
+        if (allowCountingPlayerMoves) field.dice.appearCell = cell;
         if (isStopped || cell.isFlagged || cell.isOpen) return;
 
         if (isFirstMove) {
@@ -141,7 +142,7 @@ public class MinesweeperGame extends Game {
         player.inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
         cell.makeNumberGold();            // make golden if the shovel is in use
 
-        addScore(shop.dice.appearCell.x, shop.dice.appearCell.y); // x,y = dice display position
+        addScore(field.dice.appearCell.x, field.dice.appearCell.y); // x,y = dice display position
 
         if (cell.isEmpty()) {             // recursive opening
             allowCountingPlayerMoves = false;
@@ -203,13 +204,13 @@ public class MinesweeperGame extends Game {
 
     private void addScore(int x, int y) {
         int randomNumber = getRandomNumber(6) + 1;
-        shop.dice.setImage(randomNumber, x, y);
+        field.dice.setImage(randomNumber, x, y);
 
         if (field.getCell(x, y).isMined) return;
         if (shop.luckyDice.isActivated()) {
             player.score.setDiceScore(player.score.getDiceScore() + Options.difficulty * randomNumber);
-            shop.dice.totalCells++;
-            shop.dice.totalBonus += randomNumber;
+            field.dice.totalCells++;
+            field.dice.totalBonus += randomNumber;
         }
         setScore(player.score.getCurrentScore());
     }

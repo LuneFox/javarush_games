@@ -10,7 +10,7 @@ public class ControlAbout implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GENERAL_BACK).checkLeftTouch(x, y)) {
-            Screen.set(Screen.MAIN);
+            Screen.setActive(Screen.MAIN);
         }
         Options.aboutPageSelector.checkLeftTouch(x, y);
     }
@@ -27,6 +27,6 @@ public class ControlAbout implements ControlStrategy {
 
     @Override
     public void pressEsc() {
-        Screen.set(Screen.MAIN);
+        Screen.setActive(Screen.MAIN);
     }
 }

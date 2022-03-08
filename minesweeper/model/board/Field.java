@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 
 public class Field extends DrawableObject {
     private final Cell[][] field = new Cell[10][10];
+    public Dice dice;
 
     public void create() {
         for (int y = 0; y < 10; y++) {
@@ -25,6 +26,7 @@ public class Field extends DrawableObject {
         }
         plantMines();
         attachNumbers();
+        dice = new Dice(1);
     }
 
     private void plantMines() {
@@ -80,6 +82,7 @@ public class Field extends DrawableObject {
     @Override
     public void draw() {
         getAllCells(Cell.Filter.NONE).forEach(Cell::draw);
+        dice.displayIfActive();
     }
 
     public Cell[][] get() {

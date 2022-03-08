@@ -9,7 +9,7 @@ public class ControlScore implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GENERAL_CONFIRM).checkLeftTouch(x, y)) {
-            Screen.setCurrentView(Screen.board); // crutch
+            // Screen.setCurrentView(Screen.board); // crutch
             goBack();
         }
     }
@@ -26,6 +26,6 @@ public class ControlScore implements ControlStrategy {
 
     private void goBack() {
         Screen.board.update();
-        Screen.set(Screen.GAME_OVER);
+        Screen.setActive(Screen.GAME_OVER);
     }
 }

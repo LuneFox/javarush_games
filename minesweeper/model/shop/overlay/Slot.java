@@ -102,6 +102,6 @@ public class Slot extends DrawableObject {
     @Override
     protected void onRightTouch() {
         Screen.itemHelp.setDisplayItem(item);
-        Screen.set(Screen.ITEM_HELP);
+        Screen.setActive(Screen.ITEM_HELP);
     }
 }

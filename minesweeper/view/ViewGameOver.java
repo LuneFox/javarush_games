@@ -6,7 +6,6 @@ import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.view.graphics.*;
 
 public final class ViewGameOver extends View {
-    public Area scoreArea = new Area(18, 37, 60, 64);
     private int showDelay;
 
     /**
@@ -26,6 +25,7 @@ public final class ViewGameOver extends View {
             return;
         }
 
+        game.field.draw();
         if (game.isVictory) {
             Cache.get(VisualElement.WIN_VICTORY).draw(Image.CENTER, Image.CENTER);
             Cache.get(VisualElement.FACE_HAPPY).draw(Image.CENTER, Image.CENTER);
@@ -35,10 +35,12 @@ public final class ViewGameOver extends View {
             Cache.get(VisualElement.FACE_SAD).draw(Image.CENTER, Image.CENTER);
             Printer.print("не повезло!", Color.YELLOW, 18, 33);
         }
-        Printer.print("счёт: " + Score.Table.total, Color.LIGHTGOLDENRODYELLOW, 18, 57);
+        Printer.print("счёт: " + Score.Table.total, Color.LIGHTGOLDENRODYELLOW, 28, 57);
         Cache.get(Button.ButtonID.GAME_OVER_AGAIN).draw();
         Cache.get(Button.ButtonID.GAME_OVER_RETURN).draw();
         Cache.get(Button.ButtonID.GAME_OVER_HIDE).draw();
+        Cache.get(Button.ButtonID.GAME_OVER_QUESTION).draw();
+
     }
 
     public void setDelay() {

@@ -26,32 +26,32 @@ public enum Screen {
 
 
     // Screen at index 0 is considered active
-    public static void set(Screen screen) {
-        screens.remove(screen);         // remove it from the list
-        screens.add(0, screen);         // insert it at index 0
-        // Pending view is a view that is associated with this screen
-        Arrays.stream(views).filter(view -> view.screen == screen).forEach(view -> pendingView = view);
+    public static void setActive(Screen screen) {
+        // Put on "top"
+        screens.remove(screen);
+        screens.add(0, screen);
+        // Pending view is a view linked to given screen
+        Arrays.stream(views)
+                .filter(view -> view.screen == screen)
+                .forEach(view -> pendingView = view);
     }
 
     public static void updateView() {
-        if (Button.pressedTime > Button.POST_PRESS_DELAY) Button.pressedTime--;
-        if (Button.pressedTime <= Button.POST_PRESS_DELAY) { // when the button is done animating, apply pending view
+        // Give time for buttons to animate before changing views
+        if (Button.pressedTime <= Button.POST_PRESS_DELAY) {
             currentView = pendingView;
+        } else {
+            Button.pressedTime--;
         }
-        currentView.update(); // keeps updating previous view if the button isn't done animating
+
+        currentView.update();
     }
 
-    // Get active screen
-    public static Screen get() {
+    public static Screen getActive() {
         return screens.get(0);
     }
 
-    // Check if a screen is active
-    public static boolean is(Screen screen) {
+    public static boolean isActive(Screen screen) {
         return (screens.get(0) == screen);
-    }
-
-    public static void setCurrentView(View currentView) {
-        Screen.currentView = currentView;
     }
 }

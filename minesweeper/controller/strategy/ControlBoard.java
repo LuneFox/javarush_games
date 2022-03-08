@@ -13,7 +13,7 @@ public class ControlBoard implements ControlStrategy {
         int gridY = y / 10;
 
         if (game.isStopped) {
-            Screen.set(Screen.GAME_OVER);
+            Screen.setActive(Screen.GAME_OVER);
             return;
         }
         Cell cell = game.field.get()[gridY][gridX];
@@ -29,7 +29,7 @@ public class ControlBoard implements ControlStrategy {
         int gridY = y / 10;
 
         if (game.isStopped) {
-            Screen.set(Screen.GAME_OVER);
+            Screen.setActive(Screen.GAME_OVER);
             return;
         }
         game.setFlag(gridX, gridY, true);  // works only on closed tiles
@@ -40,25 +40,25 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void pressSpace() {
         if (!game.isStopped) {
-            Screen.set(Screen.SHOP);
+            Screen.setActive(Screen.SHOP);
         } else {
-            Screen.set(Screen.GAME_OVER);
+            Screen.setActive(Screen.GAME_OVER);
         }
     }
 
     @Override
     public void pressEsc() {
         if (game.isStopped) {
-            Screen.set(Screen.GAME_OVER);
+            Screen.setActive(Screen.GAME_OVER);
         } else {
-            Screen.set(Screen.MAIN);
+            Screen.setActive(Screen.MAIN);
         }
     }
 
     @Override
     public void pressOther() {
         if (game.isStopped) {
-            Screen.set(Screen.GAME_OVER);
+            Screen.setActive(Screen.GAME_OVER);
         }
     }
 }
