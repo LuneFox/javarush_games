@@ -16,7 +16,6 @@ public class ControlMain implements ControlStrategy {
         } else if (Cache.get(Button.ButtonID.MAIN_MENU_OPTIONS).checkLeftTouch(x, y)) {
             Screen.setActive(Screen.OPTIONS);
         } else if (Cache.get(Button.ButtonID.MAIN_MENU_ABOUT).checkLeftTouch(x, y)) {
-            Options.aboutPageSelector.reset();
             Screen.setActive(Screen.ABOUT);
         } else if (Cache.get(Button.ButtonID.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
             Screen.setActive(Screen.RECORDS);

@@ -102,7 +102,7 @@ public class Score {
         public static int scoreTimer;
         public static int moneyScore;
         public static int minesScore;
-        public static double luck;
+        public static double avgLuck;
         public static boolean victory;
 
         public static void update() {
@@ -119,7 +119,7 @@ public class Score {
             moneyScore = game.player.score.getMoneyScore();
             minesScore = game.player.score.getMinesScore();
             luckyCells = game.field.dice.totalCells;
-            luck = game.field.dice.getAverageLuck();
+            avgLuck = game.field.dice.getAverageLuck();
             victory = game.isVictory;
         }
     }

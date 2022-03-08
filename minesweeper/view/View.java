@@ -12,6 +12,10 @@ public class View {
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public Screen screen;
 
+    public View() {
+        Screen.views.add(this);
+    }
+
     // Global updates go into this parent method, other views start updating by calling super
     public void update() {
         game.display.setInterlaceEnabled(false);

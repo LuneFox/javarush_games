@@ -4,6 +4,8 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.view.graphics.Printer;
 
+import java.util.*;
+
 /**
  * Simple page selector that looks like this: <   1/12   >
  * Arrow buttons change current page, getCurrentPage method returns current page to be used elsewhere.
@@ -11,6 +13,7 @@ import com.javarush.games.minesweeper.view.graphics.Printer;
  */
 
 public class PageSelector extends DrawableObject {
+    public static final List<PageSelector> allSelectors = new LinkedList<>();
     private final int maxPage;
     private int currentPage;
     private final MenuArrow prevPageArrow;
@@ -24,6 +27,7 @@ public class PageSelector extends DrawableObject {
         prevPageArrow = new MenuArrow(x, y, false);
         nextPageArrow = new MenuArrow(x + width - prevPageArrow.width, y, true);
         this.height = prevPageArrow.height;
+        allSelectors.add(this);
     }
 
     public void prevPage() {
@@ -67,5 +71,18 @@ public class PageSelector extends DrawableObject {
 
     public void reset() {
         currentPage = 0;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PageSelector that = (PageSelector) o;
+        return maxPage == that.maxPage && currentPage == that.currentPage && Objects.equals(prevPageArrow, that.prevPageArrow) && Objects.equals(nextPageArrow, that.nextPageArrow);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(maxPage, currentPage, prevPageArrow, nextPageArrow);
     }
 }
