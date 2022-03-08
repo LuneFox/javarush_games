@@ -28,10 +28,13 @@ public final class ViewOptions extends View {
         Printer.print("игра на время", 2, Options.timerEnabledSelector.y - 1);
         Options.timerEnabledSelector.draw();
 
+        Printer.print("Сообщения:", 2, Options.displayMessageSelector.y - 1);
+        Options.displayMessageSelector.draw();
+
         Printer.print("тема: " + Theme.getCurrentName(), 2, Options.themeSelector.y);
         Options.themeSelector.draw();
 
-        Cache.get(Button.ButtonID.GENERAL_BACK).draw();
+        Cache.get(Button.ButtonID.GENERAL_CLOSE).draw();
         super.update();
     }
 }

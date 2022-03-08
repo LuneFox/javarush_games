@@ -20,14 +20,14 @@ public final class ViewItemHelp extends View {
     public void update() {
         Strings.generateNewShieldDescription();
         Cache.get(VisualElement.WIN_MENU).draw();
-        displayItem.icon.setPosition(5, 5);
+        displayItem.icon.setPosition(5, 10);
         displayItem.icon.draw();
         if (displayItem.id == ShopItem.ID.SHIELD) {
             displayItem.description = Strings.generateNewShieldDescription().toString();
         }
-        Printer.print("[" + displayItem.name + "]", Color.YELLOW, 25, 9);
-        Printer.print(displayItem.description, 4, 25);
-        Cache.get(Button.ButtonID.GENERAL_CONFIRM).draw();
+        Printer.print("[" + displayItem.name + "]", Color.YELLOW, 25, 14);
+        Printer.print(displayItem.description, 4, 30);
+        Cache.get(Button.ButtonID.GENERAL_CLOSE).draw();
         super.update();
     }
 

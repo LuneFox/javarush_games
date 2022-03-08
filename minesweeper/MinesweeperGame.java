@@ -70,6 +70,7 @@ public class MinesweeperGame extends Game {
         timer.restart();
         setScore(player.score.getCurrentScore());
         Screen.setActive(Screen.BOARD);
+        Message.show("Новая игра");
     }
 
 
@@ -104,6 +105,7 @@ public class MinesweeperGame extends Game {
     public void checkTimeOut() {
         if (!isStopped && timer.isZero()) {
             Screen.setActive(Screen.BOARD);
+            Message.show("Время вышло!");
             lose();
         } else {
             timer.countDown();
@@ -139,7 +141,9 @@ public class MinesweeperGame extends Game {
             return;
         }
 
-        player.inventory.money += cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1); // player gets gold
+        int moneyEarned = cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1);
+        player.inventory.money += moneyEarned;
+
         cell.makeNumberGold();            // make golden if the shovel is in use
 
         addScore(field.dice.appearCell.x, field.dice.appearCell.y); // x,y = dice display position
@@ -196,6 +200,7 @@ public class MinesweeperGame extends Game {
         if (!cell.isMined) return true;         // cell isn't mined - YES
         if (shop.shield.isActivated()) {
             shop.shield.use(cell);              // shield has worked - YES
+            Message.show("Щит разрушен!");
             return true;
         } else {
             return false;
@@ -239,6 +244,7 @@ public class MinesweeperGame extends Game {
         List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), Filter.SAFE, true);
 
         if (safeNeighbors.size() == 0) {       // no safe cells, place free flags over closed ones
+            Message.show("Тут только мины!");
             field.getNeighborCells(field.getCell(x, y), Filter.CLOSED, true).forEach(closedCell -> {
                 if (player.inventory.hasNoFlags()) shop.give(shop.flag);
                 setFlag(closedCell.x, closedCell.y, false);
@@ -250,6 +256,7 @@ public class MinesweeperGame extends Game {
                 setFlag(cell.x, cell.y, true); // remove flag if it was placed wrong
             }
             openCell(cell.x, cell.y);
+            Message.show("Ячейка открыта");
         }
     }
 
@@ -257,7 +264,10 @@ public class MinesweeperGame extends Game {
     public void destroyCell(int x, int y) {
         onManualTurn();
         Cell cell = field.getCell(x, y);
-        if (cell.isIndestructible()) return;
+        if (cell.isIndestructible()) {
+            Message.show("Не получилось!");
+            return;
+        }
 
         cell.setSprite(VisualElement.NONE);
         cell.isDestroyed = true;
@@ -270,6 +280,7 @@ public class MinesweeperGame extends Game {
         }
 
         if (cell.isMined) { // recursive explosions
+            Message.show("Взорвалась мина!");
             cell.isMined = false;
             allowCountingPlayerMoves = false;
             allowFlagExplosion = true;

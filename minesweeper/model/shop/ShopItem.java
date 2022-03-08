@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.options.Options;
@@ -126,6 +127,7 @@ public class ShopItem {
 
     public void expireCheck() {
         if (game.player.getMoves() >= this.expireMove && this.isActivated) {
+            Message.show(this.name + ": всё");
             this.deactivate();
             this.inStock = 1;
         }

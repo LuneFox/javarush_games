@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.options.Options;
@@ -71,13 +72,16 @@ public class Shop {
     }
 
     public void offerFlag() {
-        if (!Options.autoBuyFlagsEnabled && flag.inStock > 0) {
+        if (!Options.autoBuyFlagsSelector.isEnabled() && flag.inStock > 0) {
+            Message.show("Нет флажков!");
             Screen.setActive(Screen.SHOP);
             return;
         }
         if (flag.isUnobtainable()) {
+            Message.show("Невозможно купить!");
             return;
         }
+        Message.show("Куплен флажок");
         sell(flag);
     }
 

@@ -20,8 +20,8 @@ public class Button extends DrawableObject {
     private boolean isPressed;
 
     public enum ButtonID {
-        GENERAL_BACK(61, 88, 36, 9, "назад"),
         GENERAL_CONFIRM(61, 88, 36, 9, "ясно"),
+        GENERAL_CLOSE(88, 2, 0, 0, "x"),
 
         MAIN_MENU_START(61, 88, 36, 9, "старт"),
         MAIN_MENU_NEW_RESTART(61, 88, 36, 9, "заново"),

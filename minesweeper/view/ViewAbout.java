@@ -16,7 +16,7 @@ public final class ViewAbout extends View {
 
     public ViewAbout() {
         this.screen = Screen.ABOUT;
-        this.pageSelector = new PageSelector(7, 89, 45, 6);
+        this.pageSelector = new PageSelector(27, 89, 45, 6);
     }
 
     @Override
@@ -61,7 +61,7 @@ public final class ViewAbout extends View {
                 break;
         }
 
-        Cache.get(Button.ButtonID.GENERAL_BACK).draw();
+        Cache.get(Button.ButtonID.GENERAL_CLOSE).draw();
         super.update();
     }
 

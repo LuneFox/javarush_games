@@ -8,7 +8,7 @@ public class ControlItemHelp implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (Cache.get(Button.ButtonID.GENERAL_CONFIRM).checkLeftTouch(x, y)) {
+        if (Cache.get(Button.ButtonID.GENERAL_CLOSE).checkLeftTouch(x, y)) {
             Screen.setActive(Screen.SHOP);
         }
     }

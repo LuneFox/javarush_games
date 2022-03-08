@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.model.shop.overlay;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
 import com.javarush.games.minesweeper.view.graphics.*;
@@ -84,14 +85,17 @@ public class Slot extends DrawableObject {
 
         if (item.isActivated()) {
             activatedShaker.startShaking();
+            Message.show("Уже активировано");
             return;
         }
 
         if (item.inStock <= 0) {
+            Message.show("Недоступно");
             return;
         }
 
         if (item.isUnaffordable()) {
+            Message.show("Не хватает золота");
             game.shop.header.moneyShaker.startShaking();
             return;
         }

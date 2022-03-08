@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.options.Options;
 
 /**
  * Class for displaying various menus on the screen.
@@ -17,7 +18,7 @@ public class View {
     }
 
     public void update() {
-        Message.drawMessage();
+            Message.drawMessage();
     }
 }
 

@@ -23,7 +23,6 @@ public class SwitchSelector extends DrawableObject {
 
     public SwitchSelector(int x, int y, String textOff, String textOn) {
         super(x, y);
-        this.enabled = false;
         this.rail = new Image(VisualElement.MENU_SWITCH_RAIL, x, y + 2);
         this.handle = new Image(VisualElement.MENU_SWITCH, x, y);
         this.width = rail.width;
@@ -32,6 +31,12 @@ public class SwitchSelector extends DrawableObject {
         this.rightStopper = x + rail.width - handle.width;
         this.textOff = textOff;
         this.textOn = textOn;
+    }
+
+    public SwitchSelector(int x, int y, String textOff, String textOn, boolean isEnabled) {
+        this(x, y, textOff, textOn);
+        this.enabled = isEnabled;
+        handle.setPosition(enabled ? rightStopper : x, y);
     }
 
     @Override

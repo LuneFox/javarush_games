@@ -1,10 +1,12 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.view.graphics.Cache;
-import com.javarush.games.minesweeper.view.graphics.Image;
-import com.javarush.games.minesweeper.view.graphics.Printer;
-import com.javarush.games.minesweeper.view.graphics.VisualElement;
+import com.javarush.games.minesweeper.model.options.Options;
+import com.javarush.games.minesweeper.view.graphics.*;
+
+/**
+ * Shows short message over the screen. Singleton.
+ */
 
 public class Message extends DrawableObject {
     private static final Message INSTANCE = new Message();
@@ -35,13 +37,16 @@ public class Message extends DrawableObject {
         if (INSTANCE.timeToLive <= 0) {
             return;
         }
-        INSTANCE.draw();
+        if (Options.displayMessageSelector.isEnabled()) {
+            game.display.setInterlaceEnabled(false);
+            INSTANCE.draw();
+        }
         INSTANCE.timeToLive--;
     }
 
     public static void show(String text) {
-        INSTANCE.timeToLive = 50;
-        INSTANCE.timeToLiveStart = 50;
+        INSTANCE.timeToLive = 60;
+        INSTANCE.timeToLiveStart = 60;
         INSTANCE.text = text;
         INSTANCE.yPos = -11;
     }
