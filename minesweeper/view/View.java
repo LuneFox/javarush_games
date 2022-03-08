@@ -16,15 +16,8 @@ public class View {
         Screen.views.add(this);
     }
 
-    // Global updates go into this parent method, other views start updating by calling super
     public void update() {
-        game.display.setInterlaceEnabled(false);
-
-        if (!Screen.isActive(Screen.SHOP)) { // money approach slowly only when they change at shop screen
-            if (game.shop.header != null) {
-                game.shop.header.setDisplayMoney(game.player.inventory.money);
-            }
-        }
+        // Child classes do their own things here
     }
 }
 
