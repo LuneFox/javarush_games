@@ -9,14 +9,12 @@ public class Options {
     public static SwitchSelector timerEnabledSelector;
     public static ThemeSelector themeSelector;
     public static DifficultySelector difficultySelector;
-    public static PageSelector aboutPageSelector;
 
     public static void initialize() {
         autoBuyFlagsSelector = new SwitchSelector(85, 35, "вручную", "авто");
         timerEnabledSelector = new SwitchSelector(85, 54, "нет", "да");
         themeSelector = new ThemeSelector(63, 73);
         difficultySelector = new DifficultySelector(49, 16);
-        aboutPageSelector = new PageSelector(7, 89, 45, 6);
     }
 
     public static void apply() {

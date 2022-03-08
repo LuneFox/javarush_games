@@ -12,17 +12,17 @@ public class ControlAbout implements ControlStrategy {
         if (Cache.get(Button.ButtonID.GENERAL_BACK).checkLeftTouch(x, y)) {
             Screen.setActive(Screen.MAIN);
         }
-        Options.aboutPageSelector.checkLeftTouch(x, y);
+        Screen.about.pageSelector.checkLeftTouch(x, y);
     }
 
     @Override
     public void pressRight() {
-        Options.aboutPageSelector.nextPage();
+        Screen.about.pageSelector.nextPage();
     }
 
     @Override
     public void pressLeft() {
-        Options.aboutPageSelector.prevPage();
+        Screen.about.pageSelector.prevPage();
     }
 
     @Override
