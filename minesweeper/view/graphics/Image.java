@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.model.DrawableObject;
  */
 
 public class Image extends DrawableObject {
-    public static final int CENTER = -1;
+    public static final int CENTER = Integer.MIN_VALUE;
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public int[][] matrix;  // matrix of color numbers
     public Color[] colors;  // an array to match colors and numbers
@@ -78,8 +78,8 @@ public class Image extends DrawableObject {
     }
 
     public final void setPosition(int drawX, int drawY) { // negative value = middle
-        this.x = (drawX < 0) ? (50 - matrix[0].length / 2) : drawX;
-        this.y = (drawY < 0) ? (50 - matrix.length / 2) : drawY;
+        this.x = (drawX == CENTER) ? (50 - matrix[0].length / 2) : drawX;
+        this.y = (drawY == CENTER) ? (50 - matrix.length / 2) : drawY;
     }
 
     public final void replaceColor(Color color, int number) {

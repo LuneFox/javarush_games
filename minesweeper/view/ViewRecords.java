@@ -17,7 +17,6 @@ public final class ViewRecords extends View {
 
     @Override
     public void update() {
-        super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
         Printer.print(Strings.RECORDS[0], Color.YELLOW, Printer.CENTER, 2);
         Cache.get(Button.ButtonID.GENERAL_BACK).draw();
@@ -56,5 +55,6 @@ public final class ViewRecords extends View {
         Printer.print(Strings.RECORDS[4], colors[0], 94, 47, true);
         Printer.print(Strings.RECORDS[5], colors[3], 18, 58);
         Printer.print(Strings.RECORDS[6], colors[0], 94, 67, true);
+        super.update();
     }
 }

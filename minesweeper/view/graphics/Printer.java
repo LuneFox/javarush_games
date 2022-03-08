@@ -9,18 +9,17 @@ import java.util.HashMap;
  */
 
 public class Printer {
-    public static final int CENTER = -1;
+    public static final int CENTER = Integer.MIN_VALUE;
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
 
     public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
-        // If drawX is outside bounds,
-        if (drawX < 0 || drawX > 99) {
+        if (drawX == CENTER) {
             int width = calculateWidth(input);
             drawX = 50 - width / 2;
         }
-        // Don't allow printing outside screen
-        if (drawY < 0 || drawY > 99) {
+
+        if (drawY == CENTER) {
             drawY = 0;
         }
 

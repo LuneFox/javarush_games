@@ -21,7 +21,6 @@ public final class ViewAbout extends View {
 
     @Override
     public void update() {
-        super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
         pageSelector.draw();
 
@@ -63,6 +62,7 @@ public final class ViewAbout extends View {
         }
 
         Cache.get(Button.ButtonID.GENERAL_BACK).draw();
+        super.update();
     }
 
     private void printPage(String title, String contents) {

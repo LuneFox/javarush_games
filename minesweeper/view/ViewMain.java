@@ -28,7 +28,6 @@ public final class ViewMain extends View {
 
     @Override
     public void update() {
-        super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
         Printer.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
         ((FloatingImage) Cache.get(VisualElement.FLO_LOGO)).draw(2.8, Image.CENTER, 8);
@@ -48,6 +47,7 @@ public final class ViewMain extends View {
         }
 
         Cache.get(Button.ButtonID.MAIN_MENU_START).draw();
+        super.update();
     }
 
     private void printRandomQuote() {

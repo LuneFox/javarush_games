@@ -1,8 +1,8 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Screen;
-import com.javarush.games.minesweeper.Util;
 
 /**
  * Class for displaying various menus on the screen.
@@ -17,7 +17,7 @@ public class View {
     }
 
     public void update() {
-        // Child classes do their own things here
+        Message.drawMessage();
     }
 }
 

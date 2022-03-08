@@ -34,7 +34,6 @@ public final class ViewScore extends View {
 
     @Override
     public void update() {
-        super.update();
         Cache.get(VisualElement.WIN_MENU).draw();
         pageSelector.draw();
 
@@ -72,5 +71,6 @@ public final class ViewScore extends View {
                 break;
         }
         Cache.get(Button.ButtonID.GENERAL_CONFIRM).draw();
+        super.update();
     }
 }

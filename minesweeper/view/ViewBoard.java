@@ -15,7 +15,6 @@ public final class ViewBoard extends View {
     }
 
     public void update() {
-        super.update();
         if (!(Screen.isActive(Screen.SHOP))) game.display.setInterlaceEnabled(true);
         game.checkTimeOut();
         game.field.draw();
@@ -29,5 +28,6 @@ public final class ViewBoard extends View {
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
+        super.update();
     }
 }

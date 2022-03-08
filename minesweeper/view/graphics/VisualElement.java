@@ -56,6 +56,7 @@ public enum VisualElement {
 
     WIN_MENU,
     WIN_SHOP_SHOWCASE,
+    WIN_MESSAGE,
     WIN_VICTORY,
     WIN_GAME_OVER,
     WIN_SHOP_HEADER_FOOTER,

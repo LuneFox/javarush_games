@@ -266,6 +266,10 @@ public class ImageStorage {
                 setColors(Color.GRAY, Color.WHITE, Color.BLACK);
                 data = ImageCreator.createWindow(10, 10, false, true);
                 break;
+            case WIN_MESSAGE:
+                setColors(Color.BLACK, Color.BLACK, Color.BLACK);
+                data = ImageCreator.createWindow(90, 11, false, false);
+                break;
             case SHOP_DICE_1:
                 setColors(Color.WHITE, Color.RED, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111011111113111111131112111311111113111111131111111303333333");

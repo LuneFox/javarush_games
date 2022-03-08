@@ -16,8 +16,6 @@ public final class ViewOptions extends View {
 
     @Override
     public void update() {
-        super.update();
-
         Cache.get(VisualElement.WIN_MENU).draw();
         Printer.print("настройки", Color.YELLOW, Printer.CENTER, 2);
 
@@ -34,5 +32,6 @@ public final class ViewOptions extends View {
         Options.themeSelector.draw();
 
         Cache.get(Button.ButtonID.GENERAL_BACK).draw();
+        super.update();
     }
 }

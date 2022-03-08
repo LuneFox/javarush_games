@@ -17,8 +17,6 @@ public final class ViewGameOver extends View {
     }
 
     public void update() {
-        super.update();
-
         if (showDelay > 0) {
             Screen.board.update();
             showDelay--;
@@ -40,7 +38,7 @@ public final class ViewGameOver extends View {
         Cache.get(Button.ButtonID.GAME_OVER_RETURN).draw();
         Cache.get(Button.ButtonID.GAME_OVER_HIDE).draw();
         Cache.get(Button.ButtonID.GAME_OVER_QUESTION).draw();
-
+        super.update();
     }
 
     public void setDelay() {

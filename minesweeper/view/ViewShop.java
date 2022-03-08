@@ -13,8 +13,7 @@ public final class ViewShop extends View {
 
     @Override
     public void update() {
-        super.update();
-        Screen.board.update();
+        game.field.draw();
         game.checkTimeOut();
         game.shop.showCase.draw();
         game.shop.header.draw();
@@ -22,5 +21,6 @@ public final class ViewShop extends View {
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
+        super.update();
     }
 }

@@ -18,7 +18,6 @@ public final class ViewItemHelp extends View {
     }
 
     public void update() {
-        super.update();
         Strings.generateNewShieldDescription();
         Cache.get(VisualElement.WIN_MENU).draw();
         displayItem.icon.setPosition(5, 5);
@@ -29,6 +28,7 @@ public final class ViewItemHelp extends View {
         Printer.print("[" + displayItem.name + "]", Color.YELLOW, 25, 9);
         Printer.print(displayItem.description, 4, 25);
         Cache.get(Button.ButtonID.GENERAL_CONFIRM).draw();
+        super.update();
     }
 
     public void setDisplayItem(ShopItem item) {
