@@ -1,10 +1,10 @@
-package com.javarush.games.minesweeper.model.options;
+package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.view.graphics.Image;
-import com.javarush.games.minesweeper.view.graphics.Theme;
-import com.javarush.games.minesweeper.view.graphics.VisualElement;
+import com.javarush.games.minesweeper.gui.image.Image;
 
 import java.util.Arrays;
 
@@ -14,10 +14,10 @@ public class ThemeSelector extends DrawableObject {
 
     public ThemeSelector(int x, int y) {
         super(x, y);
-        this.themeCursor = new Image(VisualElement.MENU_THEME_PALETTE);
+        this.themeCursor = new Image(ImageID.MENU_THEME_PALETTE);
         themePalettes = new Image[3];
         for (int i = 0; i < themePalettes.length; i++) {
-            themePalettes[i] = new Image(VisualElement.MENU_THEME_PALETTE);
+            themePalettes[i] = new Image(ImageID.MENU_THEME_PALETTE);
             themePalettes[i].setPosition(this.x + i * 12, this.y);
             this.width += themePalettes[i].width + 2;
         }

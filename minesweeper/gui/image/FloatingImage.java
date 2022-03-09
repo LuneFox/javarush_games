@@ -1,15 +1,15 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui.image;
 
 public class FloatingImage extends Image {
     private float shift;     // difference between the anchor and the current position
     private boolean phase;
 
-    public FloatingImage(VisualElement visualElement) {
-        this(visualElement, -1, -1);
+    public FloatingImage(ImageID imageID) {
+        this(imageID, -1, -1);
     }
 
-    public FloatingImage(VisualElement visualElement, int drawX, int drawY) {
-        super(visualElement, drawX, drawY);
+    public FloatingImage(ImageID imageID, int drawX, int drawY) {
+        super(imageID, drawX, drawY);
         shift = 0;
         phase = true;
     }

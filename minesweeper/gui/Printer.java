@@ -1,8 +1,7 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
-
-import java.util.HashMap;
+import com.javarush.games.minesweeper.gui.image.Image;
 
 /**
  * Utility class for drawing text information using symbol images.

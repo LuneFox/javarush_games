@@ -2,10 +2,10 @@ package com.javarush.games.minesweeper.controller;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.model.Message;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.view.graphics.Button;
+import com.javarush.games.minesweeper.gui.interactive.Button;
 
 import java.util.*;
 
@@ -40,7 +40,7 @@ public class Controller {
     }
 
     public final void pressKey(Key key) {
-        if (Message.getTimeToLive() <= 0) {
+        if (PopUpMessage.getTimeToLive() <= 0) {
             memorizeClick(99, 99); // Key presses always make the message slide from the top
         }
         selectStrategy(0, 0); // Key presses never miss the screen

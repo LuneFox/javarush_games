@@ -1,6 +1,11 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageCreator;
+import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.model.DrawableObject;
 
 /**
@@ -18,36 +23,6 @@ public class Button extends DrawableObject {
     private String text;
     private int textOffset;
     private boolean isPressed;
-
-    public enum ButtonID {
-        GENERAL_CONFIRM(61, 88, 36, 9, "ясно"),
-        GENERAL_CLOSE(88, 2, 0, 0, "x"),
-
-        MAIN_MENU_START(61, 88, 36, 9, "старт"),
-        MAIN_MENU_NEW_RESTART(61, 88, 36, 9, "заново"),
-        MAIN_MENU_OPTIONS(61, 64, 36, 9, "опции"),
-        MAIN_MENU_ABOUT(61, 76, 36, 9, "об игре"),
-        MAIN_MENU_RECORDS(2, 88, 0, 0, "рекорды"),
-
-        GAME_OVER_HIDE(73, 35, 0, 0, "x"),
-        GAME_OVER_QUESTION(17, 56, 0, 0, "?"),
-        GAME_OVER_AGAIN(57, 69, 0, 0, "снова"),
-        GAME_OVER_RETURN(15, 69, 0, 0, "меню");
-
-        public final int x;
-        public final int y;
-        public final int width;
-        public final int height;
-        public final String label;
-
-        ButtonID(int x, int y, int width, int height, String label) {
-            this.x = x;
-            this.y = y;
-            this.width = width;
-            this.height = height;
-            this.label = label;
-        }
-    }
 
     public Button(int posX, int posY, int sizeX, int sizeY, String text) { // size 0 = auto size;
         super(posX, posY);
@@ -71,9 +46,9 @@ public class Button extends DrawableObject {
     }
 
     public void setBody(int posX, int posY, boolean addShadow) {
-        this.body = new Image(VisualElement.MENU_BUTTON, posX, posY) {
+        this.body = new Image(ImageID.MENU_BUTTON, posX, posY) {
             @Override
-            public int[][] getMatrixFromStorage(VisualElement visualElement) {
+            public int[][] getMatrixFromStorage(ImageID imageID) {
                 return ImageCreator.createWindow(Button.this.width, Button.this.height, addShadow, true);
             }
         };
@@ -82,7 +57,7 @@ public class Button extends DrawableObject {
                 Theme.BUTTON_BG.getColor(),
                 Color.BLACK,
                 Theme.BUTTON_BORDER.getColor()};
-        body.getMatrixFromStorage(VisualElement.MENU_BUTTON);
+        body.getMatrixFromStorage(ImageID.MENU_BUTTON);
     }
 
     public void replaceText(int width, String label) {

@@ -1,14 +1,14 @@
 package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.model.Message;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.options.Options;
+import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.shop.overlay.ShowCase;
-import com.javarush.games.minesweeper.view.graphics.Cache;
-import com.javarush.games.minesweeper.view.graphics.VisualElement;
+import com.javarush.games.minesweeper.gui.Cache;
+import com.javarush.games.minesweeper.gui.image.ImageID;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -69,15 +69,15 @@ public class Shop {
 
     public void offerFlag() {
         if (!Options.autoBuyFlagsSelector.isEnabled() && flag.inStock > 0) {
-            Message.show("Купите флажок!");
+            PopUpMessage.show("Купите флажок!");
             Screen.setActive(Screen.SHOP);
             return;
         }
         if (flag.isUnobtainable()) {
-            Message.show("Невозможно купить!");
+            PopUpMessage.show("Невозможно купить!");
             return;
         }
-        Message.show("Куплен флажок");
+        PopUpMessage.show("Куплен флажок");
         sell(flag);
     }
 
@@ -97,12 +97,12 @@ public class Shop {
     }
 
     public void reset() {
-        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Cache.get(VisualElement.SHOP_ITEM_SHIELD));
-        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Cache.get(VisualElement.SHOP_ITEM_SCANNER));
-        flag = new ShopItem(2, 1, getFlagsAmount(), Cache.get(VisualElement.SHOP_ITEM_FLAG));
-        goldenShovel = new ShopItem(3, 9, 1, Cache.get(VisualElement.SHOP_ITEM_SHOVEL));
-        luckyDice = new ShopItem(4, 6, 1, Cache.get(VisualElement.SHOP_ITEM_DICE));
-        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Cache.get(VisualElement.SHOP_ITEM_BOMB));
+        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Cache.get(ImageID.SHOP_ITEM_SHIELD));
+        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Cache.get(ImageID.SHOP_ITEM_SCANNER));
+        flag = new ShopItem(2, 1, getFlagsAmount(), Cache.get(ImageID.SHOP_ITEM_FLAG));
+        goldenShovel = new ShopItem(3, 9, 1, Cache.get(ImageID.SHOP_ITEM_SHOVEL));
+        luckyDice = new ShopItem(4, 6, 1, Cache.get(ImageID.SHOP_ITEM_DICE));
+        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Cache.get(ImageID.SHOP_ITEM_BOMB));
 
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));

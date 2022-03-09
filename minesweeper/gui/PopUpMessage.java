@@ -1,17 +1,19 @@
-package com.javarush.games.minesweeper.model;
+package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.controller.Controller;
-import com.javarush.games.minesweeper.model.options.Options;
-import com.javarush.games.minesweeper.view.graphics.*;
+import com.javarush.games.minesweeper.model.Options;
+import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.model.DrawableObject;
 
 /**
  * Shows short message over the screen. Singleton.
  */
 
-public class Message extends DrawableObject {
+public class PopUpMessage extends DrawableObject {
     private static final int STEP = 1;
-    private static final Message INSTANCE = new Message();
+    private static final PopUpMessage INSTANCE = new PopUpMessage();
     private final Image background;
     private String text;
     private int timeToLive;             // current time
@@ -19,9 +21,9 @@ public class Message extends DrawableObject {
     private int yPos;                   // overall draw height
     private boolean slideFromBottom;
 
-    private Message() {
+    private PopUpMessage() {
         height = 11;
-        this.background = Cache.get(VisualElement.WIN_MESSAGE);
+        this.background = Cache.get(ImageID.WIN_MESSAGE);
         background.setPosition(5, -height);
         slideFromBottom = false;
     }

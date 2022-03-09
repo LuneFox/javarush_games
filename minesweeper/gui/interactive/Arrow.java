@@ -1,18 +1,18 @@
-package com.javarush.games.minesweeper.model.options;
+package com.javarush.games.minesweeper.gui.interactive;
 
+import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.view.graphics.Image;
-import com.javarush.games.minesweeper.view.graphics.VisualElement;
+import com.javarush.games.minesweeper.gui.image.Image;
 
-public class MenuArrow extends DrawableObject {
+public class Arrow extends DrawableObject {
     private static final int PRESSED_DURATION = 2;
     private final boolean pointsRight;
     private final Image arrowImage;
     private int pressedCountDown;
 
-    public MenuArrow(int x, int y, boolean pointsRight) {
+    public Arrow(int x, int y, boolean pointsRight) {
         super(x, y);
-        arrowImage = new Image(VisualElement.MENU_ARROW, x, y);
+        arrowImage = new Image(ImageID.MENU_ARROW, x, y);
         this.height = arrowImage.height;
         this.width = arrowImage.width;
         this.pointsRight = pointsRight;

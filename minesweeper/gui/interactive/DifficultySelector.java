@@ -1,31 +1,31 @@
-package com.javarush.games.minesweeper.model.options;
+package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.model.Strings;
-import com.javarush.games.minesweeper.view.graphics.Image;
-import com.javarush.games.minesweeper.view.graphics.Printer;
-import com.javarush.games.minesweeper.view.graphics.Theme;
-import com.javarush.games.minesweeper.view.graphics.VisualElement;
+import com.javarush.games.minesweeper.gui.image.Image;
 
 public class DifficultySelector extends DrawableObject {
     private static final int MAX_DIFFICULTY = 45;
     private static final int MIN_DIFFICULTY = 5;
     private int difficultySetting;
-    private final MenuArrow difficultyDownArrow;
-    private final MenuArrow difficultyUpArrow;
+    private final Arrow difficultyDownArrow;
+    private final Arrow difficultyUpArrow;
     private final Image[] bars = new Image[MAX_DIFFICULTY / 5];
 
     public DifficultySelector(int x, int y) {
         super(x, y);
         difficultySetting = 10;
         this.width = 49;
-        difficultyDownArrow = new MenuArrow(x, y, false);
-        difficultyUpArrow = new MenuArrow(x + width - difficultyDownArrow.width, y, true);
+        difficultyDownArrow = new Arrow(x, y, false);
+        difficultyUpArrow = new Arrow(x + width - difficultyDownArrow.width, y, true);
         this.height = difficultyDownArrow.height;
 
         for (int i = 0; i < bars.length; i++) {
-            Image bar = new Image(VisualElement.MENU_DIFFICULTY_BAR, (i * 4) + this.x + difficultyDownArrow.width + 2, this.y);
+            Image bar = new Image(ImageID.MENU_DIFFICULTY_BAR, (i * 4) + this.x + difficultyDownArrow.width + 2, this.y);
             if (i > 2) bar.replaceColor(Color.YELLOW, 1);
             if (i > 4) bar.replaceColor(Color.ORANGE, 1);
             if (i > 6) bar.replaceColor(Color.RED, 1);

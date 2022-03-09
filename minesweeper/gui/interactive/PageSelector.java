@@ -1,8 +1,8 @@
-package com.javarush.games.minesweeper.model.options;
+package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.view.graphics.Printer;
 
 import java.util.*;
 
@@ -16,16 +16,16 @@ public class PageSelector extends DrawableObject {
     public static final List<PageSelector> allSelectors = new LinkedList<>();
     private final int maxPage;
     private int currentPage;
-    private final MenuArrow prevPageArrow;
-    private final MenuArrow nextPageArrow;
+    private final Arrow prevPageArrow;
+    private final Arrow nextPageArrow;
 
     public PageSelector(int x, int y, int width, int maxPage) {
         super(x, y);
         this.width = width;
         this.maxPage = maxPage - 1;
         currentPage = 0;
-        prevPageArrow = new MenuArrow(x, y, false);
-        nextPageArrow = new MenuArrow(x + width - prevPageArrow.width, y, true);
+        prevPageArrow = new Arrow(x, y, false);
+        nextPageArrow = new Arrow(x + width - prevPageArrow.width, y, true);
         this.height = prevPageArrow.height;
         allSelectors.add(this);
     }

@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui.image;
 
 /**
  * Utility class for generating images of different kind.

@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.view.graphics.Drawable;
+import com.javarush.games.minesweeper.gui.Drawable;
 
 public abstract class DrawableObject implements Drawable {
     protected static MinesweeperGame game = MinesweeperGame.getInstance();

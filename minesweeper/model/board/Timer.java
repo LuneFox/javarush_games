@@ -1,10 +1,8 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.model.options.Options;
-import com.javarush.games.minesweeper.view.graphics.Drawable;
+import com.javarush.games.minesweeper.model.Options;
 
 import java.util.Date;
 

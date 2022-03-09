@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui.image;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
@@ -18,13 +18,13 @@ public class Image extends DrawableObject {
         HORIZONTAL, VERTICAL, NONE
     }
 
-    public Image(VisualElement visualElement) { // constructor without setting position (for loading images in memory)
-        this(visualElement, 0, 0);
+    public Image(ImageID imageID) { // constructor without setting position (for loading images in memory)
+        this(imageID, 0, 0);
     }
 
-    public Image(VisualElement visualElement, int x, int y) { // constructor with setting position at once
+    public Image(ImageID imageID, int x, int y) { // constructor with setting position at once
         super(x, y);
-        this.matrix = getMatrixFromStorage(visualElement);
+        this.matrix = getMatrixFromStorage(imageID);
         this.height = matrix.length;
         this.width = matrix[0].length;
     }
@@ -89,8 +89,8 @@ public class Image extends DrawableObject {
         }
     }
 
-    public int[][] getMatrixFromStorage(VisualElement visualElement) {
-        ImageStorage storage = new ImageStorage(visualElement);
+    public int[][] getMatrixFromStorage(ImageID imageID) {
+        ImageStorage storage = new ImageStorage(imageID);
         colors = storage.getColors();
         return storage.getData();
     }

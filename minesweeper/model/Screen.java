@@ -1,14 +1,19 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.model.options.PageSelector;
+import com.javarush.games.minesweeper.gui.interactive.PageSelector;
 import com.javarush.games.minesweeper.view.*;
-import com.javarush.games.minesweeper.view.graphics.Button;
+import com.javarush.games.minesweeper.gui.interactive.Button;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+
+/**
+ * Screen determines what the game is showing to the player right now.
+ * Controls and views depend on what screen is at position 0.
+ */
 
 public enum Screen {
     ABOUT, BOARD, GAME_OVER, ITEM_HELP, MAIN, OPTIONS, RECORDS, SCORE, SHOP;
@@ -20,7 +25,8 @@ public enum Screen {
     static {
         screens = new LinkedList<>(Arrays.asList(Screen.values()));
         views = new ArrayList<>();
-        screens.forEach(screen -> views.add(View.createView(screen)));
+        ViewFactory factory = new ViewFactory();
+        screens.forEach(screen -> views.add(factory.createView(screen)));
     }
 
     // Screen at index 0 is considered active

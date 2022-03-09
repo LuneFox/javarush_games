@@ -1,4 +1,9 @@
-package com.javarush.games.minesweeper.model.options;
+package com.javarush.games.minesweeper.model;
+
+import com.javarush.games.minesweeper.gui.interactive.DifficultySelector;
+import com.javarush.games.minesweeper.gui.interactive.PageSelector;
+import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
+import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
 
 public class Options {
     // Store copies of options apart from corresponding switches to apply them only to a new game

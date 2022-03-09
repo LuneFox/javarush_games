@@ -2,12 +2,12 @@ package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.model.Message;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.options.Options;
-import com.javarush.games.minesweeper.view.graphics.VisualElement;
-import com.javarush.games.minesweeper.view.graphics.Image;
+import com.javarush.games.minesweeper.model.Options;
+import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.Image;
 
 /**
  * Items you can buy in the shop and use in the game.
@@ -95,7 +95,7 @@ public class ShopItem {
             case SHIELD:
                 if (this.isActivated) {
                     this.deactivate();
-                    cell.setSprite(VisualElement.SPR_BOARD_MINE);
+                    cell.setSprite(ImageID.SPR_BOARD_MINE);
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);
                     game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (Options.difficulty / 5));
@@ -127,7 +127,7 @@ public class ShopItem {
 
     public void expireCheck() {
         if (game.player.getMoves() >= this.expireMove && this.isActivated) {
-            Message.show(this.name + ": всё");
+            PopUpMessage.show(this.name + ": всё");
             this.deactivate();
             this.inStock = 1;
         }

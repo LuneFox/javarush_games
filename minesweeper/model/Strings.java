@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.model;
 
-import com.javarush.games.minesweeper.model.options.Options;
+import com.javarush.games.minesweeper.model.Options;
 
 /**
  * Some long strings are stored here.
@@ -68,6 +68,4 @@ public class Strings {
     public static final String ITEM_BOMB_DESCRIPTION =
             "Бросив бомбочку, вы\nуничтожите закрытую\nклетку на поле.\nЕсли взорвёте мину,\n" +
                     "соседние мины тоже\nвзорвутся по цепи.\nОчков не даёт.";
-
-
 }

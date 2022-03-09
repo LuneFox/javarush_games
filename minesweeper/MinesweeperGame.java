@@ -3,16 +3,17 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
+import com.javarush.games.minesweeper.gui.Display;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.model.*;
 import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.board.Field;
-import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
-import com.javarush.games.minesweeper.view.graphics.*;
 import com.javarush.games.minesweeper.model.board.Cell.Filter;
 
 import java.util.*;
@@ -71,7 +72,7 @@ public class MinesweeperGame extends Game {
         timer.restart();
         setScore(player.score.getCurrentScore());
         Screen.setActive(Screen.BOARD);
-        Message.show("Новая игра");
+        PopUpMessage.show("Новая игра");
     }
 
 
@@ -106,7 +107,7 @@ public class MinesweeperGame extends Game {
     public void checkTimeOut() {
         if (!isStopped && timer.isZero()) {
             Screen.setActive(Screen.BOARD);
-            Message.show("Время вышло!");
+            PopUpMessage.show("Время вышло!");
             lose();
         } else {
             timer.countDown();
@@ -185,7 +186,7 @@ public class MinesweeperGame extends Game {
     private void returnFlagToInventory(Cell cell) {
         player.inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
-        cell.setSprite(cell.isMined ? VisualElement.SPR_BOARD_MINE : VisualElement.NONE);
+        cell.setSprite(cell.isMined ? ImageID.SPR_BOARD_MINE : ImageID.NONE);
     }
 
     private void placeFlagFromInventory(Cell cell) {
@@ -194,14 +195,14 @@ public class MinesweeperGame extends Game {
         if (cell.isFlagged) return;
         player.inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
-        cell.setSprite(VisualElement.SPR_BOARD_FLAG);
+        cell.setSprite(ImageID.SPR_BOARD_FLAG);
     }
 
     private boolean trySurviving(Cell cell) {   // did the player survive the mine?
         if (!cell.isMined) return true;         // cell isn't mined - YES
         if (shop.shield.isActivated()) {
             shop.shield.use(cell);              // shield has worked - YES
-            Message.show("Щит разрушен!");
+            PopUpMessage.show("Щит разрушен!");
             return true;
         } else {
             return false;
@@ -245,7 +246,7 @@ public class MinesweeperGame extends Game {
         List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), Filter.SAFE, true);
 
         if (safeNeighbors.size() == 0) {       // no safe cells, place free flags over closed ones
-            Message.show("Тут только мины!");
+            PopUpMessage.show("Тут только мины!");
             field.getNeighborCells(field.getCell(x, y), Filter.CLOSED, true).forEach(closedCell -> {
                 if (player.inventory.hasNoFlags()) shop.give(shop.flag);
                 setFlag(closedCell.x, closedCell.y, false);
@@ -257,7 +258,7 @@ public class MinesweeperGame extends Game {
                 setFlag(cell.x, cell.y, true); // remove flag if it was placed wrong
             }
             openCell(cell.x, cell.y);
-            Message.show("Ячейка открыта");
+            PopUpMessage.show("Ячейка открыта");
         }
     }
 
@@ -266,11 +267,11 @@ public class MinesweeperGame extends Game {
         onManualTurn();
         Cell cell = field.getCell(x, y);
         if (cell.isIndestructible()) {
-            Message.show("Не получилось!");
+            PopUpMessage.show("Не получилось!");
             return;
         }
 
-        cell.setSprite(VisualElement.NONE);
+        cell.setSprite(ImageID.NONE);
         cell.isDestroyed = true;
         cell.isOpen = true;
         shop.deactivateExpiredItems();
@@ -281,7 +282,7 @@ public class MinesweeperGame extends Game {
         }
 
         if (cell.isMined) { // recursive explosions
-            Message.show("Взорвалась мина!");
+            PopUpMessage.show("Взорвалась мина!");
             cell.isMined = false;
             allowCountingPlayerMoves = false;
             allowFlagExplosion = true;

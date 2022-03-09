@@ -1,6 +1,7 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui.image;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Theme;
 
 /**
  * All images' body data and colors are stored here. Each image corresponds a visual element.
@@ -11,8 +12,8 @@ public class ImageStorage {
     private Color[] colors;
     private final int[][] data;
 
-    public ImageStorage(VisualElement visualElement) {
-        switch (visualElement) {
+    public ImageStorage(ImageID imageID) {
+        switch (imageID) {
 
             // BIG PICTURES
 

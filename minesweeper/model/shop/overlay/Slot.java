@@ -1,11 +1,12 @@
 package com.javarush.games.minesweeper.model.shop.overlay;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.*;
+import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
-import com.javarush.games.minesweeper.view.graphics.*;
 
 /**
  * Clicking on this slot will sell the player the corresponding item.
@@ -22,7 +23,7 @@ public class Slot extends DrawableObject {
 
     public Slot(int x, int y, ShopItem item) {
         this.item = item;
-        frame = Cache.get(VisualElement.SHOP_ITEM_FRAME);
+        frame = Cache.get(ImageID.SHOP_ITEM_FRAME);
         this.x = x;
         this.y = y;
         this.height = 20;
@@ -63,11 +64,11 @@ public class Slot extends DrawableObject {
 
     private boolean shiftFrame() {
         if (pressedCountDown > 0) {
-            frame = Cache.get(VisualElement.SHOP_ITEM_FRAME_PRESSED);
+            frame = Cache.get(ImageID.SHOP_ITEM_FRAME_PRESSED);
             pressedCountDown--;
             return true;
         } else {
-            frame = Cache.get(VisualElement.SHOP_ITEM_FRAME);
+            frame = Cache.get(ImageID.SHOP_ITEM_FRAME);
             return false;
         }
     }
@@ -85,17 +86,17 @@ public class Slot extends DrawableObject {
 
         if (item.isActivated()) {
             activatedShakeHelper.startShaking();
-            Message.show("Уже активировано");
+            PopUpMessage.show("Уже активировано");
             return;
         }
 
         if (item.inStock <= 0) {
-            Message.show("Недоступно");
+            PopUpMessage.show("Недоступно");
             return;
         }
 
         if (item.isUnaffordable()) {
-            Message.show("Не хватает золота");
+            PopUpMessage.show("Не хватает золота");
             game.shop.showCase.header.moneyShakeHelper.startShaking();
             return;
         }

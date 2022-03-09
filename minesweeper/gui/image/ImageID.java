@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui.image;
 
 /**
  * Code names for all available graphic pieces in the game.
@@ -6,7 +6,7 @@ package com.javarush.games.minesweeper.view.graphics;
  * For example, everything that starts with SYM_ goes to symbols cache.
  */
 
-public enum VisualElement {
+public enum ImageID {
     NONE,
 
     CELL_OPENED,
@@ -135,13 +135,17 @@ public enum VisualElement {
     SYM_SYMBOL_SQ_BRACKET_R(']'),
     SYM_SYMBOL_NEWLINE('\n');
 
-    char[] characters;
+    private char[] characters;
 
-    VisualElement() {
+    public char[] getCharacters() {
+        return characters;
+    }
+
+    ImageID() {
     }
 
     // Constructor for symbols
-    VisualElement(char... characters) {
+    ImageID(char... characters) {
         this.characters = characters;
     }
 }

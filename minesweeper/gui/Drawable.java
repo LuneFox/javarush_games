@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view.graphics;
+package com.javarush.games.minesweeper.gui;
 
 @FunctionalInterface
 public interface Drawable {

@@ -1,7 +1,11 @@
 package com.javarush.games.minesweeper.model.shop.overlay;
 
+import com.javarush.games.minesweeper.gui.Cache;
+import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.view.graphics.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +17,7 @@ public class ShowCase extends DrawableObject {
     private final List<Slot> slots = new ArrayList<>();
 
     public ShowCase() {
-        this.panel = Cache.get(VisualElement.WIN_SHOP_SHOWCASE);
+        this.panel = Cache.get(ImageID.WIN_SHOP_SHOWCASE);
         this.x = 10;
         this.y = 10;
         this.height = 80;
@@ -35,7 +39,7 @@ public class ShowCase extends DrawableObject {
 
     @Override
     public void draw() {
-        panel = Cache.get(VisualElement.WIN_SHOP_SHOWCASE);
+        panel = Cache.get(ImageID.WIN_SHOP_SHOWCASE);
         panel.draw(x, y);
         slots.forEach(DrawableObject::draw);
         header.draw();
