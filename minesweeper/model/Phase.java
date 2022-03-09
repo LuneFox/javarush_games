@@ -11,31 +11,31 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Screen determines what the game is showing to the player right now.
- * Controls and views depend on what screen is at position 0.
+ * Phase determines what the game is showing to the player right now.
+ * Controls and views depend on what phase is current (at position 0).
  */
 
-public enum Screen {
+public enum Phase {
     ABOUT, BOARD, GAME_OVER, ITEM_HELP, MAIN, OPTIONS, RECORDS, SCORE, SHOP;
-    private static final List<Screen> screens;
-    private static final List<View> views;
+    private static final List<Phase> PHASES;
+    private static final List<View> VIEWS;
     private static View pendingView;
     private static View currentView;
 
     static {
-        screens = new LinkedList<>(Arrays.asList(Screen.values()));
-        views = new ArrayList<>();
+        PHASES = new LinkedList<>(Arrays.asList(Phase.values()));
+        VIEWS = new ArrayList<>();
         ViewFactory factory = new ViewFactory();
-        screens.forEach(screen -> views.add(factory.createView(screen)));
+        PHASES.forEach(screen -> VIEWS.add(factory.createView(screen)));
     }
 
-    // Screen at index 0 is considered active
-    public static void setActive(Screen screen) {
-        // Put on "top"
-        screens.remove(screen);
-        screens.add(0, screen);
-        // Pending view is a view linked to given screen
-        views.stream().filter(view -> view.screen == screen).forEach(view -> pendingView = view);
+    // Phase at index 0 is considered active
+    public static void setActive(Phase phase) {
+        PHASES.remove(phase);                         // place phase at position 0 = make active
+        PHASES.add(0, phase);
+        VIEWS.stream()                                // search views
+                .filter(view -> view.phase == phase)  // find view for this phase
+                .forEach(view -> pendingView = view); // register this view as pending
     }
 
     public static void updateView() {
@@ -61,11 +61,11 @@ public enum Screen {
         }
     }
 
-    public static Screen getActive() {
-        return screens.get(0);
+    public static Phase getActive() {
+        return PHASES.get(0);
     }
 
-    public static boolean isActive(Screen screen) {
-        return (screens.get(0) == screen);
+    public static boolean isActive(Phase phase) {
+        return (PHASES.get(0) == phase);
     }
 }

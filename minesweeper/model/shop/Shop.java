@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
@@ -70,7 +70,7 @@ public class Shop {
     public void offerFlag() {
         if (!Options.autoBuyFlagsSelector.isEnabled() && flag.inStock > 0) {
             PopUpMessage.show("Купите флажок!");
-            Screen.setActive(Screen.SHOP);
+            Phase.setActive(Phase.SHOP);
             return;
         }
         if (flag.isUnobtainable()) {

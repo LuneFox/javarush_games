@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.Phase;
 
 /**
  * Draws stuff on the screen.
@@ -10,10 +10,10 @@ import com.javarush.games.minesweeper.model.Screen;
 
 public class View {
     protected MinesweeperGame game = MinesweeperGame.getInstance();
-    public Screen screen;
+    public Phase phase;
 
-    public View(Screen screen) {
-        this.screen = screen;
+    public View(Phase phase) {
+        this.phase = phase;
     }
 
     public void update() {

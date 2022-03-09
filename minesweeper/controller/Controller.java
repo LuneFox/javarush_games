@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.controller;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 
@@ -15,14 +15,14 @@ import java.util.*;
 
 public class Controller {
     private ControlStrategy strategy;
-    private static final Map<Screen, ControlStrategy> strategyMap = new HashMap<>();
+    private static final Map<Phase, ControlStrategy> strategyMap = new HashMap<>();
     private static int lastClickX;
     private static int lastClickY;
 
     static {
-        List<Screen> screens = new LinkedList<>(Arrays.asList(Screen.values()));
+        // Fill strategy map
         ControlStrategyFactory factory = new ControlStrategyFactory();
-        screens.forEach(screen -> strategyMap.put(screen, factory.createStrategy(screen)));
+        Arrays.stream(Phase.values()).forEach(screen -> strategyMap.put(screen, factory.createStrategy(screen)));
         strategyMap.put(null, new ControlStrategy() { // disabled controls option
         });
     }
@@ -62,7 +62,7 @@ public class Controller {
             this.strategy = strategyMap.get(null);
             return;
         }
-        this.strategy = strategyMap.get(Screen.getActive());
+        this.strategy = strategyMap.get(Phase.getActive());
     }
 
     private void memorizeClick(int x, int y) {

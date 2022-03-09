@@ -10,7 +10,7 @@ import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.gui.interactive.ButtonID;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
@@ -22,10 +22,10 @@ import java.util.LinkedList;
 import static com.javarush.games.minesweeper.model.player.Score.Table.*;
 
 public class ViewFactory {
-    public View createView(Screen screen) {
-        switch (screen) {
+    public View createView(Phase phase) {
+        switch (phase) {
             case ABOUT:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         Cache.get(ImageID.WIN_MENU).draw();
@@ -79,10 +79,10 @@ public class ViewFactory {
                 };
 
             case BOARD:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
-                        if (!(Screen.isActive(Screen.SHOP))) game.display.setInterlaceEnabled(true);
+                        if (!(Phase.isActive(Phase.SHOP))) game.display.setInterlaceEnabled(true);
                         game.checkTimeOut();
                         game.field.draw();
                         if (game.shop.allItems.get(1).isActivated()) {
@@ -100,7 +100,7 @@ public class ViewFactory {
                 };
 
             case GAME_OVER:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         if (game.gameOverShowDelay > 0) {
@@ -130,7 +130,7 @@ public class ViewFactory {
                 };
 
             case ITEM_HELP:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         ShopItem displayItem = game.shop.helpDisplayItem;
@@ -149,7 +149,7 @@ public class ViewFactory {
                 };
 
             case MAIN:
-                return new View(screen) {
+                return new View(phase) {
                     private String quote;
                     private Date lastQuoteDate;
                     private final LinkedList<String> QUOTES = new LinkedList<>();
@@ -207,7 +207,7 @@ public class ViewFactory {
                 };
 
             case OPTIONS:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         Cache.get(ImageID.WIN_MENU).draw();
@@ -234,7 +234,7 @@ public class ViewFactory {
                 };
 
             case RECORDS:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         Cache.get(ImageID.WIN_MENU).draw();
@@ -280,7 +280,7 @@ public class ViewFactory {
                 };
 
             case SCORE:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         Cache.get(ImageID.WIN_MENU).draw();
@@ -325,7 +325,7 @@ public class ViewFactory {
                 };
 
             case SHOP:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         game.field.draw();
@@ -339,7 +339,7 @@ public class ViewFactory {
                 };
 
             default:
-                return new View(screen) {
+                return new View(phase) {
                     @Override
                     public void update() {
                         super.update();

@@ -39,7 +39,7 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void initialize() {
-        instance = this;            // most declarations below use this instance
+        instance = this;            // most declarations below use this instance, leave before everything else
         display = new Display();
         controller = new Controller();
         field = new Field();
@@ -51,14 +51,14 @@ public class MinesweeperGame extends Game {
         showGrid(false);
         setScreenSize(100, 100);
         isStopped = true;
-        Screen.setActive(Screen.MAIN);
+        Phase.setActive(Phase.MAIN);
         setTurnTimer(30);
     }
 
     @Override
     public void onTurn(int step) {
-        Screen.updateView();
-        display.draw();
+        Phase.updateView(); // view elements are drawn layer by layer over the virtual invisible display to save time
+        display.draw();     // copy all pixels from virtual display to real display
     }
 
     public void startNewGame() {
@@ -71,7 +71,7 @@ public class MinesweeperGame extends Game {
         player.inventory.reset();
         timer.restart();
         setScore(player.score.getCurrentScore());
-        Screen.setActive(Screen.BOARD);
+        Phase.setActive(Phase.BOARD);
         PopUpMessage.show("Новая игра");
     }
 
@@ -93,7 +93,7 @@ public class MinesweeperGame extends Game {
         this.isStopped = true;
         this.isVictory = isVictory;
         gameOverShowDelay = 30;
-        Screen.setActive(Screen.GAME_OVER);
+        Phase.setActive(Phase.GAME_OVER);
         setScore(player.score.getTotalScore());
         Score.Table.update();
     }
@@ -106,7 +106,7 @@ public class MinesweeperGame extends Game {
 
     public void checkTimeOut() {
         if (!isStopped && timer.isZero()) {
-            Screen.setActive(Screen.BOARD);
+            Phase.setActive(Phase.BOARD);
             PopUpMessage.show("Время вышло!");
             lose();
         } else {
