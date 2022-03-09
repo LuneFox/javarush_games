@@ -96,7 +96,7 @@ public class Slot extends DrawableObject {
 
         if (item.isUnaffordable()) {
             Message.show("Не хватает золота");
-            game.shop.header.moneyShaker.startShaking();
+            game.shop.showCase.header.moneyShaker.startShaking();
             return;
         }
 

@@ -50,8 +50,8 @@ public enum Screen {
         MinesweeperGame game = MinesweeperGame.getInstance();
         game.display.setInterlaceEnabled(false);
         PageSelector.allSelectors.forEach(PageSelector::reset);
-        if (game.shop.header != null) {
-            game.shop.header.setDisplayMoney(game.player.inventory.money);
+        if (game.shop.showCase != null) {
+            game.shop.showCase.header.setDisplayMoney(game.player.inventory.money);
         }
     }
 

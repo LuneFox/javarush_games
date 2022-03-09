@@ -344,8 +344,6 @@ public class View {
                         game.field.draw();
                         game.checkTimeOut();
                         game.shop.showCase.draw();
-                        game.shop.header.draw();
-                        game.shop.footer.draw();
                         game.timer.draw();
                         game.shop.goldenShovel.statusBar.draw();
                         game.shop.luckyDice.statusBar.draw();

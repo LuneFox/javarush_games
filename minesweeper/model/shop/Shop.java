@@ -32,9 +32,6 @@ public class Shop {
     public ShopItem luckyDice;
     public ShopItem miniBomb;
 
-    // Window components
-    public Header header;
-    public Footer footer;
     public ShowCase showCase;
     public ShopItem helpDisplayItem;
 
@@ -74,7 +71,7 @@ public class Shop {
 
     public void offerFlag() {
         if (!Options.autoBuyFlagsSelector.isEnabled() && flag.inStock > 0) {
-            Message.show("Нет флажков!");
+            Message.show("Купите флажок!");
             Screen.setActive(Screen.SHOP);
             return;
         }
@@ -112,8 +109,6 @@ public class Shop {
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
 
-        header = new Header();
-        footer = new Footer();
         showCase = new ShowCase();
     }
 

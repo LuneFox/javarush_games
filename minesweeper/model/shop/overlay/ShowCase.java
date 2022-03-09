@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ShowCase extends DrawableObject {
+    public Header header;
+    public Footer footer;
     private Image panel;
     private final List<Slot> slots = new ArrayList<>();
 
@@ -26,6 +28,9 @@ public class ShowCase extends DrawableObject {
                 slots.add(new Slot(x + dx, y + dy, game.shop.allItems.get(i++)));
             }
         }
+
+        this.header = new Header();
+        this.footer = new Footer();
     }
 
     @Override
@@ -33,6 +38,8 @@ public class ShowCase extends DrawableObject {
         panel = Cache.get(VisualElement.WIN_SHOP_SHOWCASE);
         panel.draw(x, y);
         slots.forEach(DrawableObject::draw);
+        header.draw();
+        footer.draw();
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, y + 12);
     }
 
