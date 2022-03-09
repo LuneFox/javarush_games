@@ -2,8 +2,6 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.Screen;
-import com.javarush.games.minesweeper.model.Strings;
-import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.model.options.PageSelector;
 import com.javarush.games.minesweeper.view.graphics.*;
 
