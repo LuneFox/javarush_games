@@ -34,6 +34,7 @@ public class MinesweeperGame extends Game {
     public boolean isStopped = true;
     public boolean isFirstMove = true;
     public boolean isVictory = false;
+    public int gameOverShowDelay;
 
     @Override
     public void initialize() {
@@ -90,7 +91,7 @@ public class MinesweeperGame extends Game {
     private void finish(boolean isVictory) {
         this.isStopped = true;
         this.isVictory = isVictory;
-        Screen.gameOver.setDelay();
+        gameOverShowDelay = 30;
         Screen.setActive(Screen.GAME_OVER);
         setScore(player.score.getTotalScore());
         Score.Table.update();

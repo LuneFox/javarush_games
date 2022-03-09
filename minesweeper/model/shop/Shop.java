@@ -36,6 +36,7 @@ public class Shop {
     public Header header;
     public Footer footer;
     public ShowCase showCase;
+    public ShopItem helpDisplayItem;
 
     public void sell(ShopItem item) {
         if (item == null) return;

@@ -10,6 +10,7 @@ import com.javarush.games.minesweeper.view.graphics.*;
  */
 
 public class Message extends DrawableObject {
+    private static final int STEP = 1;
     private static final Message INSTANCE = new Message();
     private final Image background;
     private String text;
@@ -19,18 +20,19 @@ public class Message extends DrawableObject {
     private boolean slideFromBottom;
 
     private Message() {
+        height = 11;
         this.background = Cache.get(VisualElement.WIN_MESSAGE);
-        background.setPosition(5, -11);
+        background.setPosition(5, -height);
         slideFromBottom = false;
     }
 
     @Override
     public void draw() {
         // Slide animation
-        if (timeToLiveStart - timeToLive < 10) {
-            yPos += Controller.clickedOnUpperHalf() ? -2 : 2;
-        } else if (timeToLive < 10) {
-            yPos += Controller.clickedOnUpperHalf() ? 2 : -2;
+        if (timeToLiveStart - timeToLive < height) {
+            yPos += slideFromBottom ? -STEP : STEP;
+        } else if (timeToLive < height) {
+            yPos += slideFromBottom ? STEP : -STEP;
         }
         background.draw(5, yPos);
         Printer.print(text, Color.WHITE, Printer.CENTER, yPos + 1);
@@ -51,7 +53,8 @@ public class Message extends DrawableObject {
         INSTANCE.timeToLive = 60;
         INSTANCE.timeToLiveStart = 60;
         INSTANCE.text = text;
-        INSTANCE.yPos = Controller.clickedOnUpperHalf() ? 100 : -11;
+        INSTANCE.slideFromBottom = Controller.clickedOnUpperHalf();
+        INSTANCE.yPos = INSTANCE.slideFromBottom ? 100 : -INSTANCE.height;
     }
 
     public static int getTimeToLive() {

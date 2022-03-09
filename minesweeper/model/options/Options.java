@@ -10,6 +10,7 @@ public class Options {
     public static SwitchSelector timerEnabledSelector;
     public static SwitchSelector displayMessageSelector;
     public static ThemeSelector themeSelector;
+    public static PageSelector aboutPageSelector = new PageSelector(27, 89, 45, 6);
 
     public static void initialize() {
         difficultySelector = new DifficultySelector(49, 14);

@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.options.Options;
+import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.view.graphics.Button;
 import com.javarush.games.minesweeper.view.graphics.Cache;
 
@@ -58,17 +59,17 @@ class ControlAbout implements ControlStrategy {
         if (Cache.get(Button.ButtonID.GENERAL_CLOSE).checkLeftTouch(x, y)) {
             Screen.setActive(Screen.MAIN);
         }
-        Screen.about.pageSelector.checkLeftTouch(x, y);
+        Options.aboutPageSelector.checkLeftTouch(x, y);
     }
 
     @Override
     public void pressRight() {
-        Screen.about.pageSelector.nextPage();
+        Options.aboutPageSelector.nextPage();
     }
 
     @Override
     public void pressLeft() {
-        Screen.about.pageSelector.prevPage();
+        Options.aboutPageSelector.prevPage();
     }
 
     @Override
@@ -256,34 +257,29 @@ class ControlScore implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (Cache.get(Button.ButtonID.GENERAL_CONFIRM).checkLeftTouch(x, y)) {
-            goBack();
+            Screen.setActive(Screen.GAME_OVER);
         }
-        Screen.score.pageSelector.checkLeftTouch(x, y);
+        Score.Table.pageSelector.checkLeftTouch(x, y);
     }
 
     @Override
     public void pressSpace() {
-        goBack();
+        Screen.setActive(Screen.GAME_OVER);
     }
 
     @Override
     public void pressEsc() {
-        goBack();
+        Screen.setActive(Screen.GAME_OVER);
     }
 
     @Override
     public void pressRight() {
-        Screen.score.pageSelector.nextPage();
+        Score.Table.pageSelector.nextPage();
     }
 
     @Override
     public void pressLeft() {
-        Screen.score.pageSelector.prevPage();
-    }
-
-    private void goBack() {
-        Screen.board.update();
-        Screen.setActive(Screen.GAME_OVER);
+        Score.Table.pageSelector.prevPage();
     }
 }
 

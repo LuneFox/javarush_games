@@ -11,23 +11,17 @@ import java.util.LinkedList;
 import java.util.List;
 
 public enum Screen {
-    MAIN, GAME_OVER, SHOP, BOARD, OPTIONS, ABOUT, ITEM_HELP, SCORE, RECORDS;
-
-    private static final MinesweeperGame game = MinesweeperGame.getInstance();
-    private static final List<Screen> screens = new LinkedList<>(Arrays.asList(Screen.values()));
-    public static final List<View> views = new ArrayList<>();
-    public static final ViewAbout about = new ViewAbout();
-    public static final ViewBoard board = new ViewBoard();
-    public static final ViewGameOver gameOver = new ViewGameOver();
-    public static final ViewItemHelp itemHelp = new ViewItemHelp();
-    public static final ViewMain main = new ViewMain();
-    public static final ViewOptions options = new ViewOptions();
-    public static final ViewRecords records = new ViewRecords();
-    public static final ViewScore score = new ViewScore();
-    public static final ViewShop shop = new ViewShop();
+    ABOUT, BOARD, GAME_OVER, ITEM_HELP, MAIN, OPTIONS, RECORDS, SCORE, SHOP;
+    private static final List<Screen> screens;
+    private static final List<View> views;
     private static View pendingView;
-    private static View currentView = main;
+    private static View currentView;
 
+    static {
+        screens = new LinkedList<>(Arrays.asList(Screen.values()));
+        views = new ArrayList<>();
+        screens.forEach(screen -> views.add(View.createView(screen)));
+    }
 
     // Screen at index 0 is considered active
     public static void setActive(Screen screen) {
@@ -35,9 +29,7 @@ public enum Screen {
         screens.remove(screen);
         screens.add(0, screen);
         // Pending view is a view linked to given screen
-        views.stream()
-                .filter(view -> view.screen == screen)
-                .forEach(view -> pendingView = view);
+        views.stream().filter(view -> view.screen == screen).forEach(view -> pendingView = view);
     }
 
     public static void updateView() {
@@ -55,6 +47,7 @@ public enum Screen {
 
     private static void onViewChange() {
         // Things that happen right before the pending view is applied
+        MinesweeperGame game = MinesweeperGame.getInstance();
         game.display.setInterlaceEnabled(false);
         PageSelector.allSelectors.forEach(PageSelector::reset);
         if (game.shop.header != null) {
