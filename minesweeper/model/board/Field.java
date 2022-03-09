@@ -64,7 +64,9 @@ public class Field extends DrawableObject {
     public void attachNumbers() {
         getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
             cell.countMinedNeighbors = getNeighborCells(cell, Cell.Filter.MINED, false).size();
-            cell.setSprite(cell.countMinedNeighbors);
+            if (cell.countMinedNeighbors > 0) {
+                cell.setSprite(cell.countMinedNeighbors);
+            }
         });
     }
 
