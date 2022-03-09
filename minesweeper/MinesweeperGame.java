@@ -36,6 +36,7 @@ public class MinesweeperGame extends Game {
     public boolean isFirstMove = true;
     public boolean isVictory = false;
     public int gameOverShowDelay;
+    private boolean cheatPhase;
 
     @Override
     public void initialize() {
@@ -70,6 +71,7 @@ public class MinesweeperGame extends Game {
         shop.reset();
         player.inventory.reset();
         timer.restart();
+        cheatPhase = false;
         setScore(player.score.getCurrentScore());
         Phase.setActive(Phase.BOARD);
         PopUpMessage.show("Новая игра");
@@ -293,6 +295,62 @@ public class MinesweeperGame extends Game {
             });
             field.attachNumbers();
         }
+    }
+
+    private void autoFlag() {
+        boolean[] success = new boolean[1];
+        field.getAllCells(Filter.NUMERABLE).forEach(cell -> {
+            if (!cell.isOpen) return;
+            List<Cell> dangerousNeighbors = field.getNeighborCells(cell, Filter.DANGEROUS, false);
+            List<Cell> closedNeighbors = field.getNeighborCells(cell, Filter.CLOSED, false);
+            if (dangerousNeighbors.size() == closedNeighbors.size()) {
+                dangerousNeighbors.forEach(dangerousNeighbor -> {
+                    if (dangerousNeighbor.isFlagged) return;
+                    if (player.inventory.hasNoFlags()) shop.sell(shop.flag);
+                    setFlag(dangerousNeighbor.x, dangerousNeighbor.y, false);
+                    success[0] = true;
+                });
+            }
+        });
+        if (!success[0]) {
+            PopUpMessage.show("DEV: CANNOT FLAG");
+        } else {
+            PopUpMessage.show("DEV: AUTO FLAG");
+        }
+    }
+
+    private void autoOpen() {
+        if (field.getAllCells(Filter.CLOSED).size() == 100) {
+            List<Cell> allCells = field.getAllCells(Filter.NONE);
+            Cell randomCell = allCells.get(getRandomNumber(allCells.size()));
+            openCell(randomCell.x, randomCell.y);
+        } else {
+            field.getAllCells(Filter.NUMERABLE).forEach(cell -> {
+                openSurroundingCells(cell.x, cell.y);
+            });
+        }
+        PopUpMessage.show("DEV: AUTO OPEN");
+    }
+
+    public void autoScan() {
+        List<Cell> allCells = field.getAllCells(Filter.SAFE);
+        Cell randomCell = allCells.get(getRandomNumber(allCells.size()));
+        scanNeighbors(randomCell.x, randomCell.y);
+        PopUpMessage.show("DEV: AUTO SCAN");
+    }
+
+    public void autoMove() {
+        shop.goldenShovel.deactivate();
+        shop.purge(shop.goldenShovel);
+        shop.luckyDice.deactivate();
+        shop.purge(shop.luckyDice);
+
+        if (cheatPhase) {
+            autoFlag();
+        } else {
+            autoOpen();
+        }
+        cheatPhase = !cheatPhase;
     }
 
     // CONTROLS

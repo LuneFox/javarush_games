@@ -120,7 +120,7 @@ public class ViewFactory {
                             Cache.get(ImageID.FACE_SAD).draw(Image.CENTER, Image.CENTER);
                             Printer.print("не повезло!", Color.YELLOW, 18, 33);
                         }
-                        Printer.print("счёт: " + Score.Table.total, Color.LIGHTGOLDENRODYELLOW, 28, 57);
+                        Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 28, 57);
                         Cache.get(ButtonID.GAME_OVER_AGAIN).draw();
                         Cache.get(ButtonID.GAME_OVER_RETURN).draw();
                         Cache.get(ButtonID.GAME_OVER_HIDE).draw();
@@ -201,7 +201,7 @@ public class ViewFactory {
                     private void printTopScore() {
                         if (game.player.score.getTopScore() > 0) {
                             Printer.print("счёт: " + game.player.score.getTopScore() + "\n" + game.player.getTitle(),
-                                    Color.LIGHTGOLDENRODYELLOW, 4, 65);
+                                    Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 4, 65);
                         }
                     }
                 };
@@ -297,15 +297,16 @@ public class ViewFactory {
                             case 0:
                                 Printer.print("подробности счёта", Color.YELLOW, Printer.CENTER, 2);
                                 Printer.print("ячейки:\nкубик:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", 3, 13);
+
                                 Printer.print(
-                                        (game.player.score.getTotalScore() +
+                                        (total +
                                                 "\n\n" + scoreTimer +
                                                 "\n" + (shieldScoreDetail + scoreLost) +
                                                 "\n" + (victory ? (moneyScoreDetail + scoreMoney) : youLost) +
                                                 "\n" + (victory ? (minesScoreDetail + scoreMines) : youLost) +
                                                 "\n" + scoreDice +
                                                 "\n" + cellScoreDetail + cellsCount * difficulty),
-                                        Color.YELLOW, 94, 13, true);
+                                        Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 94, 13, true);
                                 break;
                             case 1:
                                 Printer.print("очки кубика удачи", Color.YELLOW, Printer.CENTER, 2);
@@ -314,7 +315,7 @@ public class ViewFactory {
                                                 "\n\n\n" + difficulty +
                                                 "\n" + diceLuckyCells +
                                                 "\n" + diceAvgLuck),
-                                        Color.YELLOW, 94, 13, true);
+                                        Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 94, 13, true);
                                 break;
                             default:
                                 break;

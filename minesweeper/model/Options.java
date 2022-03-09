@@ -9,6 +9,8 @@ public class Options {
     // Store copies of options apart from corresponding switches to apply them only to a new game
     public static int difficulty;
     public static boolean timerEnabled;
+    public static boolean developerMode;
+    public static int developerCounter;
 
     public static DifficultySelector difficultySelector;
     public static SwitchSelector autoBuyFlagsSelector;

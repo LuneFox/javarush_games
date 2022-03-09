@@ -79,6 +79,18 @@ public class ControlStrategyFactory {
                     }
 
                     @Override
+                    public void pressLeft() {
+                        if (!Options.developerMode) return;
+                        game.autoScan();
+                    }
+
+                    @Override
+                    public void pressRight() {
+                        if (!Options.developerMode) return;
+                        game.autoMove();
+                    }
+
+                    @Override
                     public void pressSpace() {
                         if (!game.isStopped) {
                             Phase.setActive(Phase.SHOP);
@@ -167,7 +179,13 @@ public class ControlStrategyFactory {
                         } else if (Cache.get(ButtonID.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.RECORDS);
                         } else if (Cache.get(ImageID.FLO_LOGO).checkLeftTouch(x, y)) {
-                            PopUpMessage.show("Версия: " + Strings.VERSION);
+                            if (Options.developerCounter < 9) {
+                                Options.developerCounter++;
+                                PopUpMessage.show("Версия: " + Strings.VERSION);
+                            } else {
+                                Options.developerMode = true;
+                                PopUpMessage.show("Вы разработчик!");
+                            }
                         }
                     }
 
@@ -288,6 +306,23 @@ public class ControlStrategyFactory {
                     @Override
                     public void pressEsc() {
                         Phase.setActive(Phase.BOARD);
+                    }
+
+                    @Override
+                    public void pressUp() {
+                        if (!Options.developerMode) return;
+                        game.player.inventory.money = 999;
+                        PopUpMessage.show("DEV: 999 GOLD");
+                    }
+
+                    @Override
+                    public void pressDown() {
+                        if (!Options.developerMode) return;
+                        game.shop.goldenShovel.activate();
+                        game.shop.luckyDice.activate();
+                        game.shop.goldenShovel.expireMove = 99;
+                        game.shop.luckyDice.expireMove = 99;
+                        PopUpMessage.show("DEV: DURABLE ITEMS");
                     }
 
                     private boolean clickedOutsideShopWindow(int x, int y) {
