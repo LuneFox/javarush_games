@@ -163,7 +163,7 @@ public class ViewFactory {
                     @Override
                     public void update() {
                         Cache.get(ImageID.WIN_MENU).draw();
-                        Printer.print("JavaRush", Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
+                        Printer.print(Options.developerMode ? "Developer Mode" : "JavaRush", Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
                         ((FloatingImage) Cache.get(ImageID.FLO_LOGO)).draw(2.8, Image.CENTER, 8);
                         Cache.get(ButtonID.MAIN_MENU_OPTIONS).draw();
                         Cache.get(ButtonID.MAIN_MENU_ABOUT).draw();
