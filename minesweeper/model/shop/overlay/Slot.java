@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.gui.*;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 /**
@@ -107,6 +107,6 @@ public class Slot extends DrawableObject {
     @Override
     protected void onRightTouch() {
         game.shop.helpDisplayItem = item;
-        Screen.setActive(Screen.ITEM_HELP);
+        Phase.setActive(Phase.ITEM_HELP);
     }
 }

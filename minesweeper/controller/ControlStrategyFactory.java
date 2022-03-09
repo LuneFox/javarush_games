@@ -4,7 +4,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.gui.interactive.ButtonID;
-import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.Options;
@@ -16,14 +16,14 @@ import java.util.stream.Stream;
 import static com.javarush.games.minesweeper.Util.inside;
 
 public class ControlStrategyFactory {
-    public ControlStrategy createStrategy(Screen screen) {
-        switch (screen) {
+    public ControlStrategy createStrategy(Phase phase) {
+        switch (phase) {
             case ABOUT:
                 return new ControlStrategy() {
                     @Override
                     public void leftClick(int x, int y) {
                         if (Cache.get(ButtonID.GENERAL_CLOSE).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.MAIN);
+                            Phase.setActive(Phase.MAIN);
                         }
                         Options.aboutPageSelector.checkLeftTouch(x, y);
                     }
@@ -40,7 +40,7 @@ public class ControlStrategyFactory {
 
                     @Override
                     public void pressEsc() {
-                        Screen.setActive(Screen.MAIN);
+                        Phase.setActive(Phase.MAIN);
                     }
                 };
 
@@ -54,7 +54,7 @@ public class ControlStrategyFactory {
                         int gridY = y / 10;
 
                         if (game.isStopped) {
-                            Screen.setActive(Screen.GAME_OVER);
+                            Phase.setActive(Phase.GAME_OVER);
                             return;
                         }
                         Cell cell = game.field.get()[gridY][gridX];
@@ -70,7 +70,7 @@ public class ControlStrategyFactory {
                         int gridY = y / 10;
 
                         if (game.isStopped) {
-                            Screen.setActive(Screen.GAME_OVER);
+                            Phase.setActive(Phase.GAME_OVER);
                             return;
                         }
                         game.setFlag(gridX, gridY, true);  // works only on closed tiles
@@ -81,18 +81,18 @@ public class ControlStrategyFactory {
                     @Override
                     public void pressSpace() {
                         if (!game.isStopped) {
-                            Screen.setActive(Screen.SHOP);
+                            Phase.setActive(Phase.SHOP);
                         } else {
-                            Screen.setActive(Screen.GAME_OVER);
+                            Phase.setActive(Phase.GAME_OVER);
                         }
                     }
 
                     @Override
                     public void pressEsc() {
                         if (game.isStopped) {
-                            Screen.setActive(Screen.GAME_OVER);
+                            Phase.setActive(Phase.GAME_OVER);
                         } else {
-                            Screen.setActive(Screen.MAIN);
+                            Phase.setActive(Phase.MAIN);
                         }
                     }
 
@@ -104,7 +104,7 @@ public class ControlStrategyFactory {
                     @Override
                     public void pressOther() {
                         if (game.isStopped) {
-                            Screen.setActive(Screen.GAME_OVER);
+                            Phase.setActive(Phase.GAME_OVER);
                         }
                     }
                 };
@@ -116,11 +116,11 @@ public class ControlStrategyFactory {
                     @Override
                     public void leftClick(int x, int y) {
                         if (Cache.get(ButtonID.GAME_OVER_HIDE).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.BOARD);
+                            Phase.setActive(Phase.BOARD);
                         } else if (Cache.get(ButtonID.GAME_OVER_RETURN).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.MAIN);
+                            Phase.setActive(Phase.MAIN);
                         } else if (Cache.get(ButtonID.GAME_OVER_QUESTION).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.SCORE);
+                            Phase.setActive(Phase.SCORE);
                         } else if (Cache.get(ButtonID.GAME_OVER_AGAIN).checkLeftTouch(x, y)) {
                             game.startNewGame();
                         }
@@ -128,12 +128,12 @@ public class ControlStrategyFactory {
 
                     @Override
                     public void pressSpace() {
-                        Screen.setActive(Screen.SCORE);
+                        Phase.setActive(Phase.SCORE);
                     }
 
                     @Override
                     public void pressEsc() {
-                        Screen.setActive(Screen.BOARD);
+                        Phase.setActive(Phase.BOARD);
                     }
                 };
 
@@ -142,13 +142,13 @@ public class ControlStrategyFactory {
                     @Override
                     public void leftClick(int x, int y) {
                         if (Cache.get(ButtonID.GENERAL_CLOSE).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.SHOP);
+                            Phase.setActive(Phase.SHOP);
                         }
                     }
 
                     @Override
                     public void pressEsc() {
-                        Screen.setActive(Screen.SHOP);
+                        Phase.setActive(Phase.SHOP);
                     }
                 };
 
@@ -161,11 +161,11 @@ public class ControlStrategyFactory {
                         if (Cache.get(ButtonID.MAIN_MENU_START).checkLeftTouch(x, y)) {
                             game.startNewGame();
                         } else if (Cache.get(ButtonID.MAIN_MENU_OPTIONS).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.OPTIONS);
+                            Phase.setActive(Phase.OPTIONS);
                         } else if (Cache.get(ButtonID.MAIN_MENU_ABOUT).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.ABOUT);
+                            Phase.setActive(Phase.ABOUT);
                         } else if (Cache.get(ButtonID.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.RECORDS);
+                            Phase.setActive(Phase.RECORDS);
                         } else if (Cache.get(ImageID.FLO_LOGO).checkLeftTouch(x, y)) {
                             PopUpMessage.show("Версия: " + Strings.VERSION);
                         }
@@ -174,7 +174,7 @@ public class ControlStrategyFactory {
                     @Override
                     public void pressEsc() {
                         if (!game.isStopped) {
-                            Screen.setActive(Screen.BOARD);
+                            Phase.setActive(Phase.BOARD);
                         }
                     }
                 };
@@ -184,7 +184,7 @@ public class ControlStrategyFactory {
                     @Override
                     public void leftClick(int x, int y) {
                         if (Cache.get(ButtonID.GENERAL_CLOSE).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.MAIN);
+                            Phase.setActive(Phase.MAIN);
                             PopUpMessage.show("Сохранено");
                         }
 
@@ -209,7 +209,7 @@ public class ControlStrategyFactory {
 
                     @Override
                     public void pressEsc() {
-                        Screen.setActive(Screen.MAIN);
+                        Phase.setActive(Phase.MAIN);
                         PopUpMessage.show("Сохранено");
                     }
                 };
@@ -219,13 +219,13 @@ public class ControlStrategyFactory {
                     @Override
                     public void leftClick(int x, int y) {
                         if (Cache.get(ButtonID.GENERAL_CLOSE).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.MAIN);
+                            Phase.setActive(Phase.MAIN);
                         }
                     }
 
                     @Override
                     public void pressEsc() {
-                        Screen.setActive(Screen.MAIN);
+                        Phase.setActive(Phase.MAIN);
                     }
                 };
 
@@ -234,19 +234,19 @@ public class ControlStrategyFactory {
                     @Override
                     public void leftClick(int x, int y) {
                         if (Cache.get(ButtonID.GENERAL_CONFIRM).checkLeftTouch(x, y)) {
-                            Screen.setActive(Screen.GAME_OVER);
+                            Phase.setActive(Phase.GAME_OVER);
                         }
                         Score.Table.pageSelector.checkLeftTouch(x, y);
                     }
 
                     @Override
                     public void pressSpace() {
-                        Screen.setActive(Screen.GAME_OVER);
+                        Phase.setActive(Phase.GAME_OVER);
                     }
 
                     @Override
                     public void pressEsc() {
-                        Screen.setActive(Screen.GAME_OVER);
+                        Phase.setActive(Phase.GAME_OVER);
                     }
 
                     @Override
@@ -267,7 +267,7 @@ public class ControlStrategyFactory {
                     @Override
                     public void leftClick(int x, int y) {
                         if (clickedOutsideShopWindow(x, y)) {
-                            Screen.setActive(Screen.BOARD);
+                            Phase.setActive(Phase.BOARD);
                             return;
                         }
                         game.shop.showCase.checkLeftTouch(x, y);
@@ -282,12 +282,12 @@ public class ControlStrategyFactory {
 
                     @Override
                     public void pressSpace() {
-                        Screen.setActive(Screen.BOARD);
+                        Phase.setActive(Phase.BOARD);
                     }
 
                     @Override
                     public void pressEsc() {
-                        Screen.setActive(Screen.BOARD);
+                        Phase.setActive(Phase.BOARD);
                     }
 
                     private boolean clickedOutsideShopWindow(int x, int y) {
