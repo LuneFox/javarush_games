@@ -94,35 +94,38 @@ public class Score {
     public static class Table {
         public static int total;
         public static int minesCount;
-        public static int scoredCells;
+        public static int cellsCount;
         public static int difficulty;
-        public static int money;
-        public static int shields;
-        public static int luckyCells;
+        public static int moneyLeftOver;
+        public static int penaltyShields;
+        public static int diceLuckyCells;
         public static int scoreDice;
         public static int scoreLost;
         public static int scoreTimer;
-        public static int moneyScore;
-        public static int minesScore;
-        public static double avgLuck;
+        public static int scoreMoney;
+        public static int scoreMines;
+        public static double diceAvgLuck;
         public static boolean victory;
 
         public static void update() {
             MinesweeperGame game = MinesweeperGame.getInstance();
-            total = game.player.score.getTotalScore();
-            minesCount = game.field.countAllCells(Cell.Filter.MINED);
-            scoredCells = game.field.countAllCells(Cell.Filter.SCORED);
-            difficulty = Options.difficulty;
-            money = game.player.inventory.money;
-            shields = game.player.getBrokenShields();
-            scoreDice = game.player.score.getDiceScore();
-            scoreLost = game.player.score.getLostScore();
-            scoreTimer = game.player.score.getTimerScore();
-            moneyScore = game.player.score.getMoneyScore();
-            minesScore = game.player.score.getMinesScore();
-            luckyCells = game.field.dice.totalCells;
-            avgLuck = game.field.dice.getAverageLuck();
+            Score score = game.player.score;
+
+            scoreDice = score.getDiceScore();
+            scoreLost = score.getLostScore();
+            scoreTimer = score.getTimerScore();
+            scoreMoney = score.getMoneyScore();
+            scoreMines = score.getMinesScore();
+            total = score.getTotalScore();
+
             victory = game.isVictory;
+            difficulty = Options.difficulty;
+            minesCount = game.field.countAllCells(Cell.Filter.MINED);
+            cellsCount = game.field.countAllCells(Cell.Filter.SCORED);
+            penaltyShields = game.player.getBrokenShields();
+            diceLuckyCells = game.field.dice.totalCells;
+            diceAvgLuck = game.field.dice.getAverageLuck();
+            moneyLeftOver = game.player.inventory.money;
         }
     }
 }

@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.controller;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.strategy.*;
+import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.view.graphics.Button;
@@ -16,6 +17,8 @@ import java.util.Map;
 public class Controller {
     private ControlStrategy strategy;
     private static final Map<Screen, ControlStrategy> strategyMap = new HashMap<>();
+    private static int lastClickX;
+    private static int lastClickY;
 
     static {
         strategyMap.put(Screen.ABOUT, new ControlAbout());
@@ -32,18 +35,22 @@ public class Controller {
     }
 
     public final void leftClick(int x, int y) {
+        memorizeClickCoordinates(x, y);
         selectStrategy(x, y);
         strategy.leftClick(x, y);
     }
 
     public final void rightClick(int x, int y) {
+        memorizeClickCoordinates(x, y);
         selectStrategy(x, y);
         strategy.rightClick(x, y);
-        // System.out.printf("%d %d%n", x, y);
     }
 
     public final void pressKey(Key key) {
-        selectStrategy(0, 0); // Keyboard buttons never miss the screen
+        if (Message.getTimeToLive() <= 0) {
+            memorizeClickCoordinates(99, 99); // Key presses always make the message slide from the top
+        }
+        selectStrategy(0, 0); // Key presses never miss the screen
         if (key == Key.UP) strategy.pressUp();
         else if (key == Key.DOWN) strategy.pressDown();
         else if (key == Key.LEFT) strategy.pressLeft();
@@ -63,5 +70,15 @@ public class Controller {
             return;
         }
         this.strategy = strategyMap.get(Screen.getActive());
+    }
+
+    private void memorizeClickCoordinates(int x, int y) {
+        // System.out.printf("%d %d%n", x, y);
+        lastClickX = x;
+        lastClickY = y;
+    }
+
+    public static boolean clickedOnUpperHalf() {
+        return lastClickY < 50;
     }
 }

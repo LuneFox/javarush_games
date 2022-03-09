@@ -37,5 +37,4 @@ public interface ControlStrategy {
 
     default void pressOther() {
     }
-
 }

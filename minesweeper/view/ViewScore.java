@@ -8,15 +8,15 @@ import com.javarush.games.minesweeper.view.graphics.*;
 
 import static com.javarush.games.minesweeper.model.player.Score.Table.minesCount;
 import static com.javarush.games.minesweeper.model.player.Score.Table.difficulty;
-import static com.javarush.games.minesweeper.model.player.Score.Table.money;
-import static com.javarush.games.minesweeper.model.player.Score.Table.scoredCells;
-import static com.javarush.games.minesweeper.model.player.Score.Table.avgLuck;
-import static com.javarush.games.minesweeper.model.player.Score.Table.luckyCells;
-import static com.javarush.games.minesweeper.model.player.Score.Table.shields;
+import static com.javarush.games.minesweeper.model.player.Score.Table.moneyLeftOver;
+import static com.javarush.games.minesweeper.model.player.Score.Table.cellsCount;
+import static com.javarush.games.minesweeper.model.player.Score.Table.diceAvgLuck;
+import static com.javarush.games.minesweeper.model.player.Score.Table.diceLuckyCells;
+import static com.javarush.games.minesweeper.model.player.Score.Table.penaltyShields;
 import static com.javarush.games.minesweeper.model.player.Score.Table.scoreTimer;
 import static com.javarush.games.minesweeper.model.player.Score.Table.scoreLost;
-import static com.javarush.games.minesweeper.model.player.Score.Table.moneyScore;
-import static com.javarush.games.minesweeper.model.player.Score.Table.minesScore;
+import static com.javarush.games.minesweeper.model.player.Score.Table.scoreMoney;
+import static com.javarush.games.minesweeper.model.player.Score.Table.scoreMines;
 import static com.javarush.games.minesweeper.model.player.Score.Table.scoreDice;
 import static com.javarush.games.minesweeper.model.player.Score.Table.victory;
 
@@ -38,10 +38,10 @@ public final class ViewScore extends View {
         pageSelector.draw();
 
         String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
-        String luckDetail = avgLuck + "*" + luckyCells + "*" + difficulty + " = " + scoreDice;
-        String moneyScoreDetail = money + "*" + difficulty + " = ";
-        String cellScoreDetail = scoredCells + "*" + Options.difficulty + " = ";
-        String shieldScoreDetail = shields == 0 ? "" : shields + "*-" + (150 * (difficulty / 5)) + " = ";
+        String luckDetail = diceAvgLuck + "*" + diceLuckyCells + "*" + difficulty + " = " + scoreDice;
+        String moneyScoreDetail = moneyLeftOver + "*" + difficulty + " = ";
+        String cellScoreDetail = cellsCount + "*" + Options.difficulty + " = ";
+        String shieldScoreDetail = penaltyShields == 0 ? "" : penaltyShields + "*-" + (150 * (difficulty / 5)) + " = ";
         String youLost = "не учтено";
 
         switch (pageSelector.getCurrentPage()) {
@@ -52,10 +52,10 @@ public final class ViewScore extends View {
                         (game.player.score.getTotalScore() +
                                 "\n\n" + scoreTimer +
                                 "\n" + (shieldScoreDetail + scoreLost) +
-                                "\n" + (victory ? (moneyScoreDetail + moneyScore) : youLost) +
-                                "\n" + (victory ? (minesScoreDetail + minesScore) : youLost) +
+                                "\n" + (victory ? (moneyScoreDetail + scoreMoney) : youLost) +
+                                "\n" + (victory ? (minesScoreDetail + scoreMines) : youLost) +
                                 "\n" + scoreDice +
-                                "\n" + cellScoreDetail + scoredCells * difficulty),
+                                "\n" + cellScoreDetail + cellsCount * difficulty),
                         Color.YELLOW, 94, 13, true);
                 break;
             case 1:
@@ -63,8 +63,8 @@ public final class ViewScore extends View {
                 Printer.print("средняя удача:\nзатронуто ячеек:\nбонус сложности:\n\nсуммарно:", 3, 13);
                 Printer.print((luckDetail +
                                 "\n\n\n" + difficulty +
-                                "\n" + luckyCells +
-                                "\n" + avgLuck),
+                                "\n" + diceLuckyCells +
+                                "\n" + diceAvgLuck),
                         Color.YELLOW, 94, 13, true);
                 break;
             default:

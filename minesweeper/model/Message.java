@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.model.options.Options;
 import com.javarush.games.minesweeper.view.graphics.*;
 
@@ -12,22 +13,24 @@ public class Message extends DrawableObject {
     private static final Message INSTANCE = new Message();
     private final Image background;
     private String text;
-    private int timeToLive;      // current time
-    private int timeToLiveStart; // original time
-    private int yPos;            // overall draw height
+    private int timeToLive;             // current time
+    private int timeToLiveStart;        // original time
+    private int yPos;                   // overall draw height
+    private boolean slideFromBottom;
 
     private Message() {
         this.background = Cache.get(VisualElement.WIN_MESSAGE);
         background.setPosition(5, -11);
+        slideFromBottom = false;
     }
 
     @Override
     public void draw() {
         // Slide animation
         if (timeToLiveStart - timeToLive < 10) {
-            yPos += 2;
+            yPos += Controller.clickedOnUpperHalf() ? -2 : 2;
         } else if (timeToLive < 10) {
-            yPos -= 2;
+            yPos += Controller.clickedOnUpperHalf() ? 2 : -2;
         }
         background.draw(5, yPos);
         Printer.print(text, Color.WHITE, Printer.CENTER, yPos + 1);
@@ -48,6 +51,10 @@ public class Message extends DrawableObject {
         INSTANCE.timeToLive = 60;
         INSTANCE.timeToLiveStart = 60;
         INSTANCE.text = text;
-        INSTANCE.yPos = -11;
+        INSTANCE.yPos = Controller.clickedOnUpperHalf() ? 100 : -11;
+    }
+
+    public static int getTimeToLive() {
+        return INSTANCE.timeToLive;
     }
 }
