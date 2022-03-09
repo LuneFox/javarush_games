@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.overlay;
 
 import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.Message;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
 import com.javarush.games.minesweeper.view.graphics.Cache;
@@ -49,5 +50,21 @@ public class Header extends DrawableObject {
 
     public void setDisplayMoney(int displayMoney) {
         this.displayMoney = displayMoney;
+    }
+
+    @Override
+    protected void onLeftTouch() {
+        if (Cache.get(VisualElement.SPR_BOARD_MINE).checkLeftTouch(lastClickX, lastClickY)){
+            Message.show("Мины на поле");
+        } else if (Cache.get(VisualElement.SPR_BOARD_FLAG).checkLeftTouch(lastClickX, lastClickY)){
+            Message.show("Ваши флажки");
+        } if (Cache.get(VisualElement.SHOP_COIN).checkLeftTouch(lastClickX, lastClickY)){
+            Message.show("Ваше золото");
+        }
+    }
+
+    @Override
+    protected void onRightTouch() {
+        onLeftTouch();
     }
 }

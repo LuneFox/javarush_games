@@ -95,6 +95,11 @@ public class ControlStrategyFactory {
                     }
 
                     @Override
+                    public void pressPause() {
+                        pressEsc();
+                    }
+
+                    @Override
                     public void pressOther() {
                         if (game.isStopped) {
                             Screen.setActive(Screen.GAME_OVER);
@@ -262,11 +267,13 @@ public class ControlStrategyFactory {
                             return;
                         }
                         game.shop.showCase.checkLeftTouch(x, y);
+                        game.shop.showCase.header.checkLeftTouch(x, y);
                     }
 
                     @Override
                     public void rightClick(int x, int y) {
                         game.shop.showCase.checkRightTouch(x, y);
+                        game.shop.showCase.header.checkRightTouch(x, y);
                     }
 
                     @Override
