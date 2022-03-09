@@ -168,7 +168,6 @@ public class ViewFactory {
                         Cache.get(ButtonID.MAIN_MENU_OPTIONS).draw();
                         Cache.get(ButtonID.MAIN_MENU_ABOUT).draw();
                         Cache.get(ButtonID.MAIN_MENU_RECORDS).draw();
-                        Printer.print(Strings.VERSION, Theme.MAIN_MENU_VERSION.getColor(), 85, 0);
                         printTopScore();
 
                         Button startButton = Cache.get(ButtonID.MAIN_MENU_START);

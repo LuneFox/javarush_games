@@ -2,8 +2,10 @@ package com.javarush.games.minesweeper.controller;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.gui.image.ImageID;
 import com.javarush.games.minesweeper.gui.interactive.ButtonID;
 import com.javarush.games.minesweeper.model.Screen;
+import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.player.Score;
@@ -164,6 +166,8 @@ public class ControlStrategyFactory {
                             Screen.setActive(Screen.ABOUT);
                         } else if (Cache.get(ButtonID.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
                             Screen.setActive(Screen.RECORDS);
+                        } else if (Cache.get(ImageID.FLO_LOGO).checkLeftTouch(x, y)) {
+                            PopUpMessage.show("Версия: " + Strings.VERSION);
                         }
                     }
 
