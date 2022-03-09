@@ -31,16 +31,9 @@ public class Cell extends DrawableObject {
     private Image sprite;                      // foreground image (number, flag or mine)
 
     static {
-        sprites.put(0, VisualElement.NONE);
-        sprites.put(1, VisualElement.SPR_BOARD_1);
-        sprites.put(2, VisualElement.SPR_BOARD_2);
-        sprites.put(3, VisualElement.SPR_BOARD_3);
-        sprites.put(4, VisualElement.SPR_BOARD_4);
-        sprites.put(5, VisualElement.SPR_BOARD_5);
-        sprites.put(6, VisualElement.SPR_BOARD_6);
-        sprites.put(7, VisualElement.SPR_BOARD_7);
-        sprites.put(8, VisualElement.SPR_BOARD_8);
-        sprites.put(9, VisualElement.SPR_BOARD_9);
+        for (int i = 0; i < 10; i++) {
+            sprites.put(i, VisualElement.valueOf("SPR_BOARD_" + i));
+        }
     }
 
     public Cell(VisualElement visualElement, int x, int y, boolean isMined) {
@@ -123,7 +116,7 @@ public class Cell extends DrawableObject {
      * Any list of cells can be filtered by some criteria.
      */
 
-    public enum Filter {CLOSED, DANGEROUS, MINED, NONE, NUMERABLE, OPEN, SAFE, SUSPECTED, EMPTY, SCORED, FLAGGED}
+    public enum Filter {CLOSED, DANGEROUS, EMPTY, FLAGGED, MINED, NONE, NUMERABLE, OPEN, SAFE, SCORED, SUSPECTED}
 
     public static List<Cell> filterCells(List<Cell> list, Filter filter) {
         List<Cell> result = new ArrayList<>();

@@ -4,7 +4,7 @@ package com.javarush.games.minesweeper.model.shop.overlay;
  * Use getShift to quickly shake the X coordinate of anything you want.
  */
 
-public class Shaker {
+public class ShakeHelper {
     private static final int SHAKE_DURATION = 10;
     private int shakeCountDown;
     private int shakeShift;

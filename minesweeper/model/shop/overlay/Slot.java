@@ -18,7 +18,7 @@ public class Slot extends DrawableObject {
     private final ShopItem item;
     private Image frame;
 
-    public Shaker activatedShaker = new Shaker();
+    public ShakeHelper activatedShakeHelper = new ShakeHelper();
 
     public Slot(int x, int y, ShopItem item) {
         this.item = item;
@@ -55,7 +55,7 @@ public class Slot extends DrawableObject {
             if (item.canExpire) {
                 Printer.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right, top, true);
             }
-            Printer.print("АКТ", Color.YELLOW, right + activatedShaker.getShift(), bottom, true);
+            Printer.print("АКТ", Color.YELLOW, right + activatedShakeHelper.getShift(), bottom, true);
         } else {
             Printer.print("НЕТ", Theme.SHOP_SIGN_NO.getColor(), right, bottom, true);
         }
@@ -84,7 +84,7 @@ public class Slot extends DrawableObject {
         pressedCountDown = PRESSED_DURATION;
 
         if (item.isActivated()) {
-            activatedShaker.startShaking();
+            activatedShakeHelper.startShaking();
             Message.show("Уже активировано");
             return;
         }
@@ -96,7 +96,7 @@ public class Slot extends DrawableObject {
 
         if (item.isUnaffordable()) {
             Message.show("Не хватает золота");
-            game.shop.showCase.header.moneyShaker.startShaking();
+            game.shop.showCase.header.moneyShakeHelper.startShaking();
             return;
         }
 

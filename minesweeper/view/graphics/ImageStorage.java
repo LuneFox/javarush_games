@@ -317,7 +317,7 @@ public class ImageStorage {
             // SPRITES
 
             case SPR_BOARD_0:
-                setColors(Color.WHITE);
+                setColors(Color.NONE);
                 data = ImageCreator.makeSprite("011010111011101110110110", 4, 3, 4);
                 break;
             case SPR_BOARD_1:

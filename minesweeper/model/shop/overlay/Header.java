@@ -12,7 +12,7 @@ import com.javarush.games.minesweeper.view.graphics.VisualElement;
 public class Header extends DrawableObject {
     private Image panel;
     private int displayMoney;
-    public Shaker moneyShaker = new Shaker();
+    public ShakeHelper moneyShakeHelper = new ShakeHelper();
 
     public Header() {
         panel = Cache.get(VisualElement.WIN_SHOP_HEADER_FOOTER);
@@ -35,7 +35,7 @@ public class Header extends DrawableObject {
         Printer.print("" + game.player.inventory.getCount(ShopItem.ID.FLAG), x + 39, y + 2);
         // Draw amount of money on hand
         Cache.get(VisualElement.SHOP_COIN).draw(x + 59, y + 3);
-        Printer.print("" + displayMoney, x + 65 + moneyShaker.getShift(), y + 2);
+        Printer.print("" + displayMoney, x + 65 + moneyShakeHelper.getShift(), y + 2);
         moneyApproach();
     }
 
