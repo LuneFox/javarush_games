@@ -1,9 +1,8 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.Drawable;
 
-public abstract class DrawableObject implements Drawable {
+public abstract class DrawableObject {
     protected static MinesweeperGame game = MinesweeperGame.getInstance();
     public int x;
     public int y;
@@ -22,13 +21,15 @@ public abstract class DrawableObject implements Drawable {
         this.y = y;
     }
 
+    public abstract void draw();
+
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     private boolean checkCover(int hitX, int hitY) {
-        return (hitX >= x && hitX <= x + width && hitY >= y && hitY <= y + height);
+        return (hitX >= x && hitX <= rightBorder() && hitY >= y && hitY <= bottomBorder());
     }
 
     // Check if click coordinates are on top of this object and, if so, fire and action
@@ -50,6 +51,14 @@ public abstract class DrawableObject implements Drawable {
             onRightTouch();
         }
         return covers;
+    }
+
+    public int rightBorder() {
+        return x + width;
+    }
+
+    public int bottomBorder() {
+        return y + height;
     }
 
     protected void onLeftTouch() {

@@ -22,9 +22,10 @@ public class PopUpMessage extends DrawableObject {
     private boolean slideFromBottom;
 
     private PopUpMessage() {
-        height = 11;
         this.background = Cache.get(ImageID.WIN_MESSAGE);
-        background.setPosition(5, -height);
+        height = 11;
+        width = background.width;
+        background.setPosition(Image.CENTER, -height);
         slideFromBottom = false;
     }
 
@@ -36,7 +37,7 @@ public class PopUpMessage extends DrawableObject {
         } else if (timeToLive < height) {
             yPos += slideFromBottom ? STEP : -STEP;
         }
-        background.draw(5, yPos);
+        background.draw(Image.CENTER, yPos);
         Printer.print(text, Color.WHITE, Printer.CENTER, yPos + 1);
     }
 

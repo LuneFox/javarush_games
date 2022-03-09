@@ -19,7 +19,8 @@ public class Button extends DrawableObject {
     public static final int POST_PRESS_DELAY = -2;// for how long buttons display unpressed before moving to next screen
 
     private final Color textColor;
-    private Image body;
+    private Image bodyUp;
+    private Image bodyDown;
     private String text;
     private int textOffset;
     private boolean isPressed;
@@ -32,7 +33,7 @@ public class Button extends DrawableObject {
         this.height = (sizeY == 0) ? 9 : sizeY;
         this.textOffset = (sizeX == 0) ? 2 : ((sizeX - textLength) / 2) + 1;
         this.textColor = Color.WHITE;
-        setBody(posX, posY, true);
+        createBodies(posX, posY);
     }
 
     public void draw() {
@@ -40,24 +41,34 @@ public class Button extends DrawableObject {
         if (pressedTime <= 0) isPressed = false;
         int drawX = (isPressed) ? x + 1 : x;
         int drawY = (isPressed) ? y + 1 : y;
-        setBody(drawX, drawY, !isPressed);
-        this.body.draw();
+        if (isPressed) {
+            this.bodyDown.draw(drawX, drawY);
+        } else {
+            this.bodyUp.draw(drawX, drawY);
+        }
         Printer.print(text, textColor, drawX + textOffset, drawY);
     }
 
-    public void setBody(int posX, int posY, boolean addShadow) {
-        this.body = new Image(ImageID.MENU_BUTTON, posX, posY) {
+    private void createBodies(int posX, int posY) {
+        this.bodyUp = new Image(ImageID.MENU_BUTTON, posX, posY) {
             @Override
             public int[][] getMatrixFromStorage(ImageID imageID) {
-                return ImageCreator.createWindow(Button.this.width, Button.this.height, addShadow, true);
+                return ImageCreator.createWindow(Button.this.width, Button.this.height, true, true);
             }
         };
-        this.body.colors = new Color[]{
+
+        this.bodyDown = new Image(ImageID.MENU_BUTTON, posX, posY) {
+            @Override
+            public int[][] getMatrixFromStorage(ImageID imageID) {
+                return ImageCreator.createWindow(Button.this.width, Button.this.height, false, true);
+            }
+        };
+
+        this.bodyUp.colors = this.bodyDown.colors = new Color[]{
                 Color.NONE,
                 Theme.BUTTON_BG.getColor(),
                 Color.BLACK,
                 Theme.BUTTON_BORDER.getColor()};
-        body.getMatrixFromStorage(ImageID.MENU_BUTTON);
     }
 
     public void replaceText(int width, String label) {
