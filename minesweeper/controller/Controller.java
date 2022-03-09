@@ -7,8 +7,7 @@ import com.javarush.games.minesweeper.model.Screen;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.view.graphics.Button;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Separate class for processing various input events.
@@ -21,34 +20,28 @@ public class Controller {
     private static int lastClickY;
 
     static {
-        strategyMap.put(Screen.ABOUT, new ControlAbout());
-        strategyMap.put(Screen.BOARD, new ControlBoard());
-        strategyMap.put(Screen.GAME_OVER, new ControlGameOver());
-        strategyMap.put(Screen.ITEM_HELP, new ControlItemHelp());
-        strategyMap.put(Screen.MAIN, new ControlMain());
-        strategyMap.put(Screen.OPTIONS, new ControlOptions());
-        strategyMap.put(Screen.RECORDS, new ControlRecords());
-        strategyMap.put(Screen.SCORE, new ControlScore());
-        strategyMap.put(Screen.SHOP, new ControlShop());
-        strategyMap.put(null, new ControlStrategy() {
+        List<Screen> screens = new LinkedList<>(Arrays.asList(Screen.values()));
+        ControlStrategyFactory factory = new ControlStrategyFactory();
+        screens.forEach(screen -> strategyMap.put(screen, factory.createStrategy(screen)));
+        strategyMap.put(null, new ControlStrategy() { // disabled controls option
         });
     }
 
     public final void leftClick(int x, int y) {
-        memorizeClickCoordinates(x, y);
+        memorizeClick(x, y);
         selectStrategy(x, y);
         strategy.leftClick(x, y);
     }
 
     public final void rightClick(int x, int y) {
-        memorizeClickCoordinates(x, y);
+        memorizeClick(x, y);
         selectStrategy(x, y);
         strategy.rightClick(x, y);
     }
 
     public final void pressKey(Key key) {
         if (Message.getTimeToLive() <= 0) {
-            memorizeClickCoordinates(99, 99); // Key presses always make the message slide from the top
+            memorizeClick(99, 99); // Key presses always make the message slide from the top
         }
         selectStrategy(0, 0); // Key presses never miss the screen
         if (key == Key.UP) strategy.pressUp();
@@ -72,7 +65,7 @@ public class Controller {
         this.strategy = strategyMap.get(Screen.getActive());
     }
 
-    private void memorizeClickCoordinates(int x, int y) {
+    private void memorizeClick(int x, int y) {
         // System.out.printf("%d %d%n", x, y);
         lastClickX = x;
         lastClickY = y;
