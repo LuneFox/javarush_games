@@ -350,10 +350,26 @@ public class MinesweeperGame extends Game {
         if (!Options.developerMode) return;
 
         List<Cell> allCells = field.getAllCells(Filter.SAFE);
+        if (allCells.isEmpty()) return;
         Cell randomCell = allCells.get(getRandomNumber(allCells.size()));
         shop.scanner.activate();
         onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         PopUpMessage.show("DEV: RANDOM SCAN");
+    }
+
+    @DeveloperOption
+    public void skipEasyPart() {
+        if (!Options.developerMode) return;
+
+        autoStop = false;
+        int limit = 0;
+        while (!autoStop && limit < 50) {
+            autoOpen();
+            autoFlag();
+            limit++;
+        }
+        autoOpen();
+        PopUpMessage.show("DEV: SKIP EASY PART");
     }
 
     @DeveloperOption
@@ -374,7 +390,6 @@ public class MinesweeperGame extends Game {
         shop.luckyDice.expireMove += 10;
         PopUpMessage.show("DEV: 10 TOOLS");
     }
-
 
     // CONTROLS
 

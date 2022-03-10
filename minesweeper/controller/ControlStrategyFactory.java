@@ -100,15 +100,7 @@ public class ControlStrategyFactory {
                     @Override
                     @DeveloperOption
                     public void pressUp() {
-                        game.autoStop = false;
-                        int limit = 0;
-                        while (!game.autoStop && limit < 50) {
-                            pressRight();
-                            pressLeft();
-                            limit++;
-                        }
-                        pressRight();
-                        PopUpMessage.show("DEV: SKIP EASY PART");
+                        game.skipEasyPart();
                     }
 
                     @Override
