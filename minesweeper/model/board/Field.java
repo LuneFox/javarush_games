@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,8 +20,8 @@ public class Field extends DrawableObject {
     public void create() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
-                field[y][x] = new Cell(ImageID.CELL_CLOSED, x, y, false);
-                field[y][x].setSprite(ImageID.NONE);
+                field[y][x] = new Cell(ImageType.CELL_CLOSED, x, y, false);
+                field[y][x].setSprite(ImageType.NONE);
             }
         }
         plantMines();
@@ -34,8 +34,8 @@ public class Field extends DrawableObject {
             int x = game.getRandomNumber(10);
             int y = game.getRandomNumber(10);
             if (!field[y][x].isMined && !field[y][x].isOpen) {
-                field[y][x] = new Cell(ImageID.CELL_CLOSED, x, y, true);
-                field[y][x].setSprite(ImageID.SPR_BOARD_MINE);
+                field[y][x] = new Cell(ImageType.CELL_CLOSED, x, y, true);
+                field[y][x].setSprite(ImageType.SPR_BOARD_MINE);
             }
         }
     }

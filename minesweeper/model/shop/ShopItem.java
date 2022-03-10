@@ -6,7 +6,7 @@ import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
 
 /**
@@ -95,7 +95,7 @@ public class ShopItem {
             case SHIELD:
                 if (this.isActivated) {
                     this.deactivate();
-                    cell.setSprite(ImageID.SPR_BOARD_MINE);
+                    cell.setSprite(ImageType.SPR_BOARD_MINE);
                     cell.isShielded = true;
                     game.shop.restock(game.shop.shield, 1);
                     game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (Options.difficulty / 5));

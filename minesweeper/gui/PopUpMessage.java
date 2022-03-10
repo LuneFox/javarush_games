@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.gui.image.Image;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.DrawableObject;
 
 /**
@@ -22,7 +22,7 @@ public class PopUpMessage extends DrawableObject {
     private boolean slideFromBottom;
 
     private PopUpMessage() {
-        this.background = Cache.get(ImageID.WIN_MESSAGE);
+        this.background = Cache.get(ImageType.WIN_MESSAGE);
         height = 11;
         width = background.width;
         background.setPosition(Image.CENTER, -height);

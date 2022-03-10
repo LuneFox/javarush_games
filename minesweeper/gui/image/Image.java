@@ -18,13 +18,13 @@ public class Image extends DrawableObject {
         HORIZONTAL, VERTICAL, NONE
     }
 
-    public Image(ImageID imageID) { // constructor without setting position (for loading images in memory)
-        this(imageID, 0, 0);
+    public Image(ImageType imageType) { // constructor without setting position (for loading images in memory)
+        this(imageType, 0, 0);
     }
 
-    public Image(ImageID imageID, int x, int y) { // constructor with setting position at once
+    public Image(ImageType imageType, int x, int y) { // constructor with setting position at once
         super(x, y);
-        this.matrix = getMatrixFromStorage(imageID);
+        this.matrix = getMatrixFromStorage(imageType);
         this.height = matrix.length;
         this.width = matrix[0].length;
     }
@@ -89,8 +89,8 @@ public class Image extends DrawableObject {
         }
     }
 
-    public int[][] getMatrixFromStorage(ImageID imageID) {
-        ImageStorage storage = new ImageStorage(imageID);
+    public int[][] getMatrixFromStorage(ImageType imageType) {
+        ImageStorage storage = new ImageStorage(imageType);
         colors = storage.getColors();
         return storage.getData();
     }

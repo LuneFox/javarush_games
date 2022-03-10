@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.gui.image.Image;
 
@@ -12,7 +12,7 @@ public class Arrow extends DrawableObject {
 
     public Arrow(int x, int y, boolean pointsRight) {
         super(x, y);
-        arrowImage = new Image(ImageID.MENU_ARROW, x, y);
+        arrowImage = new Image(ImageType.MENU_ARROW, x, y);
         this.height = arrowImage.height;
         this.width = arrowImage.width;
         this.pointsRight = pointsRight;

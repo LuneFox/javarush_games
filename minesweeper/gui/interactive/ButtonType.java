@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
-public enum ButtonID {
+public enum ButtonType {
     GENERAL_CONFIRM(61, 88, 36, 9, "ясно"),
     GENERAL_CLOSE(88, 2, 0, 0, "x"),
 
@@ -21,7 +21,7 @@ public enum ButtonID {
     public final int height;
     public final String label;
 
-    ButtonID(int x, int y, int width, int height, String label) {
+    ButtonType(int x, int y, int width, int height, String label) {
         this.x = x;
         this.y = y;
         this.width = width;

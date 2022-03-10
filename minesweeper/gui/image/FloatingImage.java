@@ -4,12 +4,12 @@ public class FloatingImage extends Image {
     private float shift;     // difference between the anchor and the current position
     private boolean phase;
 
-    public FloatingImage(ImageID imageID) {
-        this(imageID, -1, -1);
+    public FloatingImage(ImageType imageType) {
+        this(imageType, -1, -1);
     }
 
-    public FloatingImage(ImageID imageID, int drawX, int drawY) {
-        super(imageID, drawX, drawY);
+    public FloatingImage(ImageType imageType, int drawX, int drawY) {
+        super(imageType, drawX, drawY);
         shift = 0;
         phase = true;
     }

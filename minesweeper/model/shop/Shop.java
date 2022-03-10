@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.shop.overlay.ShowCase;
 import com.javarush.games.minesweeper.gui.Cache;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -97,12 +97,12 @@ public class Shop {
     }
 
     public void reset() {
-        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Cache.get(ImageID.SHOP_ITEM_SHIELD));
-        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Cache.get(ImageID.SHOP_ITEM_SCANNER));
-        flag = new ShopItem(2, 1, getFlagsAmount(), Cache.get(ImageID.SHOP_ITEM_FLAG));
-        goldenShovel = new ShopItem(3, 9, 1, Cache.get(ImageID.SHOP_ITEM_SHOVEL));
-        luckyDice = new ShopItem(4, 6, 1, Cache.get(ImageID.SHOP_ITEM_DICE));
-        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Cache.get(ImageID.SHOP_ITEM_BOMB));
+        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Cache.get(ImageType.SHOP_ITEM_SHIELD));
+        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Cache.get(ImageType.SHOP_ITEM_SCANNER));
+        flag = new ShopItem(2, 1, getFlagsAmount(), Cache.get(ImageType.SHOP_ITEM_FLAG));
+        goldenShovel = new ShopItem(3, 9, 1, Cache.get(ImageType.SHOP_ITEM_SHOVEL));
+        luckyDice = new ShopItem(4, 6, 1, Cache.get(ImageType.SHOP_ITEM_DICE));
+        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Cache.get(ImageType.SHOP_ITEM_BOMB));
 
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));

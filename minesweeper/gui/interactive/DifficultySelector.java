@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.gui.interactive;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -25,7 +25,7 @@ public class DifficultySelector extends DrawableObject {
         this.height = difficultyDownArrow.height;
 
         for (int i = 0; i < bars.length; i++) {
-            Image bar = new Image(ImageID.MENU_DIFFICULTY_BAR, (i * 4) + this.x + difficultyDownArrow.width + 2, this.y);
+            Image bar = new Image(ImageType.MENU_DIFFICULTY_BAR, (i * 4) + this.x + difficultyDownArrow.width + 2, this.y);
             if (i > 2) bar.replaceColor(Color.YELLOW, 1);
             if (i > 4) bar.replaceColor(Color.ORANGE, 1);
             if (i > 6) bar.replaceColor(Color.RED, 1);

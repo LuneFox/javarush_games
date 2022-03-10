@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.model.shop.overlay;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.*;
 import com.javarush.games.minesweeper.gui.image.Image;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.DrawableObject;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
@@ -23,7 +23,7 @@ public class Slot extends DrawableObject {
 
     public Slot(int x, int y, ShopItem item) {
         this.item = item;
-        frame = Cache.get(ImageID.SHOP_ITEM_FRAME);
+        frame = Cache.get(ImageType.SHOP_ITEM_FRAME);
         this.x = x;
         this.y = y;
         this.height = 20;
@@ -64,11 +64,11 @@ public class Slot extends DrawableObject {
 
     private boolean shiftFrame() {
         if (pressedCountDown > 0) {
-            frame = Cache.get(ImageID.SHOP_ITEM_FRAME_PRESSED);
+            frame = Cache.get(ImageType.SHOP_ITEM_FRAME_PRESSED);
             pressedCountDown--;
             return true;
         } else {
-            frame = Cache.get(ImageID.SHOP_ITEM_FRAME);
+            frame = Cache.get(ImageType.SHOP_ITEM_FRAME);
             return false;
         }
     }

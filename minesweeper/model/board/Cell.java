@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.gui.Theme;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageStorage;
 import com.javarush.games.minesweeper.model.DrawableObject;
@@ -18,7 +18,7 @@ import java.util.Map;
  */
 
 public class Cell extends DrawableObject {
-    private static final Map<Integer, ImageID> sprites = new HashMap<>();
+    private static final Map<Integer, ImageType> sprites = new HashMap<>();
 
     public boolean isMined;                // contains a mine
     public boolean isOpen;                 // revealed
@@ -29,19 +29,19 @@ public class Cell extends DrawableObject {
     public boolean isDestroyed;            // blown up by the bomb
     public int countMinedNeighbors;        // number of adjacent mines
 
-    private final ImageID imageID; // visual element assigned to the body: opened, closed or destroyed
+    private final ImageType imageType; // visual element assigned to the body: opened, closed or destroyed
     private final Image background;            // the "body" of the cell
     private Image sprite;                      // foreground image (number, flag or mine)
 
     static {
         for (int i = 0; i < 10; i++) {
-            sprites.put(i, ImageID.valueOf("SPR_BOARD_" + i));
+            sprites.put(i, ImageType.valueOf("SPR_BOARD_" + i));
         }
     }
 
-    public Cell(ImageID imageID, int x, int y, boolean isMined) {
-        this.background = new Image(imageID, x * 10, y * 10);
-        this.imageID = imageID;
+    public Cell(ImageType imageType, int x, int y, boolean isMined) {
+        this.background = new Image(imageType, x * 10, y * 10);
+        this.imageType = imageType;
         this.x = x;
         this.y = y;
         this.isMined = isMined;
@@ -52,14 +52,14 @@ public class Cell extends DrawableObject {
     public void draw() {
         if (isOpen) {
             background.matrix = isDestroyed ?
-                    background.getMatrixFromStorage(ImageID.CELL_DESTROYED) :
-                    background.getMatrixFromStorage(ImageID.CELL_OPENED);
+                    background.getMatrixFromStorage(ImageType.CELL_DESTROYED) :
+                    background.getMatrixFromStorage(ImageType.CELL_OPENED);
             background.replaceColor(Theme.CELL_BG_DOWN.getColor(), 3);
         }
 
         if (isFlaggedCorrectly() && game.isStopped && !game.isVictory) {
             background.replaceColor(Color.GREEN, 3);
-            setSprite(ImageID.SPR_BOARD_MINE);
+            setSprite(ImageType.SPR_BOARD_MINE);
         } else if (isShielded) {
             background.replaceColor(Color.YELLOW, 3);
         } else if (isScanned) {
@@ -77,11 +77,11 @@ public class Cell extends DrawableObject {
     }
 
     public void updateColors() {
-        background.colors = new ImageStorage(imageID).getColors();
+        background.colors = new ImageStorage(imageType).getColors();
     }
 
-    public void setSprite(ImageID imageID) {
-        this.sprite = new Image(imageID, x * 10, y * 10);
+    public void setSprite(ImageType imageType) {
+        this.sprite = new Image(imageType, x * 10, y * 10);
     }
 
     public void setSprite(int number) {

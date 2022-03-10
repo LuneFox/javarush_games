@@ -12,8 +12,8 @@ public class ImageStorage {
     private Color[] colors;
     private final int[][] data;
 
-    public ImageStorage(ImageID imageID) {
-        switch (imageID) {
+    public ImageStorage(ImageType imageType) {
+        switch (imageType) {
 
             // BIG PICTURES
 

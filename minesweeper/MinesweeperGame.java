@@ -5,7 +5,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.*;
 import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.board.Cell;
@@ -187,7 +187,7 @@ public class MinesweeperGame extends Game {
     private void returnFlagToInventory(Cell cell) {
         player.inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
-        cell.setSprite(cell.isMined ? ImageID.SPR_BOARD_MINE : ImageID.NONE);
+        cell.setSprite(cell.isMined ? ImageType.SPR_BOARD_MINE : ImageType.NONE);
     }
 
     private void placeFlagFromInventory(Cell cell) {
@@ -196,7 +196,7 @@ public class MinesweeperGame extends Game {
         if (cell.isFlagged) return;
         player.inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
-        cell.setSprite(ImageID.SPR_BOARD_FLAG);
+        cell.setSprite(ImageType.SPR_BOARD_FLAG);
     }
 
     private boolean trySurviving(Cell cell) {   // did the player survive the mine?
@@ -272,7 +272,7 @@ public class MinesweeperGame extends Game {
             return;
         }
 
-        cell.setSprite(ImageID.NONE);
+        cell.setSprite(ImageType.NONE);
         cell.isDestroyed = true;
         cell.isOpen = true;
         shop.deactivateExpiredItems();

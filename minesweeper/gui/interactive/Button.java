@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageCreator;
-import com.javarush.games.minesweeper.gui.image.ImageID;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.DrawableObject;
 
 /**
@@ -50,16 +50,16 @@ public class Button extends DrawableObject {
     }
 
     private void createBodies(int posX, int posY) {
-        this.bodyUp = new Image(ImageID.MENU_BUTTON, posX, posY) {
+        this.bodyUp = new Image(ImageType.MENU_BUTTON, posX, posY) {
             @Override
-            public int[][] getMatrixFromStorage(ImageID imageID) {
+            public int[][] getMatrixFromStorage(ImageType imageType) {
                 return ImageCreator.createWindow(Button.this.width, Button.this.height, true, true);
             }
         };
 
-        this.bodyDown = new Image(ImageID.MENU_BUTTON, posX, posY) {
+        this.bodyDown = new Image(ImageType.MENU_BUTTON, posX, posY) {
             @Override
-            public int[][] getMatrixFromStorage(ImageID imageID) {
+            public int[][] getMatrixFromStorage(ImageType imageType) {
                 return ImageCreator.createWindow(Button.this.width, Button.this.height, false, true);
             }
         };

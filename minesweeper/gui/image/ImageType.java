@@ -6,7 +6,7 @@ package com.javarush.games.minesweeper.gui.image;
  * For example, everything that starts with SYM_ goes to symbols cache.
  */
 
-public enum ImageID {
+public enum ImageType {
     NONE,
 
     CELL_OPENED,
@@ -141,11 +141,11 @@ public enum ImageID {
         return characters;
     }
 
-    ImageID() {
+    ImageType() {
     }
 
     // Constructor for symbols
-    ImageID(char... characters) {
+    ImageType(char... characters) {
         this.characters = characters;
     }
 }
