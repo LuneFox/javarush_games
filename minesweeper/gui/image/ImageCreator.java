@@ -69,50 +69,50 @@ public class ImageCreator {
     }
 
 
-    // WINDOW GENERATION
+    // FRAME GENERATION
 
-    public static int[][] createWindow(int sizeX, int sizeY, boolean addShadow, boolean addFrame) {
+    public static int[][] createFrame(int sizeX, int sizeY, boolean addShadow, boolean addStroke) {
         // Image with shadow is 1 px taller and wider
         if (addShadow) {
             sizeX++;
             sizeY++;
         }
 
-        int[][] window = new int[sizeY][sizeX];
-        addWindowBackground(window, sizeX, sizeY);
-        if (addShadow) addWindowShadow(window, sizeX, sizeY);
-        if (addFrame) addWindowFrame(window, sizeX, sizeY, addShadow);
-        return window;
+        int[][] frame = new int[sizeY][sizeX];
+        fillFrameBody(frame, sizeX, sizeY);
+        if (addShadow) addFrameShadow(frame, sizeX, sizeY);
+        if (addStroke) addInnerStroke(frame, sizeX, sizeY, addShadow);
+        return frame;
     }
 
-    private static void addWindowShadow(int[][] window, int sizeX, int sizeY) {
+    private static void addFrameShadow(int[][] frame, int sizeX, int sizeY) {
         for (int x = 0; x < sizeX; x++) {
-            window[sizeY - 1][x] = (x == 0) ? 0 : 2;
+            frame[sizeY - 1][x] = (x == 0) ? 0 : 2;
         }
         for (int y = 0; y < sizeY; y++) {
-            window[y][sizeX - 1] = (y == 0) ? 0 : 2;
+            frame[y][sizeX - 1] = (y == 0) ? 0 : 2;
         }
     }
 
-    private static void addWindowFrame(int[][] window, int sizeX, int sizeY, boolean shadow) {
+    private static void addInnerStroke(int[][] frame, int sizeX, int sizeY, boolean shadow) {
         if (shadow) { // if shadow is drawn, shrink the drawing zone back to normal window
             sizeX--;
             sizeY--;
         }
         for (int x = 0; x < sizeX; x++) {
-            window[0][x] = 3;
-            window[sizeY - 1][x] = 3;
+            frame[0][x] = 3;
+            frame[sizeY - 1][x] = 3;
         }
         for (int y = 0; y < sizeY; y++) {
-            window[y][0] = 3;
-            window[y][sizeX - 1] = 3;
+            frame[y][0] = 3;
+            frame[y][sizeX - 1] = 3;
         }
     }
 
-    private static void addWindowBackground(int[][] window, int sizeX, int sizeY) {
+    private static void fillFrameBody(int[][] frame, int sizeX, int sizeY) {
         for (int y = 0; y < sizeY; y++) {
             for (int x = 0; x < sizeX; x++) {
-                window[y][x] = 1;
+                frame[y][x] = 1;
             }
         }
     }
