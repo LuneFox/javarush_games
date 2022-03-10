@@ -298,6 +298,8 @@ public class MinesweeperGame extends Game {
 
     @DeveloperOption
     public void autoFlag() {
+        if (!Options.developerMode) return;
+
         if (!Options.autoBuyFlagsSelector.isEnabled())
             Options.autoBuyFlagsSelector.checkLeftTouch(Options.autoBuyFlagsSelector.x, Options.autoBuyFlagsSelector.y);
         boolean[] success = new boolean[1];
@@ -318,12 +320,14 @@ public class MinesweeperGame extends Game {
             PopUpMessage.show("DEV: CANNOT FLAG");
             autoStop = true;
         } else {
-            PopUpMessage.show("DEV: TRYING TO FLAG");
+            PopUpMessage.show("DEV: AUTO FLAG");
         }
     }
 
     @DeveloperOption
     public void autoOpen() {
+        if (!Options.developerMode) return;
+
         int closedCells = field.countAllCells(Filter.CLOSED);
         if (isFirstMove) {
             List<Cell> allCells = field.getAllCells(Filter.NONE);
@@ -337,21 +341,40 @@ public class MinesweeperGame extends Game {
         if (field.countAllCells(Filter.CLOSED) == closedCells) {
             PopUpMessage.show("DEV: CANNOT OPEN");
         } else {
-            PopUpMessage.show("DEV: TRYING TO OPEN");
+            PopUpMessage.show("DEV: AUTO OPEN");
         }
     }
 
     @DeveloperOption
     public void autoScan() {
-        shop.luckyDice.deactivate();
-        shop.restock(shop.luckyDice, 1);
-        shop.goldenShovel.deactivate();
-        shop.restock(shop.goldenShovel, 1);
+        if (!Options.developerMode) return;
+
         List<Cell> allCells = field.getAllCells(Filter.SAFE);
         Cell randomCell = allCells.get(getRandomNumber(allCells.size()));
-        scanNeighbors(randomCell.x, randomCell.y);
+        shop.scanner.activate();
+        onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         PopUpMessage.show("DEV: RANDOM SCAN");
     }
+
+    @DeveloperOption
+    public void cheatMoreMoney() {
+        if (!Options.developerMode) return;
+
+        player.inventory.money += 50;
+        PopUpMessage.show("DEV: 50 GOLD");
+    }
+
+    @DeveloperOption
+    public void cheatMoreTools() {
+        if (!Options.developerMode) return;
+
+        shop.goldenShovel.activate();
+        shop.luckyDice.activate();
+        shop.goldenShovel.expireMove += 10;
+        shop.luckyDice.expireMove += 10;
+        PopUpMessage.show("DEV: 10 TOOLS");
+    }
+
 
     // CONTROLS
 

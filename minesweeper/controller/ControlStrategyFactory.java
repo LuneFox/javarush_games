@@ -1,5 +1,6 @@
 package com.javarush.games.minesweeper.controller;
 
+import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -79,26 +80,26 @@ public class ControlStrategyFactory {
                     }
 
                     @Override
+                    @DeveloperOption
                     public void pressLeft() {
-                        if (!Options.developerMode) return;
                         game.autoFlag();
                     }
 
                     @Override
+                    @DeveloperOption
                     public void pressRight() {
-                        if (!Options.developerMode) return;
                         game.autoOpen();
                     }
 
                     @Override
+                    @DeveloperOption
                     public void pressDown() {
-                        if (!Options.developerMode) return;
                         game.autoScan();
                     }
 
                     @Override
+                    @DeveloperOption
                     public void pressUp() {
-                        if (!Options.developerMode) return;
                         game.autoStop = false;
                         int limit = 0;
                         while (!game.autoStop && limit < 50) {
@@ -189,6 +190,7 @@ public class ControlStrategyFactory {
                     final private MinesweeperGame game = MinesweeperGame.getInstance();
 
                     @Override
+                    @DeveloperOption
                     public void leftClick(int x, int y) {
                         if (Cache.get(ButtonType.MAIN_MENU_START).checkLeftTouch(x, y)) {
                             game.startNewGame();
@@ -329,20 +331,15 @@ public class ControlStrategyFactory {
                     }
 
                     @Override
+                    @DeveloperOption
                     public void pressUp() {
-                        if (!Options.developerMode) return;
-                        game.player.inventory.money = 999;
-                        PopUpMessage.show("DEV: 999 GOLD");
+                        game.cheatMoreMoney();
                     }
 
                     @Override
+                    @DeveloperOption
                     public void pressDown() {
-                        if (!Options.developerMode) return;
-                        game.shop.goldenShovel.activate();
-                        game.shop.luckyDice.activate();
-                        game.shop.goldenShovel.expireMove = 99;
-                        game.shop.luckyDice.expireMove = 99;
-                        PopUpMessage.show("DEV: DURABLE ITEMS");
+                        game.cheatMoreTools();
                     }
 
                     private boolean clickedOutsideShopWindow(int x, int y) {
