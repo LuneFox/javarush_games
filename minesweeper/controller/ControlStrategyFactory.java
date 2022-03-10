@@ -73,7 +73,7 @@ public class ControlStrategyFactory {
                             Phase.setActive(Phase.GAME_OVER);
                             return;
                         }
-                        game.setFlag(gridX, gridY, true);  // works only on closed tiles
+                        game.setFlag(gridX, gridY, true);              // works only on closed tiles
                         game.openSurroundingCells(gridX, gridY);       // works only on open tiles
                         game.shop.deactivateExpiredItems();
                     }
@@ -81,13 +81,33 @@ public class ControlStrategyFactory {
                     @Override
                     public void pressLeft() {
                         if (!Options.developerMode) return;
-                        game.autoScan();
+                        game.autoFlag();
                     }
 
                     @Override
                     public void pressRight() {
                         if (!Options.developerMode) return;
-                        game.autoMove();
+                        game.autoOpen();
+                    }
+
+                    @Override
+                    public void pressDown() {
+                        if (!Options.developerMode) return;
+                        game.autoScan();
+                    }
+
+                    @Override
+                    public void pressUp() {
+                        if (!Options.developerMode) return;
+                        game.autoStop = false;
+                        int limit = 0;
+                        while (!game.autoStop && limit < 50) {
+                            pressRight();
+                            pressLeft();
+                            limit++;
+                        }
+                        pressRight();
+                        PopUpMessage.show("DEV: SKIP EASY PART");
                     }
 
                     @Override

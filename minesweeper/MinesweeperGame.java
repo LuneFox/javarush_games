@@ -36,7 +36,7 @@ public class MinesweeperGame extends Game {
     public boolean isFirstMove = true;
     public boolean isVictory = false;
     public int gameOverShowDelay;
-    private boolean cheatPhase;
+    public boolean autoStop;                   // Game can't continue playing automatically
 
     @Override
     public void initialize() {
@@ -71,7 +71,6 @@ public class MinesweeperGame extends Game {
         shop.reset();
         player.inventory.reset();
         timer.restart();
-        cheatPhase = false;
         setScore(player.score.getCurrentScore());
         Phase.setActive(Phase.BOARD);
         PopUpMessage.show("Новая игра");
@@ -297,7 +296,9 @@ public class MinesweeperGame extends Game {
         }
     }
 
-    private void autoFlag() {
+    public void autoFlag() {
+        if (!Options.autoBuyFlagsSelector.isEnabled())
+            Options.autoBuyFlagsSelector.checkLeftTouch(Options.autoBuyFlagsSelector.x, Options.autoBuyFlagsSelector.y);
         boolean[] success = new boolean[1];
         field.getAllCells(Filter.NUMERABLE).forEach(cell -> {
             if (!cell.isOpen) return;
@@ -314,43 +315,39 @@ public class MinesweeperGame extends Game {
         });
         if (!success[0]) {
             PopUpMessage.show("DEV: CANNOT FLAG");
+            autoStop = true;
         } else {
-            PopUpMessage.show("DEV: AUTO FLAG");
+            PopUpMessage.show("DEV: TRYING TO FLAG");
         }
     }
 
-    private void autoOpen() {
-        if (field.getAllCells(Filter.CLOSED).size() == 100) {
+    public void autoOpen() {
+        int closedCells = field.countAllCells(Filter.CLOSED);
+        if (isFirstMove) {
             List<Cell> allCells = field.getAllCells(Filter.NONE);
             Cell randomCell = allCells.get(getRandomNumber(allCells.size()));
-            openCell(randomCell.x, randomCell.y);
+            onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         } else {
             field.getAllCells(Filter.NUMERABLE).forEach(cell -> {
-                openSurroundingCells(cell.x, cell.y);
+                if (cell.isOpen) onMouseRightClick(cell.x * 10, cell.y * 10);
             });
         }
-        PopUpMessage.show("DEV: AUTO OPEN");
+        if (field.countAllCells(Filter.CLOSED) == closedCells) {
+            PopUpMessage.show("DEV: CANNOT OPEN");
+        } else {
+            PopUpMessage.show("DEV: TRYING TO OPEN");
+        }
     }
 
     public void autoScan() {
+        shop.luckyDice.deactivate();
+        shop.restock(shop.luckyDice, 1);
+        shop.goldenShovel.deactivate();
+        shop.restock(shop.goldenShovel, 1);
         List<Cell> allCells = field.getAllCells(Filter.SAFE);
         Cell randomCell = allCells.get(getRandomNumber(allCells.size()));
         scanNeighbors(randomCell.x, randomCell.y);
-        PopUpMessage.show("DEV: AUTO SCAN");
-    }
-
-    public void autoMove() {
-        shop.goldenShovel.deactivate();
-        shop.purge(shop.goldenShovel);
-        shop.luckyDice.deactivate();
-        shop.purge(shop.luckyDice);
-
-        if (cheatPhase) {
-            autoFlag();
-        } else {
-            autoOpen();
-        }
-        cheatPhase = !cheatPhase;
+        PopUpMessage.show("DEV: RANDOM SCAN");
     }
 
     // CONTROLS
