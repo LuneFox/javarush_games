@@ -361,6 +361,7 @@ public class MinesweeperGame extends Game {
     public void skipEasyPart() {
         if (!Options.developerMode) return;
 
+        int closedCells = field.countAllCells(Filter.CLOSED);
         autoStop = false;
         int limit = 0;
         while (!autoStop && limit < 50) {
@@ -369,7 +370,13 @@ public class MinesweeperGame extends Game {
             limit++;
         }
         autoOpen();
-        PopUpMessage.show("DEV: SKIP EASY PART");
+
+        if (field.countAllCells(Filter.CLOSED) == closedCells) {
+            PopUpMessage.show("DEV: TOO RISKY!");
+        } else {
+            PopUpMessage.show("DEV: SKIP EASY PART");
+        }
+
     }
 
     @DeveloperOption
