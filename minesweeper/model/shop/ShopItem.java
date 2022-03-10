@@ -138,6 +138,7 @@ public class ShopItem {
     }
 
     public void activate() {
+        if (game.isStopped) return;
         this.isActivated = true;
     }
 

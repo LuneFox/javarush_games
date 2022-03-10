@@ -364,10 +364,14 @@ public class MinesweeperGame extends Game {
         int closedCells = field.countAllCells(Filter.CLOSED);
         autoStop = false;
         int limit = 0;
-        while (!autoStop && limit < 50) {
+        while (!autoStop) {
+            // Limit is set to prevent accidental infinite loops
             autoOpen();
             autoFlag();
             limit++;
+            if (limit > closedCells) {
+                break;
+            }
         }
         autoOpen();
 
