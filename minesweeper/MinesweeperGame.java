@@ -296,6 +296,7 @@ public class MinesweeperGame extends Game {
         }
     }
 
+    @DeveloperOption
     public void autoFlag() {
         if (!Options.autoBuyFlagsSelector.isEnabled())
             Options.autoBuyFlagsSelector.checkLeftTouch(Options.autoBuyFlagsSelector.x, Options.autoBuyFlagsSelector.y);
@@ -321,6 +322,7 @@ public class MinesweeperGame extends Game {
         }
     }
 
+    @DeveloperOption
     public void autoOpen() {
         int closedCells = field.countAllCells(Filter.CLOSED);
         if (isFirstMove) {
@@ -339,6 +341,7 @@ public class MinesweeperGame extends Game {
         }
     }
 
+    @DeveloperOption
     public void autoScan() {
         shop.luckyDice.deactivate();
         shop.restock(shop.luckyDice, 1);
