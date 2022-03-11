@@ -23,7 +23,7 @@ public class Slot extends DrawableObject {
 
     public Slot(int x, int y, ShopItem item) {
         this.item = item;
-        frame = Cache.get(ImageType.SHOP_ITEM_FRAME);
+        frame = Image.cache.get(ImageType.SHOP_ITEM_FRAME);
         this.x = x;
         this.y = y;
         this.height = 20;
@@ -64,11 +64,11 @@ public class Slot extends DrawableObject {
 
     private boolean shiftFrame() {
         if (pressedCountDown > 0) {
-            frame = Cache.get(ImageType.SHOP_ITEM_FRAME_PRESSED);
+            frame = Image.cache.get(ImageType.SHOP_ITEM_FRAME_PRESSED);
             pressedCountDown--;
             return true;
         } else {
-            frame = Cache.get(ImageType.SHOP_ITEM_FRAME);
+            frame = Image.cache.get(ImageType.SHOP_ITEM_FRAME);
             return false;
         }
     }

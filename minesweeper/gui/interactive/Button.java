@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.model.Cache;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -13,6 +14,15 @@ import com.javarush.games.minesweeper.model.DrawableObject;
  */
 
 public class Button extends DrawableObject {
+
+    public static final Cache<ButtonType, Button> cache = new Cache<ButtonType, Button>(ButtonType.values().length) {
+        @Override
+        protected Button put(ButtonType id) {
+            Button button = new Button(id.x, id.y, id.width, id.height, id.label);
+            cache.put(id, button);
+            return button;
+        }
+    };
 
     public static int pressedTime = -2;           // this timer counts towards 0, then the press animation stops
     public static final int PRESS_DURATION = 5;   // for how long buttons stay pressed

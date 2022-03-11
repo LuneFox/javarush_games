@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.gui.image;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.Cache;
 import com.javarush.games.minesweeper.model.DrawableObject;
 
 /**
@@ -9,7 +10,23 @@ import com.javarush.games.minesweeper.model.DrawableObject;
  */
 
 public class Image extends DrawableObject {
+
+    public static final Cache<ImageType, Image> cache = new Cache<ImageType, Image>(ImageType.values().length) {
+        @Override
+        protected Image put(ImageType type) {
+            Image result;
+            if (type.name().startsWith("FLO_")) {
+                result = new FloatingImage(type);
+                cache.put(type, result);
+            } else {
+                result = new Image(type);
+                cache.put(type, result);
+            }
+            return result;
+        }
+    };
     public static final int CENTER = Integer.MIN_VALUE;
+
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public int[][] matrix;  // matrix of color numbers
     public Color[] colors;  // an array to match colors and numbers

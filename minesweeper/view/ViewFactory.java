@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.gui.Cache;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.FloatingImage;
@@ -28,7 +27,7 @@ public class ViewFactory {
                 return new View(phase) {
                     @Override
                     public void update() {
-                        Cache.get(ImageType.WIN_MENU).draw();
+                        Image.cache.get(ImageType.WIN_MENU).draw();
                         Options.aboutPageSelector.draw();
 
                         switch (Options.aboutPageSelector.getCurrentPage()) {
@@ -68,7 +67,7 @@ public class ViewFactory {
                                 break;
                         }
 
-                        Cache.get(ButtonType.GENERAL_CLOSE).draw();
+                        Button.cache.get(ButtonType.GENERAL_CLOSE).draw();
                         super.update();
                     }
 
@@ -86,11 +85,11 @@ public class ViewFactory {
                         game.checkTimeOut();
                         game.field.draw();
                         if (game.shop.allItems.get(1).isActivated()) {
-                            Cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
-                            Cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).draw();
+                            Image.cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.BLUE, 3);
+                            Image.cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).draw();
                         } else if (game.shop.allItems.get(5).isActivated()) {
-                            Cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.RED, 3);
-                            Cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).draw();
+                            Image.cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).replaceColor(Color.RED, 3);
+                            Image.cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME).draw();
                         }
                         game.timer.draw();
                         game.shop.goldenShovel.statusBar.draw();
@@ -112,19 +111,19 @@ public class ViewFactory {
 
                         game.field.draw();
                         if (game.isVictory) {
-                            Cache.get(ImageType.WIN_VICTORY).draw(Image.CENTER, Image.CENTER);
-                            Cache.get(ImageType.FACE_HAPPY).draw(Image.CENTER, Image.CENTER);
+                            Image.cache.get(ImageType.WIN_VICTORY).draw(Image.CENTER, Image.CENTER);
+                            Image.cache.get(ImageType.FACE_HAPPY).draw(Image.CENTER, Image.CENTER);
                             Printer.print("победа!", Color.YELLOW, 18, 33);
                         } else {
-                            Cache.get(ImageType.WIN_GAME_OVER).draw(Image.CENTER, Image.CENTER);
-                            Cache.get(ImageType.FACE_SAD).draw(Image.CENTER, Image.CENTER);
+                            Image.cache.get(ImageType.WIN_GAME_OVER).draw(Image.CENTER, Image.CENTER);
+                            Image.cache.get(ImageType.FACE_SAD).draw(Image.CENTER, Image.CENTER);
                             Printer.print("не повезло!", Color.YELLOW, 18, 33);
                         }
                         Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 28, 57);
-                        Cache.get(ButtonType.GAME_OVER_AGAIN).draw();
-                        Cache.get(ButtonType.GAME_OVER_RETURN).draw();
-                        Cache.get(ButtonType.GAME_OVER_HIDE).draw();
-                        Cache.get(ButtonType.GAME_OVER_QUESTION).draw();
+                        Button.cache.get(ButtonType.GAME_OVER_AGAIN).draw();
+                        Button.cache.get(ButtonType.GAME_OVER_RETURN).draw();
+                        Button.cache.get(ButtonType.GAME_OVER_HIDE).draw();
+                        Button.cache.get(ButtonType.GAME_OVER_QUESTION).draw();
                         super.update();
                     }
                 };
@@ -135,7 +134,7 @@ public class ViewFactory {
                     public void update() {
                         ShopItem displayItem = game.shop.helpDisplayItem;
                         Strings.generateNewShieldDescription();
-                        Cache.get(ImageType.WIN_MENU).draw();
+                        Image.cache.get(ImageType.WIN_MENU).draw();
                         displayItem.icon.setPosition(5, 10);
                         displayItem.icon.draw();
                         if (displayItem.id == ShopItem.ID.SHIELD) {
@@ -143,7 +142,7 @@ public class ViewFactory {
                         }
                         Printer.print("[" + displayItem.name + "]", Color.YELLOW, 25, 14);
                         Printer.print(displayItem.description, 4, 30);
-                        Cache.get(ButtonType.GENERAL_CLOSE).draw();
+                        Button.cache.get(ButtonType.GENERAL_CLOSE).draw();
                         super.update();
                     }
                 };
@@ -162,15 +161,15 @@ public class ViewFactory {
 
                     @Override
                     public void update() {
-                        Cache.get(ImageType.WIN_MENU).draw();
+                        Image.cache.get(ImageType.WIN_MENU).draw();
                         Printer.print(Options.developerMode ? "Developer Mode" : "JavaRush", Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
-                        ((FloatingImage) Cache.get(ImageType.FLO_LOGO)).draw(2.8, Image.CENTER, 8);
-                        Cache.get(ButtonType.MAIN_MENU_OPTIONS).draw();
-                        Cache.get(ButtonType.MAIN_MENU_ABOUT).draw();
-                        Cache.get(ButtonType.MAIN_MENU_RECORDS).draw();
+                        ((FloatingImage) Image.cache.get(ImageType.FLO_LOGO)).draw(2.8, Image.CENTER, 8);
+                        Button.cache.get(ButtonType.MAIN_MENU_OPTIONS).draw();
+                        Button.cache.get(ButtonType.MAIN_MENU_ABOUT).draw();
+                        Button.cache.get(ButtonType.MAIN_MENU_RECORDS).draw();
                         printTopScore();
 
-                        Button startButton = Cache.get(ButtonType.MAIN_MENU_START);
+                        Button startButton = Button.cache.get(ButtonType.MAIN_MENU_START);
                         if (game.isStopped || game.isFirstMove) {
                             printRandomQuote();
                             if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
@@ -179,7 +178,7 @@ public class ViewFactory {
                             if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
                         }
 
-                        Cache.get(ButtonType.MAIN_MENU_START).draw();
+                        Button.cache.get(ButtonType.MAIN_MENU_START).draw();
                         super.update();
                     }
 
@@ -210,7 +209,7 @@ public class ViewFactory {
                 return new View(phase) {
                     @Override
                     public void update() {
-                        Cache.get(ImageType.WIN_MENU).draw();
+                        Image.cache.get(ImageType.WIN_MENU).draw();
                         Printer.print("настройки", Color.YELLOW, Printer.CENTER, 2);
 
                         Printer.print("сложность", 2, Options.difficultySelector.y - 1);
@@ -228,7 +227,7 @@ public class ViewFactory {
                         Printer.print("тема: " + Theme.getCurrentName(), 2, Options.themeSelector.y);
                         Options.themeSelector.draw();
 
-                        Cache.get(ButtonType.GENERAL_CLOSE).draw();
+                        Button.cache.get(ButtonType.GENERAL_CLOSE).draw();
                         super.update();
                     }
                 };
@@ -237,15 +236,15 @@ public class ViewFactory {
                 return new View(phase) {
                     @Override
                     public void update() {
-                        Cache.get(ImageType.WIN_MENU).draw();
+                        Image.cache.get(ImageType.WIN_MENU).draw();
                         Printer.print(Strings.RECORDS[0], Color.YELLOW, Printer.CENTER, 2);
-                        Cache.get(ButtonType.GENERAL_CLOSE).draw();
+                        Button.cache.get(ButtonType.GENERAL_CLOSE).draw();
                         drawPrizeCups();
                         drawEntries();
                     }
 
                     private void drawPrizeCups() {
-                        Image prizeCup = Cache.get(ImageType.MENU_CUP);
+                        Image prizeCup = Image.cache.get(ImageType.MENU_CUP);
                         Color[] colors;
                         for (int i = 0; i < 3; i++) {
                             switch (i) {
@@ -283,7 +282,7 @@ public class ViewFactory {
                 return new View(phase) {
                     @Override
                     public void update() {
-                        Cache.get(ImageType.WIN_MENU).draw();
+                        Image.cache.get(ImageType.WIN_MENU).draw();
                         Score.Table.pageSelector.draw();
 
                         String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
@@ -320,7 +319,7 @@ public class ViewFactory {
                             default:
                                 break;
                         }
-                        Cache.get(ButtonType.GENERAL_CONFIRM).draw();
+                        Button.cache.get(ButtonType.GENERAL_CONFIRM).draw();
                         super.update();
                     }
                 };

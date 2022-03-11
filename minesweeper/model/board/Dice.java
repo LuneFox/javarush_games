@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.model.DrawableObject;
-import com.javarush.games.minesweeper.gui.Cache;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
 
@@ -27,12 +26,12 @@ public class Dice extends DrawableObject {
 
     public void setImage(int number, int x, int y) {
         setPosition(x, y);
-        if (number == 1) this.image = Cache.get(ImageType.SHOP_DICE_1);
-        else if (number == 2) this.image = Cache.get(ImageType.SHOP_DICE_2);
-        else if (number == 3) this.image = Cache.get(ImageType.SHOP_DICE_3);
-        else if (number == 4) this.image = Cache.get(ImageType.SHOP_DICE_4);
-        else if (number == 5) this.image = Cache.get(ImageType.SHOP_DICE_5);
-        else if (number == 6) this.image = Cache.get(ImageType.SHOP_DICE_6);
+        if (number == 1) this.image = Image.cache.get(ImageType.SHOP_DICE_1);
+        else if (number == 2) this.image = Image.cache.get(ImageType.SHOP_DICE_2);
+        else if (number == 3) this.image = Image.cache.get(ImageType.SHOP_DICE_3);
+        else if (number == 4) this.image = Image.cache.get(ImageType.SHOP_DICE_4);
+        else if (number == 5) this.image = Image.cache.get(ImageType.SHOP_DICE_5);
+        else if (number == 6) this.image = Image.cache.get(ImageType.SHOP_DICE_6);
         this.onScreenTime = 0;
     }
 

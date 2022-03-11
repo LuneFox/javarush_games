@@ -3,14 +3,15 @@ package com.javarush.games.minesweeper.controller;
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
+import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.gui.interactive.ButtonType;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.player.Score;
-import com.javarush.games.minesweeper.gui.Cache;
 
 import java.util.stream.Stream;
 
@@ -23,7 +24,7 @@ public class ControlStrategyFactory {
                 return new ControlStrategy() {
                     @Override
                     public void leftClick(int x, int y) {
-                        if (Cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
+                        if (Button.cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.MAIN);
                         }
                         Options.aboutPageSelector.checkLeftTouch(x, y);
@@ -140,13 +141,13 @@ public class ControlStrategyFactory {
 
                     @Override
                     public void leftClick(int x, int y) {
-                        if (Cache.get(ButtonType.GAME_OVER_HIDE).checkLeftTouch(x, y)) {
+                        if (Button.cache.get(ButtonType.GAME_OVER_HIDE).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.BOARD);
-                        } else if (Cache.get(ButtonType.GAME_OVER_RETURN).checkLeftTouch(x, y)) {
+                        } else if (Button.cache.get(ButtonType.GAME_OVER_RETURN).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.MAIN);
-                        } else if (Cache.get(ButtonType.GAME_OVER_QUESTION).checkLeftTouch(x, y)) {
+                        } else if (Button.cache.get(ButtonType.GAME_OVER_QUESTION).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.SCORE);
-                        } else if (Cache.get(ButtonType.GAME_OVER_AGAIN).checkLeftTouch(x, y)) {
+                        } else if (Button.cache.get(ButtonType.GAME_OVER_AGAIN).checkLeftTouch(x, y)) {
                             game.startNewGame();
                         }
                     }
@@ -166,7 +167,7 @@ public class ControlStrategyFactory {
                 return new ControlStrategy() {
                     @Override
                     public void leftClick(int x, int y) {
-                        if (Cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
+                        if (Button.cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.SHOP);
                         }
                     }
@@ -184,15 +185,15 @@ public class ControlStrategyFactory {
                     @Override
                     @DeveloperOption
                     public void leftClick(int x, int y) {
-                        if (Cache.get(ButtonType.MAIN_MENU_START).checkLeftTouch(x, y)) {
+                        if (Button.cache.get(ButtonType.MAIN_MENU_START).checkLeftTouch(x, y)) {
                             game.startNewGame();
-                        } else if (Cache.get(ButtonType.MAIN_MENU_OPTIONS).checkLeftTouch(x, y)) {
+                        } else if (Button.cache.get(ButtonType.MAIN_MENU_OPTIONS).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.OPTIONS);
-                        } else if (Cache.get(ButtonType.MAIN_MENU_ABOUT).checkLeftTouch(x, y)) {
+                        } else if (Button.cache.get(ButtonType.MAIN_MENU_ABOUT).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.ABOUT);
-                        } else if (Cache.get(ButtonType.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
+                        } else if (Button.cache.get(ButtonType.MAIN_MENU_RECORDS).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.RECORDS);
-                        } else if (Cache.get(ImageType.FLO_LOGO).checkLeftTouch(x, y)) {
+                        } else if (Image.cache.get(ImageType.FLO_LOGO).checkLeftTouch(x, y)) {
                             if (Options.developerCounter < 9) {
                                 Options.developerCounter++;
                                 PopUpMessage.show("Версия: " + Strings.VERSION);
@@ -215,7 +216,7 @@ public class ControlStrategyFactory {
                 return new ControlStrategy() {
                     @Override
                     public void leftClick(int x, int y) {
-                        if (Cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
+                        if (Button.cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.MAIN);
                             PopUpMessage.show("Сохранено");
                         }
@@ -250,7 +251,7 @@ public class ControlStrategyFactory {
                 return new ControlStrategy() {
                     @Override
                     public void leftClick(int x, int y) {
-                        if (Cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
+                        if (Button.cache.get(ButtonType.GENERAL_CLOSE).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.MAIN);
                         }
                     }
@@ -265,7 +266,7 @@ public class ControlStrategyFactory {
                 return new ControlStrategy() {
                     @Override
                     public void leftClick(int x, int y) {
-                        if (Cache.get(ButtonType.GENERAL_CONFIRM).checkLeftTouch(x, y)) {
+                        if (Button.cache.get(ButtonType.GENERAL_CONFIRM).checkLeftTouch(x, y)) {
                             Phase.setActive(Phase.GAME_OVER);
                         }
                         Score.Table.pageSelector.checkLeftTouch(x, y);

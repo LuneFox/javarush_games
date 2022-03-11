@@ -2,6 +2,8 @@ package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.interactive.Button;
 
 /**
  * Theme configurator with all variable colors.
@@ -137,7 +139,8 @@ public enum Theme {
 
     public static void set(int themeNumber) {
         Theme.currentNumber = themeNumber;
-        Cache.refresh();
+        Image.cache.refresh();
+        Button.cache.refresh();
         MinesweeperGame.getInstance().field.recolor();
     }
 

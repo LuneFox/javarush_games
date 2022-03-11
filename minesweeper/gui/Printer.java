@@ -1,16 +1,36 @@
 package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.model.Cache;
 import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageType;
+
+import java.util.Arrays;
 
 /**
  * Utility class for drawing text information using symbol images.
  */
 
 public class Printer {
+
+    public static final Cache<Character, Image> cache = new Cache<Character, Image>(128) {
+        @Override
+        protected Image put(Character character) {
+            Arrays.stream(ImageType.values())
+                    .filter(element -> element.name().startsWith("SYM_"))
+                    .forEach(element -> {
+                        for (char c : element.getCharacters()) {
+                            cache.put(c, new Image(element));  // cache all symbols along the way (load font)
+                        }
+                    });
+            return cache.get(character);
+        }
+    };
+
     public static final int CENTER = Integer.MIN_VALUE;
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
+
 
     public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
         if (drawX == CENTER) {
@@ -62,7 +82,7 @@ public class Printer {
             if (caret.isAtNewLine(chars[i])) continue; // Return caret to new line at "\n" symbol, don't draw it
 
             if (alignRight && i == 0) {
-                int width1st = Cache.get(chars[0]).width;
+                int width1st = cache.get(chars[0]).width;
                 if (width1st > 4) {
                     caret.x -= width1st - 4; // First letter position fix
                 }
@@ -88,7 +108,7 @@ public class Printer {
     }
 
     private static void drawSymbol(char c, Color color, int x, int y) {
-        Image symbol = Cache.get(c);
+        Image symbol = cache.get(c);
         symbol.replaceColor(color, 1);
         symbol.draw(x, y);
     }
@@ -101,7 +121,7 @@ public class Printer {
         Image symbol;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
-            symbol = Cache.get(c);
+            symbol = cache.get(c);
             width += (symbol.matrix[0].length + CHAR_SPACING);
         }
         return width;
