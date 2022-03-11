@@ -26,9 +26,9 @@ public class DifficultySelector extends DrawableObject {
 
         for (int i = 0; i < bars.length; i++) {
             Image bar = new Image(ImageType.MENU_DIFFICULTY_BAR, (i * 4) + this.x + difficultyDownArrow.width + 2, this.y);
-            if (i > 2) bar.replaceColor(Color.YELLOW, 1);
-            if (i > 4) bar.replaceColor(Color.ORANGE, 1);
             if (i > 6) bar.replaceColor(Color.RED, 1);
+            else if (i > 4) bar.replaceColor(Color.ORANGE, 1);
+            else if (i > 2) bar.replaceColor(Color.YELLOW, 1);
             bars[i] = bar;
         }
     }

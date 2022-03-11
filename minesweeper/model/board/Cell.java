@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageStorage;
+import com.javarush.games.minesweeper.model.Cache;
 import com.javarush.games.minesweeper.model.DrawableObject;
 
 import java.util.ArrayList;
