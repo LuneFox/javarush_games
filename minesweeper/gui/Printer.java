@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.model.Cache;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 

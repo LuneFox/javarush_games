@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model;
+package com.javarush.games.minesweeper.gui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +19,4 @@ public abstract class Cache<K, V> {
     }
 
     protected abstract V put(K key);
-
-    public void refresh() {
-        cache.keySet().forEach(this::put);
-    }
 }

@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.gui.image;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.model.Cache;
+import com.javarush.games.minesweeper.gui.Cache;
 import com.javarush.games.minesweeper.model.GameObject;
 import com.javarush.games.minesweeper.view.View;
 
