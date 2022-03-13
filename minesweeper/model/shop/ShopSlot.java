@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.*;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.ViewShop;
 
@@ -12,7 +12,7 @@ import com.javarush.games.minesweeper.view.ViewShop;
  * Clicking on this slot will sell the player the corresponding item.
  */
 
-public class ShopSlot extends GameObject {
+public class ShopSlot extends InteractiveObject {
     private static final int PRESSED_DURATION = 5;
     private static final int PRESS_DEPTH = 1;
     private int pressedCountDown;
@@ -27,6 +27,7 @@ public class ShopSlot extends GameObject {
         this.height = 20;
         this.width = 20;
     }
+
     @Override
     public void draw() {
         // Define "press" depth when it's touched

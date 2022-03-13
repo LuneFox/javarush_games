@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.gui.image;
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Cache;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.view.View;
 
 import java.util.HashSet;
@@ -13,7 +13,7 @@ import java.util.Set;
  * An image that is drawn using colors and the number matrix. Can be mirrored, recolored etc.
  */
 
-public class Image extends GameObject {
+public class Image extends InteractiveObject {
     public static Set<Image> allImages = new HashSet<>(); // All images, including non-cached
 
     public static final Cache<ImageType, Image> cache = new Cache<ImageType, Image>(ImageType.values().length) {

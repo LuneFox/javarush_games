@@ -5,13 +5,13 @@ import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 
 /**
  * Shows short message over the screen. Singleton.
  */
 
-public class PopUpMessage extends GameObject {
+public class PopUpMessage extends InteractiveObject {
     private static final int STEP = 1;
     private static final PopUpMessage INSTANCE = new PopUpMessage();
     private final Image background;

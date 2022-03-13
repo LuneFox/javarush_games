@@ -4,7 +4,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.view.View;
 
-public abstract class GameObject implements Drawable, Clickable {
+public abstract class InteractiveObject implements Drawable, Clickable {
     protected static MinesweeperGame game = MinesweeperGame.getInstance();
 
     public int x;
@@ -14,16 +14,16 @@ public abstract class GameObject implements Drawable, Clickable {
     public int latestClickX; // remember where it was touched last time, useful if this drawable contains other drawables
     public int latestClickY;
 
-    public GameObject() {
+    public InteractiveObject() {
         this(0, 0);
     }
 
-    public GameObject(int x, int y) {
+    public InteractiveObject(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public GameObject(int x, int y, View view) { // Constructor with attaching to view
+    public InteractiveObject(int x, int y, View view) { // Constructor with attaching to view
         this(x, y);
         linkView(view);
     }
@@ -58,7 +58,7 @@ public abstract class GameObject implements Drawable, Clickable {
         // Do nothing by default, override to assign an action
     }
 
-    public <T extends GameObject> T linkView(View view) {
+    public <T extends InteractiveObject> T linkView(View view) {
         view.linkedObjects.add(this);
         return (T) this;
     }

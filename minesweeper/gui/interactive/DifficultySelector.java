@@ -4,11 +4,11 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.gui.image.Image;
 
-public class DifficultySelector extends GameObject {
+public class DifficultySelector extends InteractiveObject {
     private static final int MAX_DIFFICULTY = 45;
     private static final int MIN_DIFFICULTY = 5;
     private int difficultySetting;

@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
 
@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
  * Graphical dice that appears on screen when you use Lucky Dice
  */
 
-public class Dice extends GameObject {
+public class Dice extends InteractiveObject {
     private final static int DISPLAY_DURATION = 20;
 
     public Cell appearCell;     // cell at which the dice appears after click

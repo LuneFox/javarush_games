@@ -3,12 +3,12 @@ package com.javarush.games.minesweeper.gui.interactive;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.gui.image.Image;
 
 import java.util.Arrays;
 
-public class ThemeSelector extends GameObject {
+public class ThemeSelector extends InteractiveObject {
     private final Image[] themePalettes;
     private final Image themeCursor;
 

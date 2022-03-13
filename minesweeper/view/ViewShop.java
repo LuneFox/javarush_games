@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
@@ -68,7 +68,7 @@ public class ViewShop extends View {
 
         // Draw showcase
         showCasePanel.draw(10, 10);
-        game.shop.shopSlots.forEach(GameObject::draw);
+        game.shop.shopSlots.forEach(InteractiveObject::draw);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
 
         // Draw header

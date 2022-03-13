@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.view;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Phase;
 
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ import java.util.List;
 public abstract class View {
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public Phase phase;
-    public List<GameObject> linkedObjects;  // list of objects that can be interacted
+    public List<InteractiveObject> linkedObjects;  // list of objects that can be interacted
 
     public View(Phase phase) {
         this.phase = phase;
@@ -28,7 +28,7 @@ public abstract class View {
     }
 
     public void click(int x, int y, Controller.Click click) {
-        for (GameObject object : linkedObjects) {
+        for (InteractiveObject object : linkedObjects) {
             if (object.tryClick(x, y, click)) {
                 return; // click only the first one if they accidentally got layered
             }

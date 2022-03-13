@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 
 import java.util.*;
 
@@ -12,7 +12,7 @@ import java.util.*;
  * Constructor accepts maximum number of pages, although they're counted from 0 to MAX-1 to complement arrays.
  */
 
-public class PageSelector extends GameObject {
+public class PageSelector extends InteractiveObject {
     public static final Set<PageSelector> allSelectors = new HashSet<>();
     private final int maxPage;
     private int currentPage;

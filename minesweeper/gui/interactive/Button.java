@@ -6,14 +6,14 @@ import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageCreator;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.view.View;
 
 /**
  * Creates buttons with text wrapped in frames.
  */
 
-public abstract class Button extends GameObject {
+public abstract class Button extends InteractiveObject {
     public static int pressedTime = -2;           // this timer counts towards 0, then the press animation stops
     public static final int PRESS_DURATION = 5;   // for how long buttons stay pressed
     public static final int POST_PRESS_DELAY = -2;// for how long buttons display unpressed before moving to next screen

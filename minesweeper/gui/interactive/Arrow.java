@@ -1,10 +1,10 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.GameObject;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.gui.image.Image;
 
-public class Arrow extends GameObject {
+public class Arrow extends InteractiveObject {
     private static final int PRESSED_DURATION = 2;
     private final boolean pointsRight;
     private final Image arrowImage;
