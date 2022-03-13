@@ -3,21 +3,23 @@ package com.javarush.games.minesweeper.gui.interactive;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 import com.javarush.games.minesweeper.gui.image.Image;
 
 import java.util.Arrays;
 
-public class ThemeSelector extends DrawableObject {
+public class ThemeSelector extends GameObject {
     private final Image[] themePalettes;
     private final Image themeCursor;
 
     public ThemeSelector(int x, int y) {
         super(x, y);
         this.themeCursor = new Image(ImageType.MENU_THEME_PALETTE);
+        this.themeCursor.restrictColorUpdate(true);
         themePalettes = new Image[3];
         for (int i = 0; i < themePalettes.length; i++) {
             themePalettes[i] = new Image(ImageType.MENU_THEME_PALETTE);
+            themePalettes[i].restrictColorUpdate(true);
             themePalettes[i].setPosition(this.x + i * 12, this.y);
             this.width += themePalettes[i].width + 2;
         }
@@ -44,9 +46,9 @@ public class ThemeSelector extends DrawableObject {
     }
 
     @Override
-    protected void onLeftTouch() {
+    public void onLeftClick() {
         for (int i = 0; i < themePalettes.length; i++) {
-            if (themePalettes[i].checkLeftTouch(lastClickX, lastClickY)) {
+            if (themePalettes[i].tryClick(latestClickX, latestClickY)) {
                 Theme.set(i);
             }
         }

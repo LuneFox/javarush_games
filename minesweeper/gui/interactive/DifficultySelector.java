@@ -4,11 +4,11 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.gui.image.Image;
 
-public class DifficultySelector extends DrawableObject {
+public class DifficultySelector extends GameObject {
     private static final int MAX_DIFFICULTY = 45;
     private static final int MIN_DIFFICULTY = 5;
     private int difficultySetting;
@@ -50,22 +50,22 @@ public class DifficultySelector extends DrawableObject {
     }
 
     @Override
-    protected void onLeftTouch() {
-        if (difficultyDownArrow.checkLeftTouch(lastClickX, lastClickY)) {
+    public void onLeftClick() {
+        if (difficultyDownArrow.tryClick(latestClickX, latestClickY)) {
             difficultyDown();
-        } else if (difficultyUpArrow.checkLeftTouch(lastClickX, lastClickY)) {
+        } else if (difficultyUpArrow.tryClick(latestClickX, latestClickY)) {
             difficultyUp();
         }
     }
 
     public void difficultyUp() {
-        difficultyUpArrow.onLeftTouch();
+        difficultyUpArrow.onLeftClick();
         if (difficultySetting < MAX_DIFFICULTY)
             difficultySetting += 5;
     }
 
     public void difficultyDown() {
-        difficultyDownArrow.onLeftTouch();
+        difficultyDownArrow.onLeftClick();
         if (difficultySetting > MIN_DIFFICULTY)
             difficultySetting -= 5;
     }

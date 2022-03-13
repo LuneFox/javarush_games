@@ -1,35 +1,32 @@
-package com.javarush.games.minesweeper.model.shop.overlay;
+package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.*;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.shop.ShopItem;
+import com.javarush.games.minesweeper.view.ViewShop;
 
 /**
  * Clicking on this slot will sell the player the corresponding item.
  */
 
-public class Slot extends DrawableObject {
+public class ShopSlot extends GameObject {
     private static final int PRESSED_DURATION = 5;
     private static final int PRESS_DEPTH = 1;
     private int pressedCountDown;
-    private final ShopItem item;
+
+    private ShopItem item;
     private Image frame;
 
-    public ShakeHelper activatedShakeHelper = new ShakeHelper();
-
-    public Slot(int x, int y, ShopItem item) {
-        this.item = item;
+    public ShopSlot(int x, int y) {
         frame = Image.cache.get(ImageType.SHOP_ITEM_FRAME);
         this.x = x;
         this.y = y;
         this.height = 20;
         this.width = 20;
     }
-
     @Override
     public void draw() {
         // Define "press" depth when it's touched
@@ -56,7 +53,7 @@ public class Slot extends DrawableObject {
             if (item.canExpire) {
                 Printer.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right, top, true);
             }
-            Printer.print("АКТ", Color.YELLOW, right + activatedShakeHelper.getShift(), bottom, true);
+            Printer.print("АКТ", Color.YELLOW, right + ViewShop.activatedShakeHelper.getShift(), bottom, true);
         } else {
             Printer.print("НЕТ", Theme.SHOP_SIGN_NO.getColor(), right, bottom, true);
         }
@@ -81,11 +78,11 @@ public class Slot extends DrawableObject {
     }
 
     @Override
-    protected void onLeftTouch() {
+    public void onLeftClick() {
         pressedCountDown = PRESSED_DURATION;
 
         if (item.isActivated()) {
-            activatedShakeHelper.startShaking();
+            ViewShop.activatedShakeHelper.startShaking();
             PopUpMessage.show("Уже активировано");
             return;
         }
@@ -96,16 +93,20 @@ public class Slot extends DrawableObject {
         }
 
         if (item.isUnaffordable()) {
+            ViewShop.moneyShakeHelper.startShaking();
             PopUpMessage.show("Не хватает золота");
-            game.shop.showCase.header.moneyShakeHelper.startShaking();
             return;
         }
 
         game.shop.sell(item);
     }
 
+    public void setItem(ShopItem item) {
+        this.item = item;
+    }
+
     @Override
-    protected void onRightTouch() {
+    public void onRightClick() {
         game.shop.helpDisplayItem = item;
         Phase.setActive(Phase.ITEM_HELP);
     }

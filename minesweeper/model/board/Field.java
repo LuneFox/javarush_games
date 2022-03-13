@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.model.board;
 
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 
@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
  * This class contains the game field itself and global actions that operate it.
  */
 
-public class Field extends DrawableObject {
+public class Field extends GameObject {
     private final Cell[][] field = new Cell[10][10];
     public Dice dice;
 
@@ -74,11 +74,6 @@ public class Field extends DrawableObject {
         getAllCells(Cell.Filter.NONE).forEach(cell -> {
             if (cell.isMined) cell.isOpen = true;
         });
-    }
-
-    public void recolor() {
-        if (game.isStopped) return; // no cells to color yet
-        getAllCells(Cell.Filter.NONE).forEach(Cell::updateColors);
     }
 
     @Override

@@ -3,13 +3,13 @@ package com.javarush.games.minesweeper.gui;
 import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 
 /**
  * Logical display to flatten layers and increase the drawing speed, allows making effects.
  */
 
-public class Display extends DrawableObject {
+public class Display extends GameObject {
     private final Game game = MinesweeperGame.getInstance();
     private final Pixel[][] matrix;
     private boolean interlacePhase;

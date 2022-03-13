@@ -41,13 +41,14 @@ public class MinesweeperGame extends Game {
     @Override
     public void initialize() {
         instance = this;            // most declarations below use this instance, leave before everything else
+        Options.initialize();
         display = new Display();
         controller = new Controller();
         field = new Field();
         timer = new Timer();
         shop = new Shop();
         player = new Player();
-        Options.initialize();
+
 
         showGrid(false);
         setScreenSize(100, 100);
@@ -301,7 +302,7 @@ public class MinesweeperGame extends Game {
         if (!Options.developerMode) return;
 
         if (!Options.autoBuyFlagsSelector.isEnabled())
-            Options.autoBuyFlagsSelector.checkLeftTouch(Options.autoBuyFlagsSelector.x, Options.autoBuyFlagsSelector.y);
+            Options.autoBuyFlagsSelector.tryClick(Options.autoBuyFlagsSelector.x, Options.autoBuyFlagsSelector.y);
         boolean[] success = new boolean[1];
         field.getAllCells(Filter.NUMERABLE).forEach(cell -> {
             if (!cell.isOpen) return;

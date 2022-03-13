@@ -5,8 +5,7 @@ import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageStorage;
-import com.javarush.games.minesweeper.model.Cache;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,7 +17,7 @@ import java.util.Map;
  * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
  */
 
-public class Cell extends DrawableObject {
+public class Cell extends GameObject {
     private static final Map<Integer, ImageType> sprites = new HashMap<>();
 
     public boolean isMined;                // contains a mine

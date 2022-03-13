@@ -1,10 +1,10 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 import com.javarush.games.minesweeper.gui.image.Image;
 
-public class Arrow extends DrawableObject {
+public class Arrow extends GameObject {
     private static final int PRESSED_DURATION = 2;
     private final boolean pointsRight;
     private final Image arrowImage;
@@ -38,7 +38,7 @@ public class Arrow extends DrawableObject {
     }
 
     @Override
-    protected void onLeftTouch() {
+    public void onLeftClick() {
         pressedCountDown = PRESSED_DURATION;
     }
 }

@@ -62,4 +62,6 @@ public class Strings {
     public static final String ITEM_BOMB_DESCRIPTION =
             "Бросив бомбочку, вы\nуничтожите закрытую\nклетку на поле.\nЕсли взорвёте мину,\n" +
                     "соседние мины тоже\nвзорвутся по цепи.\nОчков не даёт.";
+
+    public static final String OPTIONS_SAVED = "Сохранено";
 }

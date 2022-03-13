@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 import com.javarush.games.minesweeper.gui.image.Image;
 
 /**
@@ -12,7 +12,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
  * Has a form of a common switch with a handle that slides along the rail.
  */
 
-public class SwitchSelector extends DrawableObject {
+public class SwitchSelector extends GameObject {
     private boolean enabled;
     private final Image rail;
     private final Image handle;
@@ -57,7 +57,7 @@ public class SwitchSelector extends DrawableObject {
         Printer.print(enabled ? textOn : textOff, helpColor, rightStopper, y + height + 1, true);
     }
 
-    protected void onLeftTouch() {
+    public void onLeftClick() {
         enabled = !enabled;
     }
 

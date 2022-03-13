@@ -17,23 +17,23 @@ import java.util.List;
 
 public enum Phase {
     ABOUT, BOARD, GAME_OVER, ITEM_HELP, MAIN, OPTIONS, RECORDS, SCORE, SHOP;
-    private static final List<Phase> PHASES;
-    private static final List<View> VIEWS;
+    private static final List<Phase> phases;
+    private static final List<View> views;
     private static View pendingView;
     private static View currentView;
 
     static {
-        PHASES = new LinkedList<>(Arrays.asList(Phase.values()));
-        VIEWS = new ArrayList<>();
+        phases = new LinkedList<>(Arrays.asList(Phase.values()));
+        views = new ArrayList<>();
         ViewFactory factory = new ViewFactory();
-        PHASES.forEach(screen -> VIEWS.add(factory.createView(screen)));
+        phases.forEach(screen -> views.add(factory.createView(screen)));
     }
 
     // Phase at index 0 is considered active
     public static void setActive(Phase phase) {
-        PHASES.remove(phase);                         // place phase at position 0 = make active
-        PHASES.add(0, phase);
-        VIEWS.stream()                                // search views
+        phases.remove(phase);                         // place phase at position 0 = make active
+        phases.add(0, phase);
+        views.stream()                                // search views
                 .filter(view -> view.phase == phase)  // find view for this phase
                 .forEach(view -> pendingView = view); // register this view as pending
     }
@@ -56,16 +56,18 @@ public enum Phase {
         MinesweeperGame game = MinesweeperGame.getInstance();
         game.display.setInterlaceEnabled(false);
         PageSelector.allSelectors.forEach(PageSelector::reset);
-        if (game.shop.showCase != null) {
-            game.shop.showCase.header.setDisplayMoney(game.player.inventory.money);
-        }
+        game.player.inventory.displayMoney = game.player.inventory.money;
     }
 
     public static Phase getActive() {
-        return PHASES.get(0);
+        return phases.get(0);
+    }
+
+    public static View getCurrentView() {
+        return currentView;
     }
 
     public static boolean isActive(Phase phase) {
-        return (PHASES.get(0) == phase);
+        return (phases.get(0) == phase);
     }
 }

@@ -218,6 +218,10 @@ public class ImageStorage {
                 setColors(Color.YELLOW, Color.ORANGE);
                 data = ImageCreator.makeArray(4, "011011121112111211220220");
                 break;
+            case MENU_BUTTON:
+                setColors(Theme.BUTTON_BG.getColor(), Color.BLACK, Theme.BUTTON_BORDER.getColor());
+                data = null; // it's dynamic, depends on text size, create a frame
+                break;
             case MENU_ARROW:
                 setColors(Color.YELLOW, Color.WHITE);
                 data = ImageCreator.makeArray(5, "11000011000011000011001100110011000");

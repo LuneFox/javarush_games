@@ -19,11 +19,25 @@ public class Controller {
     private static int lastClickX;
     private static int lastClickY;
 
+    public enum Click {
+        LEFT, RIGHT
+    }
+
     static {
         // Fill strategy map
         ControlStrategyFactory factory = new ControlStrategyFactory();
         Arrays.stream(Phase.values()).forEach(screen -> strategyMap.put(screen, factory.createStrategy(screen)));
         strategyMap.put(null, new ControlStrategy() { // disabled controls option
+
+            @Override
+            public void leftClick(int x, int y) {
+                // do nothing
+            }
+
+            @Override
+            public void rightClick(int x, int y) {
+                // do nothing
+            }
         });
     }
 

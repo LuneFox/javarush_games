@@ -13,6 +13,7 @@ import java.util.Map;
 
 public class Inventory {
     public int money;
+    public int displayMoney;
     public static final int INIT_FLAG_NUMBER = 3;
     public Map<ShopItem.ID, Integer> items = new EnumMap<>(ShopItem.ID.class);
 

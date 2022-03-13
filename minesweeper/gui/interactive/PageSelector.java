@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
-import com.javarush.games.minesweeper.model.DrawableObject;
+import com.javarush.games.minesweeper.model.GameObject;
 
 import java.util.*;
 
@@ -12,8 +12,8 @@ import java.util.*;
  * Constructor accepts maximum number of pages, although they're counted from 0 to MAX-1 to complement arrays.
  */
 
-public class PageSelector extends DrawableObject {
-    public static final List<PageSelector> allSelectors = new LinkedList<>();
+public class PageSelector extends GameObject {
+    public static final Set<PageSelector> allSelectors = new HashSet<>();
     private final int maxPage;
     private int currentPage;
     private final Arrow prevPageArrow;
@@ -31,13 +31,13 @@ public class PageSelector extends DrawableObject {
     }
 
     public void prevPage() {
-        prevPageArrow.onLeftTouch();
+        prevPageArrow.onLeftClick();
         if (currentPage > 0)
             currentPage--;
     }
 
     public void nextPage() {
-        nextPageArrow.onLeftTouch();
+        nextPageArrow.onLeftClick();
         if (currentPage < maxPage)
             currentPage++;
     }
@@ -56,9 +56,9 @@ public class PageSelector extends DrawableObject {
     }
 
     @Override
-    protected void onLeftTouch() {
+    public void onLeftClick() {
         // Click on left half = page back, click on right half = page forward
-        if (lastClickX < x + width / 2) {
+        if (latestClickX < x + width / 2) {
             prevPage();
         } else {
             nextPage();
