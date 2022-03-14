@@ -282,19 +282,19 @@ public class ImageStorage {
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111011111213111111131111111311111113121111131111111303333333");
                 break;
-            case FIELD_DICE_3:
+            case BOARD_DICE_3:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111011111213111111131112111311111113121111131111111303333333");
                 break;
-            case FIELD_DICE_4:
+            case BOARD_DICE_4:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111012111213111111131111111311111113121112131111111303333333");
                 break;
-            case FIELD_DICE_5:
+            case BOARD_DICE_5:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111012111213111111131112111311111113121112131111111303333333");
                 break;
-            case FIELD_DICE_6:
+            case BOARD_DICE_6:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111012111213111111131211121311111113121112131111111303333333");
                 break;
