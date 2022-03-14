@@ -1,5 +1,6 @@
 package com.javarush.games.minesweeper.model.board;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -72,7 +73,13 @@ public class Field extends InteractiveObject {
 
     public void revealMines() {
         getAllCells(Cell.Filter.NONE).forEach(cell -> {
-            if (cell.isMined) cell.isOpen = true;
+            if (cell.isMined) {
+                cell.open();
+                if (cell.isFlagged && !cell.isDestroyed) {
+                    cell.setSprite(ImageType.BOARD_MINE);
+                    cell.setBackgroundColor(Color.GREEN);
+                }
+            }
         });
     }
 

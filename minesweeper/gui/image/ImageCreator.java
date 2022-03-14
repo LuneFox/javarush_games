@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.gui.image;
 
+import com.javarush.games.minesweeper.MinesweeperGame;
+
 /**
  * Utility class for generating images of different kind.
  */
@@ -71,6 +73,11 @@ public class ImageCreator {
 
     // FRAME GENERATION
 
+    private static final int FRAME_COLOR_TRANSPARENT = 0;
+    private static final int FRAME_COLOR_BACKGROUND = 1;
+    private static final int FRAME_COLOR_SHADOW = 2;
+    private static final int FRAME_COLOR_STROKE = 3;
+
     public static int[][] createFrame(int sizeX, int sizeY, boolean addShadow, boolean addStroke) {
         // Image with shadow is 1 px taller and wider
         if (addShadow) {
@@ -79,40 +86,87 @@ public class ImageCreator {
         }
 
         int[][] frame = new int[sizeY][sizeX];
-        fillFrameBody(frame, sizeX, sizeY);
-        if (addShadow) addFrameShadow(frame, sizeX, sizeY);
-        if (addStroke) addInnerStroke(frame, sizeX, sizeY, addShadow);
+        fillBackground(frame);
+        if (addShadow) addFrameShadow(frame);
+        if (addStroke) addInnerStroke(frame, addShadow);
         return frame;
     }
 
-    private static void addFrameShadow(int[][] frame, int sizeX, int sizeY) {
-        for (int x = 0; x < sizeX; x++) {
-            frame[sizeY - 1][x] = (x == 0) ? 0 : 2;
+    private static void addFrameShadow(int[][] frame) {
+        // Draw bottom borderline without left pixel;
+        for (int x = 0; x < frame[0].length; x++) {
+            frame[frame.length - 1][x] = (x == 0) ? FRAME_COLOR_TRANSPARENT : FRAME_COLOR_SHADOW;
         }
-        for (int y = 0; y < sizeY; y++) {
-            frame[y][sizeX - 1] = (y == 0) ? 0 : 2;
+
+        // Draw right borderline without top pixel;
+        for (int y = 0; y < frame.length; y++) {
+            frame[y][frame[0].length - 1] = (y == 0) ? FRAME_COLOR_TRANSPARENT : FRAME_COLOR_SHADOW;
         }
     }
 
-    private static void addInnerStroke(int[][] frame, int sizeX, int sizeY, boolean shadow) {
-        if (shadow) { // if shadow is drawn, shrink the drawing zone back to normal window
+    private static void addInnerStroke(int[][] frame, boolean shadow) {
+        int sizeY = frame.length;
+        int sizeX = frame[0].length;
+
+        // If shadow is drawn, shrink the drawing zone back to normal window
+        if (shadow) {
             sizeX--;
             sizeY--;
         }
+
+        // Draw top and bottom lines
         for (int x = 0; x < sizeX; x++) {
-            frame[0][x] = 3;
-            frame[sizeY - 1][x] = 3;
+            frame[0][x] = FRAME_COLOR_STROKE;
+            frame[sizeY - 1][x] = FRAME_COLOR_STROKE;
         }
-        for (int y = 0; y < sizeY; y++) {
-            frame[y][0] = 3;
-            frame[y][sizeX - 1] = 3;
+
+        // Draw remaining left and right lines
+        for (int y = 1; y < sizeY - 1; y++) {
+            frame[y][0] = FRAME_COLOR_STROKE;
+            frame[y][sizeX - 1] = FRAME_COLOR_STROKE;
         }
     }
 
-    private static void fillFrameBody(int[][] frame, int sizeX, int sizeY) {
+    private static void fillBackground(int[][] frame) {
+        for (int y = 0; y < frame.length; y++) {
+            for (int x = 0; x < frame[0].length; x++) {
+                frame[y][x] = FRAME_COLOR_BACKGROUND;
+            }
+        }
+    }
+
+    // CELL GENERATION
+
+    private static final int CELL_LIGHT_COLOR = 2;
+    private static final int CELL_SHADOW_COLOR = 3;
+
+    public static int[][] createCell(int sizeX, int sizeY, boolean bevelUp) {
+        int[][] cell = new int[sizeY][sizeX];
+        fillBackground(cell);
+        bevelCell(cell, sizeX, sizeY, bevelUp);
+        return cell;
+    }
+
+    private static void bevelCell(int[][] cell, int sizeX, int sizeY, boolean up) {
+        for (int x = 0; x < sizeX; x++) {
+            cell[0][x] = CELL_LIGHT_COLOR;
+        }
         for (int y = 0; y < sizeY; y++) {
-            for (int x = 0; x < sizeX; x++) {
-                frame[y][x] = 1;
+            cell[y][0] = CELL_LIGHT_COLOR;
+        }
+        if (up) {
+            for (int x = 1; x < sizeX; x++) {
+                cell[sizeY - 1][x] = CELL_SHADOW_COLOR;
+            }
+            for (int y = 1; y < sizeY; y++) {
+                cell[y][sizeX - 1] = CELL_SHADOW_COLOR;
+            }
+        } else {
+            for (int x = 1; x < sizeX; x++) {
+                cell[1][x] = CELL_SHADOW_COLOR;
+            }
+            for (int y = 1; y < sizeY; y++) {
+                cell[y][1] = CELL_SHADOW_COLOR;
             }
         }
     }

@@ -372,29 +372,27 @@ public class ImageStorage {
             // CELLS
 
             case CELL_CLOSED:
-                String a = "2222222222", b = "2333333331", c = "2111111111";
-                setColors(Theme.CELL_SHADOW.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_BG_UP.getColor());
-                data = ImageCreator.makeArray(a, b, b, b, b, b, b, b, b, c);
+                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor());
+                data = ImageCreator.createCell(10, 10, true);
                 break;
             case CELL_OPENED:
-                String d = "2222222222", e = "2111111111", f = "2133333333";
-                setColors(Theme.CELL_SHADOW.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_BG_UP.getColor());
-                data = ImageCreator.makeArray(d, e, f, f, f, f, f, f, f, f);
+                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor());
+                data = ImageCreator.createCell(10, 10, false);
                 break;
             case CELL_DESTROYED:
-                setColors(Theme.CELL_SHADOW.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_BG_UP.getColor(),
+                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor(),
                         Color.BLACK, Color.GRAY);
                 data = ImageCreator.makeArray(
                         "2222222222",
-                        "2111111111",
-                        "2153335335",
-                        "2135435353",
-                        "2153344343",
-                        "2154544353",
-                        "2135353533",
-                        "2135435455",
-                        "2135333533",
-                        "2153333533");
+                        "2333333333",
+                        "2351115115",
+                        "2315415151",
+                        "2351144141",
+                        "2354544151",
+                        "2315151511",
+                        "2315415455",
+                        "2315111511",
+                        "2351111511");
                 break;
 
             // SYMBOLS

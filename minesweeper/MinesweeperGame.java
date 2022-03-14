@@ -5,6 +5,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.*;
 import com.javarush.games.minesweeper.model.board.Timer;
@@ -117,7 +118,7 @@ public class MinesweeperGame extends Game {
     }
 
     private void explode(Cell cell) {
-        cell.isGameOverCause = true; // highlight mine that caused game over
+        cell.isGameOverCause = true; // mine that caused game over
         lose();
     }
 
@@ -136,7 +137,7 @@ public class MinesweeperGame extends Game {
             cell = field.getCell(x, y);   // continue with a new cell
         }
 
-        cell.isOpen = true;
+        cell.open();
         onManualTurn();                  // do things that happen during real click only
 
         boolean survived = trySurviving(cell);
@@ -148,7 +149,7 @@ public class MinesweeperGame extends Game {
         int moneyEarned = cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1);
         player.inventory.money += moneyEarned;
 
-        cell.makeNumberGold();            // make golden if the shovel is in use
+        cell.makeNumberYellow();            // make golden if the shovel is in use
 
         addScore(field.dice.appearCell.x, field.dice.appearCell.y); // x,y = dice display position
 
@@ -260,6 +261,7 @@ public class MinesweeperGame extends Game {
                 setFlag(cell.x, cell.y, true); // remove flag if it was placed wrong
             }
             openCell(cell.x, cell.y);
+            cell.setBackgroundColor(Theme.CELL_SCANNED.getColor());
             PopUpMessage.show("Ячейка открыта");
         }
     }
@@ -274,8 +276,7 @@ public class MinesweeperGame extends Game {
         }
 
         cell.setSprite(ImageType.NONE);
-        cell.isDestroyed = true;
-        cell.isOpen = true;
+        cell.destroy();
         shop.deactivateExpiredItems();
 
         if (cell.isFlagged) {

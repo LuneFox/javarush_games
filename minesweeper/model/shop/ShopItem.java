@@ -97,6 +97,7 @@ public class ShopItem {
                     this.deactivate();
                     cell.setSprite(ImageType.BOARD_MINE);
                     cell.isShielded = true;
+                    cell.setBackgroundColor(Color.YELLOW);
                     game.shop.restock(game.shop.shield, 1);
                     game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (Options.difficulty / 5));
                     game.player.incBrokenShields();

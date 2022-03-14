@@ -4,7 +4,6 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
-import com.javarush.games.minesweeper.gui.image.ImageStorage;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
 import java.util.ArrayList;
@@ -29,7 +28,6 @@ public class Cell extends InteractiveObject {
     public boolean isDestroyed;            // blown up by the bomb
     public int countMinedNeighbors;        // number of adjacent mines
 
-    private final ImageType imageType;     // visual element assigned to the body: opened, closed or destroyed
     private final Image background;        // square "body" of the cell
     private Image sprite;                  // foreground image (number, flag or mine)
 
@@ -41,43 +39,38 @@ public class Cell extends InteractiveObject {
 
     public Cell(ImageType imageType, int x, int y, boolean isMined) {
         this.background = new Image(imageType, x * 10, y * 10);
-        this.imageType = imageType;
         this.x = x;
         this.y = y;
         this.isMined = isMined;
-        updateColors();
     }
 
     @Override
     public void draw() {
-        if (isOpen) {
-            background.matrix = isDestroyed ?
-                    background.getMatrixFromStorage(ImageType.CELL_DESTROYED) :
-                    background.getMatrixFromStorage(ImageType.CELL_OPENED);
-            background.replaceColor(Theme.CELL_BG_DOWN.getColor(), 3);
-        }
-
-        if (isFlaggedCorrectly() && game.isStopped && !game.isVictory) {
-            background.replaceColor(Color.GREEN, 3);
-            setSprite(ImageType.BOARD_MINE);
-        } else if (isShielded) {
-            background.replaceColor(Color.YELLOW, 3);
-        } else if (isScanned) {
-            background.replaceColor(Theme.CELL_SCANNED.getColor(), 3);
-        } else if (isDestroyed) {
-            background.replaceColor(Color.DARKSLATEGRAY, 3);
-        } else if (isGameOverCause) {
-            background.replaceColor(Color.RED, 3);
-        }
         background.draw();
-
         if (isFlagged || isOpen) {
             sprite.draw();
         }
     }
 
-    public void updateColors() {
-        background.colors = new ImageStorage(imageType).getColors();
+    public void open() {
+        isOpen = true;
+        background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
+        if (isGameOverCause) {
+            setBackgroundColor(Color.RED);
+        } else {
+            setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
+        }
+    }
+
+    public void destroy() {
+        isOpen = true;
+        isDestroyed = true;
+        background.matrix = background.getMatrixFromStorage(ImageType.CELL_DESTROYED);
+        setBackgroundColor(Color.DARKSLATEGRAY);
+    }
+
+    public void setBackgroundColor(Color color) {
+        background.replaceColor(color, 1);
     }
 
     public void setSprite(ImageType imageType) {
@@ -89,7 +82,7 @@ public class Cell extends InteractiveObject {
         this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
 
-    public void makeNumberGold() {
+    public void makeNumberYellow() {
         if (isNumerable() && game.shop.goldenShovel.isActivated()) {
             sprite.replaceColor(Color.YELLOW, 1);
         }
@@ -103,10 +96,6 @@ public class Cell extends InteractiveObject {
 
     public boolean isNumerable() {
         return (!isMined && !isDestroyed && !isFlagged); // A number can be assigned to this cell
-    }
-
-    public boolean isFlaggedCorrectly() {
-        return (isFlagged && isMined && !isDestroyed);   // Is mined, marked with a flag and is not destroyed
     }
 
     public boolean isIndestructible() {                  // Cannot be exploded with a bomb
