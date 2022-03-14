@@ -26,12 +26,7 @@ public class Dice extends InteractiveObject {
 
     public void setImage(int number, int x, int y) {
         setPosition(x, y);
-        if (number == 1) this.image = Image.cache.get(ImageType.SHOP_DICE_1);
-        else if (number == 2) this.image = Image.cache.get(ImageType.SHOP_DICE_2);
-        else if (number == 3) this.image = Image.cache.get(ImageType.SHOP_DICE_3);
-        else if (number == 4) this.image = Image.cache.get(ImageType.SHOP_DICE_4);
-        else if (number == 5) this.image = Image.cache.get(ImageType.SHOP_DICE_5);
-        else if (number == 6) this.image = Image.cache.get(ImageType.SHOP_DICE_6);
+        this.image = Image.cache.get(ImageType.valueOf("BOARD_DICE_" + number));
         this.onScreenTime = 0;
     }
 

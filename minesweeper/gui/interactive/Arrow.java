@@ -12,7 +12,7 @@ public class Arrow extends InteractiveObject {
 
     public Arrow(int x, int y, boolean pointsRight) {
         super(x, y);
-        arrowImage = new Image(ImageType.MENU_ARROW, x, y);
+        arrowImage = new Image(ImageType.GUI_ARROW, x, y);
         this.height = arrowImage.height;
         this.width = arrowImage.width;
         this.pointsRight = pointsRight;

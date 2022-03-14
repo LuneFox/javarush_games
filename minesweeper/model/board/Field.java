@@ -35,7 +35,7 @@ public class Field extends InteractiveObject {
             int y = game.getRandomNumber(10);
             if (!field[y][x].isMined && !field[y][x].isOpen) {
                 field[y][x] = new Cell(ImageType.CELL_CLOSED, x, y, true);
-                field[y][x].setSprite(ImageType.SPR_BOARD_MINE);
+                field[y][x].setSprite(ImageType.BOARD_MINE);
             }
         }
     }

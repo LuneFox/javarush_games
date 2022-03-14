@@ -21,7 +21,7 @@ public class ViewScore extends View {
             Phase.setActive(Phase.GAME_OVER);
         }
     };
-    Image background = Image.cache.get(ImageType.WIN_MENU);
+    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
     PageSelector pageSelector = Score.Table.pageSelector.linkView(this);
 
     public ViewScore(Phase phase) {

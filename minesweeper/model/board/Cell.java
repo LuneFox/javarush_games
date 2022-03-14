@@ -29,13 +29,13 @@ public class Cell extends InteractiveObject {
     public boolean isDestroyed;            // blown up by the bomb
     public int countMinedNeighbors;        // number of adjacent mines
 
-    private final ImageType imageType; // visual element assigned to the body: opened, closed or destroyed
-    private final Image background;            // the "body" of the cell
-    private Image sprite;                      // foreground image (number, flag or mine)
+    private final ImageType imageType;     // visual element assigned to the body: opened, closed or destroyed
+    private final Image background;        // square "body" of the cell
+    private Image sprite;                  // foreground image (number, flag or mine)
 
     static {
         for (int i = 0; i < 10; i++) {
-            sprites.put(i, ImageType.valueOf("SPR_BOARD_" + i));
+            sprites.put(i, ImageType.valueOf("BOARD_" + i));
         }
     }
 
@@ -59,7 +59,7 @@ public class Cell extends InteractiveObject {
 
         if (isFlaggedCorrectly() && game.isStopped && !game.isVictory) {
             background.replaceColor(Color.GREEN, 3);
-            setSprite(ImageType.SPR_BOARD_MINE);
+            setSprite(ImageType.BOARD_MINE);
         } else if (isShielded) {
             background.replaceColor(Color.YELLOW, 3);
         } else if (isScanned) {

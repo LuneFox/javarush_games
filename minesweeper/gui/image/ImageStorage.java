@@ -17,7 +17,7 @@ public class ImageStorage {
 
             // BIG PICTURES
 
-            case FLO_LOGO:
+            case PICTURE_MAIN_LOGO:
                 setColors(Color.WHITE, Color.BLACK, Color.DARKSLATEGRAY, Color.SANDYBROWN, Color.RED, Color.YELLOW);
                 data = ImageCreator.makeArray(
                         "       1111111",
@@ -53,7 +53,7 @@ public class ImageStorage {
                         "  1222222221",
                         "   111111111");
                 break;
-            case FACE_HAPPY:
+            case PICTURE_YELLOW_CAT_SMILE:
                 colors = Color.values();
                 data = new int[][]{
                         {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
@@ -71,7 +71,7 @@ public class ImageStorage {
                         {0, 0, 0, 0, 1, 1, 4, 4, 4, 4, 1, 1, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}};
                 break;
-            case FACE_SAD:
+            case PICTURE_YELLOW_CAT_SAD:
                 colors = Color.values();
                 data = new int[][]{
                         {1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1},
@@ -89,7 +89,7 @@ public class ImageStorage {
                         {0, 0, 0, 0, 1, 1, 4, 4, 4, 4, 1, 1, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0}};
                 break;
-            case SHOP_ITEM_SHIELD:
+            case SHOP_SHOWCASE_SHIELD:
                 colors = Color.values();
                 data = new int[][]{
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -111,7 +111,7 @@ public class ImageStorage {
                         {0, 0, 0, 0, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
                 break;
-            case SHOP_ITEM_SCANNER:
+            case SHOP_SHOWCASE_SCANNER:
                 colors = Color.values();
                 data = new int[][]{new int[18],
                         {0, 0, 0, 126, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -131,7 +131,7 @@ public class ImageStorage {
                         {0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0},
                         {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}};
                 break;
-            case SHOP_ITEM_FLAG:
+            case SHOP_SHOWCASE_FLAG:
                 setColors(Color.BLACK, Color.RED, Color.DARKRED, Color.YELLOW);
                 data = ImageCreator.makeArray(
                         "",
@@ -153,7 +153,7 @@ public class ImageStorage {
                         "  11",
                         "  11");
                 break;
-            case SHOP_ITEM_SHOVEL:
+            case SHOP_SHOWCASE_SHOVEL:
                 colors = Color.values();
                 data = new int[][]{new int[18],
                         {0, 0, 0, 0, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -172,7 +172,7 @@ public class ImageStorage {
                         {0, 0, 1, 59, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
                         {0, 0, 1, 1, 1, 0, 0, 0, 59, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
                 break;
-            case SHOP_ITEM_DICE:
+            case SHOP_SHOWCASE_DICE:
                 setColors(Color.DARKGRAY, Color.LIGHTGRAY, Color.RED, Color.BLACK);
                 data = ImageCreator.makeArray(
                         "",
@@ -193,7 +193,7 @@ public class ImageStorage {
                         "      112111",
                         "        11");
                 break;
-            case SHOP_ITEM_BOMB:
+            case SHOP_SHOWCASE_BOMB:
                 setColors(Color.BLACK, Color.GRAY, Color.LIGHTGRAY, Color.RED, Color.YELLOW);
                 data = ImageCreator.makeArray(
                         "   5 5",
@@ -214,92 +214,91 @@ public class ImageStorage {
                         "     11111111",
                         "       1111");
                 break;
-            case SHOP_COIN:
+            case SHOP_HEADER_COIN:
                 setColors(Color.YELLOW, Color.ORANGE);
                 data = ImageCreator.makeArray(4, "011011121112111211220220");
                 break;
-            case MENU_BUTTON:
+            case GUI_BUTTON:
                 setColors(Theme.BUTTON_BG.getColor(), Color.BLACK, Theme.BUTTON_BORDER.getColor());
                 data = null; // it's dynamic, depends on text size, create a frame
                 break;
-            case MENU_ARROW:
+            case GUI_ARROW:
                 setColors(Color.YELLOW, Color.WHITE);
                 data = ImageCreator.makeArray(5, "11000011000011000011001100110011000");
                 break;
-            case MENU_DIFFICULTY_BAR:
+            case GUI_DIFFICULTY_BAR:
                 setColors(Color.GREEN, Color.BLACK);
                 data = ImageCreator.makeArray(3, "020212212212212212020");
                 break;
-            case WIN_MENU:
+            case GUI_BACKGROUND:
                 setColors(Theme.MAIN_MENU_BG.getColor(), Color.NONE, Theme.MAIN_MENU_BORDER.getColor());
                 data = ImageCreator.createFrame(100, 100, false, true);
                 break;
-            case WIN_SHOP_SHOWCASE:
+            case SHOP_SHOWCASE_PANEL:
                 setColors(Theme.SHOP_BG.getColor(), Color.BLACK, Theme.SHOP_BORDER.getColor());
                 data = ImageCreator.createFrame(80, 80, true, true);
                 break;
-            case WIN_SHOP_HEADER_FOOTER:
+            case SHOP_HEADER_PANEL:
                 setColors(Theme.SHOP_HEADER_FOOTER.getColor(), Color.BLACK, Theme.SHOP_BORDER.getColor());
                 data = ImageCreator.createFrame(80, 12, false, true);
                 break;
-            case SHOP_ITEM_FRAME:
+            case SHOP_SHOWCASE_FRAME:
                 setColors(Theme.SHOP_ITEM_BG.getColor(), Color.BLACK, Color.GREEN);
                 data = ImageCreator.createFrame(20, 20, true, true);
                 break;
-            case SHOP_ITEM_FRAME_PRESSED:
+            case SHOP_SHOWCASE_FRAME_PRESSED:
                 setColors(Theme.SHOP_ITEM_BG.getColor(), Color.BLACK, Color.GREEN);
                 data = ImageCreator.createFrame(20, 20, false, true);
                 break;
-            case WIN_VICTORY:
-            case WIN_GAME_OVER:
+            case GUI_VICTORY_WINDOW:
                 setColors(Theme.MAIN_MENU_BG.getColor(), Color.BLACK, Theme.BUTTON_BG.getColor());
                 data = ImageCreator.createFrame(70, 35, true, true);
                 break;
-            case MENU_SWITCH:
+            case GUI_SWITCH_HANDLE:
                 setColors(Color.RED, Color.BLACK, Color.YELLOW);
                 data = ImageCreator.createFrame(4, 7, false, true);
                 break;
-            case MENU_SWITCH_RAIL:
+            case GUI_SWITCH_RAIL:
                 setColors(Color.BLACK, Color.NONE, Color.NONE);
                 data = ImageCreator.createFrame(12, 3, false, false);
                 break;
-            case WIN_BOARD_TRANSPARENT_FRAME:
+            case GUI_SURROUND_FRAME:
                 setColors(Color.NONE, Color.NONE, Color.BLUE);
                 data = ImageCreator.createFrame(100, 100, false, true);
                 break;
-            case MENU_THEME_PALETTE:
+            case GUI_THEME_PALETTE:
                 setColors(Color.GRAY, Color.WHITE, Color.BLACK);
                 data = ImageCreator.createFrame(10, 10, false, true);
                 break;
-            case WIN_MESSAGE:
+            case GUI_POPUP_MESSAGE:
                 setColors(Color.BLACK, Color.BLACK, Color.BLACK);
                 data = ImageCreator.createFrame(90, 11, false, false);
                 break;
-            case SHOP_DICE_1:
+            case BOARD_DICE_1:
                 setColors(Color.WHITE, Color.RED, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111011111113111111131112111311111113111111131111111303333333");
                 break;
-            case SHOP_DICE_2:
+            case BOARD_DICE_2:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111011111213111111131111111311111113121111131111111303333333");
                 break;
-            case SHOP_DICE_3:
+            case FIELD_DICE_3:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111011111213111111131112111311111113121111131111111303333333");
                 break;
-            case SHOP_DICE_4:
+            case FIELD_DICE_4:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111012111213111111131111111311111113121112131111111303333333");
                 break;
-            case SHOP_DICE_5:
+            case FIELD_DICE_5:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111012111213111111131112111311111113121112131111111303333333");
                 break;
-            case SHOP_DICE_6:
+            case FIELD_DICE_6:
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111012111213111111131211121311111113121112131111111303333333");
                 break;
-            case MENU_CUP:
+            case PICTURE_PRIZE_CUP:
                 setColors(Color.GOLD, Color.WHITE, Color.MAROON, Color.KHAKI);
                 data = ImageCreator.makeArray(
                         "   111111111",
@@ -321,51 +320,51 @@ public class ImageStorage {
 
             // SPRITES
 
-            case SPR_BOARD_0:
+            case BOARD_0:
                 setColors(Color.NONE);
                 data = ImageCreator.makeSprite("011010111011101110110110", 4, 3, 4);
                 break;
-            case SPR_BOARD_1:
+            case BOARD_1:
                 setColors(Color.DARKGREEN);
                 data = ImageCreator.makeSprite("001001101110011001101111", 4, 3, 4);
                 break;
-            case SPR_BOARD_2:
+            case BOARD_2:
                 setColors(Color.DARKBLUE);
                 data = ImageCreator.makeSprite("011010110011011011001111", 4, 3, 4);
                 break;
-            case SPR_BOARD_3:
+            case BOARD_3:
                 setColors(Color.DARKRED);
                 data = ImageCreator.makeSprite("111100110110001110110110", 4, 3, 4);
                 break;
-            case SPR_BOARD_4:
+            case BOARD_4:
                 setColors(Color.PURPLE);
                 data = ImageCreator.makeSprite("001101111011111100110011", 4, 3, 4);
                 break;
-            case SPR_BOARD_5:
+            case BOARD_5:
                 setColors(Color.DARKSLATEGRAY);
                 data = ImageCreator.makeSprite("111111001110001110110110", 4, 3, 4);
                 break;
-            case SPR_BOARD_6:
+            case BOARD_6:
                 setColors(Color.DARKSLATEBLUE);
                 data = ImageCreator.makeSprite("011111001110110111010110", 4, 3, 4);
                 break;
-            case SPR_BOARD_7:
+            case BOARD_7:
                 setColors(Color.FORESTGREEN);
                 data = ImageCreator.makeSprite("111100010010011001100110", 4, 3, 4);
                 break;
-            case SPR_BOARD_8:
+            case BOARD_8:
                 setColors(Color.RED);
                 data = ImageCreator.makeSprite("011011010110110111010110", 4, 3, 4);
                 break;
-            case SPR_BOARD_9:
+            case BOARD_9:
                 setColors(Color.BLACK);
                 data = ImageCreator.makeSprite("011010111011011100111110", 4, 3, 4);
                 break;
-            case SPR_BOARD_FLAG:
+            case BOARD_FLAG:
                 setColors(Color.BLACK, Color.RED, Color.DARKRED, Color.YELLOW);
                 data = ImageCreator.makeSprite("122001422212233133001000010000", 5, 2, 3);
                 break;
-            case SPR_BOARD_MINE:
+            case BOARD_MINE:
                 setColors(Color.BLACK, Color.RED, Color.DARKGRAY, Color.DARKSLATEGRAY, Color.DARKRED, Color.DIMGRAY);
                 data = ImageCreator.makeSprite("0001000000111100013446100142541111455410016446100011110000001000", 8, 2, 2);
                 break;

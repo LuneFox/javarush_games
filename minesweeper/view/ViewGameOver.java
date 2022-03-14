@@ -39,9 +39,9 @@ public class ViewGameOver extends View {
             Phase.setActive(Phase.SCORE);
         }
     };
-    private final Image victoryWindow = new Image(ImageType.WIN_VICTORY);
-    private final Image happyFace = new Image(ImageType.FACE_HAPPY);
-    private final Image sadFace = new Image(ImageType.FACE_SAD);
+    private final Image victoryWindow = new Image(ImageType.GUI_VICTORY_WINDOW);
+    private final Image happyFace = new Image(ImageType.PICTURE_YELLOW_CAT_SMILE);
+    private final Image sadFace = new Image(ImageType.PICTURE_YELLOW_CAT_SAD);
 
     public ViewGameOver(Phase phase) {
         super(phase);

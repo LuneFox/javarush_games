@@ -43,7 +43,7 @@ public class ViewMain extends View {
             game.startNewGame();
         }
     };
-    FloatingImage logo = new FloatingImage(ImageType.FLO_LOGO, this) {
+    FloatingImage logo = new FloatingImage(ImageType.PICTURE_MAIN_LOGO, this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
@@ -56,7 +56,7 @@ public class ViewMain extends View {
             }
         }
     };
-    Image background = Image.cache.get(ImageType.WIN_MENU);
+    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
     public ViewMain(Phase phase) {
         super(phase);

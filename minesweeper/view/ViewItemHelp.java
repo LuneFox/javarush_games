@@ -18,7 +18,7 @@ public class ViewItemHelp extends View {
             Phase.setActive(Phase.SHOP);
         }
     };
-    Image background = Image.cache.get(ImageType.WIN_MENU);
+    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
     public ViewItemHelp(Phase phase) {
         super(phase);

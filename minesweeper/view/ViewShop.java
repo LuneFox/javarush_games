@@ -14,8 +14,8 @@ public class ViewShop extends View {
     public static ShakeHelper moneyShakeHelper = new ShakeHelper();
     public static ShakeHelper activatedShakeHelper = new ShakeHelper();
 
-    private final Image headerFooterPanel = new Image(ImageType.WIN_SHOP_HEADER_FOOTER);
-    private final Image headerMine = new Image(ImageType.SPR_BOARD_MINE, this) {
+    private final Image headerFooterPanel = new Image(ImageType.SHOP_HEADER_PANEL);
+    private final Image headerMine = new Image(ImageType.BOARD_MINE, this) {
         @Override
         public void onLeftClick() {
             PopUpMessage.show("Мины на поле");
@@ -25,7 +25,7 @@ public class ViewShop extends View {
             onLeftClick();
         }
     };
-    private final Image headerFlag = new Image(ImageType.SPR_BOARD_FLAG, this) {
+    private final Image headerFlag = new Image(ImageType.BOARD_FLAG, this) {
         @Override
         public void onLeftClick() {
             PopUpMessage.show("Ваши флажки");
@@ -35,7 +35,7 @@ public class ViewShop extends View {
             onLeftClick();
         }
     };
-    private final Image headerCoin = new Image(ImageType.SHOP_COIN, this) {
+    private final Image headerCoin = new Image(ImageType.SHOP_HEADER_COIN, this) {
         @Override
         public void onLeftClick() {
             PopUpMessage.show("Ваше золото");
@@ -46,7 +46,7 @@ public class ViewShop extends View {
             onLeftClick();
         }
     };
-    private final Image showCasePanel = new Image(ImageType.WIN_SHOP_SHOWCASE);
+    private final Image showCasePanel = new Image(ImageType.SHOP_SHOWCASE_PANEL);
 
     private boolean slotsAreLinked;
 

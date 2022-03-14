@@ -6,7 +6,7 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Phase;
 
 public class ViewBoard extends View {
-    Image frame = Image.cache.get(ImageType.WIN_BOARD_TRANSPARENT_FRAME);
+    Image frame = Image.cache.get(ImageType.GUI_SURROUND_FRAME);
 
     public ViewBoard(Phase phase) {
         super(phase);

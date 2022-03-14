@@ -108,12 +108,12 @@ public class Shop {
 
     public void reset() {
         // Create new items
-        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_ITEM_SHIELD));
-        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_ITEM_SCANNER));
-        flag = new ShopItem(2, 1, getFlagsAmount(), Image.cache.get(ImageType.SHOP_ITEM_FLAG));
-        goldenShovel = new ShopItem(3, 9, 1, Image.cache.get(ImageType.SHOP_ITEM_SHOVEL));
-        luckyDice = new ShopItem(4, 6, 1, Image.cache.get(ImageType.SHOP_ITEM_DICE));
-        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Image.cache.get(ImageType.SHOP_ITEM_BOMB));
+        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SHIELD));
+        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SCANNER));
+        flag = new ShopItem(2, 1, getFlagsAmount(), Image.cache.get(ImageType.SHOP_SHOWCASE_FLAG));
+        goldenShovel = new ShopItem(3, 9, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL));
+        luckyDice = new ShopItem(4, 6, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_DICE));
+        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB));
 
         // Replace old items
         allItems.clear();

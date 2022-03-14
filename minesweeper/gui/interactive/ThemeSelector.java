@@ -14,11 +14,11 @@ public class ThemeSelector extends InteractiveObject {
 
     public ThemeSelector(int x, int y) {
         super(x, y);
-        this.themeCursor = new Image(ImageType.MENU_THEME_PALETTE);
+        this.themeCursor = new Image(ImageType.GUI_THEME_PALETTE);
         this.themeCursor.restrictColorUpdate(true);
         themePalettes = new Image[3];
         for (int i = 0; i < themePalettes.length; i++) {
-            themePalettes[i] = new Image(ImageType.MENU_THEME_PALETTE);
+            themePalettes[i] = new Image(ImageType.GUI_THEME_PALETTE);
             themePalettes[i].restrictColorUpdate(true);
             themePalettes[i].setPosition(this.x + i * 12, this.y);
             this.width += themePalettes[i].width + 2;

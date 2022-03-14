@@ -23,8 +23,8 @@ public class SwitchSelector extends InteractiveObject {
 
     public SwitchSelector(int x, int y, String textOff, String textOn) {
         super(x, y);
-        this.rail = new Image(ImageType.MENU_SWITCH_RAIL, x, y + 2);
-        this.handle = new Image(ImageType.MENU_SWITCH, x, y);
+        this.rail = new Image(ImageType.GUI_SWITCH_RAIL, x, y + 2);
+        this.handle = new Image(ImageType.GUI_SWITCH_HANDLE, x, y);
         this.width = rail.width;
         this.height = handle.height;
         this.leftStopper = x;

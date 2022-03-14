@@ -22,7 +22,7 @@ public class PopUpMessage extends InteractiveObject {
     private boolean slideFromBottom;
 
     private PopUpMessage() {
-        this.background = Image.cache.get(ImageType.WIN_MESSAGE);
+        this.background = Image.cache.get(ImageType.GUI_POPUP_MESSAGE);
         height = 11;
         width = background.width;
         background.setPosition(Image.CENTER, -height);

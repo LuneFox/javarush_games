@@ -17,7 +17,7 @@ public class ViewAbout extends View {
             Phase.setActive(Phase.MAIN);
         }
     };
-    Image background = Image.cache.get(ImageType.WIN_MENU);
+    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
     PageSelector pageSelector = Options.aboutPageSelector.linkView(this);
 
     public ViewAbout(Phase phase) {

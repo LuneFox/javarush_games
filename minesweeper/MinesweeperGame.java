@@ -188,7 +188,7 @@ public class MinesweeperGame extends Game {
     private void returnFlagToInventory(Cell cell) {
         player.inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
-        cell.setSprite(cell.isMined ? ImageType.SPR_BOARD_MINE : ImageType.NONE);
+        cell.setSprite(cell.isMined ? ImageType.BOARD_MINE : ImageType.NONE);
     }
 
     private void placeFlagFromInventory(Cell cell) {
@@ -197,7 +197,7 @@ public class MinesweeperGame extends Game {
         if (cell.isFlagged) return;
         player.inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
-        cell.setSprite(ImageType.SPR_BOARD_FLAG);
+        cell.setSprite(ImageType.BOARD_FLAG);
     }
 
     private boolean trySurviving(Cell cell) {   // did the player survive the mine?

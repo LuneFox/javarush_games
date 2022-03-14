@@ -21,7 +21,7 @@ public class ShopSlot extends InteractiveObject {
     private Image frame;
 
     public ShopSlot(int x, int y) {
-        frame = Image.cache.get(ImageType.SHOP_ITEM_FRAME);
+        frame = Image.cache.get(ImageType.SHOP_SHOWCASE_FRAME);
         this.x = x;
         this.y = y;
         this.height = 20;
@@ -62,11 +62,11 @@ public class ShopSlot extends InteractiveObject {
 
     private boolean shiftFrame() {
         if (pressedCountDown > 0) {
-            frame = Image.cache.get(ImageType.SHOP_ITEM_FRAME_PRESSED);
+            frame = Image.cache.get(ImageType.SHOP_SHOWCASE_FRAME_PRESSED);
             pressedCountDown--;
             return true;
         } else {
-            frame = Image.cache.get(ImageType.SHOP_ITEM_FRAME);
+            frame = Image.cache.get(ImageType.SHOP_SHOWCASE_FRAME);
             return false;
         }
     }

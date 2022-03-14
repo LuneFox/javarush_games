@@ -21,7 +21,7 @@ public class ViewOptions extends View {
             PopUpMessage.show(Strings.OPTIONS_SAVED);
         }
     };
-    Image background = Image.cache.get(ImageType.WIN_MENU);
+    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
     DifficultySelector difficultySelector = Options.difficultySelector.linkView(this);
     SwitchSelector autoBuyFlagsSelector = Options.autoBuyFlagsSelector.linkView(this);
     SwitchSelector timerEnabledSelector = Options.timerEnabledSelector.linkView(this);

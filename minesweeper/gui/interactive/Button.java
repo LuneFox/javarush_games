@@ -50,14 +50,14 @@ public abstract class Button extends InteractiveObject {
     }
 
     public void createBodyImages(int posX, int posY) {
-        this.bodyUp = new Image(ImageType.MENU_BUTTON, posX, posY) {
+        this.bodyUp = new Image(ImageType.GUI_BUTTON, posX, posY) {
             @Override
             public int[][] getMatrixFromStorage(ImageType imageType) {
                 return ImageCreator.createFrame(Button.this.width, Button.this.height, true, true);
             }
         };
 
-        this.bodyDown = new Image(ImageType.MENU_BUTTON, posX, posY) {
+        this.bodyDown = new Image(ImageType.GUI_BUTTON, posX, posY) {
             @Override
             public int[][] getMatrixFromStorage(ImageType imageType) {
                 return ImageCreator.createFrame(Button.this.width, Button.this.height, false, true);
