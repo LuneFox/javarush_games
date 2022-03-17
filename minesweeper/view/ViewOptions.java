@@ -37,19 +37,19 @@ public class ViewOptions extends View {
         background.draw();
         Printer.print("настройки", Color.YELLOW, Printer.CENTER, 2);
 
-        Printer.print("сложность", 2, Options.difficultySelector.y - 1);
+        Printer.print("сложность", 3, Options.difficultySelector.y - 1);
         difficultySelector.draw();
 
-        Printer.print("покупка флажков", 2, Options.autoBuyFlagsSelector.y - 1);
+        Printer.print("покупка флажков", 3, Options.autoBuyFlagsSelector.y - 1);
         autoBuyFlagsSelector.draw();
 
-        Printer.print("игра на время", 2, Options.timerEnabledSelector.y - 1);
+        Printer.print("игра на время", 3, Options.timerEnabledSelector.y - 1);
         timerEnabledSelector.draw();
 
-        Printer.print("Сообщения:", 2, Options.displayMessageSelector.y - 1);
+        Printer.print("Сообщения:", 3, Options.displayMessageSelector.y - 1);
         displayMessageSelector.draw();
 
-        Printer.print("тема: " + Theme.getCurrentName(), 2, Options.themeSelector.y);
+        Printer.print("тема: " + Theme.getCurrentName(), 3, Options.themeSelector.y);
         themeSelector.draw();
 
         closeButton.draw();

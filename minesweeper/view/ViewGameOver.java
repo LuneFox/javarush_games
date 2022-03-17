@@ -32,7 +32,7 @@ public class ViewGameOver extends View {
             Phase.setActive(Phase.BOARD);
         }
     };
-    private final Button showScoreDetailButton = new Button(17, 56, 0, 0, "?", this) {
+    private final Button showScoreDetailButton = new Button(18, 55, 0, 0, "?", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
@@ -66,7 +66,7 @@ public class ViewGameOver extends View {
             Printer.print("не повезло!", Color.YELLOW, 18, 33);
         }
 
-        Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 28, 57);
+        Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
         againButton.draw();
         returnToMenuButton.draw();
         hideOverlayButton.draw();

@@ -73,12 +73,12 @@ public class ViewShop extends View {
 
         // Draw header
         headerFooterPanel.draw(10, 10);
-        headerMine.draw(10, 10);
-        headerFlag.draw(39, 11);
-        headerCoin.draw(69, 13);
-        Printer.print("" + game.field.countAllCells(Cell.Filter.DANGEROUS), 22, 12);
-        Printer.print("" + game.player.inventory.getCount(ShopItem.ID.FLAG), 49, 12);
-        Printer.print("" + game.player.inventory.displayMoney, 75 + moneyShakeHelper.getShift(), 12);
+        headerMine.draw(13, 10);
+        headerFlag.draw(42, 11);
+        headerCoin.draw(70, 13);
+        Printer.print("" + game.field.countAllCells(Cell.Filter.DANGEROUS), 25, 12);
+        Printer.print("" + game.player.inventory.getCount(ShopItem.ID.FLAG), 52, 12);
+        Printer.print("" + game.player.inventory.displayMoney, 76 + moneyShakeHelper.getShift(), 12);
         moneyApproach();
 
         // Draw footer

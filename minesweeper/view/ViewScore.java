@@ -33,7 +33,7 @@ public class ViewScore extends View {
         background.draw();
         pageSelector.draw();
         String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
-        String luckDetail = diceAvgLuck + "*" + diceLuckyCells + "*" + difficulty + " = " + scoreDice;
+        String luckDetail = diceAvgLuck + " * " + diceLuckyCells + " * " + difficulty + " = " + scoreDice;
         String moneyScoreDetail = moneyLeftOver + "*" + difficulty + " = ";
         String cellScoreDetail = cellsCount + "*" + Options.difficulty + " = ";
         String shieldScoreDetail = penaltyShields == 0 ? "" : penaltyShields + "*-" + (150 * (difficulty / 5)) + " = ";
@@ -52,16 +52,16 @@ public class ViewScore extends View {
                                 "\n" + (victory ? (minesScoreDetail + scoreMines) : youLost) +
                                 "\n" + scoreDice +
                                 "\n" + cellScoreDetail + cellsCount * difficulty),
-                        Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 94, 13, true);
+                        Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 93, 13, true);
                 break;
             case 1:
                 Printer.print("очки кубика удачи", Color.YELLOW, Printer.CENTER, 2);
-                Printer.print("средняя удача:\nзатронуто ячеек:\nбонус сложности:\n\nсуммарно:", 3, 13);
+                Printer.print("средняя удача:\nзатронуто ячеек:\nбонус сложности:\n\nв общем счёте:", 3, 13);
                 Printer.print((luckDetail +
                                 "\n\n\n" + difficulty +
                                 "\n" + diceLuckyCells +
                                 "\n" + diceAvgLuck),
-                        Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 94, 13, true);
+                        Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 93, 13, true);
                 break;
             default:
                 break;
