@@ -45,7 +45,7 @@ public class ViewScore extends View {
 
         switch (Score.Table.pageSelector.getCurrentPage()) {
             case 0:
-                Printer.print("детализация", Color.YELLOW, Printer.CENTER, 2);
+                Printer.print("<детализация>", Color.YELLOW, Printer.CENTER, 2);
                 Printer.print("ячейки:\nкубик:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", paddingLeft, paddingTop);
 
                 Printer.print(
@@ -59,7 +59,7 @@ public class ViewScore extends View {
                         Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, paddingRight, paddingTop, true);
                 break;
             case 1:
-                Printer.print("очки кубика", Color.YELLOW, Printer.CENTER, 2);
+                Printer.print("<очки кубика>", Color.YELLOW, Printer.CENTER, 2);
                 Printer.print("средняя удача:\nзатронуто ячеек:\nбонус сложности:\n\nв общем счёте:", paddingLeft, paddingTop);
                 Printer.print((luckDetail +
                                 "\n\n\n" + difficulty +

@@ -60,10 +60,10 @@ public class ViewGameOver extends View {
         victoryWindow.draw(Image.CENTER, Image.CENTER);
         if (game.isVictory) {
             happyFace.draw(Image.CENTER, Image.CENTER);
-            Printer.print("победа!", Color.YELLOW, 18, 33);
+            Printer.print("<победа!>", Color.YELLOW, 18, 33);
         } else {
             sadFace.draw(Image.CENTER, Image.CENTER);
-            Printer.print("не повезло!", Color.YELLOW, 18, 33);
+            Printer.print("<не повезло!>", Color.YELLOW, 18, 33);
         }
 
         Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);

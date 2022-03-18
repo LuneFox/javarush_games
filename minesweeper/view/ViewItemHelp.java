@@ -34,7 +34,7 @@ public class ViewItemHelp extends View {
         if (displayItem.id == ShopItem.ID.SHIELD) {
             displayItem.description = Strings.generateNewShieldDescription().toString();
         }
-        Printer.print("[" + displayItem.name + "]", Color.YELLOW, 25, 14);
+        Printer.print("<[" + displayItem.name + "]>", Color.YELLOW, 25, 14);
         Printer.print(displayItem.description, 4, 30);
         closeButton.draw();
         super.update();

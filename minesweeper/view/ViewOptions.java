@@ -35,7 +35,7 @@ public class ViewOptions extends View {
     @Override
     public void update() {
         background.draw();
-        Printer.print("настройки", Color.YELLOW, Printer.CENTER, 2);
+        Printer.print("<настройки>", Color.YELLOW, Printer.CENTER, 2);
 
         Printer.print("сложность", 3, Options.difficultySelector.y - 1);
         difficultySelector.draw();

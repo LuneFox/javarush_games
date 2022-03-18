@@ -10,7 +10,7 @@ public class Strings {
     public static final String VERSION = "1.21";
 
     public static final String[] RECORDS = new String[]{
-            "Лучшие игроки",
+            "<Лучшие игроки>",
             "Dim\nID 2700224", "43263",
             "Pavlo Plynko\nID 28219", "37890",
             "Михаил Васильев\nID 2522974", "37125"};
