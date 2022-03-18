@@ -5,11 +5,6 @@ import com.javarush.games.minesweeper.model.player.Score;
 
 public class ControlScore implements ControlStrategy {
     @Override
-    public void pressSpace() {
-        Phase.setActive(Phase.GAME_OVER);
-    }
-
-    @Override
     public void pressEsc() {
         Phase.setActive(Phase.GAME_OVER);
     }

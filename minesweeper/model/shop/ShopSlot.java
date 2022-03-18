@@ -38,7 +38,7 @@ public class ShopSlot extends InteractiveObject {
         // Anchors for text
         final int top = y;
         final int right = x + 14;
-        final int bottom = y + 11;
+        final int bottom = y + 10;
 
         // Select frame color depending on item status
         pickFrameColor();
@@ -49,7 +49,13 @@ public class ShopSlot extends InteractiveObject {
 
         // Write price, activation markers, expiration time, availability etc.
         if (item.inStock > 0 && !item.isActivated()) {
+            Color strokeColor = Color.BLACK;
+            Printer.print("" + item.cost, strokeColor, right + 1, bottom, true);
+            Printer.print("" + item.cost, strokeColor, right - 1, bottom, true);
+            Printer.print("" + item.cost, strokeColor, right, bottom + 1, true);
+            Printer.print("" + item.cost, strokeColor, right, bottom - 1, true);
             Printer.print("" + item.cost, Color.YELLOW, right, bottom, true);
+
         } else if (item.isActivated()) {
             if (item.canExpire) {
                 Printer.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right, top, true);

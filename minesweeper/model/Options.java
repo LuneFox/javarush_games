@@ -25,7 +25,7 @@ public class Options {
         timerEnabledSelector = new SwitchSelector(85, 50, "нет", "да");
         displayMessageSelector = new SwitchSelector(85, 69, "скрывать", "показывать", true);
         themeSelector = new ThemeSelector(63, 87);
-        aboutPageSelector = new PageSelector(27, 89, 45, 6);
+        aboutPageSelector = new PageSelector(27, 89, 45, 5);
     }
 
     public static void apply() {

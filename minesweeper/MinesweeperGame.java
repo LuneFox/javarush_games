@@ -378,6 +378,7 @@ public class MinesweeperGame extends Game {
         autoOpen();
 
         if (field.countAllCells(Filter.CLOSED) == closedCells) {
+            // Nothing changed = could not make a safe move
             PopUpMessage.show("DEV: TOO RISKY!");
         } else {
             PopUpMessage.show("DEV: SKIP EASY PART");

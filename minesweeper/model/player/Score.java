@@ -93,7 +93,7 @@ public class Score {
     }
 
     public static class Table {
-        public static PageSelector pageSelector = new PageSelector(10, 89, 40, 2);
+        public static PageSelector pageSelector = new PageSelector(30, 89, 40, 2);
         public static int total;
         public static int minesCount;
         public static int cellsCount;
