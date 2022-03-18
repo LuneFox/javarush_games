@@ -65,8 +65,24 @@ public class Cell extends InteractiveObject {
     public void destroy() {
         isOpen = true;
         isDestroyed = true;
+        isMined = false;
         background.matrix = background.getMatrixFromStorage(ImageType.CELL_DESTROYED);
         setBackgroundColor(Color.DARKSLATEGRAY);
+    }
+
+    public void renewOpenedColors() {
+        if (!isOpen) return;
+
+        background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
+        if (isOpen) setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
+
+        if (isGameOverCause) setBackgroundColor(Color.RED);
+        else if (isShielded) setBackgroundColor(Color.YELLOW);
+        else if (isScanned) setBackgroundColor(Theme.CELL_SCANNED.getColor());
+        else if (isDestroyed) {
+            background.matrix = background.getMatrixFromStorage(ImageType.CELL_DESTROYED);
+            setBackgroundColor(Color.DARKSLATEGRAY);
+        }
     }
 
     public void setBackgroundColor(Color color) {
@@ -84,7 +100,9 @@ public class Cell extends InteractiveObject {
 
     public void makeNumberYellow() {
         if (isNumerable() && game.shop.goldenShovel.isActivated()) {
-            sprite.replaceColor(Color.YELLOW, 1);
+            if (countMinedNeighbors > 0) {
+                sprite.replaceColor(Color.YELLOW, 1);
+            }
         }
     }
 

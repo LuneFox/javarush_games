@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 
 /**
@@ -138,6 +139,7 @@ public enum Theme {
     public static void set(int themeNumber) {
         Theme.currentNumber = themeNumber;
         Image.refreshAllImagesColors();
+        MinesweeperGame.getInstance().field.onThemeChange();
     }
 
     public static int getCurrentNumber() {

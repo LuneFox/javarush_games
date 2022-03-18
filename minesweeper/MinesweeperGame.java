@@ -294,8 +294,8 @@ public class MinesweeperGame extends Game {
                     destroyCell(neighbor.x, neighbor.y); // recursive call
                 }
             });
-            field.attachNumbers();
         }
+        field.setNumbers();
     }
 
     @DeveloperOption

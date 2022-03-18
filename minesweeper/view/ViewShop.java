@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.ShakeHelper;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -12,7 +13,6 @@ import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 public class ViewShop extends View {
     public static ShakeHelper moneyShakeHelper = new ShakeHelper();
-    public static ShakeHelper activatedShakeHelper = new ShakeHelper();
 
     private final Image headerFooterPanel = new Image(ImageType.SHOP_HEADER_PANEL);
     private final Image headerMine = new Image(ImageType.BOARD_MINE, this) {
@@ -100,23 +100,6 @@ public class ViewShop extends View {
             game.player.inventory.displayMoney++;
         } else if (game.player.inventory.displayMoney > game.player.inventory.money) {
             game.player.inventory.displayMoney--;
-        }
-    }
-
-    public static class ShakeHelper {
-        private static final int SHAKE_DURATION = 10;
-        private int shakeCountDown;
-        private int shakeShift;
-
-        public int getShift() {
-            if (shakeCountDown == 0) return 0;
-            shakeShift = (shakeShift == 0) ? 1 : 0;
-            shakeCountDown--;
-            return shakeShift;
-        }
-
-        public void startShaking() {
-            shakeCountDown = SHAKE_DURATION;
         }
     }
 }

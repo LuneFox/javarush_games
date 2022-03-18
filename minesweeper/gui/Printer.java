@@ -11,7 +11,6 @@ import java.util.Arrays;
  */
 
 public class Printer {
-
     public static final Cache<Character, Image> cache = new Cache<Character, Image>(128) {
         @Override
         protected Image put(Character character) {
@@ -71,14 +70,21 @@ public class Printer {
         }
 
         Caret caret = new Caret(drawX, drawY);
+        boolean enableStroke = false;
 
-        // Choosing between normal order or reversed order of chars to draw from right to left
+        // Choosing between normal order or  reversed order of chars to draw from right to left
         char[] chars = (alignRight) ?
                 new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
                 input.toLowerCase().toCharArray();
 
+
         for (int i = 0; i < chars.length; i++) {
             if (caret.isAtNewLine(chars[i])) continue; // Return caret to new line at "\n" symbol, don't draw it
+
+            if (chars[i] == '>' || chars[i] == '<') {
+                enableStroke = !enableStroke;
+                continue;
+            }
 
             if (alignRight && i == 0) {
                 int width1st = cache.get(chars[0]).width;
@@ -87,7 +93,11 @@ public class Printer {
                 }
             }
 
-            drawSymbol(chars[i], color, caret.x, caret.y);
+            if (enableStroke) {
+                drawSymbolStroked(chars[i], color, caret.x, caret.y);
+            } else {
+                drawSymbol(chars[i], color, caret.x, caret.y);
+            }
 
             // j = 0 means we take the CURRENT symbol, j = 1 means we take the NEXT symbol to calculate the shift
             // We need to take the next symbol only when typing from right to left and if there is one
@@ -112,6 +122,17 @@ public class Printer {
         symbol.draw(x, y);
     }
 
+    private static void drawSymbolStroked(char c, Color color, int x, int y) {
+        Image symbol = cache.get(c);
+        symbol.replaceColor(Theme.MAIN_MENU_QUOTE_BACK.getColor(), 1);
+        symbol.draw(x - 1, y);
+        symbol.draw(x + 1, y);
+        symbol.draw(x, y - 1);
+        symbol.draw(x, y + 1);
+        symbol.replaceColor(color, 1);
+        symbol.draw(x, y);
+    }
+
     /**
      * Calculates the width in pixels of the text that comes as an argument
      */
@@ -120,6 +141,7 @@ public class Printer {
         Image symbol;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
+            if (c == '<' || c == '>') continue;
             symbol = cache.get(c);
             width += (symbol.matrix[0].length + CHAR_SPACING);
         }

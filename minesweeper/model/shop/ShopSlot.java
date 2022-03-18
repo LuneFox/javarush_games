@@ -19,6 +19,7 @@ public class ShopSlot extends InteractiveObject {
 
     private ShopItem item;
     private Image frame;
+    private final ShakeHelper activatedShaker = new ShakeHelper();
 
     public ShopSlot(int x, int y) {
         frame = Image.cache.get(ImageType.SHOP_SHOWCASE_FRAME);
@@ -49,20 +50,15 @@ public class ShopSlot extends InteractiveObject {
 
         // Write price, activation markers, expiration time, availability etc.
         if (item.inStock > 0 && !item.isActivated()) {
-            Color strokeColor = Color.BLACK;
-            Printer.print("" + item.cost, strokeColor, right + 1, bottom, true);
-            Printer.print("" + item.cost, strokeColor, right - 1, bottom, true);
-            Printer.print("" + item.cost, strokeColor, right, bottom + 1, true);
-            Printer.print("" + item.cost, strokeColor, right, bottom - 1, true);
-            Printer.print("" + item.cost, Color.YELLOW, right, bottom, true);
+            Printer.print("<" + item.cost +">", Color.YELLOW, right, bottom, true);
 
         } else if (item.isActivated()) {
             if (item.canExpire) {
                 Printer.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right, top, true);
             }
-            Printer.print("АКТ", Color.YELLOW, right + ViewShop.activatedShakeHelper.getShift(), bottom, true);
+            Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, true);
         } else {
-            Printer.print("НЕТ", Theme.SHOP_SIGN_NO.getColor(), right, bottom, true);
+            Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, true);
         }
     }
 
@@ -89,7 +85,7 @@ public class ShopSlot extends InteractiveObject {
         pressedCountDown = PRESSED_DURATION;
 
         if (item.isActivated()) {
-            ViewShop.activatedShakeHelper.startShaking();
+            activatedShaker.startShaking();
             PopUpMessage.show("Уже активировано");
             return;
         }

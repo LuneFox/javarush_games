@@ -26,7 +26,7 @@ public class Field extends InteractiveObject {
             }
         }
         plantMines();
-        attachNumbers();
+        setNumbers();
         dice = new Dice(1);
     }
 
@@ -62,12 +62,10 @@ public class Field extends InteractiveObject {
         return Cell.filterCells(neighbors, filter);
     }
 
-    public void attachNumbers() {
+    public void setNumbers() {
         getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
             cell.countMinedNeighbors = getNeighborCells(cell, Cell.Filter.MINED, false).size();
-            if (cell.countMinedNeighbors > 0) {
                 cell.setSprite(cell.countMinedNeighbors);
-            }
         });
     }
 
@@ -81,6 +79,11 @@ public class Field extends InteractiveObject {
                 }
             }
         });
+    }
+
+    public void onThemeChange() {
+        if (game.isStopped) return;
+        getAllCells(Cell.Filter.NONE).forEach(Cell::renewOpenedColors);
     }
 
     @Override
