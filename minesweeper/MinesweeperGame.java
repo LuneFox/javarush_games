@@ -249,7 +249,7 @@ public class MinesweeperGame extends Game {
         List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), Filter.SAFE, true);
 
         if (safeNeighbors.size() == 0) {       // no safe cells, place free flags over closed ones
-            PopUpMessage.show("Тут только мины!");
+            PopUpMessage.show("Нечего открывать");
             field.getNeighborCells(field.getCell(x, y), Filter.CLOSED, true).forEach(closedCell -> {
                 if (player.inventory.hasNoFlags()) shop.give(shop.flag);
                 setFlag(closedCell.x, closedCell.y, false);
