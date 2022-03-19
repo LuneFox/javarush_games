@@ -101,6 +101,7 @@ public class ShopItem {
                     game.shop.restock(game.shop.shield, 1);
                     game.player.score.setLostScore(game.player.score.getLostScore() - 150 * (Options.difficulty / 5));
                     game.player.incBrokenShields();
+                    PopUpMessage.show("Щит разрушен!");
                     return true;
                 }
             case SCANNER:
@@ -112,7 +113,7 @@ public class ShopItem {
                     return true;
                 }
             case BOMB:
-                if (isActivated()) {
+                if (this.isActivated) {
                     this.deactivate();
                     game.field.dice.hide();
                     game.shop.restock(game.shop.miniBomb, 1);

@@ -71,6 +71,11 @@ public class Cell extends InteractiveObject {
         setSprite(ImageType.NONE);
     }
 
+    public void scan() {
+        isScanned = true;
+        setBackgroundColor(Theme.CELL_SCANNED.getColor());
+    }
+
     // Update colors for opened state
     public void updateOpenedColors() {
         if (!isOpen) return;
@@ -101,10 +106,8 @@ public class Cell extends InteractiveObject {
     }
 
     public void makeNumberYellow() {
-        if (isNumerable() && game.shop.goldenShovel.isActivated()) {
-            if (countMinedNeighbors > 0) {
-                sprite.replaceColor(Color.YELLOW, 1);
-            }
+        if (isNumerable() && countMinedNeighbors > 0) {
+            sprite.replaceColor(Color.YELLOW, 1);
         }
     }
 

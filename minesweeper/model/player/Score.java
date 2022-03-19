@@ -88,8 +88,8 @@ public class Score {
         this.timerScore = timerScore;
     }
 
-    public void addTimerScore(int score) {
-        this.timerScore += score;
+    public void addTimerScore() {
+        this.timerScore += game.timer.getScore();
     }
 
     public static class Table {
