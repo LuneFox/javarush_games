@@ -38,7 +38,7 @@ public class Timer extends InteractiveObject {
 
     public void countDown() {
         if (!Options.timerEnabled) return;
-        int ONE_SECOND = 1000;
+        final int ONE_SECOND = 1000;
         if (new Date().getTime() - lastTickTime.getTime() >= ONE_SECOND) {
             time = (time > 0) ? time - Options.difficulty : 0;
             swapColor();

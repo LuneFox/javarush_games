@@ -70,7 +70,7 @@ public class ViewShop extends View {
         }
 
         game.field.draw();
-        game.checkTimeOut();
+        game.timerTick();
 
         // Draw showcase
         showCasePanel.draw(10, 10);

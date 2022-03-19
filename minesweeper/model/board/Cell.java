@@ -68,6 +68,7 @@ public class Cell extends InteractiveObject {
         isMined = false;
         background.matrix = background.getMatrixFromStorage(ImageType.CELL_DESTROYED);
         setBackgroundColor(Color.DARKSLATEGRAY);
+        setSprite(ImageType.NONE);
     }
 
     // Update colors for opened state
