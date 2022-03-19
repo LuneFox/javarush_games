@@ -34,13 +34,13 @@ public class MinesweeperGame extends Game {
     public Player player;
     public Timer timer;
     public Field field;
+    public int gameOverShowDelay;
     public boolean isFlagExplosionAllowed;     // allows destroying flags during chain explosions
     public boolean isStopped;
     public boolean isFirstMove;
     private boolean isRecursiveMove;           // doesn't count as a move made by player
     public boolean isVictory;
-    public int gameOverShowDelay;
-    public boolean autoStop;                   // Game can't continue playing automatically
+    private boolean autoStop;                   // Game can't continue playing automatically
 
     @Override
     public void initialize() {
@@ -202,7 +202,13 @@ public class MinesweeperGame extends Game {
     private void returnFlagToInventory(Cell cell) {
         player.inventory.add(ShopItem.ID.FLAG);
         cell.isFlagged = false;
-        cell.setSprite(cell.isMined ? ImageType.BOARD_MINE : ImageType.NONE);
+        if (cell.isMined){
+            cell.setSprite(ImageType.BOARD_MINE);
+        } else if (cell.isNumerable()){
+            cell.setSprite(cell.countMinedNeighbors);
+        } else {
+            cell.setSprite(ImageType.NONE);
+        }
     }
 
     private void placeFlagFromInventory(Cell cell) {
