@@ -18,6 +18,10 @@ public class Timer extends InteractiveObject {
 
     public Timer() {
         super();
+        x = 0;
+        y = 0;
+        height = 1;
+        width = 100;
         this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         this.time = 0;
         this.lastTickTime = new Date();
@@ -27,14 +31,15 @@ public class Timer extends InteractiveObject {
         if (!Options.timerEnabled) return;
         if (game.isStopped) return;
         if (game.isFirstMove) return;
-        for (int i = x; i < ((time / TIME_LIMIT) * 100); i++) {
+        for (int i = x; i < ((time / TIME_LIMIT) * width); i++) {
             game.display.setCellColor(i, 0, COLORS[0]);
         }
     }
 
     public void countDown() {
         if (!Options.timerEnabled) return;
-        if (new Date().getTime() - lastTickTime.getTime() >= 1000) {
+        int ONE_SECOND = 1000;
+        if (new Date().getTime() - lastTickTime.getTime() >= ONE_SECOND) {
             time = (time > 0) ? time - Options.difficulty : 0;
             swapColor();
             lastTickTime = new Date();

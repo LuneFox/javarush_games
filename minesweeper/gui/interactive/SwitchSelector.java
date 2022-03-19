@@ -42,10 +42,11 @@ public class SwitchSelector extends InteractiveObject {
     @Override
     public void draw() {
         // Move handle
-        if (enabled && handle.x < rightStopper)
+        if (enabled && handle.x < rightStopper) {
             handle.x++;
-        else if (!enabled && handle.x > leftStopper)
+        } else if (!enabled && handle.x > leftStopper) {
             handle.x--;
+        }
 
         // Draw switch
         handle.replaceColor(enabled ? Color.GREEN : Color.RED, 1);

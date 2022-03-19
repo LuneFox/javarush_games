@@ -11,14 +11,10 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         Phase.getCurrentView().click(x, y, Controller.Click.LEFT);
+        if (checkGameOver()) return;
 
         int gridX = x / 10;
         int gridY = y / 10;
-
-        if (game.isStopped) {
-            Phase.setActive(Phase.GAME_OVER);
-            return;
-        }
         Cell cell = game.field.get()[gridY][gridX];
         if (!cell.isFlagged || game.shop.scanner.isActivated()) {
             game.openCell(gridX, gridY);
@@ -29,14 +25,10 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void rightClick(int x, int y) {
         Phase.getCurrentView().click(x, y, Controller.Click.RIGHT);
+        if (checkGameOver()) return;
 
         int gridX = x / 10;
         int gridY = y / 10;
-
-        if (game.isStopped) {
-            Phase.setActive(Phase.GAME_OVER);
-            return;
-        }
         game.setFlag(gridX, gridY, true);              // works only on closed tiles
         game.openSurroundingCells(gridX, gridY);       // works only on open tiles
         game.shop.deactivateExpiredItems();
@@ -68,20 +60,12 @@ public class ControlBoard implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        if (!game.isStopped) {
-            Phase.setActive(Phase.SHOP);
-        } else {
-            Phase.setActive(Phase.GAME_OVER);
-        }
+        Phase.setActive(!game.isStopped ? Phase.SHOP : Phase.GAME_OVER);
     }
 
     @Override
     public void pressEsc() {
-        if (game.isStopped) {
-            Phase.setActive(Phase.GAME_OVER);
-        } else {
-            Phase.setActive(Phase.MAIN);
-        }
+        Phase.setActive(game.isStopped ? Phase.GAME_OVER : Phase.MAIN);
     }
 
     @Override
@@ -94,5 +78,13 @@ public class ControlBoard implements ControlStrategy {
         if (game.isStopped) {
             Phase.setActive(Phase.GAME_OVER);
         }
+    }
+
+    private boolean checkGameOver() {
+        if (game.isStopped) {
+            Phase.setActive(Phase.GAME_OVER);
+            return true;
+        }
+        return false;
     }
 }

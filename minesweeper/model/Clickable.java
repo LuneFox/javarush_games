@@ -9,6 +9,7 @@ public interface Clickable {
 
     boolean tryClick(int x, int y, Controller.Click click);
 
+    // Unspecified click = left click
     default boolean tryClick(int x, int y){
         return tryClick(x, y, Controller.Click.LEFT);
     }

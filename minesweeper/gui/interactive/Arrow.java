@@ -20,21 +20,14 @@ public class Arrow extends InteractiveObject {
 
     @Override
     public void draw() {
-        // Draws itself pressed until countdown has finished
-        if (pressedCountDown > 0) {
-            if (pointsRight) {
-                arrowImage.draw(x + 1, y, Image.Mirror.NONE);
-            } else {
-                arrowImage.draw(x - 1, y, Image.Mirror.HORIZONTAL);
-            }
-            pressedCountDown--;
+        if (pressedCountDown <= 0) {
+            arrowImage.setPosition(x, y);
         } else {
-            if (pointsRight) {
-                arrowImage.draw(x, y, Image.Mirror.NONE);
-            } else {
-                arrowImage.draw(x, y, Image.Mirror.HORIZONTAL);
-            }
+            // Draws itself pressed until countdown has finished
+            pressedCountDown--;
+            arrowImage.setPosition(pointsRight ? (x + 1) : (x - 1), y);
         }
+        arrowImage.draw(pointsRight ? Image.Mirror.NONE : Image.Mirror.HORIZONTAL);
     }
 
     @Override

@@ -29,7 +29,6 @@ public class Printer {
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
 
-
     public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
         if (drawX == CENTER) {
             int width = calculateWidth(input);
@@ -87,9 +86,10 @@ public class Printer {
             }
 
             if (alignRight && i == 0) {
+                // First letter position fix
                 int width1st = cache.get(chars[0]).width;
                 if (width1st > 4) {
-                    caret.x -= width1st - 4; // First letter position fix
+                    caret.x -= width1st - 4;
                 }
             }
 

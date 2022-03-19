@@ -32,16 +32,20 @@ public class ThemeSelector extends InteractiveObject {
         this.themeCursor.replaceColor(Color.NONE, 1);
         this.themeCursor.replaceColor(Color.NONE, 2);
         this.themeCursor.replaceColor(Color.YELLOW, 3);
-        themeCursor.setPosition(themePalettes[Theme.getCurrentNumber()].x, themePalettes[Theme.getCurrentNumber()].y);
+
+        Image currentPalette = themePalettes[Theme.getCurrentNumber()];
+        themeCursor.setPosition(currentPalette.x, currentPalette.y);
     }
 
     @Override
     public void draw() {
         Arrays.stream(themePalettes).forEach(Image::draw);
-        if (themeCursor.x < themePalettes[Theme.getCurrentNumber()].x)
+        Image currentPalette = themePalettes[Theme.getCurrentNumber()];
+        if (themeCursor.x < currentPalette.x) {
             themeCursor.x++;
-        else if (themeCursor.x > themePalettes[Theme.getCurrentNumber()].x)
+        } else if (themeCursor.x > currentPalette.x) {
             themeCursor.x--;
+        }
         themeCursor.draw();
     }
 

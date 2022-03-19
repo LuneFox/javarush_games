@@ -3,6 +3,12 @@ package com.javarush.games.minesweeper.gui;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Simple cache realization. Returns value when something is put into inner hashmap.
+ *
+ * @param <K> key
+ * @param <V> value
+ */
+
 public abstract class Cache<K, V> {
     protected final Map<K, V> cache;
 

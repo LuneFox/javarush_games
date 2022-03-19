@@ -32,14 +32,16 @@ public class PageSelector extends InteractiveObject {
 
     public void prevPage() {
         prevPageArrow.onLeftClick();
-        if (currentPage > 0)
+        if (currentPage > 0) {
             currentPage--;
+        }
     }
 
     public void nextPage() {
         nextPageArrow.onLeftClick();
-        if (currentPage < maxPage)
+        if (currentPage < maxPage) {
             currentPage++;
+        }
     }
 
     @Override

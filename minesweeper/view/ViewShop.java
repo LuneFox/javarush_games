@@ -9,6 +9,9 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.player.Inventory;
+import com.javarush.games.minesweeper.model.player.Player;
+import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 public class ViewShop extends View {
@@ -52,14 +55,17 @@ public class ViewShop extends View {
 
     public ViewShop(Phase phase) {
         super(phase);
-        slotsAreLinked = false;
     }
 
     @Override
     public void update() {
         // Linking shop slots to this view. Cannot link in constructor because shop isn't created at that time
+        final Shop shop = game.shop;
+        final Player player = game.player;
+        final Inventory inventory = player.inventory;
+
         if (!slotsAreLinked) {
-            game.shop.shopSlots.forEach(shopSlot -> shopSlot.linkView(this));
+            shop.slots.forEach(slot -> slot.linkView(this));
             slotsAreLinked = true;
         }
 
@@ -68,7 +74,7 @@ public class ViewShop extends View {
 
         // Draw showcase
         showCasePanel.draw(10, 10);
-        game.shop.shopSlots.forEach(InteractiveObject::draw);
+        shop.slots.forEach(InteractiveObject::draw);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
 
         // Draw header
@@ -77,29 +83,20 @@ public class ViewShop extends View {
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
         Printer.print("" + game.field.countAllCells(Cell.Filter.DANGEROUS), 25, 12);
-        Printer.print("" + game.player.inventory.getCount(ShopItem.ID.FLAG), 52, 12);
-        Printer.print("" + game.player.inventory.displayMoney, 76 + moneyShakeHelper.getShift(), 12);
-        moneyApproach();
+        Printer.print("" + inventory.getCount(ShopItem.ID.FLAG), 52, 12);
+        Printer.print("" + inventory.displayMoney, 76 + moneyShakeHelper.getShift(), 12);
+        inventory.moneyApproach();
 
         // Draw footer
         headerFooterPanel.draw(10, 78);
-        Printer.print("Очки:" + game.player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
-        Printer.print("Шаги:" + game.player.getMoves(), Theme.SHOP_MOVES.getColor(), 83, 80, true);
+        Printer.print("Очки:" + player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
+        Printer.print("Шаги:" + player.getMoves(), Theme.SHOP_MOVES.getColor(), 83, 80, true);
 
         // Draw field elements
         game.timer.draw();
-        game.shop.goldenShovel.statusBar.draw();
-        game.shop.luckyDice.statusBar.draw();
+        shop.goldenShovel.statusBar.draw();
+        shop.luckyDice.statusBar.draw();
 
         super.update();
-    }
-
-    // Animation. With each view update money on display slowly approaches the real amount that player has
-    private void moneyApproach() {
-        if (game.player.inventory.displayMoney < game.player.inventory.money) {
-            game.player.inventory.displayMoney++;
-        } else if (game.player.inventory.displayMoney > game.player.inventory.money) {
-            game.player.inventory.displayMoney--;
-        }
     }
 }

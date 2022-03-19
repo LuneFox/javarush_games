@@ -70,7 +70,8 @@ public class Cell extends InteractiveObject {
         setBackgroundColor(Color.DARKSLATEGRAY);
     }
 
-    public void renewOpenedColors() {
+    // Update colors for opened state
+    public void updateOpenedColors() {
         if (!isOpen) return;
 
         background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
@@ -117,9 +118,9 @@ public class Cell extends InteractiveObject {
     }
 
     public boolean isIndestructible() {                  // Cannot be exploded with a bomb
-        boolean activated = (isOpen || isDestroyed);
-        boolean noFlagDestruction = (isFlagged && !game.allowFlagExplosion);
-        return (game.isStopped || activated || noFlagDestruction);
+        boolean activated = isOpen || isDestroyed;
+        boolean noFlagDestruction = isFlagged && !game.allowFlagExplosion;
+        return game.isStopped || activated || noFlagDestruction;
     }
 
     /**

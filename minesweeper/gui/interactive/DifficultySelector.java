@@ -11,6 +11,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
 public class DifficultySelector extends InteractiveObject {
     private static final int MAX_DIFFICULTY = 45;
     private static final int MIN_DIFFICULTY = 5;
+    private static final int DIFFICULTY_STEP = 5;
     private int difficultySetting;
     private final Arrow difficultyDownArrow;
     private final Arrow difficultyUpArrow;
@@ -62,13 +63,13 @@ public class DifficultySelector extends InteractiveObject {
     public void difficultyUp() {
         difficultyUpArrow.onLeftClick();
         if (difficultySetting < MAX_DIFFICULTY)
-            difficultySetting += 5;
+            difficultySetting += DIFFICULTY_STEP;
     }
 
     public void difficultyDown() {
         difficultyDownArrow.onLeftClick();
         if (difficultySetting > MIN_DIFFICULTY)
-            difficultySetting -= 5;
+            difficultySetting -= DIFFICULTY_STEP;
     }
 
     public int getDifficultySetting() {

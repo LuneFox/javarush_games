@@ -20,6 +20,6 @@ public class Util {
     }
 
     public static boolean isWithinScreen(int x, int y) {
-        return (x >= 0 && y >= 0 && x < 100 && y < 100);
+        return x >= 0 && y >= 0 && x < 100 && y < 100;
     }
 }

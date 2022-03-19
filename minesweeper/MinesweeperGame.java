@@ -7,10 +7,13 @@ import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.ImageType;
+import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.*;
+import com.javarush.games.minesweeper.model.board.Dice;
 import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.board.Field;
+import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
@@ -134,7 +137,7 @@ public class MinesweeperGame extends Game {
 
         if (isFirstMove) {
             forceClickOnBlank(cell);       // rebuilds the level until the cell at this position is blank
-            cell = field.getCell(x, y);   // continue with a new cell
+            cell = field.getCell(x, y);    // continue with a new cell
         }
 
         cell.open();
@@ -193,10 +196,11 @@ public class MinesweeperGame extends Game {
     }
 
     private void placeFlagFromInventory(Cell cell) {
-        if (player.inventory.hasNoFlags()) shop.offerFlag();
-        if (player.inventory.hasNoFlags()) return;
+        Inventory inventory = player.inventory;
+        if (inventory.hasNoFlags()) shop.offerFlag();
+        if (inventory.hasNoFlags()) return;
         if (cell.isFlagged) return;
-        player.inventory.remove(ShopItem.ID.FLAG);
+        inventory.remove(ShopItem.ID.FLAG);
         cell.isFlagged = true;
         cell.setSprite(ImageType.BOARD_FLAG);
     }
@@ -214,13 +218,14 @@ public class MinesweeperGame extends Game {
 
     private void addScore(int x, int y) {
         int randomNumber = getRandomNumber(6) + 1;
-        field.dice.setImage(randomNumber, x, y);
+        Dice dice = field.dice;
+        dice.setImage(randomNumber, x, y);
 
         if (field.getCell(x, y).isMined) return;
         if (shop.luckyDice.isActivated()) {
             player.score.setDiceScore(player.score.getDiceScore() + Options.difficulty * randomNumber);
-            field.dice.totalCells++;
-            field.dice.totalBonus += randomNumber;
+            dice.totalCells++;
+            dice.totalBonus += randomNumber;
         }
         setScore(player.score.getCurrentScore());
     }
@@ -302,8 +307,11 @@ public class MinesweeperGame extends Game {
     public void autoFlag() {
         if (!Options.developerMode) return;
 
-        if (!Options.autoBuyFlagsSelector.isEnabled())
-            Options.autoBuyFlagsSelector.tryClick(Options.autoBuyFlagsSelector.x, Options.autoBuyFlagsSelector.y);
+        SwitchSelector selector = Options.autoBuyFlagsSelector;
+        if (!selector.isEnabled()) {
+            selector.tryClick(selector.x, selector.y); // click self
+        }
+
         boolean[] success = new boolean[1];
         field.getAllCells(Filter.NUMERABLE).forEach(cell -> {
             if (!cell.isOpen) return;

@@ -22,7 +22,7 @@ public class Shop {
 
     // Usable items on sale
     public final List<ShopItem> allItems = new ArrayList<>();
-    public final List<ShopSlot> shopSlots = new ArrayList<>();
+    public final List<ShopSlot> slots = new ArrayList<>();
     public ShopItem shield;
     public ShopItem scanner;
     public ShopItem flag;
@@ -38,7 +38,7 @@ public class Shop {
                 int dx = 5 + 25 * row;
                 int dy = 21 + 25 * column;
                 ShopSlot slot = new ShopSlot(10 + dx, 10 + dy);
-                shopSlots.add(slot);
+                slots.add(slot);
             }
         }
     }
@@ -120,8 +120,8 @@ public class Shop {
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
 
         // Put new items to slots
-        for (int i = 0; i < shopSlots.size(); i++) {
-            shopSlots.get(i).setItem(allItems.get(i));
+        for (int i = 0; i < slots.size(); i++) {
+            slots.get(i).setItem(allItems.get(i));
         }
     }
 

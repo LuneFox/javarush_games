@@ -83,7 +83,7 @@ public class Field extends InteractiveObject {
 
     public void onThemeChange() {
         if (game.isStopped) return;
-        getAllCells(Cell.Filter.NONE).forEach(Cell::renewOpenedColors);
+        getAllCells(Cell.Filter.NONE).forEach(Cell::updateOpenedColors);
     }
 
     @Override

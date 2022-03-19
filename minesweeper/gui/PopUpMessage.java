@@ -42,9 +42,7 @@ public class PopUpMessage extends InteractiveObject {
     }
 
     public static void drawMessage() {
-        if (INSTANCE.timeToLive <= 0) {
-            return;
-        }
+        if (INSTANCE.timeToLive <= 0) return;
         if (Options.displayMessageSelector.isEnabled()) {
             game.display.setInterlaceEnabled(false);
             INSTANCE.draw();

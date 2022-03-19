@@ -19,8 +19,8 @@ public abstract class Button extends InteractiveObject {
     public static final int POST_PRESS_DELAY = -2;// for how long buttons display unpressed before moving to next screen
 
     private final Color textColor;
-    private Image bodyUp;
-    private Image bodyDown;
+    private final Image bodyUnpressed;
+    private final Image bodyPressed;
     private String text;
     private int textOffset;
     private boolean isPressed;
@@ -33,7 +33,8 @@ public abstract class Button extends InteractiveObject {
         this.height = (sizeY == 0) ? 9 : sizeY;
         this.textOffset = (sizeX == 0) ? 2 : ((sizeX - textLength) / 2) + 1;
         this.textColor = Color.WHITE;
-        createBodyImages(posX, posY);
+        this.bodyUnpressed = createBody(posX, posY, true);
+        this.bodyPressed = createBody(posX, posY, false);
     }
 
     public void draw() {
@@ -42,33 +43,22 @@ public abstract class Button extends InteractiveObject {
         int drawX = (isPressed) ? x + 1 : x;
         int drawY = (isPressed) ? y + 1 : y;
         if (isPressed) {
-            this.bodyDown.draw(drawX, drawY);
+            this.bodyPressed.draw(drawX, drawY);
         } else {
-            this.bodyUp.draw(drawX, drawY);
+            this.bodyUnpressed.draw(drawX, drawY);
         }
         Printer.print(text, textColor, drawX + textOffset, drawY);
     }
 
-    public void createBodyImages(int posX, int posY) {
-        this.bodyUp = new Image(ImageType.GUI_BUTTON, posX, posY) {
+    private Image createBody(int posX, int posY, boolean addShadow) {
+        Image body = new Image(ImageType.GUI_BUTTON, posX, posY) {
             @Override
             public int[][] getMatrixFromStorage(ImageType imageType) {
-                return ImageCreator.createFrame(Button.this.width, Button.this.height, true, true);
+                return ImageCreator.createFrame(Button.this.width, Button.this.height, addShadow, true);
             }
         };
-
-        this.bodyDown = new Image(ImageType.GUI_BUTTON, posX, posY) {
-            @Override
-            public int[][] getMatrixFromStorage(ImageType imageType) {
-                return ImageCreator.createFrame(Button.this.width, Button.this.height, false, true);
-            }
-        };
-
-        this.bodyUp.colors = this.bodyDown.colors = new Color[]{
-                Color.NONE,
-                Theme.BUTTON_BG.getColor(),
-                Color.BLACK,
-                Theme.BUTTON_BORDER.getColor()};
+        body.colors = new Color[]{Color.NONE, Theme.BUTTON_BG.getColor(), Color.BLACK, Theme.BUTTON_BORDER.getColor()};
+        return body;
     }
 
     public void replaceText(int width, String label) {

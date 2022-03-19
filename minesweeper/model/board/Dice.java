@@ -14,14 +14,12 @@ public class Dice extends InteractiveObject {
 
     public Cell appearCell;     // cell at which the dice appears after click
     private Image image;
-    public int totalBonus;      // sum of all sides on every affected cell (memory field)
-    public int totalCells;      // total number of cells affected by the dice (memory field)
+    public int totalBonus = 0;  // sum of all sides on every affected cell (memory field)
+    public int totalCells = 0;  // total number of cells affected by the dice (memory field)
     private int onScreenTime;   // number of frames that have passed since it was displayed
 
     public Dice(int number) {
         setImage(number, 0, 0);
-        totalBonus = 0;
-        totalCells = 0;
     }
 
     public void setImage(int number, int x, int y) {

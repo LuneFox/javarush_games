@@ -49,28 +49,32 @@ public class ViewGameOver extends View {
 
     @Override
     public void update() {
-        if (game.gameOverShowDelay > 0) {
-            game.field.draw();
-            game.gameOverShowDelay--;
-            super.update();
-            return;
-        }
+        if (isDelayed()) return;
 
         game.field.draw();
         victoryWindow.draw(Image.CENTER, Image.CENTER);
-        if (game.isVictory) {
-            happyFace.draw(Image.CENTER, Image.CENTER);
-            Printer.print("<победа!>", Color.YELLOW, 18, 33);
-        } else {
-            sadFace.draw(Image.CENTER, Image.CENTER);
-            Printer.print("<не повезло!>", Color.YELLOW, 18, 33);
-        }
 
+        Image face = game.isVictory ? happyFace : sadFace;
+        String result = game.isVictory ? "<победа!>" : "<не повезло!>";
+        face.draw(Image.CENTER, Image.CENTER);
+        Printer.print(result, Color.YELLOW, 18, 33);
         Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
+
         againButton.draw();
         returnToMenuButton.draw();
         hideOverlayButton.draw();
         showScoreDetailButton.draw();
+
         super.update();
+    }
+
+    private boolean isDelayed() {
+        if (game.gameOverShowDelay > 0) {
+            game.gameOverShowDelay--;
+            game.field.draw();
+            super.update();
+            return true;
+        }
+        return false;
     }
 }

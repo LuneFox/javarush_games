@@ -16,7 +16,6 @@ import java.util.*;
 public class Controller {
     private ControlStrategy strategy;
     private static final Map<Phase, ControlStrategy> strategyMap = new HashMap<>();
-    private static int lastClickX;
     private static int lastClickY;
 
     public enum Click {
@@ -42,22 +41,17 @@ public class Controller {
     }
 
     public final void leftClick(int x, int y) {
-        memorizeClick(x, y);
         selectStrategy(x, y);
         strategy.leftClick(x, y);
     }
 
     public final void rightClick(int x, int y) {
-        memorizeClick(x, y);
         selectStrategy(x, y);
         strategy.rightClick(x, y);
     }
 
     public final void pressKey(Key key) {
-        if (PopUpMessage.getTimeToLive() <= 0) {
-            memorizeClick(99, 99); // Key presses always make the message slide from the top
-        }
-        selectStrategy(0, 0); // Key presses never miss the screen
+        selectStrategy(0, 99); // Key presses never miss the screen
         if (key == Key.UP) strategy.pressUp();
         else if (key == Key.DOWN) strategy.pressDown();
         else if (key == Key.LEFT) strategy.pressLeft();
@@ -70,19 +64,17 @@ public class Controller {
     }
 
     private void selectStrategy(int x, int y) {
+        // System.out.printf("%d %d%n", x, y);
+        lastClickY = y;
+
         if (!Util.isWithinScreen(x, y) // Disable controls during awaiting of the next screen
                 || MinesweeperGame.getInstance().gameOverShowDelay > 0
                 || Button.pressedTime > Button.POST_PRESS_DELAY) {
             this.strategy = strategyMap.get(null);
             return;
         }
-        this.strategy = strategyMap.get(Phase.getActive());
-    }
 
-    private void memorizeClick(int x, int y) {
-        // System.out.printf("%d %d%n", x, y);
-        lastClickX = x;
-        lastClickY = y;
+        this.strategy = strategyMap.get(Phase.getActive());
     }
 
     public static boolean clickedOnUpperHalf() {

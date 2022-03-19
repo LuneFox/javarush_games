@@ -36,6 +36,12 @@ public class Inventory {
         money = 0;
     }
 
+    // Animation. With each view update money on display slowly approaches the real amount that player has
+    public void moneyApproach() {
+        if (displayMoney < money) displayMoney++;
+        else if (displayMoney > money) displayMoney--;
+    }
+
     public int getCount(ShopItem.ID itemID) {
         return items.get(itemID);
     }
