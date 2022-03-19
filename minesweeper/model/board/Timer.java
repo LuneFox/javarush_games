@@ -52,7 +52,7 @@ public class Timer extends InteractiveObject {
         COLORS[1] = swap;
     }
 
-    public void restart() {
+    public void reset() {
         if (Options.timerEnabled)
             time = TIME_LIMIT;
     }

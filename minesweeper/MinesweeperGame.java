@@ -34,16 +34,20 @@ public class MinesweeperGame extends Game {
     public Player player;
     public Timer timer;
     public Field field;
-    public boolean allowFlagExplosion;         // allows destroying flags during chain explosions
-    public boolean isStopped = true;
-    public boolean isFirstMove = true;
-    private boolean isRecursiveMove = false;    // sometimes cells are opened by recursion, don't count it as moves
-    public boolean isVictory = false;
+    public boolean isFlagExplosionAllowed;     // allows destroying flags during chain explosions
+    public boolean isStopped;
+    public boolean isFirstMove;
+    private boolean isRecursiveMove;           // doesn't count as a move made by player
+    public boolean isVictory;
     public int gameOverShowDelay;
     public boolean autoStop;                   // Game can't continue playing automatically
 
     @Override
     public void initialize() {
+        showGrid(false);
+        setScreenSize(100, 100);
+        setTurnTimer(30);
+
         instance = this;            // most declarations below use this instance, leave before everything else
         Options.initialize();
         display = new Display();
@@ -52,12 +56,9 @@ public class MinesweeperGame extends Game {
         timer = new Timer();
         shop = new Shop();
         player = new Player();
-
-        showGrid(false);
-        setScreenSize(100, 100);
         isStopped = true;
+
         Phase.setActive(Phase.MAIN);
-        setTurnTimer(30);
     }
 
     @Override
@@ -67,19 +68,23 @@ public class MinesweeperGame extends Game {
     }
 
     public void startNewGame() {
-        Options.apply();
-        field.create();
-        isStopped = false;
-        isFirstMove = true;
-        player.reset();
-        shop.reset();
-        player.inventory.reset();
-        timer.restart();
-        setScore(player.score.getCurrentScore());
+        resetValues();
         Phase.setActive(Phase.BOARD);
         PopUpMessage.show("Новая игра");
     }
 
+    private void resetValues() {
+        Options.apply();
+        field.create();
+        player.reset();
+        shop.reset();
+        timer.reset();
+        isStopped = false;
+        isFirstMove = true;
+        isRecursiveMove = false;
+        isVictory = false;
+        setScore(player.score.getCurrentScore());
+    }
 
     // WIN AND LOSE
 
@@ -127,11 +132,17 @@ public class MinesweeperGame extends Game {
     // BASE ACTIONS
 
     public void openCell(int x, int y) {
-        Cell cell = field.getCell(x, y);
+        if (isStopped) return;
 
-        if (shop.miniBomb.use(cell) || shop.scanner.use(cell)) return; // try using items and return if they were used
-        if (!isRecursiveMove) field.dice.appearCell = cell;
-        if (isStopped || cell.isFlagged || cell.isOpen) return;
+        Cell cell = field.getCell(x, y);
+        if (shop.miniBomb.use(cell)) return;
+        if (shop.scanner.use(cell)) return;
+        if (cell.isFlagged) return;
+        if (cell.isOpen) return;
+
+        if (!isRecursiveMove) {
+            field.dice.appearCell = cell;
+        }
 
         if (isFirstMove) {
             forceClickOnBlank(cell);       // rebuilds the level until the cell at this position is blank
@@ -149,18 +160,19 @@ public class MinesweeperGame extends Game {
 
         int moneyEarned = cell.countMinedNeighbors * (shop.goldenShovel.isActivated() ? 2 : 1);
         player.inventory.money += moneyEarned;
-
-        cell.makeNumberYellow();            // make golden if the shovel is in use
+        cell.makeNumberYellow(); // make golden if the shovel is in use
 
         addScore(field.dice.appearCell.x, field.dice.appearCell.y); // x,y = dice display position
+        recursiveOpen(cell);
+        checkVictory();
+    }
 
-        if (cell.isEmpty()) {             // recursive opening
+    private void recursiveOpen(Cell cell) {
+        if (cell.isEmpty()) {
             isRecursiveMove = true;
             List<Cell> neighbors = field.getNeighborCells(cell, Filter.NONE, false);
             neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
-
-        checkVictory();
     }
 
     public void openSurroundingCells(int x, int y) {
@@ -251,7 +263,7 @@ public class MinesweeperGame extends Game {
         if (isRecursiveMove) return;
         player.incMoves();
         player.score.addTimerScore(timer.getScore());
-        timer.restart();
+        timer.reset();
     }
 
     // Scanner action
@@ -289,7 +301,7 @@ public class MinesweeperGame extends Game {
             PopUpMessage.show("Взорвалась мина!");
             cell.isMined = false;
             isRecursiveMove = true;
-            allowFlagExplosion = true;
+            isFlagExplosionAllowed = true;
             field.getNeighborCells(cell, Filter.NONE, false).forEach(neighbor -> {
                 if (neighbor.isMined) {
                     destroyCell(neighbor.x, neighbor.y); // recursive call
@@ -407,7 +419,7 @@ public class MinesweeperGame extends Game {
     @Override
     public void onMouseLeftClick(int x, int y) {
         isRecursiveMove = false;
-        allowFlagExplosion = false;
+        isFlagExplosionAllowed = false;
         controller.leftClick(x, y);
     }
 

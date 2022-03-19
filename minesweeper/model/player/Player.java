@@ -22,6 +22,7 @@ public class Player {
         moves = 0;
         brokenShields = 0;
         score.reset();
+        inventory.reset();
     }
 
     public void incMoves() {

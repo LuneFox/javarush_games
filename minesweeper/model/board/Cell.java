@@ -120,7 +120,7 @@ public class Cell extends InteractiveObject {
 
     public boolean isIndestructible() {                  // Cannot be exploded with a bomb
         boolean activated = isOpen || isDestroyed;
-        boolean noFlagDestruction = isFlagged && !game.allowFlagExplosion;
+        boolean noFlagDestruction = isFlagged && !game.isFlagExplosionAllowed;
         return game.isStopped || activated || noFlagDestruction;
     }
 
