@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view;
+package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -8,6 +8,7 @@ import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.gui.interactive.PageSelector;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.view.View;
 
 public class ViewAbout extends View {
     private final Button closeButton = new Button(88, 2, 0, 0, "x", this) {

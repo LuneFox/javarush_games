@@ -1,14 +1,7 @@
 package com.javarush.games.minesweeper.controller;
 
-import com.javarush.games.minesweeper.DeveloperOption;
-import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.controller.impl.*;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.player.Score;
-
-import static com.javarush.games.minesweeper.Util.inside;
 
 public class ControlStrategyFactory {
     public ControlStrategy createStrategy(Phase phase) {

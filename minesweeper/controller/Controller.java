@@ -2,12 +2,13 @@ package com.javarush.games.minesweeper.controller;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.gui.interactive.Button;
+import com.javarush.games.minesweeper.model.Phase;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Separate class for processing various input events.

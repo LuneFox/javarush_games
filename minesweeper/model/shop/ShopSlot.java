@@ -6,7 +6,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.view.ViewShop;
+import com.javarush.games.minesweeper.view.impl.ViewShop;
 
 /**
  * Clicking on this slot will sell the player the corresponding item.

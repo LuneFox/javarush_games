@@ -1,10 +1,11 @@
-package com.javarush.games.minesweeper.view;
+package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.*;
 import com.javarush.games.minesweeper.gui.image.*;
 import com.javarush.games.minesweeper.gui.interactive.*;
 import com.javarush.games.minesweeper.model.*;
+import com.javarush.games.minesweeper.view.View;
 
 import java.util.Collections;
 import java.util.Date;

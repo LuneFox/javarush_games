@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view;
+package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
@@ -10,6 +10,7 @@ import com.javarush.games.minesweeper.gui.interactive.*;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.Strings;
+import com.javarush.games.minesweeper.view.View;
 
 public class ViewOptions extends View {
 

@@ -3,24 +3,18 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
-import com.javarush.games.minesweeper.gui.Display;
-import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.*;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
-import com.javarush.games.minesweeper.model.*;
-import com.javarush.games.minesweeper.model.board.Dice;
+import com.javarush.games.minesweeper.model.Options;
+import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.model.board.*;
 import com.javarush.games.minesweeper.model.board.Timer;
-import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.board.Field;
-import com.javarush.games.minesweeper.model.player.Inventory;
-import com.javarush.games.minesweeper.model.player.Player;
-import com.javarush.games.minesweeper.model.player.Score;
-import com.javarush.games.minesweeper.model.shop.Shop;
-import com.javarush.games.minesweeper.model.shop.ShopItem;
 import com.javarush.games.minesweeper.model.board.Cell.Filter;
+import com.javarush.games.minesweeper.model.player.*;
+import com.javarush.games.minesweeper.model.shop.*;
 
-import java.util.*;
+import java.util.List;
 
 /**
  * Main game class

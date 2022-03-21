@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view;
+package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -8,6 +8,7 @@ import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
+import com.javarush.games.minesweeper.view.View;
 
 public class ViewItemHelp extends View {
 

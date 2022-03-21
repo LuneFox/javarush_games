@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view;
+package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -7,6 +7,7 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.view.View;
 
 import static com.javarush.games.minesweeper.model.player.Score.Table.total;
 

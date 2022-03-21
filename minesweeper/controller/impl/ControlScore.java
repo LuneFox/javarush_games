@@ -1,5 +1,6 @@
-package com.javarush.games.minesweeper.controller;
+package com.javarush.games.minesweeper.controller.impl;
 
+import com.javarush.games.minesweeper.controller.ControlStrategy;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.player.Score;
 

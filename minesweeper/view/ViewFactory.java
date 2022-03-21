@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.view.impl.*;
 
 public class ViewFactory {
     public View createView(Phase phase) {

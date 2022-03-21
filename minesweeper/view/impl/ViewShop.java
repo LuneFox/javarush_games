@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.view;
+package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -13,6 +13,7 @@ import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
+import com.javarush.games.minesweeper.view.View;
 
 public class ViewShop extends View {
     public static ShakeHelper moneyShakeHelper = new ShakeHelper();

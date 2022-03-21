@@ -1,7 +1,9 @@
-package com.javarush.games.minesweeper.controller;
+package com.javarush.games.minesweeper.controller.impl;
 
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.controller.ControlStrategy;
+import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
 
