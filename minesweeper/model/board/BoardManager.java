@@ -153,10 +153,6 @@ public class BoardManager {
         flagManager.swapFlag(x, y);
     }
 
-    /**
-     * Item actions
-     */
-
     // Scanner action
     public void scanNeighbors(int x, int y) {  // action for Scanner
         List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), Cell.Filter.SAFE, true);
@@ -324,10 +320,6 @@ public class BoardManager {
 
     public boolean isFirstMove() {
         return isFirstMove;
-    }
-
-    public void setFirstMove(boolean firstMove) {
-        isFirstMove = firstMove;
     }
 
     public Dice getDice() {
