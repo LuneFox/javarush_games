@@ -21,8 +21,8 @@ import java.util.List;
 
 public class Shop {
     private final MinesweeperGame game;
-    public final List<ShopItem> allItems = new ArrayList<>();
     public final List<ShopSlot> slots = new ArrayList<>();
+    public final List<ShopItem> allItems = new ArrayList<>();
     public ShopItem shield;
     public ShopItem scanner;
     public ShopItem flag;
@@ -45,16 +45,11 @@ public class Shop {
 
     public void reset() {
         createNewItems();
-        replaceOldItems();
         fillSlots();
     }
 
     public void restock(ShopItem item, int amount) {
         item.inStock += amount;
-    }
-
-    public void purge(ShopItem item) {
-        item.inStock = 0;
     }
 
     public void give(ShopItem item) {
@@ -84,20 +79,18 @@ public class Shop {
             case SCANNER:
                 if (miniBomb.isActivated()) return;
                 scanner.activate();
-                purge(miniBomb);
+                miniBomb.inStock = 0;
                 break;
             case SHOVEL:
                 goldenShovel.activate();
-                goldenShovel.expireMove = game.player.getMoves() + goldenShovel.effectDuration;
                 break;
             case DICE:
                 luckyDice.activate();
-                luckyDice.expireMove = game.player.getMoves() + luckyDice.effectDuration;
                 break;
             case BOMB:
                 if (scanner.isActivated()) return;
                 miniBomb.activate();
-                purge(scanner);
+                scanner.inStock = 0;
                 break;
             default:
                 break;
@@ -130,17 +123,14 @@ public class Shop {
     }
 
     private void createNewItems() {
+        allItems.clear();
         final Cache<ImageType, Image> cache = Image.cache;
         shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, cache.get(ImageType.SHOP_SHOWCASE_SHIELD));
         scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, cache.get(ImageType.SHOP_SHOWCASE_SCANNER));
-        flag = new ShopItem(2, 1, getFlagsAmount(), cache.get(ImageType.SHOP_SHOWCASE_FLAG));
+        flag = new ShopItem(2, 1, getMaximumFlagsAmount(), cache.get(ImageType.SHOP_SHOWCASE_FLAG));
         goldenShovel = new ShopItem(3, 9, 1, cache.get(ImageType.SHOP_SHOWCASE_SHOVEL));
         luckyDice = new ShopItem(4, 6, 1, cache.get(ImageType.SHOP_SHOWCASE_DICE));
         miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, cache.get(ImageType.SHOP_SHOWCASE_BOMB));
-    }
-
-    private void replaceOldItems() {
-        allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
     }
 
@@ -150,7 +140,7 @@ public class Shop {
         }
     }
 
-    private int getFlagsAmount() {
+    private int getMaximumFlagsAmount() {
         return game.boardManager.getField().countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
     }
 

@@ -11,8 +11,8 @@ public abstract class InteractiveObject implements Drawable, Clickable {
     public int y;
     public int width;
     public int height;
-    public int latestClickX; // remember where it was touched last time, useful if this drawable contains other drawables
-    public int latestClickY;
+    protected int latestClickX; // remember where it was touched last time, useful if this drawable contains other drawables
+    protected int latestClickY;
 
     public InteractiveObject() {
         this(0, 0);
@@ -58,6 +58,7 @@ public abstract class InteractiveObject implements Drawable, Clickable {
         // Do nothing by default, override to assign an action
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends InteractiveObject> T linkView(View view) {
         view.linkObject(this);
         return (T) this;

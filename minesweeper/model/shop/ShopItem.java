@@ -25,7 +25,6 @@ public class ShopItem {
     public String name;
     public String description;
     public Image icon;
-    public int number;
     public VerticalStatusBar statusBar;
 
     public enum ID {
@@ -35,7 +34,6 @@ public class ShopItem {
     ShopItem(int slot, int cost, int inStock, Image icon) {
         this.icon = icon;
         this.cost = cost;
-        this.number = slot;
         this.inStock = inStock;
         isActivated = false;
         switch (slot) {
@@ -134,13 +132,16 @@ public class ShopItem {
         }
     }
 
-    public int remainingMoves() {
-        return expireMove - game.player.getMoves();
+    public String remainingMoves() {
+        return canExpire ? Integer.toString(expireMove - game.player.getMoves()) : "";
     }
 
     public void activate() {
         if (game.isStopped) return;
-        this.isActivated = true;
+        isActivated = true;
+        if (canExpire) {
+            expireMove = game.player.getMoves() + effectDuration;
+        }
     }
 
     public void deactivate() {
@@ -173,7 +174,8 @@ public class ShopItem {
         }
 
         public void draw() {
-            for (int i = 0; i < item.remainingMoves() * 2; i += 2) {
+            int remainingMoves = item.expireMove - game.player.getMoves();
+            for (int i = 0; i < remainingMoves * 2; i += 2) {
                 game.display.setCellColor(posX, posY - i, color);
             }
         }

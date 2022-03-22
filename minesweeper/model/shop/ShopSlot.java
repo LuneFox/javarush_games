@@ -31,32 +31,25 @@ public class ShopSlot extends InteractiveObject {
 
     @Override
     public void draw() {
-        // Define "press" depth when it's touched
         final int shift = shiftFrame() ? PRESS_DEPTH : 0;
         final int fx = x + shift;
         final int fy = y + shift;
+        changeFrameColor();
+        frame.draw(fx, fy);
+        item.icon.draw(fx + 1, fy + 1);
+        printInfo();
+    }
 
-        // Anchors for text
+    private void printInfo() {
         final int top = y;
         final int right = x + 14;
         final int bottom = y + 10;
 
-        // Select frame color depending on item status
-        pickFrameColor();
-
-        // Draw icon on frame
-        frame.draw(fx, fy);
-        item.icon.draw(fx + 1, fy + 1);
-
-        // Write price, activation markers, expiration time, availability etc.
         if (item.inStock > 0 && !item.isActivated()) {
-            Printer.print("<" + item.cost +">", Color.YELLOW, right, bottom, true);
-
+            Printer.print("<" + item.cost + ">", Color.YELLOW, right, bottom, true);
         } else if (item.isActivated()) {
-            if (item.canExpire) {
-                Printer.print(Integer.toString(item.remainingMoves()), Color.MAGENTA, right, top, true);
-            }
             Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, true);
+            Printer.print(item.remainingMoves(), Color.MAGENTA, right, top, true);
         } else {
             Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, true);
         }
@@ -73,7 +66,7 @@ public class ShopSlot extends InteractiveObject {
         }
     }
 
-    private void pickFrameColor() {
+    private void changeFrameColor() {
         Color frameColor;
         frameColor = (item.isUnobtainable()) ? Color.RED : Theme.SHOP_ITEM_FRAME_AVAILABLE.getColor();
         frameColor = (item.isActivated()) ? Color.BLUE : frameColor;
@@ -91,7 +84,7 @@ public class ShopSlot extends InteractiveObject {
         }
 
         if (item.inStock <= 0) {
-            PopUpMessage.show("Недоступно");
+            PopUpMessage.show("Не продаётся");
             return;
         }
 

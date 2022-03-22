@@ -52,14 +52,12 @@ public class Controller {
         game.boardManager.setFlagExplosionAllowed(false);
         selectStrategy(x, y);
         strategy.leftClick(x, y);
-        game.setScore(game.player.score.getCurrentScore());
     }
 
     public final void rightClick(int x, int y) {
         game.boardManager.setRecursiveMove(false);
         selectStrategy(x, y);
         strategy.rightClick(x, y);
-        game.setScore(game.player.score.getCurrentScore());
     }
 
     public final void pressKey(Key key) {
@@ -73,7 +71,6 @@ public class Controller {
         else if (key == Key.SPACE) strategy.pressSpace();
         else if (key == Key.ESCAPE) strategy.pressEsc();
         else strategy.pressOther();
-        game.setScore(game.player.score.getCurrentScore());
     }
 
     private void selectStrategy(int x, int y) {

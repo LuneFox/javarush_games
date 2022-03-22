@@ -68,7 +68,6 @@ public class MinesweeperGame extends Game {
         shop.reset();
         isStopped = false;
         isResultVictory = false;
-        setScore(0);
     }
 
     public void win() {
