@@ -36,8 +36,7 @@ public class MinesweeperGame extends Game {
         setScreenSize(100, 100);
         setTurnTimer(30);
 
-        // Most elements use instance, it must be defined first
-        instance = this;
+        instance = this;        // must come first
         Options.initialize();
         display = new Display();
         controller = new Controller();

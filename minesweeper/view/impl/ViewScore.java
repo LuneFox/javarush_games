@@ -43,11 +43,18 @@ public class ViewScore extends View {
         switch (Score.Table.pageSelector.getCurrentPage()) {
             case 0:
                 Printer.print("<детализация>", Color.YELLOW, Printer.CENTER, 2);
-                Printer.print("ячейки:\nкубик:\nмины:\nзолото:\nщиты:\nскорость:\n\nитого:", paddingLeft, paddingTop);
+                Printer.print("ячейки:\n" +
+                        "кубик:\n" +
+                        "мины:\n" +
+                        "золото:\n" +
+                        "щиты:\n" +
+                        "скорость:\n" +
+                        "\n" +
+                        "итого:", paddingLeft, paddingTop);
 
-                Printer.print(
-                        (total +
-                                "\n\n" + scoreTimer +
+                Printer.print((total +
+                                "\n" +
+                                "\n" + scoreTimer +
                                 "\n" + (shieldScoreDetail + scoreLost) +
                                 "\n" + (victory ? (moneyScoreDetail + scoreMoney) : youLost) +
                                 "\n" + (victory ? (minesScoreDetail + scoreMines) : youLost) +
@@ -55,15 +62,21 @@ public class ViewScore extends View {
                                 "\n" + cellScoreDetail + cellsCount * difficulty),
                         Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, paddingRight, paddingTop, true);
                 break;
+
             case 1:
                 Printer.print("<очки кубика>", Color.YELLOW, Printer.CENTER, 2);
-                Printer.print("средняя удача:\nзатронуто ячеек:\nбонус сложности:\n\nв общем счёте:", paddingLeft, paddingTop);
+                Printer.print("средняя удача:\n" +
+                        "затронуто ячеек:\n" +
+                        "бонус сложности:\n" +
+                        "\n" +
+                        "в общем счёте:", paddingLeft, paddingTop);
                 Printer.print((luckDetail +
                                 "\n\n\n" + difficulty +
                                 "\n" + diceLuckyCells +
                                 "\n" + diceAvgLuck),
                         Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, paddingRight, paddingTop, true);
                 break;
+
             default:
                 break;
         }

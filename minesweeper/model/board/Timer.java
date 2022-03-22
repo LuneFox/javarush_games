@@ -39,13 +39,17 @@ public class Timer extends InteractiveObject {
     }
 
     public void tick() {
-        if (!game.isStopped && isZero()) {
-            Phase.setActive(Phase.BOARD);
-            PopUpMessage.show("Время вышло!");
-            game.lose();
+        if (!game.isStopped && timeIsUp()) {
+            loseByTimeOut();
         } else {
             countDown();
         }
+    }
+
+    private void loseByTimeOut() {
+        Phase.setActive(Phase.BOARD);
+        PopUpMessage.show("Время вышло!");
+        game.lose();
     }
 
     private void countDown() {
@@ -68,7 +72,7 @@ public class Timer extends InteractiveObject {
             time = TIME_LIMIT;
     }
 
-    public boolean isZero() {
+    public boolean timeIsUp() {
         return (Options.timerEnabled && time <= 0);
     }
 

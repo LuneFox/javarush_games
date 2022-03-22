@@ -25,7 +25,12 @@ public class ViewAbout extends View {
     public void update() {
         background.draw();
         pageSelector.draw();
+        drawPageContainer();
+        closeButton.draw();
+        super.update();
+    }
 
+    private void drawPageContainer() {
         switch (Options.aboutPageSelector.getCurrentPage()) {
             case 0:
                 printPage("<Информация>",
@@ -57,9 +62,6 @@ public class ViewAbout extends View {
                         "Страница не найдена.");
                 break;
         }
-
-        closeButton.draw();
-        super.update();
     }
 
     private void printPage(String title, String contents) {

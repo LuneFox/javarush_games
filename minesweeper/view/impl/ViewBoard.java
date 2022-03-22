@@ -14,7 +14,14 @@ public class ViewBoard extends View {
         if (!(Phase.isActive(Phase.SHOP))) game.display.setInterlaceEnabled(true);
         game.timer.tick();
         game.fieldManager.getField().draw();
+        drawActivatedItemFrame();
+        game.timer.draw();
+        game.shop.goldenShovel.statusBar.draw();
+        game.shop.luckyDice.statusBar.draw();
+        super.update();
+    }
 
+    private void drawActivatedItemFrame() {
         if (game.shop.allItems.get(1).isActivated()) {
             frame.replaceColor(Color.BLUE, 3);
             frame.draw();
@@ -22,10 +29,5 @@ public class ViewBoard extends View {
             frame.replaceColor(Color.RED, 3);
             frame.draw();
         }
-
-        game.timer.draw();
-        game.shop.goldenShovel.statusBar.draw();
-        game.shop.luckyDice.statusBar.draw();
-        super.update();
     }
 }

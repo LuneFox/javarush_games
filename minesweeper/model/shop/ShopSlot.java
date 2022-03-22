@@ -96,7 +96,7 @@ public class ShopSlot extends InteractiveObject {
         }
 
         if (item.isUnaffordable()) {
-            ViewShop.moneyShakeHelper.startShaking();
+            ViewShop.shakeMoney();
             PopUpMessage.show("Не хватает золота");
             return;
         }

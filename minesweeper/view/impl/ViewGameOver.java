@@ -47,22 +47,26 @@ public class ViewGameOver extends View {
     @Override
     public void update() {
         if (waitForDelay()) return;
-
         game.fieldManager.getField().draw();
-        victoryWindow.draw(Image.CENTER, Image.CENTER);
+        drawBanner();
+        drawButtons();
+        super.update();
+    }
 
+    private void drawButtons() {
+        againButton.draw();
+        returnToMenuButton.draw();
+        hideOverlayButton.draw();
+        showScoreDetailButton.draw();
+    }
+
+    private void drawBanner() {
+        victoryWindow.draw(Image.CENTER, Image.CENTER);
         Image face = game.isResultVictory ? happyFace : sadFace;
         String result = game.isResultVictory ? "<победа!>" : "<не повезло!>";
         face.draw(Image.CENTER, Image.CENTER);
         Printer.print(result, Color.YELLOW, 18, 33);
         Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
-
-        againButton.draw();
-        returnToMenuButton.draw();
-        hideOverlayButton.draw();
-        showScoreDetailButton.draw();
-
-        super.update();
     }
 
     private boolean waitForDelay() {

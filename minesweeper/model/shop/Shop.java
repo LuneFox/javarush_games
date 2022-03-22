@@ -3,11 +3,11 @@ package com.javarush.games.minesweeper.model.shop;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageType;
+import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
-import com.javarush.games.minesweeper.gui.image.ImageType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +20,6 @@ import java.util.List;
 public class Shop {
     final static private MinesweeperGame game = MinesweeperGame.getInstance();
 
-    // Usable items on sale
     public final List<ShopItem> allItems = new ArrayList<>();
     public final List<ShopSlot> slots = new ArrayList<>();
     public ShopItem shield;
@@ -29,7 +28,6 @@ public class Shop {
     public ShopItem goldenShovel;
     public ShopItem luckyDice;
     public ShopItem miniBomb;
-
     public ShopItem helpDisplayItem;
 
     public Shop() {
@@ -43,13 +41,40 @@ public class Shop {
         }
     }
 
+    public void reset() {
+        createNewItems();
+        replaceOldItems();
+        fillSlots();
+    }
+
+    public void restock(ShopItem item, int amount) {
+        item.inStock += amount;
+    }
+
+    public void purge(ShopItem item) {
+        item.inStock = 0;
+    }
+
+    public void give(ShopItem item) {
+        if (item.inStock > 0) {
+            game.player.inventory.add(item.id);
+            item.inStock--;
+        }
+    }
+
     public void sell(ShopItem item) {
         if (item == null) return;
-        // Make transaction
+        makeTransaction(item);
+        activate(item);
+    }
+
+    private void makeTransaction(ShopItem item) {
         item.inStock--;
         game.player.inventory.money -= item.cost;
         game.player.inventory.add(item.id);
-        // Apply item effect
+    }
+
+    private void activate(ShopItem item) {
         switch (item.id) {
             case SHIELD:
                 shield.activate();
@@ -91,35 +116,21 @@ public class Shop {
         sell(flag);
     }
 
-    public void give(ShopItem item) {
-        if (item.inStock > 0) {
-            game.player.inventory.add(item.id);
-            item.inStock--;
-        }
-    }
-
-    public void restock(ShopItem item, int amount) {
-        item.inStock += amount;
-    }
-
-    public void purge(ShopItem item) {
-        item.inStock = 0;
-    }
-
-    public void reset() {
-        // Create new items
+    private void createNewItems() {
         shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SHIELD));
         scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SCANNER));
         flag = new ShopItem(2, 1, getFlagsAmount(), Image.cache.get(ImageType.SHOP_SHOWCASE_FLAG));
         goldenShovel = new ShopItem(3, 9, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL));
         luckyDice = new ShopItem(4, 6, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_DICE));
         miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB));
+    }
 
-        // Replace old items
+    private void replaceOldItems() {
         allItems.clear();
         allItems.addAll(Arrays.asList(shield, scanner, flag, goldenShovel, luckyDice, miniBomb));
+    }
 
-        // Put new items to slots
+    private void fillSlots() {
         for (int i = 0; i < slots.size(); i++) {
             slots.get(i).setItem(allItems.get(i));
         }

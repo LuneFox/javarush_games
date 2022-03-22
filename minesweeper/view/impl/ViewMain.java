@@ -69,23 +69,37 @@ public class ViewMain extends View {
     @Override
     public void update() {
         background.draw();
-        Printer.print(Options.developerMode ? "Developer Mode" : "JavaRush", Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
+        Printer.print(Options.developerMode ? "Developer Mode" : "JavaRush",
+                Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
         logo.draw(2.8, Image.CENTER, 8);
+        drawMenuButtons();
+        printTextUnderLogo();
+        printTopScore();
+        super.update();
+    }
 
-        if (game.isStopped || game.isFirstMove) {
-            printRandomQuote();
-            if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
-        } else {
-            printResumeGame();
-            if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
-        }
-
+    private void drawMenuButtons() {
         optionsButton.draw();
         aboutButton.draw();
         recordsButton.draw();
+        replaceStartButtonText();
         startButton.draw();
-        printTopScore();
-        super.update();
+    }
+
+    private void printTextUnderLogo() {
+        if (game.isStopped || game.isFirstMove) {
+            printRandomQuote();
+        } else {
+            printResumeGame();
+        }
+    }
+
+    private void replaceStartButtonText() {
+        if (game.isStopped || game.isFirstMove) {
+            if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
+        } else {
+            if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
+        }
     }
 
     private void printRandomQuote() {
