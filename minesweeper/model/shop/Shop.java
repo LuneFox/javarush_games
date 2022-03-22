@@ -126,7 +126,7 @@ public class Shop {
     }
 
     private int getFlagsAmount() {
-        return game.field.countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
+        return game.fieldManager.getField().countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
     }
 
     public void deactivateExpiredItems() {

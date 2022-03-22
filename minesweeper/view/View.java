@@ -14,6 +14,7 @@ import java.util.List;
  */
 
 public abstract class View {
+    private static int gameOverShowDelay;
     protected MinesweeperGame game = MinesweeperGame.getInstance();
     public Phase phase;
     public List<InteractiveObject> linkedObjects;  // list of objects that can be interacted
@@ -33,5 +34,13 @@ public abstract class View {
                 return; // click only the first one if they accidentally got layered
             }
         }
+    }
+
+    public static int getGameOverShowDelay() {
+        return gameOverShowDelay;
+    }
+
+    public static void setGameOverShowDelay(int gameOverShowDelay) {
+        View.gameOverShowDelay = gameOverShowDelay;
     }
 }

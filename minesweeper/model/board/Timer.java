@@ -1,8 +1,10 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
+import com.javarush.games.minesweeper.model.Phase;
 
 import java.util.Date;
 
@@ -36,10 +38,19 @@ public class Timer extends InteractiveObject {
         }
     }
 
-    public void countDown() {
+    public void tick() {
+        if (!game.isStopped && isZero()) {
+            Phase.setActive(Phase.BOARD);
+            PopUpMessage.show("Время вышло!");
+            game.lose();
+        } else {
+            countDown();
+        }
+    }
+
+    private void countDown() {
         if (!Options.timerEnabled) return;
-        final int ONE_SECOND = 1000;
-        if (new Date().getTime() - lastTickTime.getTime() >= ONE_SECOND) {
+        if (new Date().getTime() - lastTickTime.getTime() >= 1000) {
             time = (time > 0) ? time - Options.difficulty : 0;
             swapColor();
             lastTickTime = new Date();

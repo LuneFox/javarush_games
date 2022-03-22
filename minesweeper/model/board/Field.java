@@ -18,7 +18,7 @@ public class Field extends InteractiveObject {
     private final Cell[][] field = new Cell[10][10];
     public Dice dice;
 
-    public void create() {
+    public void createNewLayout() {
         for (int y = 0; y < 10; y++) {
             for (int x = 0; x < 10; x++) {
                 field[y][x] = new Cell(ImageType.CELL_CLOSED, x, y, false);

@@ -70,8 +70,8 @@ public class ViewShop extends View {
             slotsAreLinked = true;
         }
 
-        game.field.draw();
-        game.timerTick();
+        game.fieldManager.getField().draw();
+        game.timer.tick();
 
         // Draw showcase
         showCasePanel.draw(10, 10);
@@ -83,7 +83,7 @@ public class ViewShop extends View {
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
-        Printer.print("" + game.field.countAllCells(Cell.Filter.DANGEROUS), 25, 12);
+        Printer.print("" + game.fieldManager.getField().countAllCells(Cell.Filter.DANGEROUS), 25, 12);
         Printer.print("" + inventory.getCount(ShopItem.ID.FLAG), 52, 12);
         Printer.print("" + inventory.displayMoney, 76 + moneyShakeHelper.getShift(), 12);
         inventory.moneyApproach();

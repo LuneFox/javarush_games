@@ -16,8 +16,8 @@ public class ViewBoard extends View {
     @Override
     public void update() {
         if (!(Phase.isActive(Phase.SHOP))) game.display.setInterlaceEnabled(true);
-        game.timerTick();
-        game.field.draw();
+        game.timer.tick();
+        game.fieldManager.getField().draw();
 
         if (game.shop.allItems.get(1).isActivated()) {
             frame.replaceColor(Color.BLUE, 3);

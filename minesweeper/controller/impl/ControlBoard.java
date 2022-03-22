@@ -17,9 +17,9 @@ public class ControlBoard implements ControlStrategy {
 
         int gridX = x / 10;
         int gridY = y / 10;
-        Cell cell = game.field.get()[gridY][gridX];
+        Cell cell = game.fieldManager.getField().get()[gridY][gridX];
         if (!cell.isFlagged || game.shop.scanner.isActivated()) {
-            game.openCell(gridX, gridY);
+            game.fieldManager.openCell(gridX, gridY);
         }
         game.shop.deactivateExpiredItems();
     }
@@ -31,33 +31,33 @@ public class ControlBoard implements ControlStrategy {
 
         int gridX = x / 10;
         int gridY = y / 10;
-        game.setFlag(gridX, gridY, true);              // works only on closed tiles
-        game.openSurroundingCells(gridX, gridY);       // works only on open tiles
+        game.fieldManager.setFlag(gridX, gridY, true);              // works only on closed tiles
+        game.fieldManager.openSurroundingCells(gridX, gridY);       // works only on open tiles
         game.shop.deactivateExpiredItems();
     }
 
     @Override
     @DeveloperOption
     public void pressLeft() {
-        game.autoFlag();
+        game.fieldManager.autoFlag();
     }
 
     @Override
     @DeveloperOption
     public void pressRight() {
-        game.autoOpen();
+        game.fieldManager.autoOpen();
     }
 
     @Override
     @DeveloperOption
     public void pressDown() {
-        game.autoScan();
+        game.fieldManager.autoScan();
     }
 
     @Override
     @DeveloperOption
     public void pressUp() {
-        game.skipEasyPart();
+        game.fieldManager.skipEasyPart();
     }
 
     @Override

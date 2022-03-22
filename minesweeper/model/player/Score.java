@@ -6,6 +6,8 @@ import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.gui.interactive.PageSelector;
+import com.javarush.games.minesweeper.model.board.Dice;
+import com.javarush.games.minesweeper.model.board.Field;
 
 public class Score {
     private final MinesweeperGame game;
@@ -20,19 +22,33 @@ public class Score {
         this.player = player;
     }
 
+    public void addScore(Cell cell) {
+        int randomNumber = game.getRandomNumber(6) + 1;
+        Dice dice = game.fieldManager.getField().dice;
+        dice.setImage(randomNumber, dice.appearCell.x, dice.appearCell.y);
+
+        if (cell.isMined) return;
+        if (game.shop.luckyDice.isActivated()) {
+            player.score.setDiceScore(player.score.getDiceScore() + Options.difficulty * randomNumber);
+            dice.totalCells++;
+            dice.totalBonus += randomNumber;
+        }
+        game.setScore(player.score.getCurrentScore());
+    }
+
     public int getCurrentScore() {
-        int score = game.field.countAllCells(Cell.Filter.SCORED) * Options.difficulty;
+        int score = game.fieldManager.getField().countAllCells(Cell.Filter.SCORED) * Options.difficulty;
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
     public int getMoneyScore() {
-        if (!game.isVictory) return 0;
+        if (!game.isResultVictory) return 0;
         return game.player.inventory.money * Options.difficulty;
     }
 
     public int getMinesScore() {
-        if (!game.isVictory) return 0;
-        int minesCount = game.field.countAllCells(Cell.Filter.MINED);
+        if (!game.isResultVictory) return 0;
+        int minesCount = game.fieldManager.getField().countAllCells(Cell.Filter.MINED);
         return minesCount * 20 * Options.difficulty;
     }
 
@@ -120,13 +136,15 @@ public class Score {
             scoreMines = score.getMinesScore();
             total = score.getTotalScore();
 
-            victory = game.isVictory;
+            victory = game.isResultVictory;
             difficulty = Options.difficulty;
-            minesCount = game.field.countAllCells(Cell.Filter.MINED);
-            cellsCount = game.field.countAllCells(Cell.Filter.SCORED);
+
+            Field field = game.fieldManager.getField();
+            minesCount = field.countAllCells(Cell.Filter.MINED);
+            cellsCount = field.countAllCells(Cell.Filter.SCORED);
             penaltyShields = game.player.getBrokenShields();
-            diceLuckyCells = game.field.dice.totalCells;
-            diceAvgLuck = game.field.dice.getAverageLuck();
+            diceLuckyCells = field.dice.totalCells;
+            diceAvgLuck = field.dice.getAverageLuck();
             moneyLeftOver = game.player.inventory.money;
         }
     }

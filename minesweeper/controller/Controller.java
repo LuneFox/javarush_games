@@ -1,10 +1,10 @@
 package com.javarush.games.minesweeper.controller;
 
 import com.javarush.engine.cell.Key;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.view.View;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -69,7 +69,7 @@ public class Controller {
         lastClickY = y;
 
         if (!Util.isWithinScreen(x, y) // Disable controls during awaiting of the next screen
-                || MinesweeperGame.getInstance().gameOverShowDelay > 0
+                || View.getGameOverShowDelay() > 0
                 || Button.pressedTime > Button.POST_PRESS_DELAY) {
             this.strategy = strategyMap.get(null);
             return;

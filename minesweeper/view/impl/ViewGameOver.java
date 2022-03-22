@@ -50,13 +50,13 @@ public class ViewGameOver extends View {
 
     @Override
     public void update() {
-        if (isDelayed()) return;
+        if (waitForDelay()) return;
 
-        game.field.draw();
+        game.fieldManager.getField().draw();
         victoryWindow.draw(Image.CENTER, Image.CENTER);
 
-        Image face = game.isVictory ? happyFace : sadFace;
-        String result = game.isVictory ? "<победа!>" : "<не повезло!>";
+        Image face = game.isResultVictory ? happyFace : sadFace;
+        String result = game.isResultVictory ? "<победа!>" : "<не повезло!>";
         face.draw(Image.CENTER, Image.CENTER);
         Printer.print(result, Color.YELLOW, 18, 33);
         Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
@@ -69,10 +69,10 @@ public class ViewGameOver extends View {
         super.update();
     }
 
-    private boolean isDelayed() {
-        if (game.gameOverShowDelay > 0) {
-            game.gameOverShowDelay--;
-            game.field.draw();
+    private boolean waitForDelay() {
+        if (View.getGameOverShowDelay() > 0) {
+            View.setGameOverShowDelay(View.getGameOverShowDelay() - 1);
+            game.fieldManager.getField().draw();
             super.update();
             return true;
         }

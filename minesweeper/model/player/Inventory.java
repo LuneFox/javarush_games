@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.player;
 
+import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 import java.util.Arrays;
@@ -28,6 +30,16 @@ public class Inventory {
     public void remove(ShopItem.ID itemID) {
         if (items.get(itemID) <= 0) return;
         items.put(itemID, items.get(itemID) - 1);
+    }
+
+    public void addMoney(Cell cell) {
+        ShopItem shovel = MinesweeperGame.getInstance().shop.goldenShovel;
+        int moneyEarned = cell.countMinedNeighbors;
+        if (shovel.isActivated()) {
+            moneyEarned *= 2;
+            cell.makeNumberYellow();
+        }
+        money += moneyEarned;
     }
 
     public void reset() {
