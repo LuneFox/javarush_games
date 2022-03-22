@@ -4,6 +4,7 @@ import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.ControlStrategy;
 import com.javarush.games.minesweeper.controller.Controller;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
 
@@ -17,7 +18,14 @@ public class ControlBoard implements ControlStrategy {
 
         int gridX = x / 10;
         int gridY = y / 10;
+
         Cell cell = game.boardManager.getField().get()[gridY][gridX];
+
+        if (cell.isShop()) {
+            Phase.setActive(Phase.SHOP);
+            return;
+        }
+
         if (!cell.isFlagged() || game.shop.scanner.isActivated()) {
             game.boardManager.openCell(gridX, gridY);
         }
@@ -31,8 +39,16 @@ public class ControlBoard implements ControlStrategy {
 
         int gridX = x / 10;
         int gridY = y / 10;
+
+        Cell cell = game.boardManager.getField().get()[gridY][gridX];
+
+        if (cell.isShop()) {
+            PopUpMessage.show("двери магазина");
+            return;
+        }
+
         game.boardManager.swapFlag(gridX, gridY);              // works only on closed tiles
-        game.boardManager.openSurroundingCells(gridX, gridY);       // works only on open tiles
+        game.boardManager.openSurroundingCells(gridX, gridY);  // works only on open tiles
         game.shop.deactivateExpiredItems();
     }
 

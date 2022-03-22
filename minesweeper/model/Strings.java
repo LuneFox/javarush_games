@@ -7,7 +7,7 @@ import com.javarush.games.minesweeper.model.Options;
  */
 
 public class Strings {
-    public static final String VERSION = "1.21";
+    public static final String VERSION = "1.22";
 
     public static final String[] RECORDS = new String[]{
             "<Лучшие игроки>",

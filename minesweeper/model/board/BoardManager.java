@@ -61,8 +61,14 @@ public class BoardManager {
 
     public void openCell(int x, int y) {
         if (game.isStopped) return;
+        Cell cell;
 
-        Cell cell = isFirstMove ? rebuildUntilEmpty(field.getCell(x, y)) : field.getCell(x, y);
+        if (isFirstMove) {
+            cell = rebuildUntilEmpty(field.getCell(x, y));
+            cell.setShop(true);
+        } else {
+            cell = field.getCell(x, y);
+        }
 
         if (game.shop.miniBomb.use(cell) || game.shop.scanner.use(cell)) return;
         if (cell.isFlagged() || cell.isOpen()) return;
@@ -70,7 +76,7 @@ public class BoardManager {
         boolean survived = tryOpening(cell);
         if (!survived) return;
 
-        onManualMove(cell);
+        onManualMove();
         dice.roll(cell);
         game.player.inventory.addMoney(cell);
         recursiveOpen(cell);
@@ -80,7 +86,7 @@ public class BoardManager {
     private void recursiveOpen(Cell cell) {
         if (cell.isEmpty()) {
             isRecursiveMove = true;
-            List<Cell> neighbors = field.getNeighborCells(cell, Cell.Filter.NONE, false);
+            List<Cell> neighbors = field.getNeighborCells(cell, Cell.Filter.CLOSED, false);
             neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
     }
@@ -121,15 +127,16 @@ public class BoardManager {
         if (game.shop.scanner.isActivated()) return;
         if (game.shop.miniBomb.isActivated()) return;
         Cell cell = field.getCell(x, y);
-        if (cell.isOpen() && !cell.isMined()) {
-            // If mined neighbors = number of neighbor flags + opened mines
-            if (cell.getCountMinedNeighbors() == field.getNeighborCells(cell, Cell.Filter.SUSPECTED, false).size()) {
-                field.getNeighborCells(cell, Cell.Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
-            }
+        if (cell.isEmpty()) return;
+        if (!cell.isOpen()) return;
+        if (cell.isMined()) return;
+        // If mined neighbors = number of neighbor flags + opened mines
+        if (cell.getCountMinedNeighbors() == field.getNeighborCells(cell, Cell.Filter.SUSPECTED, false).size()) {
+            field.getNeighborCells(cell, Cell.Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
     }
 
-    public void onManualMove(Cell cell) {
+    public void onManualMove() {
         if (isRecursiveMove()) return;
         game.player.incMoves();
         game.player.score.addTimerScore();
@@ -181,7 +188,7 @@ public class BoardManager {
     // Mini Bomb action
     public void destroyCell(int x, int y) {
         Cell cell = field.getCell(x, y);
-        onManualMove(cell);
+        onManualMove();
 
         if (cell.isIndestructible()) {
             PopUpMessage.show("Не получилось!");
@@ -205,8 +212,8 @@ public class BoardManager {
         field.setNumbers();
         checkVictory();
     }
-    
-    
+
+
     // Cheats
 
     @DeveloperOption
@@ -294,7 +301,7 @@ public class BoardManager {
     }
 
     // Setters, getters
-    
+
     public Field getField() {
         return field;
     }

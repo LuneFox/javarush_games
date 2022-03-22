@@ -36,6 +36,7 @@ public enum ImageType {
     BOARD_9,
     BOARD_FLAG,
     BOARD_MINE,
+    BOARD_SHOP,
     BOARD_DICE_1,
     BOARD_DICE_2,
     BOARD_DICE_3,

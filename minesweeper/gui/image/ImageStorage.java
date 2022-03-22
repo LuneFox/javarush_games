@@ -368,6 +368,11 @@ public class ImageStorage {
                 setColors(Color.BLACK, Color.RED, Color.DARKGRAY, Color.DARKSLATEGRAY, Color.DARKRED, Color.DIMGRAY);
                 data = ImageCreator.makeSprite("0001000000111100013446100142541111455410016446100011110000001000", 8, 2, 2);
                 break;
+            case BOARD_SHOP: {
+                setColors(Color.DIMGRAY, Color.LIGHTSKYBLUE, Color.LIGHTBLUE, Color.DARKSLATEGRAY);
+                data = ImageCreator.makeSprite("111111111122312321123213221132212231122414321123213221132212231122312321111111111", 9, 1, 1);
+                break;
+            }
 
             // CELLS
 

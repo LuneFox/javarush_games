@@ -25,6 +25,8 @@ public class Cell extends InteractiveObject {
     private boolean isGameOverCause;
     private boolean isFlagged;
     private boolean isDestroyed;
+    private boolean isShop;
+    
     private int countMinedNeighbors;  // number of adjacent mines
     private final Image background;
     private Image sprite;
@@ -167,7 +169,7 @@ public class Cell extends InteractiveObject {
     }
 
     public boolean isNumerable() {
-        return (!isMined && !isDestroyed && !isFlagged);
+        return !(isMined || isDestroyed || isFlagged || isShop);
     }
 
     public boolean isIndestructible() {
@@ -216,5 +218,14 @@ public class Cell extends InteractiveObject {
 
     public void setCountMinedNeighbors(int countMinedNeighbors) {
         this.countMinedNeighbors = countMinedNeighbors;
+    }
+
+    public boolean isShop() {
+        return isShop;
+    }
+
+    public void setShop(boolean shop) {
+        isShop = shop;
+        setSprite(ImageType.BOARD_SHOP);
     }
 }
