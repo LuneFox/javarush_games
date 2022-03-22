@@ -17,17 +17,16 @@ import java.util.Map;
 
 public class Controller {
     private final MinesweeperGame game;
-
-    public Controller(MinesweeperGame game) {
-        this.game = game;
-    }
-
     private ControlStrategy strategy;
     private static final Map<Phase, ControlStrategy> strategyMap = new HashMap<>();
     private static int lastClickY;
 
     public enum Click {
-        LEFT, RIGHT
+        LEFT, RIGHT;
+    }
+
+    public Controller(MinesweeperGame game) {
+        this.game = game;
     }
 
     static {
@@ -74,15 +73,17 @@ public class Controller {
         else if (key == Key.SPACE) strategy.pressSpace();
         else if (key == Key.ESCAPE) strategy.pressEsc();
         else strategy.pressOther();
+        game.setScore(game.player.score.getCurrentScore());
     }
 
     private void selectStrategy(int x, int y) {
         // System.out.printf("%d %d%n", x, y);
         lastClickY = y;
 
-        if (!Util.isWithinScreen(x, y) // Disable controls during awaiting of the next screen
+        if (!Util.isWithinScreen(x, y)
                 || View.getGameOverShowDelay() > 0
                 || Button.pressedTime > Button.POST_PRESS_DELAY) {
+            // Disable controls during awaiting of the next screen
             this.strategy = strategyMap.get(null);
             return;
         }

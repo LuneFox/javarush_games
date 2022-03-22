@@ -44,7 +44,7 @@ public class BoardManager {
         drawActivatedToolFrame();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
-        dice.drawIfActive();
+        dice.draw();
     }
 
     private void drawActivatedToolFrame() {
@@ -131,7 +131,6 @@ public class BoardManager {
 
     public void onManualMove(Cell cell) {
         if (isRecursiveMove()) return;
-        dice.appearCell = cell;
         game.player.incMoves();
         game.player.score.addTimerScore();
         timer.reset();

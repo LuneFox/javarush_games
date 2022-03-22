@@ -98,7 +98,7 @@ public class Score {
         public static int difficulty;
         public static int moneyLeftOver;
         public static int penaltyShields;
-        public static int diceLuckyCells;
+        public static int diceRollsCount;
         public static int scoreDice;
         public static int scoreLost;
         public static int scoreTimer;
@@ -126,7 +126,7 @@ public class Score {
             minesCount = field.countAllCells(Cell.Filter.MINED);
             cellsCount = field.countAllCells(Cell.Filter.SCORED);
             penaltyShields = game.player.getBrokenShields();
-            diceLuckyCells = dice.rollsCount;
+            diceRollsCount = dice.getRollsCount();
             diceAvgLuck = dice.getAverageLuck();
             moneyLeftOver = game.player.inventory.money;
         }

@@ -30,7 +30,7 @@ public class ViewScore extends View {
         background.draw();
         pageSelector.draw();
         String minesScoreDetail = minesCount + "*" + 20 * difficulty + " = ";
-        String luckDetail = diceAvgLuck + " * " + diceLuckyCells + " * " + difficulty + " = " + scoreDice;
+        String luckDetail = diceAvgLuck + " * " + diceRollsCount + " * " + difficulty + " = " + scoreDice;
         String moneyScoreDetail = moneyLeftOver + "*" + difficulty + " = ";
         String cellScoreDetail = cellsCount + "*" + Options.difficulty + " = ";
         String shieldScoreDetail = penaltyShields == 0 ? "" : penaltyShields + "*-" + (150 * (difficulty / 5)) + " = ";
@@ -72,7 +72,7 @@ public class ViewScore extends View {
                         "в общем счёте:", paddingLeft, paddingTop);
                 Printer.print((luckDetail +
                                 "\n\n\n" + difficulty +
-                                "\n" + diceLuckyCells +
+                                "\n" + diceRollsCount +
                                 "\n" + diceAvgLuck),
                         Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, paddingRight, paddingTop, true);
                 break;
