@@ -4,6 +4,9 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Theme configurator with all variable colors.
  */
@@ -121,11 +124,17 @@ public enum Theme {
     });
 
     private static final int THEMES_COUNT = MAIN_MENU_BG.colors.length;
-    public static final int USSR = 0;
-    public static final int MINT = 1;
-    public static final int SKY = 2;
-    private static int currentNumber = USSR;
-    Color[] colors;
+    private static final Map<Integer, String> NAMES;
+    private static int currentNumber;
+    private final Color[] colors;
+
+    static {
+        NAMES = new HashMap<>();
+        NAMES.put(0, "СССР");
+        NAMES.put(1, "МЯТА");
+        NAMES.put(2, "НЕБО");
+        currentNumber = 0;
+    }
 
     Theme(Color[] colors) {
         this.colors = colors;
@@ -136,10 +145,10 @@ public enum Theme {
         return this.colors[currentNumber];
     }
 
-    public static void set(int themeNumber) {
+    public static void set(int themeNumber, MinesweeperGame game) {
         Theme.currentNumber = themeNumber;
         Image.updateAllImagesColors();
-        MinesweeperGame.getInstance().boardManager.getField().onThemeChange();
+        game.boardManager.updateOpenedCellsColors();
     }
 
     public static int getCurrentNumber() {
@@ -147,15 +156,6 @@ public enum Theme {
     }
 
     public static String getCurrentName() {
-        switch (currentNumber) {
-            case USSR:
-                return "ссср";
-            case MINT:
-                return "мята";
-            case SKY:
-                return "небо";
-            default:
-                return "???";
-        }
+        return NAMES.get(currentNumber);
     }
 }

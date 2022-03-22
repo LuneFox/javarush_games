@@ -36,6 +36,7 @@ public class Timer extends InteractiveObject {
         for (int i = x; i < ((time / TIME_LIMIT) * width); i++) {
             game.display.setCellColor(i, 0, COLORS[0]);
         }
+        tick();
     }
 
     public void tick() {

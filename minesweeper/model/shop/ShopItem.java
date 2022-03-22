@@ -115,7 +115,7 @@ public class ShopItem {
             case BOMB:
                 if (this.isActivated) {
                     this.deactivate();
-                    game.boardManager.getField().dice.hide();
+                    game.boardManager.getDice().hide();
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.shop.restock(game.shop.scanner, 1);
                     game.boardManager.destroyCell(cell.x, cell.y);

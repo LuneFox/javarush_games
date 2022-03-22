@@ -24,7 +24,7 @@ public class Score {
 
     public void addScore(Cell cell) {
         int randomNumber = game.getRandomNumber(6) + 1;
-        Dice dice = game.boardManager.getField().dice;
+        Dice dice = game.boardManager.getDice();
         dice.setImage(randomNumber, dice.appearCell.x, dice.appearCell.y);
 
         if (cell.isMined) return;
@@ -140,11 +140,12 @@ public class Score {
             difficulty = Options.difficulty;
 
             Field field = game.boardManager.getField();
+            Dice dice = game.boardManager.getDice();
             minesCount = field.countAllCells(Cell.Filter.MINED);
             cellsCount = field.countAllCells(Cell.Filter.SCORED);
             penaltyShields = game.player.getBrokenShields();
-            diceLuckyCells = field.dice.totalCells;
-            diceAvgLuck = field.dice.getAverageLuck();
+            diceLuckyCells = dice.totalCells;
+            diceAvgLuck = dice.getAverageLuck();
             moneyLeftOver = game.player.inventory.money;
         }
     }

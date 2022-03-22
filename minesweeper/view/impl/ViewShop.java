@@ -58,7 +58,6 @@ public class ViewShop extends View {
 
     @Override
     public void update() {
-        game.timer.tick();
         linkShowCaseSlots(game.shop);
         drawField(game.shop);
         drawShowCase(game.shop);
@@ -68,10 +67,7 @@ public class ViewShop extends View {
     }
 
     private void drawField(Shop shop) {
-        game.boardManager.getField().draw();
-        game.timer.draw();
-        shop.goldenShovel.statusBar.draw();
-        shop.luckyDice.statusBar.draw();
+        game.boardManager.drawField();
     }
 
     private void drawShowCase(Shop shop) {
@@ -97,6 +93,7 @@ public class ViewShop extends View {
         Printer.print("Шаги:" + player.getMoves(), Theme.SHOP_MOVES.getColor(), 83, 80, true);
     }
 
+    // Cannot link at creation time because they don't exist yet
     private void linkShowCaseSlots(Shop shop) {
         if (slotsAreLinked) return;
         shop.slots.forEach(this::linkObject);

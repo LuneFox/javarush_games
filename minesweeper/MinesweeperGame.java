@@ -80,7 +80,7 @@ public class MinesweeperGame extends Game {
 
     public void lose() {
         finish(false);
-        boardManager.getField().dice.hide();
+        boardManager.getDice().hide();
         boardManager.getField().revealMines();
     }
 

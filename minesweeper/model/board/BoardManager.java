@@ -1,8 +1,11 @@
 package com.javarush.games.minesweeper.model.board;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.Options;
 
@@ -12,6 +15,7 @@ public class BoardManager {
     private final Field field;
     private final FlagManager flagManager;
     private final MinesweeperGame game;
+    private Dice dice;
     private boolean isUnableToCheatMore;
     private boolean isFlagExplosionAllowed;
     private boolean isRecursiveMove;
@@ -22,9 +26,31 @@ public class BoardManager {
         this.field = new Field();
     }
 
+    public void drawField() {
+        this.field.draw();
+        drawActivatedToolFrame();
+        game.timer.draw();
+        game.shop.goldenShovel.statusBar.draw();
+        game.shop.luckyDice.statusBar.draw();
+        dice.displayIfActive();
+    }
+
+    private void drawActivatedToolFrame() {
+        Image frame = Image.cache.get(ImageType.GUI_SURROUND_FRAME);
+        if (game.shop.allItems.get(1).isActivated()) {
+            frame.replaceColor(Color.BLUE, 3);
+        } else if (game.shop.allItems.get(5).isActivated()) {
+            frame.replaceColor(Color.RED, 3);
+        } else {
+            return;
+        }
+        frame.draw();
+    }
+
     public void createField() {
         field.createNewLayout();
         flagManager.setField(field);
+        dice = new Dice(1);
         isRecursiveMove = false;
     }
 
@@ -100,7 +126,7 @@ public class BoardManager {
 
     public void onManualMove(Cell cell) {
         if (isRecursiveMove()) return;
-        field.dice.appearCell = cell;
+        dice.appearCell = cell;
         game.player.incMoves();
         game.player.score.addTimerScore();
         game.timer.reset();
@@ -119,22 +145,29 @@ public class BoardManager {
     // Scanner action
     public void scanNeighbors(int x, int y) {  // action for Scanner
         List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), Cell.Filter.SAFE, true);
-
-        if (safeNeighbors.size() == 0) {       // no safe cells, place free flags over closed ones
-            PopUpMessage.show("Нечего сканировать");
-            field.getNeighborCells(field.getCell(x, y), Cell.Filter.CLOSED, true).forEach(closedCell -> {
-                if (game.player.inventory.hasNoFlags()) game.shop.give(game.shop.flag);
-                flagManager.setFlag(closedCell.x, closedCell.y, false);
-            });
-        } else {                               // open random safe cell
-            Cell cell = safeNeighbors.get(game.getRandomNumber(safeNeighbors.size()));
-            if (cell.isFlagged) {
-                flagManager.setFlag(cell.x, cell.y, true); // remove flag if it was placed wrong
-            }
-            openCell(cell.x, cell.y);
+        if (safeNeighbors.size() != 0) {
             PopUpMessage.show("Сканирование...");
-            cell.scan();
+            scanRandomCell(safeNeighbors);
+        } else {
+            PopUpMessage.show("Нечего сканировать");
+            placeFlagsForPlayer(x, y);
         }
+    }
+
+    private void scanRandomCell(List<Cell> safeNeighbors) {
+        Cell cell = safeNeighbors.get(game.getRandomNumber(safeNeighbors.size()));
+        if (cell.isFlagged) {
+            flagManager.setFlag(cell.x, cell.y, true); // return wrong flag
+        }
+        openCell(cell.x, cell.y);
+        cell.scan();
+    }
+
+    private void placeFlagsForPlayer(int x, int y) {
+        field.getNeighborCells(field.getCell(x, y), Cell.Filter.CLOSED, true).forEach(closedCell -> {
+            if (game.player.inventory.hasNoFlags()) game.shop.give(game.shop.flag);
+            flagManager.setFlag(closedCell.x, closedCell.y, false);
+        });
     }
 
     // Mini Bomb action
@@ -246,6 +279,11 @@ public class BoardManager {
         PopUpMessage.show(field.countAllCells(Cell.Filter.CLOSED) == closedCells ? "DEV: TOO RISKY!" : "DEV: SKIP EASY PART");
     }
 
+    public void updateOpenedCellsColors() {
+        if (game.isStopped) return;
+        field.getAllCells(Cell.Filter.NONE).forEach(Cell::updateOpenedColors);
+    }
+
     public Field getField() {
         return field;
     }
@@ -264,5 +302,9 @@ public class BoardManager {
 
     public void setRecursiveMove(boolean recursiveMove) {
         isRecursiveMove = recursiveMove;
+    }
+
+    public Dice getDice() {
+        return dice;
     }
 }

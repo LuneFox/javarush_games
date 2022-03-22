@@ -16,7 +16,6 @@ import java.util.stream.Collectors;
 
 public class Field extends InteractiveObject {
     private final Cell[][] field = new Cell[10][10];
-    public Dice dice;
 
     public void createNewLayout() {
         for (int y = 0; y < 10; y++) {
@@ -27,7 +26,6 @@ public class Field extends InteractiveObject {
         }
         plantMines();
         setNumbers();
-        dice = new Dice(1);
     }
 
     private void plantMines() {
@@ -39,6 +37,13 @@ public class Field extends InteractiveObject {
                 field[y][x].setSprite(ImageType.BOARD_MINE);
             }
         }
+    }
+
+    void setNumbers() {
+        getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
+            cell.countMinedNeighbors = getNeighborCells(cell, Cell.Filter.MINED, false).size();
+            cell.setSprite(cell.countMinedNeighbors);
+        });
     }
 
     public List<Cell> getAllCells(Cell.Filter filter) {
@@ -62,13 +67,6 @@ public class Field extends InteractiveObject {
         return Cell.filterCells(neighbors, filter);
     }
 
-    public void setNumbers() {
-        getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
-            cell.countMinedNeighbors = getNeighborCells(cell, Cell.Filter.MINED, false).size();
-                cell.setSprite(cell.countMinedNeighbors);
-        });
-    }
-
     public void revealMines() {
         getAllCells(Cell.Filter.NONE).forEach(cell -> {
             if (cell.isMined) {
@@ -81,15 +79,9 @@ public class Field extends InteractiveObject {
         });
     }
 
-    public void onThemeChange() {
-        if (game.isStopped) return;
-        getAllCells(Cell.Filter.NONE).forEach(Cell::updateOpenedColors);
-    }
-
     @Override
     public void draw() {
         getAllCells(Cell.Filter.NONE).forEach(Cell::draw);
-        dice.displayIfActive();
     }
 
     public Cell[][] get() {

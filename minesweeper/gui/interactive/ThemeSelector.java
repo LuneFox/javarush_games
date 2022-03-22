@@ -2,9 +2,9 @@ package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.gui.image.Image;
 
 import java.util.Arrays;
 
@@ -25,13 +25,15 @@ public class ThemeSelector extends InteractiveObject {
         }
         this.height = themePalettes[0].height;
 
-        themePalettes[0].replaceColor(Color.RED, 1);
-        themePalettes[1].replaceColor(Color.GREEN, 1);
-        themePalettes[2].replaceColor(Color.BLUE, 1);
+        final int FILL = 1;
+        final int FRAME = 3;
 
-        this.themeCursor.replaceColor(Color.NONE, 1);
-        this.themeCursor.replaceColor(Color.NONE, 2);
-        this.themeCursor.replaceColor(Color.YELLOW, 3);
+        themePalettes[0].replaceColor(Color.RED, FILL);
+        themePalettes[1].replaceColor(Color.GREEN, FILL);
+        themePalettes[2].replaceColor(Color.BLUE, FILL);
+
+        this.themeCursor.replaceColor(Color.NONE, FILL);
+        this.themeCursor.replaceColor(Color.YELLOW, FRAME);
 
         Image currentPalette = themePalettes[Theme.getCurrentNumber()];
         themeCursor.setPosition(currentPalette.x, currentPalette.y);
@@ -53,7 +55,7 @@ public class ThemeSelector extends InteractiveObject {
     public void onLeftClick() {
         for (int i = 0; i < themePalettes.length; i++) {
             if (themePalettes[i].tryClick(latestClickX, latestClickY)) {
-                Theme.set(i);
+                Theme.set(i, game);
             }
         }
     }
