@@ -13,7 +13,7 @@ public class ViewBoard extends View {
     public void update() {
         if (!(Phase.isActive(Phase.SHOP))) game.display.setInterlaceEnabled(true);
         game.timer.tick();
-        game.fieldManager.getField().draw();
+        game.boardManager.getField().draw();
         drawActivatedItemFrame();
         game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();

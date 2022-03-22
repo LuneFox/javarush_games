@@ -1,6 +1,8 @@
 package com.javarush.games.minesweeper.model.shop;
 
+import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.gui.Cache;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -116,13 +118,25 @@ public class Shop {
         sell(flag);
     }
 
+    @DeveloperOption
+    public void cheatMoreTools() {
+        if (!Options.developerMode) return;
+
+        goldenShovel.activate();
+        luckyDice.activate();
+        goldenShovel.expireMove += 10;
+        luckyDice.expireMove += 10;
+        PopUpMessage.show("DEV: 10 TOOLS");
+    }
+
     private void createNewItems() {
-        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SHIELD));
-        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SCANNER));
-        flag = new ShopItem(2, 1, getFlagsAmount(), Image.cache.get(ImageType.SHOP_SHOWCASE_FLAG));
-        goldenShovel = new ShopItem(3, 9, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL));
-        luckyDice = new ShopItem(4, 6, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_DICE));
-        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB));
+        final Cache<ImageType, Image> cache = Image.cache;
+        shield = new ShopItem(0, 13 + Options.difficulty / 5, 1, cache.get(ImageType.SHOP_SHOWCASE_SHIELD));
+        scanner = new ShopItem(1, 8 + Options.difficulty / 5, 1, cache.get(ImageType.SHOP_SHOWCASE_SCANNER));
+        flag = new ShopItem(2, 1, getFlagsAmount(), cache.get(ImageType.SHOP_SHOWCASE_FLAG));
+        goldenShovel = new ShopItem(3, 9, 1, cache.get(ImageType.SHOP_SHOWCASE_SHOVEL));
+        luckyDice = new ShopItem(4, 6, 1, cache.get(ImageType.SHOP_SHOWCASE_DICE));
+        miniBomb = new ShopItem(5, 6 + Options.difficulty / 10, 1, cache.get(ImageType.SHOP_SHOWCASE_BOMB));
     }
 
     private void replaceOldItems() {
@@ -137,7 +151,7 @@ public class Shop {
     }
 
     private int getFlagsAmount() {
-        return game.fieldManager.getField().countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
+        return game.boardManager.getField().countAllCells(Cell.Filter.MINED) - Inventory.INIT_FLAG_NUMBER;
     }
 
     public void deactivateExpiredItems() {

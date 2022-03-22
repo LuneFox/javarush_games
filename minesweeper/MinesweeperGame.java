@@ -7,7 +7,7 @@ import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.board.FieldManager;
+import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
@@ -22,10 +22,10 @@ public class MinesweeperGame extends Game {
     private static MinesweeperGame instance;
     private Controller controller;
     public Display display;
+    public BoardManager boardManager;
     public Shop shop;
     public Player player;
     public Timer timer;
-    public FieldManager fieldManager;
     public boolean isStopped;
     public boolean isFirstMove;
     public boolean isResultVictory;
@@ -40,7 +40,7 @@ public class MinesweeperGame extends Game {
         Options.initialize();
         display = new Display();
         controller = new Controller();
-        fieldManager = new FieldManager(this);
+        boardManager = new BoardManager(this);
         timer = new Timer();
         shop = new Shop();
         player = new Player();
@@ -63,7 +63,7 @@ public class MinesweeperGame extends Game {
 
     private void resetValues() {
         Options.apply();
-        fieldManager.createField();
+        boardManager.createField();
         player.reset();
         shop.reset();
         timer.reset();
@@ -80,8 +80,8 @@ public class MinesweeperGame extends Game {
 
     public void lose() {
         finish(false);
-        fieldManager.getField().dice.hide();
-        fieldManager.getField().revealMines();
+        boardManager.getField().dice.hide();
+        boardManager.getField().revealMines();
     }
 
     private void finish(boolean isVictory) {
@@ -97,14 +97,14 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        fieldManager.setRecursiveMove(false);
-        fieldManager.setFlagExplosionAllowed(false);
+        boardManager.setRecursiveMove(false);
+        boardManager.setFlagExplosionAllowed(false);
         controller.leftClick(x, y);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        fieldManager.setRecursiveMove(false);
+        boardManager.setRecursiveMove(false);
         controller.rightClick(x, y);
     }
 

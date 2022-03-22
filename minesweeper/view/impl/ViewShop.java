@@ -68,7 +68,7 @@ public class ViewShop extends View {
     }
 
     private void drawField(Shop shop) {
-        game.fieldManager.getField().draw();
+        game.boardManager.getField().draw();
         game.timer.draw();
         shop.goldenShovel.statusBar.draw();
         shop.luckyDice.statusBar.draw();
@@ -85,7 +85,7 @@ public class ViewShop extends View {
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
-        Printer.print("" + game.fieldManager.getField().countAllCells(Cell.Filter.DANGEROUS), 25, 12);
+        Printer.print("" + game.boardManager.getField().countAllCells(Cell.Filter.DANGEROUS), 25, 12);
         Printer.print("" + inventory.getCount(ShopItem.ID.FLAG), 52, 12);
         Printer.print("" + inventory.displayMoney, 76 + moneyShakeHelper.getShift(), 12);
         inventory.moneyApproach();

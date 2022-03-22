@@ -33,13 +33,13 @@ public class ControlShop implements ControlStrategy {
     @Override
     @DeveloperOption
     public void pressUp() {
-        game.fieldManager.cheatMoreMoney();
+        game.player.inventory.cheatMoreMoney();
     }
 
     @Override
     @DeveloperOption
     public void pressDown() {
-        game.fieldManager.cheatMoreTools();
+        game.shop.cheatMoreTools();
     }
 
     private boolean clickedOutsideShopWindow(int x, int y) {

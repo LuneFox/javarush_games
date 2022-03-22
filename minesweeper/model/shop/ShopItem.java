@@ -109,16 +109,16 @@ public class ShopItem {
                     this.deactivate();
                     game.shop.restock(game.shop.scanner, 1);
                     game.shop.restock(game.shop.miniBomb, 1);
-                    game.fieldManager.scanNeighbors(cell.x, cell.y);
+                    game.boardManager.scanNeighbors(cell.x, cell.y);
                     return true;
                 }
             case BOMB:
                 if (this.isActivated) {
                     this.deactivate();
-                    game.fieldManager.getField().dice.hide();
+                    game.boardManager.getField().dice.hide();
                     game.shop.restock(game.shop.miniBomb, 1);
                     game.shop.restock(game.shop.scanner, 1);
-                    game.fieldManager.destroyCell(cell.x, cell.y);
+                    game.boardManager.destroyCell(cell.x, cell.y);
                     return true;
                 }
             default:

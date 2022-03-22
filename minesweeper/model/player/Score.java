@@ -24,7 +24,7 @@ public class Score {
 
     public void addScore(Cell cell) {
         int randomNumber = game.getRandomNumber(6) + 1;
-        Dice dice = game.fieldManager.getField().dice;
+        Dice dice = game.boardManager.getField().dice;
         dice.setImage(randomNumber, dice.appearCell.x, dice.appearCell.y);
 
         if (cell.isMined) return;
@@ -37,7 +37,7 @@ public class Score {
     }
 
     public int getCurrentScore() {
-        int score = game.fieldManager.getField().countAllCells(Cell.Filter.SCORED) * Options.difficulty;
+        int score = game.boardManager.getField().countAllCells(Cell.Filter.SCORED) * Options.difficulty;
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
@@ -48,7 +48,7 @@ public class Score {
 
     public int getMinesScore() {
         if (!game.isResultVictory) return 0;
-        int minesCount = game.fieldManager.getField().countAllCells(Cell.Filter.MINED);
+        int minesCount = game.boardManager.getField().countAllCells(Cell.Filter.MINED);
         return minesCount * 20 * Options.difficulty;
     }
 
@@ -139,7 +139,7 @@ public class Score {
             victory = game.isResultVictory;
             difficulty = Options.difficulty;
 
-            Field field = game.fieldManager.getField();
+            Field field = game.boardManager.getField();
             minesCount = field.countAllCells(Cell.Filter.MINED);
             cellsCount = field.countAllCells(Cell.Filter.SCORED);
             penaltyShields = game.player.getBrokenShields();

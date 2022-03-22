@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.model.Options;
 
 import java.util.List;
 
-public class FieldManager {
+public class BoardManager {
     private final Field field;
     private final FlagManager flagManager;
     private final MinesweeperGame game;
@@ -16,7 +16,7 @@ public class FieldManager {
     private boolean isFlagExplosionAllowed;
     private boolean isRecursiveMove;
 
-    public FieldManager(MinesweeperGame game) {
+    public BoardManager(MinesweeperGame game) {
         this.game = game;
         this.flagManager = new FlagManager(game);
         this.field = new Field();
@@ -165,7 +165,7 @@ public class FieldManager {
         checkVictory();
     }
 
-    // CHEATS
+    // CHEAT MOVES
 
     @DeveloperOption
     public void autoFlag() {
@@ -235,35 +235,15 @@ public class FieldManager {
         isUnableToCheatMore = false;
         int limit = 0;
         while (!isUnableToCheatMore) {
-            // Limit is set to prevent accidental infinite loops
             autoOpen();
             autoFlag();
-            limit++;
-            if (limit > closedCells) {
+            if (limit++ > closedCells) {
+                // Limit is set to prevent accidental infinite loops
                 break;
             }
         }
         autoOpen();
         PopUpMessage.show(field.countAllCells(Cell.Filter.CLOSED) == closedCells ? "DEV: TOO RISKY!" : "DEV: SKIP EASY PART");
-    }
-
-    @DeveloperOption
-    public void cheatMoreMoney() {
-        if (!Options.developerMode) return;
-
-        game.player.inventory.money += 50;
-        PopUpMessage.show("DEV: 50 GOLD");
-    }
-
-    @DeveloperOption
-    public void cheatMoreTools() {
-        if (!Options.developerMode) return;
-
-        game.shop.goldenShovel.activate();
-        game.shop.luckyDice.activate();
-        game.shop.goldenShovel.expireMove += 10;
-        game.shop.luckyDice.expireMove += 10;
-        PopUpMessage.show("DEV: 10 TOOLS");
     }
 
     public Field getField() {

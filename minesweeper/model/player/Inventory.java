@@ -1,6 +1,9 @@
 package com.javarush.games.minesweeper.model.player;
 
+import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.ShopItem;
 
@@ -52,6 +55,14 @@ public class Inventory {
     public void moneyApproach() {
         if (displayMoney < money) displayMoney++;
         else if (displayMoney > money) displayMoney--;
+    }
+
+    @DeveloperOption
+    public void cheatMoreMoney() {
+        if (!Options.developerMode) return;
+
+        money += 50;
+        PopUpMessage.show("DEV: 50 GOLD");
     }
 
     public int getCount(ShopItem.ID itemID) {

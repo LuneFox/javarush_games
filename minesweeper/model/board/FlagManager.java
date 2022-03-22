@@ -13,6 +13,7 @@ public class FlagManager {
         this.game = game;
     }
 
+    // Using this on flagged cell with "flagIsRemovable = true" will return the flag to inventory
     void setFlag(int x, int y, boolean flagIsRemovable) {
         if (game.isStopped) return;
         Cell cell = field.get()[y][x];
