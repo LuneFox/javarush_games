@@ -9,10 +9,6 @@ import com.javarush.games.minesweeper.view.View;
 public class ViewBoard extends View {
     Image frame = Image.cache.get(ImageType.GUI_SURROUND_FRAME);
 
-    public ViewBoard(Phase phase) {
-        super(phase);
-    }
-
     @Override
     public void update() {
         if (!(Phase.isActive(Phase.SHOP))) game.display.setInterlaceEnabled(true);

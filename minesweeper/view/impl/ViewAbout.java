@@ -21,10 +21,6 @@ public class ViewAbout extends View {
     Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
     PageSelector pageSelector = Options.aboutPageSelector.linkView(this);
 
-    public ViewAbout(Phase phase) {
-        super(phase);
-            }
-
     @Override
     public void update() {
         background.draw();

@@ -18,10 +18,6 @@ public class ViewRecords extends View {
     Image prizeCup = new Image(ImageType.PICTURE_PRIZE_CUP);
     Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
-    public ViewRecords(Phase phase) {
-        super(phase);
-    }
-
     @Override
     public void update() {
         background.draw();

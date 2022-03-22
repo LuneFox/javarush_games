@@ -29,10 +29,6 @@ public class ViewOptions extends View {
     SwitchSelector displayMessageSelector = Options.displayMessageSelector.linkView(this);
     ThemeSelector themeSelector = Options.themeSelector.linkView(this);
 
-    public ViewOptions(Phase phase) {
-        super(phase);
-    }
-
     @Override
     public void update() {
         background.draw();

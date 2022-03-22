@@ -59,8 +59,8 @@ public class ViewMain extends View {
     };
     Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
-    public ViewMain(Phase phase) {
-        super(phase);
+    public ViewMain() {
+        super();
         Collections.addAll(QUOTES, Strings.QUOTES);
         lastQuoteDate = new Date();
         quote = QUOTES.get(0);

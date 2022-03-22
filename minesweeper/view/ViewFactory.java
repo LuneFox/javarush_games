@@ -7,25 +7,25 @@ public class ViewFactory {
     public View createView(Phase phase) {
         switch (phase) {
             case ABOUT:
-                return new ViewAbout(phase);
+                return new ViewAbout();
             case BOARD:
-                return new ViewBoard(phase);
+                return new ViewBoard();
             case GAME_OVER:
-                return new ViewGameOver(phase);
+                return new ViewGameOver();
             case ITEM_HELP:
-                return new ViewItemHelp(phase);
+                return new ViewItemHelp();
             case MAIN:
-                return new ViewMain(phase);
+                return new ViewMain();
             case OPTIONS:
-                return new ViewOptions(phase);
+                return new ViewOptions();
             case RECORDS:
-                return new ViewRecords(phase);
+                return new ViewRecords();
             case SCORE:
-                return new ViewScore(phase);
+                return new ViewScore();
             case SHOP:
-                return new ViewShop(phase);
+                return new ViewShop();
             default:
-                return new View(phase) {
+                return new View() {
                     @Override
                     public void update() {
                         super.update();

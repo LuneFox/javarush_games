@@ -4,7 +4,6 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.Phase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,13 +13,11 @@ import java.util.List;
  */
 
 public abstract class View {
+    protected static MinesweeperGame game = MinesweeperGame.getInstance();
     private static int gameOverShowDelay;
-    protected MinesweeperGame game = MinesweeperGame.getInstance();
-    public Phase phase;
-    public List<InteractiveObject> linkedObjects;  // list of objects that can be interacted
+    private final List<InteractiveObject> linkedObjects;
 
-    public View(Phase phase) {
-        this.phase = phase;
+    public View() {
         this.linkedObjects = new ArrayList<>();
     }
 
@@ -34,6 +31,10 @@ public abstract class View {
                 return; // click only the first one if they accidentally got layered
             }
         }
+    }
+
+    public void linkObject(InteractiveObject interactiveObject) {
+        linkedObjects.add(interactiveObject);
     }
 
     public static int getGameOverShowDelay() {

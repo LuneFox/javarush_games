@@ -21,10 +21,6 @@ public class ViewItemHelp extends View {
     };
     Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
-    public ViewItemHelp(Phase phase) {
-        super(phase);
-    }
-
     @Override
     public void update() {
         ShopItem displayItem = game.shop.helpDisplayItem;

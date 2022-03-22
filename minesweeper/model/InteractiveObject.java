@@ -59,7 +59,7 @@ public abstract class InteractiveObject implements Drawable, Clickable {
     }
 
     public <T extends InteractiveObject> T linkView(View view) {
-        view.linkedObjects.add(this);
+        view.linkObject(this);
         return (T) this;
     }
 }

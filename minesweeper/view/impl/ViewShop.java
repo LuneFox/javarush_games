@@ -54,10 +54,6 @@ public class ViewShop extends View {
 
     private boolean slotsAreLinked;
 
-    public ViewShop(Phase phase) {
-        super(phase);
-    }
-
     @Override
     public void update() {
         // Linking shop slots to this view. Cannot link in constructor because shop isn't created at that time

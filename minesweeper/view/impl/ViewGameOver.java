@@ -44,10 +44,6 @@ public class ViewGameOver extends View {
     private final Image happyFace = new Image(ImageType.PICTURE_YELLOW_CAT_SMILE);
     private final Image sadFace = new Image(ImageType.PICTURE_YELLOW_CAT_SAD);
 
-    public ViewGameOver(Phase phase) {
-        super(phase);
-    }
-
     @Override
     public void update() {
         if (waitForDelay()) return;
