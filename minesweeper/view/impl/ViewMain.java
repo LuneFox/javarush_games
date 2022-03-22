@@ -48,8 +48,8 @@ public class ViewMain extends View {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
-            if (Options.developerCounter < 9) {
-                Options.developerCounter++;
+            if (Options.developerModeCounter < 9) {
+                Options.developerModeCounter++;
                 PopUpMessage.show("Версия: " + Strings.VERSION);
             } else {
                 Options.developerMode = true;
@@ -87,7 +87,7 @@ public class ViewMain extends View {
     }
 
     private void printTextUnderLogo() {
-        if (game.isStopped || game.isFirstMove) {
+        if (game.isStopped || game.boardManager.isFirstMove()) {
             printRandomQuote();
         } else {
             printResumeGame();
@@ -95,7 +95,7 @@ public class ViewMain extends View {
     }
 
     private void replaceStartButtonText() {
-        if (game.isStopped || game.isFirstMove) {
+        if (game.isStopped || game.boardManager.isFirstMove()) {
             if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
         } else {
             if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");

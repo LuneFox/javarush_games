@@ -4,57 +4,59 @@ import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.model.Options;
 
 /**
- * Graphical dice that appears on screen when you use Lucky Dice
+ * Lucky Dice representation with score memory
  */
 
 public class Dice extends InteractiveObject {
-    private final static int DISPLAY_DURATION = 20;
-
-    public Cell appearCell;     // cell at which the dice appears after click
+    public Cell appearCell;
     private Image image;
-    public int totalBonus = 0;  // sum of all sides on every affected cell (memory field)
-    public int totalCells = 0;  // total number of cells affected by the dice (memory field)
-    private int onScreenTime;   // number of frames that have passed since it was displayed
+    private int rollResult;
+    public int rollsSum = 0;
+    public int rollsCount = 0;
+    private int timeToLive;
 
-    public Dice(int number) {
-        setImage(number, 0, 0);
+    public void roll(Cell cell) {
+        if (cell.isMined()) return;
+        if (!game.shop.luckyDice.isActivated()) return;
+        if (!game.boardManager.isRecursiveMove()) {
+            rollResult = game.getRandomNumber(6) + 1;  // one roll per move
+            appearCell = cell;
+        }
+        setImage(rollResult, appearCell.x, appearCell.y);
+        game.player.score.addDiceScore(Options.difficulty * rollResult);
+        rollsCount++;
+        rollsSum += rollResult;
     }
 
     public void setImage(int number, int x, int y) {
         setPosition(x, y);
         this.image = Image.cache.get(ImageType.valueOf("BOARD_DICE_" + number));
-        this.onScreenTime = 0;
+        this.timeToLive = 20;
     }
 
-    // Draw dice over the cell until is exceeds display duration, onScreenTime counts with every game step (frame)
     public void draw() {
-        if (onScreenTime < DISPLAY_DURATION) {
-            image.draw(this.x * 10 + 2, this.y * 10 + 2);
-            onScreenTime++;
-        }
+        if (timeToLive <= 0) return;
+        image.draw(this.x * 10 + 2, this.y * 10 + 2);
+        timeToLive--;
     }
 
-    // Average luck from 1.0 (bad luck) to 6.0 (perfect luck)
-    public double getAverageLuck() {
-        return (Util.round((double) totalBonus / totalCells, 2));
-    }
-
-    // Instantly skip display time
-    public void hide() {
-        onScreenTime = DISPLAY_DURATION;
-    }
-
-    public void displayIfActive() {
-        if (game.shop.luckyDice == null) {
-            return;
-        }
-
+    public void drawIfActive() {
+        if (game.shop.luckyDice == null) return;
         int diceRemainingTurns = game.shop.luckyDice.expireMove - game.player.getMoves();
-
         if (Util.inside(diceRemainingTurns, 0, 2) && game.player.getMoves() != 0) {
             draw();
         }
+    }
+
+    public void hide() {
+        timeToLive = 0;
+    }
+
+    public double getAverageLuck() {
+        // Average luck from 1.0 (bad luck) to 6.0 (perfect luck)
+        return (Util.round((double) rollsSum / rollsCount, 2));
     }
 }

@@ -12,33 +12,39 @@ import com.javarush.games.minesweeper.model.Options;
 import java.util.List;
 
 public class BoardManager {
+    private final MinesweeperGame game;
     private final Field field;
     private final FlagManager flagManager;
-    private final MinesweeperGame game;
+    private final Timer timer;
     private Dice dice;
+
     private boolean isUnableToCheatMore;
     private boolean isFlagExplosionAllowed;
+    private boolean isFirstMove;
     private boolean isRecursiveMove;
 
     public BoardManager(MinesweeperGame game) {
         this.game = game;
         this.field = new Field();
+        this.timer = new Timer();
         this.flagManager = new FlagManager(game, field);
     }
 
-    public void createField() {
+    public void reset() {
         field.createNewLayout();
-        dice = new Dice(1);
+        dice = new Dice();
+        timer.reset();
         isRecursiveMove = false;
+        isFirstMove = true;
     }
 
     public void drawField() {
-        this.field.draw();
+        field.draw();
+        timer.draw();
         drawActivatedToolFrame();
-        game.timer.draw();
         game.shop.goldenShovel.statusBar.draw();
         game.shop.luckyDice.statusBar.draw();
-        dice.displayIfActive();
+        dice.drawIfActive();
     }
 
     private void drawActivatedToolFrame() {
@@ -56,7 +62,7 @@ public class BoardManager {
     public void openCell(int x, int y) {
         if (game.isStopped) return;
 
-        Cell cell = game.isFirstMove ? rebuildUntilEmpty(field.getCell(x, y)) : field.getCell(x, y);
+        Cell cell = isFirstMove ? rebuildUntilEmpty(field.getCell(x, y)) : field.getCell(x, y);
 
         if (game.shop.miniBomb.use(cell) || game.shop.scanner.use(cell)) return;
         if (cell.isFlagged() || cell.isOpen()) return;
@@ -65,7 +71,7 @@ public class BoardManager {
         if (!survived) return;
 
         onManualMove(cell);
-        game.player.score.addScore(cell);
+        dice.roll(cell);
         game.player.inventory.addMoney(cell);
         recursiveOpen(cell);
         checkVictory();
@@ -88,7 +94,7 @@ public class BoardManager {
             cell = field.getCell(cell.x, cell.y);
         }
         flaggedCells.forEach(fc -> flagManager.setFlag(fc.x, fc.y));
-        game.isFirstMove = false;
+        isFirstMove = false;
         return cell;
     }
 
@@ -128,7 +134,7 @@ public class BoardManager {
         dice.appearCell = cell;
         game.player.incMoves();
         game.player.score.addTimerScore();
-        game.timer.reset();
+        timer.reset();
     }
 
     public void checkVictory() {
@@ -200,10 +206,9 @@ public class BoardManager {
         field.setNumbers();
         checkVictory();
     }
-
-    /**
-     * Cheats
-     */
+    
+    
+    // Cheats
 
     @DeveloperOption
     public void autoFlag() {
@@ -241,7 +246,7 @@ public class BoardManager {
         if (!Options.developerMode) return;
 
         int closedCells = field.countAllCells(Cell.Filter.CLOSED);
-        if (game.isFirstMove) {
+        if (isFirstMove) {
             List<Cell> allCells = field.getAllCells(Cell.Filter.NONE);
             Cell randomCell = allCells.get(game.getRandomNumber(allCells.size()));
             game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
@@ -289,6 +294,8 @@ public class BoardManager {
         field.getAllCells(Cell.Filter.NONE).forEach(Cell::updateOpenedColors);
     }
 
+    // Setters, getters
+    
     public Field getField() {
         return field;
     }
@@ -309,7 +316,19 @@ public class BoardManager {
         isRecursiveMove = recursiveMove;
     }
 
+    public boolean isFirstMove() {
+        return isFirstMove;
+    }
+
+    public void setFirstMove(boolean firstMove) {
+        isFirstMove = firstMove;
+    }
+
     public Dice getDice() {
         return dice;
+    }
+
+    public Timer getTimer() {
+        return timer;
     }
 }

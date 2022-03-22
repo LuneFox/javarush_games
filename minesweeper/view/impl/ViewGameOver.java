@@ -47,7 +47,7 @@ public class ViewGameOver extends View {
     @Override
     public void update() {
         if (waitForDelay()) return;
-        game.boardManager.getField().draw();
+        game.boardManager.drawField();
         drawBanner();
         drawButtons();
         super.update();
@@ -72,7 +72,7 @@ public class ViewGameOver extends View {
     private boolean waitForDelay() {
         if (View.getGameOverShowDelay() > 0) {
             View.setGameOverShowDelay(View.getGameOverShowDelay() - 1);
-            game.boardManager.getField().draw();
+            game.boardManager.drawField();
             super.update();
             return true;
         }

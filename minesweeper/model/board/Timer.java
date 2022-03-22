@@ -13,10 +13,10 @@ import java.util.Date;
  */
 
 public class Timer extends InteractiveObject {
-    public float time;
-    private final float TIME_LIMIT = 500;
-    private Date lastTickTime;
+    private final float TIME_LIMIT = 500F;
     private final Color[] COLORS;
+    private float time;
+    private long lastTickTime;
 
     public Timer() {
         super();
@@ -24,15 +24,15 @@ public class Timer extends InteractiveObject {
         y = 0;
         height = 1;
         width = 100;
-        this.COLORS = new Color[]{Color.RED, Color.DEEPPINK};
-        this.time = 0;
-        this.lastTickTime = new Date();
+        COLORS = new Color[]{Color.RED, Color.DEEPPINK};
+        time = 0;
+        lastTickTime = getTime();
     }
 
     public void draw() {
         if (!Options.timerEnabled) return;
         if (game.isStopped) return;
-        if (game.isFirstMove) return;
+        if (game.boardManager.isFirstMove()) return;
         for (int i = x; i < ((time / TIME_LIMIT) * width); i++) {
             game.display.setCellColor(i, 0, COLORS[0]);
         }
@@ -55,11 +55,10 @@ public class Timer extends InteractiveObject {
 
     private void countDown() {
         if (!Options.timerEnabled) return;
-        if (new Date().getTime() - lastTickTime.getTime() >= 1000) {
-            time = (time > 0) ? time - Options.difficulty : 0;
-            swapColor();
-            lastTickTime = new Date();
-        }
+        if (getTime() - lastTickTime < 1000) return;
+        time = (time > 0) ? time - Options.difficulty : 0;
+        swapColor();
+        lastTickTime = getTime();
     }
 
     public void swapColor() {
@@ -69,8 +68,10 @@ public class Timer extends InteractiveObject {
     }
 
     public void reset() {
-        if (Options.timerEnabled)
+        if (Options.timerEnabled) {
             time = TIME_LIMIT;
+            lastTickTime = getTime();
+        }
     }
 
     public boolean timeIsUp() {
@@ -79,5 +80,9 @@ public class Timer extends InteractiveObject {
 
     public int getScore() {
         return (Options.timerEnabled) ? ((int) (time / 100) * (Options.difficulty / 5)) : 0;
+    }
+
+    private long getTime() {
+        return new Date().getTime();
     }
 }

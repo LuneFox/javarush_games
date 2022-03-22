@@ -20,8 +20,7 @@ import java.util.List;
  */
 
 public class Shop {
-    final static private MinesweeperGame game = MinesweeperGame.getInstance();
-
+    private final MinesweeperGame game;
     public final List<ShopItem> allItems = new ArrayList<>();
     public final List<ShopSlot> slots = new ArrayList<>();
     public ShopItem shield;
@@ -32,7 +31,8 @@ public class Shop {
     public ShopItem miniBomb;
     public ShopItem helpDisplayItem;
 
-    public Shop() {
+    public Shop(MinesweeperGame game) {
+        this.game = game;
         for (int column = 0; column < 2; column++) {
             for (int row = 0; row < 3; row++) {
                 int dx = 5 + 25 * row;

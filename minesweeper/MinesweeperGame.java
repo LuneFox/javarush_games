@@ -8,7 +8,6 @@ import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.BoardManager;
-import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
@@ -25,10 +24,13 @@ public class MinesweeperGame extends Game {
     public BoardManager boardManager;
     public Shop shop;
     public Player player;
-    public Timer timer;
     public boolean isStopped;
-    public boolean isFirstMove;
     public boolean isResultVictory;
+
+    // Universal accessor
+    public static MinesweeperGame getInstance() {
+        return instance;
+    }
 
     @Override
     public void initialize() {
@@ -36,13 +38,11 @@ public class MinesweeperGame extends Game {
         setScreenSize(100, 100);
         setTurnTimer(30);
 
-        instance = this;        // must come first
-        Options.initialize();
+        instance = this;
         display = new Display();
-        controller = new Controller();
+        controller = new Controller(this);
         boardManager = new BoardManager(this);
-        timer = new Timer();
-        shop = new Shop();
+        shop = new Shop(this);
         player = new Player();
         isStopped = true;
 
@@ -56,66 +56,57 @@ public class MinesweeperGame extends Game {
     }
 
     public void startNewGame() {
+        Options.apply();
         resetValues();
         Phase.setActive(Phase.BOARD);
         PopUpMessage.show("Новая игра");
     }
 
     private void resetValues() {
-        Options.apply();
-        boardManager.createField();
+        boardManager.reset();
         player.reset();
         shop.reset();
-        timer.reset();
         isStopped = false;
         isResultVictory = false;
-        isFirstMove = true;
-        setScore(player.score.getCurrentScore());
+        setScore(0);
     }
 
     public void win() {
-        finish(true);
         player.score.registerTopScore();
+        finish(true);
     }
 
     public void lose() {
-        finish(false);
         boardManager.getDice().hide();
         boardManager.getField().revealMines();
+        finish(false);
     }
 
     private void finish(boolean isVictory) {
-        this.isStopped = true;
-        this.isResultVictory = isVictory;
+        isStopped = true;
+        isResultVictory = isVictory;
         View.setGameOverShowDelay(30);
         Phase.setActive(Phase.GAME_OVER);
         setScore(player.score.getTotalScore());
         Score.Table.update();
     }
 
-    // CONTROLS
+    /**
+     * Controls
+     */
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        boardManager.setRecursiveMove(false);
-        boardManager.setFlagExplosionAllowed(false);
         controller.leftClick(x, y);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        boardManager.setRecursiveMove(false);
         controller.rightClick(x, y);
     }
 
     @Override
     public void onKeyPress(Key key) {
         controller.pressKey(key);
-    }
-
-    // GETTERS
-
-    public static MinesweeperGame getInstance() {
-        return instance;
     }
 }

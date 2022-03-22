@@ -22,18 +22,8 @@ public class Score {
         this.player = player;
     }
 
-    public void addScore(Cell cell) {
-        int randomNumber = game.getRandomNumber(6) + 1;
-        Dice dice = game.boardManager.getDice();
-        dice.setImage(randomNumber, dice.appearCell.x, dice.appearCell.y);
-
-        if (cell.isMined()) return;
-        if (game.shop.luckyDice.isActivated()) {
-            player.score.setDiceScore(player.score.getDiceScore() + Options.difficulty * randomNumber);
-            dice.totalCells++;
-            dice.totalBonus += randomNumber;
-        }
-        game.setScore(player.score.getCurrentScore());
+    public void addTimerScore() {
+        this.timerScore += game.boardManager.getTimer().getScore();
     }
 
     public int getCurrentScore() {
@@ -70,6 +60,10 @@ public class Score {
         timerScore = 0;
     }
 
+    public void addDiceScore(int amount) {
+        this.diceScore += amount;
+    }
+
     // Common getters and setters
 
     public int getTopScore() {
@@ -92,20 +86,8 @@ public class Score {
         return diceScore;
     }
 
-    public void setDiceScore(int diceScore) {
-        this.diceScore = diceScore;
-    }
-
     public int getTimerScore() {
         return timerScore;
-    }
-
-    public void setTimerScore(int timerScore) {
-        this.timerScore = timerScore;
-    }
-
-    public void addTimerScore() {
-        this.timerScore += game.timer.getScore();
     }
 
     public static class Table {
@@ -144,7 +126,7 @@ public class Score {
             minesCount = field.countAllCells(Cell.Filter.MINED);
             cellsCount = field.countAllCells(Cell.Filter.SCORED);
             penaltyShields = game.player.getBrokenShields();
-            diceLuckyCells = dice.totalCells;
+            diceLuckyCells = dice.rollsCount;
             diceAvgLuck = dice.getAverageLuck();
             moneyLeftOver = game.player.inventory.money;
         }

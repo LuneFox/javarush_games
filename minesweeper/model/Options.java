@@ -6,11 +6,10 @@ import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
 
 public class Options {
-    // Store copies of options apart from corresponding switches to apply them only to a new game
     public static int difficulty;
     public static boolean timerEnabled;
     public static boolean developerMode;
-    public static int developerCounter;
+    public static int developerModeCounter;
 
     public static DifficultySelector difficultySelector;
     public static SwitchSelector autoBuyFlagsSelector;
@@ -19,7 +18,7 @@ public class Options {
     public static ThemeSelector themeSelector;
     public static PageSelector aboutPageSelector;
 
-    public static void initialize() {
+    static {
         difficultySelector = new DifficultySelector(49, 14);
         autoBuyFlagsSelector = new SwitchSelector(85, 32, "вручную", "авто");
         timerEnabledSelector = new SwitchSelector(85, 50, "нет", "да");

@@ -18,7 +18,6 @@ import java.util.Map;
 
 public class Cell extends InteractiveObject {
     private static final Map<Integer, ImageType> sprites = new HashMap<>();
-
     private boolean isMined;
     private boolean isOpen;
     private boolean isScanned;
@@ -27,9 +26,10 @@ public class Cell extends InteractiveObject {
     private boolean isFlagged;
     private boolean isDestroyed;
     private int countMinedNeighbors;  // number of adjacent mines
-
     private final Image background;
     private Image sprite;
+
+    public enum Filter {CLOSED, DANGEROUS, EMPTY, FLAGGED, MINED, NONE, NUMERABLE, OPEN, SAFE, SCORED, SUSPECTED}
 
     static {
         for (int i = 0; i < 10; i++) {
@@ -111,21 +111,72 @@ public class Cell extends InteractiveObject {
         }
     }
 
+    public static List<Cell> filterCells(List<Cell> list, Filter filter) {
+        List<Cell> result = new ArrayList<>();
+        list.forEach(cell -> {
+            switch (filter) {
+                case CLOSED:
+                    if (!cell.isOpen) result.add(cell);
+                    break;
+                case OPEN:
+                    if (cell.isOpen) result.add(cell);
+                    break;
+                case MINED:
+                    if (cell.isMined) result.add(cell);
+                    break;
+                case FLAGGED:
+                    if (cell.isFlagged) result.add(cell);
+                    break;
+                case SAFE:
+                    // Unrevealed cell that is safe to click
+                    if (!cell.isOpen && !cell.isMined) result.add(cell);
+                    break;
+                case DANGEROUS:
+                    // Unrevealed cell that is not safe to click
+                    if (!cell.isOpen & cell.isMined) result.add(cell);
+                    break;
+                case NUMERABLE:
+                    // Cell that can have number over it
+                    if (cell.isNumerable()) result.add(cell);
+                    break;
+                case SUSPECTED:
+                    // Is flagged or revealed with shield (for auto-opening surrounding cells)
+                    if (cell.isFlagged || (cell.isOpen && cell.isMined)) result.add(cell);
+                    break;
+                case EMPTY:
+                    // Does not contain mines or numbers
+                    if (cell.isEmpty()) result.add(cell);
+                    break;
+                case SCORED:
+                    // Is counted when calculating score
+                    if (cell.isOpen && !cell.isMined && !cell.isDestroyed) result.add(cell);
+                    break;
+                case NONE:
+                default:
+                    result.add(cell);
+                    break;
+            }
+        });
+        return result;
+    }
+
     // Combined states
 
     public boolean isEmpty() {
-        return (!isMined && countMinedNeighbors == 0);   // Cell is not mined and doesn't contain a number
+        return (!isMined && countMinedNeighbors == 0);
     }
 
     public boolean isNumerable() {
-        return (!isMined && !isDestroyed && !isFlagged); // A number can be assigned to this cell
+        return (!isMined && !isDestroyed && !isFlagged);
     }
 
-    public boolean isIndestructible() {                  // Cannot be exploded with a bomb
-        boolean activated = isOpen || isDestroyed;
-        boolean noFlagDestruction = isFlagged && !game.boardManager.isFlagExplosionAllowed();
-        return game.isStopped || activated || noFlagDestruction;
+    public boolean isIndestructible() {
+        boolean isActivated = isOpen || isDestroyed;
+        boolean isUnableToDestroyFlag = isFlagged && !game.boardManager.isFlagExplosionAllowed();
+        return game.isStopped || isActivated || isUnableToDestroyFlag;
     }
+
+    // Getters, setters
 
     public boolean isOpen() {
         return isOpen;
@@ -165,60 +216,5 @@ public class Cell extends InteractiveObject {
 
     public void setCountMinedNeighbors(int countMinedNeighbors) {
         this.countMinedNeighbors = countMinedNeighbors;
-    }
-
-    /**
-     * Any list of cells can be filtered by some criteria.
-     */
-
-    public enum Filter {CLOSED, DANGEROUS, EMPTY, FLAGGED, MINED, NONE, NUMERABLE, OPEN, SAFE, SCORED, SUSPECTED}
-
-    public static List<Cell> filterCells(List<Cell> list, Filter filter) {
-        List<Cell> result = new ArrayList<>();
-        list.forEach(cell -> {
-            switch (filter) {
-                case CLOSED:
-                    if (!cell.isOpen) result.add(cell);
-                    break;
-                case OPEN:
-                    if (cell.isOpen) result.add(cell);
-                    break;
-                case MINED:
-                    if (cell.isMined) result.add(cell);
-                    break;
-                case FLAGGED:
-                    if (cell.isFlagged) result.add(cell);
-                    break;
-                case SAFE:
-                    // Unrevealed cell that is safe to click
-                    if (!cell.isOpen && !cell.isMined) result.add(cell);
-                    break;
-                case DANGEROUS:
-                    // Unrevealed cell that is not safe to click
-                    if (!cell.isOpen & cell.isMined) result.add(cell);
-                    break;
-                case NUMERABLE:
-                    // Cell that must have number over it
-                    if (cell.isNumerable()) result.add(cell);
-                    break;
-                case SUSPECTED:
-                    // Is flagged or revealed with shield (for auto-opening surrounding cells)
-                    if (cell.isFlagged || (cell.isOpen && cell.isMined)) result.add(cell);
-                    break;
-                case EMPTY:
-                    // Does not contain mines or numbers
-                    if (cell.isEmpty()) result.add(cell);
-                    break;
-                case SCORED:
-                    // Is counted when calculating score
-                    if (cell.isOpen && !cell.isMined && !cell.isDestroyed) result.add(cell);
-                    break;
-                case NONE:
-                default:
-                    result.add(cell);
-                    break;
-            }
-        });
-        return result;
     }
 }

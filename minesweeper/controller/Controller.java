@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.controller;
 
 import com.javarush.engine.cell.Key;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Phase;
@@ -15,6 +16,12 @@ import java.util.Map;
  */
 
 public class Controller {
+    private final MinesweeperGame game;
+
+    public Controller(MinesweeperGame game) {
+        this.game = game;
+    }
+
     private ControlStrategy strategy;
     private static final Map<Phase, ControlStrategy> strategyMap = new HashMap<>();
     private static int lastClickY;
@@ -42,13 +49,18 @@ public class Controller {
     }
 
     public final void leftClick(int x, int y) {
+        game.boardManager.setRecursiveMove(false);
+        game.boardManager.setFlagExplosionAllowed(false);
         selectStrategy(x, y);
         strategy.leftClick(x, y);
+        game.setScore(game.player.score.getCurrentScore());
     }
 
     public final void rightClick(int x, int y) {
+        game.boardManager.setRecursiveMove(false);
         selectStrategy(x, y);
         strategy.rightClick(x, y);
+        game.setScore(game.player.score.getCurrentScore());
     }
 
     public final void pressKey(Key key) {
