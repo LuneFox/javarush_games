@@ -32,7 +32,7 @@ public class Field extends InteractiveObject {
         while (countAllCells(Cell.Filter.MINED) < Options.difficulty / 1.5) { // fixed number of mines on field
             int x = game.getRandomNumber(10);
             int y = game.getRandomNumber(10);
-            if (!field[y][x].isMined && !field[y][x].isOpen) {
+            if (!field[y][x].isMined() && !field[y][x].isOpen()) {
                 field[y][x] = new Cell(ImageType.CELL_CLOSED, x, y, true);
                 field[y][x].setSprite(ImageType.BOARD_MINE);
             }
@@ -41,8 +41,8 @@ public class Field extends InteractiveObject {
 
     void setNumbers() {
         getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
-            cell.countMinedNeighbors = getNeighborCells(cell, Cell.Filter.MINED, false).size();
-            cell.setSprite(cell.countMinedNeighbors);
+            cell.setCountMinedNeighbors(getNeighborCells(cell, Cell.Filter.MINED, false).size());
+            cell.setSprite(cell.getCountMinedNeighbors());
         });
     }
 
@@ -69,9 +69,9 @@ public class Field extends InteractiveObject {
 
     public void revealMines() {
         getAllCells(Cell.Filter.NONE).forEach(cell -> {
-            if (cell.isMined) {
+            if (cell.isMined()) {
                 cell.open();
-                if (cell.isFlagged && !cell.isDestroyed) {
+                if (cell.isFlagged() && !cell.isDestroyed()) {
                     cell.setSprite(ImageType.BOARD_MINE);
                     cell.setBackgroundColor(Color.GREEN);
                 }

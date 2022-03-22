@@ -28,7 +28,7 @@ public enum Phase {
 
     // Phase at index 0 is considered active
     public static void setActive(Phase phase) {
-        PHASES.remove(phase);  // move phase to position 0 = make active
+        PHASES.remove(phase);
         PHASES.add(0, phase);
         pendingView = PHASE_VIEW_MAP.get(phase);
     }

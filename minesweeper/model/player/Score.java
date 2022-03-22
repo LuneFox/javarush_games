@@ -27,7 +27,7 @@ public class Score {
         Dice dice = game.boardManager.getDice();
         dice.setImage(randomNumber, dice.appearCell.x, dice.appearCell.y);
 
-        if (cell.isMined) return;
+        if (cell.isMined()) return;
         if (game.shop.luckyDice.isActivated()) {
             player.score.setDiceScore(player.score.getDiceScore() + Options.difficulty * randomNumber);
             dice.totalCells++;

@@ -7,54 +7,56 @@ import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 public class FlagManager {
     private final MinesweeperGame game;
-    private Field field;
+    private final Field field;
 
-    public FlagManager(MinesweeperGame game) {
+    FlagManager(MinesweeperGame game, Field field) {
         this.game = game;
+        this.field = field;
     }
 
-    // Using this on flagged cell with "flagIsRemovable = true" will return the flag to inventory
-    void setFlag(int x, int y, boolean flagIsRemovable) {
+    void swapFlag(int x, int y) {
         if (game.isStopped) return;
         Cell cell = field.get()[y][x];
-        if (cell.isOpen) return;
-        if (cell.isFlagged && flagIsRemovable) {
+        if (cell.isOpen()) return;
+        if (cell.isFlagged()) {
             returnFlagToInventory(cell);
         } else {
             placeFlagFromInventory(cell);
         }
     }
 
-    void returnFlagToInventory(Cell cell) {
+    void setFlag(int x, int y) {
+        if (game.isStopped) return;
+        Cell cell = field.get()[y][x];
+        if (cell.isOpen()) return;
+        placeFlagFromInventory(cell);
+    }
+
+    void returnFlagToShop(Cell cell) {
+        if (!cell.isFlagged()) return;
+        game.shop.restock(game.shop.flag, 1);
+        cell.setFlagged(false);
+    }
+
+    private void returnFlagToInventory(Cell cell) {
         game.player.inventory.add(ShopItem.ID.FLAG);
-        cell.isFlagged = false;
-        if (cell.isMined) {
+        if (cell.isMined()) {
             cell.setSprite(ImageType.BOARD_MINE);
         } else if (cell.isNumerable()) {
-            cell.setSprite(cell.countMinedNeighbors);
+            cell.setSprite(cell.getCountMinedNeighbors());
         } else {
             cell.setSprite(ImageType.NONE);
         }
+        cell.setFlagged(false);
     }
 
-    void placeFlagFromInventory(Cell cell) {
+    private void placeFlagFromInventory(Cell cell) {
         Inventory inventory = game.player.inventory;
         if (inventory.hasNoFlags()) game.shop.offerFlag();
         if (inventory.hasNoFlags()) return;
-        if (cell.isFlagged) return;
+        if (cell.isFlagged()) return;
         inventory.remove(ShopItem.ID.FLAG);
-        cell.isFlagged = true;
         cell.setSprite(ImageType.BOARD_FLAG);
-    }
-
-    void retrieveFlag(Cell cell) {
-        if (cell.isFlagged) {
-            game.shop.restock(game.shop.flag, 1);
-            cell.isFlagged = false;
-        }
-    }
-
-    public void setField(Field field) {
-        this.field = field;
+        cell.setFlagged(true);
     }
 }

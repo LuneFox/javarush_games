@@ -37,7 +37,7 @@ public class Inventory {
 
     public void addMoney(Cell cell) {
         ShopItem shovel = MinesweeperGame.getInstance().shop.goldenShovel;
-        int moneyEarned = cell.countMinedNeighbors;
+        int moneyEarned = cell.getCountMinedNeighbors();
         if (shovel.isActivated()) {
             moneyEarned *= 2;
             cell.makeNumberYellow();

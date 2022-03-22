@@ -19,17 +19,17 @@ import java.util.Map;
 public class Cell extends InteractiveObject {
     private static final Map<Integer, ImageType> sprites = new HashMap<>();
 
-    public boolean isMined;                // contains a mine
-    public boolean isOpen;                 // revealed
-    public boolean isScanned;              // revealed using a scanner
-    public boolean isShielded;             // revealed using a shield
-    public boolean isGameOverCause;        // was clicked last before game over
-    public boolean isFlagged;              // flagged by player
-    public boolean isDestroyed;            // blown up by the bomb
-    public int countMinedNeighbors;        // number of adjacent mines
+    private boolean isMined;
+    private boolean isOpen;
+    private boolean isScanned;
+    private boolean isShielded;
+    private boolean isGameOverCause;
+    private boolean isFlagged;
+    private boolean isDestroyed;
+    private int countMinedNeighbors;  // number of adjacent mines
 
-    private final Image background;        // square "body" of the cell
-    private Image sprite;                  // foreground image (number, flag or mine)
+    private final Image background;
+    private Image sprite;
 
     static {
         for (int i = 0; i < 10; i++) {
@@ -71,7 +71,7 @@ public class Cell extends InteractiveObject {
         setSprite(ImageType.NONE);
     }
 
-    public void scan() {
+    public void setScanned() {
         isScanned = true;
         setBackgroundColor(Theme.CELL_SCANNED.getColor());
     }
@@ -125,6 +125,46 @@ public class Cell extends InteractiveObject {
         boolean activated = isOpen || isDestroyed;
         boolean noFlagDestruction = isFlagged && !game.boardManager.isFlagExplosionAllowed();
         return game.isStopped || activated || noFlagDestruction;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public boolean isMined() {
+        return isMined;
+    }
+
+    public void setMined(boolean mined) {
+        isMined = mined;
+    }
+
+    public void setShielded(boolean shielded) {
+        isShielded = shielded;
+    }
+
+    public void setGameOverCause(boolean gameOverCause) {
+        isGameOverCause = gameOverCause;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public void setFlagged(boolean flagged) {
+        isFlagged = flagged;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    public int getCountMinedNeighbors() {
+        return countMinedNeighbors;
+    }
+
+    public void setCountMinedNeighbors(int countMinedNeighbors) {
+        this.countMinedNeighbors = countMinedNeighbors;
     }
 
     /**
