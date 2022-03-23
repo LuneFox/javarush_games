@@ -7,9 +7,9 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.model.player.Results;
 import com.javarush.games.minesweeper.view.View;
 
-import static com.javarush.games.minesweeper.model.player.Score.Table.total;
 
 public class ViewGameOver extends View {
     private final Button againButton = new Button(57, 69, 0, 0, "снова", this) {
@@ -66,7 +66,7 @@ public class ViewGameOver extends View {
         String result = game.isResultVictory ? "<победа!>" : "<не повезло!>";
         face.draw(Image.CENTER, Image.CENTER);
         Printer.print(result, Color.YELLOW, 18, 33);
-        Printer.print("счёт: " + total, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
+        Printer.print("счёт: " + Results.totalScore, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
     }
 
     private boolean waitForDelay() {

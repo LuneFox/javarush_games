@@ -2,7 +2,8 @@ package com.javarush.games.minesweeper.controller.impl;
 
 import com.javarush.games.minesweeper.controller.ControlStrategy;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.player.Score;
+import com.javarush.games.minesweeper.model.player.Results;
+import com.javarush.games.minesweeper.view.impl.ViewScore;
 
 public class ControlScore implements ControlStrategy {
     @Override
@@ -12,11 +13,11 @@ public class ControlScore implements ControlStrategy {
 
     @Override
     public void pressRight() {
-        Score.Table.pageSelector.nextPage();
+        ViewScore.pageSelector.nextPage();
     }
 
     @Override
     public void pressLeft() {
-        Score.Table.pageSelector.prevPage();
+        ViewScore.pageSelector.prevPage();
     }
 }

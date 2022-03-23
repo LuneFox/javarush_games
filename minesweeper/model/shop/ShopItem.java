@@ -138,6 +138,7 @@ public class ShopItem {
 
     public void activate() {
         if (game.isStopped) return;
+        if (isActivated) return;
         isActivated = true;
         if (canExpire) {
             expireMove = game.player.getMoves() + effectDuration;

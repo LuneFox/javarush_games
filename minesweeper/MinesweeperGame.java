@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.player.Player;
-import com.javarush.games.minesweeper.model.player.Score;
+import com.javarush.games.minesweeper.model.player.Results;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.view.View;
 
@@ -86,8 +86,7 @@ public class MinesweeperGame extends Game {
         isResultVictory = isVictory;
         View.setGameOverShowDelay(30);
         Phase.setActive(Phase.GAME_OVER);
-        setScore(player.score.getTotalScore());
-        Score.Table.update();
+        Results.update();
     }
 
     /**
