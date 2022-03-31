@@ -15,7 +15,7 @@ import java.util.Set;
 public class Image extends InteractiveObject {
     public static final Cache<ImageType, Image> cache;
     public static final int CENTER = Integer.MIN_VALUE;
-    public static Set<Image> allImages = new HashSet<>(); // All images, including non-cached
+    public static final Set<Image> allImages = new HashSet<>(); // All images, including non-cached
 
     private final ImageType type;
     public int[][] matrix;  // matrix of color numbers

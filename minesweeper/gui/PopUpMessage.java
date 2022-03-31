@@ -57,8 +57,4 @@ public class PopUpMessage extends InteractiveObject {
         INSTANCE.slideFromBottom = Controller.clickedOnUpperHalf();
         INSTANCE.yPos = INSTANCE.slideFromBottom ? 100 : -INSTANCE.height;
     }
-
-    public static int getTimeToLive() {
-        return INSTANCE.timeToLive;
-    }
 }

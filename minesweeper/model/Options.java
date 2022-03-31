@@ -6,17 +6,24 @@ import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
 
 public class Options {
+    public static final String[] DIFFICULTY_NAMES = new String[]{
+            "хомячок", "новичок", "любитель",
+            "опытный", "эксперт", "отчаянный",
+            "безумец", "бессмертный", "чак норрис"
+    };
+    public static final String OPTIONS_SAVED = "Сохранено";
+
     public static int difficulty;
     public static boolean timerEnabled;
     public static boolean developerMode;
     public static int developerModeCounter;
 
-    public static DifficultySelector difficultySelector;
-    public static SwitchSelector autoBuyFlagsSelector;
-    public static SwitchSelector timerEnabledSelector;
-    public static SwitchSelector displayMessageSelector;
-    public static ThemeSelector themeSelector;
-    public static PageSelector aboutPageSelector;
+    public static final DifficultySelector difficultySelector;
+    public static final SwitchSelector autoBuyFlagsSelector;
+    public static final SwitchSelector timerEnabledSelector;
+    public static final SwitchSelector displayMessageSelector;
+    public static final ThemeSelector themeSelector;
+    public static final PageSelector aboutPageSelector;
 
     static {
         difficultySelector = new DifficultySelector(49, 14);

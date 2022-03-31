@@ -29,7 +29,7 @@ public class ControlBoard implements ControlStrategy {
         if (!cell.isFlagged() || game.shop.scanner.isActivated()) {
             game.boardManager.openCell(gridX, gridY);
         }
-        game.shop.deactivateExpiredItems();
+        game.shop.checkExpiredItems();
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ControlBoard implements ControlStrategy {
 
         game.boardManager.swapFlag(gridX, gridY);              // works only on closed tiles
         game.boardManager.openSurroundingCells(gridX, gridY);  // works only on open tiles
-        game.shop.deactivateExpiredItems();
+        game.shop.checkExpiredItems();
     }
 
     @Override

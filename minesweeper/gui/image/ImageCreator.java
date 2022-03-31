@@ -1,7 +1,5 @@
 package com.javarush.games.minesweeper.gui.image;
 
-import com.javarush.games.minesweeper.MinesweeperGame;
-
 /**
  * Utility class for generating images of different kind.
  */

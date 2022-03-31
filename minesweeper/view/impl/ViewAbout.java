@@ -18,8 +18,8 @@ public class ViewAbout extends View {
             Phase.setActive(Phase.MAIN);
         }
     };
-    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
-    PageSelector pageSelector = Options.aboutPageSelector.linkView(this);
+    final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
+    final PageSelector pageSelector = Options.aboutPageSelector.linkView(this);
 
     @Override
     public void update() {

@@ -26,10 +26,6 @@ public class ViewFactory {
                 return new ViewShop();
             default:
                 return new View() {
-                    @Override
-                    public void update() {
-                        super.update();
-                    }
                 };
         }
     }

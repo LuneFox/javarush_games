@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.model.player;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.board.Dice;
+import com.javarush.games.minesweeper.model.shop.item.Dice;
 
 public class Results {
     private static final MinesweeperGame game = MinesweeperGame.getInstance();
@@ -54,7 +54,7 @@ public class Results {
     }
 
     private static String getDiceScoreInfo() {
-        Dice dice = game.boardManager.getDice();
+        Dice dice = game.shop.dice;
         return dice.getAverageLuck() + " * " + dice.getRollsCount() + " * " + Options.difficulty + " = " +
                 game.player.score.getDiceScore();
     }
@@ -81,11 +81,11 @@ public class Results {
     }
 
     private static String getDiceAvgLuck() {
-        return Double.toString(game.boardManager.getDice().getAverageLuck());
+        return Double.toString(game.shop.dice.getAverageLuck());
     }
 
     private static String getDiceRollsCount() {
-        return Integer.toString(game.boardManager.getDice().getRollsCount());
+        return Integer.toString(game.shop.dice.getRollsCount());
     }
 
     private static String getDifficulty() {

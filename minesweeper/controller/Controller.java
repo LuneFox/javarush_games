@@ -22,7 +22,7 @@ public class Controller {
     private static int lastClickY;
 
     public enum Click {
-        LEFT, RIGHT;
+        LEFT, RIGHT
     }
 
     public Controller(MinesweeperGame game) {
@@ -32,7 +32,7 @@ public class Controller {
     static {
         // Fill strategy map
         ControlStrategyFactory factory = new ControlStrategyFactory();
-        Arrays.stream(Phase.values()).forEach(screen -> strategyMap.put(screen, factory.createStrategy(screen)));
+        Arrays.stream(Phase.values()).forEach(phase -> strategyMap.put(phase, factory.createStrategy(phase)));
         strategyMap.put(null, new ControlStrategy() { // disabled controls option
 
             @Override

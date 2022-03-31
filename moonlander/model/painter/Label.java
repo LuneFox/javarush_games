@@ -1,25 +1,20 @@
-package com.javarush.games.moonlander;
+package com.javarush.games.moonlander.model.painter;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
+import com.javarush.games.moonlander.MoonLanderGame;
 
-public class Message {
+public class Label {
     private String[] splitText;
     private Color color;
-    private Color bgColor = Color.BLACK;
-    private int textSize = 90;
+    private final Color bgColor = Color.NONE;
+    private final int textSize = 90;
 
-
-    // CONSTRUCTOR
-
-    Message(String text, Color color) {
+    Label(String text, Color color) {
         // Create message object with given text and color
         splitText = specialSplit(text);
         this.color = color;
     }
-
-
-    // VISUALS
 
     public void draw(Game game, int x, int y) {
         // Draw message at given position
@@ -48,9 +43,6 @@ public class Message {
 
 
     }
-
-
-    // MECHANICS
 
     private String[] specialSplit(String text) {
         String[] result = text.toUpperCase().split("");

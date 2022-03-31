@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public abstract class View {
-    protected static MinesweeperGame game = MinesweeperGame.getInstance();
+    protected static final MinesweeperGame game = MinesweeperGame.getInstance();
     private static int gameOverShowDelay;
     private final List<InteractiveObject> linkedObjects;
 

@@ -5,11 +5,10 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.shop.ShopItem;
+import com.javarush.games.minesweeper.model.shop.Shop;
+import com.javarush.games.minesweeper.model.shop.item.ShopItem;
 
-import java.util.Arrays;
-import java.util.EnumMap;
-
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,28 +16,24 @@ import java.util.Map;
  */
 
 public class Inventory {
+    private final Shop shop = MinesweeperGame.getInstance().shop;
+
     public int money;
     public int displayMoney;
-    public static final int INIT_FLAG_NUMBER = 3;
-    public Map<ShopItem.ID, Integer> items = new EnumMap<>(ShopItem.ID.class);
+    public final Map<ShopItem, Integer> items = new HashMap<>();
 
-    public Inventory() {
-        reset();
+    public void add(ShopItem item) {
+        items.put(item, items.get(item) + 1);
     }
 
-    public void add(ShopItem.ID itemID) {
-        items.put(itemID, items.get(itemID) + 1);
-    }
-
-    public void remove(ShopItem.ID itemID) {
-        if (items.get(itemID) <= 0) return;
-        items.put(itemID, items.get(itemID) - 1);
+    public void remove(ShopItem item) {
+        if (items.get(item) <= 0) return;
+        items.put(item, items.get(item) - 1);
     }
 
     public void addMoney(Cell cell) {
-        ShopItem shovel = MinesweeperGame.getInstance().shop.goldenShovel;
         int moneyEarned = cell.getCountMinedNeighbors();
-        if (shovel.isActivated()) {
+        if (shop.shovel.isActivated()) {
             moneyEarned *= 2;
             cell.makeNumberYellow();
         }
@@ -46,9 +41,14 @@ public class Inventory {
     }
 
     public void reset() {
-        Arrays.stream(ShopItem.ID.values())
-                .forEach(id -> items.put(id, (id == ShopItem.ID.FLAG) ? INIT_FLAG_NUMBER : 0));
         money = 0;
+        items.clear();
+        shop.allItems.forEach(shopItem -> {
+            items.put(shopItem, 0);
+        });
+        shop.give(shop.flag);
+        shop.give(shop.flag);
+        shop.give(shop.flag);
     }
 
     // Animation. With each view update money on display slowly approaches the real amount that player has
@@ -61,15 +61,15 @@ public class Inventory {
     public void cheatMoreMoney() {
         if (!Options.developerMode) return;
 
-        money += 50;
-        PopUpMessage.show("DEV: 50 GOLD");
+        money = 99;
+        PopUpMessage.show("DEV: 99 GOLD");
     }
 
-    public int getCount(ShopItem.ID itemID) {
-        return items.get(itemID);
+    public int getCount(ShopItem item) {
+        return items.get(item);
     }
 
     public boolean hasNoFlags() {
-        return items.get(ShopItem.ID.FLAG) == 0;
+        return items.get(MinesweeperGame.getInstance().shop.flag) == 0;
     }
 }

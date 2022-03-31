@@ -1,69 +1,78 @@
 package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.*;
 import com.javarush.games.minesweeper.gui.image.*;
 import com.javarush.games.minesweeper.gui.interactive.*;
 import com.javarush.games.minesweeper.model.*;
 import com.javarush.games.minesweeper.view.View;
 
-import java.util.Collections;
 import java.util.Date;
-import java.util.LinkedList;
 
 public class ViewMain extends View {
+    private final String[] quotes = new String[]{
+            "Самая взрывная\nголоволомка!",
+            "Осторожно, игра\nзаминирована!",
+            "Просто бомба!",
+            "Здесь не бывает\nкислых мин!",
+            "Не собери их все!",
+            "Главное - не бомбить",
+            "Не приводи детей\nна работу!",
+            "В лопате нет\nничего смешного!",
+            "Втыкая флаг,\nне задень мину!",
+            "Какой идиот\nзакопал цифры?!"
+    };
     private String quote;
     private Date lastQuoteDate;
-    private final LinkedList<String> QUOTES = new LinkedList<>();
 
-    Button optionsButton = new Button(61, 64, 36, 9, "опции", this) {
+    final Button optionsButton = new Button(61, 64, 36, 9, "опции", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.OPTIONS);
         }
     };
-    Button aboutButton = new Button(61, 76, 36, 9, "об игре", this) {
+    final Button aboutButton = new Button(61, 76, 36, 9, "об игре", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.ABOUT);
         }
     };
-    Button recordsButton = new Button(2, 88, 0, 0, "рекорды", this) {
+    final Button recordsButton = new Button(2, 88, 0, 0, "рекорды", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.RECORDS);
         }
     };
-    Button startButton = new Button(61, 88, 36, 9, "старт", this) {
+    final Button startButton = new Button(61, 88, 36, 9, "старт", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             game.startNewGame();
         }
     };
-    FloatingImage logo = new FloatingImage(ImageType.PICTURE_MAIN_LOGO, this) {
+    final FloatingImage logo = new FloatingImage(ImageType.PICTURE_MAIN_LOGO, this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             if (Options.developerModeCounter < 9) {
                 Options.developerModeCounter++;
-                PopUpMessage.show("Версия: " + Strings.VERSION);
+                PopUpMessage.show("Версия: " + MinesweeperGame.VERSION);
             } else {
                 Options.developerMode = true;
                 PopUpMessage.show("Вы разработчик!");
             }
         }
     };
-    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
+    final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
     public ViewMain() {
         super();
-        Collections.addAll(QUOTES, Strings.QUOTES);
         lastQuoteDate = new Date();
-        quote = QUOTES.get(0);
+        quote = quotes[0];
     }
 
     @Override
@@ -104,7 +113,7 @@ public class ViewMain extends View {
 
     private void printRandomQuote() {
         if (new Date().getTime() - lastQuoteDate.getTime() > 30000) {
-            quote = QUOTES.get(game.getRandomNumber(QUOTES.size()));
+            quote = quotes[game.getRandomNumber(quotes.length)];
             lastQuoteDate = new Date();
         }
         Printer.print(quote, Theme.MAIN_MENU_QUOTE_BACK.getColor(), 5, 44); // shadow

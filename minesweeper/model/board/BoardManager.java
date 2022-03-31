@@ -1,11 +1,8 @@
 package com.javarush.games.minesweeper.model.board;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.gui.image.Image;
-import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.Options;
 
@@ -16,7 +13,6 @@ public class BoardManager {
     private final Field field;
     private final FlagManager flagManager;
     private final Timer timer;
-    private Dice dice;
 
     private boolean isUnableToCheatMore;
     private boolean isFlagExplosionAllowed;
@@ -32,7 +28,6 @@ public class BoardManager {
 
     public void reset() {
         field.createNewLayout();
-        dice = new Dice();
         timer.reset();
         isRecursiveMove = false;
         isFirstMove = true;
@@ -41,22 +36,10 @@ public class BoardManager {
     public void drawField() {
         field.draw();
         timer.draw();
-        drawActivatedToolFrame();
-        game.shop.goldenShovel.statusBar.draw();
-        game.shop.luckyDice.statusBar.draw();
-        dice.draw();
-    }
-
-    private void drawActivatedToolFrame() {
-        Image frame = Image.cache.get(ImageType.GUI_SURROUND_FRAME);
-        if (game.shop.allItems.get(1).isActivated()) {          // scanner
-            frame.replaceColor(Color.BLUE, 3);
-        } else if (game.shop.allItems.get(5).isActivated()) {   // mini bomb
-            frame.replaceColor(Color.RED, 3);
-        } else {
-            return;
-        }
-        frame.draw();
+        game.shop.scanner.drawFrame();
+        game.shop.bomb.drawFrame();
+        game.shop.shovel.draw();
+        game.shop.dice.draw();
     }
 
     public void openCell(int x, int y) {
@@ -70,14 +53,14 @@ public class BoardManager {
             cell = field.getCell(x, y);
         }
 
-        if (game.shop.miniBomb.use(cell) || game.shop.scanner.use(cell)) return;
+        if (game.shop.bomb.use(cell) || game.shop.scanner.use(cell)) return;
         if (cell.isFlagged() || cell.isOpen()) return;
 
         boolean survived = tryOpening(cell);
         if (!survived) return;
 
         onManualMove();
-        dice.roll(cell);
+        game.shop.dice.use(cell);
         game.player.inventory.addMoney(cell);
         recursiveOpen(cell);
         checkVictory();
@@ -125,7 +108,7 @@ public class BoardManager {
     // Attempt to open cells around if number of flags nearby equals the number on the cell
     public void openSurroundingCells(int x, int y) {
         if (game.shop.scanner.isActivated()) return;
-        if (game.shop.miniBomb.isActivated()) return;
+        if (game.shop.bomb.isActivated()) return;
         Cell cell = field.getCell(x, y);
         if (cell.isEmpty()) return;
         if (!cell.isOpen()) return;
@@ -320,10 +303,6 @@ public class BoardManager {
 
     public boolean isFirstMove() {
         return isFirstMove;
-    }
-
-    public Dice getDice() {
-        return dice;
     }
 
     public Timer getTimer() {

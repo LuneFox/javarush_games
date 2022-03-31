@@ -9,7 +9,6 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.*;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.Strings;
 import com.javarush.games.minesweeper.view.View;
 
 public class ViewOptions extends View {
@@ -19,15 +18,15 @@ public class ViewOptions extends View {
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.MAIN);
-            PopUpMessage.show(Strings.OPTIONS_SAVED);
+            PopUpMessage.show(Options.OPTIONS_SAVED);
         }
     };
-    Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
-    DifficultySelector difficultySelector = Options.difficultySelector.linkView(this);
-    SwitchSelector autoBuyFlagsSelector = Options.autoBuyFlagsSelector.linkView(this);
-    SwitchSelector timerEnabledSelector = Options.timerEnabledSelector.linkView(this);
-    SwitchSelector displayMessageSelector = Options.displayMessageSelector.linkView(this);
-    ThemeSelector themeSelector = Options.themeSelector.linkView(this);
+    final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
+    final DifficultySelector difficultySelector = Options.difficultySelector.linkView(this);
+    final SwitchSelector autoBuyFlagsSelector = Options.autoBuyFlagsSelector.linkView(this);
+    final SwitchSelector timerEnabledSelector = Options.timerEnabledSelector.linkView(this);
+    final SwitchSelector displayMessageSelector = Options.displayMessageSelector.linkView(this);
+    final ThemeSelector themeSelector = Options.themeSelector.linkView(this);
 
     @Override
     public void update() {

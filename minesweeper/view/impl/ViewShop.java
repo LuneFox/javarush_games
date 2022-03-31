@@ -11,7 +11,6 @@ import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.shop.Shop;
-import com.javarush.games.minesweeper.model.shop.ShopItem;
 import com.javarush.games.minesweeper.view.View;
 
 public class ViewShop extends View {
@@ -59,20 +58,20 @@ public class ViewShop extends View {
     @Override
     public void update() {
         linkShowCaseSlots(game.shop);
-        drawField(game.shop);
+        drawField();
         drawShowCase(game.shop);
         drawHeader(game.player.inventory);
         drawFooter(game.player);
         super.update();
     }
 
-    private void drawField(Shop shop) {
+    private void drawField() {
         game.boardManager.drawField();
     }
 
     private void drawShowCase(Shop shop) {
         showCasePanel.draw(10, 10);
-        shop.slots.forEach(InteractiveObject::draw);
+        shop.showCaseSlots.forEach(InteractiveObject::draw);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
     }
 
@@ -82,7 +81,7 @@ public class ViewShop extends View {
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
         Printer.print("" + game.boardManager.getField().countAllCells(Cell.Filter.DANGEROUS), 25, 12);
-        Printer.print("" + inventory.getCount(ShopItem.ID.FLAG), 52, 12);
+        Printer.print("" + inventory.getCount(game.shop.flag), 52, 12);
         Printer.print("" + inventory.displayMoney, 76 + moneyShakeHelper.getShift(), 12);
         inventory.moneyApproach();
     }
@@ -96,7 +95,7 @@ public class ViewShop extends View {
     // Cannot link at creation time because they don't exist yet
     private void linkShowCaseSlots(Shop shop) {
         if (slotsAreLinked) return;
-        shop.slots.forEach(this::linkObject);
+        shop.showCaseSlots.forEach(this::linkObject);
         slotsAreLinked = true;
     }
 

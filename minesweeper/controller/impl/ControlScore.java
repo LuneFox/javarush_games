@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper.controller.impl;
 
 import com.javarush.games.minesweeper.controller.ControlStrategy;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.player.Results;
 import com.javarush.games.minesweeper.view.impl.ViewScore;
 
 public class ControlScore implements ControlStrategy {

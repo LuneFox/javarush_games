@@ -3,10 +3,10 @@ package com.javarush.games.minesweeper.gui.interactive;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.Strings;
-import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.model.Options;
 
 public class DifficultySelector extends InteractiveObject {
     private static final int MAX_DIFFICULTY = 45;
@@ -46,7 +46,7 @@ public class DifficultySelector extends InteractiveObject {
         difficultyUpArrow.draw();
 
         // Draw difficulty name
-        String difficultyName = Strings.DIFFICULTY_NAMES[(difficultySetting / 5) - 1];
+        String difficultyName = Options.DIFFICULTY_NAMES[(difficultySetting / 5) - 1];
         Color nameColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(difficultyName, nameColor, x + width - difficultyUpArrow.width, y + height + 1, true);
     }

@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
@@ -75,17 +74,9 @@ public class Display extends InteractiveObject {
     
     public static class Pixel {
         Color cellColor;
-        Color textColor;
-        String value;
-        int textSize;
-        int number;
 
         Pixel() {
             this.cellColor = Color.NONE;
-            this.textColor = Color.NONE;
-            this.value = "";
-            this.textSize = 0;
-            this.number = 0;
         }
     }
 }

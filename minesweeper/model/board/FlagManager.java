@@ -3,7 +3,6 @@ package com.javarush.games.minesweeper.model.board;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.player.Inventory;
-import com.javarush.games.minesweeper.model.shop.ShopItem;
 
 public class FlagManager {
     private final MinesweeperGame game;
@@ -39,7 +38,7 @@ public class FlagManager {
     }
 
     private void returnFlagToInventory(Cell cell) {
-        game.player.inventory.add(ShopItem.ID.FLAG);
+        game.player.inventory.add(game.shop.flag);
         if (cell.isMined()) {
             cell.setSprite(ImageType.BOARD_MINE);
         } else if (cell.isNumerable()) {
@@ -55,7 +54,7 @@ public class FlagManager {
         if (inventory.hasNoFlags()) game.shop.offerFlag();
         if (inventory.hasNoFlags()) return;
         if (cell.isFlagged()) return;
-        inventory.remove(ShopItem.ID.FLAG);
+        inventory.remove(game.shop.flag);
         cell.setSprite(ImageType.BOARD_FLAG);
         cell.setFlagged(true);
     }

@@ -1,37 +1,49 @@
 package com.javarush.games.moonlander;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.Key;
+import com.javarush.games.moonlander.controller.Controller;
+import com.javarush.games.moonlander.model.Phase;
+import com.javarush.games.moonlander.model.painter.Painter;
 
 public class MoonLanderGame extends Game {
-    // Screen size
-    static final int WIDTH = 40;
-    static final int HEIGHT = 40;
+    public static final int WIDTH = 40;
+    public static final int HEIGHT = 40;
 
-    // Painter
-    private InputEvent inputEvent = new InputEvent(this);
-    SpritePainterTool spritePainterTool = new SpritePainterTool(this);
+    private static MoonLanderGame instance;
+    private Controller controller;
+
+    public Painter painter;
 
     @Override
     public void initialize() {
         showGrid(true);
         setScreenSize(WIDTH, HEIGHT);
-        spritePainterTool.display();
+
+        instance = this;
+        controller = new Controller();
+        painter = new Painter();
+        painter.canvas.clear();
+        Phase.setActive(Phase.PAINTER_EDITOR);
     }
 
-    // INPUT EVENTS
+    public static MoonLanderGame getInstance() {
+        return instance;
+    }
+
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        inputEvent.leftClick(x, y);
+        controller.leftClick(x, y);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        inputEvent.rightClick(x, y);
+        controller.rightClick(x, y);
     }
 
     @Override
     public void onKeyPress(Key key) {
-        inputEvent.keyPress(key);
+        controller.pressKey(key);
     }
 }

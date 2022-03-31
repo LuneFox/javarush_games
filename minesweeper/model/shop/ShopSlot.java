@@ -1,11 +1,15 @@
 package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.gui.*;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.ShakeHelper;
+import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.model.shop.item.ShopItem;
 import com.javarush.games.minesweeper.view.impl.ViewShop;
 
 /**
@@ -36,7 +40,7 @@ public class ShopSlot extends InteractiveObject {
         final int fy = y + shift;
         changeFrameColor();
         frame.draw(fx, fy);
-        item.icon.draw(fx + 1, fy + 1);
+        item.getIcon().draw(fx + 1, fy + 1);
         printInfo();
     }
 
@@ -45,11 +49,11 @@ public class ShopSlot extends InteractiveObject {
         final int right = x + 14;
         final int bottom = y + 10;
 
-        if (item.inStock > 0 && !item.isActivated()) {
-            Printer.print("<" + item.cost + ">", Color.YELLOW, right, bottom, true);
+        if (item.getInStock() > 0 && !item.isActivated()) {
+            Printer.print("<" + item.getCost() + ">", Color.YELLOW, right, bottom, true);
         } else if (item.isActivated()) {
             Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, true);
-            Printer.print(item.remainingMoves(), Color.MAGENTA, right, top, true);
+            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right, top, true);
         } else {
             Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, true);
         }
@@ -83,7 +87,7 @@ public class ShopSlot extends InteractiveObject {
             return;
         }
 
-        if (item.inStock <= 0) {
+        if (item.getInStock() <= 0) {
             PopUpMessage.show("Не продаётся");
             return;
         }

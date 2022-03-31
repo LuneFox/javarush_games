@@ -18,6 +18,7 @@ import com.javarush.games.minesweeper.view.View;
  */
 
 public class MinesweeperGame extends Game {
+    public static final String VERSION = "1.22";
     private static MinesweeperGame instance;
     private Controller controller;
     public Display display;
@@ -64,8 +65,8 @@ public class MinesweeperGame extends Game {
 
     private void resetValues() {
         boardManager.reset();
-        player.reset();
         shop.reset();
+        player.reset();
         isStopped = false;
         isResultVictory = false;
     }
@@ -76,7 +77,7 @@ public class MinesweeperGame extends Game {
     }
 
     public void lose() {
-        boardManager.getDice().hide();
+        shop.dice.hide();
         boardManager.getField().revealMines();
         finish(false);
     }
