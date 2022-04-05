@@ -44,7 +44,7 @@ public class Shop {
 
     public void give(ShopItem item) {
         if (item.getInStock() > 0) {
-            game.getPlayer().getInventory().add(item);
+            game.getInventory().add(item);
             item.setInStock(item.getInStock() - 1);
         }
     }
@@ -57,7 +57,7 @@ public class Shop {
 
     private void makeTransaction(ShopItem item) {
         item.setInStock(item.getInStock() - 1);
-        final Inventory inventory = game.getPlayer().getInventory();
+        final Inventory inventory = game.getInventory();
         inventory.setMoney(inventory.getMoney() - item.getCost());
         inventory.add(item);
     }
@@ -68,10 +68,6 @@ public class Shop {
 
     public void sellFlag() {
         sell(flag);
-    }
-
-    public void giveFlag() {
-        give(flag);
     }
 
     public void offerFlag() {
@@ -94,8 +90,9 @@ public class Shop {
 
         shovel.activate();
         dice.activate();
-        shovel.setExpireMove(game.getPlayer().getMoves() + 99);
-        dice.setExpireMove(game.getPlayer().getMoves() + 99);
+        final int moves = game.countMoves();
+        shovel.setExpireMove(moves + 99);
+        dice.setExpireMove(moves + 99);
         PopUpMessage.show("DEV: 99 TOOLS");
     }
 

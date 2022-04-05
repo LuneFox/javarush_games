@@ -7,6 +7,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.player.Score;
 
 public class Shield extends ShopItem {
     private final int difficultyModifier = Options.difficulty / 5;
@@ -33,8 +34,9 @@ public class Shield extends ShopItem {
         cell.setBackgroundColor(Color.YELLOW);
 
         game.getShop().restock(game.getShop().getShield(), 1);
-        game.getPlayer().getScore().setLostScore(game.getPlayer().getScore().getLostScore() - 150 * difficultyModifier);
-        game.getPlayer().incBrokenShields();
+        final Score score = game.getScore();
+        score.setLostScore(score.getLostScore() - 150 * difficultyModifier);
+        game.addBrokenShield();
 
         PopUpMessage.show("Щит разрушен!");
         return true;

@@ -10,7 +10,6 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.player.Inventory;
-import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.view.View;
 
@@ -65,8 +64,8 @@ public class ViewShop extends View {
         linkShowCaseSlots(game.getShop());
         drawField();
         drawShowCase(game.getShop());
-        drawHeader(game.getPlayer().getInventory());
-        drawFooter(game.getPlayer());
+        drawHeader(game.getInventory());
+        drawFooter();
         super.update();
     }
 
@@ -91,10 +90,10 @@ public class ViewShop extends View {
         inventory.moneyApproach();
     }
 
-    private void drawFooter(Player player) {
+    private void drawFooter() {
         headerFooterPanel.draw(10, 78);
-        Printer.print("Очки:" + player.getScore().getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
-        Printer.print("Шаги:" + player.getMoves(), Theme.SHOP_MOVES.getColor(), 83, 80, true);
+        Printer.print("Очки:" + game.getScore().getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
+        Printer.print("Шаги:" + game.countMoves(), Theme.SHOP_MOVES.getColor(), 83, 80, true);
     }
 
     // Cannot link at creation time because they don't exist yet

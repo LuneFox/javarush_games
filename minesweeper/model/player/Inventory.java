@@ -49,7 +49,7 @@ public class Inventory {
         game.getShop().getAllItems().forEach(shopItem -> items.put(shopItem, 0));
 
         for (int i = 0; i < 3; i++) {
-            game.getShop().giveFlag();
+            game.giveFlagFromShop();
         }
     }
 

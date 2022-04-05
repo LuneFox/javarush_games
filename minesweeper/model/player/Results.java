@@ -36,7 +36,7 @@ public class Results {
     }
 
     private static String getTotalScore() {
-        return Integer.toString(game.getPlayer().getScore().getTotalScore());
+        return Integer.toString(game.getScore().getTotalScore());
     }
 
     private static String getCellScoreInfo() {
@@ -55,28 +55,29 @@ public class Results {
     private static String getDiceScoreInfo() {
         Dice dice = game.getShop().getDice();
         return dice.getAverageLuck() + " * " + dice.getRollsCount() + " * " + Options.difficulty + " = " +
-                game.getPlayer().getScore().getDiceScore();
+                getDiceScore();
     }
 
     private static String getMoneyScoreInfo() {
         if (!isResultVictory) return "не учтено";
-        return game.getPlayer().getInventory().getMoney() + "*" + Options.difficulty + " = " +
-                game.getPlayer().getInventory().getMoney() * Options.difficulty;
+        final int money = game.getInventory().getMoney();
+        return money + "*" + Options.difficulty + " = " +
+                money * Options.difficulty;
     }
 
     private static String getShieldsScoreInfo() {
-        int countShields = game.getPlayer().getBrokenShields();
-        if (countShields == 0) return "";
-        return countShields + "*-" + (150 * (Options.difficulty / 5)) + " = " +
-                game.getPlayer().getScore().getLostScore();
+        int count = game.countBrokenShields();
+        if (count == 0) return "";
+        return count + "*-" + (150 * (Options.difficulty / 5)) + " = " +
+                game.getScore().getLostScore();
     }
 
     private static String getDiceScore() {
-        return Integer.toString(game.getPlayer().getScore().getDiceScore());
+        return Integer.toString(game.getScore().getDiceScore());
     }
 
     private static String getTimerScore() {
-        return Integer.toString(game.getPlayer().getScore().getTimerScore());
+        return Integer.toString(game.getScore().getTimerScore());
     }
 
     private static String getDiceAvgLuck() {

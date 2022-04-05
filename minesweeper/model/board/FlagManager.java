@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.player.Inventory;
 
 public class FlagManager {
     private final MinesweeperGame game;
@@ -20,7 +19,7 @@ public class FlagManager {
         if (cell.isFlagged()) {
             returnFlagToInventory(cell);
         } else {
-            placeFlagFromInventory(cell);
+            placeFlagOnBoard(cell);
         }
     }
 
@@ -28,7 +27,7 @@ public class FlagManager {
         if (game.isStopped()) return;
         Cell cell = field.get()[y][x];
         if (cell.isOpen()) return;
-        placeFlagFromInventory(cell);
+        placeFlagOnBoard(cell);
     }
 
     void returnFlagToShop(Cell cell) {
@@ -38,7 +37,7 @@ public class FlagManager {
     }
 
     private void returnFlagToInventory(Cell cell) {
-        game.getPlayer().getInventory().add(game.getShop().getFlag());
+        game.addFlagToInventory();
         if (cell.isMined()) {
             cell.setSprite(ImageType.BOARD_MINE);
         } else if (cell.isNumerable()) {
@@ -49,12 +48,11 @@ public class FlagManager {
         cell.setFlagged(false);
     }
 
-    private void placeFlagFromInventory(Cell cell) {
-        Inventory inventory = game.getPlayer().getInventory();
-        if (inventory.hasNoFlags()) game.getShop().offerFlag();
-        if (inventory.hasNoFlags()) return;
+    private void placeFlagOnBoard(Cell cell) {
+        if (game.playerHasNoFlags()) game.getShop().offerFlag();
+        if (game.playerHasNoFlags()) return;
         if (cell.isFlagged()) return;
-        inventory.remove(game.getShop().getFlag());
+        game.removeFlagFromInventory();
         cell.setSprite(ImageType.BOARD_FLAG);
         cell.setFlagged(true);
     }

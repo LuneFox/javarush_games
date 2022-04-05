@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper.model;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.gui.interactive.PageSelector;
+import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.view.View;
 import com.javarush.games.minesweeper.view.ViewFactory;
 
@@ -54,7 +55,8 @@ public enum Phase {
         // Things that happen right before the pending view is applied
         game.setDisplayInterlace(false);
         PageSelector.allSelectors.forEach(PageSelector::reset);
-        game.getPlayer().getInventory().setDisplayMoney(game.getPlayer().getInventory().getMoney());
+        final Inventory inventory = game.getInventory();
+        inventory.setDisplayMoney(inventory.getMoney());
     }
 
     public static Phase getActive() {

@@ -26,11 +26,11 @@ public class Player {
         inventory.reset();
     }
 
-    public void incMoves() {
+    public void addMove() {
         this.moves++;
     }
 
-    public void incBrokenShields() {
+    public void addBrokenShield() {
         this.brokenShields++;
     }
 
@@ -42,11 +42,11 @@ public class Player {
         this.title = title;
     }
 
-    public int getMoves() {
+    public int countMoves() {
         return moves;
     }
 
-    public int getBrokenShields() {
+    public int countBrokenShields() {
         return brokenShields;
     }
 

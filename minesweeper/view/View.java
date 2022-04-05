@@ -45,4 +45,8 @@ public abstract class View {
     public static void setGameOverShowDelay(int gameOverShowDelay) {
         View.gameOverShowDelay = gameOverShowDelay;
     }
+
+    public static void decreaseGameOverShowDelay() {
+        View.gameOverShowDelay--;
+    }
 }

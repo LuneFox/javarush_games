@@ -11,6 +11,7 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Results;
 import com.javarush.games.minesweeper.model.player.Score;
@@ -34,9 +35,8 @@ public class MinesweeperGame extends Game {
     private boolean isResultVictory;
 
     /**
-     * Everything that happens after the game is launched and before the user starts interacting.
+     * Everything that happens during the launch and before the user starts interacting.
      * Creates all important instances and sets the game field parameters.
-     * Copying instance to static field must come first because other initializations may depend on this field.
      */
     @Override
     public void initialize() {
@@ -63,7 +63,7 @@ public class MinesweeperGame extends Game {
      * In this particular case it updates the view related to current game phase
      * and draws pixels from the invisible Display on real game screen.
      *
-     * @param step defines how many frames were shown since the launch of the application.
+     * @param step count of frames since the launch of the application.
      */
     @Override
     public void onTurn(int step) {
@@ -116,7 +116,7 @@ public class MinesweeperGame extends Game {
     // Facade
 
     public void setDisplayInterlace(boolean enabled) {
-        this.display.setInterlaceEnabled(enabled);
+        display.setInterlaceEnabled(enabled);
     }
 
     public void setDisplayPixel(int x, int y, Color color) {
@@ -125,6 +125,10 @@ public class MinesweeperGame extends Game {
 
     public void drawField() {
         boardManager.drawField();
+    }
+
+    public int countAllCells(Cell.Filter filter) {
+        return boardManager.getField().countAllCells(filter);
     }
 
     public Cell getCell(int x, int y) {
@@ -151,6 +155,7 @@ public class MinesweeperGame extends Game {
         boardManager.destroyCell(x, y);
     }
 
+
     public boolean isFirstMove() {
         return boardManager.isFirstMove();
     }
@@ -171,9 +176,6 @@ public class MinesweeperGame extends Game {
         return boardManager.isFlagExplosionAllowed();
     }
 
-    public int countAllCells(Cell.Filter filter) {
-        return boardManager.getField().countAllCells(filter);
-    }
 
     public int getTimerScore() {
         return boardManager.getTimer().getScore();
@@ -199,12 +201,29 @@ public class MinesweeperGame extends Game {
         boardManager.updateOpenedCellsColors();
     }
 
+
     public Shop getShop() {
         return shop;
     }
 
+    public void giveFlagFromShop() {
+        shop.give(shop.getFlag());
+    }
+
+    public void addFlagToInventory() {
+        player.getInventory().add(shop.getFlag());
+    }
+
+    public void removeFlagFromInventory() {
+        player.getInventory().remove(shop.getFlag());
+    }
+
     public void hideDice() {
         shop.getDice().hide();
+    }
+
+    public void useDice(Cell cell) {
+        shop.getDice().use(cell);
     }
 
     /**
@@ -215,9 +234,52 @@ public class MinesweeperGame extends Game {
         shop.restock(shop.getBomb(), 1);
     }
 
-    public Player getPlayer() {
-        return player;
+    public boolean useScannerOrBomb(Cell cell) {
+        return shop.getBomb().use(cell) || shop.getScanner().use(cell);
     }
+
+    public boolean isBombOrScannerActivated() {
+        if (shop.getScanner().isActivated()) return true;
+        return shop.getBomb().isActivated();
+    }
+
+
+    public String getPlayerTitle() {
+        return player.getTitle();
+    }
+
+    public void addBrokenShield() {
+        player.addBrokenShield();
+    }
+
+    public int countBrokenShields() {
+        return player.countBrokenShields();
+    }
+
+    public void addMove() {
+        player.addMove();
+    }
+
+    public int countMoves() {
+        return player.countMoves();
+    }
+
+    public Score getScore() {
+        return player.getScore();
+    }
+
+    public Inventory getInventory() {
+        return player.getInventory();
+    }
+
+    public boolean playerHasNoFlags() {
+        return player.getInventory().hasNoFlags();
+    }
+
+    public void addMoney(Cell cell) {
+        player.getInventory().addMoney(cell);
+    }
+
 
     // Controls
 
