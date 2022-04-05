@@ -51,14 +51,14 @@ public class ViewScore extends View {
                                 "\n" +
                                 "итого:",
 
-                        Results.totalScore +
+                        Results.get("total") +
                                 "\n" +
-                                "\n" + Results.timerScore +
-                                "\n" + Results.shieldScoreInfo +
-                                "\n" + Results.moneyScoreInfo +
-                                "\n" + Results.minesScoreInfo +
-                                "\n" + Results.diceScore +
-                                "\n" + Results.cellScoreInfo);
+                                "\n" + Results.get("timer") +
+                                "\n" + Results.get("shield") +
+                                "\n" + Results.get("money") +
+                                "\n" + Results.get("mines") +
+                                "\n" + Results.get("dice_total") +
+                                "\n" + Results.get("cells"));
                 break;
 
             case 1:
@@ -70,12 +70,12 @@ public class ViewScore extends View {
                                 "\n" +
                                 "в общем счёте:",
 
-                        Results.diceScoreInfo +
+                        Results.get("dice") +
                                 "\n" +
                                 "\n" +
-                                "\n" + Results.difficulty +
-                                "\n" + Results.diceRollsCount +
-                                "\n" + Results.diceAvgLuck);
+                                "\n" + Results.get("difficulty") +
+                                "\n" + Results.get("dice_rolls") +
+                                "\n" + Results.get("dice_luck"));
                 break;
 
             default:

@@ -68,10 +68,9 @@ public class ViewGameOver extends View {
     private void drawBanner() {
         victoryWindow.draw(Image.CENTER, Image.CENTER);
         Image face = game.isResultVictory() ? happyFace : sadFace;
-        String result = game.isResultVictory() ? "<победа!>" : "<не повезло!>";
         face.draw(Image.CENTER, Image.CENTER);
-        Printer.print(result, Color.YELLOW, 18, 33);
-        Printer.print("счёт: " + Results.totalScore, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
+        Printer.print(Results.get("result"), Color.YELLOW, 18, 33);
+        Printer.print("счёт: " + Results.get("total"), Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
     }
 
     private boolean waitForDelay() {

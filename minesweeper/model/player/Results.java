@@ -5,34 +5,34 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.item.Dice;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class Results {
     private static MinesweeperGame game;
-    public static String totalScore;
-    public static String cellScoreInfo;
-    public static String minesScoreInfo;
-    public static String diceScoreInfo;
-    public static String moneyScoreInfo;
-    public static String shieldScoreInfo;
-    public static String diceScore;
-    public static String diceAvgLuck;
-    public static String timerScore;
-    public static String diceRollsCount;
-    public static String difficulty;
-    private static boolean isResultVictory;
+    private static final Map<String, String> table = new HashMap<>();
 
     public static void update() {
-        isResultVictory = game.isResultVictory();
-        totalScore = getTotalScore();
-        cellScoreInfo = getCellScoreInfo();
-        minesScoreInfo = getMinesScoreInfo();
-        diceScoreInfo = getDiceScoreInfo();
-        moneyScoreInfo = getMoneyScoreInfo();
-        shieldScoreInfo = getShieldsScoreInfo();
-        diceScore = getDiceScore();
-        diceAvgLuck = getDiceAvgLuck();
-        timerScore = getTimerScore();
-        diceRollsCount = getDiceRollsCount();
-        difficulty = getDifficulty();
+        table.put("result", getResult());
+        table.put("total", getTotalScore());
+        table.put("cells", getCellScoreInfo());
+        table.put("mines", getMinesScoreInfo());
+        table.put("money", getMoneyScoreInfo());
+        table.put("shield", getShieldsScoreInfo());
+        table.put("dice", getDiceScoreInfo());
+        table.put("dice_luck", getDiceAvgLuck());
+        table.put("dice_rolls", getDiceRollsCount());
+        table.put("dice_total", getDiceScore());
+        table.put("timer", getTimerScore());
+        table.put("difficulty", getDifficulty());
+    }
+
+    public static String get(String key) {
+        return table.getOrDefault(key, "не найдено");
+    }
+
+    private static String getResult() {
+        return game.isResultVictory() ? "<победа!>" : "<не повезло!>";
     }
 
     private static String getTotalScore() {
@@ -46,7 +46,7 @@ public class Results {
     }
 
     private static String getMinesScoreInfo() {
-        if (!isResultVictory) return "не учтено";
+        if (!game.isResultVictory()) return "не учтено";
         int countMines = game.countAllCells(Cell.Filter.MINED);
         return countMines + "*" + 20 * Options.difficulty + " = " +
                 countMines * 20 * Options.difficulty;
@@ -59,7 +59,7 @@ public class Results {
     }
 
     private static String getMoneyScoreInfo() {
-        if (!isResultVictory) return "не учтено";
+        if (!game.isResultVictory()) return "не учтено";
         final int money = game.getInventory().getMoney();
         return money + "*" + Options.difficulty + " = " +
                 money * Options.difficulty;
