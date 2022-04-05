@@ -1,55 +1,70 @@
 package com.javarush.games.minesweeper;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.BoardManager;
+import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Results;
+import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.view.View;
 
 /**
- * Main game class
+ * Main game class. Part of the model.
+ * Cannot remove it from root because it is required by JavaRush Game Engine to compile the game.
+ * Also plays role the Facade for Controller and View (central node to get to all possible game elements).
  */
-
 public class MinesweeperGame extends Game {
     public static final String VERSION = "1.22";
-    private static MinesweeperGame instance;
+
     private Controller controller;
-    public Display display;
-    public BoardManager boardManager;
-    public Shop shop;
-    public Player player;
-    public boolean isStopped;
-    public boolean isResultVictory;
+    private Display display;
+    private BoardManager boardManager;
+    private Shop shop;
+    private Player player;
+    private boolean isStopped;
+    private boolean isResultVictory;
 
-    // Universal accessor
-    public static MinesweeperGame getInstance() {
-        return instance;
-    }
-
+    /**
+     * Everything that happens after the game is launched and before the user starts interacting.
+     * Creates all important instances and sets the game field parameters.
+     * Copying instance to static field must come first because other initializations may depend on this field.
+     */
     @Override
     public void initialize() {
-        showGrid(false);
-        setScreenSize(100, 100);
-        setTurnTimer(30);
+        super.showGrid(false);
+        super.setScreenSize(100, 100);
+        super.setTurnTimer(30);
 
-        instance = this;
+        Phase.setUp(this);
+        InteractiveObject.setGame(this);
+        Results.setGame(this);
+        Score.setGame(this);
         display = new Display();
         controller = new Controller(this);
         boardManager = new BoardManager(this);
         shop = new Shop(this);
-        player = new Player();
+        player = new Player(this);
         isStopped = true;
 
         Phase.setActive(Phase.MAIN);
     }
 
+    /**
+     * Defines what happens at every tick.
+     * In this particular case it updates the view related to current game phase
+     * and draws pixels from the invisible Display on real game screen.
+     *
+     * @param step defines how many frames were shown since the launch of the application.
+     */
     @Override
     public void onTurn(int step) {
         Phase.updateView();
@@ -72,12 +87,12 @@ public class MinesweeperGame extends Game {
     }
 
     public void win() {
-        player.score.registerTopScore();
+        player.getScore().registerTopScore();
         finish(true);
     }
 
     public void lose() {
-        shop.dice.hide();
+        hideDice();
         boardManager.getField().revealMines();
         finish(false);
     }
@@ -90,9 +105,121 @@ public class MinesweeperGame extends Game {
         Results.update();
     }
 
+    public boolean isStopped() {
+        return isStopped;
+    }
+
+    public boolean isResultVictory() {
+        return isResultVictory;
+    }
+
+    // Facade
+
+    public void setDisplayInterlace(boolean enabled) {
+        this.display.setInterlaceEnabled(enabled);
+    }
+
+    public void setDisplayPixel(int x, int y, Color color) {
+        display.setCellColor(x, y, color);
+    }
+
+    public void drawField() {
+        boardManager.drawField();
+    }
+
+    public Cell getCell(int x, int y) {
+        return boardManager.getField().get()[y][x];
+    }
+
+    public void openCell(int x, int y) {
+        boardManager.openCell(x, y);
+    }
+
+    public void openSurroundingCells(int x, int y) {
+        boardManager.openSurroundingCells(x, y);
+    }
+
+    public void swapFlag(int x, int y) {
+        boardManager.swapFlag(x, y);
+    }
+
+    public void scanNeighbors(int x, int y) {
+        boardManager.scanNeighbors(x, y);
+    }
+
+    public void destroyCell(int x, int y) {
+        boardManager.destroyCell(x, y);
+    }
+
+    public boolean isFirstMove() {
+        return boardManager.isFirstMove();
+    }
+
+    public void setRecursiveMove(boolean enable) {
+        boardManager.setRecursiveMove(enable);
+    }
+
+    public boolean isRecursiveMove() {
+        return boardManager.isRecursiveMove();
+    }
+
+    public void setFlagExplosionAllowed(boolean enable) {
+        boardManager.setFlagExplosionAllowed(enable);
+    }
+
+    public boolean isFlagExplosionAllowed() {
+        return boardManager.isFlagExplosionAllowed();
+    }
+
+    public int countAllCells(Cell.Filter filter) {
+        return boardManager.getField().countAllCells(filter);
+    }
+
+    public int getTimerScore() {
+        return boardManager.getTimer().getScore();
+    }
+
+    public void autoFlag() {
+        boardManager.autoFlag();
+    }
+
+    public void autoOpen() {
+        boardManager.autoOpen();
+    }
+
+    public void autoScan() {
+        boardManager.autoScan();
+    }
+
+    public void skipEasyPart() {
+        boardManager.skipEasyPart();
+    }
+
+    public void updateOpenedCellsColors() {
+        boardManager.updateOpenedCellsColors();
+    }
+
+    public Shop getShop() {
+        return shop;
+    }
+
+    public void hideDice() {
+        shop.getDice().hide();
+    }
+
     /**
-     * Controls
+     * Called during every scanner / bomb usage to allow buying both of them again.
      */
+    public void restockScannerAndBomb() {
+        shop.restock(shop.getScanner(), 1);
+        shop.restock(shop.getBomb(), 1);
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    // Controls
 
     @Override
     public void onMouseLeftClick(int x, int y) {

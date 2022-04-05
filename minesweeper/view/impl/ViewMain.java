@@ -2,10 +2,15 @@ package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.*;
-import com.javarush.games.minesweeper.gui.image.*;
-import com.javarush.games.minesweeper.gui.interactive.*;
-import com.javarush.games.minesweeper.model.*;
+import com.javarush.games.minesweeper.gui.PopUpMessage;
+import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.FloatingImage;
+import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageType;
+import com.javarush.games.minesweeper.gui.interactive.Button;
+import com.javarush.games.minesweeper.model.Options;
+import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
 
 import java.util.Date;
@@ -69,8 +74,8 @@ public class ViewMain extends View {
     };
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
-    public ViewMain() {
-        super();
+    public ViewMain(MinesweeperGame game) {
+        super(game);
         lastQuoteDate = new Date();
         quote = quotes[0];
     }
@@ -96,7 +101,7 @@ public class ViewMain extends View {
     }
 
     private void printTextUnderLogo() {
-        if (game.isStopped || game.boardManager.isFirstMove()) {
+        if (game.isStopped() || game.isFirstMove()) {
             printRandomQuote();
         } else {
             printResumeGame();
@@ -104,7 +109,7 @@ public class ViewMain extends View {
     }
 
     private void replaceStartButtonText() {
-        if (game.isStopped || game.boardManager.isFirstMove()) {
+        if (game.isStopped() || game.isFirstMove()) {
             if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
         } else {
             if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
@@ -127,8 +132,8 @@ public class ViewMain extends View {
     }
 
     private void printTopScore() {
-        if (game.player.score.getTopScore() > 0) {
-            Printer.print("счёт: " + game.player.score.getTopScore() + "\n" + game.player.getTitle(),
+        if (game.getPlayer().getScore().getTopScore() > 0) {
+            Printer.print("счёт: " + game.getPlayer().getScore().getTopScore() + "\n" + game.getPlayer().getTitle(),
                     Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 4, 65);
         }
     }

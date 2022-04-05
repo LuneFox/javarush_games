@@ -1,6 +1,6 @@
 package com.javarush.games.minesweeper.gui.image;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Cache;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.view.View;
@@ -76,7 +76,7 @@ public class Image extends InteractiveObject {
                 int drawX = x + ((mirror == Mirror.HORIZONTAL) ? (matrix[0].length - 1 - innerX) : innerX);
                 int drawY = y + ((mirror == Mirror.VERTICAL) ? (matrix.length - 1 - innerY) : innerY);
 
-                game.display.setCellColor(drawX, drawY, colors[pixel]);
+                game.setDisplayPixel(drawX, drawY, colors[pixel]);
             }
         }
     }

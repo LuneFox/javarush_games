@@ -2,10 +2,10 @@ package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.controller.Controller;
-import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
+import com.javarush.games.minesweeper.model.Options;
 
 /**
  * Shows short message over the screen. Singleton.
@@ -44,7 +44,7 @@ public class PopUpMessage extends InteractiveObject {
     public static void drawMessage() {
         if (INSTANCE.timeToLive <= 0) return;
         if (Options.displayMessageSelector.isEnabled()) {
-            game.display.setInterlaceEnabled(false);
+            game.setDisplayInterlace(false);
             INSTANCE.draw();
         }
         INSTANCE.timeToLive--;

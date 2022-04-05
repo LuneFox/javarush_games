@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -26,6 +27,10 @@ public class ViewRecords extends View {
     };
     final Image prizeCup = new Image(ImageType.PICTURE_PRIZE_CUP);
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
+
+    public ViewRecords(MinesweeperGame game) {
+        super(game);
+    }
 
     @Override
     public void update() {

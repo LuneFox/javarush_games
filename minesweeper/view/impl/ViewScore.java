@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -27,7 +28,8 @@ public class ViewScore extends View {
     };
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
-    public ViewScore() {
+    public ViewScore(MinesweeperGame game) {
+        super(game);
         linkObject(pageSelector);
     }
 

@@ -5,7 +5,6 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.item.ShopItem;
 
 import java.util.HashMap;
@@ -16,11 +15,14 @@ import java.util.Map;
  */
 
 public class Inventory {
-    private final Shop shop = MinesweeperGame.getInstance().shop;
+    private final MinesweeperGame game;
+    private int money;
+    private int displayMoney;
+    private final Map<ShopItem, Integer> items = new HashMap<>();
 
-    public int money;
-    public int displayMoney;
-    public final Map<ShopItem, Integer> items = new HashMap<>();
+    public Inventory(MinesweeperGame game) {
+        this.game = game;
+    }
 
     public void add(ShopItem item) {
         items.put(item, items.get(item) + 1);
@@ -33,7 +35,7 @@ public class Inventory {
 
     public void addMoney(Cell cell) {
         int moneyEarned = cell.getCountMinedNeighbors();
-        if (shop.shovel.isActivated()) {
+        if (game.getShop().getShovel().isActivated()) {
             moneyEarned *= 2;
             cell.makeNumberYellow();
         }
@@ -43,12 +45,12 @@ public class Inventory {
     public void reset() {
         money = 0;
         items.clear();
-        shop.allItems.forEach(shopItem -> {
-            items.put(shopItem, 0);
-        });
-        shop.give(shop.flag);
-        shop.give(shop.flag);
-        shop.give(shop.flag);
+
+        game.getShop().getAllItems().forEach(shopItem -> items.put(shopItem, 0));
+
+        for (int i = 0; i < 3; i++) {
+            game.getShop().giveFlag();
+        }
     }
 
     // Animation. With each view update money on display slowly approaches the real amount that player has
@@ -70,6 +72,23 @@ public class Inventory {
     }
 
     public boolean hasNoFlags() {
-        return items.get(MinesweeperGame.getInstance().shop.flag) == 0;
+        ShopItem flag = game.getShop().getFlag();
+        return items.get(flag) == 0;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public int getDisplayMoney() {
+        return displayMoney;
+    }
+
+    public void setDisplayMoney(int displayMoney) {
+        this.displayMoney = displayMoney;
     }
 }

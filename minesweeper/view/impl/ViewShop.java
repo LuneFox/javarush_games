@@ -1,5 +1,6 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.ShakeHelper;
@@ -55,23 +56,27 @@ public class ViewShop extends View {
     private final Image showCasePanel = new Image(ImageType.SHOP_SHOWCASE_PANEL);
     private boolean slotsAreLinked;
 
+    public ViewShop(MinesweeperGame game) {
+        super(game);
+    }
+
     @Override
     public void update() {
-        linkShowCaseSlots(game.shop);
+        linkShowCaseSlots(game.getShop());
         drawField();
-        drawShowCase(game.shop);
-        drawHeader(game.player.inventory);
-        drawFooter(game.player);
+        drawShowCase(game.getShop());
+        drawHeader(game.getPlayer().getInventory());
+        drawFooter(game.getPlayer());
         super.update();
     }
 
     private void drawField() {
-        game.boardManager.drawField();
+        game.drawField();
     }
 
     private void drawShowCase(Shop shop) {
         showCasePanel.draw(10, 10);
-        shop.showCaseSlots.forEach(InteractiveObject::draw);
+        shop.getShowCaseSlots().forEach(InteractiveObject::draw);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
     }
 
@@ -80,22 +85,22 @@ public class ViewShop extends View {
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
-        Printer.print("" + game.boardManager.getField().countAllCells(Cell.Filter.DANGEROUS), 25, 12);
-        Printer.print("" + inventory.getCount(game.shop.flag), 52, 12);
-        Printer.print("" + inventory.displayMoney, 76 + moneyShakeHelper.getShift(), 12);
+        Printer.print("" + game.countAllCells(Cell.Filter.DANGEROUS), 25, 12);
+        Printer.print("" + inventory.getCount(game.getShop().getFlag()), 52, 12);
+        Printer.print("" + inventory.getDisplayMoney(), 76 + moneyShakeHelper.getShift(), 12);
         inventory.moneyApproach();
     }
 
     private void drawFooter(Player player) {
         headerFooterPanel.draw(10, 78);
-        Printer.print("Очки:" + player.score.getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
+        Printer.print("Очки:" + player.getScore().getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
         Printer.print("Шаги:" + player.getMoves(), Theme.SHOP_MOVES.getColor(), 83, 80, true);
     }
 
     // Cannot link at creation time because they don't exist yet
     private void linkShowCaseSlots(Shop shop) {
         if (slotsAreLinked) return;
-        shop.showCaseSlots.forEach(this::linkObject);
+        shop.getShowCaseSlots().forEach(this::linkObject);
         slotsAreLinked = true;
     }
 

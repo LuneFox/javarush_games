@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.Options;
+import com.javarush.games.minesweeper.model.shop.item.Shield;
 
 import java.util.List;
 
@@ -36,14 +37,14 @@ public class BoardManager {
     public void drawField() {
         field.draw();
         timer.draw();
-        game.shop.scanner.drawFrame();
-        game.shop.bomb.drawFrame();
-        game.shop.shovel.draw();
-        game.shop.dice.draw();
+        game.getShop().getScanner().drawFrame();
+        game.getShop().getBomb().drawFrame();
+        game.getShop().getShovel().draw();
+        game.getShop().getDice().draw();
     }
 
     public void openCell(int x, int y) {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         Cell cell;
 
         if (isFirstMove) {
@@ -53,15 +54,15 @@ public class BoardManager {
             cell = field.getCell(x, y);
         }
 
-        if (game.shop.bomb.use(cell) || game.shop.scanner.use(cell)) return;
+        if (game.getShop().getBomb().use(cell) || game.getShop().getScanner().use(cell)) return;
         if (cell.isFlagged() || cell.isOpen()) return;
 
         boolean survived = tryOpening(cell);
         if (!survived) return;
 
         onManualMove();
-        game.shop.dice.use(cell);
-        game.player.inventory.addMoney(cell);
+        game.getShop().getDice().use(cell);
+        game.getPlayer().getInventory().addMoney(cell);
         recursiveOpen(cell);
         checkVictory();
     }
@@ -95,8 +96,9 @@ public class BoardManager {
             return true;
         }
 
-        if (game.shop.shield.isActivated()) {
-            return game.shop.shield.use(cell);
+        Shield shield = game.getShop().getShield();
+        if (shield.isActivated()) {
+            return shield.use(cell);
         }
 
         cell.setGameOverCause(true);
@@ -107,8 +109,8 @@ public class BoardManager {
 
     // Attempt to open cells around if number of flags nearby equals the number on the cell
     public void openSurroundingCells(int x, int y) {
-        if (game.shop.scanner.isActivated()) return;
-        if (game.shop.bomb.isActivated()) return;
+        if (game.getShop().getScanner().isActivated()) return;
+        if (game.getShop().getBomb().isActivated()) return;
         Cell cell = field.getCell(x, y);
         if (cell.isEmpty()) return;
         if (!cell.isOpen()) return;
@@ -121,8 +123,8 @@ public class BoardManager {
 
     public void onManualMove() {
         if (isRecursiveMove()) return;
-        game.player.incMoves();
-        game.player.score.addTimerScore();
+        game.getPlayer().incMoves();
+        game.getPlayer().getScore().addTimerScore();
         timer.reset();
     }
 
@@ -159,7 +161,7 @@ public class BoardManager {
 
     private void placeFlagsForPlayer(int x, int y) {
         field.getNeighborCells(field.getCell(x, y), Cell.Filter.CLOSED, true).forEach(closedCell -> {
-            if (game.player.inventory.hasNoFlags()) game.shop.give(game.shop.flag);
+            if (game.getPlayer().getInventory().hasNoFlags()) game.getShop().giveFlag();
             flagManager.setFlag(closedCell.x, closedCell.y);
         });
     }
@@ -212,7 +214,9 @@ public class BoardManager {
             if (dangerousNeighbors.size() == closedNeighbors.size()) {
                 dangerousNeighbors.forEach(dangerousNeighbor -> {
                     if (dangerousNeighbor.isFlagged()) return;
-                    if (game.player.inventory.hasNoFlags()) game.shop.sell(game.shop.flag);
+                    if (game.getPlayer().getInventory().hasNoFlags()) {
+                        game.getShop().sellFlag();
+                    }
                     flagManager.swapFlag(dangerousNeighbor.x, dangerousNeighbor.y);
                     success[0] = true;
                 });
@@ -250,7 +254,7 @@ public class BoardManager {
         List<Cell> allCells = field.getAllCells(Cell.Filter.SAFE);
         if (allCells.isEmpty()) return;
         Cell randomCell = allCells.get(game.getRandomNumber(allCells.size()));
-        game.shop.scanner.activate();
+        game.getShop().getScanner().activate();
         game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         PopUpMessage.show("DEV: RANDOM SCAN");
     }
@@ -275,7 +279,7 @@ public class BoardManager {
     }
 
     public void updateOpenedCellsColors() {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         field.getAllCells(Cell.Filter.NONE).forEach(Cell::updateOpenedColors);
     }
 

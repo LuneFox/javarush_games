@@ -1,9 +1,10 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.interactive.PageSelector;
-import com.javarush.games.minesweeper.view.*;
 import com.javarush.games.minesweeper.gui.interactive.Button;
+import com.javarush.games.minesweeper.gui.interactive.PageSelector;
+import com.javarush.games.minesweeper.view.View;
+import com.javarush.games.minesweeper.view.ViewFactory;
 
 import java.util.*;
 
@@ -14,16 +15,19 @@ import java.util.*;
 
 public enum Phase {
     ABOUT, BOARD, GAME_OVER, ITEM_HELP, MAIN, OPTIONS, RECORDS, SCORE, SHOP;
-    private static final List<Phase> PHASES;
-    private static final Map<Phase, View> PHASE_VIEW_MAP;
+    private static MinesweeperGame game;
+
+    private static List<Phase> PHASES;
+    private static Map<Phase, View> PHASE_VIEW_MAP;
     private static View pendingView;
     private static View currentView;
 
-    static {
+    public static void setUp(MinesweeperGame game) {
+        Phase.game = game;
         PHASES = new LinkedList<>(Arrays.asList(Phase.values()));
         PHASE_VIEW_MAP = new HashMap<>();
-        ViewFactory factory = new ViewFactory();
-        PHASES.forEach(phase -> PHASE_VIEW_MAP.put(phase, factory.createView(phase)));
+        ViewFactory viewFactory = new ViewFactory(game);
+        PHASES.forEach(phase -> PHASE_VIEW_MAP.put(phase, viewFactory.createView(phase)));
     }
 
     // Phase at index 0 is considered active
@@ -48,10 +52,9 @@ public enum Phase {
 
     private static void onViewChange() {
         // Things that happen right before the pending view is applied
-        MinesweeperGame game = MinesweeperGame.getInstance();
-        game.display.setInterlaceEnabled(false);
+        game.setDisplayInterlace(false);
         PageSelector.allSelectors.forEach(PageSelector::reset);
-        game.player.inventory.displayMoney = game.player.inventory.money;
+        game.getPlayer().getInventory().setDisplayMoney(game.getPlayer().getInventory().getMoney());
     }
 
     public static Phase getActive() {

@@ -5,10 +5,15 @@ import com.javarush.games.minesweeper.controller.ControlStrategy;
 import com.javarush.games.minesweeper.model.Phase;
 
 public class ControlMain implements ControlStrategy {
+    private static MinesweeperGame game;
+
     @Override
     public void pressEsc() {
-        final MinesweeperGame game = MinesweeperGame.getInstance();
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         Phase.setActive(Phase.BOARD);
+    }
+
+    public static void setGame(MinesweeperGame game) {
+        ControlMain.game = game;
     }
 }

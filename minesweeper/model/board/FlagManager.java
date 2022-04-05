@@ -14,7 +14,7 @@ public class FlagManager {
     }
 
     void swapFlag(int x, int y) {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         Cell cell = field.get()[y][x];
         if (cell.isOpen()) return;
         if (cell.isFlagged()) {
@@ -25,7 +25,7 @@ public class FlagManager {
     }
 
     void setFlag(int x, int y) {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         Cell cell = field.get()[y][x];
         if (cell.isOpen()) return;
         placeFlagFromInventory(cell);
@@ -33,12 +33,12 @@ public class FlagManager {
 
     void returnFlagToShop(Cell cell) {
         if (!cell.isFlagged()) return;
-        game.shop.restock(game.shop.flag, 1);
+        game.getShop().restock(game.getShop().getFlag(), 1);
         cell.setFlagged(false);
     }
 
     private void returnFlagToInventory(Cell cell) {
-        game.player.inventory.add(game.shop.flag);
+        game.getPlayer().getInventory().add(game.getShop().getFlag());
         if (cell.isMined()) {
             cell.setSprite(ImageType.BOARD_MINE);
         } else if (cell.isNumerable()) {
@@ -50,11 +50,11 @@ public class FlagManager {
     }
 
     private void placeFlagFromInventory(Cell cell) {
-        Inventory inventory = game.player.inventory;
-        if (inventory.hasNoFlags()) game.shop.offerFlag();
+        Inventory inventory = game.getPlayer().getInventory();
+        if (inventory.hasNoFlags()) game.getShop().offerFlag();
         if (inventory.hasNoFlags()) return;
         if (cell.isFlagged()) return;
-        inventory.remove(game.shop.flag);
+        inventory.remove(game.getShop().getFlag());
         cell.setSprite(ImageType.BOARD_FLAG);
         cell.setFlagged(true);
     }

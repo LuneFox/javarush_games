@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.item;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Options;
@@ -9,7 +10,8 @@ import com.javarush.games.minesweeper.model.board.Cell;
 public class Scanner extends ShopItem {
     private final Image frame;
 
-    public Scanner() {
+    public Scanner(MinesweeperGame game) {
+        super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SCANNER);
         name = "Сканер";
         description = "Откроет безопасную\n" +
@@ -27,20 +29,18 @@ public class Scanner extends ShopItem {
     public boolean use(Cell cell) {
         if (!isActivated) return false;
         deactivate();
-        game.boardManager.scanNeighbors(cell.x, cell.y);
-        game.shop.restock(game.shop.scanner, 1);
-        game.shop.restock(game.shop.bomb, 1);
-
+        game.scanNeighbors(cell.x, cell.y);
+        game.restockScannerAndBomb();
         return true;
     }
 
     @Override
     public void activate() {
-        if (game.isStopped || isActivated) return;
-        if (game.shop.bomb.isActivated()) return;
+        if (game.isStopped() || isActivated) return;
+        if (game.getShop().getBomb().isActivated) return;
         isActivated = true;
         frame.replaceColor(Color.BLUE, 3);
-        game.shop.bomb.inStock = 0;
+        game.getShop().getBomb().setInStock(0);
     }
 
     public void drawFrame() {

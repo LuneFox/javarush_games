@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -20,9 +21,13 @@ public class ViewItemHelp extends View {
     };
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
+    public ViewItemHelp(MinesweeperGame game) {
+        super(game);
+    }
+
     @Override
     public void update() {
-        ShopItem displayItem = game.shop.helpDisplayItem;
+        ShopItem displayItem = game.getShop().getHelpDisplayItem();
         background.draw();
         displayItem.getIcon().draw(5, 10);
         Printer.print("<[" + displayItem.getName() + "]>", Color.YELLOW, 25, 14);

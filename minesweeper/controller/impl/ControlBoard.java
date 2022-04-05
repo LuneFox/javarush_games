@@ -9,8 +9,7 @@ import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
 
 public class ControlBoard implements ControlStrategy {
-    final private MinesweeperGame game = MinesweeperGame.getInstance();
-
+    private static MinesweeperGame game;
     @Override
     public void leftClick(int x, int y) {
         Phase.getCurrentView().click(x, y, Controller.Click.LEFT);
@@ -19,17 +18,17 @@ public class ControlBoard implements ControlStrategy {
         int gridX = x / 10;
         int gridY = y / 10;
 
-        Cell cell = game.boardManager.getField().get()[gridY][gridX];
+        Cell cell = game.getCell(gridX, gridY);
 
         if (cell.isShop()) {
             Phase.setActive(Phase.SHOP);
             return;
         }
 
-        if (!cell.isFlagged() || game.shop.scanner.isActivated()) {
-            game.boardManager.openCell(gridX, gridY);
+        if (!cell.isFlagged() || game.getShop().getScanner().isActivated()) {
+            game.openCell(gridX, gridY);
         }
-        game.shop.checkExpiredItems();
+        game.getShop().checkExpiredItems();
     }
 
     @Override
@@ -40,50 +39,50 @@ public class ControlBoard implements ControlStrategy {
         int gridX = x / 10;
         int gridY = y / 10;
 
-        Cell cell = game.boardManager.getField().get()[gridY][gridX];
+        Cell cell = game.getCell(gridX, gridY);
 
         if (cell.isShop()) {
             PopUpMessage.show("двери магазина");
             return;
         }
 
-        game.boardManager.swapFlag(gridX, gridY);              // works only on closed tiles
-        game.boardManager.openSurroundingCells(gridX, gridY);  // works only on open tiles
-        game.shop.checkExpiredItems();
+        game.swapFlag(gridX, gridY);              // works only on closed tiles
+        game.openSurroundingCells(gridX, gridY);  // works only on open tiles
+        game.getShop().checkExpiredItems();
     }
 
     @Override
     @DeveloperOption
     public void pressLeft() {
-        game.boardManager.autoFlag();
+        game.autoFlag();
     }
 
     @Override
     @DeveloperOption
     public void pressRight() {
-        game.boardManager.autoOpen();
+        game.autoOpen();
     }
 
     @Override
     @DeveloperOption
     public void pressDown() {
-        game.boardManager.autoScan();
+        game.autoScan();
     }
 
     @Override
     @DeveloperOption
     public void pressUp() {
-        game.boardManager.skipEasyPart();
+        game.skipEasyPart();
     }
 
     @Override
     public void pressSpace() {
-        Phase.setActive(!game.isStopped ? Phase.SHOP : Phase.GAME_OVER);
+        Phase.setActive(!game.isStopped() ? Phase.SHOP : Phase.GAME_OVER);
     }
 
     @Override
     public void pressEsc() {
-        Phase.setActive(game.isStopped ? Phase.GAME_OVER : Phase.MAIN);
+        Phase.setActive(game.isStopped() ? Phase.GAME_OVER : Phase.MAIN);
     }
 
     @Override
@@ -93,16 +92,20 @@ public class ControlBoard implements ControlStrategy {
 
     @Override
     public void pressOther() {
-        if (game.isStopped) {
+        if (game.isStopped()) {
             Phase.setActive(Phase.GAME_OVER);
         }
     }
 
     private boolean checkGameOver() {
-        if (game.isStopped) {
+        if (game.isStopped()) {
             Phase.setActive(Phase.GAME_OVER);
             return true;
         }
         return false;
+    }
+
+    public static void setGame(MinesweeperGame game) {
+        ControlBoard.game = game;
     }
 }

@@ -17,7 +17,7 @@ public class ShopItemStatusBar extends InteractiveObject {
 
     public void draw() {
         for (int i = 0; i < item.getRemainingMoves() * 2; i += 2) {
-            game.display.setCellColor(x, y - i, color);
+            game.setDisplayPixel(x, y - i, color);
         }
     }
 }

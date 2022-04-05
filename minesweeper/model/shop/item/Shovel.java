@@ -1,13 +1,15 @@
 package com.javarush.games.minesweeper.model.shop.item;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.ShopItemStatusBar;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 
 public class Shovel extends ShopItem {
-    protected ShopItemStatusBar statusBar;
-    public Shovel() {
+    protected final ShopItemStatusBar statusBar;
+    public Shovel(MinesweeperGame game) {
+        super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL);
         name = "Золотая лопата";
         description = "Следующие 5 шагов\n" +
@@ -25,9 +27,9 @@ public class Shovel extends ShopItem {
 
     @Override
     public void activate() {
-        if (game.isStopped || isActivated) return;
+        if (game.isStopped() || isActivated) return;
         isActivated = true;
-        setExpireMove(game.player.getMoves() + effectDuration);
+        setExpireMove(game.getPlayer().getMoves() + effectDuration);
     }
 
     public void draw(){

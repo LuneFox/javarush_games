@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.Image;
 
 public abstract class ShopItem {
-    protected final static MinesweeperGame game = MinesweeperGame.getInstance();
+    protected final MinesweeperGame game;
     protected Image icon;
     protected String name;
     protected String description;
@@ -15,6 +15,10 @@ public abstract class ShopItem {
     protected int effectDuration;
     protected boolean isActivated;
 
+    public ShopItem(MinesweeperGame game) {
+        this.game = game;
+    }
+
     public abstract void activate();
 
     public void deactivate() {
@@ -22,7 +26,7 @@ public abstract class ShopItem {
     }
 
     public void checkExpiration() {
-        if (game.player.getMoves() >= this.expireMove && this.isActivated) {
+        if (game.getPlayer().getMoves() >= this.expireMove && this.isActivated) {
             PopUpMessage.show(this.name + ": всё");
             this.deactivate();
             this.inStock = 1;
@@ -30,7 +34,7 @@ public abstract class ShopItem {
     }
 
     public int getRemainingMoves() {
-        return expireMove - game.player.getMoves();
+        return expireMove - game.getPlayer().getMoves();
     }
 
     public String getRemainingMovesText() {
@@ -39,7 +43,7 @@ public abstract class ShopItem {
     }
 
     public boolean isUnaffordable() {
-        return (game.player.inventory.money < this.cost);
+        return (game.getPlayer().getInventory().getMoney() < this.cost);
     }
 
     public boolean isUnobtainable() {

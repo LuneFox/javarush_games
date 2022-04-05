@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.model.Phase;
 import static com.javarush.games.minesweeper.Util.inside;
 
 public class ControlShop implements ControlStrategy {
-    final private MinesweeperGame game = MinesweeperGame.getInstance();
+    private static MinesweeperGame game;
 
     @Override
     public void leftClick(int x, int y) {
@@ -33,18 +33,22 @@ public class ControlShop implements ControlStrategy {
     @Override
     @DeveloperOption
     public void pressUp() {
-        game.player.inventory.cheatMoreMoney();
+        game.getPlayer().getInventory().cheatMoreMoney();
     }
 
     @Override
     @DeveloperOption
     public void pressDown() {
-        game.shop.cheatMoreTools();
+        game.getShop().cheatMoreTools();
     }
 
     private boolean clickedOutsideShopWindow(int x, int y) {
         boolean horizontal = inside(x, 0, 9) || inside(x, 90, 99);
         boolean vertical = inside(y, 0, 10) || inside(y, 91, 99);
         return (horizontal || vertical);
+    }
+
+    public static void setGame(MinesweeperGame game) {
+        ControlShop.game = game;
     }
 }

@@ -3,6 +3,9 @@ package com.javarush.games.minesweeper.controller;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
+import com.javarush.games.minesweeper.controller.impl.ControlBoard;
+import com.javarush.games.minesweeper.controller.impl.ControlMain;
+import com.javarush.games.minesweeper.controller.impl.ControlShop;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
@@ -27,6 +30,9 @@ public class Controller {
 
     public Controller(MinesweeperGame game) {
         this.game = game;
+        ControlMain.setGame(game);
+        ControlShop.setGame(game);
+        ControlBoard.setGame(game);
     }
 
     static {
@@ -48,14 +54,14 @@ public class Controller {
     }
 
     public final void leftClick(int x, int y) {
-        game.boardManager.setRecursiveMove(false);
-        game.boardManager.setFlagExplosionAllowed(false);
+        game.setRecursiveMove(false);
+        game.setFlagExplosionAllowed(false);
         selectStrategy(x, y);
         strategy.leftClick(x, y);
     }
 
     public final void rightClick(int x, int y) {
-        game.boardManager.setRecursiveMove(false);
+        game.setRecursiveMove(false);
         selectStrategy(x, y);
         strategy.rightClick(x, y);
     }

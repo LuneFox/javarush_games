@@ -98,7 +98,7 @@ public class ShopSlot extends InteractiveObject {
             return;
         }
 
-        game.shop.sell(item);
+        game.getShop().sell(item);
     }
 
     public void setItem(ShopItem item) {
@@ -107,7 +107,7 @@ public class ShopSlot extends InteractiveObject {
 
     @Override
     public void onRightClick() {
-        game.shop.helpDisplayItem = item;
+        game.getShop().setHelpDisplayItem(item);
         Phase.setActive(Phase.ITEM_HELP);
     }
 }

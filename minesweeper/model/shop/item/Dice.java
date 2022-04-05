@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.item;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.gui.ShopItemStatusBar;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -9,14 +10,15 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
 
 public class Dice extends ShopItem {
-    protected ShopItemStatusBar statusBar;
+    protected final ShopItemStatusBar statusBar;
     private Image onBoardImage;
     private int onBoardImageTimeToLive;
     private int rollResult;
     private int rollsSum = 0;
     private int rollsCount = 0;
 
-    public Dice() {
+    public Dice(MinesweeperGame game) {
+        super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_DICE);
         name = "Кубик удачи";
         description = "Следующие 3 шага\n" +
@@ -39,13 +41,13 @@ public class Dice extends ShopItem {
 
     @Override
     public void activate() {
-        if (game.isStopped || isActivated) return;
+        if (game.isStopped() || isActivated) return;
         isActivated = true;
-        setExpireMove(game.player.getMoves() + effectDuration);
+        setExpireMove(game.getPlayer().getMoves() + effectDuration);
     }
 
     public void draw() {
-        if (game.player.getMoves() > expireMove) return;
+        if (game.getPlayer().getMoves() > expireMove) return;
         statusBar.draw();
         if (onBoardImageTimeToLive <= 0) return;
         onBoardImage.draw();
@@ -65,12 +67,12 @@ public class Dice extends ShopItem {
     }
 
     private void roll(Cell cell) {
-        if (!game.boardManager.isRecursiveMove()) {
+        if (!game.isRecursiveMove()) {
             // One roll per move (affects all recursively opened cells)
             rollResult = game.getRandomNumber(6) + 1;
             setBoardImage(rollResult, cell.x, cell.y);
         }
-        game.player.score.addDiceScore(Options.difficulty * rollResult);
+        game.getPlayer().getScore().addDiceScore(Options.difficulty * rollResult);
         rollsCount++;
         rollsSum += rollResult;
     }

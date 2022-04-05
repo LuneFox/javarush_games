@@ -13,12 +13,13 @@ import java.util.List;
  */
 
 public abstract class View {
-    protected static final MinesweeperGame game = MinesweeperGame.getInstance();
+    protected final MinesweeperGame game;
     private static int gameOverShowDelay;
     private final List<InteractiveObject> linkedObjects;
 
-    public View() {
+    public View(MinesweeperGame game) {
         this.linkedObjects = new ArrayList<>();
+        this.game = game;
     }
 
     public void update() {

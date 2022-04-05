@@ -5,8 +5,7 @@ import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.view.View;
 
 public abstract class InteractiveObject implements Drawable, Clickable {
-    protected static final MinesweeperGame game = MinesweeperGame.getInstance();
-
+    protected static MinesweeperGame game;
     public int x;
     public int y;
     public int width;
@@ -62,5 +61,9 @@ public abstract class InteractiveObject implements Drawable, Clickable {
     public <T extends InteractiveObject> T linkView(View view) {
         view.linkObject(this);
         return (T) this;
+    }
+
+    public static void setGame(MinesweeperGame game) {
+        InteractiveObject.game = game;
     }
 }

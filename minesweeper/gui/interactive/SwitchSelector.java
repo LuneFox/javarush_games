@@ -3,9 +3,9 @@ package com.javarush.games.minesweeper.gui.interactive;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
+import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.gui.image.Image;
 
 /**
  * A fidget that can be turned on and off.

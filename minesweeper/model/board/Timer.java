@@ -31,16 +31,16 @@ public class Timer extends InteractiveObject {
 
     public void draw() {
         if (!Options.timerEnabled) return;
-        if (game.isStopped) return;
-        if (game.boardManager.isFirstMove()) return;
+        if (game.isStopped()) return;
+        if (game.isFirstMove()) return;
         for (int i = x; i < ((time / TIME_LIMIT) * width); i++) {
-            game.display.setCellColor(i, 0, COLORS[0]);
+            game.setDisplayPixel(i, 0, COLORS[0]);
         }
         tick();
     }
 
     public void tick() {
-        if (!game.isStopped && timeIsUp()) {
+        if (!game.isStopped() && timeIsUp()) {
             loseByTimeOut();
         } else {
             countDown();

@@ -6,7 +6,7 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
 
 public class Score {
-    private final MinesweeperGame game;
+    private static MinesweeperGame game;
     private final Player player;
     private int lostScore;
     private int diceScore;
@@ -14,7 +14,6 @@ public class Score {
     private int topScore;
 
     public Score(Player player) {
-        this.game = MinesweeperGame.getInstance();
         this.player = player;
     }
 
@@ -32,7 +31,7 @@ public class Score {
     }
 
     public int getCurrentScore() {
-        int score = game.boardManager.getField().countAllCells(Cell.Filter.SCORED) * Options.difficulty;
+        int score = game.countAllCells(Cell.Filter.SCORED) * Options.difficulty;
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
@@ -41,18 +40,18 @@ public class Score {
     }
 
     public int getMoneyScore() {
-        if (!game.isResultVictory) return 0;
-        return game.player.inventory.money * Options.difficulty;
+        if (!game.isResultVictory()) return 0;
+        return game.getPlayer().getInventory().getMoney() * Options.difficulty;
     }
 
     public int getMinesScore() {
-        if (!game.isResultVictory) return 0;
-        int minesCount = game.boardManager.getField().countAllCells(Cell.Filter.MINED);
+        if (!game.isResultVictory()) return 0;
+        int minesCount = game.countAllCells(Cell.Filter.MINED);
         return minesCount * 20 * Options.difficulty;
     }
 
     public void addTimerScore() {
-        this.timerScore += game.boardManager.getTimer().getScore();
+        this.timerScore += game.getTimerScore();
     }
 
     public void addDiceScore(int amount) {
@@ -85,4 +84,7 @@ public class Score {
         return timerScore;
     }
 
+    public static void setGame(MinesweeperGame game) {
+        Score.game = game;
+    }
 }

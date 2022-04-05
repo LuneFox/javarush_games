@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.item;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -10,7 +11,8 @@ import com.javarush.games.minesweeper.model.board.Cell;
 public class Shield extends ShopItem {
     private final int difficultyModifier = Options.difficulty / 5;
 
-    public Shield() {
+    public Shield(MinesweeperGame game) {
+        super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHIELD);
         name = "Сапёрский щит";
 
@@ -30,9 +32,9 @@ public class Shield extends ShopItem {
         cell.setShielded(true);
         cell.setBackgroundColor(Color.YELLOW);
 
-        game.shop.restock(game.shop.shield, 1);
-        game.player.score.setLostScore(game.player.score.getLostScore() - 150 * difficultyModifier);
-        game.player.incBrokenShields();
+        game.getShop().restock(game.getShop().getShield(), 1);
+        game.getPlayer().getScore().setLostScore(game.getPlayer().getScore().getLostScore() - 150 * difficultyModifier);
+        game.getPlayer().incBrokenShields();
 
         PopUpMessage.show("Щит разрушен!");
         return true;
@@ -40,7 +42,7 @@ public class Shield extends ShopItem {
 
     @Override
     public void activate() {
-        if (game.isStopped || isActivated) return;
+        if (game.isStopped() || isActivated) return;
         isActivated = true;
     }
 }

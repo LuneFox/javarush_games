@@ -1,12 +1,16 @@
 package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.gui.interactive.*;
+import com.javarush.games.minesweeper.gui.interactive.Button;
+import com.javarush.games.minesweeper.gui.interactive.DifficultySelector;
+import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
+import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
@@ -27,6 +31,10 @@ public class ViewOptions extends View {
     final SwitchSelector timerEnabledSelector = Options.timerEnabledSelector.linkView(this);
     final SwitchSelector displayMessageSelector = Options.displayMessageSelector.linkView(this);
     final ThemeSelector themeSelector = Options.themeSelector.linkView(this);
+
+    public ViewOptions(MinesweeperGame game) {
+        super(game);
+    }
 
     @Override
     public void update() {

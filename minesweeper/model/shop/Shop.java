@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.shop.item.*;
 
 import java.util.ArrayList;
@@ -17,15 +18,15 @@ import java.util.List;
 
 public class Shop {
     private final MinesweeperGame game;
-    public final List<ShopSlot> showCaseSlots = new ArrayList<>();
-    public final List<ShopItem> allItems = new ArrayList<>();
-    public Shield shield;
-    public Scanner scanner;
-    public Flag flag;
-    public Shovel shovel;
-    public Dice dice;
-    public Bomb bomb;
-    public ShopItem helpDisplayItem;
+    private final List<ShopSlot> showCaseSlots = new ArrayList<>();
+    private final List<ShopItem> allItems = new ArrayList<>();
+    private Shield shield;
+    private Scanner scanner;
+    private Flag flag;
+    private Shovel shovel;
+    private Dice dice;
+    private Bomb bomb;
+    private ShopItem helpDisplayItem;
 
     public Shop(MinesweeperGame game) {
         this.game = game;
@@ -43,7 +44,7 @@ public class Shop {
 
     public void give(ShopItem item) {
         if (item.getInStock() > 0) {
-            game.player.inventory.add(item);
+            game.getPlayer().getInventory().add(item);
             item.setInStock(item.getInStock() - 1);
         }
     }
@@ -56,12 +57,21 @@ public class Shop {
 
     private void makeTransaction(ShopItem item) {
         item.setInStock(item.getInStock() - 1);
-        game.player.inventory.money -= item.getCost();
-        game.player.inventory.add(item);
+        final Inventory inventory = game.getPlayer().getInventory();
+        inventory.setMoney(inventory.getMoney() - item.getCost());
+        inventory.add(item);
     }
 
     private void activate(ShopItem item) {
         item.activate();
+    }
+
+    public void sellFlag() {
+        sell(flag);
+    }
+
+    public void giveFlag() {
+        give(flag);
     }
 
     public void offerFlag() {
@@ -75,7 +85,7 @@ public class Shop {
             return;
         }
         PopUpMessage.show("Куплен флажок");
-        sell(flag);
+        sellFlag();
     }
 
     @DeveloperOption
@@ -84,19 +94,20 @@ public class Shop {
 
         shovel.activate();
         dice.activate();
-        shovel.setExpireMove(game.player.getMoves() + 99);
-        dice.setExpireMove(game.player.getMoves() + 99);
+        shovel.setExpireMove(game.getPlayer().getMoves() + 99);
+        dice.setExpireMove(game.getPlayer().getMoves() + 99);
         PopUpMessage.show("DEV: 99 TOOLS");
     }
 
     private void createNewItems() {
         allItems.clear();
-        shield = new Shield();
-        scanner = new Scanner();
-        flag = new Flag();
-        shovel = new Shovel();
-        dice = new Dice();
-        bomb = new Bomb();
+        shield = new Shield(game);
+        scanner = new Scanner(game);
+        flag = new Flag(game);
+        shovel = new Shovel(game);
+        dice = new Dice(game);
+        bomb = new Bomb(game);
+
         allItems.addAll(Arrays.asList(shield, scanner, flag, shovel, dice, bomb));
     }
 
@@ -120,5 +131,47 @@ public class Shop {
     public void checkExpiredItems() {
         shovel.checkExpiration();
         dice.checkExpiration();
+    }
+
+    public List<ShopSlot> getShowCaseSlots() {
+        return showCaseSlots;
+    }
+
+    public List<ShopItem> getAllItems() {
+        return allItems;
+    }
+
+    public Shield getShield() {
+        return shield;
+    }
+
+    public Scanner getScanner() {
+        return scanner;
+    }
+
+    public Flag getFlag() {
+        return flag;
+    }
+
+    public Shovel getShovel() {
+        return shovel;
+    }
+
+
+    public Dice getDice() {
+        return dice;
+    }
+
+
+    public Bomb getBomb() {
+        return bomb;
+    }
+
+    public ShopItem getHelpDisplayItem() {
+        return helpDisplayItem;
+    }
+
+    public void setHelpDisplayItem(ShopItem helpDisplayItem) {
+        this.helpDisplayItem = helpDisplayItem;
     }
 }

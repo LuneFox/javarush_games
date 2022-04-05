@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.item;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Options;
@@ -9,16 +10,11 @@ import com.javarush.games.minesweeper.model.board.Cell;
 public class Bomb extends ShopItem {
     private final Image frame;
 
-    public Bomb() {
+    public Bomb(MinesweeperGame game) {
+        super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB);
         name = "Мини-бомба";
-        description = "Бросив бомбочку, вы\n" +
-                "уничтожите закрытую\n" +
-                "клетку на поле.\n" +
-                "Если взорвёте мину,\n" +
-                "соседние мины тоже\n" +
-                "взорвутся по цепи.\n" +
-                "Очков не даёт.";
+        description = "Бросив бомбочку, вы\n" + "уничтожите закрытую\n" + "клетку на поле.\n" + "Если взорвёте мину,\n" + "соседние мины тоже\n" + "взорвутся по цепи.\n" + "Очков не даёт.";
         cost = 6 + Options.difficulty / 10;
         inStock = 1;
         frame = Image.cache.get(ImageType.GUI_SURROUND_FRAME);
@@ -28,20 +24,19 @@ public class Bomb extends ShopItem {
         if (!isActivated) return false;
 
         this.deactivate();
-        game.shop.dice.hide();
-        game.shop.restock(game.shop.bomb, 1);
-        game.shop.restock(game.shop.scanner, 1);
-        game.boardManager.destroyCell(cell.x, cell.y);
+        game.hideDice();
+        game.restockScannerAndBomb();
+        game.destroyCell(cell.x, cell.y);
         return true;
     }
 
     @Override
     public void activate() {
-        if (game.isStopped || isActivated) return;
-        if (game.shop.bomb.isActivated()) return;
+        if (game.isStopped() || isActivated) return;
+        if (game.getShop().getBomb().isActivated()) return;
         isActivated = true;
         frame.replaceColor(Color.RED, 3);
-        game.shop.scanner.inStock = 0;
+        game.getShop().getScanner().setInStock(0);
     }
 
     public void drawFrame() {

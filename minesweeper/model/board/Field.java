@@ -1,9 +1,9 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.gui.image.ImageType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

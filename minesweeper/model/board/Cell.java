@@ -1,9 +1,9 @@
 package com.javarush.games.minesweeper.model.board;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Theme;
-import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
 import java.util.ArrayList;
@@ -174,8 +174,8 @@ public class Cell extends InteractiveObject {
 
     public boolean isIndestructible() {
         boolean isActivated = isOpen || isDestroyed;
-        boolean isUnableToDestroyFlag = isFlagged && !game.boardManager.isFlagExplosionAllowed();
-        return game.isStopped || isActivated || isUnableToDestroyFlag;
+        boolean isUnableToDestroyFlag = isFlagged && !game.isFlagExplosionAllowed();
+        return game.isStopped() || isActivated || isUnableToDestroyFlag;
     }
 
     // Getters, setters

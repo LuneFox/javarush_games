@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -44,10 +45,14 @@ public class ViewGameOver extends View {
     private final Image happyFace = new Image(ImageType.PICTURE_YELLOW_CAT_SMILE);
     private final Image sadFace = new Image(ImageType.PICTURE_YELLOW_CAT_SAD);
 
+    public ViewGameOver(MinesweeperGame game) {
+        super(game);
+    }
+
     @Override
     public void update() {
         if (waitForDelay()) return;
-        game.boardManager.drawField();
+        game.drawField();
         drawBanner();
         drawButtons();
         super.update();
@@ -62,8 +67,8 @@ public class ViewGameOver extends View {
 
     private void drawBanner() {
         victoryWindow.draw(Image.CENTER, Image.CENTER);
-        Image face = game.isResultVictory ? happyFace : sadFace;
-        String result = game.isResultVictory ? "<победа!>" : "<не повезло!>";
+        Image face = game.isResultVictory() ? happyFace : sadFace;
+        String result = game.isResultVictory() ? "<победа!>" : "<не повезло!>";
         face.draw(Image.CENTER, Image.CENTER);
         Printer.print(result, Color.YELLOW, 18, 33);
         Printer.print("счёт: " + Results.totalScore, Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
@@ -72,7 +77,7 @@ public class ViewGameOver extends View {
     private boolean waitForDelay() {
         if (View.getGameOverShowDelay() > 0) {
             View.setGameOverShowDelay(View.getGameOverShowDelay() - 1);
-            game.boardManager.drawField();
+            game.drawField();
             super.update();
             return true;
         }
