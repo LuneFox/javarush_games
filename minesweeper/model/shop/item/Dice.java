@@ -43,11 +43,11 @@ public class Dice extends ShopItem {
     public void activate() {
         if (game.isStopped() || isActivated) return;
         isActivated = true;
-        setExpireMove(game.countMoves() + effectDuration);
+        setExpireMove(game.getPlayer().getMoves() + effectDuration);
     }
 
     public void draw() {
-        if (game.countMoves() > expireMove) return;
+        if (game.getPlayer().getMoves() > expireMove) return;
         statusBar.draw();
         if (onBoardImageTimeToLive <= 0) return;
         onBoardImage.draw();
@@ -72,7 +72,7 @@ public class Dice extends ShopItem {
             rollResult = game.getRandomNumber(6) + 1;
             setBoardImage(rollResult, cell.x, cell.y);
         }
-        game.getScore().addDiceScore(Options.difficulty * rollResult);
+        game.getPlayer().getScore().addDiceScore(Options.difficulty * rollResult);
         rollsCount++;
         rollsSum += rollResult;
     }

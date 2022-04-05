@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.model.player;
 import com.javarush.games.minesweeper.MinesweeperGame;
 
 /**
- * Contains player data like score
+ * Contains player data: inventory, score and some counters
  */
 
 public class Player {
@@ -26,27 +26,27 @@ public class Player {
         inventory.reset();
     }
 
-    public void addMove() {
-        this.moves++;
-    }
-
-    public void addBrokenShield() {
-        this.brokenShields++;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void addMove() {
+        this.moves++;
     }
 
-    public int countMoves() {
+    public int getMoves() {
         return moves;
     }
 
-    public int countBrokenShields() {
+    public void addBrokenShield() {
+        this.brokenShields++;
+    }
+
+    public int getBrokenShields() {
         return brokenShields;
     }
 

@@ -11,9 +11,9 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.player.Inventory;
+import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.player.Player;
-import com.javarush.games.minesweeper.model.player.Results;
+import com.javarush.games.minesweeper.model.Results;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.view.View;
@@ -92,7 +92,7 @@ public class MinesweeperGame extends Game {
     }
 
     public void lose() {
-        hideDice();
+        shop.getDice().hide();
         boardManager.getField().revealMines();
         finish(false);
     }
@@ -105,16 +105,7 @@ public class MinesweeperGame extends Game {
         Results.update();
     }
 
-    public boolean isStopped() {
-        return isStopped;
-    }
-
-    public boolean isResultVictory() {
-        return isResultVictory;
-    }
-
-
-    // Facade: display
+    // Facade
 
     public void setDisplayInterlace(boolean enabled) {
         display.setInterlaceEnabled(enabled);
@@ -124,15 +115,12 @@ public class MinesweeperGame extends Game {
         display.setCellColor(x, y, color);
     }
 
-
-    // Facade: game board
-
     public void drawField() {
         boardManager.drawField();
     }
 
     public Cell getCell(int x, int y) {
-        return boardManager.getField().get()[y][x];
+        return boardManager.getField().getCell(x, y);
     }
 
     public int countAllCells(Cell.Filter filter) {
@@ -159,10 +147,6 @@ public class MinesweeperGame extends Game {
         boardManager.destroyCell(x, y);
     }
 
-    public boolean useScannerOrBomb(Cell cell) {
-        return shop.getBomb().use(cell) || shop.getScanner().use(cell);
-    }
-
     public void autoFlag() {
         boardManager.autoFlag();
     }
@@ -175,10 +159,9 @@ public class MinesweeperGame extends Game {
         boardManager.autoScan();
     }
 
-    public void skipEasy() {
-        boardManager.skipEasyPart();
+    public void autoSolve() {
+        boardManager.autoSolve();
     }
-
 
     public boolean isFirstMove() {
         return boardManager.isFirstMove();
@@ -200,92 +183,28 @@ public class MinesweeperGame extends Game {
         boardManager.setFlagExplosionAllowed(enable);
     }
 
-
-    public int getTimerScore() {
-        return boardManager.getTimer().getScore();
-    }
-
-    public void updateColors() {
+    public void updateOpenedCellsColors() {
         boardManager.updateOpenedCellsColors();
     }
 
-
-    // Facade: shop
+    public Timer getTimer() {
+        return boardManager.getTimer();
+    }
 
     public Shop getShop() {
         return shop;
     }
 
-    public void giveFlagFromShop() {
-        shop.give(shop.getFlag());
+    public Player getPlayer() {
+        return player;
     }
 
-    public void addFlagToInventory() {
-        player.getInventory().add(shop.getFlag());
+    public boolean isStopped() {
+        return isStopped;
     }
 
-    public void removeFlagFromInventory() {
-        player.getInventory().remove(shop.getFlag());
-    }
-
-    public void hideDice() {
-        shop.getDice().hide();
-    }
-
-    public void useDice(Cell cell) {
-        shop.getDice().use(cell);
-    }
-
-    /**
-     * Called during every scanner / bomb usage to allow buying both of them again.
-     */
-    public void shopRestockScannerAndBomb() {
-        shop.restock(shop.getScanner(), 1);
-        shop.restock(shop.getBomb(), 1);
-    }
-
-    public boolean isBombOrScannerActivated() {
-        if (shop.getScanner().isActivated()) return true;
-        return shop.getBomb().isActivated();
-    }
-
-
-    // Facade: player
-
-    public Inventory getInventory() {
-        return player.getInventory();
-    }
-
-    public Score getScore() {
-        return player.getScore();
-    }
-
-    public String getPlayerTitle() {
-        return player.getTitle();
-    }
-
-    public void addMove() {
-        player.addMove();
-    }
-
-    public int countMoves() {
-        return player.countMoves();
-    }
-
-    public void addBrokenShield() {
-        player.addBrokenShield();
-    }
-
-    public int countBrokenShields() {
-        return player.countBrokenShields();
-    }
-
-    public void addMoney(Cell cell) {
-        player.getInventory().addMoney(cell);
-    }
-
-    public boolean playerHasNoFlags() {
-        return player.getInventory().hasNoFlags();
+    public boolean isResultVictory() {
+        return isResultVictory;
     }
 
 

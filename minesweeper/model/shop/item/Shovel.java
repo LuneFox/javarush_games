@@ -29,7 +29,7 @@ public class Shovel extends ShopItem {
     public void activate() {
         if (game.isStopped() || isActivated) return;
         isActivated = true;
-        setExpireMove(game.countMoves() + effectDuration);
+        setExpireMove(game.getPlayer().getMoves() + effectDuration);
     }
 
     public void draw(){

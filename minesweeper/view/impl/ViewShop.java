@@ -10,7 +10,6 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.player.Inventory;
-import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.view.View;
 
 public class ViewShop extends View {
@@ -61,10 +60,10 @@ public class ViewShop extends View {
 
     @Override
     public void update() {
-        linkShowCaseSlots(game.getShop());
+        linkUnlinkedShowCaseSlots();
         drawField();
-        drawShowCase(game.getShop());
-        drawHeader(game.getInventory());
+        drawShowCase();
+        drawHeader();
         drawFooter();
         super.update();
     }
@@ -73,13 +72,14 @@ public class ViewShop extends View {
         game.drawField();
     }
 
-    private void drawShowCase(Shop shop) {
+    private void drawShowCase() {
         showCasePanel.draw(10, 10);
-        shop.getShowCaseSlots().forEach(InteractiveObject::draw);
+        game.getShop().getShowCaseSlots().forEach(InteractiveObject::draw);
         Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
     }
 
-    private void drawHeader(Inventory inventory) {
+    private void drawHeader() {
+        Inventory inventory = game.getPlayer().getInventory();
         headerFooterPanel.draw(10, 10);
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
@@ -92,14 +92,16 @@ public class ViewShop extends View {
 
     private void drawFooter() {
         headerFooterPanel.draw(10, 78);
-        Printer.print("Очки:" + game.getScore().getCurrentScore(), Theme.SHOP_SCORE.getColor(), 13, 80);
-        Printer.print("Шаги:" + game.countMoves(), Theme.SHOP_MOVES.getColor(), 83, 80, true);
+        final int currentScore = game.getPlayer().getScore().getCurrentScore();
+        final int countMoves = game.getPlayer().getMoves();
+        Printer.print("Очки:" + currentScore, Theme.SHOP_SCORE.getColor(), 13, 80);
+        Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 83, 80, true);
     }
 
     // Cannot link at creation time because they don't exist yet
-    private void linkShowCaseSlots(Shop shop) {
+    private void linkUnlinkedShowCaseSlots() {
         if (slotsAreLinked) return;
-        shop.getShowCaseSlots().forEach(this::linkObject);
+        game.getShop().getShowCaseSlots().forEach(this::linkObject);
         slotsAreLinked = true;
     }
 

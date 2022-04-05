@@ -78,7 +78,7 @@ public class Timer extends InteractiveObject {
         return (Options.timerEnabled && time <= 0);
     }
 
-    public int getScore() {
+    public int getScoreBonus() {
         return (Options.timerEnabled) ? ((int) (time / 100) * (Options.difficulty / 5)) : 0;
     }
 

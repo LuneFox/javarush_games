@@ -41,7 +41,7 @@ public class Score {
 
     public int getMoneyScore() {
         if (!game.isResultVictory()) return 0;
-        return game.getInventory().getMoney() * Options.difficulty;
+        return game.getPlayer().getInventory().getMoney() * Options.difficulty;
     }
 
     public int getMinesScore() {
@@ -51,7 +51,7 @@ public class Score {
     }
 
     public void addTimerScore() {
-        this.timerScore += game.getTimerScore();
+        this.timerScore += game.getTimer().getScoreBonus();
     }
 
     public void addDiceScore(int amount) {

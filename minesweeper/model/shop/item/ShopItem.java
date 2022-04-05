@@ -26,7 +26,7 @@ public abstract class ShopItem {
     }
 
     public void checkExpiration() {
-        if (game.countMoves() >= this.expireMove && this.isActivated) {
+        if (game.getPlayer().getMoves() >= this.expireMove && this.isActivated) {
             PopUpMessage.show(this.name + ": всё");
             this.deactivate();
             this.inStock = 1;
@@ -34,7 +34,7 @@ public abstract class ShopItem {
     }
 
     public int getRemainingMoves() {
-        return expireMove - game.countMoves();
+        return expireMove - game.getPlayer().getMoves();
     }
 
     public String getRemainingMovesText() {
@@ -43,7 +43,7 @@ public abstract class ShopItem {
     }
 
     public boolean isUnaffordable() {
-        return (game.getInventory().getMoney() < this.cost);
+        return (game.getPlayer().getInventory().getMoney() < this.cost);
     }
 
     public boolean isUnobtainable() {

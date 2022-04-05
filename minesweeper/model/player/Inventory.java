@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.item.ShopItem;
 
 import java.util.HashMap;
@@ -46,10 +47,11 @@ public class Inventory {
         money = 0;
         items.clear();
 
-        game.getShop().getAllItems().forEach(shopItem -> items.put(shopItem, 0));
+        final Shop shop = game.getShop();
+        shop.getAllItems().forEach(shopItem -> items.put(shopItem, 0));
 
         for (int i = 0; i < 3; i++) {
-            game.giveFlagFromShop();
+            shop.give(shop.getFlag());
         }
     }
 

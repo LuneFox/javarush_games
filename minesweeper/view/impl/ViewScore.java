@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.gui.interactive.PageSelector;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.player.Results;
+import com.javarush.games.minesweeper.model.Results;
 import com.javarush.games.minesweeper.view.View;
 
 public class ViewScore extends View {

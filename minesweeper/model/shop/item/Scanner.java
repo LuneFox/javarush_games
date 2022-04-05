@@ -6,6 +6,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.shop.Shop;
 
 public class Scanner extends ShopItem {
     private final Image frame;
@@ -28,9 +29,14 @@ public class Scanner extends ShopItem {
 
     public boolean use(Cell cell) {
         if (!isActivated) return false;
+
         deactivate();
         game.scanNeighbors(cell.x, cell.y);
-        game.shopRestockScannerAndBomb();
+
+        final Shop shop = game.getShop();
+        shop.restock(shop.getScanner(), 1);
+        shop.restock(shop.getBomb(), 1);
+
         return true;
     }
 
