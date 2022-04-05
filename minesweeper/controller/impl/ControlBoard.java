@@ -47,7 +47,7 @@ public class ControlBoard implements ControlStrategy {
         }
 
         game.swapFlag(gridX, gridY);              // works only on closed tiles
-        game.openSurroundingCells(gridX, gridY);  // works only on open tiles
+        game.openSurrounding(gridX, gridY);  // works only on open tiles
         game.getShop().checkExpiredItems();
     }
 
@@ -72,7 +72,7 @@ public class ControlBoard implements ControlStrategy {
     @Override
     @DeveloperOption
     public void pressUp() {
-        game.skipEasyPart();
+        game.skipEasy();
     }
 
     @Override

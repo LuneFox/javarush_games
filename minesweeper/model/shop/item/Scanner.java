@@ -30,7 +30,7 @@ public class Scanner extends ShopItem {
         if (!isActivated) return false;
         deactivate();
         game.scanNeighbors(cell.x, cell.y);
-        game.restockScannerAndBomb();
+        game.shopRestockScannerAndBomb();
         return true;
     }
 

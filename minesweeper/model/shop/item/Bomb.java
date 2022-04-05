@@ -25,7 +25,7 @@ public class Bomb extends ShopItem {
 
         this.deactivate();
         game.hideDice();
-        game.restockScannerAndBomb();
+        game.shopRestockScannerAndBomb();
         game.destroyCell(cell.x, cell.y);
         return true;
     }
