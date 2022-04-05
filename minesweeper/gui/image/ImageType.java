@@ -43,6 +43,8 @@ public enum ImageType {
     BOARD_DICE_4,
     BOARD_DICE_5,
     BOARD_DICE_6,
+    BOARD_SCANNER_FRAME,
+    BOARD_BOMB_FRAME,
 
     SHOP_HEADER_COIN,
     SHOP_HEADER_PANEL,

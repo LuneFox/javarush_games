@@ -298,6 +298,14 @@ public class ImageStorage {
                 setColors(Color.WHITE, Color.BLACK, Color.BLACK);
                 data = ImageCreator.makeArray(8, "1111111012111213111111131211121311111113121112131111111303333333");
                 break;
+            case BOARD_SCANNER_FRAME:
+                setColors(Color.NONE, Color.NONE, Color.BLUE);
+                data = ImageCreator.createFrame(29, 29, false, true);
+                break;
+            case BOARD_BOMB_FRAME:
+                colors = Color.values();
+                data = new int[][]{{0, 0, 0, 0, 0, 0, 0, 111, 0, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 111, 111, 111, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 5, 5, 0, 111, 0, 5, 5, 0, 0, 0, 0}, {0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0}, {0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0}, {0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0}, {0, 111, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 0}, {111, 111, 111, 5, 5, 5, 0, 40, 0, 5, 5, 5, 111, 111, 111}, {0, 111, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 111, 0}, {0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0}, {0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0}, {0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0, 5, 0, 0, 0}, {0, 0, 0, 0, 5, 5, 0, 5, 0, 5, 5, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 111, 111, 111, 0, 0, 0, 0, 0, 0}, {0, 0, 0, 0, 0, 0, 0, 111, 0, 0, 0, 0, 0, 0, 0}};
+                break;
             case PICTURE_PRIZE_CUP:
                 setColors(Color.GOLD, Color.WHITE, Color.MAROON, Color.KHAKI);
                 data = ImageCreator.makeArray(

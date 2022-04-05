@@ -67,7 +67,7 @@ public class Results {
 
     private static String getShieldsScoreInfo() {
         int count = getPlayer().getBrokenShields();
-        if (count == 0) return "";
+        if (count == 0) return "0";
         return count + "*-" + (150 * (Options.difficulty / 5)) + " = " +
                 getScore().getLostScore();
     }
