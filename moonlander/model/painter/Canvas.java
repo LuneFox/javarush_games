@@ -49,7 +49,7 @@ public class Canvas extends DrawableObject {
                 game.setCellValueEx(x + posX, y + posY,
                         Color.values()[value],
                         (value == 0 || !game.painter.showNumbers) ? "" : String.valueOf(colorMatrix[y][x]),
-                        Color.WHITE);
+                        ColorPalette.getOverlayNumberColor(value));
             }
         }
     }
