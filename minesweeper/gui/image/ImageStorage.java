@@ -132,7 +132,7 @@ public class ImageStorage {
                         {0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0}};
                 break;
             case SHOP_SHOWCASE_FLAG:
-                setColors(Color.BLACK, Color.RED, Color.DARKRED, Color.YELLOW);
+                setColors(Color.BLACK, Theme.FLAG_LIGHT.getColor(), Theme.FLAG_DARK.getColor(), Color.YELLOW);
                 data = ImageCreator.makeArray(
                         "",
                         "  11",
@@ -223,7 +223,7 @@ public class ImageStorage {
                 data = null; // it's dynamic, depends on text size, create a frame
                 break;
             case GUI_ARROW:
-                setColors(Color.YELLOW, Color.WHITE);
+                setColors(Theme.LABEL.getColor(), Color.WHITE);
                 data = ImageCreator.makeArray(5, "11000011000011000011001100110011000");
                 break;
             case GUI_DIFFICULTY_BAR:
@@ -251,11 +251,11 @@ public class ImageStorage {
                 data = ImageCreator.createFrame(20, 20, false, true);
                 break;
             case GUI_VICTORY_WINDOW:
-                setColors(Theme.MAIN_MENU_BG.getColor(), Color.BLACK, Theme.BUTTON_BG.getColor());
+                setColors(Theme.SHOP_BG.getColor(), Color.BLACK, Theme.BUTTON_BG.getColor());
                 data = ImageCreator.createFrame(70, 35, true, true);
                 break;
             case GUI_SWITCH_HANDLE:
-                setColors(Color.RED, Color.BLACK, Color.YELLOW);
+                setColors(Color.RED, Color.BLACK, Theme.LABEL.getColor());
                 data = ImageCreator.createFrame(4, 7, false, true);
                 break;
             case GUI_SWITCH_RAIL:
@@ -369,7 +369,7 @@ public class ImageStorage {
                 data = ImageCreator.makeSprite("011010111011011100111110", 4, 3, 4);
                 break;
             case BOARD_FLAG:
-                setColors(Color.BLACK, Color.RED, Color.DARKRED, Color.YELLOW);
+                setColors(Color.BLACK, Theme.FLAG_LIGHT.getColor(), Theme.FLAG_DARK.getColor(), Color.YELLOW);
                 data = ImageCreator.makeSprite("122001422212233133001000010000", 5, 2, 3);
                 break;
             case BOARD_MINE:

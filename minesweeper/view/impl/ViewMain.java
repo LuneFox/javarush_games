@@ -84,7 +84,7 @@ public class ViewMain extends View {
     public void update() {
         background.draw();
         Printer.print(Options.developerMode ? "Developer Mode" : "JavaRush",
-                Theme.MAIN_MENU_VERSION.getColor(), Image.CENTER, 2);
+                Theme.MAIN_MENU_LABEL.getColor(), Image.CENTER, 2);
         logo.draw(2.8, Image.CENTER, 8);
         drawMenuButtons();
         printTextUnderLogo();
@@ -121,13 +121,13 @@ public class ViewMain extends View {
             quote = quotes[game.getRandomNumber(quotes.length)];
             lastQuoteDate = new Date();
         }
-        Printer.print(quote, Theme.MAIN_MENU_QUOTE_BACK.getColor(), 5, 44); // shadow
+        Printer.print(quote, Theme.TEXT_SHADOW.getColor(), 5, 44); // shadow
         Printer.print(quote, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 4, 44);
     }
 
     private void printResumeGame() {
         String resume = "Игра приостановлена\nESC - продолжить";
-        Printer.print(resume, Theme.MAIN_MENU_QUOTE_BACK.getColor(), 5, 44); // shadow
+        Printer.print(resume, Theme.TEXT_SHADOW.getColor(), 5, 44); // shadow
         Printer.print(resume, Theme.LABEL.getColor(), 4, 44);
     }
 

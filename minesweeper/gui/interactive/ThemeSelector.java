@@ -16,7 +16,7 @@ public class ThemeSelector extends InteractiveObject {
         super(x, y);
         this.themeCursor = new Image(ImageType.GUI_THEME_PALETTE);
         this.themeCursor.restrictColorUpdate(true);
-        themePalettes = new Image[3];
+        themePalettes = new Image[4];
         for (int i = 0; i < themePalettes.length; i++) {
             themePalettes[i] = new Image(ImageType.GUI_THEME_PALETTE);
             themePalettes[i].restrictColorUpdate(true);
@@ -31,6 +31,7 @@ public class ThemeSelector extends InteractiveObject {
         themePalettes[0].replaceColor(Color.RED, FILL);
         themePalettes[1].replaceColor(Color.GREEN, FILL);
         themePalettes[2].replaceColor(Color.BLUE, FILL);
+        themePalettes[3].replaceColor(Color.BURLYWOOD, FILL);
 
         this.themeCursor.replaceColor(Color.NONE, FILL);
         this.themeCursor.replaceColor(Color.YELLOW, FRAME);
@@ -44,9 +45,9 @@ public class ThemeSelector extends InteractiveObject {
         Arrays.stream(themePalettes).forEach(Image::draw);
         Image currentPalette = themePalettes[Theme.getCurrentNumber()];
         if (themeCursor.x < currentPalette.x) {
-            themeCursor.x++;
+            themeCursor.x+=2;
         } else if (themeCursor.x > currentPalette.x) {
-            themeCursor.x--;
+            themeCursor.x-=2;
         }
         themeCursor.draw();
     }

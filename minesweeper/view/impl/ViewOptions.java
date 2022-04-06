@@ -39,21 +39,22 @@ public class ViewOptions extends View {
     @Override
     public void update() {
         background.draw();
-        Printer.print("<настройки>", Color.YELLOW, Printer.CENTER, 2);
+        final int leftPadding = 2;
+        Printer.print("<настройки>", Theme.LABEL.getColor(), Printer.CENTER, 2);
 
-        Printer.print("сложность", 3, Options.difficultySelector.y - 1);
+        Printer.print("сложность", leftPadding, Options.difficultySelector.y - 1);
         difficultySelector.draw();
 
-        Printer.print("покупка флажков", 3, Options.autoBuyFlagsSelector.y - 1);
+        Printer.print("покупка флажков", leftPadding, Options.autoBuyFlagsSelector.y - 1);
         autoBuyFlagsSelector.draw();
 
-        Printer.print("игра на время", 3, Options.timerEnabledSelector.y - 1);
+        Printer.print("игра на время", leftPadding, Options.timerEnabledSelector.y - 1);
         timerEnabledSelector.draw();
 
-        Printer.print("Сообщения:", 3, Options.displayMessageSelector.y - 1);
+        Printer.print("Сообщения:", leftPadding, Options.displayMessageSelector.y - 1);
         displayMessageSelector.draw();
 
-        Printer.print("тема: " + Theme.getCurrentName(), 3, Options.themeSelector.y);
+        Printer.print("тема: " + Theme.getCurrentName(), leftPadding, Options.themeSelector.y);
         themeSelector.draw();
 
         closeButton.draw();

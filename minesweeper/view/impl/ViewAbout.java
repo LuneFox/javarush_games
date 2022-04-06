@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.Button;
@@ -70,7 +71,7 @@ public class ViewAbout extends View {
     }
 
     private void printPage(String title, String contents) {
-        Printer.print(title, Color.YELLOW, Printer.CENTER, 2);
+        Printer.print(title, Theme.LABEL.getColor(), Printer.CENTER, 2);
         Printer.print(contents, 3, 13);
     }
 }

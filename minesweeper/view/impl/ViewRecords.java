@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.Button;
@@ -35,7 +36,7 @@ public class ViewRecords extends View {
     @Override
     public void update() {
         background.draw();
-        Printer.print(RECORDS[0], Color.YELLOW, Printer.CENTER, 2);
+        Printer.print(RECORDS[0], Theme.LABEL.getColor(), Printer.CENTER, 2);
         closeButton.draw();
         drawPrizeCups();
         drawEntries();

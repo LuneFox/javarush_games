@@ -124,7 +124,7 @@ public class Printer {
 
     private static void drawSymbolStroked(char c, Color color, int x, int y) {
         Image symbol = cache.get(c);
-        symbol.replaceColor(Theme.MAIN_MENU_QUOTE_BACK.getColor(), 1);
+        symbol.replaceColor(Theme.TEXT_SHADOW.getColor(), 1);
         symbol.draw(x - 1, y);
         symbol.draw(x + 1, y);
         symbol.draw(x, y - 1);

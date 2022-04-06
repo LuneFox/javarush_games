@@ -15,113 +15,148 @@ public enum Theme {
     MAIN_MENU_BG(new Color[]{
             Color.BROWN,
             Color.MEDIUMSEAGREEN,
-            Color.ROYALBLUE
+            Color.ROYALBLUE,
+            Color.SIENNA
     }),
     MAIN_MENU_BORDER(new Color[]{
             Color.DARKRED,
             Color.DARKGREEN,
-            Color.STEELBLUE
+            Color.STEELBLUE,
+            Color.SADDLEBROWN
     }),
     MAIN_MENU_QUOTE_FRONT(new Color[]{
             Color.SALMON,
             Color.LIGHTGREEN,
-            Color.LIGHTSKYBLUE
+            Color.LIGHTSKYBLUE,
+            Color.NAVAJOWHITE
     }),
-    MAIN_MENU_QUOTE_BACK(new Color[]{
+    TEXT_SHADOW(new Color[]{
             Color.DARKRED,
             Color.FORESTGREEN,
-            Color.DIMGRAY
+            Color.DIMGRAY,
+            Color.SADDLEBROWN
     }),
-    MAIN_MENU_VERSION(new Color[]{
+    MAIN_MENU_LABEL(new Color[]{
             Color.DARKRED,
             Color.FORESTGREEN,
-            Color.CORNFLOWERBLUE
+            Color.CORNFLOWERBLUE,
+            Color.PERU
     }),
     BUTTON_BG(new Color[]{
             Color.DARKRED,
             Color.DARKGREEN,
-            Color.STEELBLUE
+            Color.STEELBLUE,
+            Color.DIMGREY
     }),
     BUTTON_BORDER(new Color[]{
             Color.SALMON,
             Color.LIGHTGREEN,
-            Color.LIGHTSKYBLUE
+            Color.LIGHTSKYBLUE,
+            Color.DARKGREY
     }),
     LABEL(new Color[]{
             Color.YELLOW,
             Color.YELLOW,
             Color.YELLOW,
+            Color.KHAKI
     }),
     SHOP_HEADER_FOOTER(new Color[]{
             Color.MAROON,
             Color.MEDIUMSEAGREEN,
-            Color.ROYALBLUE
+            Color.ROYALBLUE,
+            Color.DIMGREY
     }),
     SHOP_BORDER(new Color[]{
             Color.SALMON,
             Color.DARKGREEN,
-            Color.DODGERBLUE
+            Color.DODGERBLUE,
+            Color.DARKGREY
     }),
     SHOP_BG(new Color[]{
             Color.BROWN,
             Color.DARKSLATEGRAY,
-            Color.CORNFLOWERBLUE
+            Color.CORNFLOWERBLUE,
+            Color.DARKSLATEGRAY
     }),
     SHOP_TITLE(new Color[]{
             Color.SALMON,
             Color.SLATEGRAY,
-            Color.LIGHTSKYBLUE
+            Color.LIGHTSKYBLUE,
+            Color.SLATEGRAY,
     }),
     SHOP_SCORE(new Color[]{
             Color.SALMON,
             Color.LIGHTGREEN,
-            Color.LIGHTSKYBLUE
+            Color.LIGHTSKYBLUE,
+            Color.GAINSBORO
     }),
     SHOP_MOVES(new Color[]{
             Color.INDIANRED,
             Color.PALEGREEN,
-            Color.CORNFLOWERBLUE
+            Color.CORNFLOWERBLUE,
+            Color.LIGHTGREY
     }),
     SHOP_ITEM_BG(new Color[]{
             Color.DARKSALMON,
             Color.SEAGREEN,
-            Color.STEELBLUE
+            Color.STEELBLUE,
+            Color.DARKGREY
     }),
     SHOP_ITEM_FRAME_AVAILABLE(new Color[]{
             Color.ANTIQUEWHITE,
             Color.LIGHTGREEN,
-            Color.LIGHTBLUE
+            Color.LIGHTBLUE,
+            Color.ANTIQUEWHITE,
     }),
     SHOP_SIGN_NO(new Color[]{
             Color.ANTIQUEWHITE,
             Color.PINK,
-            Color.PINK
+            Color.PINK,
+            Color.ANTIQUEWHITE
     }),
     CELL_LIGHT(new Color[]{
             Color.BLANCHEDALMOND,
             Color.HONEYDEW,
-            Color.LIGHTBLUE
+            Color.LIGHTBLUE,
+            Color.IVORY,
     }),
     CELL_BG_DOWN(new Color[]{
             Color.SANDYBROWN,
             Color.DARKSEAGREEN,
-            Color.CORNFLOWERBLUE
+            Color.CORNFLOWERBLUE,
+            Color.TAN
     }),
     CELL_BG_UP(new Color[]{
             Color.BURLYWOOD,
             Color.LIGHTGREEN,
-            Color.LIGHTSKYBLUE
+            Color.LIGHTSKYBLUE,
+            Color.BISQUE,
     }),
     CELL_SHADOW(new Color[]{
             Color.SADDLEBROWN,
             Color.SEAGREEN,
-            Color.STEELBLUE
+            Color.STEELBLUE,
+            Color.PERU
     }),
     CELL_SCANNED(new Color[]{
             Color.ORANGE,
             Color.MEDIUMSPRINGGREEN,
-            Color.DEEPSKYBLUE
-    });
+            Color.DEEPSKYBLUE,
+            Color.ORANGE,
+    }),
+    FLAG_LIGHT(new Color[]{
+            Color.RED,
+            Color.LIMEGREEN,
+            Color.DARKTURQUOISE,
+            Color.MEDIUMPURPLE
+    }),
+    FLAG_DARK(new Color[]{
+            Color.DARKRED,
+            Color.FORESTGREEN,
+            Color.DARKCYAN,
+            Color.SLATEBLUE
+    }),
+    ;
 
     private static final int THEMES_COUNT = MAIN_MENU_BG.colors.length;
     private static final Map<Integer, String> NAMES;
@@ -133,7 +168,8 @@ public enum Theme {
         NAMES.put(0, "СССР");
         NAMES.put(1, "МЯТА");
         NAMES.put(2, "НЕБО");
-        currentNumber = 0;
+        NAMES.put(3, "ДЮНА");
+        currentNumber = 3;
     }
 
     Theme(Color[] colors) {
@@ -147,7 +183,7 @@ public enum Theme {
 
     public static void set(int themeNumber, MinesweeperGame game) {
         Theme.currentNumber = themeNumber;
-        Image.updateAllImagesColors();
+        Image.updateAllImages();
         game.updateOpenedCellsColors();
     }
 

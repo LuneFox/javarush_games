@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.Button;
@@ -69,7 +70,7 @@ public class ViewGameOver extends View {
         victoryWindow.draw(Image.CENTER, Image.CENTER);
         Image face = game.isResultVictory() ? happyFace : sadFace;
         face.draw(Image.CENTER, Image.CENTER);
-        Printer.print(Results.get("result"), Color.YELLOW, 18, 33);
+        Printer.print(Results.get("result"), Theme.LABEL.getColor(), 18, 33);
         Printer.print("счёт: " + Results.get("total"), Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
     }
 
