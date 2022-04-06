@@ -23,7 +23,7 @@ public class Canvas extends DrawableObject {
         this.editAreaX = DEFAULT_EDIT_AREA_SIZE;
         this.editAreaY = DEFAULT_EDIT_AREA_SIZE;
         backgroundColors = new LinkedList<>(Arrays.asList(
-                Color.GRAY,
+                Color.GREY,
                 Color.DARKGREY,
                 Color.SILVER,
                 Color.LIGHTGREY,

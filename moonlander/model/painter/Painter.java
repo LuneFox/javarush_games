@@ -86,10 +86,13 @@ public class Painter implements Drawable {
 
 
     public String getColorsInfo() {
-        return "Основной цвет: " + Color.values()[primaryColor].name() + " (#" + primaryColor + ")\n" +
-                "Вторичный цвет: " + Color.values()[secondaryColor].name() + " (#" + secondaryColor + ")\n" +
-                "Прозрачный цвет (фон): " + canvas.getBackgroundColor().name() +
-                " (#" + canvas.getBackgroundColor().ordinal() + ")" +
+        final String primaryColorName = Color.values()[primaryColor].name();
+        final String secondaryColorName = Color.values()[secondaryColor].name();
+        final String backgroundColorName = canvas.getBackgroundColor().name();
+        return "Основной цвет: " + primaryColorName + " (#" + primaryColor + "), " + Util.COLOR_MAP.getOrDefault(primaryColorName, "#??????") + "\n" +
+                "Вторичный цвет: " + secondaryColorName + " (#" + secondaryColor + "), " + Util.COLOR_MAP.getOrDefault(secondaryColorName, "#??????") + "\n" +
+                "Прозрачный цвет (фон): " + backgroundColorName +
+                " (#" + canvas.getBackgroundColor().ordinal() + "), " + Util.COLOR_MAP.getOrDefault(backgroundColorName, "#??????") +
                 "\n\nОсновной цвет привязан к левому клику." +
                 "\nВторичный цвет привязан к правому клику." +
                 "\nЛевый клик по этой области поменяет цвет фона.";
