@@ -183,7 +183,7 @@ public enum Theme {
 
     public static void set(int themeNumber, MinesweeperGame game) {
         Theme.currentNumber = themeNumber;
-        Image.updateAllImages();
+        Image.updateColors();
         game.updateOpenedCellsColors();
     }
 

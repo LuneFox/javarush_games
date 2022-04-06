@@ -38,12 +38,10 @@ public class Image extends InteractiveObject {
     }
 
     // Need this to fully change color theme
-    public static void updateAllImages() {
+    public static void updateColors() {
         for (Image image : allImages) {
             if (image.updatingColorRestricted) continue;
             ImageStorage storage = new ImageStorage(image.type);
-            int[][] data = storage.getData();
-            if (data != null) image.matrix = data;
             image.colors = storage.getColors();
         }
     }
