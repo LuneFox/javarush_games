@@ -34,16 +34,13 @@ public class FlagManager {
 
     void returnFlagToShop(Cell cell) {
         if (!cell.isFlagged()) return;
-        final Shop shop = game.getShop();
-        shop.restock(shop.getFlag(), 1);
+        game.getShop().getFlag().restock();
         cell.setFlagged(false);
     }
 
     private void returnFlagToInventory(Cell cell) {
-        final Inventory inventory = game.getPlayer().getInventory();
         final Shop shop = game.getShop();
-
-        inventory.add(shop.getFlag());
+        game.getPlayer().getInventory().put(shop.getFlag());
         if (cell.isMined()) {
             cell.setSprite(ImageType.BOARD_MINE);
         } else if (cell.isNumerable()) {
@@ -58,8 +55,8 @@ public class FlagManager {
         final Inventory inventory = game.getPlayer().getInventory();
         final Shop shop = game.getShop();
 
-        if (inventory.hasNoFlags()) shop.offerFlag();
-        if (inventory.hasNoFlags()) return;
+        if (inventory.countFlags() == 0) shop.offerFlag();
+        if (inventory.countFlags() == 0) return;
         if (cell.isFlagged()) return;
         inventory.remove(game.getShop().getFlag());
         cell.setSprite(ImageType.BOARD_FLAG);

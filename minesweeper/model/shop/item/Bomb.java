@@ -41,8 +41,8 @@ public class Bomb extends ShopItem {
 
         final Shop shop = game.getShop();
         shop.getDice().hide();
-        shop.restock(shop.getScanner(), 1);
-        shop.restock(shop.getBomb(), 1);
+        restock();
+        shop.getScanner().restock();
 
         return true;
     }
@@ -52,7 +52,7 @@ public class Bomb extends ShopItem {
         if (game.isStopped() || isActivated) return;
         if (game.getShop().getBomb().isActivated()) return;
         isActivated = true;
-        game.getShop().getScanner().setInStock(0);
+        game.getShop().getScanner().empty();
     }
 
     public void drawFrame() {

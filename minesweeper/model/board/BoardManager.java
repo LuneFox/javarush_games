@@ -69,7 +69,7 @@ public class BoardManager {
         final Dice dice = shop.getDice();
         final Inventory inventory = game.getPlayer().getInventory();
         dice.use(cell);
-        inventory.addMoney(cell);
+        collectMoney(cell);
         recursiveOpen(cell);
         checkVictory();
     }
@@ -80,6 +80,16 @@ public class BoardManager {
             List<Cell> neighbors = field.getNeighborCells(cell, Cell.Filter.CLOSED, false);
             neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
+    }
+
+    private void collectMoney(Cell cell) {
+        int collectedMoney = cell.getCountMinedNeighbors();
+        if (game.getShop().getShovel().isActivated()) {
+            collectedMoney *= 2;
+            cell.makeSpriteYellow();
+        }
+        Inventory inventory = game.getPlayer().getInventory();
+        inventory.addMoney(collectedMoney);
     }
 
     // Quick bruteforce implementation, but it makes first move very convenient
@@ -176,7 +186,7 @@ public class BoardManager {
     private void placeFlagsForPlayer(int x, int y) {
         field.getNeighborCells(field.getCell(x, y), Cell.Filter.CLOSED, true).forEach(closedCell -> {
             final Inventory inventory = game.getPlayer().getInventory();
-            if (inventory.hasNoFlags()) {
+            if (inventory.countFlags() == 0) {
                 final Shop shop = game.getShop();
                 shop.give(shop.getFlag());
             }
@@ -234,7 +244,7 @@ public class BoardManager {
             if (dangerousNeighbors.size() == closedNeighbors.size()) {
                 dangerousNeighbors.forEach(dangerousNeighbor -> {
                     if (dangerousNeighbor.isFlagged()) return;
-                    if (game.getPlayer().getInventory().hasNoFlags()) {
+                    if (game.getPlayer().getInventory().countFlags() == 0) {
                         game.getShop().sellFlag();
                     }
                     flagManager.swapFlag(dangerousNeighbor.x, dangerousNeighbor.y);

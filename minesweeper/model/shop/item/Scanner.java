@@ -46,8 +46,8 @@ public class Scanner extends ShopItem {
         game.scanNeighbors(cell.x, cell.y);
 
         final Shop shop = game.getShop();
-        shop.restock(shop.getScanner(), 1);
-        shop.restock(shop.getBomb(), 1);
+        restock();
+        shop.getBomb().restock();
 
         return true;
     }
@@ -57,7 +57,7 @@ public class Scanner extends ShopItem {
         if (game.isStopped() || isActivated) return;
         if (game.getShop().getBomb().isActivated) return;
         isActivated = true;
-        game.getShop().getBomb().setInStock(0);
+        game.getShop().getBomb().empty();
     }
 
     public void drawFrame() {

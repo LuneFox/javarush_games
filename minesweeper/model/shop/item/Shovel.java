@@ -8,6 +8,7 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 
 public class Shovel extends ShopItem {
     protected final ShopItemStatusBar statusBar;
+
     public Shovel(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL);
@@ -29,10 +30,10 @@ public class Shovel extends ShopItem {
     public void activate() {
         if (game.isStopped() || isActivated) return;
         isActivated = true;
-        setExpireMove(game.getPlayer().getMoves() + effectDuration);
+        expirationMove = game.getPlayer().getMoves() + effectDuration;
     }
 
-    public void draw(){
+    public void draw() {
         statusBar.draw();
     }
 }

@@ -7,7 +7,6 @@ import com.javarush.games.minesweeper.model.InteractiveObject;
 /**
  * Logical display to flatten layers and increase the drawing speed, allows making effects.
  */
-
 public class Display extends InteractiveObject {
     private final Pixel[][] matrix;
     private boolean interlacePhase;

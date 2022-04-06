@@ -1,5 +1,6 @@
 package com.javarush.games.minesweeper.model.shop.item;
 
+import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -11,7 +12,7 @@ public abstract class ShopItem {
     protected String description;
     protected int cost;
     protected int inStock;
-    protected int expireMove;
+    protected int expirationMove;
     protected int effectDuration;
     protected boolean isActivated;
 
@@ -22,51 +23,68 @@ public abstract class ShopItem {
     public abstract void activate();
 
     public void deactivate() {
-        this.isActivated = false;
+        isActivated = false;
     }
 
     public void checkExpiration() {
-        if (game.getPlayer().getMoves() >= this.expireMove && this.isActivated) {
-            PopUpMessage.show(this.name + ": всё");
-            this.deactivate();
-            this.inStock = 1;
+        if ((game.getPlayer().getMoves() >= expirationMove) && isActivated) {
+            PopUpMessage.show(name + ": всё");
+            deactivate();
+            restock();
         }
     }
 
-    public int getRemainingMoves() {
-        return expireMove - game.getPlayer().getMoves();
+    public int countRemainingMoves() {
+        return expirationMove - game.getPlayer().getMoves();
     }
 
     public String getRemainingMovesText() {
-        if (expireMove == 0) return "";
-        return Integer.toString(getRemainingMoves());
+        if (expirationMove == 0) return "";
+        return Integer.toString(countRemainingMoves());
     }
 
     public boolean isUnaffordable() {
-        return (game.getPlayer().getInventory().getMoney() < this.cost);
+        return (game.getPlayer().getInventory().getMoney() < cost);
     }
 
     public boolean isUnobtainable() {
-        return (isUnaffordable() || this.inStock <= 0);
+        return (isUnaffordable() || inStock <= 0);
     }
 
+    public int inStock() {
+        return inStock;
+    }
+
+    public void empty() {
+        inStock = 0;
+    }
+
+    public void restock() {
+        inStock++;
+    }
+
+    public void take() {
+        inStock--;
+    }
+
+    @DeveloperOption
+    public void cheat99() {
+        activate();
+        expirationMove = game.getPlayer().getMoves() + 99;
+    }
 
     // Getters, setters, etc.
 
-    public void setExpireMove(int expireMove) {
-        this.expireMove = expireMove;
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public Image getIcon() {
         return icon;
-    }
-
-    public int getInStock() {
-        return inStock;
-    }
-
-    public void setInStock(int inStock) {
-        this.inStock = inStock;
     }
 
     public boolean isActivated() {
@@ -75,13 +93,5 @@ public abstract class ShopItem {
 
     public int getCost() {
         return cost;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getDescription() {
-        return description;
     }
 }

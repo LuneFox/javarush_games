@@ -56,7 +56,7 @@ public enum Phase {
         game.setDisplayInterlace(false);
         PageSelector.allSelectors.forEach(PageSelector::reset);
         final Inventory inventory = game.getPlayer().getInventory();
-        inventory.setDisplayMoney(inventory.getMoney());
+        inventory.snapDisplayMoney();
     }
 
     public static Phase getActive() {

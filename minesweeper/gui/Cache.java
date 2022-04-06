@@ -8,7 +8,6 @@ import java.util.Map;
  * @param <K> key
  * @param <V> value
  */
-
 public abstract class Cache<K, V> {
     protected final Map<K, V> cache;
 

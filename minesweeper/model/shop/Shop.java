@@ -5,7 +5,6 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.shop.item.*;
 
 import java.util.ArrayList;
@@ -38,14 +37,9 @@ public class Shop {
         fillSlots();
     }
 
-    public void restock(ShopItem item, int amount) {
-        item.setInStock(item.getInStock() + amount);
-    }
-
     public void give(ShopItem item) {
-        if (item.getInStock() > 0) {
-            game.getPlayer().getInventory().add(item);
-            item.setInStock(item.getInStock() - 1);
+        if (item.inStock() > 0) {
+            sendToPlayerInventory(item);
         }
     }
 
@@ -56,10 +50,13 @@ public class Shop {
     }
 
     private void makeTransaction(ShopItem item) {
-        item.setInStock(item.getInStock() - 1);
-        final Inventory inventory = game.getPlayer().getInventory();
-        inventory.setMoney(inventory.getMoney() - item.getCost());
-        inventory.add(item);
+        game.getPlayer().pay(item.getCost());
+        sendToPlayerInventory(item);
+    }
+
+    private void sendToPlayerInventory(ShopItem item) {
+        item.take();
+        game.getPlayer().getInventory().put(item);
     }
 
     private void activate(ShopItem item) {
@@ -71,29 +68,24 @@ public class Shop {
     }
 
     public void offerFlag() {
-        if (!Options.autoBuyFlagsSelector.isEnabled() && flag.getInStock() > 0) {
+        if (!Options.autoBuyFlagsSelector.isEnabled() && flag.inStock() > 0) {
             PopUpMessage.show("Купите флажок!");
             Phase.setActive(Phase.SHOP);
             return;
         }
+
+        if (game.getPlayer().getInventory().countFlags() == 0 && game.getShop().getFlag().inStock() == 0) {
+            PopUpMessage.show("Флажки кончились");
+            return;
+        }
+
         if (flag.isUnobtainable()) {
             PopUpMessage.show("Невозможно купить!");
             return;
         }
+
         PopUpMessage.show("Куплен флажок");
         sellFlag();
-    }
-
-    @DeveloperOption
-    public void cheatMoreTools() {
-        if (!Options.developerMode) return;
-
-        shovel.activate();
-        dice.activate();
-        final int moves = game.getPlayer().getMoves();
-        shovel.setExpireMove(moves + 99);
-        dice.setExpireMove(moves + 99);
-        PopUpMessage.show("DEV: 99 TOOLS");
     }
 
     private void createNewItems() {
@@ -130,12 +122,16 @@ public class Shop {
         dice.checkExpiration();
     }
 
-    public List<ShopSlot> getShowCaseSlots() {
-        return showCaseSlots;
+    @DeveloperOption
+    public void cheatMoreTools() {
+        if (!Options.developerMode) return;
+        shovel.cheat99();
+        dice.cheat99();
+        PopUpMessage.show("DEV: 99 TOOLS");
     }
 
-    public List<ShopItem> getAllItems() {
-        return allItems;
+    public List<ShopSlot> getShowCaseSlots() {
+        return showCaseSlots;
     }
 
     public Shield getShield() {

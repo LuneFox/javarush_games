@@ -33,7 +33,7 @@ public class Shield extends ShopItem {
         cell.setShielded(true);
         cell.setBackgroundColor(Color.YELLOW);
 
-        game.getShop().restock(game.getShop().getShield(), 1);
+        restock();
         final Score score = game.getPlayer().getScore();
         score.setLostScore(score.getLostScore() - 150 * difficultyModifier);
         game.getPlayer().addBrokenShield();

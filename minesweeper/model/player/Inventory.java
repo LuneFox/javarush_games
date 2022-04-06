@@ -4,7 +4,6 @@ import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.item.ShopItem;
 
@@ -12,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Keeps track of what player currently has in his bag. Can add, remove, reset items or check their count.
+ * Keeps track of what player currently has in his bag. Can put, remove, reset items or check their count.
  */
 
 public class Inventory {
@@ -25,72 +24,61 @@ public class Inventory {
         this.game = game;
     }
 
-    public void add(ShopItem item) {
-        items.put(item, items.get(item) + 1);
+    public void put(ShopItem item) {
+        items.putIfAbsent(item, 0);
+        items.put(item, count(item) + 1);
+    }
+
+    public int countFlags() {
+        return count(game.getShop().getFlag());
     }
 
     public void remove(ShopItem item) {
-        if (items.get(item) <= 0) return;
-        items.put(item, items.get(item) - 1);
-    }
-
-    public void addMoney(Cell cell) {
-        int moneyEarned = cell.getCountMinedNeighbors();
-        if (game.getShop().getShovel().isActivated()) {
-            moneyEarned *= 2;
-            cell.makeNumberYellow();
-        }
-        money += moneyEarned;
+        int count = count(item);
+        if (count <= 0) return;
+        items.put(item, count - 1);
     }
 
     public void reset() {
         money = 0;
         items.clear();
-
         final Shop shop = game.getShop();
-        shop.getAllItems().forEach(shopItem -> items.put(shopItem, 0));
-
         for (int i = 0; i < 3; i++) {
             shop.give(shop.getFlag());
         }
-    }
-
-    // Animation. With each view update money on display slowly approaches the real amount that player has
-    public void moneyApproach() {
-        if (displayMoney < money) displayMoney++;
-        else if (displayMoney > money) displayMoney--;
-    }
-
-    @DeveloperOption
-    public void cheatMoreMoney() {
-        if (!Options.developerMode) return;
-
-        money = 99;
-        PopUpMessage.show("DEV: 99 GOLD");
-    }
-
-    public int getCount(ShopItem item) {
-        return items.get(item);
-    }
-
-    public boolean hasNoFlags() {
-        ShopItem flag = game.getShop().getFlag();
-        return items.get(flag) == 0;
     }
 
     public int getMoney() {
         return money;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
+    public void addMoney(int amount) {
+        money += amount;
     }
 
-    public int getDisplayMoney() {
+    void removeMoney(int amount) {
+        money -= amount;
+    }
+
+    public int shiftDisplayMoney() {
+        if (displayMoney < money) displayMoney++;
+        else if (displayMoney > money) displayMoney--;
         return displayMoney;
     }
 
-    public void setDisplayMoney(int displayMoney) {
-        this.displayMoney = displayMoney;
+    public void snapDisplayMoney() {
+        displayMoney = money;
+    }
+
+    @DeveloperOption
+    public void cheatMoney() {
+        if (!Options.developerMode) return;
+
+        money = 99;
+        PopUpMessage.show("DEV: 99 GOLD");
+    }
+
+    private int count(ShopItem item) {
+        return items.getOrDefault(item, 0);
     }
 }

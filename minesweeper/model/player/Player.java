@@ -26,6 +26,10 @@ public class Player {
         inventory.reset();
     }
 
+    public void pay(int amount) {
+        inventory.removeMoney(amount);
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }

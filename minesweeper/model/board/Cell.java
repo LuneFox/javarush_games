@@ -107,7 +107,7 @@ public class Cell extends InteractiveObject {
         this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
 
-    public void makeNumberYellow() {
+    public void makeSpriteYellow() {
         if (isNumerable() && countMinedNeighbors > 0) {
             sprite.replaceColor(Color.YELLOW, 1);
         }

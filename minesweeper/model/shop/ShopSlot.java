@@ -49,7 +49,7 @@ public class ShopSlot extends InteractiveObject {
         final int right = x + 14;
         final int bottom = y + 10;
 
-        if (item.getInStock() > 0 && !item.isActivated()) {
+        if (item.inStock() > 0 && !item.isActivated()) {
             Printer.print("<" + item.getCost() + ">", Color.YELLOW, right, bottom, true);
         } else if (item.isActivated()) {
             Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, true);
@@ -87,8 +87,8 @@ public class ShopSlot extends InteractiveObject {
             return;
         }
 
-        if (item.getInStock() <= 0) {
-            PopUpMessage.show("Не продаётся");
+        if (item.inStock() <= 0) {
+            PopUpMessage.show("Нет в продаже");
             return;
         }
 

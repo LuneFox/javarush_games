@@ -85,9 +85,8 @@ public class ViewShop extends View {
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
         Printer.print("" + game.countAllCells(Cell.Filter.DANGEROUS), 25, 12);
-        Printer.print("" + inventory.getCount(game.getShop().getFlag()), 52, 12);
-        Printer.print("" + inventory.getDisplayMoney(), 76 + moneyShakeHelper.getShift(), 12);
-        inventory.moneyApproach();
+        Printer.print("" + inventory.countFlags(), 52, 12);
+        Printer.print("" + inventory.shiftDisplayMoney(), 76 + moneyShakeHelper.getShift(), 12);
     }
 
     private void drawFooter() {

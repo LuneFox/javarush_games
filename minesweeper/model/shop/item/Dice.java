@@ -43,11 +43,11 @@ public class Dice extends ShopItem {
     public void activate() {
         if (game.isStopped() || isActivated) return;
         isActivated = true;
-        setExpireMove(game.getPlayer().getMoves() + effectDuration);
+       expirationMove = game.getPlayer().getMoves() + effectDuration;
     }
 
     public void draw() {
-        if (game.getPlayer().getMoves() > expireMove) return;
+        if (game.getPlayer().getMoves() > expirationMove) return;
         statusBar.draw();
         if (onBoardImageTimeToLive <= 0) return;
         onBoardImage.draw();
