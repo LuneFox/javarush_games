@@ -67,7 +67,6 @@ public class BoardManager {
 
         onManualMove();
         final Dice dice = shop.getDice();
-        final Inventory inventory = game.getPlayer().getInventory();
         dice.use(cell);
         collectMoney(cell);
         recursiveOpen(cell);

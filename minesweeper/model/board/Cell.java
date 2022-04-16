@@ -169,7 +169,7 @@ public class Cell extends InteractiveObject {
     }
 
     public boolean isNumerable() {
-        return !(isMined || isDestroyed || isFlagged || isShop);
+        return !(isMined || isDestroyed || isShop);
     }
 
     public boolean isIndestructible() {

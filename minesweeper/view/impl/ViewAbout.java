@@ -1,6 +1,5 @@
 package com.javarush.games.minesweeper.view.impl;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
