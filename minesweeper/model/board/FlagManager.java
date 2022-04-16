@@ -41,6 +41,8 @@ public class FlagManager {
     private void returnFlagToInventory(Cell cell) {
         final Shop shop = game.getShop();
         game.getPlayer().getInventory().put(shop.getFlag());
+        cell.setFlagged(false);
+
         if (cell.isMined()) {
             cell.setSprite(ImageType.BOARD_MINE);
         } else if (cell.isNumerable()) {
@@ -48,7 +50,6 @@ public class FlagManager {
         } else {
             cell.setSprite(ImageType.NONE);
         }
-        cell.setFlagged(false);
     }
 
     private void placeFlagOnBoard(Cell cell) {
