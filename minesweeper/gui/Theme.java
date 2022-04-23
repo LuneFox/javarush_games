@@ -64,7 +64,7 @@ public enum Theme {
             Color.MAROON,
             Color.MEDIUMSEAGREEN,
             Color.ROYALBLUE,
-            Color.DIMGREY
+            Color.SIENNA
     }),
     SHOP_BORDER(new Color[]{
             Color.SALMON,
@@ -76,13 +76,13 @@ public enum Theme {
             Color.BROWN,
             Color.DARKSLATEGRAY,
             Color.CORNFLOWERBLUE,
-            Color.DARKSLATEGRAY
+            Color.SANDYBROWN
     }),
     SHOP_TITLE(new Color[]{
             Color.SALMON,
             Color.SLATEGRAY,
             Color.LIGHTSKYBLUE,
-            Color.SLATEGRAY,
+            Color.LEMONCHIFFON
     }),
     SHOP_SCORE(new Color[]{
             Color.SALMON,
@@ -100,7 +100,7 @@ public enum Theme {
             Color.DARKSALMON,
             Color.SEAGREEN,
             Color.STEELBLUE,
-            Color.DARKGREY
+            Color.SILVER
     }),
     SHOP_ITEM_FRAME_AVAILABLE(new Color[]{
             Color.ANTIQUEWHITE,

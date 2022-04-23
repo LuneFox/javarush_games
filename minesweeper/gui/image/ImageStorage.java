@@ -251,7 +251,7 @@ public class ImageStorage {
                 data = ImageCreator.createFrame(20, 20, false, true);
                 break;
             case GUI_VICTORY_WINDOW:
-                setColors(Theme.SHOP_BG.getColor(), Color.BLACK, Theme.BUTTON_BG.getColor());
+                setColors(Theme.SHOP_HEADER_FOOTER.getColor(), Color.BLACK, Theme.BUTTON_BG.getColor());
                 data = ImageCreator.createFrame(70, 35, true, true);
                 break;
             case GUI_SWITCH_HANDLE:
