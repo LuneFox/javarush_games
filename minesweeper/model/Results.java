@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.CellFilter;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.item.Dice;
@@ -41,14 +41,14 @@ public class Results {
     }
 
     private static String getCellScoreInfo() {
-        int countCells = game.countAllCells(Cell.Filter.SCORED);
+        int countCells = game.countAllCells(CellFilter.SCORED);
         return countCells + "*" + Options.difficulty + " = " +
                 countCells * Options.difficulty;
     }
 
     private static String getMinesScoreInfo() {
         if (!game.isResultVictory()) return "не учтено";
-        int countMines = game.countAllCells(Cell.Filter.MINED);
+        int countMines = game.countAllCells(CellFilter.MINED);
         return countMines + "*" + 20 * Options.difficulty + " = " +
                 countMines * 20 * Options.difficulty;
     }

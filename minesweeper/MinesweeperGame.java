@@ -11,6 +11,7 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.CellFilter;
 import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.Results;
@@ -123,7 +124,7 @@ public class MinesweeperGame extends Game {
         return boardManager.getField().getCell(x, y);
     }
 
-    public int countAllCells(Cell.Filter filter) {
+    public int countAllCells(CellFilter filter) {
         return boardManager.getField().countAllCells(filter);
     }
 
@@ -183,8 +184,8 @@ public class MinesweeperGame extends Game {
         boardManager.setFlagExplosionAllowed(enable);
     }
 
-    public void updateOpenedCellsColors() {
-        boardManager.updateOpenedCellsColors();
+    public void updateOpenedCellsVisuals() {
+        boardManager.updateOpenedCellsVisuals();
     }
 
     public Timer getTimer() {

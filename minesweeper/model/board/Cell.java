@@ -31,8 +31,6 @@ public class Cell extends InteractiveObject {
     private final Image background;
     private Image sprite;
 
-    public enum Filter {CLOSED, DANGEROUS, EMPTY, FLAGGED, MINED, NONE, NUMERABLE, OPEN, SAFE, SCORED, SUSPECTED}
-
     static {
         for (int i = 0; i < 10; i++) {
             sprites.put(i, ImageType.valueOf("BOARD_" + i));
@@ -57,45 +55,35 @@ public class Cell extends InteractiveObject {
     public void open() {
         isOpen = true;
         background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
+        updateOpenedCellVisuals();
+    }
+
+    public void updateOpenedCellVisuals() {
+        if (!isOpen) return;
 
         if (isGameOverCause) {
             setBackgroundColor(Color.RED);
         } else if (isShielded) {
-            setSprite(ImageType.BOARD_MINE);
             setBackgroundColor(Color.YELLOW);
+        } else if (isScanned) {
+            setBackgroundColor(Theme.CELL_SCANNED.getColor());
+        } else if (isDestroyed) {
+            setSprite(ImageType.BOARD_DESTROYED);
+            setBackgroundColor(Color.DARKSLATEGRAY);
+        } else if (isShop) {
+            setSprite(ImageType.BOARD_SHOP);
         } else {
             setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
         }
     }
 
     public void destroy() {
-        isOpen = true;
         isDestroyed = true;
         isMined = false;
-        background.matrix = background.getMatrixFromStorage(ImageType.CELL_DESTROYED);
-        setBackgroundColor(Color.DARKSLATEGRAY);
-        setSprite(ImageType.NONE);
     }
 
     public void setScanned() {
         isScanned = true;
-        setBackgroundColor(Theme.CELL_SCANNED.getColor());
-    }
-
-    // Update colors for opened state
-    public void updateOpenedColors() {
-        if (!isOpen) return;
-
-        background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
-        if (isOpen) setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
-
-        if (isGameOverCause) setBackgroundColor(Color.RED);
-        else if (isShielded) setBackgroundColor(Color.YELLOW);
-        else if (isScanned) setBackgroundColor(Theme.CELL_SCANNED.getColor());
-        else if (isDestroyed) {
-            background.matrix = background.getMatrixFromStorage(ImageType.CELL_DESTROYED);
-            setBackgroundColor(Color.DARKSLATEGRAY);
-        }
     }
 
     public void setBackgroundColor(Color color) {
@@ -117,7 +105,7 @@ public class Cell extends InteractiveObject {
         }
     }
 
-    public static List<Cell> filterCells(List<Cell> list, Filter filter) {
+    public static List<Cell> filterCells(List<Cell> list, CellFilter filter) {
         List<Cell> result = new ArrayList<>();
         list.forEach(cell -> {
             switch (filter) {
@@ -230,6 +218,5 @@ public class Cell extends InteractiveObject {
 
     public void setShop(boolean shop) {
         isShop = shop;
-        setSprite(ImageType.BOARD_SHOP);
     }
 }

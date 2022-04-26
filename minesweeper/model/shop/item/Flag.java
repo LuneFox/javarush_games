@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.model.shop.item;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
-import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.CellFilter;
 
 public class Flag extends ShopItem {
     public Flag(MinesweeperGame game) {
@@ -12,7 +12,7 @@ public class Flag extends ShopItem {
         name = "Флажок";
         description = getFlagDescription();
         cost = 1;
-        inStock = game.countAllCells(Cell.Filter.MINED);
+        inStock = game.countAllCells(CellFilter.MINED);
     }
 
     @Override

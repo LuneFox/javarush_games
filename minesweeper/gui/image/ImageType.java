@@ -22,7 +22,7 @@ public enum ImageType {
 
     CELL_OPENED,
     CELL_CLOSED,
-    CELL_DESTROYED,
+    BOARD_DESTROYED,
 
     BOARD_0,
     BOARD_1,

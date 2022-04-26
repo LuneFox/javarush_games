@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.model.player;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.CellFilter;
 
 public class Score {
     private static MinesweeperGame game;
@@ -31,7 +31,7 @@ public class Score {
     }
 
     public int getCurrentScore() {
-        int score = game.countAllCells(Cell.Filter.SCORED) * Options.difficulty;
+        int score = game.countAllCells(CellFilter.SCORED) * Options.difficulty;
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
@@ -46,7 +46,7 @@ public class Score {
 
     public int getMinesScore() {
         if (!game.isResultVictory()) return 0;
-        int minesCount = game.countAllCells(Cell.Filter.MINED);
+        int minesCount = game.countAllCells(CellFilter.MINED);
         return minesCount * 20 * Options.difficulty;
     }
 

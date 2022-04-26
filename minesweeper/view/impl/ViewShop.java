@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.CellFilter;
 import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.view.View;
 
@@ -84,7 +84,7 @@ public class ViewShop extends View {
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
-        Printer.print("" + game.countAllCells(Cell.Filter.DANGEROUS), 25, 12);
+        Printer.print("" + game.countAllCells(CellFilter.DANGEROUS), 25, 12);
         Printer.print("" + inventory.countFlags(), 52, 12);
         Printer.print("" + inventory.shiftDisplayMoney(), 76 + moneyShakeHelper.getShift(), 12);
     }

@@ -29,7 +29,7 @@ public class Field extends InteractiveObject {
     }
 
     private void plantMines() {
-        while (countAllCells(Cell.Filter.MINED) < Options.difficulty / 1.5) { // fixed number of mines on field
+        while (countAllCells(CellFilter.MINED) < Options.difficulty / 1.5) { // fixed number of mines on field
             int x = game.getRandomNumber(10);
             int y = game.getRandomNumber(10);
             if (!field[y][x].isMined() && !field[y][x].isOpen()) {
@@ -40,21 +40,21 @@ public class Field extends InteractiveObject {
     }
 
     void setNumbers() {
-        getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
-            cell.setCountMinedNeighbors(getNeighborCells(cell, Cell.Filter.MINED, false).size());
+        getAllCells(CellFilter.NUMERABLE).forEach(cell -> {
+            cell.setCountMinedNeighbors(getNeighborCells(cell, CellFilter.MINED, false).size());
             cell.setSprite(cell.getCountMinedNeighbors());
         });
     }
 
-    public List<Cell> getAllCells(Cell.Filter filter) {
+    public List<Cell> getAllCells(CellFilter filter) {
         return Cell.filterCells(Arrays.stream(field).flatMap(Arrays::stream).collect(Collectors.toList()), filter);
     }
 
-    public int countAllCells(Cell.Filter filter) {
+    public int countAllCells(CellFilter filter) {
         return getAllCells(filter).size();
     }
 
-    public List<Cell> getNeighborCells(Cell cell, Cell.Filter filter, boolean includeSelf) {
+    public List<Cell> getNeighborCells(Cell cell, CellFilter filter, boolean includeSelf) {
         List<Cell> neighbors = new ArrayList<>();
         for (int y = cell.y - 1; y <= cell.y + 1; y++) {
             for (int x = cell.x - 1; x <= cell.x + 1; x++) {
@@ -68,7 +68,7 @@ public class Field extends InteractiveObject {
     }
 
     public void revealMines() {
-        getAllCells(Cell.Filter.NONE).forEach(cell -> {
+        getAllCells(CellFilter.NONE).forEach(cell -> {
             if (cell.isMined()) {
                 cell.open();
                 if (cell.isFlagged() && !cell.isDestroyed()) {
@@ -81,7 +81,7 @@ public class Field extends InteractiveObject {
 
     @Override
     public void draw() {
-        getAllCells(Cell.Filter.NONE).forEach(Cell::draw);
+        getAllCells(CellFilter.NONE).forEach(Cell::draw);
     }
 
     public Cell[][] get() {

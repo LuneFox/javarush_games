@@ -14,9 +14,9 @@ public class ImageStorage {
 
     public ImageStorage(ImageType imageType) {
         switch (imageType) {
-
-            // BIG PICTURES
-
+            /*
+             * Big images
+             */
             case PICTURE_MAIN_LOGO:
                 setColors(Color.WHITE, Color.BLACK, Color.DARKSLATEGRAY, Color.SANDYBROWN, Color.RED, Color.YELLOW);
                 data = ImageCreator.makeArray(
@@ -326,8 +326,9 @@ public class ImageStorage {
                         "   333333333");
                 break;
 
-            // SPRITES
-
+            /*
+              Sprites
+             */
             case BOARD_0:
                 setColors(Color.NONE);
                 data = ImageCreator.makeSprite("011010111011101110110110", 4, 3, 4);
@@ -381,19 +382,8 @@ public class ImageStorage {
                 data = ImageCreator.makeSprite("111111111122312321123213221132212231122414321123213221132212231122312321111111111", 9, 1, 1);
                 break;
             }
-
-            // CELLS
-
-            case CELL_CLOSED:
-                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor());
-                data = ImageCreator.createCell(10, 10, true);
-                break;
-            case CELL_OPENED:
-                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor());
-                data = ImageCreator.createCell(10, 10, false);
-                break;
-            case CELL_DESTROYED:
-                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor(),
+            case BOARD_DESTROYED:
+                setColors(Color.NONE, Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor(),
                         Color.BLACK, Color.GRAY);
                 data = ImageCreator.makeArray(
                         "2222222222",
@@ -408,8 +398,21 @@ public class ImageStorage {
                         "2351111511");
                 break;
 
-            // SYMBOLS
+            /*
+             * Cells
+             */
+            case CELL_CLOSED:
+                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor());
+                data = ImageCreator.createCell(10, 10, true);
+                break;
+            case CELL_OPENED:
+                setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor());
+                data = ImageCreator.createCell(10, 10, false);
+                break;
 
+            /*
+             * Symbols
+             */
             case SYM_RU_LETTER_A:
                 data = ImageCreator.makeArray(4, "0000000001101001111110011001");
                 break;

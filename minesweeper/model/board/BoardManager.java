@@ -62,7 +62,7 @@ public class BoardManager {
         if (shop.getBomb().tryToUseOrMoveFrame(cell) || shop.getScanner().tryToUseOrMoveFrame(cell)) return;
         if (cell.isFlagged() || cell.isOpen()) return;
 
-        boolean survived = tryOpening(cell);
+        boolean survived = tryToOpen(cell);
         if (!survived) return;
 
         onManualMove();
@@ -76,7 +76,7 @@ public class BoardManager {
     private void recursiveOpen(Cell cell) {
         if (cell.isEmpty()) {
             isRecursiveMove = true;
-            List<Cell> neighbors = field.getNeighborCells(cell, Cell.Filter.CLOSED, false);
+            List<Cell> neighbors = field.getNeighborCells(cell, CellFilter.CLOSED, false);
             neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
     }
@@ -93,7 +93,7 @@ public class BoardManager {
 
     // Quick bruteforce implementation, but it makes first move very convenient
     private Cell rebuildUntilEmpty(Cell cell) {
-        List<Cell> flaggedCells = field.getAllCells(Cell.Filter.FLAGGED);
+        List<Cell> flaggedCells = field.getAllCells(CellFilter.FLAGGED);
 
         flaggedCells.forEach(fc -> flagManager.swapFlag(fc.x, fc.y));
         while (!cell.isEmpty()) {
@@ -107,7 +107,7 @@ public class BoardManager {
     }
 
     // Open and return true if survived, false if mine has exploded
-    private boolean tryOpening(Cell cell) {
+    private boolean tryToOpen(Cell cell) {
         cell.open();
 
         if (!cell.isMined()) {
@@ -137,8 +137,8 @@ public class BoardManager {
         if (!cell.isOpen()) return;
         if (cell.isMined()) return;
         // If mined neighbors = number of neighbor flags + opened mines
-        if (cell.getCountMinedNeighbors() == field.getNeighborCells(cell, Cell.Filter.SUSPECTED, false).size()) {
-            field.getNeighborCells(cell, Cell.Filter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
+        if (cell.getCountMinedNeighbors() == field.getNeighborCells(cell, CellFilter.SUSPECTED, false).size()) {
+            field.getNeighborCells(cell, CellFilter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
     }
 
@@ -150,7 +150,7 @@ public class BoardManager {
     }
 
     public void checkVictory() {
-        if (field.countAllCells(Cell.Filter.CLOSED) == field.countAllCells(Cell.Filter.DANGEROUS)) {
+        if (field.countAllCells(CellFilter.CLOSED) == field.countAllCells(CellFilter.DANGEROUS)) {
             game.win();
         }
     }
@@ -163,7 +163,7 @@ public class BoardManager {
      * Scanner action
      */
     public void scanNeighbors(int x, int y) {  // action for Scanner
-        List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), Cell.Filter.SAFE, true);
+        List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), CellFilter.SAFE, true);
         if (safeNeighbors.size() != 0) {
             PopUpMessage.show("Сканирование...");
             scanRandomCell(safeNeighbors);
@@ -178,12 +178,12 @@ public class BoardManager {
         if (cell.isFlagged()) {
             flagManager.swapFlag(cell.x, cell.y); // return wrong flag
         }
-        openCell(cell.x, cell.y);
         cell.setScanned();
+        openCell(cell.x, cell.y);
     }
 
     private void placeFlagsForPlayer(int x, int y) {
-        field.getNeighborCells(field.getCell(x, y), Cell.Filter.CLOSED, true).forEach(closedCell -> {
+        field.getNeighborCells(field.getCell(x, y), CellFilter.CLOSED, true).forEach(closedCell -> {
             final Inventory inventory = game.getPlayer().getInventory();
             if (inventory.countFlags() == 0) {
                 final Shop shop = game.getShop();
@@ -210,7 +210,7 @@ public class BoardManager {
             cell.setMined(false);
             isRecursiveMove = true;
             isFlagExplosionAllowed = true;
-            field.getNeighborCells(cell, Cell.Filter.NONE, false).forEach(neighbor -> {
+            field.getNeighborCells(cell, CellFilter.NONE, false).forEach(neighbor -> {
                 if (neighbor.isMined()) {
                     destroyCell(neighbor.x, neighbor.y); // recursive call
                 }
@@ -218,6 +218,7 @@ public class BoardManager {
         }
 
         cell.destroy();
+        cell.open();
         flagManager.returnFlagToShop(cell);
         field.setNumbers();
         checkVictory();
@@ -236,10 +237,10 @@ public class BoardManager {
         }
 
         boolean[] success = new boolean[1];
-        field.getAllCells(Cell.Filter.NUMERABLE).forEach(cell -> {
+        field.getAllCells(CellFilter.NUMERABLE).forEach(cell -> {
             if (!cell.isOpen()) return;
-            List<Cell> dangerousNeighbors = field.getNeighborCells(cell, Cell.Filter.DANGEROUS, false);
-            List<Cell> closedNeighbors = field.getNeighborCells(cell, Cell.Filter.CLOSED, false);
+            List<Cell> dangerousNeighbors = field.getNeighborCells(cell, CellFilter.DANGEROUS, false);
+            List<Cell> closedNeighbors = field.getNeighborCells(cell, CellFilter.CLOSED, false);
             if (dangerousNeighbors.size() == closedNeighbors.size()) {
                 dangerousNeighbors.forEach(dangerousNeighbor -> {
                     if (dangerousNeighbor.isFlagged()) return;
@@ -263,24 +264,24 @@ public class BoardManager {
     public void autoOpen() {
         if (!Options.developerMode) return;
 
-        int closedCells = field.countAllCells(Cell.Filter.CLOSED);
+        int closedCells = field.countAllCells(CellFilter.CLOSED);
         if (isFirstMove) {
-            List<Cell> allCells = field.getAllCells(Cell.Filter.NONE);
+            List<Cell> allCells = field.getAllCells(CellFilter.NONE);
             Cell randomCell = allCells.get(game.getRandomNumber(allCells.size()));
             game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         } else {
-            for (Cell cell : field.getAllCells(Cell.Filter.NUMERABLE)) {
+            for (Cell cell : field.getAllCells(CellFilter.NUMERABLE)) {
                 if (cell.isOpen()) game.onMouseRightClick(cell.x * 10, cell.y * 10);
             }
         }
-        PopUpMessage.show(field.countAllCells(Cell.Filter.CLOSED) == closedCells ? "DEV: CANNOT OPEN" : "DEV: AUTO OPEN");
+        PopUpMessage.show(field.countAllCells(CellFilter.CLOSED) == closedCells ? "DEV: CANNOT OPEN" : "DEV: AUTO OPEN");
     }
 
     @DeveloperOption
     public void autoScan() {
         if (!Options.developerMode) return;
 
-        List<Cell> allCells = field.getAllCells(Cell.Filter.SAFE);
+        List<Cell> allCells = field.getAllCells(CellFilter.SAFE);
         if (allCells.isEmpty()) return;
         Cell randomCell = allCells.get(game.getRandomNumber(allCells.size()));
         game.getShop().getScanner().activate();
@@ -292,7 +293,7 @@ public class BoardManager {
     public void autoSolve() {
         if (!Options.developerMode) return;
 
-        int closedCells = field.countAllCells(Cell.Filter.CLOSED);
+        int closedCells = field.countAllCells(CellFilter.CLOSED);
         isUnableToCheatMore = false;
         int limit = 0;
         while (!isUnableToCheatMore) {
@@ -304,12 +305,12 @@ public class BoardManager {
             }
         }
         autoOpen();
-        PopUpMessage.show(field.countAllCells(Cell.Filter.CLOSED) == closedCells ? "DEV: CANNOT SOLVE!" : "DEV: SOLVING...");
+        PopUpMessage.show(field.countAllCells(CellFilter.CLOSED) == closedCells ? "DEV: CANNOT SOLVE!" : "DEV: SOLVING...");
     }
 
-    public void updateOpenedCellsColors() {
+    public void updateOpenedCellsVisuals() {
         if (game.isStopped()) return;
-        field.getAllCells(Cell.Filter.NONE).forEach(Cell::updateOpenedColors);
+        field.getAllCells(CellFilter.NONE).forEach(Cell::updateOpenedCellVisuals);
     }
 
     // Setters, getters
