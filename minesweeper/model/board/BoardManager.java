@@ -59,7 +59,7 @@ public class BoardManager {
         }
 
         final Shop shop = game.getShop();
-        if (shop.getBomb().tryToUse(cell) || shop.getScanner().tryToUse(cell)) return;
+        if (shop.getBomb().tryToUseOrMoveFrame(cell) || shop.getScanner().tryToUseOrMoveFrame(cell)) return;
         if (cell.isFlagged() || cell.isOpen()) return;
 
         boolean survived = tryOpening(cell);

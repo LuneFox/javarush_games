@@ -8,11 +8,7 @@ import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.Shop;
 
 public class Bomb extends ShopItem {
-    private final Image frame;
-    private final int frameMoveSpeed;
-    private int frameX;
-    private int frameY;
-    private Cell focusCell;
+    private final AimFrame frame;
 
     public Bomb(MinesweeperGame game) {
         super(game);
@@ -21,18 +17,14 @@ public class Bomb extends ShopItem {
         description = getBombDescription();
         cost = 6 + Options.difficulty / 10;
         inStock = 1;
-        frame = Image.cache.get(ImageType.BOARD_BOMB_FRAME);
-        focusCell = game.getCell(4, 4);
-        frameX = getFrameDestX();
-        frameY = getFrameDestY();
-        frameMoveSpeed = 5;
+        frame = new AimFrame(game.getCell(4, 4), -3, ImageType.BOARD_BOMB_FRAME);
     }
 
-    public boolean tryToUse(Cell cell) {
+    public boolean tryToUseOrMoveFrame(Cell cell) {
         if (!isActivated) return false;
 
-        if (focusCell != cell) {
-            focusCell = cell;
+        if (frame.isNotFocusedOnCell(cell)) {
+            frame.focusOnCell(cell);
             return true;
         }
 
@@ -52,28 +44,20 @@ public class Bomb extends ShopItem {
 
     @Override
     public void activate() {
-        if (game.isStopped() || isActivated) return;
-        if (game.getShop().getBomb().isActivated()) return;
+        if (unableToActivate()) return;
         isActivated = true;
         game.getShop().getScanner().empty();
+    }
+
+    private boolean unableToActivate() {
+        if (game.isStopped() || isActivated) return true;
+        return game.getShop().getBomb().isActivated();
     }
 
     public void drawFrame() {
         if (!isActivated) return;
         game.setDisplayInterlace(false);
-        if (frameX < getFrameDestX()) frameX += frameMoveSpeed;
-        if (frameX > getFrameDestX()) frameX -= frameMoveSpeed;
-        if (frameY < getFrameDestY()) frameY += frameMoveSpeed;
-        if (frameY > getFrameDestY()) frameY -= frameMoveSpeed;
-        frame.draw(frameX, frameY);
-    }
-
-    private int getFrameDestX() {
-        return focusCell.x * 10 - 2;
-    }
-
-    private int getFrameDestY() {
-        return focusCell.y * 10 - 2;
+        frame.draw();
     }
 
     private String getBombDescription() {

@@ -29,9 +29,9 @@ public class Dice extends ShopItem {
     }
 
     public void use(Cell cell) {
-        if (cell.isMined()) return;
-        if (!isActivated) return;
-        roll(cell);
+        if (cell.isMined() || !isActivated) return;
+        rollOnce(cell);
+        registerResult();
     }
 
     @Override
@@ -42,6 +42,10 @@ public class Dice extends ShopItem {
     public void draw() {
         if (game.getPlayer().getMoves() > expirationMove) return;
         statusBar.draw();
+        drawOnBoardImage();
+    }
+
+    private void drawOnBoardImage() {
         if (onBoardImageTimeToLive <= 0) return;
         onBoardImage.draw();
         onBoardImageTimeToLive--;
@@ -51,20 +55,17 @@ public class Dice extends ShopItem {
         onBoardImageTimeToLive = 0;
     }
 
-    public int getRollsCount() {
-        return rollsCount;
-    }
-
     public double getAverageLuck() {
         return (Util.round((double) rollsSum / rollsCount, 2));
     }
 
-    private void roll(Cell cell) {
-        if (!game.isRecursiveMove()) {
-            // One roll per move (affects all recursively opened cells)
-            rollResult = game.getRandomNumber(6) + 1;
-            setBoardImage(rollResult, cell.x, cell.y);
-        }
+    private void rollOnce(Cell cell) {
+        if (game.isRecursiveMove()) return;
+        rollResult = game.getRandomNumber(6) + 1;
+        setBoardImage(rollResult, cell.x, cell.y);
+    }
+
+    private void registerResult() {
         game.getPlayer().getScore().addDiceScore(Options.difficulty * rollResult);
         rollsCount++;
         rollsSum += rollResult;
@@ -74,6 +75,10 @@ public class Dice extends ShopItem {
         this.onBoardImage = Image.cache.get(ImageType.valueOf("BOARD_DICE_" + number));
         this.onBoardImage.setPosition(x * 10 + 2, y * 10 + 2);
         this.onBoardImageTimeToLive = 20;
+    }
+
+    public int getRollsCount() {
+        return rollsCount;
     }
 
     private String getDiceDescription() {

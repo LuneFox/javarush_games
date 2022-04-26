@@ -8,11 +8,7 @@ import com.javarush.games.minesweeper.model.board.Cell;
 import com.javarush.games.minesweeper.model.shop.Shop;
 
 public class Scanner extends ShopItem {
-    private final Image frame;
-    private final int frameMoveSpeed;
-    private int frameX;
-    private int frameY;
-    private Cell focusCell;
+    private final AimFrame frame;
 
     public Scanner(MinesweeperGame game) {
         super(game);
@@ -21,20 +17,16 @@ public class Scanner extends ShopItem {
         description = getScannerDescription();
         cost = 8 + Options.difficulty / 5;
         inStock = 1;
-        frame = Image.cache.get(ImageType.BOARD_SCANNER_FRAME);
-        focusCell = game.getCell(4, 4);
-        frameX = getFrameDestX();
-        frameY = getFrameDestY();
-        frameMoveSpeed = 5;
+        frame = new AimFrame(game.getCell(4, 4), -9, ImageType.BOARD_SCANNER_FRAME);
     }
 
-    public boolean tryToUse(Cell cell) {
+    public boolean tryToUseOrMoveFrame(Cell cell) {
         if (!isActivated) {
             return false;
         }
 
-        if (focusCell != cell) {
-            focusCell = cell;
+        if (frame.isNotFocusedOnCell(cell)) {
+            frame.focusOnCell(cell);
             return true;
         }
 
@@ -53,28 +45,20 @@ public class Scanner extends ShopItem {
 
     @Override
     public void activate() {
-        if (game.isStopped() || isActivated) return;
-        if (game.getShop().getBomb().isActivated) return;
+        if (unableToActivate()) return;
         isActivated = true;
         game.getShop().getBomb().empty();
+    }
+
+    private boolean unableToActivate() {
+        if (game.isStopped() || isActivated) return true;
+        return game.getShop().getBomb().isActivated;
     }
 
     public void drawFrame() {
         if (!isActivated) return;
         game.setDisplayInterlace(false);
-        if (frameX < getFrameDestX()) frameX += frameMoveSpeed;
-        if (frameX > getFrameDestX()) frameX -= frameMoveSpeed;
-        if (frameY < getFrameDestY()) frameY += frameMoveSpeed;
-        if (frameY > getFrameDestY()) frameY -= frameMoveSpeed;
-        frame.draw(frameX, frameY);
-    }
-
-    private int getFrameDestX() {
-        return focusCell.x * 10 - 9;
-    }
-
-    private int getFrameDestY() {
-        return focusCell.y * 10 - 9;
+        frame.draw();
     }
 
     private String getScannerDescription() {
