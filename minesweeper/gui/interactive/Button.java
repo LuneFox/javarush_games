@@ -15,13 +15,13 @@ import com.javarush.games.minesweeper.view.View;
 
 public abstract class Button extends InteractiveObject {
     // while pressedTime counts from this value to 0, the button remains pressed
-    public static final int PRESS_DURATION = 5;
+    private static final int PRESS_DURATION = 5;
 
     // while pressedTime counts from 0 to this value (negative), the button appears unpressed before moving to the next screen
-    public static final int POST_PRESS_DELAY = -2;
+    private static final int POST_PRESS_DELAY = -2;
 
     // this timer counts down, then at 0 the button is released
-    public static int pressedTimeCounter = POST_PRESS_DELAY;
+    private static int pressedTimeCounter = POST_PRESS_DELAY;
 
     private static final int DEFAULT_HEIGHT = 9;
     private static final int DEFAULT_MARGIN = 3;
@@ -113,6 +113,15 @@ public abstract class Button extends InteractiveObject {
 
     private void release() {
         isPressed = false;
+    }
+
+    public static boolean isAnimationFinished() {
+        return pressedTimeCounter <= POST_PRESS_DELAY;
+    }
+
+    public static void waitForAnimation() {
+        if (pressedTimeCounter <= POST_PRESS_DELAY) return;
+        pressedTimeCounter--;
     }
 
     public String getLabelText() {

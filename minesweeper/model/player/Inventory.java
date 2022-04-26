@@ -66,7 +66,7 @@ public class Inventory {
         return displayMoney;
     }
 
-    public void snapDisplayMoney() {
+    public void skipMoneyAnimation() {
         displayMoney = money;
     }
 
