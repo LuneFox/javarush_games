@@ -16,6 +16,7 @@ import java.util.Set;
 
 public class PageSelector extends InteractiveObject {
     public static final Set<PageSelector> allSelectors = new HashSet<>();
+    private static final int DEFAULT_PAGE = 0;
     private final int maxPage;
     private int currentPage;
     private final Arrow prevPageArrow;
@@ -23,24 +24,24 @@ public class PageSelector extends InteractiveObject {
 
     public PageSelector(int x, int y, int width, int maxPage) {
         super(x, y);
-        this.width = width;
         this.maxPage = maxPage - 1;
-        currentPage = 0;
-        prevPageArrow = new Arrow(x, y, false);
-        nextPageArrow = new Arrow(x + width - prevPageArrow.width, y, true);
+        currentPage = DEFAULT_PAGE;
+        prevPageArrow = Arrow.createLeftArrow(x, y);
+        nextPageArrow = Arrow.createRightArrow(x + width - prevPageArrow.width, y);
+        this.width = width;
         this.height = prevPageArrow.height;
         allSelectors.add(this);
     }
 
-    public void prevPage() {
-        prevPageArrow.onLeftClick();
+    public void selectPrevPage() {
+        prevPageArrow.animate();
         if (currentPage > 0) {
             currentPage--;
         }
     }
 
-    public void nextPage() {
-        nextPageArrow.onLeftClick();
+    public void selectNextPage() {
+        nextPageArrow.animate();
         if (currentPage < maxPage) {
             currentPage++;
         }
@@ -48,33 +49,45 @@ public class PageSelector extends InteractiveObject {
 
     @Override
     public void draw() {
-        // Page index
-        String text = ((currentPage + 1) + " / " + (maxPage + 1));
-        int textLength = Printer.calculateWidth(text);
-        int textPosition = x + (width / 2) - (textLength / 2);
-        Printer.print(text, Color.WHITE, textPosition, y - 1, false);
+        printPageIndex();
+        drawPageArrows();
+    }
 
-        // Arrow buttons
+    private void printPageIndex() {
+        String indexText = ((currentPage + 1) + " / " + (maxPage + 1));
+        int textHorizontalPosition = getTextHorizontalPosition(indexText);
+        Printer.print(indexText, Color.WHITE, textHorizontalPosition, y - 1, false);
+    }
+
+    private int getTextHorizontalPosition(String text) {
+        int textWidth = Printer.calculateWidth(text);
+        return getMiddlePoint() - (textWidth / 2);
+    }
+
+    private void drawPageArrows() {
         prevPageArrow.draw();
         nextPageArrow.draw();
     }
 
     @Override
     public void onLeftClick() {
-        // Click on left half = page back, click on right half = page forward
-        if (latestClickX < x + width / 2) {
-            prevPage();
+        if (latestClickX < getMiddlePoint()) {
+            selectPrevPage();
         } else {
-            nextPage();
+            selectNextPage();
         }
+    }
+
+    private int getMiddlePoint() {
+        return x + (width / 2);
     }
 
     public int getCurrentPage() {
         return currentPage;
     }
 
-    public void reset() {
-        currentPage = 0;
+    public void setDefaultPage() {
+        currentPage = DEFAULT_PAGE;
     }
 
     @Override
@@ -82,7 +95,10 @@ public class PageSelector extends InteractiveObject {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PageSelector that = (PageSelector) o;
-        return maxPage == that.maxPage && currentPage == that.currentPage && Objects.equals(prevPageArrow, that.prevPageArrow) && Objects.equals(nextPageArrow, that.nextPageArrow);
+        return maxPage == that.maxPage
+                && currentPage == that.currentPage
+                && Objects.equals(prevPageArrow, that.prevPageArrow)
+                && Objects.equals(nextPageArrow, that.nextPageArrow);
     }
 
     @Override

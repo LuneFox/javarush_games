@@ -12,11 +12,11 @@ public class ControlScore implements ControlStrategy {
 
     @Override
     public void pressRight() {
-        ViewScore.pageSelector.nextPage();
+        ViewScore.pageSelector.selectNextPage();
     }
 
     @Override
     public void pressLeft() {
-        ViewScore.pageSelector.prevPage();
+        ViewScore.pageSelector.selectPrevPage();
     }
 }

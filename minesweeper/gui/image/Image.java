@@ -114,7 +114,7 @@ public class Image extends InteractiveObject {
         return storage.getData();
     }
 
-    public void restrictColorUpdate(boolean updateColorRestricted) {
+    public void restrictColorChange(boolean updateColorRestricted) {
         this.updatingColorRestricted = updateColorRestricted;
     }
 }

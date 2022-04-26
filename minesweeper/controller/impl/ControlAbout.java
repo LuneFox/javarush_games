@@ -7,12 +7,12 @@ import com.javarush.games.minesweeper.model.Phase;
 public class ControlAbout implements ControlStrategy {
     @Override
     public void pressRight() {
-        Options.aboutPageSelector.nextPage();
+        Options.aboutPageSelector.selectNextPage();
     }
 
     @Override
     public void pressLeft() {
-        Options.aboutPageSelector.prevPage();
+        Options.aboutPageSelector.selectPrevPage();
     }
 
     @Override

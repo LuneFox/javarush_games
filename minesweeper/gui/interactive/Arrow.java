@@ -6,32 +6,58 @@ import com.javarush.games.minesweeper.model.InteractiveObject;
 
 public class Arrow extends InteractiveObject {
     private static final int PRESSED_DURATION = 2;
-    private final boolean pointsRight;
     private final Image arrowImage;
+    private Direction direction;
     private int pressedCountDown;
 
-    public Arrow(int x, int y, boolean pointsRight) {
+    private enum Direction{
+        LEFT, RIGHT
+    }
+
+    public static Arrow createLeftArrow(int x, int y) {
+        Arrow arrow = new Arrow(x, y);
+        arrow.direction = Direction.LEFT;
+        return arrow;
+    }
+
+    public static Arrow createRightArrow(int x, int y) {
+        Arrow arrow = new Arrow(x, y);
+        arrow.direction = Direction.RIGHT;
+        return arrow;
+    }
+
+    private Arrow(int x, int y) {
         super(x, y);
         arrowImage = new Image(ImageType.GUI_ARROW, x, y);
         this.height = arrowImage.height;
         this.width = arrowImage.width;
-        this.pointsRight = pointsRight;
+    }
+
+    public void animate() {
+        pressedCountDown = PRESSED_DURATION;
     }
 
     @Override
     public void draw() {
-        if (pressedCountDown <= 0) {
-            arrowImage.setPosition(x, y);
-        } else {
-            // Draws itself pressed until countdown has finished
+        if (pressedCountDown > 0) {
             pressedCountDown--;
-            arrowImage.setPosition(pointsRight ? (x + 1) : (x - 1), y);
+            setShiftedPosition();
+        } else {
+            setBasePosition();
         }
-        arrowImage.draw(pointsRight ? Image.Mirror.NONE : Image.Mirror.HORIZONTAL);
+        arrowImage.draw(direction == Direction.RIGHT ? Image.Mirror.NONE : Image.Mirror.HORIZONTAL);
+    }
+
+    private void setBasePosition() {
+        arrowImage.setPosition(x, y);
+    }
+
+    private void setShiftedPosition() {
+        arrowImage.setPosition(direction == Direction.RIGHT ? (x + 1) : (x - 1), y);
     }
 
     @Override
     public void onLeftClick() {
-        pressedCountDown = PRESSED_DURATION;
+        animate();
     }
 }

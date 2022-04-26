@@ -54,7 +54,7 @@ public enum Phase {
     private static void onViewChange() {
         // Things that happen right before the pending view is applied
         game.setDisplayInterlace(false);
-        PageSelector.allSelectors.forEach(PageSelector::reset);
+        PageSelector.allSelectors.forEach(PageSelector::setDefaultPage);
         final Inventory inventory = game.getPlayer().getInventory();
         inventory.snapDisplayMoney();
     }
