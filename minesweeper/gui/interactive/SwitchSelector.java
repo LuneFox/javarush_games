@@ -41,19 +41,27 @@ public class SwitchSelector extends InteractiveObject {
 
     @Override
     public void draw() {
-        // Move handle
+        moveHandle();
+        drawSwitch();
+        printHelpText();
+    }
+
+    private void moveHandle() {
         if (enabled && handle.x < rightStopper) {
             handle.x++;
         } else if (!enabled && handle.x > leftStopper) {
             handle.x--;
         }
+    }
 
-        // Draw switch
-        handle.replaceColor(enabled ? Color.GREEN : Color.RED, 1);
+    private void drawSwitch() {
         rail.draw();
+        final int HANDLE_BODY_COLOR = 1;
+        handle.replaceColor(enabled ? Color.GREEN : Color.RED, HANDLE_BODY_COLOR);
         handle.draw();
+    }
 
-        // Write help text
+    private void printHelpText() {
         Color helpColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(enabled ? textOn : textOff, helpColor, rightStopper, y + height + 1, true);
     }
