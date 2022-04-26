@@ -59,7 +59,7 @@ public class BoardManager {
         }
 
         final Shop shop = game.getShop();
-        if (shop.getBomb().use(cell) || shop.getScanner().use(cell)) return;
+        if (shop.getBomb().tryToUse(cell) || shop.getScanner().tryToUse(cell)) return;
         if (cell.isFlagged() || cell.isOpen()) return;
 
         boolean survived = tryOpening(cell);
@@ -116,7 +116,7 @@ public class BoardManager {
 
         Shield shield = game.getShop().getShield();
         if (shield.isActivated()) {
-            return shield.use(cell);
+            return shield.tryToUse(cell);
         }
 
         cell.setGameOverCause(true);

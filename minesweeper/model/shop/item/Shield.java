@@ -16,35 +16,49 @@ public class Shield extends ShopItem {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHIELD);
         name = "Сапёрский щит";
-
-        description = "Спасёт от взрыва\n" +
-                "при открытии мины\n" +
-                "один раз. Однако вы\n" +
-                "потеряете " + 150 * difficultyModifier + " очков.";
+        description = getShieldDescription();
         cost = 13 + difficultyModifier;
         inStock = 1;
     }
 
-    public boolean use(Cell cell) {
-        if (!isActivated) return false;
+    public boolean tryToUse(Cell cell) {
+        if (isActivated) {
+            use(cell);
+            return true;
+        }
+        return false;
+    }
+
+    private void use(Cell cell) {
         deactivate();
-
-        cell.setSprite(ImageType.BOARD_MINE);
-        cell.setShielded(true);
-        cell.setBackgroundColor(Color.YELLOW);
-
+        transformCell(cell);
+        registerScore();
         restock();
+        PopUpMessage.show("Щит разрушен!");
+    }
+
+    private void registerScore() {
         final Score score = game.getPlayer().getScore();
         score.setLostScore(score.getLostScore() - 150 * difficultyModifier);
         game.getPlayer().addBrokenShield();
+    }
 
-        PopUpMessage.show("Щит разрушен!");
-        return true;
+    private void transformCell(Cell cell) {
+        cell.setSprite(ImageType.BOARD_MINE);
+        cell.setShielded(true);
+        cell.setBackgroundColor(Color.YELLOW);
     }
 
     @Override
     public void activate() {
         if (game.isStopped() || isActivated) return;
         isActivated = true;
+    }
+
+    private String getShieldDescription() {
+        return "Спасёт от взрыва\n" +
+                "при открытии мины\n" +
+                "один раз. Однако вы\n" +
+                "потеряете " + 150 * difficultyModifier + " очков.";
     }
 }

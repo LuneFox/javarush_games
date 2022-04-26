@@ -34,10 +34,9 @@ public abstract class InteractiveObject implements Drawable, Clickable {
         this.y = y;
     }
 
-    // First check if the click hit the object and fire an action if it did
     public boolean tryClick(int x, int y, Controller.Click click) {
-        boolean covers = x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + height;
-        if (covers) {
+        boolean clickCoversObject = x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + height;
+        if (clickCoversObject) {
             latestClickX = x;
             latestClickY = y;
             if (click == Controller.Click.LEFT) {
@@ -46,7 +45,7 @@ public abstract class InteractiveObject implements Drawable, Clickable {
                 onRightClick();
             }
         }
-        return covers;
+        return clickCoversObject;
     }
 
     public void onLeftClick() {

@@ -22,16 +22,26 @@ public abstract class ShopItem {
 
     public abstract void activate();
 
+    protected void lease() {
+        if (game.isStopped() || isActivated) return;
+        isActivated = true;
+        expirationMove = game.getPlayer().getMoves() + effectDuration;
+    }
+
     public void deactivate() {
         isActivated = false;
     }
 
-    public void checkExpiration() {
-        if ((game.getPlayer().getMoves() >= expirationMove) && isActivated) {
-            PopUpMessage.show(name + ": всё");
+    public void deactivateIfExpired() {
+        if (isExpired()) {
             deactivate();
             restock();
+            PopUpMessage.show(name + ": всё");
         }
+    }
+
+    private boolean isExpired() {
+        return (game.getPlayer().getMoves() >= expirationMove) && isActivated;
     }
 
     public int countRemainingMoves() {

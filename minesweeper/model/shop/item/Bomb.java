@@ -18,7 +18,7 @@ public class Bomb extends ShopItem {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB);
         name = "Мини-бомба";
-        description = "Бросив бомбочку, вы\n" + "уничтожите закрытую\n" + "клетку на поле.\n" + "Если взорвёте мину,\n" + "соседние мины тоже\n" + "взорвутся по цепи.\n" + "Очков не даёт.";
+        description = getBombDescription();
         cost = 6 + Options.difficulty / 10;
         inStock = 1;
         frame = Image.cache.get(ImageType.BOARD_BOMB_FRAME);
@@ -28,7 +28,7 @@ public class Bomb extends ShopItem {
         frameMoveSpeed = 5;
     }
 
-    public boolean use(Cell cell) {
+    public boolean tryToUse(Cell cell) {
         if (!isActivated) return false;
 
         if (focusCell != cell) {
@@ -36,15 +36,18 @@ public class Bomb extends ShopItem {
             return true;
         }
 
+        use(cell);
+        return true;
+    }
+
+    private void use(Cell cell) {
         this.deactivate();
         game.destroyCell(cell.x, cell.y);
 
         final Shop shop = game.getShop();
+        shop.getScanner().restock();
         shop.getDice().hide();
         restock();
-        shop.getScanner().restock();
-
-        return true;
     }
 
     @Override
@@ -66,10 +69,20 @@ public class Bomb extends ShopItem {
     }
 
     private int getFrameDestX() {
-            return focusCell.x * 10 - 2;
+        return focusCell.x * 10 - 2;
     }
 
     private int getFrameDestY() {
-            return focusCell.y * 10 - 2;
+        return focusCell.y * 10 - 2;
+    }
+
+    private String getBombDescription() {
+        return "Бросив бомбочку, вы\n" +
+                "уничтожите закрытую\n" +
+                "клетку на поле.\n" +
+                "Если взорвёте мину,\n" +
+                "соседние мины тоже\n" +
+                "взорвутся по цепи.\n" +
+                "Очков не даёт.";
     }
 }

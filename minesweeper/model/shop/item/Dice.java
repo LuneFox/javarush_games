@@ -21,12 +21,7 @@ public class Dice extends ShopItem {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_DICE);
         name = "Кубик удачи";
-        description = "Следующие 3 шага\n" +
-                "вы можете получить\n" +
-                "от 1 до 6 раз больше\n" +
-                "очков. Базовое\n" +
-                "количество зависит\n" +
-                "от сложности игры.";
+        description = getDiceDescription();
         cost = 6;
         inStock = 1;
         effectDuration = 3;
@@ -41,9 +36,7 @@ public class Dice extends ShopItem {
 
     @Override
     public void activate() {
-        if (game.isStopped() || isActivated) return;
-        isActivated = true;
-       expirationMove = game.getPlayer().getMoves() + effectDuration;
+        lease();
     }
 
     public void draw() {
@@ -81,5 +74,14 @@ public class Dice extends ShopItem {
         this.onBoardImage = Image.cache.get(ImageType.valueOf("BOARD_DICE_" + number));
         this.onBoardImage.setPosition(x * 10 + 2, y * 10 + 2);
         this.onBoardImageTimeToLive = 20;
+    }
+
+    private String getDiceDescription() {
+        return "Следующие 3 шага\n" +
+                "вы можете получить\n" +
+                "от 1 до 6 раз больше\n" +
+                "очков. Базовое\n" +
+                "количество зависит\n" +
+                "от сложности игры.";
     }
 }

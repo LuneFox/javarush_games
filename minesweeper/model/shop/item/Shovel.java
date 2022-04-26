@@ -13,13 +13,7 @@ public class Shovel extends ShopItem {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL);
         name = "Золотая лопата";
-        description = "Следующие 5 шагов\n" +
-                "вы будете получать\n" +
-                "в два раза больше\n" +
-                "золотых монет.\n" +
-                "Золото добывается\n" +
-                "при открытии клеток\n" +
-                "с цифрами.";
+        description = getShovelDescription();
         cost = 9;
         inStock = 1;
         effectDuration = 5;
@@ -28,12 +22,20 @@ public class Shovel extends ShopItem {
 
     @Override
     public void activate() {
-        if (game.isStopped() || isActivated) return;
-        isActivated = true;
-        expirationMove = game.getPlayer().getMoves() + effectDuration;
+        lease();
     }
 
     public void draw() {
         statusBar.draw();
+    }
+
+    private String getShovelDescription() {
+        return "Следующие 5 шагов\n" +
+                "вы будете получать\n" +
+                "в два раза больше\n" +
+                "золотых монет.\n" +
+                "Золото добывается\n" +
+                "при открытии клеток\n" +
+                "с цифрами.";
     }
 }

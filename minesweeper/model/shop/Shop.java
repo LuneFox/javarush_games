@@ -118,8 +118,8 @@ public class Shop {
     }
 
     public void checkExpiredItems() {
-        shovel.checkExpiration();
-        dice.checkExpiration();
+        shovel.deactivateIfExpired();
+        dice.deactivateIfExpired();
     }
 
     @DeveloperOption

@@ -10,13 +10,7 @@ public class Flag extends ShopItem {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_FLAG);
         name = "Флажок";
-        description = "Обычный флажок\n" +
-                "для установки на\n" +
-                "поле. Вы можете\n" +
-                "сэкономить золото,\n" +
-                "не покупая флажки,\n" +
-                "когда позиция мины\n" +
-                "очевидна.";
+        description = getFlagDescription();
         cost = 1;
         inStock = game.countAllCells(Cell.Filter.MINED);
     }
@@ -24,5 +18,15 @@ public class Flag extends ShopItem {
     @Override
     public void activate() {
         // Cannot be activated
+    }
+
+    private String getFlagDescription() {
+        return "Обычный флажок\n" +
+                "для установки на\n" +
+                "поле. Вы можете\n" +
+                "сэкономить золото,\n" +
+                "не покупая флажки,\n" +
+                "когда позиция мины\n" +
+                "очевидна.";
     }
 }
