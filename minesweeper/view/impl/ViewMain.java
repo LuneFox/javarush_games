@@ -45,7 +45,7 @@ public class ViewMain extends View {
             Phase.setActive(Phase.ABOUT);
         }
     };
-    final Button recordsButton = new Button(2, 88, 0, 0, "рекорды", this) {
+    final Button recordsButton = new Button(2, 88, "рекорды", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
@@ -110,9 +110,9 @@ public class ViewMain extends View {
 
     private void replaceStartButtonText() {
         if (game.isStopped() || game.isFirstMove()) {
-            if (!startButton.getText().equals("старт")) startButton.replaceText(36, "старт");
+            if (!startButton.getLabelText().equals("старт")) startButton.replaceText(36, "старт");
         } else {
-            if (!startButton.getText().equals("заново")) startButton.replaceText(36, "заново");
+            if (!startButton.getLabelText().equals("заново")) startButton.replaceText(36, "заново");
         }
     }
 

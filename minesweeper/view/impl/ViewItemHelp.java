@@ -12,7 +12,7 @@ import com.javarush.games.minesweeper.view.View;
 
 public class ViewItemHelp extends View {
 
-    private final Button closeButton = new Button(88, 2, 0, 0, "x", this) {
+    private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();

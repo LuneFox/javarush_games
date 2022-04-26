@@ -14,28 +14,28 @@ import com.javarush.games.minesweeper.view.View;
 
 
 public class ViewGameOver extends View {
-    private final Button againButton = new Button(57, 69, 0, 0, "снова", this) {
+    private final Button againButton = new Button(57, 69, "снова", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             game.startNewGame();
         }
     };
-    private final Button returnToMenuButton = new Button(15, 69, 0, 0, "меню", this) {
+    private final Button returnToMenuButton = new Button(15, 69, "меню", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.MAIN);
         }
     };
-    private final Button hideOverlayButton = new Button(73, 35, 0, 0, "x", this) {
+    private final Button hideOverlayButton = new Button(73, 35, "x", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.BOARD);
         }
     };
-    private final Button showScoreDetailButton = new Button(18, 55, 0, 0, "?", this) {
+    private final Button showScoreDetailButton = new Button(18, 55, "?", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();

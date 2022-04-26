@@ -20,7 +20,7 @@ public class ViewScore extends View {
     private final static int PADDING_LEFT = 3;
 
     public static final PageSelector pageSelector = new PageSelector(30, 89, 40, 2);
-    private final Button closeButton = new Button(88, 2, 0, 0, "x", this) {
+    private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();
@@ -95,7 +95,7 @@ public class ViewScore extends View {
         Printer.print(leftText,
                 PADDING_LEFT,
                 PADDING_TOP);
-        
+
         Printer.print(rightText,
                 Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW,
                 PADDING_RIGHT,

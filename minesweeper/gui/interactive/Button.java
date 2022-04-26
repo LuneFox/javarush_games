@@ -14,40 +14,44 @@ import com.javarush.games.minesweeper.view.View;
  */
 
 public abstract class Button extends InteractiveObject {
-    public static int pressedTime = -2;           // this timer counts towards 0, then the press animation stops
-    public static final int PRESS_DURATION = 5;   // for how long buttons stay pressed
-    public static final int POST_PRESS_DELAY = -2;// for how long buttons display unpressed before moving to next screen
+    // while pressedTime counts from this value to 0, the button remains pressed
+    public static final int PRESS_DURATION = 5;
 
-    private final Color textColor;
-    private final Image bodyUnpressed;
-    private final Image bodyPressed;
-    private String text;
-    private int textOffset;
+    // while pressedTime counts from 0 to this value (negative), the button appears unpressed before moving to the next screen
+    public static final int POST_PRESS_DELAY = -2;
+
+    // this timer counts down, then at 0 the button is released
+    public static int pressedTimeCounter = POST_PRESS_DELAY;
+
+    private static final int DEFAULT_HEIGHT = 9;
+    private static final int DEFAULT_MARGIN = 3;
+    private static final int DEFAULT_TEXT_OFFSET = 2;
+
+    private final Image unpressedBody;
+    private final Image pressedBody;
+    private final Color labelColor = Color.WHITE;
+    private String labelText;
+    private int labelOffset;
     private boolean isPressed;
 
-    public Button(int posX, int posY, int sizeX, int sizeY, String text, View view) { // size 0 = auto size;
+    public Button(int posX, int posY, String text, View view) {
         super(posX, posY, view);
-        int textLength = Printer.calculateWidth(text);
-        this.text = text;
-        this.width = (sizeX == 0) ? (textLength + 3) : sizeX;
-        this.height = (sizeY == 0) ? 9 : sizeY;
-        this.textOffset = (sizeX == 0) ? 2 : ((sizeX - textLength) / 2) + 1;
-        this.textColor = Color.WHITE;
-        this.bodyUnpressed = createBody(posX, posY, true);
-        this.bodyPressed = createBody(posX, posY, false);
+        this.labelText = text;
+        this.width = Printer.calculateWidth(text) + DEFAULT_MARGIN;
+        this.height = DEFAULT_HEIGHT;
+        this.labelOffset = DEFAULT_TEXT_OFFSET;
+        this.unpressedBody = createBody(posX, posY, true);
+        this.pressedBody = createBody(posX, posY, false);
     }
 
-    public void draw() {
-        // Is drawn as pressed only when pressed time > 0, otherwise is drawn normal
-        if (pressedTime <= 0) isPressed = false;
-        int drawX = (isPressed) ? x + 1 : x;
-        int drawY = (isPressed) ? y + 1 : y;
-        if (isPressed) {
-            this.bodyPressed.draw(drawX, drawY);
-        } else {
-            this.bodyUnpressed.draw(drawX, drawY);
-        }
-        Printer.print(text, textColor, drawX + textOffset, drawY);
+    public Button(int posX, int posY, int width, int height, String text, View view) {
+        super(posX, posY, view);
+        this.labelText = text;
+        this.width = width;
+        this.height = height;
+        this.labelOffset = ((width - Printer.calculateWidth(text)) / 2) + 1;
+        this.unpressedBody = createBody(posX, posY, true);
+        this.pressedBody = createBody(posX, posY, false);
     }
 
     private Image createBody(int posX, int posY, boolean addShadow) {
@@ -57,22 +61,61 @@ public abstract class Button extends InteractiveObject {
                 return ImageCreator.createFrame(Button.this.width, Button.this.height, addShadow, true);
             }
         };
-        body.colors = new Color[]{Color.NONE, Theme.BUTTON_BG.getColor(), Color.BLACK, Theme.BUTTON_BORDER.getColor()};
+
+        body.colors = new Color[]{
+                Color.NONE,                     // transparent
+                Theme.BUTTON_BG.getColor(),     // background
+                Color.BLACK,                    // shadow
+                Theme.BUTTON_BORDER.getColor()  // border
+        };
+
         return body;
+    }
+
+    public void draw() {
+        if (pressedTimeCounter <= 0) {
+            release();
+        }
+
+        int drawX = (isPressed) ? (x + 1) : x;
+        int drawY = (isPressed) ? (y + 1) : y;
+
+        drawStateDependentBody(drawX, drawY);
+        printLabel(drawX, drawY);
+    }
+
+    private void drawStateDependentBody(int drawX, int drawY) {
+        if (isPressed) {
+            this.pressedBody.draw(drawX, drawY);
+        } else {
+            this.unpressedBody.draw(drawX, drawY);
+        }
+    }
+
+    private void printLabel(int drawX, int drawY) {
+        Printer.print(labelText, labelColor, drawX + labelOffset, drawY);
     }
 
     public void replaceText(int width, String label) {
         int textLength = Printer.calculateWidth(label);
-        this.text = label;
-        this.textOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
+        this.labelText = label;
+        this.labelOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
     }
 
     public void onLeftClick() {
-        isPressed = true;
-        pressedTime = PRESS_DURATION;
+        press();
     }
 
-    public String getText() {
-        return text;
+    private void press() {
+        isPressed = true;
+        pressedTimeCounter = PRESS_DURATION;
+    }
+
+    private void release() {
+        isPressed = false;
+    }
+
+    public String getLabelText() {
+        return labelText;
     }
 }

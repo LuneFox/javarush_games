@@ -19,7 +19,7 @@ public class ViewRecords extends View {
             "Михаил Васильев\nID 2522974", "37125"
     };
 
-    private final Button closeButton = new Button(88, 2, 0, 0, "x", this) {
+    private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
         public void onLeftClick() {
             super.onLeftClick();

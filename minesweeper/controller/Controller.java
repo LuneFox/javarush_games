@@ -85,7 +85,7 @@ public class Controller {
 
         if (!Util.isWithinScreen(x, y)
                 || View.getGameOverShowDelay() > 0
-                || Button.pressedTime > Button.POST_PRESS_DELAY) {
+                || Button.pressedTimeCounter > Button.POST_PRESS_DELAY) {
             // Disable controls during awaiting of the next screen
             this.strategy = strategyMap.get(null);
             return;

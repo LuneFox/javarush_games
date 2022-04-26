@@ -40,13 +40,13 @@ public enum Phase {
 
     public static void updateView() {
         // Give time for buttons to animate before changing views
-        if (Button.pressedTime <= Button.POST_PRESS_DELAY) {
+        if (Button.pressedTimeCounter <= Button.POST_PRESS_DELAY) {
             if (currentView != pendingView) {
                 onViewChange();
             }
             currentView = pendingView;
         } else {
-            Button.pressedTime--;
+            Button.pressedTimeCounter--;
         }
         currentView.update();
     }
