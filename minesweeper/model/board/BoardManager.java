@@ -22,6 +22,7 @@ public class BoardManager {
     private boolean isFlagExplosionAllowed;
     private boolean isFirstMove;
     private boolean isRecursiveMove;
+    private boolean miniBombHitMine;
 
     public BoardManager(MinesweeperGame game) {
         this.game = game;
@@ -206,6 +207,7 @@ public class BoardManager {
         }
 
         if (cell.isMined()) { // recursive explosions
+            miniBombHitMine = true;
             PopUpMessage.show("Взорвалась мина!");
             cell.setMined(false);
             isRecursiveMove = true;
@@ -225,11 +227,14 @@ public class BoardManager {
     }
 
     public void clearUpAfterBomb() {
-        field.getAllCells(CellFilter.DESTROYED).forEach(cell -> {
-            field.getNeighborCells(cell, CellFilter.CLOSED, false).forEach(emptyCell -> {
-                openCell(emptyCell.x, emptyCell.y);
+        if (miniBombHitMine) {
+            field.getAllCells(CellFilter.DESTROYED).forEach(cell -> {
+                field.getNeighborCells(cell, CellFilter.CLOSED, false).forEach(emptyCell -> {
+                    openCell(emptyCell.x, emptyCell.y);
+                });
             });
-        });
+        }
+        miniBombHitMine = false;
     }
 
     /*
