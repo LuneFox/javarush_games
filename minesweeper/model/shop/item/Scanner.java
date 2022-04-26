@@ -36,7 +36,7 @@ public class Scanner extends ShopItem {
 
     private void use(Cell cell) {
         deactivate();
-        game.scanNeighbors(cell.x, cell.y);
+        game.useScanner(cell.x, cell.y);
 
         final Shop shop = game.getShop();
         shop.getBomb().restock();

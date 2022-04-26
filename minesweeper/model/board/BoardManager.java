@@ -224,8 +224,17 @@ public class BoardManager {
         checkVictory();
     }
 
+    public void clearUpAfterBomb() {
+        field.getAllCells(CellFilter.DESTROYED).forEach(cell -> {
+            field.getNeighborCells(cell, CellFilter.CLOSED, false).forEach(emptyCell -> {
+                openCell(emptyCell.x, emptyCell.y);
+            });
+        });
+    }
 
-    // Cheats
+    /*
+     * Cheats
+     */
 
     @DeveloperOption
     public void autoFlag() {

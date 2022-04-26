@@ -25,7 +25,7 @@ import com.javarush.games.minesweeper.view.View;
  * Also plays role the Facade for Controller and View (central node to get to all possible game elements).
  */
 public class MinesweeperGame extends Game {
-    public static final String VERSION = "1.24";
+    public static final String VERSION = "1.25";
 
     private Controller controller;
     private Display display;
@@ -106,7 +106,9 @@ public class MinesweeperGame extends Game {
         Results.update();
     }
 
-    // Facade
+    /*
+     * Facade
+     */
 
     public void setDisplayInterlace(boolean enabled) {
         display.setInterlaceEnabled(enabled);
@@ -140,26 +142,31 @@ public class MinesweeperGame extends Game {
         boardManager.swapFlag(x, y);
     }
 
-    public void scanNeighbors(int x, int y) {
+    public void useScanner(int x, int y) {
         boardManager.scanNeighbors(x, y);
     }
 
-    public void destroyCell(int x, int y) {
+    public void useMiniBomb(int x, int y) {
         boardManager.destroyCell(x, y);
+        boardManager.clearUpAfterBomb();
     }
 
+    @DeveloperOption
     public void autoFlag() {
         boardManager.autoFlag();
     }
 
+    @DeveloperOption
     public void autoOpen() {
         boardManager.autoOpen();
     }
 
+    @DeveloperOption
     public void autoScan() {
         boardManager.autoScan();
     }
 
+    @DeveloperOption
     public void autoSolve() {
         boardManager.autoSolve();
     }
@@ -209,7 +216,9 @@ public class MinesweeperGame extends Game {
     }
 
 
-    // Controls
+    /*
+     * Controls
+     */
 
     @Override
     public void onMouseLeftClick(int x, int y) {

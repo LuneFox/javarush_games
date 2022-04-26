@@ -34,7 +34,7 @@ public class Bomb extends ShopItem {
 
     private void use(Cell cell) {
         this.deactivate();
-        game.destroyCell(cell.x, cell.y);
+        game.useMiniBomb(cell.x, cell.y);
 
         final Shop shop = game.getShop();
         shop.getScanner().restock();

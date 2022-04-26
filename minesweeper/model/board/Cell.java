@@ -121,6 +121,9 @@ public class Cell extends InteractiveObject {
                 case FLAGGED:
                     if (cell.isFlagged) result.add(cell);
                     break;
+                case DESTROYED:
+                    if (cell.isDestroyed) result.add(cell);
+                    break;
                 case SAFE:
                     // Unrevealed cell that is safe to click
                     if (!cell.isOpen && !cell.isMined) result.add(cell);
