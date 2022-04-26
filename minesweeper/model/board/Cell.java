@@ -19,6 +19,7 @@ import java.util.Map;
 public class Cell extends InteractiveObject {
     private static final Map<Integer, ImageType> sprites = new HashMap<>();
     private boolean isMined;
+    private boolean wasMinedBeforeDestruction;
     private boolean isOpen;
     private boolean isScanned;
     private boolean isShielded;
@@ -79,7 +80,11 @@ public class Cell extends InteractiveObject {
 
     public void destroy() {
         isDestroyed = true;
-        isMined = false;
+        if (isMined) {
+            isMined = false;
+            wasMinedBeforeDestruction = true;
+        }
+        open();
     }
 
     public void setScanned() {
@@ -221,5 +226,9 @@ public class Cell extends InteractiveObject {
 
     public void setShop(boolean shop) {
         isShop = shop;
+    }
+
+    public boolean wasMinedBeforeDestruction() {
+        return wasMinedBeforeDestruction;
     }
 }

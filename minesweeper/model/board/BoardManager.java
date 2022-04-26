@@ -209,7 +209,7 @@ public class BoardManager {
         if (cell.isMined()) { // recursive explosions
             miniBombHitMine = true;
             PopUpMessage.show("Взорвалась мина!");
-            cell.setMined(false);
+            cell.destroy();
             isRecursiveMove = true;
             isFlagExplosionAllowed = true;
             field.getNeighborCells(cell, CellFilter.NONE, false).forEach(neighbor -> {
@@ -217,24 +217,28 @@ public class BoardManager {
                     destroyCell(neighbor.x, neighbor.y); // recursive call
                 }
             });
+        } else {
+            cell.destroy();
         }
-
-        cell.destroy();
-        cell.open();
         flagManager.returnFlagToShop(cell);
         field.setNumbers();
         checkVictory();
     }
 
-    public void clearUpAfterBomb() {
-        if (miniBombHitMine) {
-            field.getAllCells(CellFilter.DESTROYED).forEach(cell -> {
-                field.getNeighborCells(cell, CellFilter.CLOSED, false).forEach(emptyCell -> {
-                    openCell(emptyCell.x, emptyCell.y);
-                });
-            });
-        }
+    public void cleanUpAfterMineDestruction() {
+        if (!miniBombHitMine) return;
+        field.getAllCells(CellFilter.DESTROYED).forEach(cell -> {
+            if (cell.wasMinedBeforeDestruction()) {
+                openClosedNeighbors(cell);
+            }
+        });
         miniBombHitMine = false;
+    }
+
+    private void openClosedNeighbors(Cell cell) {
+        field.getNeighborCells(cell, CellFilter.CLOSED, false).forEach(closedNeighbor -> {
+            openCell(closedNeighbor.x, closedNeighbor.y);
+        });
     }
 
     /*

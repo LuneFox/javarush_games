@@ -148,7 +148,7 @@ public class MinesweeperGame extends Game {
 
     public void useMiniBomb(int x, int y) {
         boardManager.destroyCell(x, y);
-        boardManager.clearUpAfterBomb();
+        boardManager.cleanUpAfterMineDestruction();
     }
 
     @DeveloperOption
