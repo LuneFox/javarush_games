@@ -59,7 +59,8 @@ public class ViewScore extends View {
                                 "\n" + Results.get("money") +
                                 "\n" + Results.get("mines") +
                                 "\n" + Results.get("dice_total") +
-                                "\n" + Results.get("cells"));
+                                "\n" + Results.get("cells")
+                );
                 break;
 
             case 1:
@@ -76,7 +77,8 @@ public class ViewScore extends View {
                                 "\n" +
                                 "\n" + Results.get("difficulty") +
                                 "\n" + Results.get("dice_rolls") +
-                                "\n" + Results.get("dice_luck"));
+                                "\n" + Results.get("dice_luck")
+                );
                 break;
 
             default:

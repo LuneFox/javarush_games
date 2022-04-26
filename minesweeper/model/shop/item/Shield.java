@@ -44,9 +44,8 @@ public class Shield extends ShopItem {
     }
 
     private void transformCell(Cell cell) {
-        cell.setSprite(ImageType.BOARD_MINE);
         cell.setShielded(true);
-        cell.setBackgroundColor(Color.YELLOW);
+        cell.open();
     }
 
     @Override

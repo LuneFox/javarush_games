@@ -26,7 +26,7 @@ public class Cell extends InteractiveObject {
     private boolean isFlagged;
     private boolean isDestroyed;
     private boolean isShop;
-    
+
     private int countMinedNeighbors;  // number of adjacent mines
     private final Image background;
     private Image sprite;
@@ -57,8 +57,12 @@ public class Cell extends InteractiveObject {
     public void open() {
         isOpen = true;
         background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
+
         if (isGameOverCause) {
             setBackgroundColor(Color.RED);
+        } else if (isShielded) {
+            setSprite(ImageType.BOARD_MINE);
+            setBackgroundColor(Color.YELLOW);
         } else {
             setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
         }
