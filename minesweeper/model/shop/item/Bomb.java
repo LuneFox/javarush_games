@@ -20,16 +20,14 @@ public class Bomb extends ShopItem {
         frame = new AimFrame(game.getCell(4, 4), -3, ImageType.BOARD_BOMB_FRAME);
     }
 
-    public boolean tryToUseOrMoveFrame(Cell cell) {
-        if (!isActivated) return false;
+    public void aimOrUse(Cell cell) {
+        if (!isActivated) return;
 
         if (frame.isNotFocusedOnCell(cell)) {
             frame.focusOnCell(cell);
-            return true;
+            return;
         }
-
         use(cell);
-        return true;
     }
 
     private void use(Cell cell) {

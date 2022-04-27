@@ -134,6 +134,10 @@ public class MinesweeperGame extends Game {
         boardManager.openCell(x, y);
     }
 
+    public void useItemOnCell(int x, int y) {
+        boardManager.useItemOnCell(x, y);
+    }
+
     public void openSurrounding(int x, int y) {
         boardManager.openSurroundingCells(x, y);
     }

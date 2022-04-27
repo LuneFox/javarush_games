@@ -10,6 +10,7 @@ import com.javarush.games.minesweeper.model.board.Cell;
 
 public class ControlBoard implements ControlStrategy {
     private static MinesweeperGame game;
+
     @Override
     public void leftClick(int x, int y) {
         Phase.getCurrentView().click(x, y, Controller.Click.LEFT);
@@ -25,9 +26,12 @@ public class ControlBoard implements ControlStrategy {
             return;
         }
 
-        if (!cell.isFlagged() || game.getShop().getScanner().isActivated()) {
-            game.openCell(gridX, gridY);
+        if (game.getShop().scannerOrBombActivated()) {
+            game.useItemOnCell(gridX, gridY);
+            return;
         }
+
+        game.openCell(gridX, gridY);
         game.getShop().checkExpiredItems();
     }
 
