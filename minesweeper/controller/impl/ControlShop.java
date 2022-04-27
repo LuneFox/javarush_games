@@ -2,8 +2,8 @@ package com.javarush.games.minesweeper.controller.impl;
 
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.controller.ControlStrategy;
-import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.model.Phase;
 
 import static com.javarush.games.minesweeper.Util.inside;
@@ -13,7 +13,7 @@ public class ControlShop implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        Phase.getCurrentView().click(x, y, Controller.Click.LEFT);
+        Phase.getCurrentView().click(x, y, Click.LEFT);
 
         if (clickedOutsideShopWindow(x, y)) {
             Phase.setActive(Phase.BOARD);

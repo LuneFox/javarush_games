@@ -85,7 +85,7 @@ public class BoardManager {
                 return true;
             }
         }
-        
+
         return false;
     }
 
@@ -177,7 +177,7 @@ public class BoardManager {
     }
 
     private void addTimerScore() {
-        if (isRecursiveMove()) return;
+        if (isRecursiveMove) return;
         game.getPlayer().getScore().addTimerScore();
         timer.reset();
     }

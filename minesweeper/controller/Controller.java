@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
 import com.javarush.games.minesweeper.controller.impl.ControlBoard;
+import com.javarush.games.minesweeper.controller.impl.ControlDisabled;
 import com.javarush.games.minesweeper.controller.impl.ControlMain;
 import com.javarush.games.minesweeper.controller.impl.ControlShop;
 import com.javarush.games.minesweeper.gui.interactive.Button;
@@ -14,19 +15,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Separate class for processing various input events.
- */
-
 public class Controller {
-    private final MinesweeperGame game;
-    private ControlStrategy strategy;
     private static final Map<Phase, ControlStrategy> strategyMap = new HashMap<>();
     private static int lastClickY;
 
-    public enum Click {
-        LEFT, RIGHT
-    }
+    private final MinesweeperGame game;
+    private ControlStrategy strategy;
 
     public Controller(MinesweeperGame game) {
         this.game = game;
@@ -36,21 +30,9 @@ public class Controller {
     }
 
     static {
-        // Fill strategy map
         ControlStrategyFactory factory = new ControlStrategyFactory();
         Arrays.stream(Phase.values()).forEach(phase -> strategyMap.put(phase, factory.createStrategy(phase)));
-        strategyMap.put(null, new ControlStrategy() { // disabled controls option
-
-            @Override
-            public void leftClick(int x, int y) {
-                // do nothing
-            }
-
-            @Override
-            public void rightClick(int x, int y) {
-                // do nothing
-            }
-        });
+        strategyMap.put(null, new ControlDisabled());
     }
 
     public final void leftClick(int x, int y) {
@@ -86,8 +68,7 @@ public class Controller {
         if (!Util.isWithinScreen(x, y)
                 || View.getGameOverShowDelay() > 0
                 || !Button.isAnimationFinished()) {
-            // Disable controls during awaiting of the next screen
-            this.strategy = strategyMap.get(null);
+            this.strategy = strategyMap.get(null);  // disable controls while waiting
             return;
         }
 

@@ -2,8 +2,8 @@ package com.javarush.games.minesweeper.controller.impl;
 
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.controller.ControlStrategy;
-import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.Cell;
@@ -13,7 +13,7 @@ public class ControlBoard implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        Phase.getCurrentView().click(x, y, Controller.Click.LEFT);
+        Phase.getCurrentView().click(x, y, Click.LEFT);
         if (checkGameOver()) return;
 
         int gridX = x / 10;
@@ -37,7 +37,7 @@ public class ControlBoard implements ControlStrategy {
 
     @Override
     public void rightClick(int x, int y) {
-        Phase.getCurrentView().click(x, y, Controller.Click.RIGHT);
+        Phase.getCurrentView().click(x, y, Click.RIGHT);
         if (checkGameOver()) return;
 
         int gridX = x / 10;

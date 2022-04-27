@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper.view;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.controller.Controller;
+import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
@@ -26,7 +26,7 @@ public abstract class View {
         PopUpMessage.drawMessage();
     }
 
-    public void click(int x, int y, Controller.Click click) {
+    public void click(int x, int y, Click click) {
         for (InteractiveObject object : linkedObjects) {
             if (object.tryClick(x, y, click)) {
                 return; // click only the first one if they accidentally got layered

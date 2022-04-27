@@ -45,7 +45,7 @@ public enum Phase {
         if (Button.isAnimationFinished() && isAnotherViewPending()) {
             changeCurrentView();
         } else {
-            Button.waitForAnimation();
+            Button.continueAnimation();
         }
     }
 

@@ -9,23 +9,14 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.view.View;
 
-/**
- * Creates buttons with text wrapped in frames.
- */
-
 public abstract class Button extends InteractiveObject {
-    // while pressedTime counts from this value to 0, the button remains pressed
-    private static final int PRESS_DURATION = 5;
-
-    // while pressedTime counts from 0 to this value (negative), the button appears unpressed before moving to the next screen
-    private static final int POST_PRESS_DELAY = -2;
-
-    // this timer counts down, then at 0 the button is released
-    private static int pressedTimeCounter = POST_PRESS_DELAY;
-
+    private static final int PRESS_ANIMATION_START_FRAME = 0;
+    private static final int PRESS_ANIMATION_RELEASE_FRAME = 5;
+    private static final int PRESS_ANIMATION_FINISH_FRAME = 7;
     private static final int DEFAULT_HEIGHT = 9;
     private static final int DEFAULT_MARGIN = 3;
-    private static final int DEFAULT_TEXT_OFFSET = 2;
+    private static final int DEFAULT_OFFSET = 2;
+    private static int pressAnimationCurrentFrame = PRESS_ANIMATION_FINISH_FRAME;
 
     private final Image unpressedBody;
     private final Image pressedBody;
@@ -39,7 +30,7 @@ public abstract class Button extends InteractiveObject {
         this.labelText = text;
         this.width = Printer.calculateWidth(text) + DEFAULT_MARGIN;
         this.height = DEFAULT_HEIGHT;
-        this.labelOffset = DEFAULT_TEXT_OFFSET;
+        this.labelOffset = DEFAULT_OFFSET;
         this.unpressedBody = createBody(posX, posY, true);
         this.pressedBody = createBody(posX, posY, false);
     }
@@ -61,19 +52,12 @@ public abstract class Button extends InteractiveObject {
                 return ImageCreator.createFrame(Button.this.width, Button.this.height, addShadow, true);
             }
         };
-
-        body.colors = new Color[]{
-                Color.NONE,                     // transparent
-                Theme.BUTTON_BG.getColor(),     // background
-                Color.BLACK,                    // shadow
-                Theme.BUTTON_BORDER.getColor()  // border
-        };
-
+        body.colors = new Color[]{Color.NONE, Theme.BUTTON_BG.getColor(), Color.BLACK, Theme.BUTTON_BORDER.getColor()};
         return body;
     }
 
     public void draw() {
-        if (pressedTimeCounter <= 0) {
+        if (pressAnimationCurrentFrame >= PRESS_ANIMATION_RELEASE_FRAME) {
             release();
         }
 
@@ -96,19 +80,19 @@ public abstract class Button extends InteractiveObject {
         Printer.print(labelText, labelColor, drawX + labelOffset, drawY);
     }
 
-    public void replaceText(int width, String label) {
-        int textLength = Printer.calculateWidth(label);
-        this.labelText = label;
-        this.labelOffset = (width == 0) ? 2 : ((width - textLength) / 2) + 1;
-    }
-
     public void onLeftClick() {
         press();
     }
 
+    public void replaceText(int width, String label) {
+        int textLength = Printer.calculateWidth(label);
+        this.labelText = label;
+        this.labelOffset = (width == 0) ? DEFAULT_OFFSET : ((width - textLength) / 2) + 1;
+    }
+
     private void press() {
         isPressed = true;
-        pressedTimeCounter = PRESS_DURATION;
+        pressAnimationCurrentFrame = PRESS_ANIMATION_START_FRAME;
     }
 
     private void release() {
@@ -116,12 +100,13 @@ public abstract class Button extends InteractiveObject {
     }
 
     public static boolean isAnimationFinished() {
-        return pressedTimeCounter <= POST_PRESS_DELAY;
+        return pressAnimationCurrentFrame >= PRESS_ANIMATION_FINISH_FRAME;
     }
 
-    public static void waitForAnimation() {
-        if (pressedTimeCounter <= POST_PRESS_DELAY) return;
-        pressedTimeCounter--;
+    public static void continueAnimation() {
+        if (pressAnimationCurrentFrame <= PRESS_ANIMATION_FINISH_FRAME) {
+            pressAnimationCurrentFrame++;
+        }
     }
 
     public String getLabelText() {

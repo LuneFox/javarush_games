@@ -1,7 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.controller.Controller;
+import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.view.View;
 
 public abstract class InteractiveObject implements Drawable, Clickable {
@@ -34,14 +34,14 @@ public abstract class InteractiveObject implements Drawable, Clickable {
         this.y = y;
     }
 
-    public boolean tryClick(int x, int y, Controller.Click click) {
+    public boolean tryClick(int x, int y, Click click) {
         boolean clickCoversObject = x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + height;
         if (clickCoversObject) {
             latestClickX = x;
             latestClickY = y;
-            if (click == Controller.Click.LEFT) {
+            if (click == Click.LEFT) {
                 onLeftClick();
-            } else if (click == Controller.Click.RIGHT) {
+            } else if (click == Click.RIGHT) {
                 onRightClick();
             }
         }
