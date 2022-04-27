@@ -339,6 +339,7 @@ public class BoardManager {
         Shop shop = game.getShop();
         shop.getScanner().activate();
         game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
+        game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         PopUpMessage.show("DEV: RANDOM SCAN");
     }
 
