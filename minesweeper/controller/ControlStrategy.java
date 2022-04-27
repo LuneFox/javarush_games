@@ -2,10 +2,6 @@ package com.javarush.games.minesweeper.controller;
 
 import com.javarush.games.minesweeper.model.Phase;
 
-/**
- * Strategy pattern for different controls on different screens.
- */
-
 public interface ControlStrategy {
     default void leftClick(int x, int y) {
         Phase.getCurrentView().click(x, y, Click.LEFT);

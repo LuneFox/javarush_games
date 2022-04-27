@@ -25,8 +25,7 @@ public class ControlStrategyFactory {
             case SHOP:
                 return new ControlShop();
             default:
-                return new ControlStrategy() {
-                };
+                return new ControlDisabled();
         }
     }
 }
