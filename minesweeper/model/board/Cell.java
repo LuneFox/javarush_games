@@ -162,6 +162,10 @@ public class Cell extends InteractiveObject {
         return isShop;
     }
 
+    public boolean isShielded() {
+        return isShielded;
+    }
+
     /*
      *     Setters
      */
@@ -182,6 +186,7 @@ public class Cell extends InteractiveObject {
 
     public void setShielded(boolean shielded) {
         isShielded = shielded;
+        open();
     }
 
     public void setGameOverCause(boolean gameOverCause) {

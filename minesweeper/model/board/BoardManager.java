@@ -7,6 +7,7 @@ import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.shop.Shop;
+import com.javarush.games.minesweeper.model.shop.item.Shield;
 
 import java.util.List;
 
@@ -65,22 +66,26 @@ public class BoardManager {
         if (cell.isFlagged() || cell.isOpen()) return;
 
         cell.open();
-        if (openedMineFailedToSurviveAndLost(cell)) return;
+        if (openedMineAndFailedToSurvive(cell)) return;
 
         registerScoreAndMoney(cell);
         openRecursivelyIfEmpty(cell);
         checkVictory();
     }
 
-    private boolean openedMineFailedToSurviveAndLost(Cell cell) {
+    private boolean openedMineAndFailedToSurvive(Cell cell) {
         if (cell.isMined()) {
-            boolean survived = game.getShop().getShield().tryToUse(cell);
-            if (!survived) {
+
+            Shield shield = game.getShop().getShield();
+            if (shield.isActivated()) shield.use(cell);
+
+            if (!cell.isShielded()) {
                 cell.setGameOverCause(true);
                 game.lose();
                 return true;
             }
         }
+        
         return false;
     }
 

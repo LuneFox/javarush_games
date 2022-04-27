@@ -1,6 +1,5 @@
 package com.javarush.games.minesweeper.model.shop.item;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -21,31 +20,18 @@ public class Shield extends ShopItem {
         inStock = 1;
     }
 
-    public boolean tryToUse(Cell cell) {
-        if (isActivated) {
-            use(cell);
-            return true;
-        }
-        return false;
-    }
-
-    private void use(Cell cell) {
+    public void use(Cell cell) {
         deactivate();
-        transformCell(cell);
-        registerScore();
+        cell.setShielded(true);
+        affectScore();
         restock();
         PopUpMessage.show("Щит разрушен!");
     }
 
-    private void registerScore() {
+    private void affectScore() {
         final Score score = game.getPlayer().getScore();
         score.setLostScore(score.getLostScore() - 150 * difficultyModifier);
         game.getPlayer().addBrokenShield();
-    }
-
-    private void transformCell(Cell cell) {
-        cell.setShielded(true);
-        cell.open();
     }
 
     @Override
