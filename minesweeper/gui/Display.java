@@ -8,10 +8,11 @@ import com.javarush.games.minesweeper.model.InteractiveObject;
  * Logical display to flatten layers and increase the drawing speed, allows making effects.
  */
 public class Display extends InteractiveObject {
+    public static final int SIZE = 100;
     private final Pixel[][] matrix;
     private boolean interlacePhase;
     private boolean interlaceEnabled;
-    
+
     public Display() {
         this.x = 0;
         this.y = 0;
@@ -66,11 +67,11 @@ public class Display extends InteractiveObject {
             this.matrix[y][x].cellColor = color;
         }
     }
-    
+
     public void setInterlaceEnabled(boolean interlaceEnabled) {
         this.interlaceEnabled = interlaceEnabled;
     }
-    
+
     public static class Pixel {
         Color cellColor;
 

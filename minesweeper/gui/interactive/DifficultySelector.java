@@ -32,7 +32,7 @@ public class DifficultySelector extends InteractiveObject {
     private void createBars() {
         for (int i = 0; i < bars.length; i++) {
             Image bar = new Image(ImageType.GUI_DIFFICULTY_BAR, getBarHorizontalPosition(i), this.y);
-            bar.restrictColorChange(true);
+            bar.setUnableToReloadColors(true);
 
             if (i > 6) {
                 bar.replaceColor(Color.RED, 1);

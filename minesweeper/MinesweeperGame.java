@@ -42,7 +42,7 @@ public class MinesweeperGame extends Game {
     @Override
     public void initialize() {
         super.showGrid(false);
-        super.setScreenSize(100, 100);
+        super.setScreenSize(Display.SIZE, Display.SIZE);
         super.setTurnTimer(30);
 
         Phase.setUp(this);

@@ -2,25 +2,23 @@ package com.javarush.games.minesweeper.gui.image;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Cache;
+import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.view.View;
 
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * An image that is drawn using colors and the number matrix. Can be mirrored, recolored etc.
- */
-
 public class Image extends InteractiveObject {
     public static final Cache<ImageType, Image> cache;
     public static final int CENTER = Integer.MIN_VALUE;
-    public static final Set<Image> allImages = new HashSet<>(); // All images, including non-cached
+    public static final Set<Image> allCreatedImages = new HashSet<>();
 
     private final ImageType type;
-    public int[][] matrix;  // matrix of color numbers
-    public Color[] colors;  // an array to match colors and numbers
-    private boolean updatingColorRestricted;
+    public int[][] matrix;
+    public Color[] colors;
+    private boolean isUnableToReloadColors;
+
 
     public enum Mirror {
         HORIZONTAL, VERTICAL, NONE
@@ -37,46 +35,50 @@ public class Image extends InteractiveObject {
         };
     }
 
-    // Need this to fully change color theme
-    public static void updateColors() {
-        for (Image image : allImages) {
-            if (image.updatingColorRestricted) continue;
-            ImageStorage storage = new ImageStorage(image.type);
-            image.colors = storage.getColors();
-        }
+    public Image(ImageType type) {
+        this(type, 0, 0);
     }
 
-    // Main constructor
-    public Image(ImageType type, int x, int y) { // constructor with setting position at once
+    public Image(ImageType type, View view) {
+        this(type);
+        linkView(view);
+    }
+
+    public Image(ImageType type, int x, int y) {
         super(x, y);
         this.type = type;
         this.matrix = getMatrixFromStorage(type);
         this.height = matrix.length;
         this.width = matrix[0].length;
-        Image.allImages.add(this);
+        Image.allCreatedImages.add(this);
     }
 
-    // Constructor with linking to view
-    public Image(ImageType type, View view) {
-        this(type, 0, 0);
-        linkView(view);
+    public final void setPosition(int drawX, int drawY) {
+        this.x = drawX == CENTER ? getCenterH() : drawX;
+        this.y = drawY == CENTER ? getCenterV() : drawY;
     }
 
-    // Constructor without setting position (for loading images into memory)
-    public Image(ImageType type) {
-        this(type, 0, 0);
+    private int getCenterH() {
+        return (Display.SIZE / 2) - (matrix[0].length / 2);
     }
 
-    // Main draw method
+    private int getCenterV() {
+        return (Display.SIZE / 2) - (matrix.length / 2);
+    }
+
+    public int[][] getMatrixFromStorage(ImageType imageType) {
+        ImageStorage storage = new ImageStorage(imageType);
+        colors = storage.getColors();
+        return storage.getData();
+    }
+
     public void draw(Mirror mirror) {
-        for (int innerY = 0; innerY < matrix.length; innerY++) {
-            for (int innerX = 0; innerX < matrix[0].length; innerX++) {
+        for (int innerY = 0; innerY < height; innerY++) {
+            for (int innerX = 0; innerX < width; innerX++) {
                 int pixel = matrix[innerY][innerX];
-                if (isTransparent(pixel)) continue;
-
-                int drawX = x + ((mirror == Mirror.HORIZONTAL) ? (matrix[0].length - 1 - innerX) : innerX);
-                int drawY = y + ((mirror == Mirror.VERTICAL) ? (matrix.length - 1 - innerY) : innerY);
-
+                if (isPixelTransparent(pixel)) continue;
+                int drawX = x + ((mirror == Mirror.HORIZONTAL) ? (width - 1 - innerX) : innerX);
+                int drawY = y + ((mirror == Mirror.VERTICAL) ? (height - 1 - innerY) : innerY);
                 game.setDisplayPixel(drawX, drawY, colors[pixel]);
             }
         }
@@ -91,14 +93,9 @@ public class Image extends InteractiveObject {
         draw(Mirror.NONE);
     }
 
-    // 0 always stands for transparent
-    private boolean isTransparent(int pixel) {
-        return (pixel == 0 || colors[pixel] == Color.NONE);
-    }
-
-    public final void setPosition(int drawX, int drawY) { // negative value = middle
-        this.x = drawX == CENTER ? 50 - matrix[0].length / 2 : drawX;
-        this.y = drawY == CENTER ? 50 - matrix.length / 2 : drawY;
+    private boolean isPixelTransparent(int pixel) {
+        final int TRANSPARENT = 0;
+        return (pixel == TRANSPARENT || colors[pixel] == Color.NONE);
     }
 
     public final void replaceColor(Color color, int number) {
@@ -108,13 +105,17 @@ public class Image extends InteractiveObject {
         }
     }
 
-    public int[][] getMatrixFromStorage(ImageType imageType) {
-        ImageStorage storage = new ImageStorage(imageType);
-        colors = storage.getColors();
-        return storage.getData();
+    public static void reloadAllCreatedImagesColors() {
+        for (Image image : allCreatedImages) {
+            if (image.isUnableToReloadColors) {
+                continue;
+            }
+            ImageStorage storage = new ImageStorage(image.type);
+            image.colors = storage.getColors();
+        }
     }
 
-    public void restrictColorChange(boolean updateColorRestricted) {
-        this.updatingColorRestricted = updateColorRestricted;
+    public void setUnableToReloadColors(boolean unableToReloadColors) {
+        isUnableToReloadColors = unableToReloadColors;
     }
 }
