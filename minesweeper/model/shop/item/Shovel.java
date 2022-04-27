@@ -25,7 +25,7 @@ public class Shovel extends ShopItem {
         lease();
     }
 
-    public void draw() {
+    public void drawStatusBar() {
         statusBar.draw();
     }
 

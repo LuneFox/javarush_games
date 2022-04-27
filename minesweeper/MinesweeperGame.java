@@ -119,7 +119,7 @@ public class MinesweeperGame extends Game {
     }
 
     public void drawField() {
-        boardManager.drawField();
+        boardManager.drawGameBoard();
     }
 
     public Cell getCell(int x, int y) {

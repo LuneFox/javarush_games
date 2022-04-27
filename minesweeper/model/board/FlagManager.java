@@ -16,7 +16,7 @@ public class FlagManager {
 
     void swapFlag(int x, int y) {
         if (game.isStopped()) return;
-        Cell cell = field.get()[y][x];
+        Cell cell = field.getField()[y][x];
         if (cell.isOpen()) return;
         if (cell.isFlagged()) {
             returnFlagToInventory(cell);
@@ -27,7 +27,7 @@ public class FlagManager {
 
     void setFlag(int x, int y) {
         if (game.isStopped()) return;
-        Cell cell = field.get()[y][x];
+        Cell cell = field.getField()[y][x];
         if (cell.isOpen()) return;
         placeFlagOnBoard(cell);
     }

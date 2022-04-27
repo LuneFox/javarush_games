@@ -39,7 +39,7 @@ public class Dice extends ShopItem {
         lease();
     }
 
-    public void draw() {
+    public void drawStatusBar() {
         if (game.getPlayer().getMoves() > expirationMove) return;
         statusBar.draw();
         drawOnBoardImage();

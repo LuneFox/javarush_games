@@ -6,9 +6,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,11 +36,11 @@ public class Cell extends InteractiveObject {
         }
     }
 
-    public Cell(ImageType imageType, int x, int y, boolean isMined) {
-        this.background = new Image(imageType, x * 10, y * 10);
+    public Cell(int x, int y) {
+        this.background = new Image(ImageType.CELL_CLOSED, x * 10, y * 10);
         this.x = x;
         this.y = y;
-        this.isMined = isMined;
+        setSprite(ImageType.NONE);
     }
 
     @Override
@@ -73,6 +71,9 @@ public class Cell extends InteractiveObject {
             setBackgroundColor(Color.DARKSLATEGRAY);
         } else if (isShop) {
             setSprite(ImageType.BOARD_SHOP);
+        } else if (isCorrectlyFlagged()) {
+            setSprite(ImageType.BOARD_MINE);
+            setBackgroundColor(Color.GREEN);
         } else {
             setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
         }
@@ -85,10 +86,6 @@ public class Cell extends InteractiveObject {
             wasMinedBeforeDestruction = true;
         }
         open();
-    }
-
-    public void setScanned() {
-        isScanned = true;
     }
 
     public void setBackgroundColor(Color color) {
@@ -110,59 +107,9 @@ public class Cell extends InteractiveObject {
         }
     }
 
-    public static List<Cell> filterCells(List<Cell> list, CellFilter filter) {
-        List<Cell> result = new ArrayList<>();
-        list.forEach(cell -> {
-            switch (filter) {
-                case CLOSED:
-                    if (!cell.isOpen) result.add(cell);
-                    break;
-                case OPEN:
-                    if (cell.isOpen) result.add(cell);
-                    break;
-                case MINED:
-                    if (cell.isMined) result.add(cell);
-                    break;
-                case FLAGGED:
-                    if (cell.isFlagged) result.add(cell);
-                    break;
-                case DESTROYED:
-                    if (cell.isDestroyed) result.add(cell);
-                    break;
-                case SAFE:
-                    // Unrevealed cell that is safe to click
-                    if (!cell.isOpen && !cell.isMined) result.add(cell);
-                    break;
-                case DANGEROUS:
-                    // Unrevealed cell that is not safe to click
-                    if (!cell.isOpen & cell.isMined) result.add(cell);
-                    break;
-                case NUMERABLE:
-                    // Cell that can have number over it
-                    if (cell.isNumerable()) result.add(cell);
-                    break;
-                case SUSPECTED:
-                    // Is flagged or revealed with shield (for auto-opening surrounding cells)
-                    if (cell.isFlagged || (cell.isOpen && cell.isMined)) result.add(cell);
-                    break;
-                case EMPTY:
-                    // Does not contain mines or numbers
-                    if (cell.isEmpty()) result.add(cell);
-                    break;
-                case SCORED:
-                    // Is counted when calculating score
-                    if (cell.isOpen && !cell.isMined && !cell.isDestroyed) result.add(cell);
-                    break;
-                case NONE:
-                default:
-                    result.add(cell);
-                    break;
-            }
-        });
-        return result;
-    }
-
-    // Combined states
+    /*
+     * Combined states
+     */
 
     public boolean isEmpty() {
         return (!isMined && countMinedNeighbors == 0);
@@ -178,18 +125,59 @@ public class Cell extends InteractiveObject {
         return game.isStopped() || isActivated || isUnableToDestroyFlag;
     }
 
-    // Getters, setters
+    private boolean isCorrectlyFlagged() {
+        return isFlagged() && !isDestroyed();
+    }
 
-    public boolean isOpen() {
-        return isOpen;
+
+    /*
+     *     Getters
+     */
+
+    public int getCountMinedNeighbors() {
+        return countMinedNeighbors;
     }
 
     public boolean isMined() {
         return isMined;
     }
 
+    public boolean wasMinedBeforeDestruction() {
+        return wasMinedBeforeDestruction;
+    }
+
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
+    }
+
+    public boolean isShop() {
+        return isShop;
+    }
+
+    /*
+     *     Setters
+     */
+
     public void setMined(boolean mined) {
         isMined = mined;
+        setSprite(ImageType.BOARD_MINE);
+    }
+
+    public void setCountMinedNeighbors(int countMinedNeighbors) {
+        this.countMinedNeighbors = countMinedNeighbors;
+        setSprite(countMinedNeighbors);
+    }
+
+    public void setScanned(boolean scanned) {
+        isScanned = scanned;
     }
 
     public void setShielded(boolean shielded) {
@@ -200,35 +188,11 @@ public class Cell extends InteractiveObject {
         isGameOverCause = gameOverCause;
     }
 
-    public boolean isFlagged() {
-        return isFlagged;
-    }
-
     public void setFlagged(boolean flagged) {
         isFlagged = flagged;
     }
 
-    public boolean isDestroyed() {
-        return isDestroyed;
-    }
-
-    public int getCountMinedNeighbors() {
-        return countMinedNeighbors;
-    }
-
-    public void setCountMinedNeighbors(int countMinedNeighbors) {
-        this.countMinedNeighbors = countMinedNeighbors;
-    }
-
-    public boolean isShop() {
-        return isShop;
-    }
-
     public void setShop(boolean shop) {
         isShop = shop;
-    }
-
-    public boolean wasMinedBeforeDestruction() {
-        return wasMinedBeforeDestruction;
     }
 }
