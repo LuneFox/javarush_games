@@ -53,30 +53,30 @@ public class Cell extends InteractiveObject {
 
     public void open() {
         isOpen = true;
-        background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
-        updateOpenedCellVisuals();
+        setGraphicsForOpenedState();
     }
 
-    public void updateOpenedCellVisuals() {
+    public void setGraphicsForOpenedState() {
         if (!isOpen) return;
+        selectBackgroundForOpenedState();
+        selectSpriteForOpenedState();
+    }
 
-        if (isGameOverCause) {
-            setBackgroundColor(Color.RED);
-        } else if (isShielded) {
-            setBackgroundColor(Color.YELLOW);
-        } else if (isScanned) {
-            setBackgroundColor(Theme.CELL_SCANNED.getColor());
-        } else if (isDestroyed) {
-            setSprite(ImageType.BOARD_DESTROYED);
-            setBackgroundColor(Color.DARKSLATEGRAY);
-        } else if (isShop) {
-            setSprite(ImageType.BOARD_SHOP);
-        } else if (isCorrectlyFlagged()) {
-            setSprite(ImageType.BOARD_MINE);
-            setBackgroundColor(Color.GREEN);
-        } else {
-            setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
-        }
+    private void selectBackgroundForOpenedState() {
+        background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
+        if (isGameOverCause) setBackgroundColor(Color.RED);
+        else if (isShielded) setBackgroundColor(Color.YELLOW);
+        else if (isScanned) setBackgroundColor(Theme.CELL_SCANNED.getColor());
+        else if (isDestroyed) setBackgroundColor(Color.DARKSLATEGRAY);
+        else if (isCorrectlyFlagged()) setBackgroundColor(Color.GREEN);
+        else setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
+    }
+
+    private void selectSpriteForOpenedState() {
+        if (isNumerable()) setSprite(countMinedNeighbors);
+        else if (isShop) setSprite(ImageType.BOARD_SHOP);
+        else if (isDestroyed) setSprite(ImageType.BOARD_DESTROYED);
+        else if (isMined) setSprite(ImageType.BOARD_MINE);
     }
 
     public void destroy() {
@@ -88,15 +88,15 @@ public class Cell extends InteractiveObject {
         open();
     }
 
-    public void setBackgroundColor(Color color) {
+    private void setBackgroundColor(Color color) {
         background.changeColor(color, 1);
     }
 
-    public void setSprite(ImageType imageType) {
+    private void setSprite(ImageType imageType) {
         this.sprite = new Image(imageType, x * 10, y * 10);
     }
 
-    public void setSprite(int number) {
+    private void setSprite(int number) {
         if (number < 0 || number > 9) throw new IllegalArgumentException("Sprites numbers must be from 0 to 9");
         this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
@@ -172,12 +172,10 @@ public class Cell extends InteractiveObject {
 
     public void setMined(boolean mined) {
         isMined = mined;
-        setSprite(ImageType.BOARD_MINE);
     }
 
     public void setCountMinedNeighbors(int countMinedNeighbors) {
         this.countMinedNeighbors = countMinedNeighbors;
-        setSprite(countMinedNeighbors);
     }
 
     public void setScanned(boolean scanned) {
@@ -186,7 +184,6 @@ public class Cell extends InteractiveObject {
 
     public void setShielded(boolean shielded) {
         isShielded = shielded;
-        open();
     }
 
     public void setGameOverCause(boolean gameOverCause) {
@@ -195,6 +192,7 @@ public class Cell extends InteractiveObject {
 
     public void setFlagged(boolean flagged) {
         isFlagged = flagged;
+        setSprite(isFlagged ? ImageType.BOARD_FLAG : ImageType.NONE);
     }
 
     public void setShop(boolean shop) {

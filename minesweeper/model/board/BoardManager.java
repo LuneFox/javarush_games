@@ -62,39 +62,42 @@ public class BoardManager {
     public void openCell(int x, int y) {
         if (game.isStopped()) return;
 
-        Cell cell = selectOrMakeFirstShop(x, y);
+        Cell cell = game.getCell(x, y);
         if (cell.isFlagged() || cell.isOpen()) return;
 
-        cell.open();
-        if (openedMineAndFailedToSurvive(cell)) return;
+        if (isFirstMove) {
+            cell = transformToEmptyShopCell(cell);
+            isFirstMove = false;
+        }
 
-        registerScoreAndMoney(cell);
-        openRecursivelyIfEmpty(cell);
-        checkVictory();
-    }
-
-    private boolean openedMineAndFailedToSurvive(Cell cell) {
         if (cell.isMined()) {
-
-            Shield shield = game.getShop().getShield();
-            if (shield.isActivated()) shield.use(cell);
-
+            tryUsingShield(cell);
             if (!cell.isShielded()) {
-                cell.setGameOverCause(true);
-                game.lose();
-                return true;
+                gameOver(cell);
+                return;
             }
         }
 
-        return false;
-    }
+        cell.open();
 
-    private void openRecursivelyIfEmpty(Cell cell) {
         if (cell.isEmpty()) {
             isRecursiveMove = true;
             List<Cell> neighbors = field.getNeighborCells(cell, CellFilter.CLOSED, false);
             neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
         }
+
+        registerScoreAndMoney(cell);
+        checkVictory();
+    }
+
+    private void gameOver(Cell cell) {
+        cell.setGameOverCause(true);
+        game.lose();
+    }
+
+    private void tryUsingShield(Cell cell) {
+        Shield shield = game.getShop().getShield();
+        if (shield.isActivated()) shield.use(cell);
     }
 
     private void registerScoreAndMoney(Cell cell) {
@@ -102,15 +105,6 @@ public class BoardManager {
         addTimerScore();
         useDice(cell);
         collectMoneyFromCell(cell);
-    }
-
-    private Cell selectOrMakeFirstShop(int x, int y) {
-        if (isFirstMove) {
-            isFirstMove = false;
-            return makeEmptyShopCell(field.getCell(x, y));
-        } else {
-            return field.getCell(x, y);
-        }
     }
 
     private void useDice(Cell cell) {
@@ -130,8 +124,8 @@ public class BoardManager {
         inventory.addMoney(collectedMoney);
     }
 
-    private Cell makeEmptyShopCell(Cell cell) {
-        // Quick bruteforce implementation, but it makes first move very convenient
+    private Cell transformToEmptyShopCell(Cell cell) {
+        // A little costly but quick bruteforce implementation, makes first move very convenient
         List<Cell> flaggedCells = field.getAllCells(CellFilter.FLAGGED);
         collectExistingFlags(flaggedCells);
         cell = recreateLayoutUntilEmpty(cell);
@@ -209,8 +203,8 @@ public class BoardManager {
 
     private void scanRandomCell(List<Cell> safeNeighbors) {
         Cell cell = safeNeighbors.get(game.getRandomNumber(safeNeighbors.size()));
-        if (cell.isFlagged()) {
-            flagManager.swapFlag(cell.x, cell.y); // return wrong flag
+        if (cell.isFlagged()) { // by mistake
+            flagManager.swapFlag(cell.x, cell.y);
         }
         cell.setScanned(true);
         openCell(cell.x, cell.y);
@@ -362,9 +356,9 @@ public class BoardManager {
         PopUpMessage.show(field.countAllCells(CellFilter.CLOSED) == closedCells ? "DEV: CANNOT SOLVE!" : "DEV: SOLVING...");
     }
 
-    public void updateOpenedCellsVisuals() {
+    public void reapplyOpenedCellsVisuals() {
         if (game.isStopped()) return;
-        field.getAllCells().forEach(Cell::updateOpenedCellVisuals);
+        field.getAllCells(CellFilter.OPEN).forEach(Cell::setGraphicsForOpenedState);
     }
 
     // Setters, getters

@@ -195,8 +195,8 @@ public class MinesweeperGame extends Game {
         boardManager.setFlagExplosionAllowed(enable);
     }
 
-    public void updateOpenedCellsVisuals() {
-        boardManager.updateOpenedCellsVisuals();
+    public void applyThemeChangeToOpenedCells() {
+        boardManager.reapplyOpenedCellsVisuals();
     }
 
     public Timer getTimer() {
