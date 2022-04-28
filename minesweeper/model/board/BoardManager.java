@@ -260,6 +260,7 @@ public class BoardManager {
                 openClosedNeighbors(cell);
             }
         });
+        reapplyOpenedCellsVisuals();
         miniBombHitMine = false;
     }
 

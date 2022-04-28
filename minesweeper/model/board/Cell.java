@@ -26,7 +26,7 @@ public class Cell extends InteractiveObject {
     private boolean isDestroyed;
     private boolean isShop;
 
-    private int countMinedNeighbors;  // number of adjacent mines
+    private int countMinedNeighbors;
     private final Image background;
     private Image sprite;
 
