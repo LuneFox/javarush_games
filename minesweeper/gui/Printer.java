@@ -98,7 +98,7 @@ public class Printer {
     }
 
     private static boolean charIsStrokeMarkup(char c) {
-        return c == '<' || c == '>';
+        return (c == '<') || (c == '>');
     }
 
     private static void stroke(int x, int y, Image symbol) {

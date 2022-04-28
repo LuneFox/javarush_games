@@ -52,7 +52,6 @@ public class ViewShop extends View {
     };
 
     private final Image showCasePanel = new Image(ImageType.SHOP_SHOWCASE_PANEL);
-    private boolean slotsAreLinked;
 
     public ViewShop(MinesweeperGame game) {
         super(game);
@@ -60,7 +59,6 @@ public class ViewShop extends View {
 
     @Override
     public void update() {
-        linkUnlinkedShowCaseSlots();
         drawField();
         drawShowCase();
         drawHeader();
@@ -86,7 +84,7 @@ public class ViewShop extends View {
         headerCoin.draw(70, 13);
         Printer.print("" + game.countAllCells(CellFilter.DANGEROUS), 25, 12);
         Printer.print("" + inventory.countFlags(), 52, 12);
-        Printer.print("" + inventory.shiftDisplayMoney(), 76 + moneyShakeHelper.getShift(), 12);
+        Printer.print("" + inventory.shiftDisplayedMoney(), 76 + moneyShakeHelper.getShift(), 12);
     }
 
     private void drawFooter() {
@@ -95,13 +93,6 @@ public class ViewShop extends View {
         final int countMoves = game.getPlayer().getMoves();
         Printer.print("Очки:" + currentScore, Theme.SHOP_SCORE.getColor(), 13, 80);
         Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 83, 80, Printer.Align.RIGHT);
-    }
-
-    // Cannot link at creation time because they don't exist yet
-    private void linkUnlinkedShowCaseSlots() {
-        if (slotsAreLinked) return;
-        game.getShop().getShowCaseSlots().forEach(this::linkObject);
-        slotsAreLinked = true;
     }
 
     public static void shakeMoney() {

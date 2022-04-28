@@ -72,6 +72,10 @@ public enum Phase {
         return (PHASES.get(ACTIVE_PHASE_POSITION) == phase);
     }
 
+    public static View getView(Phase phase) {
+        return viewMap.get(phase);
+    }
+
     public static View getCurrentView() {
         return currentView;
     }

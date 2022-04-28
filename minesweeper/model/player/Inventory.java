@@ -10,14 +10,10 @@ import com.javarush.games.minesweeper.model.shop.item.ShopItem;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Keeps track of what player currently has in his bag. Can put, remove, reset items or check their count.
- */
-
 public class Inventory {
     private final MinesweeperGame game;
     private int money;
-    private int displayMoney;
+    private int displayedMoney;
     private final Map<ShopItem, Integer> items = new HashMap<>();
 
     public Inventory(MinesweeperGame game) {
@@ -60,14 +56,14 @@ public class Inventory {
         money -= amount;
     }
 
-    public int shiftDisplayMoney() {
-        if (displayMoney < money) displayMoney++;
-        else if (displayMoney > money) displayMoney--;
-        return displayMoney;
+    public int shiftDisplayedMoney() {
+        if (displayedMoney < money) displayedMoney++;
+        else if (displayedMoney > money) displayedMoney--;
+        return displayedMoney;
     }
 
     public void skipMoneyAnimation() {
-        displayMoney = money;
+        displayedMoney = money;
     }
 
     @DeveloperOption

@@ -107,6 +107,7 @@ public class Shop {
                 int dy = 21 + 25 * column;
                 ShopSlot slot = new ShopSlot(10 + dx, 10 + dy);
                 showCaseSlots.add(slot);
+                Phase.getView(Phase.SHOP).linkObject(slot);
             }
         }
     }

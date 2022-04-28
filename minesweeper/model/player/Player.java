@@ -2,10 +2,6 @@ package com.javarush.games.minesweeper.model.player;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 
-/**
- * Contains player data: inventory, score and some counters
- */
-
 public class Player {
     private final Score score;
     private final Inventory inventory;
@@ -30,35 +26,38 @@ public class Player {
         inventory.removeMoney(amount);
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
     public void addMove() {
         this.moves++;
-    }
-
-    public int getMoves() {
-        return moves;
     }
 
     public void addBrokenShield() {
         this.brokenShields++;
     }
 
-    public int getBrokenShields() {
-        return brokenShields;
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+
+    // Getters
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 
     public Score getScore() {
         return score;
     }
 
-    public Inventory getInventory() {
-        return inventory;
+    public int getMoves() {
+        return moves;
+    }
+
+    public int getBrokenShields() {
+        return brokenShields;
     }
 }
