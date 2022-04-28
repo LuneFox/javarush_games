@@ -18,7 +18,7 @@ public class ViewScore extends View {
     public static final PageSelector pageSelector = new PageSelector(30, 89, 40, 2);
     private static final int PADDING_TOP = 15;
     private static final int PADDING_RIGHT = Display.SIZE - 2;
-    private static final int PADDING_LEFT = 2;
+    private static final int PADDING_LEFT = 3;
 
     private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
