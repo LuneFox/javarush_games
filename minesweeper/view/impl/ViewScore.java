@@ -17,7 +17,7 @@ import com.javarush.games.minesweeper.view.View;
 public class ViewScore extends View {
     public static final PageSelector pageSelector = new PageSelector(30, 89, 40, 2);
     private static final int PADDING_TOP = 15;
-    private static final int PADDING_RIGHT = 2;
+    private static final int PADDING_RIGHT = Display.SIZE - 2;
     private static final int PADDING_LEFT = 2;
 
     private final Button closeButton = new Button(88, 2, "x", this) {
@@ -39,53 +39,46 @@ public class ViewScore extends View {
         background.draw();
         pageSelector.draw();
 
-        switch (pageSelector.getCurrentPage()) {
-            case 0:
-                printPage("<детализация>",
-
-                        "ячейки:\n" +
-                                "кубик:\n" +
-                                "мины:\n" +
-                                "золото:\n" +
-                                "щиты:\n" +
-                                "скорость:\n" +
-                                "\n" +
-                                "итого:",
-
-                        Results.get("total") +
-                                "\n" +
-                                "\n" + Results.get("timer") +
-                                "\n" + Results.get("shield") +
-                                "\n" + Results.get("money") +
-                                "\n" + Results.get("mines") +
-                                "\n" + Results.get("dice_total") +
-                                "\n" + Results.get("cells")
-                );
-                break;
-
-            case 1:
-                printPage("<очки кубика>",
-
-                        "средняя удача:\n" +
-                                "затронуто ячеек:\n" +
-                                "бонус сложности:\n" +
-                                "\n" +
-                                "в общем счёте:",
-
-                        Results.get("dice") +
-                                "\n" +
-                                "\n" +
-                                "\n" + Results.get("difficulty") +
-                                "\n" + Results.get("dice_rolls") +
-                                "\n" + Results.get("dice_luck")
-                );
-                break;
-
-            default:
-                break;
+        if (pageSelector.getCurrentPage() == 0) {
+            printTotalScoreDetails();
+        } else if (pageSelector.getCurrentPage() == 1) {
+            printDiceScoreDetails();
         }
+
         closeButton.draw();
         super.update();
+    }
+
+    private void printTotalScoreDetails() {
+        printPage("<детализация>",
+                "ячейки:\n" +
+                        "кубик:\n" +
+                        "мины:\n" +
+                        "золото:\n" +
+                        "щиты:\n" +
+                        "скорость:\n\n" +
+                        "итого:",
+                Results.get("cells") + "\n" +
+                        Results.get("dice_total") + "\n" +
+                        Results.get("mines") + "\n" +
+                        Results.get("money") + "\n" +
+                        Results.get("shield") + "\n" +
+                        Results.get("timer") + "\n\n" +
+                        Results.get("total")
+        );
+    }
+
+    private void printDiceScoreDetails() {
+        printPage("<очки кубика>",
+                "средняя удача:\n" +
+                        "затронуто ячеек:\n" +
+                        "бонус сложности:\n\n" +
+                        "в общем счёте:",
+                Results.get("dice_luck") + "\n" +
+                        Results.get("dice_rolls") + "\n" +
+                        Results.get("difficulty") + "\n\n\n" +
+                        Results.get("dice_multiply")
+        );
     }
 
     private void printPage(String title, String leftText, String rightText) {
@@ -99,10 +92,9 @@ public class ViewScore extends View {
                 PADDING_TOP);
 
         Printer.print(rightText,
-                Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW,
-                Display.SIZE - PADDING_RIGHT,
+                Options.isDeveloperModeEnabled ? Color.RED : Color.LIGHTGOLDENRODYELLOW,
+                PADDING_RIGHT,
                 PADDING_TOP,
                 Printer.Align.RIGHT);
     }
-
 }

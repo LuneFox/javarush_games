@@ -128,7 +128,7 @@ public class Shop {
 
     @DeveloperOption
     public void cheatMoreTools() {
-        if (!Options.developerMode) return;
+        if (!Options.isDeveloperModeEnabled) return;
         shovel.cheat99();
         dice.cheat99();
         PopUpMessage.show("DEV: 99 TOOLS");

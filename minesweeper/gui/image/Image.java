@@ -98,7 +98,7 @@ public class Image extends InteractiveObject {
         return (pixel == TRANSPARENT || colors[pixel] == Color.NONE);
     }
 
-    public final void replaceColor(Color color, int number) {
+    public final void changeColor(Color color, int number) {
         try {
             this.colors[number] = color;
         } catch (IndexOutOfBoundsException ignored) {

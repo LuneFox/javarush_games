@@ -28,13 +28,13 @@ public class ThemeSelector extends InteractiveObject {
         final int FILL = 1;
         final int FRAME = 3;
 
-        themePalettes[0].replaceColor(Color.RED, FILL);
-        themePalettes[1].replaceColor(Color.GREEN, FILL);
-        themePalettes[2].replaceColor(Color.BLUE, FILL);
-        themePalettes[3].replaceColor(Color.BURLYWOOD, FILL);
+        themePalettes[0].changeColor(Color.RED, FILL);
+        themePalettes[1].changeColor(Color.GREEN, FILL);
+        themePalettes[2].changeColor(Color.BLUE, FILL);
+        themePalettes[3].changeColor(Color.BURLYWOOD, FILL);
 
-        this.themeCursor.replaceColor(Color.NONE, FILL);
-        this.themeCursor.replaceColor(Color.YELLOW, FRAME);
+        this.themeCursor.changeColor(Color.NONE, FILL);
+        this.themeCursor.changeColor(Color.YELLOW, FRAME);
 
         Image currentPalette = themePalettes[Theme.getCurrentNumber()];
         themeCursor.setPosition(currentPalette.x, currentPalette.y);

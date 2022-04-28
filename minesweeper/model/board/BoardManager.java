@@ -280,7 +280,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoFlag() {
-        if (!Options.developerMode) return;
+        if (!Options.isDeveloperModeEnabled) return;
 
         SwitchSelector selector = Options.autoBuyFlagsSelector;
         if (!selector.isEnabled()) {
@@ -314,7 +314,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoOpen() {
-        if (!Options.developerMode) return;
+        if (!Options.isDeveloperModeEnabled) return;
 
         int closedCells = field.countAllCells(CellFilter.CLOSED);
         if (isFirstMove) {
@@ -331,7 +331,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoScan() {
-        if (!Options.developerMode) return;
+        if (!Options.isDeveloperModeEnabled) return;
 
         List<Cell> allCells = field.getAllCells(CellFilter.SAFE);
         if (allCells.isEmpty()) return;
@@ -345,7 +345,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoSolve() {
-        if (!Options.developerMode) return;
+        if (!Options.isDeveloperModeEnabled) return;
 
         int closedCells = field.countAllCells(CellFilter.CLOSED);
         isUnableToCheatMore = false;

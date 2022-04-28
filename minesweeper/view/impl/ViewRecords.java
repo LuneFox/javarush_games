@@ -45,14 +45,14 @@ public class ViewRecords extends View {
     private void drawPrizeCups() {
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
-                prizeCup.replaceColor(Color.GOLD, 1);
-                prizeCup.replaceColor(Color.YELLOW, 2);
+                prizeCup.changeColor(Color.GOLD, 1);
+                prizeCup.changeColor(Color.YELLOW, 2);
             } else if (i == 1) {
-                prizeCup.replaceColor(Color.SILVER, 1);
-                prizeCup.replaceColor(Color.WHITE, 2);
+                prizeCup.changeColor(Color.SILVER, 1);
+                prizeCup.changeColor(Color.WHITE, 2);
             } else {
-                prizeCup.replaceColor(Color.DARKGOLDENROD, 1);
-                prizeCup.replaceColor(Color.PALEGOLDENROD, 2);
+                prizeCup.changeColor(Color.DARKGOLDENROD, 1);
+                prizeCup.changeColor(Color.PALEGOLDENROD, 2);
             }
             prizeCup.draw(2, 18 + (30 * i));
         }

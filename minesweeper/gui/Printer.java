@@ -15,6 +15,7 @@ public class Printer {
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
     public static final Cache<Character, Image> cache;
+    private static boolean isStrokeEnabled;
 
     public enum Align {
         LEFT, RIGHT
@@ -47,7 +48,7 @@ public class Printer {
     public static void print(String input, Color color, int drawX, int drawY, Align align) {
         drawX = adjustDrawX(input, drawX);
         drawY = adjustDrawY(drawY);
-        final int caretNewLineX = drawX;
+        final int caretBase = drawX;
 
         class Caret {
             private int x, y;
@@ -58,78 +59,54 @@ public class Printer {
             }
 
             private void gotoNewLine() {
-                x = caretNewLineX;
+                x = caretBase;
                 y += LINE_HEIGHT;
             }
 
-            private void shiftToNextSymbol(char c) {
-                int shift = calculateWidth(Character.toString(c));
-                x = (align == Align.RIGHT) ? (x - shift) : (x + shift);
+            private void gotoNextSymbol(char c) {
+                x += calculateWidth(Character.toString(c));
+            }
+
+            private void gotoStartPosition(String line) {
+                if (align == Align.RIGHT) x = caretBase - calculateWidth(line);
             }
         }
 
         Caret caret = new Caret(drawX, drawY);
-        char[] chars = getCharsInCorrectOrder(input, align);
-        boolean isStrokeEnabled = false;
-        if (align == Align.RIGHT) caret.shiftToNextSymbol(chars[0]);
-
-        for (int i = 0; i < chars.length; i++) {
-            if (chars[i] == '\n') {
-                caret.gotoNewLine();
-                if (align == Align.RIGHT) {
-                    caret.shiftToNextSymbol(selectRelativeCharForCaretShift(Align.RIGHT, chars, i));
-                }
-                continue;
+        String[] lines = input.split("\n");
+        for (String line : lines) {
+            caret.gotoStartPosition(line);
+            char[] sequence = line.toLowerCase().toCharArray();
+            for (char c : sequence) {
+                drawSymbol(c, color, caret.x, caret.y);
+                caret.gotoNextSymbol(c);
             }
-
-            if (charIsStrokeMarkup(chars[i])) {
-                isStrokeEnabled = !isStrokeEnabled;
-                continue;
-            }
-
-            if (isStrokeEnabled) {
-                drawSymbolStroked(chars[i], color, caret.x, caret.y);
-            } else {
-                drawSymbol(chars[i], color, caret.x, caret.y);
-            }
-
-            char relativeChar = selectRelativeCharForCaretShift(align, chars, i);
-            caret.shiftToNextSymbol(relativeChar);
+            caret.gotoNewLine();
         }
     }
 
-    private static char selectRelativeCharForCaretShift(Align align, char[] chars, int i) {
-        final int TAKE_CURRENT_CHAR = 0;
-        final int TAKE_NEXT_CHAR = 1;
-        final int CRITERIA = (isLastCharacter(chars, i) || align == Align.LEFT) ? TAKE_CURRENT_CHAR : TAKE_NEXT_CHAR;
-        return (chars[i + CRITERIA]);
-    }
-
-    private static boolean isLastCharacter(char[] chars, int i) {
-        return i == (chars.length - 1);
-    }
-
-    private static char[] getCharsInCorrectOrder(String input, Align align) {
-        return align == Align.RIGHT ?
-                new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
-                input.toLowerCase().toCharArray();
-    }
-
     private static void drawSymbol(char c, Color color, int x, int y) {
+        if (charIsStrokeMarkup(c)) {
+            isStrokeEnabled = !isStrokeEnabled;
+            return;
+        }
+
         Image symbol = cache.get(c);
-        symbol.replaceColor(color, 1);
+        if (isStrokeEnabled) stroke(x, y, symbol);
+        symbol.changeColor(color, 1);
         symbol.draw(x, y);
     }
 
-    private static void drawSymbolStroked(char c, Color color, int x, int y) {
-        Image symbol = cache.get(c);
-        symbol.replaceColor(Theme.TEXT_SHADOW.getColor(), 1);
+    private static boolean charIsStrokeMarkup(char c) {
+        return c == '<' || c == '>';
+    }
+
+    private static void stroke(int x, int y, Image symbol) {
+        symbol.changeColor(Theme.TEXT_SHADOW.getColor(), 1);
         symbol.draw(x - 1, y);
         symbol.draw(x + 1, y);
         symbol.draw(x, y - 1);
         symbol.draw(x, y + 1);
-        symbol.replaceColor(color, 1);
-        symbol.draw(x, y);
     }
 
     private static int adjustDrawX(String input, int drawX) {
@@ -157,9 +134,5 @@ public class Printer {
             width += (symbol.matrix[0].length + CHAR_SPACING);
         }
         return width;
-    }
-
-    private static boolean charIsStrokeMarkup(char c) {
-        return c == '<' || c == '>';
     }
 }

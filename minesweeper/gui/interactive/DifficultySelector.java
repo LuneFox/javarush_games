@@ -35,11 +35,11 @@ public class DifficultySelector extends InteractiveObject {
             bar.setUnableToReloadColors(true);
 
             if (i > 6) {
-                bar.replaceColor(Color.RED, 1);
+                bar.changeColor(Color.RED, 1);
             } else if (i > 4) {
-                bar.replaceColor(Color.ORANGE, 1);
+                bar.changeColor(Color.ORANGE, 1);
             } else if (i > 2) {
-                bar.replaceColor(Color.YELLOW, 1);
+                bar.changeColor(Color.YELLOW, 1);
             }
 
             bars[i] = bar;

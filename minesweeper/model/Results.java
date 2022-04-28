@@ -20,7 +20,7 @@ public class Results {
         table.put("mines", getMinesScoreInfo());
         table.put("money", getMoneyScoreInfo());
         table.put("shield", getShieldsScoreInfo());
-        table.put("dice", getDiceScoreInfo());
+        table.put("dice_multiply", getDiceScoreInfo());
         table.put("dice_luck", getDiceAvgLuck());
         table.put("dice_rolls", getDiceRollsCount());
         table.put("dice_total", getDiceScore());

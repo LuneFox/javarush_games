@@ -46,14 +46,14 @@ public class ShopSlot extends InteractiveObject {
 
     private void printInfo() {
         final int top = y;
-        final int right = x + 14;
+        final int right = x + 18;
         final int bottom = y + 10;
 
         if (item.inStock() > 0 && !item.isActivated()) {
             Printer.print("<" + item.getCost() + ">", Color.YELLOW, right, bottom, Printer.Align.RIGHT);
         } else if (item.isActivated()) {
             Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, Printer.Align.RIGHT);
-            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right + 5, top, Printer.Align.RIGHT);
+            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right, top, Printer.Align.RIGHT);
         } else {
             Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, Printer.Align.RIGHT);
         }
@@ -74,7 +74,7 @@ public class ShopSlot extends InteractiveObject {
         Color frameColor;
         frameColor = (item.isUnobtainable()) ? Color.RED : Theme.SHOP_ITEM_FRAME_AVAILABLE.getColor();
         frameColor = (item.isActivated()) ? Color.BLUE : frameColor;
-        frame.replaceColor(frameColor, 3);
+        frame.changeColor(frameColor, 3);
     }
 
     @Override

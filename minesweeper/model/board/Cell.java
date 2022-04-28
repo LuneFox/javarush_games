@@ -89,7 +89,7 @@ public class Cell extends InteractiveObject {
     }
 
     public void setBackgroundColor(Color color) {
-        background.replaceColor(color, 1);
+        background.changeColor(color, 1);
     }
 
     public void setSprite(ImageType imageType) {
@@ -103,7 +103,7 @@ public class Cell extends InteractiveObject {
 
     public void makeSpriteYellow() {
         if (isNumerable() && countMinedNeighbors > 0) {
-            sprite.replaceColor(Color.YELLOW, 1);
+            sprite.changeColor(Color.YELLOW, 1);
         }
     }
 

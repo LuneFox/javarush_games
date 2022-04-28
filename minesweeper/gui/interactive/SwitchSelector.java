@@ -58,7 +58,7 @@ public class SwitchSelector extends InteractiveObject {
     private void drawSwitch() {
         rail.draw();
         final int HANDLE_BODY_COLOR = 1;
-        handle.replaceColor(enabled ? Color.GREEN : Color.RED, HANDLE_BODY_COLOR);
+        handle.changeColor(enabled ? Color.GREEN : Color.RED, HANDLE_BODY_COLOR);
         handle.draw();
     }
 
