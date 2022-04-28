@@ -71,7 +71,7 @@ public class DifficultySelector extends InteractiveObject {
     private void printDifficultyName() {
         String difficultyName = Options.DIFFICULTY_NAMES[(difficultySetting / 5) - 1];
         Color nameColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
-        Printer.print(difficultyName, nameColor, x + width - difficultyUpArrow.width, y + height + 1, Printer.Align.RIGHT);
+        Printer.print(difficultyName, nameColor, x + width, y + height + 1, Printer.Align.RIGHT);
     }
 
     @Override

@@ -71,24 +71,20 @@ public class Printer {
         Caret caret = new Caret(drawX, drawY);
         char[] chars = getCharsInCorrectOrder(input, align);
         boolean isStrokeEnabled = false;
+        if (align == Align.RIGHT) caret.shiftToNextSymbol(chars[0]);
 
         for (int i = 0; i < chars.length; i++) {
             if (chars[i] == '\n') {
                 caret.gotoNewLine();
+                if (align == Align.RIGHT) {
+                    caret.shiftToNextSymbol(selectRelativeCharForCaretShift(Align.RIGHT, chars, i));
+                }
                 continue;
             }
 
             if (charIsStrokeMarkup(chars[i])) {
                 isStrokeEnabled = !isStrokeEnabled;
                 continue;
-            }
-
-            // First letter position fix for reverse typing
-            if (align == Align.RIGHT && i == 0) {
-                int rightMostCharWidth = cache.get(chars[i]).width;
-                if (rightMostCharWidth > 4) {
-                    caret.x -= rightMostCharWidth - 4;
-                }
             }
 
             if (isStrokeEnabled) {

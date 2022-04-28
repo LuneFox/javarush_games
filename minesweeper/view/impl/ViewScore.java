@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -16,8 +17,8 @@ import com.javarush.games.minesweeper.view.View;
 public class ViewScore extends View {
 
     private final static int PADDING_TOP = 15;
-    private final static int PADDING_RIGHT = 100 - 7;
-    private final static int PADDING_LEFT = 3;
+    private final static int PADDING_RIGHT = 2;
+    private final static int PADDING_LEFT = 2;
 
     public static final PageSelector pageSelector = new PageSelector(30, 89, 40, 2);
     private final Button closeButton = new Button(88, 2, "x", this) {
@@ -100,7 +101,7 @@ public class ViewScore extends View {
 
         Printer.print(rightText,
                 Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW,
-                PADDING_RIGHT,
+                Display.SIZE - PADDING_RIGHT,
                 PADDING_TOP,
                 Printer.Align.RIGHT);
     }

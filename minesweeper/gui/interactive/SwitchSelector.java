@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -63,7 +64,7 @@ public class SwitchSelector extends InteractiveObject {
 
     private void printHelpText() {
         Color helpColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
-        Printer.print(enabled ? textOn : textOff, helpColor, rightStopper, y + height + 1, Printer.Align.RIGHT);
+        Printer.print(enabled ? textOn : textOff, helpColor, Display.SIZE - 2, y + height + 1, Printer.Align.RIGHT);
     }
 
     public void onLeftClick() {
