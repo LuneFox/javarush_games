@@ -61,11 +61,11 @@ public class ViewRecords extends View {
     private void drawEntries() {
         Color[] colors = new Color[]{Color.WHITE, Color.GOLD, Color.SILVER, Color.PALEGOLDENROD};
         Printer.print(RECORDS[1], colors[1], 19, 17);
-        Printer.print(RECORDS[2], colors[0], 94, 26, true);
+        Printer.print(RECORDS[2], colors[0], 94, 26, Printer.Align.RIGHT);
         Printer.print(RECORDS[3], colors[2], 19, 47);
-        Printer.print(RECORDS[4], colors[0], 94, 56, true);
+        Printer.print(RECORDS[4], colors[0], 94, 56, Printer.Align.RIGHT);
         Printer.print(RECORDS[5], colors[3], 19, 77);
-        Printer.print(RECORDS[6], colors[0], 94, 86, true);
+        Printer.print(RECORDS[6], colors[0], 94, 86, Printer.Align.RIGHT);
         super.update();
     }
 }

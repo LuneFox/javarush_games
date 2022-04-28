@@ -94,7 +94,7 @@ public class ViewShop extends View {
         final int currentScore = game.getPlayer().getScore().getCurrentScore();
         final int countMoves = game.getPlayer().getMoves();
         Printer.print("Очки:" + currentScore, Theme.SHOP_SCORE.getColor(), 13, 80);
-        Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 83, 80, true);
+        Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 83, 80, Printer.Align.RIGHT);
     }
 
     // Cannot link at creation time because they don't exist yet

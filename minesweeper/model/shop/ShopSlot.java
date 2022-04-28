@@ -50,12 +50,12 @@ public class ShopSlot extends InteractiveObject {
         final int bottom = y + 10;
 
         if (item.inStock() > 0 && !item.isActivated()) {
-            Printer.print("<" + item.getCost() + ">", Color.YELLOW, right, bottom, true);
+            Printer.print("<" + item.getCost() + ">", Color.YELLOW, right, bottom, Printer.Align.RIGHT);
         } else if (item.isActivated()) {
-            Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, true);
-            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right, top, true);
+            Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, Printer.Align.RIGHT);
+            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right, top, Printer.Align.RIGHT);
         } else {
-            Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, true);
+            Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, Printer.Align.RIGHT);
         }
     }
 

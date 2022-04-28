@@ -56,7 +56,7 @@ public class PageSelector extends InteractiveObject {
     private void printPageIndex() {
         String indexText = ((currentPage + 1) + " / " + (maxPage + 1));
         int textHorizontalPosition = getTextHorizontalPosition(indexText);
-        Printer.print(indexText, Color.WHITE, textHorizontalPosition, y - 1, false);
+        Printer.print(indexText, Color.WHITE, textHorizontalPosition, y - 1);
     }
 
     private int getTextHorizontalPosition(String text) {

@@ -11,109 +11,112 @@ import java.util.Arrays;
  */
 
 public class Printer {
-    public static final Cache<Character, Image> cache = new Cache<Character, Image>(128) {
-        @Override
-        protected Image put(Character character) {
-            Arrays.stream(ImageType.values())
-                    .filter(element -> element.name().startsWith("SYM_"))
-                    .forEach(element -> {
-                        for (char c : element.getCharacters()) {
-                            cache.put(c, new Image(element));  // cache all symbols along the way (load font)
-                        }
-                    });
-            return cache.get(character);
-        }
-    };
-
     public static final int CENTER = Integer.MIN_VALUE;
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
+    public static final Cache<Character, Image> cache;
 
-    public static void print(String input, Color color, int drawX, int drawY, boolean alignRight) {
-        if (drawX == CENTER) {
-            int width = calculateWidth(input);
-            drawX = 50 - width / 2;
-        }
+    public enum Align {
+        LEFT, RIGHT
+    }
 
-        if (drawY == CENTER) {
-            drawY = 0;
-        }
+    static {
+        cache = new Cache<Character, Image>(128) {
+            @Override
+            protected Image put(Character character) {
+                Arrays.stream(ImageType.values())
+                        .filter(element -> element.name().startsWith("SYM_"))
+                        .forEach(element -> {
+                            for (char c : element.getCharacters()) {
+                                cache.put(c, new Image(element));
+                            }
+                        });
+                return cache.get(character);
+            }
+        };
+    }
 
-        final int finalDrawX = drawX;
+    public static void print(String text, int x, int y) {
+        print(text, Color.WHITE, x, y, Align.LEFT);
+    }
 
+    public static void print(String text, Color color, int x, int y) {
+        print(text, color, x, y, Align.LEFT);
+    }
 
-        // A caret marks the place where the next symbol is going to be drawn
+    public static void print(String input, Color color, int drawX, int drawY, Align align) {
+        drawX = adjustDrawX(input, drawX);
+        drawY = adjustDrawY(drawY);
+        final int caretNewLineX = drawX;
+
         class Caret {
-            int x, y;
+            private int x, y;
 
-            Caret(int x, int y) {
+            private Caret(int x, int y) {
                 this.x = x;
                 this.y = y;
             }
 
-            // Return the caret to the beginning of the next line if the char is '\n'
-            boolean isAtNewLine(char c) {
-                if (c == '\n') {
-                    x = finalDrawX;
-                    y += LINE_HEIGHT;
-                    return true;
-                }
-                return false;
+            private void gotoNewLine() {
+                x = caretNewLineX;
+                y += LINE_HEIGHT;
             }
 
-            // Move the caret by the width of the symbol + spacing, direction depends on the alignment
-            void shift(boolean alignRight, char c) {
+            private void shiftToNextSymbol(char c) {
                 int shift = calculateWidth(Character.toString(c));
-                x = (alignRight) ? x - shift : x + shift;
+                x = (align == Align.RIGHT) ? (x - shift) : (x + shift);
             }
         }
 
         Caret caret = new Caret(drawX, drawY);
-        boolean enableStroke = false;
-
-        // Choosing between normal order or  reversed order of chars to draw from right to left
-        char[] chars = (alignRight) ?
-                new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
-                input.toLowerCase().toCharArray();
-
+        char[] chars = getCharsInCorrectOrder(input, align);
+        boolean isStrokeEnabled = false;
 
         for (int i = 0; i < chars.length; i++) {
-            if (caret.isAtNewLine(chars[i])) continue; // Return caret to new line at "\n" symbol, don't draw it
-
-            if (chars[i] == '>' || chars[i] == '<') {
-                enableStroke = !enableStroke;
+            if (chars[i] == '\n') {
+                caret.gotoNewLine();
                 continue;
             }
 
-            if (alignRight && i == 0) {
-                // First letter position fix
-                int width1st = cache.get(chars[0]).width;
-                if (width1st > 4) {
-                    caret.x -= width1st - 4;
+            if (charIsStrokeMarkup(chars[i])) {
+                isStrokeEnabled = !isStrokeEnabled;
+                continue;
+            }
+
+            // First letter position fix for reverse typing
+            if (align == Align.RIGHT && i == 0) {
+                int rightMostCharWidth = cache.get(chars[i]).width;
+                if (rightMostCharWidth > 4) {
+                    caret.x -= rightMostCharWidth - 4;
                 }
             }
 
-            if (enableStroke) {
+            if (isStrokeEnabled) {
                 drawSymbolStroked(chars[i], color, caret.x, caret.y);
             } else {
                 drawSymbol(chars[i], color, caret.x, caret.y);
             }
 
-            // j = 0 means we take the CURRENT symbol, j = 1 means we take the NEXT symbol to calculate the shift
-            // We need to take the next symbol only when typing from right to left and if there is one
-            int j = (i >= chars.length - 1 || !alignRight) ? 0 : 1;
-            char relativeChar = (chars[i + j]);
-
-            caret.shift(alignRight, relativeChar);
+            char relativeChar = selectRelativeCharForCaretShift(align, chars, i);
+            caret.shiftToNextSymbol(relativeChar);
         }
     }
 
-    public static void print(String text, Color color, int x, int y) {
-        print(text, color, x, y, false);
+    private static char selectRelativeCharForCaretShift(Align align, char[] chars, int i) {
+        final int TAKE_CURRENT_CHAR = 0;
+        final int TAKE_NEXT_CHAR = 1;
+        final int CRITERIA = (isLastCharacter(chars, i) || align == Align.LEFT) ? TAKE_CURRENT_CHAR : TAKE_NEXT_CHAR;
+        return (chars[i + CRITERIA]);
     }
 
-    public static void print(String text, int x, int y) {
-        print(text, Color.WHITE, x, y, false);
+    private static boolean isLastCharacter(char[] chars, int i) {
+        return i == (chars.length - 1);
+    }
+
+    private static char[] getCharsInCorrectOrder(String input, Align align) {
+        return align == Align.RIGHT ?
+                new StringBuilder(input).reverse().toString().toLowerCase().toCharArray() :
+                input.toLowerCase().toCharArray();
     }
 
     private static void drawSymbol(char c, Color color, int x, int y) {
@@ -133,18 +136,34 @@ public class Printer {
         symbol.draw(x, y);
     }
 
-    /**
-     * Calculates the width in pixels of the text that comes as an argument
-     */
+    private static int adjustDrawX(String input, int drawX) {
+        if (drawX == CENTER) {
+            int width = calculateWidth(input);
+            drawX = (Display.SIZE / 2) - (width / 2);
+        }
+        return drawX;
+    }
+
+    private static int adjustDrawY(int drawY) {
+        if (drawY == CENTER) {
+            drawY = 0;
+        }
+        return drawY;
+    }
+
     public static int calculateWidth(String s) {
         int width = 0;
         Image symbol;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
-            if (c == '<' || c == '>') continue;
+            if (charIsStrokeMarkup(c)) continue;
             symbol = cache.get(c);
             width += (symbol.matrix[0].length + CHAR_SPACING);
         }
         return width;
+    }
+
+    private static boolean charIsStrokeMarkup(char c) {
+        return c == '<' || c == '>';
     }
 }

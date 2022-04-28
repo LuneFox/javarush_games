@@ -63,7 +63,7 @@ public class SwitchSelector extends InteractiveObject {
 
     private void printHelpText() {
         Color helpColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
-        Printer.print(enabled ? textOn : textOff, helpColor, rightStopper, y + height + 1, true);
+        Printer.print(enabled ? textOn : textOff, helpColor, rightStopper, y + height + 1, Printer.Align.RIGHT);
     }
 
     public void onLeftClick() {

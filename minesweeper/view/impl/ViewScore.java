@@ -102,7 +102,7 @@ public class ViewScore extends View {
                 Options.developerMode ? Color.RED : Color.LIGHTGOLDENRODYELLOW,
                 PADDING_RIGHT,
                 PADDING_TOP,
-                true);
+                Printer.Align.RIGHT);
     }
 
 }
