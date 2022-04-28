@@ -49,8 +49,7 @@ public abstract class ShopItem {
     }
 
     public String getRemainingMovesText() {
-        if (expirationMove == 0) return "";
-        return Integer.toString(countRemainingMoves());
+        return expirationMove == 0 ? " " : "" + countRemainingMoves();
     }
 
     public boolean isUnaffordable() {

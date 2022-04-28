@@ -79,7 +79,6 @@ public class Timer extends InteractiveObject {
     }
 
     public int getScoreBonus() {
-        System.out.println((int) (time / 50) * (Options.difficulty / 5));
         return (Options.timerEnabled) ? ((int) (time / 50) * (Options.difficulty / 5)) : 0;
     }
 

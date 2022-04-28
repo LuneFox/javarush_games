@@ -53,7 +53,7 @@ public class ShopSlot extends InteractiveObject {
             Printer.print("<" + item.getCost() + ">", Color.YELLOW, right, bottom, Printer.Align.RIGHT);
         } else if (item.isActivated()) {
             Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, Printer.Align.RIGHT);
-            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right, top, Printer.Align.RIGHT);
+            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right + 5, top, Printer.Align.RIGHT);
         } else {
             Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, Printer.Align.RIGHT);
         }
