@@ -23,7 +23,7 @@ public abstract class View {
     }
 
     public void update() {
-        PopUpMessage.drawMessage();
+        PopUpMessage.drawInstance();
     }
 
     public void click(int x, int y, Click click) {
