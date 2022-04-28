@@ -15,12 +15,11 @@ import com.javarush.games.minesweeper.model.Results;
 import com.javarush.games.minesweeper.view.View;
 
 public class ViewScore extends View {
-
-    private final static int PADDING_TOP = 15;
-    private final static int PADDING_RIGHT = 2;
-    private final static int PADDING_LEFT = 2;
-
     public static final PageSelector pageSelector = new PageSelector(30, 89, 40, 2);
+    private static final int PADDING_TOP = 15;
+    private static final int PADDING_RIGHT = 2;
+    private static final int PADDING_LEFT = 2;
+
     private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
         public void onLeftClick() {

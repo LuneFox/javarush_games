@@ -12,6 +12,8 @@ import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
 
 public class ViewAbout extends View {
+    public static final PageSelector pageSelector = new PageSelector(27, 89, 44, 5);
+
     private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
         public void onLeftClick() {
@@ -20,10 +22,10 @@ public class ViewAbout extends View {
         }
     };
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
-    final PageSelector pageSelector = Options.aboutPageSelector.linkView(this);
 
     public ViewAbout(MinesweeperGame game) {
         super(game);
+        linkObject(pageSelector);
     }
 
     @Override
@@ -36,7 +38,7 @@ public class ViewAbout extends View {
     }
 
     private void drawPageContainer() {
-        switch (Options.aboutPageSelector.getCurrentPage()) {
+        switch (pageSelector.getCurrentPage()) {
             case 0:
                 printPage("<Информация>",
                         "В моей версии игры\nесть магазин вещей.\nОни помогут меньше\nполагаться на удачу," +

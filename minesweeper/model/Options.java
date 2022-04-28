@@ -1,7 +1,6 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.gui.interactive.DifficultySelector;
-import com.javarush.games.minesweeper.gui.interactive.PageSelector;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
 
@@ -23,7 +22,6 @@ public class Options {
     public static final SwitchSelector timerEnabledSelector;
     public static final SwitchSelector displayMessageSelector;
     public static final ThemeSelector themeSelector;
-    public static final PageSelector aboutPageSelector;
 
     static {
         difficultySelector = new DifficultySelector(49, 14);
@@ -31,7 +29,6 @@ public class Options {
         timerEnabledSelector = new SwitchSelector(85, 50, "нет", "да");
         displayMessageSelector = new SwitchSelector(85, 69, "скрывать", "показывать", true);
         themeSelector = new ThemeSelector(51, 87);
-        aboutPageSelector = new PageSelector(27, 89, 45, 5);
     }
 
     public static void apply() {
