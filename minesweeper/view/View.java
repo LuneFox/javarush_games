@@ -1,9 +1,11 @@
 package com.javarush.games.minesweeper.view;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.InteractiveObject;
+import com.javarush.games.minesweeper.view.impl.ViewMain;
 
 import java.util.ArrayList;
 import java.util.List;

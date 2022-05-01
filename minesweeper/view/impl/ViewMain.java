@@ -82,6 +82,8 @@ public class ViewMain extends View {
 
     @Override
     public void update() {
+        View.setGameOverShowDelay(0); // solves synchronization / control disable bug
+
         background.draw();
         Printer.print(Options.isDeveloperModeEnabled ? "Developer Mode" : "JavaRush",
                 Theme.MAIN_MENU_LABEL.getColor(), Image.CENTER, 2);
