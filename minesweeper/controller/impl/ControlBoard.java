@@ -28,6 +28,7 @@ public class ControlBoard implements ControlStrategy {
 
         if (game.getShop().scannerOrBombActivated()) {
             game.useItemOnCell(gridX, gridY);
+            game.getShop().checkExpiredItems();
             return;
         }
 
