@@ -10,56 +10,53 @@ import com.javarush.games.minesweeper.model.InteractiveObject;
 public class Display extends InteractiveObject {
     public static final int SIZE = 100;
     private final Pixel[][] matrix;
-    private boolean interlacePhase;
     private boolean interlaceEnabled;
+    private boolean interlacePhase;
 
     public Display() {
-        this.x = 0;
-        this.y = 0;
-        this.height = 100;
-        this.width = 100;
-        this.matrix = new Pixel[height][width];
+        setPosition(0, 0);
+        this.height = SIZE;
+        this.width = SIZE;
+        this.matrix = createPixelMatrix();
+    }
+
+    private Pixel[][] createPixelMatrix() {
+        Pixel[][] result = new Pixel[height][width];
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                matrix[y][x] = new Pixel();
+                result[y][x] = new Pixel();
             }
         }
+        return result;
     }
 
     public void draw() {
         if (interlaceEnabled) {
-            interlacedDraw();
+            drawInterlacedRows();
+            switchInterlacePhase();
         } else {
-            simpleDraw();
+            drawRows(0, 0);
         }
     }
 
-    private void interlacedDraw() {
+    private void drawInterlacedRows() {
         if (interlacePhase) {
-            // Phase 1
-            for (int y = 0; y < height; y += 2) {
-                for (int x = 0; x < width; x++) {
-                    game.setCellColor(x, y, matrix[y][x].cellColor);
-                }
-            }
+            drawRows(0, 1);
         } else {
-            // Phase 2
-            for (int y = 1; y < height; y += 2) {
-                for (int x = 0; x < width; x++) {
-                    game.setCellColor(x, y, matrix[y][x].cellColor);
-                }
-            }
+            drawRows(1, 1);
         }
-        // Switch phase
-        interlacePhase = !interlacePhase;
     }
 
-    private void simpleDraw() {
-        for (int y = 0; y < height; y++) {
+    private void drawRows(int startRow, int skip) {
+        for (int y = startRow; y < height; y += (skip + 1)) {
             for (int x = 0; x < width; x++) {
                 game.setCellColor(x, y, matrix[y][x].cellColor);
             }
         }
+    }
+
+    private void switchInterlacePhase() {
+        interlacePhase = !interlacePhase;
     }
 
     public void setCellColor(int x, int y, Color color) {
