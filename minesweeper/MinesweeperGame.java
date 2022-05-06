@@ -155,6 +155,10 @@ public class MinesweeperGame extends Game {
         boardManager.cleanUpAfterMineDestruction();
     }
 
+    public void skipInventoryMoneyAnimation() {
+        player.getInventory().skipMoneyAnimation();
+    }
+
     @DeveloperOption
     public void autoFlag() {
         boardManager.autoFlag();

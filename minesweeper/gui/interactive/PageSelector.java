@@ -22,6 +22,10 @@ public class PageSelector extends InteractiveObject {
     private final Arrow prevPageArrow;
     private final Arrow nextPageArrow;
 
+    public static void resetAllSelectors() {
+        allSelectors.forEach(PageSelector::setDefaultPage);
+    }
+
     public PageSelector(int x, int y, int width, int maxPage) {
         super(x, y);
         this.maxPage = maxPage - 1;
@@ -86,7 +90,7 @@ public class PageSelector extends InteractiveObject {
         return currentPage;
     }
 
-    public void setDefaultPage() {
+    private void setDefaultPage() {
         currentPage = DEFAULT_PAGE;
     }
 

@@ -60,8 +60,8 @@ public enum Phase {
 
     private static void onViewChange() {
         game.setDisplayInterlace(false);
-        game.getPlayer().getInventory().skipMoneyAnimation();
-        PageSelector.allSelectors.forEach(PageSelector::setDefaultPage);
+        game.skipInventoryMoneyAnimation();
+        PageSelector.resetAllSelectors();
     }
 
     public static Phase getActive() {
