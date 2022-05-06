@@ -10,7 +10,7 @@ public abstract class InteractiveObject implements Drawable, Clickable {
     public int y;
     public int width;
     public int height;
-    protected int latestClickX; // remember where it was touched last time, useful if this drawable contains other drawables
+    protected int latestClickX;
     protected int latestClickY;
 
     public InteractiveObject() {
@@ -18,42 +18,44 @@ public abstract class InteractiveObject implements Drawable, Clickable {
     }
 
     public InteractiveObject(int x, int y) {
-        this.x = x;
-        this.y = y;
+        setPosition(x, y);
     }
-
-    public InteractiveObject(int x, int y, View view) { // Constructor with attaching to view
-        this(x, y);
-        linkView(view);
-    }
-
-    public abstract void draw();
 
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public boolean tryClick(int x, int y, Click click) {
-        boolean clickCoversObject = x >= this.x && x <= this.x + this.width && y >= this.y && y <= this.y + height;
-        if (clickCoversObject) {
-            latestClickX = x;
-            latestClickY = y;
-            if (click == Click.LEFT) {
-                onLeftClick();
-            } else if (click == Click.RIGHT) {
-                onRightClick();
-            }
+    public void click(int x, int y, Click click) {
+        rememberLatestClick(x, y);
+        fireAction(click);
+    }
+
+    private void rememberLatestClick(int x, int y) {
+        latestClickX = x;
+        latestClickY = y;
+    }
+
+    private void fireAction(Click click) {
+        if (click == Click.LEFT) {
+            onLeftClick();
+        } else if (click == Click.RIGHT) {
+            onRightClick();
+        } else {
+            throw new IllegalArgumentException();
         }
-        return clickCoversObject;
     }
 
     public void onLeftClick() {
-        // Do nothing by default, override to assign an action
     }
 
     public void onRightClick() {
-        // Do nothing by default, override to assign an action
+    }
+
+    public abstract void draw();
+
+    public boolean covers(int x, int y) {
+        return (x >= this.x) && (x <= this.x + this.width) && (y >= this.y) && (y <= this.y + height);
     }
 
     @SuppressWarnings("unchecked")

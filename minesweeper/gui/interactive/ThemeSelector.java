@@ -45,9 +45,9 @@ public class ThemeSelector extends InteractiveObject {
         Arrays.stream(themePalettes).forEach(Image::draw);
         Image currentPalette = themePalettes[Theme.getCurrentNumber()];
         if (themeCursor.x < currentPalette.x) {
-            themeCursor.x+=2;
+            themeCursor.x += 2;
         } else if (themeCursor.x > currentPalette.x) {
-            themeCursor.x-=2;
+            themeCursor.x -= 2;
         }
         themeCursor.draw();
     }
@@ -55,7 +55,8 @@ public class ThemeSelector extends InteractiveObject {
     @Override
     public void onLeftClick() {
         for (int i = 0; i < themePalettes.length; i++) {
-            if (themePalettes[i].tryClick(latestClickX, latestClickY)) {
+            if (themePalettes[i].covers(latestClickX, latestClickY)) {
+                themePalettes[i].click(latestClickX, latestClickY);
                 Theme.set(i, game);
             }
         }

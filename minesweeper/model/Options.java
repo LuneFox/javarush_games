@@ -14,7 +14,7 @@ public class Options {
 
     public static int difficulty;
     public static boolean timerEnabled;
-    public static boolean isDeveloperModeEnabled;
+    public static boolean developerModeEnabled;
     public static int developerModeCounter;
 
     public static final DifficultySelector difficultySelector;

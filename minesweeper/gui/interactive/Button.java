@@ -26,23 +26,25 @@ public abstract class Button extends InteractiveObject {
     private boolean isPressed;
 
     public Button(int posX, int posY, String text, View view) {
-        super(posX, posY, view);
+        super(posX, posY);
         this.labelText = text;
         this.width = Printer.calculateWidth(text) + DEFAULT_MARGIN;
         this.height = DEFAULT_HEIGHT;
         this.labelOffset = DEFAULT_OFFSET;
         this.unpressedBody = createBody(posX, posY, true);
         this.pressedBody = createBody(posX, posY, false);
+        this.linkView(view);
     }
 
     public Button(int posX, int posY, int width, int height, String text, View view) {
-        super(posX, posY, view);
+        super(posX, posY);
         this.labelText = text;
         this.width = width;
         this.height = height;
         this.labelOffset = ((width - Printer.calculateWidth(text)) / 2) + 1;
         this.unpressedBody = createBody(posX, posY, true);
         this.pressedBody = createBody(posX, posY, false);
+        this.linkView(view);
     }
 
     private Image createBody(int posX, int posY, boolean addShadow) {

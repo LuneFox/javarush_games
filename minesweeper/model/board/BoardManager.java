@@ -275,11 +275,11 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoFlag() {
-        if (!Options.isDeveloperModeEnabled) return;
+        if (!Options.developerModeEnabled) return;
 
         SwitchSelector selector = Options.autoBuyFlagsSelector;
         if (!selector.isEnabled()) {
-            selector.tryClick(selector.x, selector.y); // click self
+            selector.click(selector.x, selector.y); // click self
         }
 
         boolean[] success = new boolean[1];
@@ -309,7 +309,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoOpen() {
-        if (!Options.isDeveloperModeEnabled) return;
+        if (!Options.developerModeEnabled) return;
 
         int closedCells = field.countAllCells(CellFilter.CLOSED);
         if (isFirstMove) {
@@ -326,7 +326,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoScan() {
-        if (!Options.isDeveloperModeEnabled) return;
+        if (!Options.developerModeEnabled) return;
 
         List<Cell> allCells = field.getAllCells(CellFilter.SAFE);
         if (allCells.isEmpty()) return;
@@ -340,7 +340,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoSolve() {
-        if (!Options.isDeveloperModeEnabled) return;
+        if (!Options.developerModeEnabled) return;
 
         int closedCells = field.countAllCells(CellFilter.CLOSED);
         isUnableToCheatMore = false;

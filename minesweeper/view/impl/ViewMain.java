@@ -67,7 +67,7 @@ public class ViewMain extends View {
                 Options.developerModeCounter++;
                 PopUpMessage.show("Версия: " + MinesweeperGame.VERSION);
             } else {
-                Options.isDeveloperModeEnabled = true;
+                Options.developerModeEnabled = true;
                 PopUpMessage.show("Вы разработчик!");
             }
         }
@@ -85,7 +85,7 @@ public class ViewMain extends View {
         View.setGameOverShowDelay(0); // solves synchronization / control disable bug
 
         background.draw();
-        Printer.print(Options.isDeveloperModeEnabled ? "Developer Mode" : "JavaRush",
+        Printer.print(Options.developerModeEnabled ? "Developer Mode" : "JavaRush",
                 Theme.MAIN_MENU_LABEL.getColor(), Image.CENTER, 2);
         logo.draw(2.8, Image.CENTER, 8);
         drawMenuButtons();
@@ -137,7 +137,7 @@ public class ViewMain extends View {
         final int topScore = game.getPlayer().getScore().getTopScore();
         if (topScore > 0) {
             Printer.print("счёт: " + topScore + "\n" + game.getPlayer().getTitle(),
-                    Options.isDeveloperModeEnabled ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 4, 65);
+                    Options.developerModeEnabled ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 4, 65);
         }
     }
 }

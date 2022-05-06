@@ -76,9 +76,11 @@ public class DifficultySelector extends InteractiveObject {
 
     @Override
     public void onLeftClick() {
-        if (difficultyDownArrow.tryClick(latestClickX, latestClickY)) {
+        if (difficultyDownArrow.covers(latestClickX, latestClickY)) {
+            difficultyDownArrow.click(latestClickX, latestClickY);
             difficultyDown();
-        } else if (difficultyUpArrow.tryClick(latestClickX, latestClickY)) {
+        } else if (difficultyUpArrow.covers(latestClickX, latestClickY)) {
+            difficultyUpArrow.click(latestClickX, latestClickY);
             difficultyUp();
         }
     }

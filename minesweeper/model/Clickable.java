@@ -7,10 +7,9 @@ public interface Clickable {
 
     void onRightClick();
 
-    boolean tryClick(int x, int y, Click click);
+    void click(int x, int y, Click click);
 
-    // Unspecified click = left click
-    default boolean tryClick(int x, int y){
-        return tryClick(x, y, Click.LEFT);
+    default void click(int x, int y) {
+        click(x, y, Click.LEFT);
     }
 }

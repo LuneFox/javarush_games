@@ -28,7 +28,8 @@ public abstract class View {
 
     public void click(int x, int y, Click click) {
         for (InteractiveObject object : linkedObjects) {
-            if (object.tryClick(x, y, click)) {
+            if (object.covers(x, y)) {
+                object.click(x, y, click);
                 return; // click only the first one if they accidentally got layered
             }
         }
