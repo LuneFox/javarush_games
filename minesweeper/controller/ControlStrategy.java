@@ -4,11 +4,11 @@ import com.javarush.games.minesweeper.model.Phase;
 
 public interface ControlStrategy {
     default void leftClick(int x, int y) {
-        Phase.getCurrentView().click(x, y, Click.LEFT);
+        Phase.leftClickOnCurrentView(x, y);
     }
 
     default void rightClick(int x, int y) {
-        Phase.getCurrentView().click(x, y, Click.RIGHT);
+        Phase.rightClickOnCurrentView(x, y);
     }
 
     default void pressUp() {

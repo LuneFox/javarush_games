@@ -9,14 +9,14 @@ import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.board.BoardManager;
-import com.javarush.games.minesweeper.model.board.Cell;
-import com.javarush.games.minesweeper.model.board.CellFilter;
-import com.javarush.games.minesweeper.model.board.Timer;
+import com.javarush.games.minesweeper.model.board.*;
+import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.Results;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
+import com.javarush.games.minesweeper.model.shop.item.Bomb;
+import com.javarush.games.minesweeper.model.shop.item.Scanner;
 import com.javarush.games.minesweeper.view.View;
 
 /**
@@ -110,53 +110,71 @@ public class MinesweeperGame extends Game {
      * Facade
      */
 
-    public void setDisplayInterlace(boolean enabled) {
+    public void setInterlacedEffect(boolean enabled) {
         display.setInterlaceEnabled(enabled);
     }
 
-    public void setDisplayPixel(int x, int y, Color color) {
+    public void drawPixel(int x, int y, Color color) {
         display.setCellColor(x, y, color);
     }
 
-    public void drawField() {
+    public void drawGameBoard() {
         boardManager.drawGameBoard();
     }
 
-    public Cell getCell(int x, int y) {
-        return boardManager.getField().getCell(x, y);
+    public Cell getCellByLogicalPosition(int x, int y) {
+        Field field = boardManager.getField();
+        return field.getCell(x, y);
     }
 
-    public int countAllCells(CellFilter filter) {
+    public Cell getCellByCoordinates(int x, int y) {
+        Field field = boardManager.getField();
+        return field.getCell(x / 10, y / 10);
+    }
+
+
+    public int countCells(CellFilter filter) {
         return boardManager.getField().countAllCells(filter);
     }
 
-    public void openCell(int x, int y) {
-        boardManager.openCell(x, y);
+    public void open(Cell cell) {
+        boardManager.openCell(cell.x, cell.y);
     }
 
-    public void useItemOnCell(int x, int y) {
-        boardManager.useItemOnCell(x, y);
+    public void useItem(Cell cell) {
+        boardManager.useItemOnCell(cell.x, cell.y);
     }
 
-    public void openSurrounding(int x, int y) {
-        boardManager.openSurroundingCells(x, y);
+    public void openSurrounding(Cell cell) {
+        boardManager.openSurroundingCells(cell.x, cell.y);
     }
 
-    public void swapFlag(int x, int y) {
-        boardManager.swapFlag(x, y);
+    public void swapFlag(Cell cell) {
+        boardManager.swapFlag(cell.x, cell.y);
     }
 
-    public void useScanner(int x, int y) {
-        boardManager.scanNeighbors(x, y);
+    public void useScanner(Cell cell) {
+        boardManager.scanNeighbors(cell.x, cell.y);
     }
 
-    public void useMiniBomb(int x, int y) {
-        boardManager.destroyCell(x, y);
+    public void useMiniBomb(Cell cell) {
+        boardManager.destroyCell(cell.x, cell.y);
         boardManager.cleanUpAfterMineDestruction();
     }
 
     public void skipInventoryMoneyAnimation() {
-        player.getInventory().skipMoneyAnimation();
+        Inventory inventory = player.getInventory();
+        inventory.skipMoneyAnimation();
+    }
+
+    public boolean isScannerOrBombActivated() {
+        Scanner scanner = shop.getScanner();
+        Bomb bomb = shop.getBomb();
+        return scanner.isActivated() || bomb.isActivated();
+    }
+
+    public void checkExpiredItems() {
+        shop.checkExpiredItems();
     }
 
     @DeveloperOption

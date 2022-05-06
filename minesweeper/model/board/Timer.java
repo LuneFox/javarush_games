@@ -34,7 +34,7 @@ public class Timer extends InteractiveObject {
         if (game.isStopped()) return;
         if (game.isFirstMove()) return;
         for (int i = x; i < ((time / TIME_LIMIT) * width); i++) {
-            game.setDisplayPixel(i, 0, COLORS[0]);
+            game.drawPixel(i, 0, COLORS[0]);
         }
         tick();
     }

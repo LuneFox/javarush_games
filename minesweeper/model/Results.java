@@ -41,14 +41,14 @@ public class Results {
     }
 
     private static String getCellScoreInfo() {
-        int countCells = game.countAllCells(CellFilter.SCORED);
+        int countCells = game.countCells(CellFilter.SCORED);
         return countCells + "*" + Options.difficulty + " = " +
                 countCells * Options.difficulty;
     }
 
     private static String getMinesScoreInfo() {
         if (!game.isResultVictory()) return "не учтено";
-        int countMines = game.countAllCells(CellFilter.MINED);
+        int countMines = game.countCells(CellFilter.MINED);
         return countMines + "*" + 20 * Options.difficulty + " = " +
                 countMines * 20 * Options.difficulty;
     }

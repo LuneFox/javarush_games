@@ -62,7 +62,7 @@ public class BoardManager {
     public void openCell(int x, int y) {
         if (game.isStopped()) return;
 
-        Cell cell = game.getCell(x, y);
+        Cell cell = field.getCell(x, y);
         if (cell.isFlagged() || cell.isOpen()) return;
 
         if (isFirstMove) {
@@ -150,18 +150,20 @@ public class BoardManager {
         flaggedCells.forEach(fc -> flagManager.swapFlag(fc.x, fc.y));
     }
 
-    // Attempt to open cells around if number of flags nearby equals the number on the cell
     public void openSurroundingCells(int x, int y) {
-        Shop shop = game.getShop();
-        if (shop.scannerOrBombActivated()) return;
+        if (game.isScannerOrBombActivated()) return;
 
         Cell cell = field.getCell(x, y);
         if (cell.isEmpty()) return;
         if (!cell.isOpen()) return;
         if (cell.isMined()) return;
-        // If mined neighbors = number of neighbor flags + opened mines
-        if (cell.getCountMinedNeighbors() == field.getNeighborCells(cell, CellFilter.SUSPECTED, false).size()) {
-            field.getNeighborCells(cell, CellFilter.NONE, false).forEach(neighbor -> openCell(neighbor.x, neighbor.y));
+
+        int countMinedNeighbors = cell.getCountMinedNeighbors();
+        int countNeighborFlagsAndRevealedMines = field.getNeighborCells(cell, CellFilter.SUSPECTED, false).size();
+
+        if (countMinedNeighbors == countNeighborFlagsAndRevealedMines) {
+            List<Cell> allNeighbors = field.getNeighborCells(cell, CellFilter.NONE, false);
+            allNeighbors.forEach(game::open);
         }
     }
 

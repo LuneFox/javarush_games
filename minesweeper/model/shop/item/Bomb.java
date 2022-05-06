@@ -17,7 +17,8 @@ public class Bomb extends ShopItem {
         description = getBombDescription();
         cost = 6 + Options.difficulty / 10;
         inStock = 1;
-        frame = new AimFrame(game.getCell(4, 4), -3, ImageType.BOARD_BOMB_FRAME);
+        int framePadding = -3;
+        frame = new AimFrame(game.getCellByLogicalPosition(4, 4), framePadding, ImageType.BOARD_BOMB_FRAME);
     }
 
     public void aimOrUse(Cell cell) {
@@ -32,7 +33,7 @@ public class Bomb extends ShopItem {
 
     private void use(Cell cell) {
         this.deactivate();
-        game.useMiniBomb(cell.x, cell.y);
+        game.useMiniBomb(cell);
 
         final Shop shop = game.getShop();
         shop.getScanner().restock();
@@ -54,7 +55,7 @@ public class Bomb extends ShopItem {
 
     public void drawFrame() {
         if (!isActivated) return;
-        game.setDisplayInterlace(false);
+        game.setInterlacedEffect(false);
         frame.draw();
     }
 

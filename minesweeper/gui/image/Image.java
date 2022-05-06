@@ -79,7 +79,7 @@ public class Image extends InteractiveObject {
                 if (isPixelTransparent(pixel)) continue;
                 int drawX = x + ((mirror == Mirror.HORIZONTAL) ? (width - 1 - innerX) : innerX);
                 int drawY = y + ((mirror == Mirror.VERTICAL) ? (height - 1 - innerY) : innerY);
-                game.setDisplayPixel(drawX, drawY, colors[pixel]);
+                game.drawPixel(drawX, drawY, colors[pixel]);
             }
         }
     }

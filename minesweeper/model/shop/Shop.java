@@ -123,10 +123,6 @@ public class Shop {
         dice.deactivateIfExpired();
     }
 
-    public boolean scannerOrBombActivated() {
-        return scanner.isActivated() || bomb.isActivated();
-    }
-
     @DeveloperOption
     public void cheatMoreTools() {
         if (!Options.developerModeEnabled) return;

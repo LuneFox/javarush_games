@@ -2,7 +2,6 @@ package com.javarush.games.minesweeper.controller.impl;
 
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.controller.ControlStrategy;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Phase;
@@ -13,47 +12,52 @@ public class ControlBoard implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        Phase.getCurrentView().click(x, y, Click.LEFT);
-        if (checkGameOver()) return;
+        Phase.leftClickOnCurrentView(x, y);
 
-        int gridX = x / 10;
-        int gridY = y / 10;
+        if (game.isStopped()) {
+            Phase.setActive(Phase.GAME_OVER);
+            return;
+        }
 
-        Cell cell = game.getCell(gridX, gridY);
+        Cell cell = game.getCellByCoordinates(x, y);
 
         if (cell.isShop()) {
             Phase.setActive(Phase.SHOP);
             return;
         }
 
-        if (game.getShop().scannerOrBombActivated()) {
-            game.useItemOnCell(gridX, gridY);
-            game.getShop().checkExpiredItems();
+        if (game.isScannerOrBombActivated()) {
+            game.useItem(cell);
+            game.checkExpiredItems();
             return;
         }
 
-        game.openCell(gridX, gridY);
-        game.getShop().checkExpiredItems();
+        game.open(cell);
+
+        game.checkExpiredItems();
     }
 
     @Override
     public void rightClick(int x, int y) {
-        Phase.getCurrentView().click(x, y, Click.RIGHT);
-        if (checkGameOver()) return;
+        Phase.rightClickOnCurrentView(x, y);
 
-        int gridX = x / 10;
-        int gridY = y / 10;
+        if (game.isStopped()) {
+            Phase.setActive(Phase.GAME_OVER);
 
-        Cell cell = game.getCell(gridX, gridY);
+            return;
+        }
+
+        Cell cell = game.getCellByCoordinates(x, y);
 
         if (cell.isShop()) {
             PopUpMessage.show("двери магазина");
             return;
         }
 
-        game.swapFlag(gridX, gridY);         // works only on closed tiles
-        game.openSurrounding(gridX, gridY);  // works only on open tiles
-        game.getShop().checkExpiredItems();
+        game.swapFlag(cell);         // works only on closed cells
+        game.openSurrounding(cell);  // works only on open cells
+
+        game.checkExpiredItems();
     }
 
     @Override
@@ -100,14 +104,6 @@ public class ControlBoard implements ControlStrategy {
         if (game.isStopped()) {
             Phase.setActive(Phase.GAME_OVER);
         }
-    }
-
-    private boolean checkGameOver() {
-        if (game.isStopped()) {
-            Phase.setActive(Phase.GAME_OVER);
-            return true;
-        }
-        return false;
     }
 
     public static void setGame(MinesweeperGame game) {

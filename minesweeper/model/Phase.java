@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
+import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.gui.interactive.PageSelector;
 import com.javarush.games.minesweeper.view.View;
@@ -59,7 +60,7 @@ public enum Phase {
     }
 
     private static void onViewChange() {
-        game.setDisplayInterlace(false);
+        game.setInterlacedEffect(false);
         game.skipInventoryMoneyAnimation();
         PageSelector.resetAllSelectors();
     }
@@ -76,7 +77,11 @@ public enum Phase {
         return viewMap.get(phase);
     }
 
-    public static View getCurrentView() {
-        return currentView;
+    public static void leftClickOnCurrentView(int x, int y) {
+        currentView.click(x, y, Click.LEFT);
+    }
+
+    public static void rightClickOnCurrentView(int x, int y) {
+        currentView.click(x, y, Click.RIGHT);
     }
 }

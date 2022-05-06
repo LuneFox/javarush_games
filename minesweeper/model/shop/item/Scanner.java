@@ -17,7 +17,8 @@ public class Scanner extends ShopItem {
         description = getScannerDescription();
         cost = 8 + Options.difficulty / 5;
         inStock = 1;
-        frame = new AimFrame(game.getCell(4, 4), -9, ImageType.BOARD_SCANNER_FRAME);
+        int framePadding = -9;
+        frame = new AimFrame(game.getCellByLogicalPosition(4, 4), framePadding, ImageType.BOARD_SCANNER_FRAME);
     }
 
     public void aimOrUse(Cell cell) {
@@ -33,7 +34,7 @@ public class Scanner extends ShopItem {
 
     private void use(Cell cell) {
         deactivate();
-        game.useScanner(cell.x, cell.y);
+        game.useScanner(cell);
 
         final Shop shop = game.getShop();
         shop.getBomb().restock();
@@ -54,7 +55,7 @@ public class Scanner extends ShopItem {
 
     public void drawFrame() {
         if (!isActivated) return;
-        game.setDisplayInterlace(false);
+        game.setInterlacedEffect(false);
         frame.draw();
     }
 

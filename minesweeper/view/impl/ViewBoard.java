@@ -11,8 +11,8 @@ public class ViewBoard extends View {
 
     @Override
     public void update() {
-        if (!(Phase.isActive(Phase.SHOP))) game.setDisplayInterlace(true);
-        game.drawField();
+        if (!(Phase.isActive(Phase.SHOP))) game.setInterlacedEffect(true);
+        game.drawGameBoard();
         super.update();
     }
 }
