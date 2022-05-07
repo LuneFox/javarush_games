@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model.shop.item;
+package com.javarush.games.minesweeper.model.shop.items;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;

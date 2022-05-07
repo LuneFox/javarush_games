@@ -32,7 +32,7 @@ public class ControlShop implements ControlStrategy {
     @Override
     @DeveloperOption
     public void pressUp() {
-        game.getPlayer().getInventory().cheatMoney();
+        game.getPlayer().cheatMoney();
     }
 
     @Override

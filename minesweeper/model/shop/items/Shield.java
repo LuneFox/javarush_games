@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model.shop.item;
+package com.javarush.games.minesweeper.model.shop.items;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
@@ -24,14 +24,14 @@ public class Shield extends ShopItem {
         deactivate();
         cell.setShielded(true);
         affectScore();
-        restock();
+        putToStock();
         PopUpMessage.show("Щит разрушен!");
     }
 
     private void affectScore() {
         final Score score = game.getPlayer().getScore();
         score.setLostScore(score.getLostScore() - 150 * difficultyModifier);
-        game.getPlayer().addBrokenShield();
+        game.getPlayer().increaseBrokenShieldsCounter();
     }
 
     @Override

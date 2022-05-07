@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model.shop.item;
+package com.javarush.games.minesweeper.model.shop.items;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -36,16 +36,16 @@ public class Bomb extends ShopItem {
         game.destroyCell(cell);
 
         final Shop shop = game.getShop();
-        shop.getScanner().restock();
+        shop.getScanner().putToStock();
         shop.getDice().hide();
-        restock();
+        putToStock();
     }
 
     @Override
     public void activate() {
         if (unableToActivate()) return;
         isActivated = true;
-        game.getShop().getScanner().empty();
+        game.getShop().getScanner().emptyStock();
     }
 
     private boolean unableToActivate() {

@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.shop.item.Shovel;
+import com.javarush.games.minesweeper.model.shop.items.Shovel;
 
 import java.util.HashMap;
 import java.util.Map;

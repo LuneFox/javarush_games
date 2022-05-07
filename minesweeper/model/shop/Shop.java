@@ -6,7 +6,8 @@ import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.field.Cell;
-import com.javarush.games.minesweeper.model.shop.item.*;
+import com.javarush.games.minesweeper.model.player.Player;
+import com.javarush.games.minesweeper.model.shop.items.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,60 +34,22 @@ public class Shop {
         createSlots();
     }
 
+    private void createSlots() {
+        for (int column = 0; column < 2; column++) {
+            for (int row = 0; row < 3; row++) {
+                int dx = 5 + 25 * row;
+                int dy = 21 + 25 * column;
+                ShopSlot slot = new ShopSlot(10 + dx, 10 + dy);
+                showCaseSlots.add(slot);
+                Phase.getView(Phase.SHOP).linkObject(slot);
+            }
+        }
+    }
+
     public void reset() {
         createNewItems();
         fillSlots();
-    }
-
-    public void give(ShopItem item) {
-        if (item.inStock() > 0) {
-            sendToPlayerInventory(item);
-        }
-    }
-
-    public void sell(ShopItem item) {
-        if (item == null) return;
-        makeTransaction(item);
-        activate(item);
-    }
-
-    private void makeTransaction(ShopItem item) {
-        game.getPlayer().pay(item.getCost());
-        sendToPlayerInventory(item);
-    }
-
-    private void sendToPlayerInventory(ShopItem item) {
-        item.take();
-        game.getPlayer().getInventory().put(item);
-    }
-
-    private void activate(ShopItem item) {
-        item.activate();
-    }
-
-    public void sellFlag() {
-        sell(flag);
-    }
-
-    public void offerFlag() {
-        if (!Options.autoBuyFlagsSelector.isEnabled() && flag.inStock() > 0) {
-            PopUpMessage.show("Купите флажок!");
-            Phase.setActive(Phase.SHOP);
-            return;
-        }
-
-        if (game.countInventoryFlags() == 0 && flag.inStock() == 0) {
-            PopUpMessage.show("Флажки кончились");
-            return;
-        }
-
-        if (flag.isUnobtainable()) {
-            PopUpMessage.show("Невозможно купить!");
-            return;
-        }
-
-        PopUpMessage.show("Куплен флажок");
-        sellFlag();
+        giveStarterFlags();
     }
 
     private void createNewItems() {
@@ -101,22 +64,67 @@ public class Shop {
         allItems.addAll(Arrays.asList(shield, scanner, flag, shovel, dice, bomb));
     }
 
-    private void createSlots() {
-        for (int column = 0; column < 2; column++) {
-            for (int row = 0; row < 3; row++) {
-                int dx = 5 + 25 * row;
-                int dy = 21 + 25 * column;
-                ShopSlot slot = new ShopSlot(10 + dx, 10 + dy);
-                showCaseSlots.add(slot);
-                Phase.getView(Phase.SHOP).linkObject(slot);
-            }
-        }
-    }
-
     private void fillSlots() {
         for (int i = 0; i < showCaseSlots.size(); i++) {
             showCaseSlots.get(i).setItem(allItems.get(i));
         }
+    }
+
+    private void giveStarterFlags() {
+        for (int i = 0; i < 3; i++) {
+            give(flag);
+        }
+    }
+
+    public void sellFlag() {
+        sell(flag);
+    }
+
+    public void give(ShopItem item) {
+        if (item.getInStock() > 0) {
+            System.out.println("giving item = " + item);
+            item.removeFromStock();
+            game.getPlayer().gainItem(item);
+        }
+    }
+
+    public void sell(ShopItem item) {
+        if (item == null) return;
+        processItemTransaction(item);
+        activateItem(item);
+    }
+
+    private void processItemTransaction(ShopItem item) {
+        item.removeFromStock();
+
+        final Player player = game.getPlayer();
+        player.loseMoney(item.getCost());
+        player.gainItem(item);
+    }
+
+    private void activateItem(ShopItem item) {
+        item.activate();
+    }
+
+    public void offerFlag() {
+        if (!Options.autoBuyFlagsSelector.isEnabled() && flag.getInStock() > 0) {
+            PopUpMessage.show("Купите флажок!");
+            Phase.setActive(Phase.SHOP);
+            return;
+        }
+
+        if (game.countPlayerFlags() == 0 && flag.getInStock() == 0) {
+            PopUpMessage.show("Флажки кончились");
+            return;
+        }
+
+        if (flag.isUnobtainable()) {
+            PopUpMessage.show("Невозможно купить!");
+            return;
+        }
+
+        PopUpMessage.show("Куплен флажок");
+        sellFlag();
     }
 
     public void checkExpiredItems() {
@@ -131,11 +139,11 @@ public class Shop {
         dice.drawStatusBar();
     }
 
-    public void aimScanner(Cell cell) {
+    public void aimWithScanner(Cell cell) {
         scanner.aim(cell);
     }
 
-    public void aimBomb(Cell cell) {
+    public void aimWithBomb(Cell cell) {
         bomb.aim(cell);
     }
 

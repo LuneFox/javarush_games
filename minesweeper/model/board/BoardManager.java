@@ -9,10 +9,9 @@ import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.board.field.CellFilter;
 import com.javarush.games.minesweeper.model.board.field.FieldDAO;
-import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.shop.Shop;
-import com.javarush.games.minesweeper.model.shop.item.Shield;
+import com.javarush.games.minesweeper.model.shop.items.Shield;
 
 import java.util.List;
 
@@ -145,9 +144,9 @@ public class BoardManager {
 
     private Cell transformToEmptyShopCell(Cell cell) {
         List<Cell> flaggedCells = fieldDAO.getAllCells(CellFilter.FLAGGED);
-        flaggedCells.forEach(flagManager::returnFlagToInventory);
+        flaggedCells.forEach(flagManager::returnFlagToPlayerInventory);
         cell = restartUntilCellIsEmpty(cell);
-        flaggedCells.forEach(flagManager::placeFlagFromInventory);
+        flaggedCells.forEach(flagManager::placeFlagFromPlayerInventory);
         cell.setShop(true);
         return cell;
     }
@@ -174,7 +173,7 @@ public class BoardManager {
         addPlayerMove();
         addTimerScore();
         useDice(cell);
-        collectMoneyFromCell(cell);
+        earnMoneyFromCell(cell);
     }
 
     private void addPlayerMove() {
@@ -192,11 +191,9 @@ public class BoardManager {
         game.getShop().getDice().use(cell);
     }
 
-    private void collectMoneyFromCell(Cell cell) {
+    private void earnMoneyFromCell(Cell cell) {
         final Player player = game.getPlayer();
-        final Inventory inventory = player.getInventory();
-        int collectedMoney = cell.produceMoney();
-        inventory.addMoney(collectedMoney);
+        player.gainMoney(cell.produceMoney());
     }
 
     private void checkVictory() {
@@ -274,12 +271,12 @@ public class BoardManager {
         final List<Cell> closedCells = fieldDAO.getCellsIn3x3area(cell, CellFilter.CLOSED);
 
         closedCells.forEach(closedCell -> {
-            final Inventory inventory = game.getPlayer().getInventory();
-            if (inventory.countFlags() == 0) {
+            final Player player = game.getPlayer();
+            if (player.countFlags() == 0) {
                 Shop shop = game.getShop();
                 shop.give(shop.getFlag());
             }
-            flagManager.placeFlagFromInventory(closedCell);
+            flagManager.placeFlagFromPlayerInventory(closedCell);
         });
     }
 
@@ -334,7 +331,7 @@ public class BoardManager {
             if (dangerousNeighbors.size() == closedNeighbors.size()) {
                 dangerousNeighbors.forEach(dangerousNeighbor -> {
                     if (dangerousNeighbor.isFlagged()) return;
-                    if (game.getPlayer().getInventory().countFlags() == 0) {
+                    if (game.getPlayer().countFlags() == 0) {
                         Shop shop = game.getShop();
                         shop.sellFlag();
                     }

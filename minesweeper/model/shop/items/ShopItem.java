@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model.shop.item;
+package com.javarush.games.minesweeper.model.shop.items;
 
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
@@ -28,56 +28,56 @@ public abstract class ShopItem {
         expirationMove = game.getPlayer().getMoves() + effectDuration;
     }
 
-    public void deactivate() {
-        isActivated = false;
-    }
-
     public void deactivateIfExpired() {
         if (isExpired()) {
             deactivate();
-            restock();
+            putToStock();
             PopUpMessage.show(name + ": всё");
         }
     }
 
-    public void drawIcon(int x, int y) {
-        icon.draw(x, y);
+    public void deactivate() {
+        isActivated = false;
     }
 
     private boolean isExpired() {
         return (game.getPlayer().getMoves() >= expirationMove) && isActivated;
     }
 
-    public int countRemainingMoves() {
-        return expirationMove - game.getPlayer().getMoves();
-    }
-
     public String getRemainingMovesText() {
         return expirationMove == 0 ? " " : "" + countRemainingMoves();
     }
 
-    public boolean isUnaffordable() {
-        return (game.getPlayer().getInventory().getMoney() < cost);
+    public int countRemainingMoves() {
+        return expirationMove - game.getPlayer().getMoves();
     }
 
     public boolean isUnobtainable() {
         return (isUnaffordable() || inStock <= 0);
     }
 
-    public int inStock() {
-        return inStock;
+    public boolean isUnaffordable() {
+        return (game.getPlayer().getMoneyBalance() < cost);
     }
 
-    public void empty() {
-        inStock = 0;
-    }
-
-    public void restock() {
+    public void putToStock() {
         inStock++;
     }
 
-    public void take() {
+    public void removeFromStock() {
         inStock--;
+    }
+
+    public void emptyStock() {
+        inStock = 0;
+    }
+
+    public int getInStock() {
+        return inStock;
+    }
+
+    public void drawIcon(int x, int y) {
+        icon.draw(x, y);
     }
 
     @DeveloperOption
@@ -94,10 +94,6 @@ public abstract class ShopItem {
 
     public String getDescription() {
         return description;
-    }
-
-    public Image getIcon() {
-        return icon;
     }
 
     public boolean isActivated() {

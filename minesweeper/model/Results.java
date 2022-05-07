@@ -4,7 +4,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.board.field.CellFilter;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
-import com.javarush.games.minesweeper.model.shop.item.Dice;
+import com.javarush.games.minesweeper.model.shop.items.Dice;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +60,7 @@ public class Results {
 
     private static String getMoneyScoreInfo() {
         if (!game.isResultVictory()) return "не учтено";
-        final int money = getPlayer().getInventory().getMoney();
+        final int money = getPlayer().getMoneyBalance();
         return money + "*" + Options.difficulty + " = " +
                 money * Options.difficulty;
     }

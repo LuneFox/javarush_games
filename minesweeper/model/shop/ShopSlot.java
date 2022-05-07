@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.shop.item.ShopItem;
+import com.javarush.games.minesweeper.model.shop.items.ShopItem;
 import com.javarush.games.minesweeper.view.impl.ViewShop;
 
 /**
@@ -63,7 +63,7 @@ public class ShopSlot extends InteractiveObject {
     }
 
     private void printInfoOverlay() {
-        if (item.inStock() > 0 && !item.isActivated()) {
+        if (item.getInStock() > 0 && !item.isActivated()) {
             printItemCost();
         } else if (item.isActivated()) {
             printActivatedStatus();
@@ -95,7 +95,7 @@ public class ShopSlot extends InteractiveObject {
             return;
         }
 
-        if (item.inStock() <= 0) {
+        if (item.getInStock() <= 0) {
             PopUpMessage.show("Нет в продаже");
             return;
         }

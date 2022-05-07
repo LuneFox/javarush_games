@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.shop.item.ShopItem;
+import com.javarush.games.minesweeper.model.shop.items.ShopItem;
 
 public class ShopItemStatusBar extends InteractiveObject {
     private final Color color;

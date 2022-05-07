@@ -14,12 +14,11 @@ import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.board.field.CellFilter;
-import com.javarush.games.minesweeper.model.player.Inventory;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
-import com.javarush.games.minesweeper.model.shop.item.Bomb;
-import com.javarush.games.minesweeper.model.shop.item.Scanner;
+import com.javarush.games.minesweeper.model.shop.items.Bomb;
+import com.javarush.games.minesweeper.model.shop.items.Scanner;
 import com.javarush.games.minesweeper.view.View;
 
 /**
@@ -84,8 +83,8 @@ public class MinesweeperGame extends Game {
 
     private void resetAssets() {
         boardManager.reset();
-        shop.reset();
         player.reset();
+        shop.reset();
         isStopped = false;
         isResultVictory = false;
     }
@@ -145,8 +144,8 @@ public class MinesweeperGame extends Game {
 
     public void aimWithScannerOrBomb(Cell cell) {
         if (isStopped()) return;
-        shop.aimScanner(cell);
-        shop.aimBomb(cell);
+        shop.aimWithScanner(cell);
+        shop.aimWithBomb(cell);
     }
 
     public void scanNeighbors(Cell cell) {
@@ -156,11 +155,6 @@ public class MinesweeperGame extends Game {
     public void destroyCell(Cell cell) {
         boardManager.destroyCell(cell);
         boardManager.cleanUpAfterMineDestruction();
-    }
-
-    public void skipInventoryMoneyAnimation() {
-        Inventory inventory = player.getInventory();
-        inventory.skipMoneyAnimation();
     }
 
     public boolean isScannerOrBombActivated() {
@@ -173,9 +167,8 @@ public class MinesweeperGame extends Game {
         shop.checkExpiredItems();
     }
 
-    public int countInventoryFlags() {
-        Inventory inventory = player.getInventory();
-        return inventory.countFlags();
+    public int countPlayerFlags() {
+        return player.countFlags();
     }
 
     @DeveloperOption

@@ -41,7 +41,7 @@ public class Score {
 
     public int getMoneyScore() {
         if (!game.isResultVictory()) return 0;
-        return game.getPlayer().getInventory().getMoney() * Options.difficulty;
+        return game.getPlayer().getMoneyBalance() * Options.difficulty;
     }
 
     public int getMinesScore() {
