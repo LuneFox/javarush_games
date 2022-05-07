@@ -125,42 +125,35 @@ public class MinesweeperGame extends Game {
         boardManager.draw();
     }
 
+    public void leftClickOnBoard(int x, int y) {
+        boardManager.interactLeft(x, y);
+        checkExpiredItems();
+    }
+
+    public void rightClickOnBoard(int x, int y) {
+        boardManager.interactRight(x, y);
+        checkExpiredItems();
+    }
+
     public Cell getCell(int x, int y) {
         return boardManager.getCell(x, y);
     }
-
-    public Cell getCellByCoordinates(int x, int y) {
-        return boardManager.getCellByCoordinates(x, y);
-    }
-
 
     public int countCells(CellFilter filter) {
         return boardManager.countAllCells(filter);
     }
 
-    public void openCell(Cell cell) {
-        boardManager.openCell(cell);
-    }
-
-    public void useItem(Cell cell) {
+    public void aimWithScannerOrBomb(Cell cell) {
         if (isStopped()) return;
-        shop.useScanner(cell);
-        shop.useBomb(cell);
+        shop.aimScanner(cell);
+        shop.aimBomb(cell);
     }
 
-    public void openSurrounding(Cell cell) {
-        boardManager.openSurroundingCells(cell);
-    }
-
-    public void swapFlag(Cell cell) {
-        boardManager.swapFlag(cell);
-    }
-
-    public void useScanner(Cell cell) {
+    public void scanNeighbors(Cell cell) {
         boardManager.scanNeighbors(cell);
     }
 
-    public void useMiniBomb(Cell cell) {
+    public void destroyCell(Cell cell) {
         boardManager.destroyCell(cell);
         boardManager.cleanUpAfterMineDestruction();
     }

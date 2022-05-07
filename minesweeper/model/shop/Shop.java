@@ -131,12 +131,12 @@ public class Shop {
         dice.drawStatusBar();
     }
 
-    public void useScanner(Cell cell) {
-        scanner.aimOrUse(cell);
+    public void aimScanner(Cell cell) {
+        scanner.aim(cell);
     }
 
-    public void useBomb(Cell cell) {
-        bomb.aimOrUse(cell);
+    public void aimBomb(Cell cell) {
+        bomb.aim(cell);
     }
 
     @DeveloperOption

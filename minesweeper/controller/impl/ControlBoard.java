@@ -3,9 +3,7 @@ package com.javarush.games.minesweeper.controller.impl;
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.ControlStrategy;
-import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.board.field.Cell;
 
 public class ControlBoard implements ControlStrategy {
     private static MinesweeperGame game;
@@ -13,27 +11,13 @@ public class ControlBoard implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         Phase.leftClickOnCurrentView(x, y);
-        
+
         if (game.isStopped()) {
             Phase.setActive(Phase.GAME_OVER);
             return;
         }
 
-        Cell cell = game.getCellByCoordinates(x, y);
-        
-        if (cell.isShop()) {
-            Phase.setActive(Phase.SHOP);
-            return;
-        }
-        
-        if (game.isScannerOrBombActivated()) {
-            game.useItem(cell);
-            game.checkExpiredItems();
-            return;
-        }
-        
-        game.openCell(cell);
-        game.checkExpiredItems();
+        game.leftClickOnBoard(x, y);
     }
 
     @Override
@@ -45,16 +29,7 @@ public class ControlBoard implements ControlStrategy {
             return;
         }
 
-        Cell cell = game.getCellByCoordinates(x, y);
-
-        if (cell.isShop()) {
-            PopUpMessage.show("двери магазина");
-            return;
-        }
-
-        game.swapFlag(cell);         // works only on closed cells
-        game.openSurrounding(cell);  // works only on open cells
-        game.checkExpiredItems();
+        game.rightClickOnBoard(x, y);
     }
 
     @Override

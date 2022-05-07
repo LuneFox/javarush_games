@@ -21,7 +21,7 @@ public class Bomb extends ShopItem {
         frame = new AimFrame(game.getCell(4, 4), framePadding, ImageType.BOARD_BOMB_FRAME);
     }
 
-    public void aimOrUse(Cell cell) {
+    public void aim(Cell cell) {
         if (!isActivated) return;
 
         if (frame.isNotFocusedOnCell(cell)) {
@@ -33,7 +33,7 @@ public class Bomb extends ShopItem {
 
     private void use(Cell cell) {
         this.deactivate();
-        game.useMiniBomb(cell);
+        game.destroyCell(cell);
 
         final Shop shop = game.getShop();
         shop.getScanner().restock();

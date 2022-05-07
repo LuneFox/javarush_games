@@ -21,7 +21,7 @@ public class Scanner extends ShopItem {
         frame = new AimFrame(game.getCell(4, 4), framePadding, ImageType.BOARD_SCANNER_FRAME);
     }
 
-    public void aimOrUse(Cell cell) {
+    public void aim(Cell cell) {
         if (!isActivated) return;
 
         if (frame.isNotFocusedOnCell(cell)) {
@@ -34,7 +34,7 @@ public class Scanner extends ShopItem {
 
     private void use(Cell cell) {
         deactivate();
-        game.useScanner(cell);
+        game.scanNeighbors(cell);
 
         final Shop shop = game.getShop();
         shop.getBomb().restock();
