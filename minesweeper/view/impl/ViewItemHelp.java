@@ -29,7 +29,7 @@ public class ViewItemHelp extends View {
     public void update() {
         ShopItem displayItem = game.getShop().getHelpDisplayItem();
         background.draw();
-        displayItem.getIcon().draw(5, 10);
+        displayItem.drawIcon(5, 10);
         Printer.print("<[" + displayItem.getName() + "]>", Color.YELLOW, 25, 14);
         Printer.print(displayItem.getDescription(), 4, 30);
         closeButton.draw();

@@ -17,7 +17,7 @@ import com.javarush.games.minesweeper.view.impl.ViewShop;
  */
 
 public class ShopSlot extends InteractiveObject {
-    private static final int PRESSED_DURATION = 5;
+    private static final int PRESS_DURATION = 5;
     private static final int PRESS_DEPTH = 1;
     private int pressedCountDown;
 
@@ -36,27 +36,12 @@ public class ShopSlot extends InteractiveObject {
     @Override
     public void draw() {
         final int shift = shiftFrame() ? PRESS_DEPTH : 0;
-        final int fx = x + shift;
-        final int fy = y + shift;
+        final int frameX = x + shift;
+        final int frameY = y + shift;
         changeFrameColor();
-        frame.draw(fx, fy);
-        item.getIcon().draw(fx + 1, fy + 1);
-        printInfo();
-    }
-
-    private void printInfo() {
-        final int top = y;
-        final int right = x + 18;
-        final int bottom = y + 10;
-
-        if (item.inStock() > 0 && !item.isActivated()) {
-            Printer.print("<" + item.getCost() + ">", Color.YELLOW, right, bottom, Printer.Align.RIGHT);
-        } else if (item.isActivated()) {
-            Printer.print("<АКТ>", Color.YELLOW, right + activatedShaker.getShift(), bottom, Printer.Align.RIGHT);
-            Printer.print(item.getRemainingMovesText(), Color.MAGENTA, right, top, Printer.Align.RIGHT);
-        } else {
-            Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), right, bottom, Printer.Align.RIGHT);
-        }
+        frame.draw(frameX, frameY);
+        item.drawIcon(frameX + 1, frameY + 1);
+        printInfoOverlay();
     }
 
     private boolean shiftFrame() {
@@ -77,9 +62,32 @@ public class ShopSlot extends InteractiveObject {
         frame.changeColor(frameColor, 3);
     }
 
+    private void printInfoOverlay() {
+        if (item.inStock() > 0 && !item.isActivated()) {
+            printItemCost();
+        } else if (item.isActivated()) {
+            printActivatedStatus();
+        } else {
+            printOutOfStockMarker();
+        }
+    }
+
+    private void printItemCost() {
+        Printer.print("<" + item.getCost() + ">", Color.YELLOW, x + 18, y + 10, Printer.Align.RIGHT);
+    }
+
+    private void printActivatedStatus() {
+        Printer.print("<АКТ>", Color.YELLOW, x + 18 + activatedShaker.getShift(), y + 10, Printer.Align.RIGHT);
+        Printer.print(item.getRemainingMovesText(), Color.MAGENTA, x + 18, y, Printer.Align.RIGHT);
+    }
+
+    private void printOutOfStockMarker() {
+        Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), x + 18, y + 10, Printer.Align.RIGHT);
+    }
+
     @Override
     public void onLeftClick() {
-        pressedCountDown = PRESSED_DURATION;
+        pressedCountDown = PRESS_DURATION;
 
         if (item.isActivated()) {
             activatedShaker.startShaking();
@@ -101,13 +109,13 @@ public class ShopSlot extends InteractiveObject {
         game.getShop().sell(item);
     }
 
-    public void setItem(ShopItem item) {
-        this.item = item;
-    }
-
     @Override
     public void onRightClick() {
         game.getShop().setHelpDisplayItem(item);
         Phase.setActive(Phase.ITEM_HELP);
+    }
+
+    public void setItem(ShopItem item) {
+        this.item = item;
     }
 }

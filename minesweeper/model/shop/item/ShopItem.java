@@ -40,6 +40,10 @@ public abstract class ShopItem {
         }
     }
 
+    public void drawIcon(int x, int y) {
+        icon.draw(x, y);
+    }
+
     private boolean isExpired() {
         return (game.getPlayer().getMoves() >= expirationMove) && isActivated;
     }
