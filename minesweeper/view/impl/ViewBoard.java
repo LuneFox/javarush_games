@@ -12,6 +12,7 @@ public class ViewBoard extends View {
     @Override
     public void update() {
         if (!(Phase.isActive(Phase.SHOP))) game.setInterlacedEffect(true);
+        View.setGameOverShowDelay(0);
         game.drawGameBoard();
         super.update();
     }

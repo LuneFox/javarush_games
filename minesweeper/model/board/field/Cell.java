@@ -1,10 +1,11 @@
-package com.javarush.games.minesweeper.model.board;
+package com.javarush.games.minesweeper.model.board.field;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
+import com.javarush.games.minesweeper.model.shop.item.Shovel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -101,7 +102,17 @@ public class Cell extends InteractiveObject {
         this.sprite = new Image(sprites.get(number), x * 10, y * 10);
     }
 
-    public void makeSpriteYellow() {
+    public int produceMoney() {
+        Shovel shovel = game.getShop().getShovel();
+        if (shovel.isActivated()) {
+            makeSpriteYellow();
+            return countMinedNeighbors * 2;
+        } else {
+            return countMinedNeighbors;
+        }
+    }
+
+    private void makeSpriteYellow() {
         if (isNumerable() && countMinedNeighbors > 0) {
             sprite.changeColor(Color.YELLOW, 1);
         }
@@ -110,6 +121,10 @@ public class Cell extends InteractiveObject {
     /*
      * Combined states
      */
+
+    public boolean cannotBeOpened() {
+        return game.isStopped() || isFlagged || isOpen;
+    }
 
     public boolean isEmpty() {
         return (!isMined && countMinedNeighbors == 0);
@@ -130,8 +145,9 @@ public class Cell extends InteractiveObject {
     }
 
 
+
     /*
-     *     Getters
+     * Getters
      */
 
     public int getCountMinedNeighbors() {
@@ -167,7 +183,7 @@ public class Cell extends InteractiveObject {
     }
 
     /*
-     *     Setters
+     * Setters
      */
 
     public void setMined(boolean mined) {

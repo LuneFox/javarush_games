@@ -5,7 +5,7 @@ import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.player.Score;
 
 public class Shield extends ShopItem {

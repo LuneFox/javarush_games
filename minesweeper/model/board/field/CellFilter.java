@@ -1,4 +1,4 @@
-package com.javarush.games.minesweeper.model.board;
+package com.javarush.games.minesweeper.model.board.field;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.model.player;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.board.CellFilter;
+import com.javarush.games.minesweeper.model.board.field.CellFilter;
 
 public class Score {
     private static MinesweeperGame game;

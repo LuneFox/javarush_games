@@ -5,6 +5,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
+import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.shop.item.*;
 
 import java.util.ArrayList;
@@ -74,7 +75,7 @@ public class Shop {
             return;
         }
 
-        if (game.getPlayer().getInventory().countFlags() == 0 && game.getShop().getFlag().inStock() == 0) {
+        if (game.countInventoryFlags() == 0 && flag.inStock() == 0) {
             PopUpMessage.show("Флажки кончились");
             return;
         }
@@ -121,6 +122,21 @@ public class Shop {
     public void checkExpiredItems() {
         shovel.deactivateIfExpired();
         dice.deactivateIfExpired();
+    }
+
+    public void drawItemAssets() {
+        scanner.drawFrame();
+        bomb.drawFrame();
+        shovel.drawStatusBar();
+        dice.drawStatusBar();
+    }
+
+    public void useScanner(Cell cell) {
+        scanner.aimOrUse(cell);
+    }
+
+    public void useBomb(Cell cell) {
+        bomb.aimOrUse(cell);
     }
 
     @DeveloperOption

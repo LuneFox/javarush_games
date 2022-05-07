@@ -4,7 +4,7 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.board.Cell;
+import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.shop.Shop;
 
 public class Scanner extends ShopItem {
@@ -18,7 +18,7 @@ public class Scanner extends ShopItem {
         cost = 8 + Options.difficulty / 5;
         inStock = 1;
         int framePadding = -9;
-        frame = new AimFrame(game.getCellByLogicalPosition(4, 4), framePadding, ImageType.BOARD_SCANNER_FRAME);
+        frame = new AimFrame(game.getCell(4, 4), framePadding, ImageType.BOARD_SCANNER_FRAME);
     }
 
     public void aimOrUse(Cell cell) {

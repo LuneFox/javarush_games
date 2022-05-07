@@ -1,35 +1,24 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.image.ImageType;
+import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.player.Inventory;
+import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.shop.Shop;
 
 public class FlagManager {
     private final MinesweeperGame game;
-    private final Field field;
 
-    FlagManager(MinesweeperGame game, Field field) {
+    FlagManager(MinesweeperGame game) {
         this.game = game;
-        this.field = field;
     }
 
-    void swapFlag(int x, int y) {
-        if (game.isStopped()) return;
-        Cell cell = field.getField()[y][x];
-        if (cell.isOpen()) return;
+    void swapFlag(Cell cell) {
         if (cell.isFlagged()) {
             returnFlagToInventory(cell);
         } else {
             placeFlagFromInventory(cell);
         }
-    }
-
-    void setFlag(int x, int y) {
-        if (game.isStopped()) return;
-        Cell cell = field.getField()[y][x];
-        if (cell.isOpen()) return;
-        placeFlagFromInventory(cell);
     }
 
     void returnFlagToShop(Cell cell) {
@@ -38,22 +27,28 @@ public class FlagManager {
         cell.setFlagged(false);
     }
 
-    private void returnFlagToInventory(Cell cell) {
+    void returnFlagToInventory(Cell cell) {
+        if (game.isStopped()) return;
+        if (cell.isOpen()) return;
         final Shop shop = game.getShop();
-        final Inventory inventory = game.getPlayer().getInventory();
+        final Player player = game.getPlayer();
+        final Inventory inventory = player.getInventory();
+
         inventory.put(shop.getFlag());
         cell.setFlagged(false);
     }
 
-    private void placeFlagFromInventory(Cell cell) {
-        final Inventory inventory = game.getPlayer().getInventory();
+    void placeFlagFromInventory(Cell cell) {
+        if (game.isStopped()) return;
+        if (cell.isOpen()) return;
         final Shop shop = game.getShop();
+        final Player player = game.getPlayer();
+        final Inventory inventory = player.getInventory();
 
         if (inventory.countFlags() == 0) shop.offerFlag();
         if (inventory.countFlags() == 0) return;
         if (cell.isFlagged()) return;
         inventory.remove(game.getShop().getFlag());
-        // cell.setSprite(ImageType.BOARD_FLAG);
         cell.setFlagged(true);
     }
 }

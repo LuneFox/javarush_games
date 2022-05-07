@@ -5,7 +5,11 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.Options;
+import com.javarush.games.minesweeper.model.board.field.Cell;
+import com.javarush.games.minesweeper.model.board.field.CellFilter;
+import com.javarush.games.minesweeper.model.board.field.FieldDAO;
 import com.javarush.games.minesweeper.model.player.Inventory;
+import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.item.Shield;
 
@@ -13,7 +17,7 @@ import java.util.List;
 
 public class BoardManager {
     private final MinesweeperGame game;
-    private final Field field;
+    private final FieldDAO fieldDAO;
     private final FlagManager flagManager;
     private final Timer timer;
 
@@ -25,45 +29,63 @@ public class BoardManager {
 
     public BoardManager(MinesweeperGame game) {
         this.game = game;
-        this.field = new Field();
+        this.fieldDAO = new FieldDAO();
         this.timer = new Timer();
-        this.flagManager = new FlagManager(game, field);
+        this.flagManager = new FlagManager(game);
     }
 
+    /*
+     * Creation
+     */
+
     public void reset() {
-        field.createNewLayout();
+        fieldDAO.createNewField();
+        plantMines();
+        enumerateMinedCells();
         timer.reset();
         isRecursiveMove = false;
         isFirstMove = true;
     }
 
-    public void drawGameBoard() {
-        field.draw();
+    private void plantMines() {
+        double numberOfMinesToPlant = Options.difficulty / 1.5;
+        while (fieldDAO.countAllCells(CellFilter.MINED) < numberOfMinesToPlant) {
+            int randomX = game.getRandomNumber(10);
+            int randomY = game.getRandomNumber(10);
+            Cell cell = getCell(randomX, randomY);
+            if (!cell.isMined()) {
+                cell.setMined(true);
+            }
+        }
+    }
+
+    public void enumerateMinedCells() {
+        fieldDAO.getAllCells(CellFilter.NUMERABLE).forEach(cell -> {
+            final int minesCount = fieldDAO.getNeighborCells(cell, CellFilter.MINED).size();
+            cell.setCountMinedNeighbors(minesCount);
+        });
+    }
+
+    /*
+     * Display
+     */
+
+    public void draw() {
+        drawField();
         timer.draw();
-        drawShopItems();
+        game.getShop().drawItemAssets();
     }
 
-    private void drawShopItems() {
-        Shop shop = game.getShop();
-        shop.getScanner().drawFrame();
-        shop.getBomb().drawFrame();
-        shop.getShovel().drawStatusBar();
-        shop.getDice().drawStatusBar();
+    private void drawField() {
+        fieldDAO.getAllCells().forEach(Cell::draw);
     }
 
-    public void useItemOnCell(int x, int y) {
-        if (game.isStopped()) return;
-        Cell cell = field.getCell(x, y);
-        Shop shop = game.getShop();
-        shop.getScanner().aimOrUse(cell);
-        shop.getBomb().aimOrUse(cell);
-    }
+    /*
+     * Open cell
+     */
 
-    public void openCell(int x, int y) {
-        if (game.isStopped()) return;
-
-        Cell cell = field.getCell(x, y);
-        if (cell.isFlagged() || cell.isOpen()) return;
+    public void openCell(Cell cell) {
+        if (cell.cannotBeOpened()) return;
 
         if (isFirstMove) {
             cell = transformToEmptyShopCell(cell);
@@ -71,9 +93,9 @@ public class BoardManager {
         }
 
         if (cell.isMined()) {
-            tryUsingShield(cell);
+            tryUsingShieldOnMinedCell(cell);
             if (!cell.isShielded()) {
-                gameOver(cell);
+                gameOverFromCellExplosion(cell);
                 return;
             }
         }
@@ -82,22 +104,39 @@ public class BoardManager {
 
         if (cell.isEmpty()) {
             isRecursiveMove = true;
-            List<Cell> neighbors = field.getNeighborCells(cell, CellFilter.CLOSED, false);
-            neighbors.forEach(neighbor -> openCell(neighbor.x, neighbor.y));
+            List<Cell> closedNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.CLOSED);
+            closedNeighbors.forEach(this::openCell);
         }
 
         registerScoreAndMoney(cell);
         checkVictory();
     }
 
-    private void gameOver(Cell cell) {
-        cell.setGameOverCause(true);
-        game.lose();
+    private Cell transformToEmptyShopCell(Cell cell) {
+        List<Cell> flaggedCells = fieldDAO.getAllCells(CellFilter.FLAGGED);
+        flaggedCells.forEach(flagManager::returnFlagToInventory);
+        cell = restartUntilCellIsEmpty(cell);
+        flaggedCells.forEach(flagManager::placeFlagFromInventory);
+        cell.setShop(true);
+        return cell;
     }
 
-    private void tryUsingShield(Cell cell) {
+    private Cell restartUntilCellIsEmpty(Cell cell) {
+        while (!cell.isEmpty()) {
+            reset();
+            cell = getCell(cell.x, cell.y);
+        }
+        return cell;
+    }
+
+    private void tryUsingShieldOnMinedCell(Cell cell) {
         Shield shield = game.getShop().getShield();
         if (shield.isActivated()) shield.use(cell);
+    }
+
+    private void gameOverFromCellExplosion(Cell cell) {
+        cell.setGameOverCause(true);
+        game.lose();
     }
 
     private void registerScoreAndMoney(Cell cell) {
@@ -105,66 +144,6 @@ public class BoardManager {
         addTimerScore();
         useDice(cell);
         collectMoneyFromCell(cell);
-    }
-
-    private void useDice(Cell cell) {
-        game.getShop().getDice().use(cell);
-    }
-
-    private void collectMoneyFromCell(Cell cell) {
-        int collectedMoney = cell.getCountMinedNeighbors();
-        Shop shop = game.getShop();
-
-        if (shop.getShovel().isActivated()) {
-            collectedMoney *= 2;
-            cell.makeSpriteYellow();
-        }
-
-        Inventory inventory = game.getPlayer().getInventory();
-        inventory.addMoney(collectedMoney);
-    }
-
-    private Cell transformToEmptyShopCell(Cell cell) {
-        // A little costly but quick bruteforce implementation, makes first move very convenient
-        List<Cell> flaggedCells = field.getAllCells(CellFilter.FLAGGED);
-        collectExistingFlags(flaggedCells);
-        cell = recreateLayoutUntilEmpty(cell);
-        putFlagsBack(flaggedCells);
-        cell.setShop(true);
-        return cell;
-    }
-
-    private Cell recreateLayoutUntilEmpty(Cell cell) {
-        while (!cell.isEmpty()) {
-            field.createNewLayout();
-            cell = field.getCell(cell.x, cell.y);
-        }
-        return cell;
-    }
-
-    private void putFlagsBack(List<Cell> flaggedCells) {
-        flaggedCells.forEach(fc -> flagManager.setFlag(fc.x, fc.y));
-    }
-
-    private void collectExistingFlags(List<Cell> flaggedCells) {
-        flaggedCells.forEach(fc -> flagManager.swapFlag(fc.x, fc.y));
-    }
-
-    public void openSurroundingCells(int x, int y) {
-        if (game.isScannerOrBombActivated()) return;
-
-        Cell cell = field.getCell(x, y);
-        if (cell.isEmpty()) return;
-        if (!cell.isOpen()) return;
-        if (cell.isMined()) return;
-
-        int countMinedNeighbors = cell.getCountMinedNeighbors();
-        int countNeighborFlagsAndRevealedMines = field.getNeighborCells(cell, CellFilter.SUSPECTED, false).size();
-
-        if (countMinedNeighbors == countNeighborFlagsAndRevealedMines) {
-            List<Cell> allNeighbors = field.getNeighborCells(cell, CellFilter.NONE, false);
-            allNeighbors.forEach(game::open);
-        }
     }
 
     private void addPlayerMove() {
@@ -178,97 +157,136 @@ public class BoardManager {
         timer.reset();
     }
 
+    private void useDice(Cell cell) {
+        game.getShop().getDice().use(cell);
+    }
+
+    private void collectMoneyFromCell(Cell cell) {
+        final Player player = game.getPlayer();
+        final Inventory inventory = player.getInventory();
+        int collectedMoney = cell.produceMoney();
+        inventory.addMoney(collectedMoney);
+    }
 
     public void checkVictory() {
-        if (field.countAllCells(CellFilter.CLOSED) == field.countAllCells(CellFilter.DANGEROUS)) {
+        final int countClosedCells = fieldDAO.countAllCells(CellFilter.CLOSED);
+        final int countMinedClosedCells = fieldDAO.countAllCells(CellFilter.DANGEROUS);
+        if (countClosedCells == countMinedClosedCells) {
             game.win();
         }
     }
 
-    public void swapFlag(int x, int y) {
-        flagManager.swapFlag(x, y);
+    /*
+     * Destroy cell (mini bomb action)
+     */
+
+    public void destroyCell(Cell cell) {
+        if (cell.isIndestructible() && !isRecursiveMove) {
+            PopUpMessage.show("Не получилось!");
+            return;
+        }
+
+        addPlayerMove();
+        addTimerScore();
+        flagManager.returnFlagToShop(cell);
+
+        if (cell.isMined()) {
+            PopUpMessage.show(isRecursiveMove ? "Взорвались мины!" : "Взорвалась мина!");
+            miniBombHitMine = true;
+            isRecursiveMove = true;
+            isFlagExplosionAllowed = true;
+            cell.destroy();
+            List<Cell> minedNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.MINED);
+            minedNeighbors.forEach(this::destroyCell);
+        } else {
+            cell.destroy();
+        }
+        enumerateMinedCells();
+        checkVictory();
     }
 
-    /**
-     * Scanner action
+    public void cleanUpAfterMineDestruction() {
+        if (!miniBombHitMine) return;
+        fieldDAO.getAllCells(CellFilter.DESTROYED).stream()
+                .filter(Cell::wasMinedBeforeDestruction)
+                .map(cell -> fieldDAO.getNeighborCells(cell, CellFilter.CLOSED))
+                .forEach(closedNeighbors -> closedNeighbors.forEach(this::openCell));
+        reapplyOpenedCellsVisuals();
+        miniBombHitMine = false;
+    }
+
+    /*
+     * Open surrounding cells automatically
      */
-    public void scanNeighbors(int x, int y) {  // action for Scanner
-        List<Cell> safeNeighbors = field.getNeighborCells(field.getCell(x, y), CellFilter.SAFE, true);
-        if (safeNeighbors.size() != 0) {
+
+    public void openSurroundingCells(int x, int y) {
+        if (game.isScannerOrBombActivated()) return;
+
+        Cell cell = getCell(x, y);
+        if (cell.isEmpty()) return;
+        if (!cell.isOpen()) return;
+        if (cell.isMined()) return;
+
+        int countMinedNeighbors = cell.getCountMinedNeighbors();
+        int countNeighborFlagsAndRevealedMines = fieldDAO.getNeighborCells(cell, CellFilter.SUSPECTED).size();
+
+        if (countMinedNeighbors == countNeighborFlagsAndRevealedMines) {
+            List<Cell> allNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.NONE);
+            allNeighbors.forEach(game::openCell);
+        }
+    }
+
+    /*
+     * Scan neighbors (scanner action)
+     */
+
+
+    public void scanNeighbors(Cell cell) {  // action for Scanner
+        List<Cell> safeCells = fieldDAO.getCellsIn3x3area(cell, CellFilter.SAFE);
+        if (safeCells.size() != 0) {
             PopUpMessage.show("Сканирование...");
-            scanRandomCell(safeNeighbors);
+            scanRandomCell(safeCells);
         } else {
             PopUpMessage.show("Нечего сканировать");
-            placeFlagsForPlayer(x, y);
+            placeFlagsForPlayer(cell);
         }
     }
 
     private void scanRandomCell(List<Cell> safeNeighbors) {
         Cell cell = safeNeighbors.get(game.getRandomNumber(safeNeighbors.size()));
         if (cell.isFlagged()) { // by mistake
-            flagManager.swapFlag(cell.x, cell.y);
+            flagManager.swapFlag(cell);
         }
         cell.setScanned(true);
-        openCell(cell.x, cell.y);
+        openCell(cell);
     }
 
-    private void placeFlagsForPlayer(int x, int y) {
-        field.getNeighborCells(field.getCell(x, y), CellFilter.CLOSED, true).forEach(closedCell -> {
+    private void placeFlagsForPlayer(Cell cell) {
+        final List<Cell> closedCells = fieldDAO.getCellsIn3x3area(cell, CellFilter.CLOSED);
+
+        closedCells.forEach(closedCell -> {
             final Inventory inventory = game.getPlayer().getInventory();
             if (inventory.countFlags() == 0) {
                 Shop shop = game.getShop();
                 shop.give(shop.getFlag());
             }
-            flagManager.setFlag(closedCell.x, closedCell.y);
+            flagManager.placeFlagFromInventory(closedCell);
         });
     }
 
-    /**
-     * Mini-bomb action
+    /*
+     * Other
      */
-    public void destroyCell(int x, int y) {
-        Cell cell = field.getCell(x, y);
-        addPlayerMove();
-        addTimerScore();
 
-        if (cell.isIndestructible()) {
-            PopUpMessage.show("Не получилось!");
-            return;
-        }
-
-        if (cell.isMined()) { // recursive explosions
-            miniBombHitMine = true;
-            PopUpMessage.show("Взорвалась мина!");
-            cell.destroy();
-            isRecursiveMove = true;
-            isFlagExplosionAllowed = true;
-            field.getNeighborCells(cell, CellFilter.NONE, false).forEach(neighbor -> {
-                if (neighbor.isMined()) {
-                    destroyCell(neighbor.x, neighbor.y); // recursive call
-                }
-            });
-        } else {
-            cell.destroy();
-        }
-        flagManager.returnFlagToShop(cell);
-        field.applyNumbersToCellsNearMines();
-        checkVictory();
-    }
-
-    public void cleanUpAfterMineDestruction() {
-        if (!miniBombHitMine) return;
-        field.getAllCells(CellFilter.DESTROYED).forEach(cell -> {
-            if (cell.wasMinedBeforeDestruction()) {
-                openClosedNeighbors(cell);
-            }
+    public void revealMines() {
+        fieldDAO.getAllCells().forEach(cell -> {
+            if (cell.isMined()) cell.open();
         });
-        reapplyOpenedCellsVisuals();
-        miniBombHitMine = false;
     }
 
-    private void openClosedNeighbors(Cell cell) {
-        field.getNeighborCells(cell, CellFilter.CLOSED, false)
-                .forEach(closedNeighbor -> openCell(closedNeighbor.x, closedNeighbor.y));
+    public void reapplyOpenedCellsVisuals() {
+        if (game.isStopped()) return;
+        fieldDAO.getAllCells(CellFilter.OPEN).forEach(Cell::setGraphicsForOpenedState);
     }
 
     /*
@@ -285,10 +303,10 @@ public class BoardManager {
         }
 
         boolean[] success = new boolean[1];
-        field.getAllCells(CellFilter.NUMERABLE).forEach(cell -> {
+        fieldDAO.getAllCells(CellFilter.NUMERABLE).forEach(cell -> {
             if (!cell.isOpen()) return;
-            List<Cell> dangerousNeighbors = field.getNeighborCells(cell, CellFilter.DANGEROUS, false);
-            List<Cell> closedNeighbors = field.getNeighborCells(cell, CellFilter.CLOSED, false);
+            List<Cell> dangerousNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.DANGEROUS);
+            List<Cell> closedNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.CLOSED);
             if (dangerousNeighbors.size() == closedNeighbors.size()) {
                 dangerousNeighbors.forEach(dangerousNeighbor -> {
                     if (dangerousNeighbor.isFlagged()) return;
@@ -296,7 +314,7 @@ public class BoardManager {
                         Shop shop = game.getShop();
                         shop.sellFlag();
                     }
-                    flagManager.swapFlag(dangerousNeighbor.x, dangerousNeighbor.y);
+                    flagManager.swapFlag(dangerousNeighbor);
                     success[0] = true;
                 });
             }
@@ -313,24 +331,24 @@ public class BoardManager {
     public void autoOpen() {
         if (!Options.developerModeEnabled) return;
 
-        int closedCells = field.countAllCells(CellFilter.CLOSED);
+        int closedCells = fieldDAO.countAllCells(CellFilter.CLOSED);
         if (isFirstMove) {
-            List<Cell> allCells = field.getAllCells();
+            List<Cell> allCells = fieldDAO.getAllCells();
             Cell randomCell = allCells.get(game.getRandomNumber(allCells.size()));
             game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         } else {
-            for (Cell cell : field.getAllCells(CellFilter.NUMERABLE)) {
+            for (Cell cell : fieldDAO.getAllCells(CellFilter.NUMERABLE)) {
                 if (cell.isOpen()) game.onMouseRightClick(cell.x * 10, cell.y * 10);
             }
         }
-        PopUpMessage.show(field.countAllCells(CellFilter.CLOSED) == closedCells ? "DEV: CANNOT OPEN" : "DEV: AUTO OPEN");
+        PopUpMessage.show(fieldDAO.countAllCells(CellFilter.CLOSED) == closedCells ? "DEV: CANNOT OPEN" : "DEV: AUTO OPEN");
     }
 
     @DeveloperOption
     public void autoScan() {
         if (!Options.developerModeEnabled) return;
 
-        List<Cell> allCells = field.getAllCells(CellFilter.SAFE);
+        List<Cell> allCells = fieldDAO.getAllCells(CellFilter.SAFE);
         if (allCells.isEmpty()) return;
         Cell randomCell = allCells.get(game.getRandomNumber(allCells.size()));
         Shop shop = game.getShop();
@@ -344,7 +362,7 @@ public class BoardManager {
     public void autoSolve() {
         if (!Options.developerModeEnabled) return;
 
-        int closedCells = field.countAllCells(CellFilter.CLOSED);
+        int closedCells = fieldDAO.countAllCells(CellFilter.CLOSED);
         isUnableToCheatMore = false;
         int limit = 0;
         while (!isUnableToCheatMore) {
@@ -356,19 +374,32 @@ public class BoardManager {
             }
         }
         autoOpen();
-        PopUpMessage.show(field.countAllCells(CellFilter.CLOSED) == closedCells ? "DEV: CANNOT SOLVE!" : "DEV: SOLVING...");
+        PopUpMessage.show(fieldDAO.countAllCells(CellFilter.CLOSED) == closedCells ? "DEV: CANNOT SOLVE!" : "DEV: SOLVING...");
     }
 
-    public void reapplyOpenedCellsVisuals() {
-        if (game.isStopped()) return;
-        field.getAllCells(CellFilter.OPEN).forEach(Cell::setGraphicsForOpenedState);
+    /*
+     * Delegations
+     */
+
+    public Cell getCell(int x, int y) {
+        return fieldDAO.getCell(x, y);
     }
 
-    // Setters, getters
-
-    public Field getField() {
-        return field;
+    public Cell getCellByCoordinates(int x, int y) {
+        return fieldDAO.getCellByCoordinates(x, y);
     }
+
+    public int countAllCells(CellFilter filter) {
+        return fieldDAO.countAllCells(filter);
+    }
+
+    public void swapFlag(Cell cell) {
+        flagManager.swapFlag(cell);
+    }
+
+    /*
+     * Getters, setters
+     */
 
     public boolean isFlagExplosionAllowed() {
         return isFlagExplosionAllowed;
