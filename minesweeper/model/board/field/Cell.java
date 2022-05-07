@@ -10,11 +10,6 @@ import com.javarush.games.minesweeper.model.shop.item.Shovel;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Logical game element and a cell for drawing sprites inside.
- * Each tile is 10x10 pixels. Each tile can have a single sprite assigned to it that can be revealed.
- */
-
 public class Cell extends InteractiveObject {
     private static final Map<Integer, ImageType> sprites = new HashMap<>();
     private boolean isMined;
@@ -69,7 +64,7 @@ public class Cell extends InteractiveObject {
         else if (isShielded) setBackgroundColor(Color.YELLOW);
         else if (isScanned) setBackgroundColor(Theme.CELL_SCANNED.getColor());
         else if (isDestroyed) setBackgroundColor(Color.DARKSLATEGRAY);
-        else if (isCorrectlyFlagged()) setBackgroundColor(Color.GREEN);
+        else if (isFlagged) setBackgroundColor(Color.GREEN); // flagged cells get force-opened only when mines are revealed
         else setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
     }
 
@@ -103,18 +98,14 @@ public class Cell extends InteractiveObject {
     }
 
     public int produceMoney() {
+        if (countMinedNeighbors == 0) return 0;
+
         Shovel shovel = game.getShop().getShovel();
         if (shovel.isActivated()) {
-            makeSpriteYellow();
+            sprite.changeColor(Color.YELLOW, 1);
             return countMinedNeighbors * 2;
         } else {
             return countMinedNeighbors;
-        }
-    }
-
-    private void makeSpriteYellow() {
-        if (isNumerable() && countMinedNeighbors > 0) {
-            sprite.changeColor(Color.YELLOW, 1);
         }
     }
 
@@ -126,6 +117,12 @@ public class Cell extends InteractiveObject {
         return game.isStopped() || isFlagged || isOpen;
     }
 
+    public boolean cannotBeDestroyed() {
+        boolean isActivated = isOpen || isDestroyed;
+        boolean isUnableToDestroyFlag = isFlagged && !game.isFlagExplosionAllowed();
+        return game.isStopped() || isActivated || isUnableToDestroyFlag;
+    }
+
     public boolean isEmpty() {
         return (!isMined && countMinedNeighbors == 0);
     }
@@ -133,18 +130,6 @@ public class Cell extends InteractiveObject {
     public boolean isNumerable() {
         return !(isMined || isDestroyed || isFlagged || isShop);
     }
-
-    public boolean isIndestructible() {
-        boolean isActivated = isOpen || isDestroyed;
-        boolean isUnableToDestroyFlag = isFlagged && !game.isFlagExplosionAllowed();
-        return game.isStopped() || isActivated || isUnableToDestroyFlag;
-    }
-
-    private boolean isCorrectlyFlagged() {
-        return isFlagged() && !isDestroyed();
-    }
-
-
 
     /*
      * Getters

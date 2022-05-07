@@ -181,7 +181,7 @@ public class BoardManager {
      */
 
     public void destroyCell(Cell cell) {
-        if (cell.isIndestructible() && !isRecursiveMove) {
+        if (cell.cannotBeDestroyed() && !isRecursiveMove) {
             PopUpMessage.show("Не получилось!");
             return;
         }
@@ -261,9 +261,10 @@ public class BoardManager {
         if (!cell.isOpen() || cell.isEmpty() || cell.isMined()) return;
 
         int countMinedNeighbors = cell.getCountMinedNeighbors();
-        int countNeighborFlagsAndRevealedMines = fieldDAO.getNeighborCells(cell, CellFilter.SUSPECTED).size();
+        int countShieldedNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.SHIELDED).size();
+        int countFlaggedNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.FLAGGED).size();
 
-        if (countMinedNeighbors == countNeighborFlagsAndRevealedMines) {
+        if (countMinedNeighbors == countFlaggedNeighbors + countShieldedNeighbors) {
             List<Cell> allNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.NONE);
             allNeighbors.forEach(game::openCell);
         }
