@@ -256,13 +256,9 @@ public class BoardManager {
      * Other
      */
 
-    public void openSurroundingCells(int x, int y) {
+    public void openSurroundingCells(Cell cell) {
         if (game.isScannerOrBombActivated()) return;
-
-        Cell cell = getCell(x, y);
-        if (cell.isEmpty()) return;
-        if (!cell.isOpen()) return;
-        if (cell.isMined()) return;
+        if (!cell.isOpen() || cell.isEmpty() || cell.isMined()) return;
 
         int countMinedNeighbors = cell.getCountMinedNeighbors();
         int countNeighborFlagsAndRevealedMines = fieldDAO.getNeighborCells(cell, CellFilter.SUSPECTED).size();

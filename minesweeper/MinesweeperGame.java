@@ -149,7 +149,7 @@ public class MinesweeperGame extends Game {
     }
 
     public void openSurrounding(Cell cell) {
-        boardManager.openSurroundingCells(cell.x, cell.y);
+        boardManager.openSurroundingCells(cell);
     }
 
     public void swapFlag(Cell cell) {
