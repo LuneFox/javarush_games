@@ -3,12 +3,15 @@ package com.javarush.games.minesweeper.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
+import com.javarush.games.minesweeper.gui.Printer.Align;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
+
+import static com.javarush.engine.cell.Color.*;
 
 public class ViewRecords extends View {
 
@@ -45,27 +48,27 @@ public class ViewRecords extends View {
     private void drawPrizeCups() {
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
-                prizeCup.changeColor(Color.GOLD, 1);
-                prizeCup.changeColor(Color.YELLOW, 2);
+                prizeCup.changeColor(GOLD, 1);
+                prizeCup.changeColor(YELLOW, 2);
             } else if (i == 1) {
-                prizeCup.changeColor(Color.SILVER, 1);
-                prizeCup.changeColor(Color.WHITE, 2);
+                prizeCup.changeColor(SILVER, 1);
+                prizeCup.changeColor(WHITE, 2);
             } else {
-                prizeCup.changeColor(Color.DARKGOLDENROD, 1);
-                prizeCup.changeColor(Color.PALEGOLDENROD, 2);
+                prizeCup.changeColor(DARKGOLDENROD, 1);
+                prizeCup.changeColor(PALEGOLDENROD, 2);
             }
             prizeCup.draw(2, 18 + (30 * i));
         }
     }
 
     private void drawEntries() {
-        Color[] colors = new Color[]{Color.WHITE, Color.GOLD, Color.SILVER, Color.PALEGOLDENROD};
+        Color[] colors = new Color[]{WHITE, GOLD, SILVER, PALEGOLDENROD};
         Printer.print(RECORDS[1], colors[1], 19, 17);
-        Printer.print(RECORDS[2], colors[0], 94, 26, Printer.Align.RIGHT);
+        Printer.print(RECORDS[2], colors[0], 94, 26, Align.RIGHT);
         Printer.print(RECORDS[3], colors[2], 19, 47);
-        Printer.print(RECORDS[4], colors[0], 94, 56, Printer.Align.RIGHT);
+        Printer.print(RECORDS[4], colors[0], 94, 56, Align.RIGHT);
         Printer.print(RECORDS[5], colors[3], 19, 77);
-        Printer.print(RECORDS[6], colors[0], 94, 86, Printer.Align.RIGHT);
+        Printer.print(RECORDS[6], colors[0], 94, 86, Align.RIGHT);
         super.update();
     }
 }
