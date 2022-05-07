@@ -67,7 +67,7 @@ public class BoardManager {
     }
 
     /*
-     * Display
+     * Draw
      */
 
     public void draw() {
@@ -216,30 +216,8 @@ public class BoardManager {
     }
 
     /*
-     * Open surrounding cells automatically
-     */
-
-    public void openSurroundingCells(int x, int y) {
-        if (game.isScannerOrBombActivated()) return;
-
-        Cell cell = getCell(x, y);
-        if (cell.isEmpty()) return;
-        if (!cell.isOpen()) return;
-        if (cell.isMined()) return;
-
-        int countMinedNeighbors = cell.getCountMinedNeighbors();
-        int countNeighborFlagsAndRevealedMines = fieldDAO.getNeighborCells(cell, CellFilter.SUSPECTED).size();
-
-        if (countMinedNeighbors == countNeighborFlagsAndRevealedMines) {
-            List<Cell> allNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.NONE);
-            allNeighbors.forEach(game::openCell);
-        }
-    }
-
-    /*
      * Scan neighbors (scanner action)
      */
-
 
     public void scanNeighbors(Cell cell) {  // action for Scanner
         List<Cell> safeCells = fieldDAO.getCellsIn3x3area(cell, CellFilter.SAFE);
@@ -278,6 +256,23 @@ public class BoardManager {
      * Other
      */
 
+    public void openSurroundingCells(int x, int y) {
+        if (game.isScannerOrBombActivated()) return;
+
+        Cell cell = getCell(x, y);
+        if (cell.isEmpty()) return;
+        if (!cell.isOpen()) return;
+        if (cell.isMined()) return;
+
+        int countMinedNeighbors = cell.getCountMinedNeighbors();
+        int countNeighborFlagsAndRevealedMines = fieldDAO.getNeighborCells(cell, CellFilter.SUSPECTED).size();
+
+        if (countMinedNeighbors == countNeighborFlagsAndRevealedMines) {
+            List<Cell> allNeighbors = fieldDAO.getNeighborCells(cell, CellFilter.NONE);
+            allNeighbors.forEach(game::openCell);
+        }
+    }
+
     public void revealMines() {
         fieldDAO.getAllCells().forEach(cell -> {
             if (cell.isMined()) cell.open();
@@ -288,6 +283,7 @@ public class BoardManager {
         if (game.isStopped()) return;
         fieldDAO.getAllCells(CellFilter.OPEN).forEach(Cell::setGraphicsForOpenedState);
     }
+
 
     /*
      * Cheats

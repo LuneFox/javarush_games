@@ -16,7 +16,7 @@ public abstract class Button extends InteractiveObject {
     private static final int DEFAULT_HEIGHT = 9;
     private static final int DEFAULT_MARGIN = 3;
     private static final int DEFAULT_OFFSET = 2;
-    private static int pressAnimationCurrentFrame = PRESS_ANIMATION_FINISH_FRAME;
+    private static int pressAnimationCurrentFrame = PRESS_ANIMATION_FINISH_FRAME + 1;
 
     private final Image unpressedBody;
     private final Image pressedBody;
@@ -102,7 +102,7 @@ public abstract class Button extends InteractiveObject {
     }
 
     public static boolean isAnimationFinished() {
-        return pressAnimationCurrentFrame >= PRESS_ANIMATION_FINISH_FRAME;
+        return pressAnimationCurrentFrame > PRESS_ANIMATION_FINISH_FRAME;
     }
 
     public static void continueAnimation() {

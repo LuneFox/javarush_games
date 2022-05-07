@@ -36,6 +36,7 @@ public class Controller {
     }
 
     public final void leftClick(int x, int y) {
+        if (isInvalidInput(x, y)) return;
         game.setRecursiveMove(false);
         game.setFlagExplosionAllowed(false);
         selectStrategy(x, y);
@@ -43,12 +44,14 @@ public class Controller {
     }
 
     public final void rightClick(int x, int y) {
+        if (isInvalidInput(x, y)) return;
         game.setRecursiveMove(false);
         selectStrategy(x, y);
         strategy.rightClick(x, y);
     }
 
     public final void pressKey(Key key) {
+        if (isInvalidInput(0, 99)) return;
         selectStrategy(0, 99); // Key presses never miss the screen
         if (key == Key.UP) strategy.pressUp();
         else if (key == Key.DOWN) strategy.pressDown();
@@ -64,15 +67,11 @@ public class Controller {
     private void selectStrategy(int x, int y) {
         // System.out.printf("%d %d%n", x, y);
         lastClickY = y;
-
-        if (!Util.isWithinScreen(x, y)
-                || View.getGameOverShowDelay() > 0
-                || !Button.isAnimationFinished()) {
-            this.strategy = strategyMap.get(null);  // disable controls while waiting
-            return;
-        }
-
         this.strategy = strategyMap.get(Phase.getActive());
+    }
+
+    private boolean isInvalidInput(int x, int y) {
+        return !Button.isAnimationFinished() || !Util.isWithinScreen(x, y) || View.getGameOverShowDelay() > 0;
     }
 
     public static boolean clickedOnUpperHalf() {
