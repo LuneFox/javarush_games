@@ -76,18 +76,13 @@ public class SwitchSelector extends InteractiveObject {
     }
 
     private void printLabel() {
-        String label = selectLabel();
+        String label = (state == State.ON) ? labelOn : labelOff;
         Color textColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(label, textColor, (Display.SIZE - 2), (y + height + 1), Printer.Align.RIGHT);
     }
 
-    private String selectLabel() {
-        return state == State.ON ? labelOn : labelOff;
-    }
-
     public void onLeftClick() {
-        if (state == State.ON) state = State.OFF;
-        else state = State.ON;
+        state = (state == State.ON) ? State.OFF : State.ON;
     }
 
     public boolean isEnabled() {
