@@ -42,7 +42,7 @@ public abstract class InteractiveObject implements Drawable, Clickable {
         } else if (click == Click.RIGHT) {
             onRightClick();
         } else {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Invalid click type");
         }
     }
 

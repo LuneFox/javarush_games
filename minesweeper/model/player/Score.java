@@ -59,7 +59,9 @@ public class Score {
         this.diceScore += amount;
     }
 
-    // Common getters and setters
+    /*
+     * Plain getters and setters
+     */
 
     public int getTopScore() {
         return topScore;

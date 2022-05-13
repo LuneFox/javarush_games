@@ -27,7 +27,7 @@ public class Options {
         difficultySelector = new DifficultySelector(49, 14);
         autoBuyFlagsSelector = new SwitchSelector(85, 32, "вручную", "авто");
         timerEnabledSelector = new SwitchSelector(85, 50, "нет", "да");
-        displayMessageSelector = new SwitchSelector(85, 69, "скрывать", "показывать", true);
+        displayMessageSelector = new SwitchSelector(85, 69, "скрывать", "показывать", SwitchSelector.State.ON);
         themeSelector = new ThemeSelector(51, 87);
     }
 

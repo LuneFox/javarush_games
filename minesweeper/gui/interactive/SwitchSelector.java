@@ -14,43 +14,56 @@ import com.javarush.games.minesweeper.model.InteractiveObject;
  */
 
 public class SwitchSelector extends InteractiveObject {
-    private boolean enabled;
+    private State state;
     private final Image rail;
     private final Image handle;
     private final int leftStopper;
     private final int rightStopper;
-    private final String textOff;
-    private final String textOn;
+    private final String labelOff;
+    private final String labelOn;
 
-    public SwitchSelector(int x, int y, String textOff, String textOn) {
-        super(x, y);
-        this.rail = new Image(ImageType.GUI_SWITCH_RAIL, x, y + 2);
-        this.handle = new Image(ImageType.GUI_SWITCH_HANDLE, x, y);
-        this.width = rail.width;
-        this.height = handle.height;
-        this.leftStopper = x;
-        this.rightStopper = x + rail.width - handle.width;
-        this.textOff = textOff;
-        this.textOn = textOn;
+    public enum State {
+        ON, OFF
     }
 
-    public SwitchSelector(int x, int y, String textOff, String textOn, boolean isEnabled) {
-        this(x, y, textOff, textOn);
-        this.enabled = isEnabled;
-        handle.setPosition(enabled ? rightStopper : x, y);
+    public SwitchSelector(int x, int y, String labelOff, String labelOn) {
+        super(x, y);
+
+        this.rail = new Image(ImageType.GUI_SWITCH_RAIL, x, y + 2);
+        this.handle = new Image(ImageType.GUI_SWITCH_HANDLE, x, y);
+
+        this.width = rail.width;
+        this.height = handle.height;
+
+        this.leftStopper = x;
+        this.rightStopper = x + rail.width - handle.width;
+
+        this.labelOff = labelOff;
+        this.labelOn = labelOn;
+
+        this.state = State.OFF;
+    }
+
+    public SwitchSelector(int x, int y, String labelOff, String labelOn, State state) {
+        this(x, y, labelOff, labelOn);
+        this.state = state;
+
+        if (state == State.ON) {
+            handle.setPosition(rightStopper, y);
+        }
     }
 
     @Override
     public void draw() {
         moveHandle();
         drawSwitch();
-        printHelpText();
+        printLabel();
     }
 
     private void moveHandle() {
-        if (enabled && handle.x < rightStopper) {
+        if (state == State.ON && handle.x < rightStopper) {
             handle.x++;
-        } else if (!enabled && handle.x > leftStopper) {
+        } else if (state == State.OFF && handle.x > leftStopper) {
             handle.x--;
         }
     }
@@ -58,20 +71,26 @@ public class SwitchSelector extends InteractiveObject {
     private void drawSwitch() {
         rail.draw();
         final int HANDLE_BODY_COLOR = 1;
-        handle.changeColor(enabled ? Color.GREEN : Color.RED, HANDLE_BODY_COLOR);
+        handle.changeColor(state == State.ON ? Color.GREEN : Color.RED, HANDLE_BODY_COLOR);
         handle.draw();
     }
 
-    private void printHelpText() {
-        Color helpColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
-        Printer.print(enabled ? textOn : textOff, helpColor, Display.SIZE - 2, y + height + 1, Printer.Align.RIGHT);
+    private void printLabel() {
+        String label = selectLabel();
+        Color textColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
+        Printer.print(label, textColor, (Display.SIZE - 2), (y + height + 1), Printer.Align.RIGHT);
+    }
+
+    private String selectLabel() {
+        return state == State.ON ? labelOn : labelOff;
     }
 
     public void onLeftClick() {
-        enabled = !enabled;
+        if (state == State.ON) state = State.OFF;
+        else state = State.ON;
     }
 
     public boolean isEnabled() {
-        return enabled;
+        return state == State.ON;
     }
 }
