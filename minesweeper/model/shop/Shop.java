@@ -82,7 +82,6 @@ public class Shop {
 
     public void give(ShopItem item) {
         if (item.getInStock() > 0) {
-            System.out.println("giving item = " + item);
             item.removeFromStock();
             game.getPlayer().gainItem(item);
         }

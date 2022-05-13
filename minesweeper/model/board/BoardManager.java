@@ -299,9 +299,10 @@ public class BoardManager {
     }
 
     public void revealMines() {
-        fieldDAO.getAllCells().forEach(cell -> {
-            if (cell.isMined()) cell.open();
-        });
+        fieldDAO.getAllCells()
+                .stream()
+                .filter(Cell::isMined)
+                .forEach(Cell::open);
     }
 
     public void refreshOpenedCellsGraphics() {
