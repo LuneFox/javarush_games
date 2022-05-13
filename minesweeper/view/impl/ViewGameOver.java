@@ -71,7 +71,7 @@ public class ViewGameOver extends View {
         Image face = game.isResultVictory() ? happyFace : sadFace;
         face.draw(Image.CENTER, Image.CENTER);
         Printer.print(Results.get("result"), Theme.LABEL.getColor(), 18, 33);
-        Printer.print("счёт: " + Results.get("total"), Options.developerModeEnabled ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
+        Printer.print("счёт: " + Results.get("total"), Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
     }
 
     private boolean waitForDelay() {

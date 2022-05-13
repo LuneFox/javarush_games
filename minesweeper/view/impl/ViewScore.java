@@ -92,7 +92,7 @@ public class ViewScore extends View {
                 PADDING_TOP);
 
         Printer.print(rightText,
-                Options.developerModeEnabled ? Color.RED : Color.LIGHTGOLDENRODYELLOW,
+                Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW,
                 PADDING_RIGHT,
                 PADDING_TOP,
                 Printer.Align.RIGHT);

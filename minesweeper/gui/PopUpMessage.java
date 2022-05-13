@@ -55,7 +55,7 @@ public class PopUpMessage extends InteractiveObject {
 
     @Override
     public void draw() {
-        if (!Options.displayMessageSelector.isEnabled()) return;
+        if (!Options.getDisplayMessageSelector().isEnabled()) return;
         slide();
         drawPanel();
         printMessage();

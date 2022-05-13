@@ -5,23 +5,24 @@ import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
 
 public class Options {
-    public static final String[] DIFFICULTY_NAMES = new String[]{
+    private static final String[] DIFFICULTY_NAMES = new String[]{
             "хомячок", "новичок", "любитель",
             "опытный", "эксперт", "отчаянный",
             "безумец", "бессмертный", "чак норрис"
     };
+
     public static final String OPTIONS_SAVED = "Сохранено";
 
-    public static int difficulty;
-    public static boolean timerEnabled;
-    public static boolean developerModeEnabled;
-    public static int developerModeCounter;
+    private static int difficulty;
+    private static boolean timerEnabled;
+    private static boolean developerModeEnabled;
+    private static int developerModeCounter;
 
-    public static final DifficultySelector difficultySelector;
-    public static final SwitchSelector autoBuyFlagsSelector;
-    public static final SwitchSelector timerEnabledSelector;
-    public static final SwitchSelector displayMessageSelector;
-    public static final ThemeSelector themeSelector;
+    private static final DifficultySelector difficultySelector;
+    private static final SwitchSelector autoBuyFlagsSelector;
+    private static final SwitchSelector timerEnabledSelector;
+    private static final SwitchSelector displayMessageSelector;
+    private static final ThemeSelector themeSelector;
 
     static {
         difficultySelector = new DifficultySelector(49, 14);
@@ -34,5 +35,53 @@ public class Options {
     public static void apply() {
         timerEnabled = timerEnabledSelector.isEnabled();
         difficulty = difficultySelector.getDifficultySetting();
+    }
+
+    public static String getDifficultyName(int relativeDifficulty) {
+        return DIFFICULTY_NAMES[(relativeDifficulty / 5) - 1];
+    }
+
+    public static int getDifficulty() {
+        return difficulty;
+    }
+
+    public static boolean isTimerEnabled() {
+        return timerEnabled;
+    }
+
+    public static boolean isDeveloperModeEnabled() {
+        return developerModeEnabled;
+    }
+
+    public static void setDeveloperModeEnabled(boolean developerModeEnabled) {
+        Options.developerModeEnabled = developerModeEnabled;
+    }
+
+    public static int getDeveloperModeCounter() {
+        return developerModeCounter;
+    }
+
+    public static void setDeveloperModeCounter(int developerModeCounter) {
+        Options.developerModeCounter = developerModeCounter;
+    }
+
+    public static DifficultySelector getDifficultySelector() {
+        return difficultySelector;
+    }
+
+    public static SwitchSelector getAutoBuyFlagsSelector() {
+        return autoBuyFlagsSelector;
+    }
+
+    public static SwitchSelector getTimerEnabledSelector() {
+        return timerEnabledSelector;
+    }
+
+    public static SwitchSelector getDisplayMessageSelector() {
+        return displayMessageSelector;
+    }
+
+    public static ThemeSelector getThemeSelector() {
+        return themeSelector;
     }
 }

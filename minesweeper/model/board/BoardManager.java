@@ -49,7 +49,7 @@ public class BoardManager {
     }
 
     private void plantMines() {
-        double numberOfMinesToPlant = (Options.difficulty / 1.5);
+        double numberOfMinesToPlant = (Options.getDifficulty() / 1.5);
         while (fieldDao.getAllCells(Cell::isMined).size() < numberOfMinesToPlant) {
             int randomX = game.getRandomNumber(10);
             int randomY = game.getRandomNumber(10);
@@ -335,7 +335,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoFlag() {
-        if (!Options.developerModeEnabled) return;
+        if (!Options.isDeveloperModeEnabled()) return;
 
         forceEnableAutoBuyFlags();
 
@@ -369,7 +369,7 @@ public class BoardManager {
     }
 
     private void forceEnableAutoBuyFlags() {
-        SwitchSelector selector = Options.autoBuyFlagsSelector;
+        SwitchSelector selector = Options.getAutoBuyFlagsSelector();
         if (!selector.isEnabled()) {
             selector.click(selector.x, selector.y); // click self
         }
@@ -386,7 +386,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoOpen() {
-        if (!Options.developerModeEnabled) return;
+        if (!Options.isDeveloperModeEnabled()) return;
 
         long closedCells = fieldDao.getAllCells(Cell::isClosed).size();
 
@@ -405,7 +405,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoScan() {
-        if (!Options.developerModeEnabled) return;
+        if (!Options.isDeveloperModeEnabled()) return;
 
         List<Cell> safeCells = fieldDao.getAllCells(Cell::isSafeToOpen);
         if (safeCells.isEmpty()) return;
@@ -420,7 +420,7 @@ public class BoardManager {
 
     @DeveloperOption
     public void autoSolve() {
-        if (!Options.developerModeEnabled) return;
+        if (!Options.isDeveloperModeEnabled()) return;
 
         long closedCells = fieldDao.getAllCells(Cell::isClosed).size();
         stopAutoSolve = false;

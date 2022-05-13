@@ -66,7 +66,7 @@ public class Dice extends ShopItem {
     }
 
     private void registerResult() {
-        game.getPlayer().getScore().addDiceScore(Options.difficulty * rollResult);
+        game.getPlayer().getScore().addDiceScore(Options.getDifficulty() * rollResult);
         rollsCount++;
         rollsSum += rollResult;
     }

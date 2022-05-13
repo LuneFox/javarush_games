@@ -49,7 +49,7 @@ public class Inventory {
 
     @DeveloperOption
     void cheatMoney() {
-        if (!Options.developerModeEnabled) return;
+        if (!Options.isDeveloperModeEnabled()) return;
         money = 99;
         PopUpMessage.show("DEV: 99 GOLD");
     }

@@ -15,7 +15,7 @@ public class Scanner extends ShopItem {
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SCANNER);
         name = "Сканер";
         description = getScannerDescription();
-        cost = 8 + Options.difficulty / 5;
+        cost = 8 + Options.getDifficulty() / 5;
         inStock = 1;
         int framePadding = -9;
         frame = new AimFrame(game.getCell(4, 4), framePadding, ImageType.BOARD_SCANNER_FRAME);

@@ -27,12 +27,12 @@ public class Score {
         int totalScore = getTotalScore();
         if (totalScore <= topScore) return;
         setTopScore(totalScore);
-        player.setTitle(Options.DIFFICULTY_NAMES[Options.difficulty / 5 - 1]);
+        player.setTitle(Options.getDifficultyName(Options.getDifficulty()));
         PopUpMessage.show("Новый рекорд!");
     }
 
     public int getCurrentScore() {
-        int score = game.getAllCells(Cell::isScored).size() * Options.difficulty;
+        int score = game.getAllCells(Cell::isScored).size() * Options.getDifficulty();
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
@@ -42,13 +42,13 @@ public class Score {
 
     public int getMoneyScore() {
         if (!game.isResultVictory()) return 0;
-        return game.getPlayer().getMoneyBalance() * Options.difficulty;
+        return game.getPlayer().getMoneyBalance() * Options.getDifficulty();
     }
 
     public int getMinesScore() {
         if (!game.isResultVictory()) return 0;
         int minesCount = game.getAllCells(Cell::isMined).size();
-        return minesCount * 20 * Options.difficulty;
+        return minesCount * 20 * Options.getDifficulty();
     }
 
     public void addTimerScore() {

@@ -30,7 +30,7 @@ public class Timer extends InteractiveObject {
     }
 
     public void draw() {
-        if (!Options.timerEnabled) return;
+        if (!Options.isTimerEnabled()) return;
         if (game.isStopped()) return;
         if (game.isFirstMove()) return;
 
@@ -56,9 +56,9 @@ public class Timer extends InteractiveObject {
     }
 
     private void countDown() {
-        if (!Options.timerEnabled) return;
+        if (!Options.isTimerEnabled()) return;
         if (getTime() - lastTickTime < 1000) return;
-        time = (time > 0) ? time - Options.difficulty : 0;
+        time = (time > 0) ? time - Options.getDifficulty() : 0;
         swapColor();
         lastTickTime = getTime();
     }
@@ -70,18 +70,18 @@ public class Timer extends InteractiveObject {
     }
 
     public void reset() {
-        if (Options.timerEnabled) {
+        if (Options.isTimerEnabled()) {
             time = TIME_LIMIT;
             lastTickTime = getTime();
         }
     }
 
     public boolean timeIsUp() {
-        return (Options.timerEnabled && time <= 0);
+        return (Options.isTimerEnabled() && time <= 0);
     }
 
     public int getScoreBonus() {
-        return (Options.timerEnabled) ? ((int) (time / 50) * (Options.difficulty / 5)) : 0;
+        return (Options.isTimerEnabled()) ? ((int) (time / 50) * (Options.getDifficulty() / 5)) : 0;
     }
 
     private long getTime() {

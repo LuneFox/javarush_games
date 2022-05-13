@@ -8,12 +8,12 @@ import com.javarush.games.minesweeper.model.Phase;
 public class ControlOptions implements ControlStrategy {
     @Override
     public void pressRight() {
-        Options.difficultySelector.difficultyUp();
+        Options.getDifficultySelector().difficultyUp();
     }
 
     @Override
     public void pressLeft() {
-        Options.difficultySelector.difficultyDown();
+        Options.getDifficultySelector().difficultyDown();
     }
 
     @Override

@@ -106,7 +106,7 @@ public class Shop {
     }
 
     public void offerFlag() {
-        if (!Options.autoBuyFlagsSelector.isEnabled() && flag.getInStock() > 0) {
+        if (!Options.getAutoBuyFlagsSelector().isEnabled() && flag.getInStock() > 0) {
             PopUpMessage.show("Купите флажок!");
             Phase.setActive(Phase.SHOP);
             return;
@@ -148,7 +148,7 @@ public class Shop {
 
     @DeveloperOption
     public void cheatMoreTools() {
-        if (!Options.developerModeEnabled) return;
+        if (!Options.isDeveloperModeEnabled()) return;
         shovel.cheat99();
         dice.cheat99();
         PopUpMessage.show("DEV: 99 TOOLS");

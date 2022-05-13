@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.player.Score;
 
 public class Shield extends ShopItem {
-    private final int difficultyModifier = Options.difficulty / 5;
+    private final int difficultyModifier = Options.getDifficulty() / 5;
 
     public Shield(MinesweeperGame game) {
         super(game);

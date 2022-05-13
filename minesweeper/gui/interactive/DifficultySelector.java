@@ -21,17 +21,20 @@ public class DifficultySelector extends InteractiveObject {
 
     public DifficultySelector(int x, int y) {
         super(x, y);
+
         this.width = DEFAULT_WIDTH;
         difficultyDownArrow = Arrow.createLeftArrow(x, y);
         difficultyUpArrow = Arrow.createRightArrow(x + width - difficultyDownArrow.width, y);
-        difficultySetting = DEFAULT_DIFFICULTY_SETTING;
         this.height = difficultyDownArrow.height;
+
+        difficultySetting = DEFAULT_DIFFICULTY_SETTING;
         createBars();
     }
 
     private void createBars() {
         for (int i = 0; i < bars.length; i++) {
-            Image bar = new Image(ImageType.GUI_DIFFICULTY_BAR, getBarHorizontalPosition(i), this.y);
+            int x = getBarHorizontalPosition(i);
+            Image bar = new Image(ImageType.GUI_DIFFICULTY_BAR, x, this.y);
             bar.setUnableToReloadColors(true);
 
             if (i > 6) {
@@ -69,7 +72,7 @@ public class DifficultySelector extends InteractiveObject {
     }
 
     private void printDifficultyName() {
-        String difficultyName = Options.DIFFICULTY_NAMES[(difficultySetting / 5) - 1];
+        String difficultyName = Options.getDifficultyName(this.difficultySetting);
         Color nameColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(difficultyName, nameColor, x + width, y + height + 1, Printer.Align.RIGHT);
     }

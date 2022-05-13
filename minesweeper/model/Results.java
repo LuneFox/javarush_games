@@ -40,33 +40,33 @@ public class Results {
 
     private static String getCellScoreInfo() {
         long countCells = game.getAllCells(Cell::isScored).size();
-        return countCells + "*" + Options.difficulty + " = " +
-                countCells * Options.difficulty;
+        return countCells + "*" + Options.getDifficulty() + " = " +
+                countCells * Options.getDifficulty();
     }
 
     private static String getMinesScoreInfo() {
         if (!game.isResultVictory()) return "не учтено";
         long countMines = game.getAllCells(Cell::isMined).size();
-        return countMines + "*" + 20 * Options.difficulty + " = " +
-                countMines * 20 * Options.difficulty;
+        return countMines + "*" + 20 * Options.getDifficulty() + " = " +
+                countMines * 20 * Options.getDifficulty();
     }
 
     private static String getDiceScoreInfo() {
-        return getDice().getAverageLuck() + " * " + getDice().getRollsCount() + " * " + Options.difficulty + " = " +
+        return getDice().getAverageLuck() + " * " + getDice().getRollsCount() + " * " + Options.getDifficulty() + " = " +
                 getDiceScore();
     }
 
     private static String getMoneyScoreInfo() {
         if (!game.isResultVictory()) return "не учтено";
         final int money = game.getPlayer().getMoneyBalance();
-        return money + "*" + Options.difficulty + " = " +
-                money * Options.difficulty;
+        return money + "*" + Options.getDifficulty() + " = " +
+                money * Options.getDifficulty();
     }
 
     private static String getShieldsScoreInfo() {
         int count = game.getPlayer().getBrokenShields();
         if (count == 0) return "0";
-        return count + "*-" + (150 * (Options.difficulty / 5)) + " = " +
+        return count + "*-" + (150 * (Options.getDifficulty() / 5)) + " = " +
                 game.getScore().getLostScore();
     }
 
@@ -87,7 +87,7 @@ public class Results {
     }
 
     private static String getDifficulty() {
-        return Integer.toString(Options.difficulty);
+        return Integer.toString(Options.getDifficulty());
     }
 
     private static Dice getDice() {

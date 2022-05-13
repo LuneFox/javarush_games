@@ -15,7 +15,7 @@ public class Bomb extends ShopItem {
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB);
         name = "Мини-бомба";
         description = getBombDescription();
-        cost = 6 + Options.difficulty / 10;
+        cost = 6 + Options.getDifficulty() / 10;
         inStock = 1;
         int framePadding = -3;
         frame = new AimFrame(game.getCell(4, 4), framePadding, ImageType.BOARD_BOMB_FRAME);
