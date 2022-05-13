@@ -59,7 +59,7 @@ public class Display extends InteractiveObject {
         interlacePhase = !interlacePhase;
     }
 
-    public void setCellColor(int x, int y, Color color) {
+    public void drawPixel(int x, int y, Color color) {
         if (Util.isWithinScreen(x, y)) {
             this.matrix[y][x].cellColor = color;
         }

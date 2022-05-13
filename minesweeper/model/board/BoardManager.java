@@ -48,7 +48,7 @@ public class BoardManager {
     }
 
     private void plantMines() {
-        double numberOfMinesToPlant = Options.difficulty / 1.5;
+        double numberOfMinesToPlant = (Options.difficulty / 1.5);
         while (fieldDAO.countAllCells(CellFilter.MINED) < numberOfMinesToPlant) {
             int randomX = game.getRandomNumber(10);
             int randomY = game.getRandomNumber(10);
@@ -84,7 +84,7 @@ public class BoardManager {
      * Interaction
      */
 
-    public void interactLeft(int x, int y) {
+    public void interactWithLeftClick(int x, int y) {
         Cell cell = fieldDAO.getCellByCoordinates(x, y);
         if (cell.isShop()) {
             Phase.setActive(Phase.SHOP);
@@ -99,7 +99,7 @@ public class BoardManager {
         openCell(cell);
     }
 
-    public void interactRight(int x, int y) {
+    public void interactWithRightClick(int x, int y) {
         Cell cell = fieldDAO.getCellByCoordinates(x, y);
         if (cell.isShop()) {
             PopUpMessage.show("двери магазина");
@@ -239,7 +239,7 @@ public class BoardManager {
                 .filter(Cell::wasMinedBeforeDestruction)
                 .map(cell -> fieldDAO.getNeighborCells(cell, CellFilter.CLOSED))
                 .forEach(closedNeighbors -> closedNeighbors.forEach(this::openCell));
-        reapplyOpenedCellsVisuals();
+        refreshOpenedCellsGraphics();
         miniBombHitMine = false;
     }
 
@@ -304,7 +304,7 @@ public class BoardManager {
         });
     }
 
-    public void reapplyOpenedCellsVisuals() {
+    public void refreshOpenedCellsGraphics() {
         if (game.isStopped()) return;
         fieldDAO.getAllCells(CellFilter.OPEN).forEach(Cell::setGraphicsForOpenedState);
     }

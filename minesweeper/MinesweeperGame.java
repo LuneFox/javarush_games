@@ -112,44 +112,20 @@ public class MinesweeperGame extends Game {
      * Facade
      */
 
-    public void setInterlacedEffect(boolean enabled) {
-        display.setInterlaceEnabled(enabled);
-    }
-
-    public void drawPixel(int x, int y, Color color) {
-        display.setCellColor(x, y, color);
-    }
-
-    public void drawGameBoard() {
-        boardManager.draw();
-    }
-
     public void leftClickOnBoard(int x, int y) {
-        boardManager.interactLeft(x, y);
-        checkExpiredItems();
+        boardManager.interactWithLeftClick(x, y);
+        shop.checkExpiredItems();
     }
 
     public void rightClickOnBoard(int x, int y) {
-        boardManager.interactRight(x, y);
-        checkExpiredItems();
-    }
-
-    public Cell getCell(int x, int y) {
-        return boardManager.getCell(x, y);
-    }
-
-    public int countCells(CellFilter filter) {
-        return boardManager.countAllCells(filter);
+        boardManager.interactWithRightClick(x, y);
+        shop.checkExpiredItems();
     }
 
     public void aimWithScannerOrBomb(Cell cell) {
         if (isStopped()) return;
         shop.aimWithScanner(cell);
         shop.aimWithBomb(cell);
-    }
-
-    public void scanNeighbors(Cell cell) {
-        boardManager.scanNeighbors(cell);
     }
 
     public void destroyCell(Cell cell) {
@@ -163,12 +139,33 @@ public class MinesweeperGame extends Game {
         return scanner.isActivated() || bomb.isActivated();
     }
 
-    public void checkExpiredItems() {
-        shop.checkExpiredItems();
+    /*
+     * Method shortcuts
+     */
+
+    public Cell getCell(int x, int y) {
+        return boardManager.getCell(x, y);
     }
 
-    public int countPlayerFlags() {
-        return player.countFlags();
+    public int countAllCells(CellFilter filter) {
+        return boardManager.countAllCells(filter);
+    }
+
+    public void refreshOpenedCellsGraphics() {
+        boardManager.refreshOpenedCellsGraphics();
+    }
+
+    public void scanNeighbors(Cell cell) {
+        boardManager.scanNeighbors(cell);
+    }
+
+    public void drawGameBoard() {
+        boardManager.draw();
+    }
+
+    @DeveloperOption
+    public void autoSolve() {
+        boardManager.autoSolve();
     }
 
     @DeveloperOption
@@ -186,38 +183,13 @@ public class MinesweeperGame extends Game {
         boardManager.autoScan();
     }
 
-    @DeveloperOption
-    public void autoSolve() {
-        boardManager.autoSolve();
+    public int countPlayerFlags() {
+        return player.countFlags();
     }
 
-    public boolean isFirstMove() {
-        return boardManager.isFirstMove();
-    }
-
-    public boolean isRecursiveMove() {
-        return boardManager.isRecursiveMove();
-    }
-
-    public void setRecursiveMove(boolean enable) {
-        boardManager.setRecursiveMove(enable);
-    }
-
-    public boolean isFlagExplosionAllowed() {
-        return boardManager.isFlagExplosionAllowed();
-    }
-
-    public void setFlagExplosionAllowed(boolean enable) {
-        boardManager.setFlagExplosionAllowed(enable);
-    }
-
-    public void applyThemeChangeToOpenedCells() {
-        boardManager.reapplyOpenedCellsVisuals();
-    }
-
-    public Timer getTimer() {
-        return boardManager.getTimer();
-    }
+    /*
+     * Plain getters
+     */
 
     public Shop getShop() {
         return shop;
@@ -233,6 +205,42 @@ public class MinesweeperGame extends Game {
 
     public boolean isResultVictory() {
         return isResultVictory;
+    }
+
+    public Timer getTimer() {
+        return boardManager.getTimer();
+    }
+
+    public boolean isRecursiveMove() {
+        return boardManager.isRecursiveMove();
+    }
+
+    public boolean isFlagExplosionAllowed() {
+        return boardManager.isFlagExplosionAllowed();
+    }
+
+    public boolean isFirstMove() {
+        return boardManager.isFirstMove();
+    }
+
+    /*
+     * Plain setters
+     */
+
+    public void setRecursiveMove(boolean enable) {
+        boardManager.setRecursiveMove(enable);
+    }
+
+    public void setFlagExplosionAllowed(boolean enable) {
+        boardManager.setFlagExplosionAllowed(enable);
+    }
+
+    public void setInterlacedEffect(boolean enabled) {
+        display.setInterlaceEnabled(enabled);
+    }
+
+    public void drawPixel(int x, int y, Color color) {
+        display.drawPixel(x, y, color);
     }
 
 

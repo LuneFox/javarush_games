@@ -82,7 +82,7 @@ public class ViewShop extends View {
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
-        Printer.print("" + game.countCells(CellFilter.DANGEROUS), 25, 12);
+        Printer.print("" + game.countAllCells(CellFilter.DANGEROUS), 25, 12);
         Printer.print("" + player.countFlags(), 52, 12);
         Printer.print("" + shiftDisplayedMoney(), 76 + moneyShakeHelper.getShift(), 12);
     }

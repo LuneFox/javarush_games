@@ -12,7 +12,7 @@ public class Flag extends ShopItem {
         name = "Флажок";
         description = getFlagDescription();
         cost = 1;
-        inStock = game.countCells(CellFilter.MINED);
+        inStock = game.countAllCells(CellFilter.MINED);
     }
 
     @Override

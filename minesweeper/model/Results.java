@@ -41,14 +41,14 @@ public class Results {
     }
 
     private static String getCellScoreInfo() {
-        int countCells = game.countCells(CellFilter.SCORED);
+        int countCells = game.countAllCells(CellFilter.SCORED);
         return countCells + "*" + Options.difficulty + " = " +
                 countCells * Options.difficulty;
     }
 
     private static String getMinesScoreInfo() {
         if (!game.isResultVictory()) return "не учтено";
-        int countMines = game.countCells(CellFilter.MINED);
+        int countMines = game.countAllCells(CellFilter.MINED);
         return countMines + "*" + 20 * Options.difficulty + " = " +
                 countMines * 20 * Options.difficulty;
     }
@@ -101,7 +101,7 @@ public class Results {
     }
 
     private static Score getScore() {
-        return getPlayer().getScore();
+        return game.getPlayer().getScore();
     }
 
     public static void setGame(MinesweeperGame game) {
