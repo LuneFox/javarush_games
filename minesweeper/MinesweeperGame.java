@@ -12,13 +12,15 @@ import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.Results;
 import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.board.field.Cell;
-import com.javarush.games.minesweeper.model.board.field.CellFilter;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.items.Bomb;
 import com.javarush.games.minesweeper.model.shop.items.Scanner;
 import com.javarush.games.minesweeper.view.View;
+
+import java.util.List;
+import java.util.function.Predicate;
 
 /**
  * Main game class. Part of the model.
@@ -89,14 +91,14 @@ public class MinesweeperGame extends Game {
     }
 
     public void win() {
-        player.getScore().registerTopScore();
         finish(true);
+        player.getScore().registerTopScore();
     }
 
     public void lose() {
+        finish(false);
         shop.getDice().hide();
         boardManager.revealMines();
-        finish(false);
     }
 
     private void finish(boolean isVictory) {
@@ -146,10 +148,6 @@ public class MinesweeperGame extends Game {
         return boardManager.getCell(x, y);
     }
 
-    public int countAllCells(CellFilter filter) {
-        return boardManager.countAllCells(filter);
-    }
-
     public void refreshOpenedCellsGraphics() {
         boardManager.refreshOpenedCellsGraphics();
     }
@@ -190,15 +188,23 @@ public class MinesweeperGame extends Game {
      * Plain getters
      */
 
+    public List<Cell> getAllCells(Predicate<Cell> predicate) {
+        return boardManager.getAllCells(predicate);
+    }
+
     public Shop getShop() {
         return shop;
+    }
+
+    public boolean shovelIsActivated() {
+        return shop.getShovel().isActivated();
     }
 
     public Player getPlayer() {
         return player;
     }
 
-    public Score getScore(){
+    public Score getScore() {
         return player.getScore();
     }
 
