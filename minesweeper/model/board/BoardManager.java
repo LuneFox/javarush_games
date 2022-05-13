@@ -22,7 +22,7 @@ public class BoardManager {
     private final FlagManager flagManager;
     private final Timer timer;
 
-    private boolean isUnableToCheatMore;
+    private boolean stopAutoSolve;
     private boolean isFlagExplosionAllowed;
     private boolean isFirstMove;
     private boolean isRecursiveMove;
@@ -337,10 +337,7 @@ public class BoardManager {
     public void autoFlag() {
         if (!Options.developerModeEnabled) return;
 
-        SwitchSelector selector = Options.autoBuyFlagsSelector;
-        if (!selector.isEnabled()) {
-            selector.click(selector.x, selector.y); // click self
-        }
+        forceEnableAutoBuyFlags();
 
         boolean[] success = new boolean[1];
 
@@ -354,22 +351,34 @@ public class BoardManager {
                 dangerousNeighbors.stream()
                         .filter(Cell::isNotFlagged)
                         .forEach(dangerousNeighbor -> {
-                            if (dangerousNeighbor.isFlagged()) return;
-
-                            if (game.getPlayer().countFlags() == 0) {
-                                Shop shop = game.getShop();
-                                shop.sellFlag();
-                            }
-
+                            buyFlagIfAbsent();
                             flagManager.swapFlag(dangerousNeighbor);
                             success[0] = true;
                         });
             }
         });
 
+        showAutoFlagResult(success);
+    }
+
+    private void buyFlagIfAbsent() {
+        if (game.getPlayer().countFlags() == 0) {
+            Shop shop = game.getShop();
+            shop.sellFlag();
+        }
+    }
+
+    private void forceEnableAutoBuyFlags() {
+        SwitchSelector selector = Options.autoBuyFlagsSelector;
+        if (!selector.isEnabled()) {
+            selector.click(selector.x, selector.y); // click self
+        }
+    }
+
+    private void showAutoFlagResult(boolean[] success) {
         if (!success[0]) {
+            stopAutoSolve = true;
             PopUpMessage.show("DEV: CANNOT FLAG");
-            isUnableToCheatMore = true;
         } else {
             PopUpMessage.show("DEV: AUTO FLAG");
         }
@@ -402,10 +411,10 @@ public class BoardManager {
         if (safeCells.isEmpty()) return;
 
         Cell randomCell = safeCells.get(game.getRandomNumber(safeCells.size()));
-        Shop shop = game.getShop();
-        shop.getScanner().activate();
+        game.getShop().getScanner().activate();
         game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
         game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
+
         PopUpMessage.show("DEV: RANDOM SCAN");
     }
 
@@ -414,17 +423,16 @@ public class BoardManager {
         if (!Options.developerModeEnabled) return;
 
         long closedCells = fieldDao.getAllCells(Cell::isClosed).size();
-        isUnableToCheatMore = false;
+        stopAutoSolve = false;
         int limit = 0;
-        while (!isUnableToCheatMore) {
+
+        while (!stopAutoSolve) {
             autoOpen();
             autoFlag();
-            if (limit++ > closedCells) {
-                // Limit is set to prevent accidental infinite loops
-                break;
-            }
+            if (limit++ > closedCells) break; // Limit is set to prevent accidental infinite loops
         }
         autoOpen();
+
         PopUpMessage.show(fieldDao.getAllCells(Cell::isClosed).size() == closedCells ? "DEV: CANNOT SOLVE!" : "DEV: SOLVING...");
     }
 

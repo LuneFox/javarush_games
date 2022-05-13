@@ -22,6 +22,7 @@ public class FlagManager {
 
     void returnFlagToShop(Cell cell) {
         if (!cell.isFlagged()) return;
+
         game.getShop().getFlag().putToStock();
         cell.setFlagged(false);
     }
@@ -29,8 +30,10 @@ public class FlagManager {
     void returnFlagToPlayerInventory(Cell cell) {
         if (game.isStopped()) return;
         if (cell.isOpen()) return;
+
         final Shop shop = game.getShop();
         final Player player = game.getPlayer();
+
         player.gainItem(shop.getFlag());
         cell.setFlagged(false);
     }
@@ -43,7 +46,6 @@ public class FlagManager {
         final Player player = game.getPlayer();
 
         if (player.countFlags() == 0) shop.offerFlag();
-
         if (player.countFlags() == 0) return;
         if (cell.isFlagged()) return;
 
