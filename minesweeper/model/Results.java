@@ -2,8 +2,6 @@ package com.javarush.games.minesweeper.model;
 
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.board.field.CellFilter;
-import com.javarush.games.minesweeper.model.player.Player;
-import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.items.Dice;
 
 import java.util.HashMap;
@@ -37,7 +35,7 @@ public class Results {
     }
 
     private static String getTotalScore() {
-        return Integer.toString(getScore().getTotalScore());
+        return Integer.toString(game.getScore().getTotalScore());
     }
 
     private static String getCellScoreInfo() {
@@ -60,24 +58,24 @@ public class Results {
 
     private static String getMoneyScoreInfo() {
         if (!game.isResultVictory()) return "не учтено";
-        final int money = getPlayer().getMoneyBalance();
+        final int money = game.getPlayer().getMoneyBalance();
         return money + "*" + Options.difficulty + " = " +
                 money * Options.difficulty;
     }
 
     private static String getShieldsScoreInfo() {
-        int count = getPlayer().getBrokenShields();
+        int count = game.getPlayer().getBrokenShields();
         if (count == 0) return "0";
         return count + "*-" + (150 * (Options.difficulty / 5)) + " = " +
-                getScore().getLostScore();
+                game.getScore().getLostScore();
     }
 
     private static String getDiceScore() {
-        return Integer.toString(getScore().getDiceScore());
+        return Integer.toString(game.getScore().getDiceScore());
     }
 
     private static String getTimerScore() {
-        return Integer.toString(getScore().getTimerScore());
+        return Integer.toString(game.getScore().getTimerScore());
     }
 
     private static String getDiceAvgLuck() {
@@ -92,16 +90,8 @@ public class Results {
         return Integer.toString(Options.difficulty);
     }
 
-    private static Player getPlayer() {
-        return game.getPlayer();
-    }
-
     private static Dice getDice() {
         return game.getShop().getDice();
-    }
-
-    private static Score getScore() {
-        return game.getPlayer().getScore();
     }
 
     public static void setGame(MinesweeperGame game) {

@@ -11,7 +11,6 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.Results;
 import com.javarush.games.minesweeper.model.board.BoardManager;
-import com.javarush.games.minesweeper.model.board.Timer;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.board.field.CellFilter;
 import com.javarush.games.minesweeper.model.player.Player;
@@ -199,16 +198,20 @@ public class MinesweeperGame extends Game {
         return player;
     }
 
+    public Score getScore(){
+        return player.getScore();
+    }
+
     public boolean isStopped() {
         return isStopped;
     }
 
-    public boolean isResultVictory() {
-        return isResultVictory;
+    public int getTimerBonus() {
+        return boardManager.getTimer().getScoreBonus();
     }
 
-    public Timer getTimer() {
-        return boardManager.getTimer();
+    public boolean isResultVictory() {
+        return isResultVictory;
     }
 
     public boolean isRecursiveMove() {

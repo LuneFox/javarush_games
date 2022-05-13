@@ -183,7 +183,7 @@ public class BoardManager {
 
     private void addTimerScore() {
         if (isRecursiveMove) return;
-        game.getPlayer().getScore().addTimerScore();
+        game.getScore().addTimerScore();
         timer.reset();
     }
 

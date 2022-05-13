@@ -51,7 +51,7 @@ public class Score {
     }
 
     public void addTimerScore() {
-        this.timerScore += game.getTimer().getScoreBonus();
+        this.timerScore += game.getTimerBonus();
     }
 
     public void addDiceScore(int amount) {
