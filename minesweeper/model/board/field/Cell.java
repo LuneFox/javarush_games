@@ -5,7 +5,6 @@ import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.shop.items.Shovel;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -64,7 +63,7 @@ public class Cell extends InteractiveObject {
         else if (isShielded) setBackgroundColor(Color.YELLOW);
         else if (isScanned) setBackgroundColor(Theme.CELL_SCANNED.getColor());
         else if (isDestroyed) setBackgroundColor(Color.DARKSLATEGRAY);
-        else if (isFlagged) setBackgroundColor(Color.GREEN); // flagged cells get force-opened only when mines are revealed
+        else if (isFlagged) setBackgroundColor(Color.GREEN); // flagged cells get opened only when mines are revealed
         else setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
     }
 
@@ -100,8 +99,7 @@ public class Cell extends InteractiveObject {
     public int produceMoney() {
         if (countMinedNeighbors == 0) return 0;
 
-        Shovel shovel = game.getShop().getShovel();
-        if (shovel.isActivated()) {
+        if (game.shovelIsActivated()) {
             sprite.changeColor(Color.YELLOW, 1);
             return countMinedNeighbors * 2;
         } else {
@@ -110,17 +108,51 @@ public class Cell extends InteractiveObject {
     }
 
     /*
-     * Combined states
+     * States
      */
 
-    public boolean cannotBeOpened() {
-        return game.isStopped() || isFlagged || isOpen;
+    public boolean isMined() {
+        return isMined;
     }
 
-    public boolean cannotBeDestroyed() {
-        boolean isActivated = isOpen || isDestroyed;
-        boolean isUnableToDestroyFlag = isFlagged && !game.isFlagExplosionAllowed();
-        return game.isStopped() || isActivated || isUnableToDestroyFlag;
+    public boolean isOpen() {
+        return isOpen;
+    }
+
+    public boolean isClosed() {
+        return !isOpen;
+    }
+
+    public boolean isFlagged() {
+        return isFlagged;
+    }
+
+    public boolean isNotFlagged() {
+        return !isFlagged;
+    }
+
+    public boolean isDangerousToOpen() {
+        return !isOpen && isMined;
+    }
+
+    public boolean isSafeToOpen() {
+        return !isOpen && !isMined;
+    }
+
+    public boolean isScored() {
+        return isOpen && !isMined && !isDestroyed;
+    }
+
+    public boolean isShielded() {
+        return isShielded;
+    }
+
+    public boolean isShop() {
+        return isShop;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 
     public boolean isEmpty() {
@@ -131,45 +163,27 @@ public class Cell extends InteractiveObject {
         return !(isMined || isDestroyed || isFlagged || isShop);
     }
 
-    /*
-     * Getters
-     */
-
-    public int getCountMinedNeighbors() {
-        return countMinedNeighbors;
+    public boolean cannotBeOpened() {
+        return game.isStopped() || isFlagged || isOpen;
     }
 
-    public boolean isMined() {
-        return isMined;
+    public boolean isIndestructible() {
+        boolean isActivated = isOpen || isDestroyed;
+        boolean isUnableToDestroyFlag = isFlagged && !game.isFlagExplosionAllowed();
+        return game.isStopped() || isActivated || isUnableToDestroyFlag;
     }
 
     public boolean wasMinedBeforeDestruction() {
         return wasMinedBeforeDestruction;
     }
 
-    public boolean isOpen() {
-        return isOpen;
-    }
-
-    public boolean isFlagged() {
-        return isFlagged;
-    }
-
-    public boolean isDestroyed() {
-        return isDestroyed;
-    }
-
-    public boolean isShop() {
-        return isShop;
-    }
-
-    public boolean isShielded() {
-        return isShielded;
-    }
-
     /*
-     * Setters
+     * Getters, setters
      */
+
+    public int getCountMinedNeighbors() {
+        return countMinedNeighbors;
+    }
 
     public void setMined(boolean mined) {
         isMined = mined;

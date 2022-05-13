@@ -3,7 +3,7 @@ package com.javarush.games.minesweeper.model.player;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.board.field.CellFilter;
+import com.javarush.games.minesweeper.model.board.field.Cell;
 
 public class Score {
     private static MinesweeperGame game;
@@ -24,14 +24,15 @@ public class Score {
     }
 
     public void registerTopScore() {
-        if (getTotalScore() <= getTopScore()) return;
-        setTopScore(getTotalScore());
+        int totalScore = getTotalScore();
+        if (totalScore <= topScore) return;
+        setTopScore(totalScore);
         player.setTitle(Options.DIFFICULTY_NAMES[Options.difficulty / 5 - 1]);
         PopUpMessage.show("Новый рекорд!");
     }
 
     public int getCurrentScore() {
-        int score = game.countAllCells(CellFilter.SCORED) * Options.difficulty;
+        int score = game.getAllCells(Cell::isScored).size() * Options.difficulty;
         return score + getDiceScore() + getTimerScore() + getLostScore();
     }
 
@@ -46,7 +47,7 @@ public class Score {
 
     public int getMinesScore() {
         if (!game.isResultVictory()) return 0;
-        int minesCount = game.countAllCells(CellFilter.MINED);
+        int minesCount = game.getAllCells(Cell::isMined).size();
         return minesCount * 20 * Options.difficulty;
     }
 

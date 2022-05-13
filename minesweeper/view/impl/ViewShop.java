@@ -8,7 +8,7 @@ import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.board.field.CellFilter;
+import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.view.View;
 
@@ -82,7 +82,7 @@ public class ViewShop extends View {
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
-        Printer.print("" + game.countAllCells(CellFilter.DANGEROUS), 25, 12);
+        Printer.print("" + game.getAllCells(Cell::isDangerousToOpen).size(), 25, 12);
         Printer.print("" + player.countFlags(), 52, 12);
         Printer.print("" + shiftDisplayedMoney(), 76 + moneyShakeHelper.getShift(), 12);
     }
@@ -101,8 +101,8 @@ public class ViewShop extends View {
 
     private void drawFooter() {
         headerFooterPanel.draw(10, 78);
-        final int currentScore = game.getPlayer().getScore().getCurrentScore();
-        final int countMoves = game.getPlayer().getMoves();
+        final long currentScore = game.getPlayer().getScore().getCurrentScore();
+        final long countMoves = game.getPlayer().getMoves();
         Printer.print("Очки:" + currentScore, Theme.SHOP_SCORE.getColor(), 13, 80);
         Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 83, 80, Printer.Align.RIGHT);
     }

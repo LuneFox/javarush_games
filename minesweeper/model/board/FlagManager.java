@@ -38,12 +38,15 @@ public class FlagManager {
     void placeFlagFromPlayerInventory(Cell cell) {
         if (game.isStopped()) return;
         if (cell.isOpen()) return;
+
         final Shop shop = game.getShop();
         final Player player = game.getPlayer();
 
         if (player.countFlags() == 0) shop.offerFlag();
+
         if (player.countFlags() == 0) return;
         if (cell.isFlagged()) return;
+
         player.loseItem(shop.getFlag());
         cell.setFlagged(true);
     }

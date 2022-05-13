@@ -1,8 +1,9 @@
 package com.javarush.games.minesweeper.model.board.field;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class FieldDAO {
     private Field field;
@@ -23,37 +24,30 @@ public class FieldDAO {
         return field.grid[y / 10][x / 10];
     }
 
-    public int countAllCells(CellFilter filter) {
-        return getAllCells(filter).size();
+    public List<Cell> getAllCells(Predicate<Cell> predicate) {
+        return getAllCells().stream().filter(predicate).collect(Collectors.toList());
     }
 
     public List<Cell> getAllCells() {
-        return getAllCells(CellFilter.NONE);
+        return Arrays.stream(field.grid).flatMap(Arrays::stream).collect(Collectors.toList());
     }
 
-    public List<Cell> getAllCells(CellFilter filter) {
-        List<Cell> list = new ArrayList<>();
-        for (Cell[] cells : field.grid) {
-            list.addAll(Arrays.asList(cells));
-        }
-        return CellFilter.filter(list, filter);
+    public List<Cell> getNeighborCells(Cell centerCell, Predicate<Cell> predicate) {
+        return getNeighborCells(centerCell).stream().filter(predicate).collect(Collectors.toList());
     }
 
-    public List<Cell> getNeighborCells(Cell cell, CellFilter filter) {
-        List<Cell> result = getCellsIn3x3area(cell, filter);
-        result.remove(cell);
-        return result;
+    public List<Cell> getNeighborCells(Cell centerCell) {
+        return getCellsIn3x3area(centerCell, cell -> !cell.equals(centerCell));
     }
 
-    public List<Cell> getCellsIn3x3area(Cell centerCell, CellFilter filter) {
-        List<Cell> neighbors = new ArrayList<>();
-        for (int y = centerCell.y - 1; y <= centerCell.y + 1; y++) {
-            for (int x = centerCell.x - 1; x <= centerCell.x + 1; x++) {
-                if (y < 0 || y >= 10) continue;
-                if (x < 0 || x >= 10) continue;
-                neighbors.add(field.grid[y][x]);
-            }
-        }
-        return CellFilter.filter(neighbors, filter);
+    public List<Cell> getCellsIn3x3area(Cell centerCell, Predicate<Cell> predicate) {
+        return getCellsIn3x3area(centerCell).stream().filter(predicate).collect(Collectors.toList());
+    }
+
+    public List<Cell> getCellsIn3x3area(Cell centerCell) {
+        return getAllCells().stream()
+                .filter(cell -> Math.abs(cell.y - centerCell.y) <= 1)
+                .filter(cell -> Math.abs(cell.x - centerCell.x) <= 1)
+                .collect(Collectors.toList());
     }
 }

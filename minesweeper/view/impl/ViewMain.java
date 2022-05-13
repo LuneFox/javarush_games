@@ -134,7 +134,7 @@ public class ViewMain extends View {
     }
 
     private void printTopScore() {
-        final int topScore = game.getPlayer().getScore().getTopScore();
+        final long topScore = game.getPlayer().getScore().getTopScore();
         if (topScore > 0) {
             Printer.print("счёт: " + topScore + "\n" + game.getPlayer().getTitle(),
                     Options.developerModeEnabled ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 4, 65);
