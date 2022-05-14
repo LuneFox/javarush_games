@@ -5,6 +5,7 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.spaceinvaders.controller.Controller;
 import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyFleet;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
@@ -52,9 +53,10 @@ public class SpaceInvadersGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
+        GameObject.setGame(this);
+        ObjectShape.setGame(this);
         display = new Display(this);
         controller = new Controller(this);
-        ObjectShape.setGame(this);
         createGame();
     }
 
@@ -109,10 +111,10 @@ public class SpaceInvadersGame extends Game {
         drawHills();
         drawBushes();
         enemyFleet.draw(this, false);
-        playerBullets.forEach(bullet -> bullet.draw(this, false));
-        bonuses.forEach(bonus -> bonus.draw(this, false));
+        playerBullets.forEach(GameObject::draw);
+        bonuses.forEach(GameObject::draw);
         drawBricks();
-        enemyBullets.forEach(bullet -> bullet.draw(this, false));
+        enemyBullets.forEach(GameObject::draw);
         drawFloor();
         mario.draw(this);
         drawFlash();
@@ -134,7 +136,7 @@ public class SpaceInvadersGame extends Game {
         };
         for (int i = 0; i < 7; i++) {
             floorTile.x = i * floorTile.width;
-            floorTile.draw(this, false);
+            floorTile.draw();
         }
     }
 
@@ -146,7 +148,7 @@ public class SpaceInvadersGame extends Game {
         };
         for (int i = 0; i < 3; i++) {
             bush.x = 2 * i * bush.width;
-            bush.draw(this, false);
+            bush.draw();
         }
     }
 
@@ -158,7 +160,7 @@ public class SpaceInvadersGame extends Game {
         };
         for (int i = 0; i < 2; i++) {
             hill.x = 1.8 * i * hill.width + 14;
-            hill.draw(this, false);
+            hill.draw();
         }
     }
 
@@ -169,13 +171,13 @@ public class SpaceInvadersGame extends Game {
                 setStaticView(DecoShape.CLOUD);
             }
         }
-        new Cloud(5, 65).draw(this, false);
-        new Cloud(38, 57).draw(this, false);
-        new Cloud(81, 72).draw(this, true);
+        new Cloud(5, 65).draw();
+        new Cloud(38, 57).draw();
+        new Cloud(81, 72).draw(Mirror.HORIZONTAL);
     }
 
     private void drawBricks() {
-        bricks.forEach(brick -> brick.draw(this, false));
+        bricks.forEach(GameObject::draw);
     }
 
     private void drawFlash() {

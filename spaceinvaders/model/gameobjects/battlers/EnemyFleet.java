@@ -4,6 +4,8 @@ import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.ArrayList;
@@ -69,7 +71,7 @@ public class EnemyFleet {
     // -------- GRAPHICS
 
     public void draw(SpaceInvadersGame game, boolean reversed) {
-        ships.forEach(ship -> ship.draw(game, false));
+        ships.forEach(GameObject::draw);
     }
 
 
@@ -93,7 +95,7 @@ public class EnemyFleet {
         int[] sum = new int[]{0};
         ships.forEach(enemyShip -> {
             bullets.forEach(bullet -> {
-                if (enemyShip.isCollision(bullet, false) && enemyShip.isAlive && bullet.isAlive) {
+                if (enemyShip.collidesWithAnotherObject(bullet, Mirror.NONE) && enemyShip.isAlive && bullet.isAlive) {
                     if (bullet.deadlyForEnemies) {
                         enemyShip.kill();
                         bullet.kill();

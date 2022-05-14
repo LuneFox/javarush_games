@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 import com.javarush.games.spaceinvaders.model.Bullet;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick.Bonus;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
@@ -17,11 +18,11 @@ public class Mario extends Ship {
     public boolean isJumping = false;
     private boolean isWalking = false;
     private boolean isBraking = false;
+    private boolean reachedJumpTop = false;
     private Direction direction = Direction.UP;
     private Direction faceDirection = Direction.RIGHT;
     private int frameCounter = 0;
     public int faintCounter = 0;
-    private boolean reachedJumpTop;
 
     public Mario() {
         super(SpaceInvadersGame.WIDTH / 2.0, SpaceInvadersGame.HEIGHT - MarioShape.STAND.length - FLOOR_LEVEL);
@@ -114,11 +115,11 @@ public class Mario extends Ship {
             default:
                 break;
         }
-        boolean reverse = false;
+        Mirror mirror = Mirror.NONE;
         if (faceDirection == Direction.LEFT) {
-            reverse = true;
+            mirror = Mirror.HORIZONTAL;
         }
-        super.draw(game, reverse);
+        super.draw(mirror);
     }
 
     @Override
@@ -178,14 +179,14 @@ public class Mario extends Ship {
 
         if (faceDirection == Direction.RIGHT) {
             bullets.forEach(bullet -> {
-                if (isAlive && bullet.isAlive && isCollision(bullet, false)) {
+                if (isAlive && bullet.isAlive && collidesWithAnotherObject(bullet, Mirror.NONE)) {
                     kill();
                     bullet.kill();
                 }
             });
         } else if (faceDirection == Direction.LEFT) {
             bullets.forEach(bullet -> {
-                if (isAlive && bullet.isAlive && isCollision(bullet, true)) {
+                if (isAlive && bullet.isAlive && collidesWithAnotherObject(bullet, Mirror.HORIZONTAL)) {
                     kill();
                     bullet.kill();
                 }

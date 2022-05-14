@@ -8,7 +8,6 @@ import java.util.Date;
 public class Bullet extends GameObject {
 
     protected int dy;
-    public boolean isAlive = true;
     public boolean deadlyForEnemies = false;
     public Date collisionDate;
 

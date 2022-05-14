@@ -12,9 +12,8 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        if (!game.mario.isJumping) {
-            game.mario.jump();
-        }
+        if (game.mario.isJumping) return;
+        game.mario.jump();
     }
 
     @Override

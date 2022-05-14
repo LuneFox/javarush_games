@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items;
 
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.Bullet;
@@ -22,12 +23,12 @@ public class Brick extends GameObject {
     public void verifyTouch(Mario mario, SpaceInvadersGame game) {
         // проверка пересечения Марио и кирпича с учётом отзеркаливания спрайта
         if (mario.getFaceDirection() == Direction.RIGHT) {
-            if (this.isCollision(mario, false)) {
+            if (this.collidesWithAnotherObject(mario, Mirror.NONE)) {
                 this.touched = true;
                 jump(game);
             }
         } else if (mario.getFaceDirection() == Direction.LEFT) {
-            if (this.isCollision(mario, true)) {
+            if (this.collidesWithAnotherObject(mario, Mirror.HORIZONTAL)) {
                 this.touched = true;
                 jump(game);
             }

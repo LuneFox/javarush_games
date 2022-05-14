@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
@@ -80,7 +81,7 @@ public class QuestionBrick extends Brick {
     public abstract class Bonus extends GameObject {
         private int ejectHeight = 8;
         private int jumpCounter;
-        private int dx;
+        private final int dx;
         public boolean isCollected;
         private boolean isEjected;
         private boolean isJumped;
@@ -98,13 +99,13 @@ public class QuestionBrick extends Brick {
         public void verifyTouch(Mario mario, SpaceInvadersGame game) {
             // проверка пересечения Марио и бонуса с учётом отзеркаливания спрайта
             if (mario.getFaceDirection() == Direction.RIGHT) {
-                if (this.isCollision(mario, false)) {
+                if (this.collidesWithAnotherObject(mario, Mirror.NONE)) {
                     mario.collect(this);
                     this.isCollected = true;
                     game.increaseScore(10);
                 }
             } else if (mario.getFaceDirection() == Direction.LEFT) {
-                if (this.isCollision(mario, true)) {
+                if (this.collidesWithAnotherObject(mario, Mirror.HORIZONTAL)) {
                     mario.collect(this);
                     this.isCollected = true;
                     game.increaseScore(10);
@@ -128,7 +129,7 @@ public class QuestionBrick extends Brick {
                 return;
             }
 
-            if (isCollision(QuestionBrick.this, false)) {
+            if (collidesWithAnotherObject(QuestionBrick.this, Mirror.NONE)) {
                 isPushed = true;
             }
 
@@ -178,10 +179,9 @@ public class QuestionBrick extends Brick {
         @Override
         public void verifyHit(List<Bullet> bullets) {
             bullets.forEach(bullet -> {
-                int[] point = isCollisionWithCoords(bullet, false);
-                if (point != null) {
+                if (collidesWithAnotherObject(bullet, Mirror.NONE)) {
                     bullet.kill();
-                    this.matrix[point[1]][point[0]] = 0;
+                    this.matrix[lastCollisionY][lastCollisionX] = 0;
                 }
             });
         }
@@ -196,7 +196,7 @@ public class QuestionBrick extends Brick {
         @Override
         public void verifyHit(List<Bullet> bullets) {
             bullets.forEach(bullet -> {
-                if (isCollision(bullet, true) && new Date().getTime() - bullet.collisionDate.getTime() > 500) {
+                if (collidesWithAnotherObject(bullet, Mirror.HORIZONTAL) && new Date().getTime() - bullet.collisionDate.getTime() > 500) {
                     bullet.changeDirection();
                     bullet.deadlyForEnemies = true;
                     bullet.collisionDate = new Date();
