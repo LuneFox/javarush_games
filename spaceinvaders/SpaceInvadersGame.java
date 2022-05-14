@@ -114,7 +114,7 @@ public class SpaceInvadersGame extends Game {
         drawBricks();
         enemyBullets.forEach(GameObject::draw);
         drawFloor();
-        mario.draw(this);
+        mario.draw();
         drawFlash();
     }
 

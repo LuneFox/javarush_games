@@ -38,8 +38,7 @@ public class ObjectShape {
 
     public static int[][] getRandomTetrisBullet() {
         int shapeNumber = spaceInvadersGame.getRandomNumber(19);
-        List<int[][]> tetrisBulletList = new ArrayList<>();
-        tetrisBulletList.addAll(Arrays.asList(
+        List<int[][]> tetrisBulletList = new ArrayList<>(Arrays.asList(
                 new int[][]{{71, 71}, {71, 71}},               // квадрат
                 new int[][]{{71}, {71}, {71}, {71}},           // вертикальная палка
                 new int[][]{{71, 71}, {71, 0}, {71, 0}},       // буква Г 0 градусов

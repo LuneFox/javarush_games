@@ -24,8 +24,7 @@ public class Score {
     }
 
     private static int getMultiplier() {
-        Date now = new Date();
-        long millis = now.getTime() - startTime.getTime();
+        long millis = new Date().getTime() - startTime.getTime();
         int seconds = (int) millis / 1000;
         return Math.max(100 - seconds, 0);
     }

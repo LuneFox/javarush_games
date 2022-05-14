@@ -8,7 +8,7 @@ import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.Optional;
 
-public class BossTank extends EnemyTank {
+public class BossTank extends Tank {
     public BossTank(double x, double y) {
         super(x, y);
         score = 100;
@@ -26,8 +26,8 @@ public class BossTank extends EnemyTank {
     @Override
     public void kill() {
         if (!isAlive) return;
-        isAlive = false;
-        setAnimatedView(Sprite.Loop.DISABLED, 2,
+        super.kill();
+        setAnimatedView(Sprite.Loop.DISABLED, 1,
                 ObjectShape.BOSS_TANK_KILL_1,
                 ObjectShape.BOSS_TANK_KILL_2,
                 ObjectShape.BOSS_TANK_KILL_3,

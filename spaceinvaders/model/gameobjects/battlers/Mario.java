@@ -96,7 +96,8 @@ public class Mario extends Tank {
 
     // -------- GRAPHICS
 
-    public void draw(SpaceInvadersGame game) {
+    @Override
+    public void draw() {
         switch (direction) {
             case RIGHT:
                 faceDirection = Direction.RIGHT;
