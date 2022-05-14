@@ -3,7 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
@@ -21,7 +21,7 @@ public class EnemyFleet {
     private static final int COLUMNS_COUNT = 10;
     private static final int STEP = ObjectShape.TANK_1.length + 1;
 
-    private List<EnemyShip> ships;
+    private List<EnemyTank> ships;
     private Direction direction = Direction.RIGHT;
 
 
@@ -44,7 +44,7 @@ public class EnemyFleet {
 
         double speed = getSpeed();
 
-        for (EnemyShip ship : ships) {
+        for (EnemyTank ship : ships) {
             if (changedDirection) {
                 ship.move(Direction.DOWN, speed);
             } else {
@@ -81,10 +81,10 @@ public class EnemyFleet {
         ships = new ArrayList<>();
         for (int x = 0; x < COLUMNS_COUNT; x++) {
             for (int y = 0; y < ROWS_COUNT; y++) {
-                ships.add(new EnemyShip(x * STEP, y * STEP + 15));
+                ships.add(new EnemyTank(x * STEP, y * STEP + 15));
             }
         }
-        ships.add(new Boss((STEP * COLUMNS_COUNT / 2.0) - (ObjectShape.BOSS_TANK_1.length / 2.0) - 1, 1));
+        ships.add(new BossTank((STEP * COLUMNS_COUNT / 2.0) - (ObjectShape.BOSS_TANK_1.length / 2.0) - 1, 1));
     }
 
     public int verifyHit(List<Bullet> bullets) {
@@ -96,7 +96,7 @@ public class EnemyFleet {
         ships.forEach(enemyShip -> {
             bullets.forEach(bullet -> {
                 if (enemyShip.collidesWithAnotherObject(bullet, Mirror.NONE) && enemyShip.isAlive && bullet.isAlive) {
-                    if (bullet.deadlyForEnemies) {
+                    if (bullet.canKillEnemies) {
                         enemyShip.kill();
                         bullet.kill();
                         sum[0] += enemyShip.score;
@@ -108,7 +108,7 @@ public class EnemyFleet {
     }
 
     public void deleteHiddenShips() {
-        ArrayList<EnemyShip> shipsClone = new ArrayList<>(ships);
+        ArrayList<EnemyTank> shipsClone = new ArrayList<>(ships);
         shipsClone.forEach(enemyShip -> {
             if (!enemyShip.isVisible()) {
                 ships.remove(enemyShip);

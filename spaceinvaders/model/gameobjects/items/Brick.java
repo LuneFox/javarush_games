@@ -6,7 +6,8 @@ import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
-import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.CoinBullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 public class Brick extends GameObject {
@@ -57,22 +58,10 @@ public class Brick extends GameObject {
     }
 
     public Bullet fire() {
-        return new Bullet(x + 2, y, Direction.UP) {
-            {
-                setAnimatedView(Sprite.Loop.ENABLED, 1,
-                        ObjectShape.COIN_WIDTH_7,
-                        ObjectShape.COIN_WIDTH_5,
-                        ObjectShape.COIN_WIDTH_3,
-                        ObjectShape.COIN_WIDTH_1,
-                        ObjectShape.COIN_WIDTH_3,
-                        ObjectShape.COIN_WIDTH_5);
-                deadlyForEnemies = true;
-            }
-        };
+        return new CoinBullet(x + 2, y, Direction.UP);
     }
 
     public void check(SpaceInvadersGame game) {
 
     }
-
 }

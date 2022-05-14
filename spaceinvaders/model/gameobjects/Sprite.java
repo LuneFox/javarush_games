@@ -30,6 +30,7 @@ public class Sprite {
     }
 
     void draw(double x, double y, Mirror mirror) {
+        nextFrame();
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Color color = Color.values()[matrix[j][i]];
@@ -38,7 +39,6 @@ public class Sprite {
                 game.display.drawPixel((int) drawX, (int) drawY, color);
             }
         }
-        nextFrame();
     }
 
     void nextFrame() {
@@ -68,7 +68,8 @@ public class Sprite {
         this.nextFrameDelay = nextFrameDelay;
         this.frames = Arrays.asList(frames);
         this.currentFrame = 0;
-        this.setMatrix(frames[0]);
+        int lastFrameIndex = frames.length - 1;
+        this.setMatrix(frames[lastFrameIndex]);
     }
 
     void setMatrix(int[][] matrix) {

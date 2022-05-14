@@ -1,17 +1,18 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
-import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.FireBallBullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick.Bonus;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.List;
 
-public class Mario extends Ship {
+public class Mario extends Tank {
     public static final int JUMP_HEIGHT_LIMIT = 30;
     private static final int FLOOR_LEVEL = 4;
 
@@ -69,19 +70,9 @@ public class Mario extends Ship {
             return null;
         }
         bonus = null;
-        return new Bullet(
+        return new FireBallBullet(
                 Mario.this.x + Mario.this.getWidth() / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
-                Mario.this.y - ObjectShape.FIREBALL_1.length + 4, Direction.UP) {
-            {
-                dy = dy * 2;
-                setAnimatedView(Sprite.Loop.ENABLED, 2,
-                        ObjectShape.FIREBALL_1,
-                        ObjectShape.FIREBALL_2,
-                        ObjectShape.FIREBALL_3,
-                        ObjectShape.FIREBALL_4);
-                deadlyForEnemies = true;
-            }
-        };
+                Mario.this.y - ObjectShape.FIREBALL_1.length + 4, Direction.UP);
     }
 
     public boolean wipeEnemyBullets() {

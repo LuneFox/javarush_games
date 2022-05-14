@@ -2,7 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items;
 
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
@@ -196,10 +196,10 @@ public class QuestionBrick extends Brick {
         @Override
         public void verifyHit(List<Bullet> bullets) {
             bullets.forEach(bullet -> {
-                if (collidesWithAnotherObject(bullet, Mirror.HORIZONTAL) && new Date().getTime() - bullet.collisionDate.getTime() > 500) {
-                    bullet.changeDirection();
-                    bullet.deadlyForEnemies = true;
-                    bullet.collisionDate = new Date();
+                if (collidesWithAnotherObject(bullet, Mirror.HORIZONTAL) && new Date().getTime() - bullet.lastCollisionDate.getTime() > 500) {
+                    bullet.inverseDirection();
+                    bullet.canKillEnemies = true;
+                    bullet.lastCollisionDate = new Date();
                 }
             });
         }

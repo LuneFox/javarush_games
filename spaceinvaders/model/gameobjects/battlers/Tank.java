@@ -1,12 +1,11 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 
-public class Ship extends GameObject {
+public class Tank extends GameObject {
 
-
-    public Ship(double x, double y) {
+    public Tank(double x, double y) {
         super(x, y);
     }
 

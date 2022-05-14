@@ -1,0 +1,37 @@
+package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
+
+import com.javarush.games.spaceinvaders.model.Direction;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyTankBullet;
+import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+
+public class EnemyTank extends Tank {
+    public int score = 15;
+
+    public EnemyTank(double x, double y) {
+        super(x, y);
+        setAnimatedView(Sprite.Loop.ENABLED, 1, ObjectShape.TANK_1, ObjectShape.TANK_2);
+    }
+
+    public void move(Direction direction, double speed) {
+        if (direction == Direction.RIGHT) x += speed;
+        else if (direction == Direction.LEFT) x -= speed;
+        else if (direction == Direction.DOWN) y += 2;
+    }
+
+    @Override
+    public Bullet fire() {
+        return new EnemyTankBullet(x + 2, y + getHeight(), Direction.DOWN);
+    }
+
+    @Override
+    public void kill() {
+        if (!isAlive) return;
+        isAlive = false;
+        setAnimatedView(Sprite.Loop.DISABLED, 1,
+                ObjectShape.TANK_KILL_1,
+                ObjectShape.TANK_KILL_2,
+                ObjectShape.TANK_KILL_3);
+    }
+}
