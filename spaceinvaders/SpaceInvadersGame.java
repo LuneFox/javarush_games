@@ -7,6 +7,7 @@ import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.gameobjects.items.Brick;
 import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick;
 import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick.*;
+import com.javarush.games.spaceinvaders.gui.Display;
 import com.javarush.games.spaceinvaders.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.shapes.ObjectShape;
 
@@ -114,7 +115,7 @@ public class SpaceInvadersGame extends Game {
     private void drawSky() {
         for (int y = 0; y < HEIGHT; y++) {
             for (int x = 0; x < WIDTH; x++) {
-                display.setCellValueEx(x, y, (y > 60) ? Color.DEEPSKYBLUE : Color.BLACK, "");
+                display.drawPixel(x, y, (y > 60) ? Color.DEEPSKYBLUE : Color.BLACK);
             }
         }
     }
@@ -177,7 +178,7 @@ public class SpaceInvadersGame extends Game {
                 for (int x = 0; x < WIDTH; x++) {
                     if (y % 2 == 0 && x % 2 == 0) {
                         flashColor = !flashColor;
-                        display.setCellValueEx(x, y, flashColor ? Color.WHITE : Color.YELLOW, "");
+                        display.drawPixel(x, y, flashColor ? Color.WHITE : Color.YELLOW);
                     }
                 }
             }
