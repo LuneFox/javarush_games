@@ -7,11 +7,15 @@ import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyTankBulle
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 public class EnemyTank extends Tank {
-    public int score = 15;
+    public int score;
 
     public EnemyTank(double x, double y) {
         super(x, y);
-        setAnimatedView(Sprite.Loop.ENABLED, 1, ObjectShape.TANK_1, ObjectShape.TANK_2);
+        score = 15;
+        setAnimatedView(Sprite.Loop.ENABLED, 1,
+                ObjectShape.TANK_1,
+                ObjectShape.TANK_2
+        );
     }
 
     public void move(Direction direction, double speed) {
@@ -32,6 +36,7 @@ public class EnemyTank extends Tank {
         setAnimatedView(Sprite.Loop.DISABLED, 1,
                 ObjectShape.TANK_KILL_1,
                 ObjectShape.TANK_KILL_2,
-                ObjectShape.TANK_KILL_3);
+                ObjectShape.TANK_KILL_3
+        );
     }
 }
