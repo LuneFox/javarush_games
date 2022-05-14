@@ -1,13 +1,15 @@
 package com.javarush.games.spaceinvaders;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.Key;
+import com.javarush.games.spaceinvaders.controller.Controller;
+import com.javarush.games.spaceinvaders.model.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyFleet;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.Brick;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick;
-import com.javarush.games.spaceinvaders.model.Bullet;
-import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.view.Display;
 import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
@@ -24,22 +26,24 @@ public class SpaceInvadersGame extends Game {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
-    private static final int PLAYER_BULLETS_MAX = 2;
+    public static final int PLAYER_BULLETS_MAX = 2;
+
+    private Controller controller;
 
     public Display display;
-    private List<Bullet> enemyBullets;
-    private List<Bullet> playerBullets;
-    private List<Brick> bricks;
-    private List<QuestionBrick.Bonus> bonuses;
-    private EnemyFleet enemyFleet;
-    private Mario mario;
-    private Date startTime;
-    private int animationsCount;
-    private int score;
-    private boolean flashColor;
-    private boolean isGameStopped;
-    private boolean displayedEnding;
-    private boolean showFlash = false;
+    public List<Bullet> enemyBullets;
+    public List<Bullet> playerBullets;
+    public List<Brick> bricks;
+    public List<QuestionBrick.Bonus> bonuses;
+    public EnemyFleet enemyFleet;
+    public Mario mario;
+    public Date startTime;
+    public int animationsCount;
+    public int score;
+    public boolean flashColor;
+    public boolean isGameStopped;
+    public boolean displayedEnding;
+    public boolean showFlash = false;
 
 
     // -------- INITIALIZATION
@@ -49,11 +53,12 @@ public class SpaceInvadersGame extends Game {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         display = new Display(this);
+        controller = new Controller(this);
         ObjectShape.setGame(this);
         createGame();
     }
 
-    private void createGame() {
+    public void createGame() {
         score = 0;
         enemyFleet = new EnemyFleet();
         mario = new Mario();
@@ -292,6 +297,16 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
+    public void marioFire() {
+        Bullet bullet = mario.fire();
+        addPlayerBullet(bullet);
+        if (mario.wipeEnemyBullets()) {
+            showFlash = true;
+            score += enemyBullets.size() * 5 * getMultiplier();
+            enemyBullets.clear();
+        }
+    }
+
     private void stopGame(boolean isWin) {
         stopTurnTimer();
         if (isWin) {
@@ -299,9 +314,7 @@ public class SpaceInvadersGame extends Game {
                     "SCORE: " + score + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!",
                     Color.WHITE, 20);
         } else {
-            showMessageDialog(Color.NONE,
-                    "MAMMA MIA!",
-                    Color.RED, 75);
+            showMessageDialog(Color.NONE, "MAMMA MIA!", Color.RED, 75);
         }
     }
 
@@ -314,60 +327,15 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
-
     // -------- CONTROLS
 
     @Override
     public void onKeyPress(Key key) {
-        switch (key) {
-            case SPACE:
-                if (isGameStopped && displayedEnding) {
-                    createGame();
-                } else {
-                    Bullet bullet = mario.fire();
-                    addPlayerBullet(bullet);
-                    if (mario.wipeEnemyBullets()) {
-                        showFlash = true;
-                        score += enemyBullets.size() * 5 * getMultiplier();
-                        enemyBullets.clear();
-                    }
-                }
-                break;
-            case LEFT:
-                if (!isGameStopped) {
-                    mario.setDirection(Direction.LEFT);
-                    break;
-                }
-            case RIGHT:
-                if (!isGameStopped) {
-                    mario.setDirection(Direction.RIGHT);
-                    break;
-                }
-            case UP:
-                if (!isGameStopped) {
-                    if (!mario.isJumping) {
-                        mario.jump();
-                    }
-                    break;
-                }
-            default:
-                break;
-        }
+        controller.pressKey(key);
     }
 
     @Override
     public void onKeyReleased(Key key) {
-        switch (key) {
-            case LEFT:
-                if (mario.getDirection() == Direction.LEFT) {
-                    mario.setDirection(Direction.UP);
-                }
-                break;
-            case RIGHT:
-                if (mario.getDirection() == Direction.RIGHT) {
-                    mario.setDirection(Direction.UP);
-                }
-                break;
-        }
+        controller.releaseKey(key);
     }
 }
