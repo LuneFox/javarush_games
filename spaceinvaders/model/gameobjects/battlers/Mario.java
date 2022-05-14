@@ -1,11 +1,11 @@
-package com.javarush.games.spaceinvaders.gameobjects.battlers;
+package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
-import com.javarush.games.spaceinvaders.Bullet;
-import com.javarush.games.spaceinvaders.Direction;
+import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick.Bonus;
-import com.javarush.games.spaceinvaders.shapes.MarioShape;
-import com.javarush.games.spaceinvaders.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick.Bonus;
+import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
+import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.List;
 

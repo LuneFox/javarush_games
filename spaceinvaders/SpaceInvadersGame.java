@@ -1,15 +1,16 @@
 package com.javarush.games.spaceinvaders;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.spaceinvaders.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.gameobjects.battlers.EnemyFleet;
-import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
-import com.javarush.games.spaceinvaders.gameobjects.items.Brick;
-import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick;
-import com.javarush.games.spaceinvaders.gameobjects.items.QuestionBrick.*;
-import com.javarush.games.spaceinvaders.gui.Display;
-import com.javarush.games.spaceinvaders.shapes.DecoShape;
-import com.javarush.games.spaceinvaders.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyFleet;
+import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.Brick;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick;
+import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.Direction;
+import com.javarush.games.spaceinvaders.view.Display;
+import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
+import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +30,7 @@ public class SpaceInvadersGame extends Game {
     private List<Bullet> enemyBullets;
     private List<Bullet> playerBullets;
     private List<Brick> bricks;
-    private List<Bonus> bonuses;
+    private List<QuestionBrick.Bonus> bonuses;
     private EnemyFleet enemyFleet;
     private Mario mario;
     private Date startTime;
@@ -200,7 +201,7 @@ public class SpaceInvadersGame extends Game {
         enemyFleet.move();
         enemyBullets.forEach(Bullet::move);
         playerBullets.forEach(Bullet::move);
-        bonuses.forEach(Bonus::move);
+        bonuses.forEach(QuestionBrick.Bonus::move);
         bricks.forEach(brick -> brick.jump(this));
         mario.move();
     }
@@ -220,7 +221,7 @@ public class SpaceInvadersGame extends Game {
             }
         });
 
-        ArrayList<Bonus> bonusesClone = new ArrayList<>(bonuses);
+        ArrayList<QuestionBrick.Bonus> bonusesClone = new ArrayList<>(bonuses);
         bonusesClone.forEach(bonus -> {
             if (bonus.x + bonus.width < 0 || bonus.x > WIDTH || bonus.isCollected) {
                 bonus.isCollected = true;
@@ -246,7 +247,7 @@ public class SpaceInvadersGame extends Game {
         return count[0];
     }
 
-    public void addBonus(Bonus bonus) {
+    public void addBonus(QuestionBrick.Bonus bonus) {
         bonuses.add(bonus);
     }
 

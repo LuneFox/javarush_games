@@ -1,7 +1,7 @@
-package com.javarush.games.spaceinvaders;
+package com.javarush.games.spaceinvaders.model;
 
-import com.javarush.games.spaceinvaders.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.Date;
 

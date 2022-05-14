@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.shapes;
+package com.javarush.games.spaceinvaders.view.shapes;
 
 public class DecoShape {
     public static final int[][] FLOOR = new int[][]{{143, 118, 118, 118, 118, 118, 118, 118, 118, 126, 143, 118, 118, 118, 118, 143}, {118, 143, 143, 143, 143, 143, 143, 143, 143, 126, 118, 143, 143, 143, 143, 126}, {118, 143, 143, 143, 143, 143, 143, 143, 143, 126, 118, 143, 143, 143, 143, 126}, {118, 143, 143, 143, 143, 143, 143, 143, 143, 126, 118, 143, 143, 143, 143, 126}};

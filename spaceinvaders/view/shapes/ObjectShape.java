@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.shapes;
+package com.javarush.games.spaceinvaders.view.shapes;
 
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 

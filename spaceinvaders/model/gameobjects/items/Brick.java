@@ -1,12 +1,11 @@
-package com.javarush.games.spaceinvaders.gameobjects.items;
+package com.javarush.games.spaceinvaders.model.gameobjects.items;
 
-import com.javarush.games.spaceinvaders.Direction;
+import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
-import com.javarush.games.spaceinvaders.Bullet;
-import com.javarush.games.spaceinvaders.Bullet.*;
-import com.javarush.games.spaceinvaders.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
+import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 public class Brick extends GameObject {
     private static final int JUMP_HEIGHT = 2; // максимальное смещение при подпрыгивании

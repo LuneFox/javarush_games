@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.gameobjects;
+package com.javarush.games.spaceinvaders.model.gameobjects;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;

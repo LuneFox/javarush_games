@@ -1,7 +1,7 @@
-package com.javarush.games.spaceinvaders.gameobjects.battlers;
-import com.javarush.games.spaceinvaders.Direction;
-import com.javarush.games.spaceinvaders.Bullet;
-import com.javarush.games.spaceinvaders.shapes.ObjectShape;
+package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
+import com.javarush.games.spaceinvaders.model.Direction;
+import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 public class Boss extends EnemyShip {
     private int frameCount = 0;

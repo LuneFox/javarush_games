@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.gui;
+package com.javarush.games.spaceinvaders.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
@@ -36,9 +36,13 @@ public class Display {
     }
 
     public void drawPixel(int x, int y, Color color) {
-        if (isWithinScreen(x, y) && color != Color.NONE) {
+        if (isWithinScreen(x, y) && isNotTransparentColor(color)) {
             this.matrix[y][x].cellColor = color;
         }
+    }
+
+    private boolean isNotTransparentColor(Color color) {
+        return color != Color.NONE;
     }
 
     public static class Pixel {

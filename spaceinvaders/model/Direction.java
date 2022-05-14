@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders;
+package com.javarush.games.spaceinvaders.model;
 
 public enum Direction {
     RIGHT, LEFT, UP, DOWN

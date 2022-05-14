@@ -1,12 +1,12 @@
-package com.javarush.games.spaceinvaders.gameobjects.items;
+package com.javarush.games.spaceinvaders.model.gameobjects.items;
 
-import com.javarush.games.spaceinvaders.Direction;
+import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.Bullet;
-import com.javarush.games.spaceinvaders.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.gameobjects.battlers.Mario;
-import com.javarush.games.spaceinvaders.shapes.DecoShape;
-import com.javarush.games.spaceinvaders.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
+import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
+import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.Date;
 import java.util.List;
@@ -97,7 +97,7 @@ public class QuestionBrick extends Brick {
 
         public void verifyTouch(Mario mario, SpaceInvadersGame game) {
             // проверка пересечения Марио и бонуса с учётом отзеркаливания спрайта
-            if (mario.getFaceDirection() == com.javarush.games.spaceinvaders.Direction.RIGHT) {
+            if (mario.getFaceDirection() == Direction.RIGHT) {
                 if (this.isCollision(mario, false)) {
                     mario.collect(this);
                     this.isCollected = true;
