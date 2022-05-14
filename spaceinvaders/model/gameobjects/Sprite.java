@@ -44,7 +44,7 @@ public class Sprite {
     void nextFrame() {
         if (nextFrameTimer++ % nextFrameDelay != 0) return;
 
-        if (animationNotFinished()) {
+        if (!isAnimationFinished()) {
             this.matrix = frames.get(currentFrame++);
         } else if (loop == Loop.ENABLED) {
             currentFrame = 0;
@@ -52,8 +52,8 @@ public class Sprite {
         }
     }
 
-    boolean animationNotFinished() {
-        return currentFrame < frames.size();
+    boolean isAnimationFinished(){
+        return currentFrame >= frames.size();
     }
 
     void setStaticView(int[][] frame) {

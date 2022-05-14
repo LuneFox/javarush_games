@@ -160,14 +160,14 @@ public class Mario extends Tank {
 
         if (faceDirection == Direction.RIGHT) {
             bullets.forEach(bullet -> {
-                if (isAlive && bullet.isAlive && collidesWithAnotherObject(bullet, Mirror.NONE)) {
+                if (isAlive && bullet.isAlive && collidesWith(bullet, Mirror.NONE)) {
                     kill();
                     bullet.kill();
                 }
             });
         } else if (faceDirection == Direction.LEFT) {
             bullets.forEach(bullet -> {
-                if (isAlive && bullet.isAlive && collidesWithAnotherObject(bullet, Mirror.HORIZONTAL)) {
+                if (isAlive && bullet.isAlive && collidesWith(bullet, Mirror.HORIZONTAL)) {
                     kill();
                     bullet.kill();
                 }

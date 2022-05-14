@@ -36,8 +36,8 @@ public class GameObject {
         sprite.setAnimatedView(loop, nextFrameDelay, frames);
     }
 
-    public boolean isVisible() {
-        return (isAlive || sprite.animationNotFinished());
+    public boolean nothingHasRemained() {
+        return (!isAlive && sprite.isAnimationFinished());
     }
 
     public void draw() {
@@ -64,7 +64,7 @@ public class GameObject {
      * Collisions
      */
 
-    public boolean collidesWithAnotherObject(GameObject anotherObject, Mirror mirror) {
+    public boolean collidesWith(GameObject anotherObject, Mirror mirror) {
         // Check if any other object's pixels collide with this object's pixels, return true at first collision
         for (int x = 0; x < anotherObject.getWidth(); x++) {
             for (int y = 0; y < anotherObject.getHeight(); y++) {

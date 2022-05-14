@@ -29,7 +29,6 @@ public class BossTank extends EnemyTank {
                 ObjectShape.BOSS_TANK_KILL_1,
                 ObjectShape.BOSS_TANK_KILL_2,
                 ObjectShape.BOSS_TANK_KILL_3,
-                ObjectShape.BOSS_TANK_KILL_4,
                 ObjectShape.BOSS_TANK_KILL_4
         );
     }

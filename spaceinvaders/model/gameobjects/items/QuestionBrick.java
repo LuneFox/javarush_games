@@ -99,13 +99,13 @@ public class QuestionBrick extends Brick {
         public void verifyTouch(Mario mario, SpaceInvadersGame game) {
             // проверка пересечения Марио и бонуса с учётом отзеркаливания спрайта
             if (mario.getFaceDirection() == Direction.RIGHT) {
-                if (this.collidesWithAnotherObject(mario, Mirror.NONE)) {
+                if (this.collidesWith(mario, Mirror.NONE)) {
                     mario.collect(this);
                     this.isCollected = true;
                     game.increaseScore(10);
                 }
             } else if (mario.getFaceDirection() == Direction.LEFT) {
-                if (this.collidesWithAnotherObject(mario, Mirror.HORIZONTAL)) {
+                if (this.collidesWith(mario, Mirror.HORIZONTAL)) {
                     mario.collect(this);
                     this.isCollected = true;
                     game.increaseScore(10);
@@ -129,7 +129,7 @@ public class QuestionBrick extends Brick {
                 return;
             }
 
-            if (collidesWithAnotherObject(QuestionBrick.this, Mirror.NONE)) {
+            if (collidesWith(QuestionBrick.this, Mirror.NONE)) {
                 isPushed = true;
             }
 
@@ -179,7 +179,7 @@ public class QuestionBrick extends Brick {
         @Override
         public void verifyHit(List<Bullet> bullets) {
             bullets.forEach(bullet -> {
-                if (collidesWithAnotherObject(bullet, Mirror.NONE)) {
+                if (collidesWith(bullet, Mirror.NONE)) {
                     bullet.kill();
                     eraseCollisionPixel();
                 }
@@ -196,7 +196,7 @@ public class QuestionBrick extends Brick {
         @Override
         public void verifyHit(List<Bullet> bullets) {
             bullets.forEach(bullet -> {
-                if (collidesWithAnotherObject(bullet, Mirror.HORIZONTAL) && new Date().getTime() - bullet.lastCollisionDate.getTime() > 500) {
+                if (collidesWith(bullet, Mirror.HORIZONTAL) && new Date().getTime() - bullet.lastCollisionDate.getTime() > 500) {
                     bullet.inverseDirection();
                     bullet.canKillEnemies = true;
                     bullet.lastCollisionDate = new Date();
