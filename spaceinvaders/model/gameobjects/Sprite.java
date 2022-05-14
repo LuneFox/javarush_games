@@ -16,10 +16,17 @@ public class Sprite {
 
     private List<int[][]> frames;
     private int currentFrame;
-    private boolean loopAnimationEnabled = false;
+    private int nextFrameDelay;
+    private int nextFrameTimer;
+    private Loop loop;
+
+    public enum Loop {
+        ENABLED, DISABLED
+    }
 
     public Sprite(SpaceInvadersGame game) {
         this.game = game;
+        this.nextFrameDelay = 1;
     }
 
     void draw(double x, double y, Mirror mirror) {
@@ -35,9 +42,11 @@ public class Sprite {
     }
 
     void nextFrame() {
+        if (nextFrameTimer++ % nextFrameDelay != 0) return;
+
         if (animationNotFinished()) {
             this.matrix = frames.get(currentFrame++);
-        } else if (loopAnimationEnabled) {
+        } else if (loop == Loop.ENABLED) {
             currentFrame = 0;
             this.matrix = frames.get(currentFrame++);
         }
@@ -48,23 +57,24 @@ public class Sprite {
     }
 
     void setStaticView(int[][] frame) {
+        this.frames = new ArrayList<>();
+        this.frames.add(frame);
+        this.currentFrame = 0;
         this.setMatrix(frame);
-        frames = new ArrayList<>();
-        frames.add(frame);
-        currentFrame = 0;
     }
 
-    void setAnimatedView(boolean loop, int[][]... frames) {
-        this.loopAnimationEnabled = loop;
-        setMatrix(frames[0]);
+    void setAnimatedView(Loop loop, int nextFrameDelay, int[][]... frames) {
+        this.loop = loop;
+        this.nextFrameDelay = nextFrameDelay;
         this.frames = Arrays.asList(frames);
-        currentFrame = 0;
+        this.currentFrame = 0;
+        this.setMatrix(frames[0]);
     }
 
     void setMatrix(int[][] matrix) {
         this.matrix = matrix;
-        width = matrix[0].length;
-        height = matrix.length;
+        this.width = matrix[0].length;
+        this.height = matrix.length;
     }
 
     boolean pixelIsNotTransparent(int x, int y) {

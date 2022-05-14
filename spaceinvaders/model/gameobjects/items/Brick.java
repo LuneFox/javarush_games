@@ -4,6 +4,7 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
@@ -58,7 +59,7 @@ public class Brick extends GameObject {
     public Bullet fire() {
         return new Bullet(x + 2, y, Direction.UP) {
             {
-                setAnimatedView(true,
+                setAnimatedView(Sprite.Loop.ENABLED, 1,
                         ObjectShape.COIN_WIDTH_7,
                         ObjectShape.COIN_WIDTH_5,
                         ObjectShape.COIN_WIDTH_3,

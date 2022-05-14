@@ -4,6 +4,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick.Bonus;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
@@ -21,7 +22,6 @@ public class Mario extends Ship {
     private boolean reachedJumpTop = false;
     private Direction direction = Direction.UP;
     private Direction faceDirection = Direction.RIGHT;
-    private int frameCounter = 0;
     public int faintCounter = 0;
 
     public Mario() {
@@ -74,7 +74,7 @@ public class Mario extends Ship {
                 Mario.this.y - ObjectShape.FIREBALL_1.length + 4, Direction.UP) {
             {
                 dy = dy * 2;
-                setAnimatedView(true,
+                setAnimatedView(Sprite.Loop.ENABLED, 2,
                         ObjectShape.FIREBALL_1,
                         ObjectShape.FIREBALL_2,
                         ObjectShape.FIREBALL_3,
@@ -121,16 +121,6 @@ public class Mario extends Ship {
         }
         super.draw(mirror);
     }
-
-    @Override
-    public void nextFrame() {
-        frameCounter++;
-        if (frameCounter == 2) {
-            super.nextFrame();
-            frameCounter = 0;
-        }
-    }
-
 
     // -------- UTILITIES
 
@@ -213,7 +203,7 @@ public class Mario extends Ship {
     public void setDirection(Direction newDirection) {
         if ((newDirection == Direction.RIGHT) || (newDirection == Direction.LEFT)) {
             if (!isJumping && !isWalking || isBraking) {
-                setAnimatedView(true,
+                setAnimatedView(Sprite.Loop.ENABLED, 2,
                         MarioShape.WALK_3,
                         MarioShape.WALK_2,
                         MarioShape.WALK_1,

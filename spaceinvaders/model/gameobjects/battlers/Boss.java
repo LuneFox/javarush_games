@@ -1,24 +1,17 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
+
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 public class Boss extends EnemyShip {
-    private int frameCount = 0;
-
     public Boss(double x, double y) {
         super(x, y);
-        setAnimatedView(true,
-                ObjectShape.BOSS_TANK_1, ObjectShape.BOSS_TANK_2);
+        setAnimatedView(Sprite.Loop.ENABLED, 10,
+                ObjectShape.BOSS_TANK_1,
+                ObjectShape.BOSS_TANK_2);
         score = 100;
-    }
-
-    @Override
-    public void nextFrame() {
-        frameCount++;
-        if (frameCount % 10 == 0 || !isAlive) {
-            super.nextFrame();
-        }
     }
 
     @Override
@@ -37,7 +30,7 @@ public class Boss extends EnemyShip {
     public void kill() {
         if (isAlive) {
             isAlive = false;
-            setAnimatedView(false,
+            setAnimatedView(Sprite.Loop.DISABLED, 2,
                     ObjectShape.BOSS_TANK_KILL_1,
                     ObjectShape.BOSS_TANK_KILL_2,
                     ObjectShape.BOSS_TANK_KILL_3,

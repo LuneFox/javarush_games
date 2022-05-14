@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 public class EnemyShip extends Ship {
@@ -9,7 +10,7 @@ public class EnemyShip extends Ship {
 
     public EnemyShip(double x, double y) {
         super(x, y);
-        setAnimatedView(true, ObjectShape.TANK_1, ObjectShape.TANK_2);
+        setAnimatedView(Sprite.Loop.ENABLED, 1, ObjectShape.TANK_1, ObjectShape.TANK_2);
     }
 
     public void move(Direction direction, double speed) {
@@ -37,7 +38,7 @@ public class EnemyShip extends Ship {
     public void kill() {
         if (isAlive) {
             isAlive = false;
-            setAnimatedView(false,
+            setAnimatedView(Sprite.Loop.DISABLED, 1,
                     ObjectShape.TANK_KILL_1,
                     ObjectShape.TANK_KILL_2,
                     ObjectShape.TANK_KILL_3,

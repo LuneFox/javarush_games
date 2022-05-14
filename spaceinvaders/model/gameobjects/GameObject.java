@@ -31,9 +31,9 @@ public class GameObject {
         sprite.setStaticView(frame);
     }
 
-    public void setAnimatedView(boolean loop, int[][]... frames) {
+    public void setAnimatedView(Sprite.Loop loop, int nextFrameDelay, int[][]... frames) {
         sprite = new Sprite(game);
-        sprite.setAnimatedView(loop, frames);
+        sprite.setAnimatedView(loop, nextFrameDelay, frames);
     }
 
     public boolean isVisible() {
@@ -50,10 +50,6 @@ public class GameObject {
 
     public void eraseCollisionPixel() {
         sprite.erasePixel(lastCollisionX, lastCollisionY);
-    }
-
-    public void nextFrame() {
-        sprite.nextFrame();
     }
 
     public int getWidth() {
