@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.controller;
 
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Direction;
+import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 
 public class BattleControlStrategy implements ControlStrategy {
     private final SpaceInvadersGame game;
@@ -12,23 +13,8 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        if (game.mario.isJumping) return;
+        if (game.mario.hasState(Mario.State.JUMPING)) return;
         game.mario.jump();
-    }
-
-    @Override
-    public void releaseUp() {
-        ControlStrategy.super.releaseUp();
-    }
-
-    @Override
-    public void pressDown() {
-        ControlStrategy.super.pressDown();
-    }
-
-    @Override
-    public void releaseDown() {
-        ControlStrategy.super.releaseDown();
     }
 
     @Override
@@ -40,7 +26,7 @@ public class BattleControlStrategy implements ControlStrategy {
     @Override
     public void releaseRight() {
         if (game.mario.getDirection() == Direction.RIGHT) {
-            game.mario.setDirection(Direction.UP);
+            game.mario.setDirection(Direction.NONE);
         }
     }
 
@@ -53,7 +39,7 @@ public class BattleControlStrategy implements ControlStrategy {
     @Override
     public void releaseLeft() {
         if (game.mario.getDirection() == Direction.LEFT) {
-            game.mario.setDirection(Direction.UP);
+            game.mario.setDirection(Direction.NONE);
         }
     }
 
@@ -64,10 +50,5 @@ public class BattleControlStrategy implements ControlStrategy {
         } else {
             game.marioFire();
         }
-    }
-
-    @Override
-    public void releaseSpace() {
-        ControlStrategy.super.releaseSpace();
     }
 }

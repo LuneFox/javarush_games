@@ -23,12 +23,12 @@ public class Brick extends GameObject {
 
     public void verifyTouch(Mario mario, SpaceInvadersGame game) {
         // проверка пересечения Марио и кирпича с учётом отзеркаливания спрайта
-        if (mario.getFaceDirection() == Direction.RIGHT) {
+        if (mario.getFacingDirection() == Direction.RIGHT) {
             if (this.collidesWith(mario, Mirror.NONE)) {
                 this.touched = true;
                 jump(game);
             }
-        } else if (mario.getFaceDirection() == Direction.LEFT) {
+        } else if (mario.getFacingDirection() == Direction.LEFT) {
             if (this.collidesWith(mario, Mirror.HORIZONTAL)) {
                 this.touched = true;
                 jump(game);

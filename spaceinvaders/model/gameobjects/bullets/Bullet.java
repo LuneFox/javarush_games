@@ -12,7 +12,7 @@ public abstract class Bullet extends GameObject {
 
     public Bullet(double x, double y, Direction direction) {
         super(x, y);
-        dy = (direction == Direction.UP) ? -1 : 1;
+        dy = (direction == Direction.UP) ? -2 : 2;
         canKillEnemies = false;
         lastCollisionDate = new Date();
     }
