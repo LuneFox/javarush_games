@@ -12,6 +12,10 @@ public class GameObject {
     public int lastCollisionY;
     public boolean isAlive;
 
+    public static void setGame(SpaceInvadersGame game) {
+        GameObject.game = game;
+    }
+
     public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
@@ -99,9 +103,5 @@ public class GameObject {
     private void memorizeCollisionPoint(int x, int y) {
         lastCollisionX = x;
         lastCollisionY = y;
-    }
-
-    public static void setGame(SpaceInvadersGame game) {
-        GameObject.game = game;
     }
 }
