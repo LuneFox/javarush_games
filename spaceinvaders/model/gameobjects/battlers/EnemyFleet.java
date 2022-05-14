@@ -3,7 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
@@ -130,7 +130,7 @@ public class EnemyFleet {
     public double getBottomBorder() {
         final double[] bottomBorder = {0};
         ships.forEach(ship -> {
-            bottomBorder[0] = Math.max(bottomBorder[0], ship.y + ship.height);
+            bottomBorder[0] = Math.max(bottomBorder[0], ship.y + ship.getHeight());
         });
         return bottomBorder[0];
     }
@@ -146,7 +146,7 @@ public class EnemyFleet {
     private double getRightBorder() {
         final double[] rightBorder = {0};
         ships.forEach(ship -> {
-            rightBorder[0] = Math.max(rightBorder[0], ship.x + ship.width);
+            rightBorder[0] = Math.max(rightBorder[0], ship.x + ship.getWidth());
         });
         return rightBorder[0];
     }

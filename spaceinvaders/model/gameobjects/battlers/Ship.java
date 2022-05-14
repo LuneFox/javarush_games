@@ -1,7 +1,7 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 
 public class Ship extends GameObject {
 

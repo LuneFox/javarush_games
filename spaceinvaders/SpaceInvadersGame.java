@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.spaceinvaders.controller.Controller;
-import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyFleet;
@@ -135,7 +135,7 @@ public class SpaceInvadersGame extends Game {
             }
         };
         for (int i = 0; i < 7; i++) {
-            floorTile.x = i * floorTile.width;
+            floorTile.x = i * floorTile.getWidth();
             floorTile.draw();
         }
     }
@@ -147,7 +147,7 @@ public class SpaceInvadersGame extends Game {
             }
         };
         for (int i = 0; i < 3; i++) {
-            bush.x = 2 * i * bush.width;
+            bush.x = 2 * i * bush.getWidth();
             bush.draw();
         }
     }
@@ -159,7 +159,7 @@ public class SpaceInvadersGame extends Game {
             }
         };
         for (int i = 0; i < 2; i++) {
-            hill.x = 1.8 * i * hill.width + 14;
+            hill.x = 1.8 * i * hill.getWidth() + 14;
             hill.draw();
         }
     }
@@ -223,14 +223,14 @@ public class SpaceInvadersGame extends Game {
 
         ArrayList<Bullet> playerBulletsClone = new ArrayList<>(playerBullets);
         playerBulletsClone.forEach(bullet -> {
-            if (bullet.y + bullet.height < 0 || !bullet.isAlive) {
+            if (bullet.y + bullet.getHeight() < 0 || !bullet.isAlive) {
                 playerBullets.remove(bullet);
             }
         });
 
         ArrayList<QuestionBrick.Bonus> bonusesClone = new ArrayList<>(bonuses);
         bonusesClone.forEach(bonus -> {
-            if (bonus.x + bonus.width < 0 || bonus.x > WIDTH || bonus.isCollected) {
+            if (bonus.x + bonus.getWidth() < 0 || bonus.x > WIDTH || bonus.isCollected) {
                 bonus.isCollected = true;
                 bonuses.remove(bonus);
             }

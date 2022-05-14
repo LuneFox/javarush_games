@@ -1,6 +1,6 @@
-package com.javarush.games.spaceinvaders.model;
+package com.javarush.games.spaceinvaders.model.gameobjects;
 
-import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.Date;

@@ -1,7 +1,7 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.model.Direction;
-import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 public class EnemyShip extends Ship {
@@ -30,7 +30,7 @@ public class EnemyShip extends Ship {
 
     @Override
     public Bullet fire() {
-        return new Bullet(x + 2, y + height, Direction.DOWN);
+        return new Bullet(x + 2, y + getHeight(), Direction.DOWN);
     }
 
     @Override

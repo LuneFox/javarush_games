@@ -1,6 +1,6 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
-import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
@@ -70,7 +70,7 @@ public class Mario extends Ship {
         }
         bonus = null;
         return new Bullet(
-                Mario.this.x + Mario.this.width / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
+                Mario.this.x + Mario.this.getWidth() / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
                 Mario.this.y - ObjectShape.FIREBALL_1.length + 4, Direction.UP) {
             {
                 dy = dy * 2;
@@ -141,8 +141,8 @@ public class Mario extends Ship {
                 setStaticView(MarioShape.BRAKE);
                 isBraking = true;
             }
-        } else if (x + width > SpaceInvadersGame.WIDTH + 4) {
-            x = SpaceInvadersGame.WIDTH - width + 4;
+        } else if (x + getWidth() > SpaceInvadersGame.WIDTH + 4) {
+            x = SpaceInvadersGame.WIDTH - getWidth() + 4;
             if (!isJumping) {
                 setStaticView(MarioShape.BRAKE);
                 isBraking = true;
@@ -159,8 +159,8 @@ public class Mario extends Ship {
             } else {
                 reachedJumpTop = true;
                 this.y += 2;
-                if (y >= SpaceInvadersGame.HEIGHT - height - FLOOR_LEVEL) {
-                    y = SpaceInvadersGame.HEIGHT - height - FLOOR_LEVEL;
+                if (y >= SpaceInvadersGame.HEIGHT - getHeight() - FLOOR_LEVEL) {
+                    y = SpaceInvadersGame.HEIGHT - getHeight() - FLOOR_LEVEL;
                     isJumping = false;
                     setDirection(lastDirection);
                 }

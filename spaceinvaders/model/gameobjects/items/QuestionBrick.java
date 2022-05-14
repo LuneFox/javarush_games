@@ -2,7 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items;
 
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.Bullet;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
@@ -154,8 +154,8 @@ public class QuestionBrick extends Brick {
             } else {
                 if (dx > 0 && x > 38 || dx < 0 && x < 52) {
                     y += 3;
-                    if (y > SpaceInvadersGame.HEIGHT - DecoShape.FLOOR.length - this.height) {
-                        y = SpaceInvadersGame.HEIGHT - DecoShape.FLOOR.length - this.height;
+                    if (y > SpaceInvadersGame.HEIGHT - DecoShape.FLOOR.length - this.getHeight()) {
+                        y = SpaceInvadersGame.HEIGHT - DecoShape.FLOOR.length - this.getHeight();
                     }
                 }
                 x += dx;
@@ -181,7 +181,7 @@ public class QuestionBrick extends Brick {
             bullets.forEach(bullet -> {
                 if (collidesWithAnotherObject(bullet, Mirror.NONE)) {
                     bullet.kill();
-                    this.matrix[lastCollisionY][lastCollisionX] = 0;
+                    eraseCollisionPixel();
                 }
             });
         }
