@@ -13,7 +13,7 @@ import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 import java.util.List;
 import java.util.Optional;
 
-public class Mario extends Tank {
+public class Mario extends Battler {
     public static final int JUMP_HEIGHT_LIMIT = 30;
     private static final int FLOOR_LEVEL = 4;
 

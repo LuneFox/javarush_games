@@ -1,14 +1,15 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.model.Direction;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
+import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyBossTankBullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.Optional;
 
-public class BossTank extends Tank {
+public class BossTank extends EnemyTank {
     public BossTank(double x, double y) {
         super(x, y);
         score = 100;
@@ -27,6 +28,7 @@ public class BossTank extends Tank {
     public void kill() {
         if (!isAlive) return;
         super.kill();
+        Score.add(score);
         setAnimatedView(Sprite.Loop.DISABLED, 1,
                 ObjectShape.BOSS_TANK_KILL_1,
                 ObjectShape.BOSS_TANK_KILL_2,

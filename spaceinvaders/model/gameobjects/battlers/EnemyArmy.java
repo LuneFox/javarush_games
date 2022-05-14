@@ -16,7 +16,7 @@ public class EnemyArmy {
     private static final int ROWS = 3;
     private static final int COLUMNS = 10;
     private static final int STEP = ObjectShape.TANK_1.length + 1;
-    private List<Tank> enemyTanks;
+    private List<EnemyTank> enemyTanks;
     private double speed;
     private Direction direction;
 
@@ -43,7 +43,7 @@ public class EnemyArmy {
         int marginTop = 15;
         int tankX = x * STEP;
         int tankY = y * STEP + marginTop;
-        SmallTank tank = new SmallTank(tankX, tankY);
+        EnemyTank tank = new EnemyTank(tankX, tankY);
         enemyTanks.add(tank);
     }
 
@@ -86,7 +86,7 @@ public class EnemyArmy {
 
     private boolean isNearLeftBorder() {
         double armyLeftBorder = SpaceInvadersGame.WIDTH;
-        for (Tank tank : enemyTanks) {
+        for (EnemyTank tank : enemyTanks) {
             armyLeftBorder = Math.min(armyLeftBorder, tank.x);
         }
         return armyLeftBorder <= 0;
@@ -94,7 +94,7 @@ public class EnemyArmy {
 
     private boolean isNearRightBorder() {
         double armyRightBorder = 0;
-        for (Tank tank : enemyTanks) {
+        for (EnemyTank tank : enemyTanks) {
             armyRightBorder = Math.max(armyRightBorder, tank.x + tank.getWidth());
         }
         return armyRightBorder >= SpaceInvadersGame.WIDTH;
@@ -113,14 +113,14 @@ public class EnemyArmy {
 
     public void verifyHit(List<Bullet> bullets) {
         if (bullets.isEmpty()) return;
-        for (Tank tank : enemyTanks) {
+        for (EnemyTank tank : enemyTanks) {
             for (Bullet bullet : bullets) {
                 destroyTankAndBulletOnCollision(tank, bullet);
             }
         }
     }
 
-    private void destroyTankAndBulletOnCollision(Tank enemyTank, Bullet bullet) {
+    private void destroyTankAndBulletOnCollision(EnemyTank enemyTank, Bullet bullet) {
         if (!bullet.canKillEnemies) return;
         if (!bullet.isAlive) return;
         if (!enemyTank.isAlive) return;
@@ -132,7 +132,7 @@ public class EnemyArmy {
 
     public boolean reachedLine(double lineHeight) {
         double armyBottomBorder = 0;
-        for (Tank tank : enemyTanks) {
+        for (EnemyTank tank : enemyTanks) {
             armyBottomBorder = Math.max(armyBottomBorder, tank.y + tank.getHeight());
         }
         return armyBottomBorder > lineHeight;
