@@ -1,17 +1,17 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.engine.cell.Game;
-import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.Score;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
+import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyTankBullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class EnemyArmy {
     private static final int ROWS = 3;
@@ -101,11 +101,12 @@ public class EnemyArmy {
         return armyRightBorder >= SpaceInvadersGame.WIDTH;
     }
 
-    public Bullet fire(Game game) {
-        if (enemyTanks.isEmpty()) return EnemyTankBullet.EMPTY_BULLET;
+    public Optional<Bullet> fire(Game game) {
+        Optional<Bullet> bulletOptional = Optional.empty();
+        if (enemyTanks.isEmpty()) return bulletOptional;
 
         int chanceToFire = game.getRandomNumber(100 / SpaceInvadersGame.COMPLEXITY);
-        if (chanceToFire != 0) return EnemyTankBullet.EMPTY_BULLET;
+        if (chanceToFire != 0) return bulletOptional;
 
         int randomTank = game.getRandomNumber(enemyTanks.size());
         return enemyTanks.get(randomTank).fire();

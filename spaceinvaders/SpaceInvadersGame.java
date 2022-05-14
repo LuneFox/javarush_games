@@ -10,7 +10,6 @@ import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyArmy;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyTankBullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.Brick;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick;
 import com.javarush.games.spaceinvaders.view.Display;
@@ -19,6 +18,7 @@ import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * VERSION 1.03
@@ -79,10 +79,10 @@ public class SpaceInvadersGame extends Game {
     public void onTurn(int step) {
         moveSpaceObjects();
         check();
-        Bullet bullet = enemyArmy.fire(this);
-        if (bullet != EnemyTankBullet.EMPTY_BULLET) {
-            enemyBullets.add(bullet);
-        }
+
+        Optional<Bullet> bulletOptional = enemyArmy.fire(this);
+        bulletOptional.ifPresent(bullet -> enemyBullets.add(bullet));
+
         setScore(Score.get());
         drawScene();
         display.draw();
@@ -291,8 +291,8 @@ public class SpaceInvadersGame extends Game {
     }
 
     public void marioFire() {
-        Bullet bullet = mario.fire();
-        addPlayerBullet(bullet);
+        Optional<Bullet> bulletOptional = mario.fire();
+        bulletOptional.ifPresent(this::addPlayerBullet);
         if (mario.wipeEnemyBullets()) {
             showFlash = true;
             Score.add(enemyBullets.size() * 5);

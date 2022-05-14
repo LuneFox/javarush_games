@@ -11,6 +11,7 @@ import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.List;
+import java.util.Optional;
 
 public class Mario extends Tank {
     public static final int JUMP_HEIGHT_LIMIT = 30;
@@ -65,14 +66,14 @@ public class Mario extends Tank {
     }
 
     @Override
-    public Bullet fire() {
+    public Optional<Bullet> fire() {
         if (!isAlive || bonus == null || !bonus.getClass().getName().contains("Mushroom")) {
-            return null;
+            return Optional.empty();
         }
         bonus = null;
-        return new FireBallBullet(
+        return Optional.of(new FireBallBullet(
                 Mario.this.x + Mario.this.getWidth() / 2.0 - ObjectShape.FIREBALL_1.length / 2.0,
-                Mario.this.y - ObjectShape.FIREBALL_1.length + 4, Direction.UP);
+                Mario.this.y - ObjectShape.FIREBALL_1.length + 4, Direction.UP));
     }
 
     public boolean wipeEnemyBullets() {

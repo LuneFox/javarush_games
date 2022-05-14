@@ -6,6 +6,8 @@ import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyBossTankBullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
+import java.util.Optional;
+
 public class BossTank extends EnemyTank {
     public BossTank(double x, double y) {
         super(x, y);
@@ -17,8 +19,8 @@ public class BossTank extends EnemyTank {
     }
 
     @Override
-    public Bullet fire() {
-        return new EnemyBossTankBullet(x + 3, y + getHeight(), Direction.DOWN);
+    public Optional<Bullet> fire() {
+        return Optional.of(new EnemyBossTankBullet(x + 3, y + getHeight(), Direction.DOWN));
     }
 
     @Override

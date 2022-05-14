@@ -6,6 +6,8 @@ import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyTankBullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
+import java.util.Optional;
+
 public class EnemyTank extends Tank {
     public int score;
 
@@ -25,8 +27,8 @@ public class EnemyTank extends Tank {
     }
 
     @Override
-    public Bullet fire() {
-        return new EnemyTankBullet(x + 2, y + getHeight(), Direction.DOWN);
+    public Optional<Bullet> fire() {
+        return Optional.of(new EnemyTankBullet(x + 2, y + getHeight(), Direction.DOWN));
     }
 
     @Override
