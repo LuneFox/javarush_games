@@ -2,7 +2,6 @@ package com.javarush.games.spaceinvaders.controller;
 
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Direction;
-import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 
 public class BattleControlStrategy implements ControlStrategy {
     private final SpaceInvadersGame game;
@@ -13,33 +12,33 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        if (game.mario.hasState(Mario.State.JUMPING)) return;
+        if (game.isGameStopped) return;
         game.mario.jump();
     }
 
     @Override
     public void pressRight() {
         if (game.isGameStopped) return;
-        game.mario.setDirection(Direction.RIGHT);
+        game.mario.setMoveDirection(Direction.RIGHT);
     }
 
     @Override
     public void releaseRight() {
-        if (game.mario.getDirection() == Direction.RIGHT) {
-            game.mario.setDirection(Direction.NONE);
+        if (game.mario.getMoveDirection() == Direction.RIGHT) {
+            game.mario.setMoveDirection(Direction.NONE);
         }
     }
 
     @Override
     public void pressLeft() {
         if (game.isGameStopped) return;
-        game.mario.setDirection(Direction.LEFT);
+        game.mario.setMoveDirection(Direction.LEFT);
     }
 
     @Override
     public void releaseLeft() {
-        if (game.mario.getDirection() == Direction.LEFT) {
-            game.mario.setDirection(Direction.NONE);
+        if (game.mario.getMoveDirection() == Direction.LEFT) {
+            game.mario.setMoveDirection(Direction.NONE);
         }
     }
 

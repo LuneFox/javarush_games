@@ -29,6 +29,7 @@ public class SpaceInvadersGame extends Game {
     public static final int HEIGHT = 100;
     public static final int COMPLEXITY = 5;
     public static final int PLAYER_BULLETS_MAX = 2;
+    public static final int FLOOR_HEIGHT = 4;
 
     private Controller controller;
 
@@ -89,7 +90,7 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void createBricks() {
-        int height = HEIGHT - Mario.JUMP_HEIGHT_LIMIT - ObjectShape.BRICK.length;
+        int height = HEIGHT - 30 - ObjectShape.BRICK.length;
         bricks.add(new QuestionBrick(10, height));
         bricks.add(new QuestionBrick(80, height));
         bricks.add(new Brick(0, height));
@@ -285,7 +286,7 @@ public class SpaceInvadersGame extends Game {
             stopGameWithDelay();
         }
         if (enemyArmy.getTanksCount() == 0) {
-            mario.win();
+            mario.playVictoryAnimation();
             stopGameWithDelay();
         }
     }
@@ -314,7 +315,7 @@ public class SpaceInvadersGame extends Game {
     private void stopGameWithDelay() {
         isGameStopped = true;
         animationsCount++;
-        if (animationsCount >= 20) {
+        if (animationsCount >= 30) {
             stopGame(mario.isAlive);
             displayedEnding = true;
         }

@@ -98,15 +98,15 @@ public class QuestionBrick extends Brick {
 
         public void verifyTouch(Mario mario, SpaceInvadersGame game) {
             // проверка пересечения Марио и бонуса с учётом отзеркаливания спрайта
-            if (mario.getFacingDirection() == Direction.RIGHT) {
+            if (mario.getFaceDirection() == Direction.RIGHT) {
                 if (this.collidesWith(mario, Mirror.NONE)) {
-                    mario.collect(this);
+                    mario.setBonus(this);
                     this.isCollected = true;
                     game.increaseScore(10);
                 }
-            } else if (mario.getFacingDirection() == Direction.LEFT) {
+            } else if (mario.getFaceDirection() == Direction.LEFT) {
                 if (this.collidesWith(mario, Mirror.HORIZONTAL)) {
-                    mario.collect(this);
+                    mario.setBonus(this);
                     this.isCollected = true;
                     game.increaseScore(10);
                 }
