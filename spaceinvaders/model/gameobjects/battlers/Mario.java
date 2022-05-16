@@ -15,8 +15,9 @@ import java.util.Optional;
 
 public class Mario extends Battler {
     private static final int MAX_JUMP_ENERGY = 5;
-    private static final double WALK_SPEED = 1;
-    private static final double MAX_WALK_SPEED = 3;
+    private static final double START_SPEED = 0.6;
+    private static final double MAX_SPEED = 2.4;
+    private static final double ACCELERATION = 0.2;
     private static final double JUMP_RAISE_SPEED = 4;
     private static final double JUMP_DESCEND_SPEED = 2;
     private static final double JUMP_BOUND = 66;
@@ -29,7 +30,7 @@ public class Mario extends Battler {
     public Bonus bonus;
     public int finishAnimationCounter;
     private int jumpEnergy;
-    private double acceleration;
+    private double speed;
 
     public enum Animation {
         STANDING, WALKING, JUMPING, BRAKING, DEAD
@@ -42,12 +43,13 @@ public class Mario extends Battler {
         jumpEnergy = 0;
         leftWalkingBound = -4;
         rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;
-        acceleration = 0;
+        speed = 0;
     }
 
     public void move() {
         if (isAlive) {
             controlWalking();
+            controlBounds();
             controlJumping();
         } else {
             playDeathAnimation();
@@ -55,35 +57,49 @@ public class Mario extends Battler {
     }
 
     private void controlWalking() {
-        if (moveDirection == Direction.NONE) {
-            setStandingAnimation();
-            acceleration = 0;
-        } else if (moveDirection == Direction.RIGHT || moveDirection == Direction.LEFT) {
+        changeSpeed();
+        selectAnimationAccordingToSpeed();
+        brakeOnReverseDirectionInput();
+        x += speed;
+    }
+
+    private void changeSpeed() {
+        if (moveDirection == Direction.RIGHT) {
+            if (speed == 0) speed = START_SPEED;
+            if (speed < MAX_SPEED) speed += ACCELERATION;
+        } else if (moveDirection == Direction.LEFT) {
+            if (speed == 0) speed = -START_SPEED;
+            if (speed > -MAX_SPEED) speed -= ACCELERATION;
+        } else if (moveDirection == Direction.NONE) {
+            speed += ((speed > 0) ? -ACCELERATION : ACCELERATION);
+            if (Math.abs(speed) < 0.5) speed = 0;
+        }
+    }
+
+    private void selectAnimationAccordingToSpeed() {
+        if (Math.abs(speed) > ACCELERATION) {
             setWalkingAnimation();
-            walkInDirection();
-        }
-        controlWalkingBounds();
-    }
-
-    private void walkInDirection() {
-        acceleration += 0.1;
-        double speed = Math.min(WALK_SPEED + acceleration, MAX_WALK_SPEED);
-        if (moveDirection == Direction.RIGHT)
-            x += speed;
-        else if (moveDirection == Direction.LEFT) {
-            x -= speed;
+        } else {
+            setStandingAnimation();
         }
     }
 
-    public void controlWalkingBounds() {
+    private void brakeOnReverseDirectionInput() {
+        if (moveDirection == Direction.RIGHT && speed < ACCELERATION) {
+            speed += ACCELERATION / 2;
+            setBrakingAnimation();
+        }
+        if (moveDirection == Direction.LEFT && speed > -ACCELERATION) {
+            speed -= ACCELERATION / 2;
+            setBrakingAnimation();
+        }
+    }
+
+    public void controlBounds() {
         if (x < leftWalkingBound) {
             x = leftWalkingBound;
-            acceleration = 0;
-            setBrakingAnimation();
         } else if (x > rightWalkingBound) {
             x = rightWalkingBound;
-            acceleration = 0;
-            setBrakingAnimation();
         }
     }
 
