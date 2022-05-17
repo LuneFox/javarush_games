@@ -11,15 +11,14 @@ import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Battler;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyArmy;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.items.Brick;
-import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.Brick;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.QuestionBrick;
 import com.javarush.games.spaceinvaders.view.Display;
 import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * VERSION 1.03
@@ -28,9 +27,9 @@ import java.util.Optional;
 public class SpaceInvadersGame extends Game {
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
-    public static final int COMPLEXITY = 5;
     public static final int PLAYER_BULLETS_MAX = 2;
     public static final int FLOOR_HEIGHT = 4;
+    public static final int DIFFICULTY = 5;
 
     private Controller controller;
 
@@ -38,7 +37,6 @@ public class SpaceInvadersGame extends Game {
     public List<Bullet> enemyBullets;
     public List<Bullet> playerBullets;
     public List<Brick> bricks;
-    public List<QuestionBrick.Bonus> bonuses;
     public EnemyArmy enemyArmy;
     public Mario mario;
     public int animationsCount;
@@ -69,7 +67,6 @@ public class SpaceInvadersGame extends Game {
         enemyBullets = new ArrayList<>();
         playerBullets = new ArrayList<>();
         bricks = new ArrayList<>();
-        bonuses = new ArrayList<>();
         createBricks();
         setTurnTimer(40);
         animationsCount = 0;
@@ -82,10 +79,7 @@ public class SpaceInvadersGame extends Game {
     public void onTurn(int step) {
         moveSpaceObjects();
         check();
-
-        Optional<Bullet> bulletOptional = enemyArmy.fire(this);
-        bulletOptional.ifPresent(bullet -> enemyBullets.add(bullet));
-
+        enemyArmy.attack(this);
         setScore(Score.get());
         drawScene();
         display.draw();
@@ -113,7 +107,6 @@ public class SpaceInvadersGame extends Game {
         drawBushes();
         enemyArmy.draw();
         playerBullets.forEach(GameObject::draw);
-        bonuses.forEach(GameObject::draw);
         drawBricks();
         enemyBullets.forEach(GameObject::draw);
         drawFloor();
@@ -209,8 +202,7 @@ public class SpaceInvadersGame extends Game {
         enemyArmy.move();
         enemyBullets.forEach(Bullet::move);
         playerBullets.forEach(Bullet::move);
-        bonuses.forEach(QuestionBrick.Bonus::move);
-        bricks.forEach(brick -> brick.jump(this));
+        bricks.forEach(Brick::move);
         mario.move();
     }
 
@@ -226,14 +218,6 @@ public class SpaceInvadersGame extends Game {
         playerBulletsClone.forEach(bullet -> {
             if (bullet.y + bullet.getHeight() < 0 || !bullet.isAlive) {
                 playerBullets.remove(bullet);
-            }
-        });
-
-        ArrayList<QuestionBrick.Bonus> bonusesClone = new ArrayList<>(bonuses);
-        bonusesClone.forEach(bonus -> {
-            if (bonus.x + bonus.getWidth() < 0 || bonus.x > WIDTH || bonus.isCollected) {
-                bonus.isCollected = true;
-                bonuses.remove(bonus);
             }
         });
     }
@@ -255,10 +239,6 @@ public class SpaceInvadersGame extends Game {
         return count[0];
     }
 
-    public void addBonus(QuestionBrick.Bonus bonus) {
-        bonuses.add(bonus);
-    }
-
     public void increaseScore(int amount) {
         Score.add(amount);
     }
@@ -269,15 +249,7 @@ public class SpaceInvadersGame extends Game {
         enemyArmy.verifyHit(enemyBullets);
         enemyArmy.removeDeadTanks();
 
-        bricks.forEach(brick -> {
-            brick.verifyTouch(mario, this);
-            brick.check(this);
-        });
-
-        bonuses.forEach(bonus -> {
-            bonus.verifyTouch(mario, this);
-            bonus.verifyHit(enemyBullets);
-        });
+        bricks.forEach(brick -> brick.verifyTouch(mario));
 
         removeDeadObjects();
 

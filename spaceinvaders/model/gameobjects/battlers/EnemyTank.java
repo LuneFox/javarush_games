@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
+import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
@@ -28,7 +29,19 @@ public class EnemyTank extends Battler {
     }
 
     @Override
-    public Optional<Bullet> fire() {
+    public void shoot() {
+        Optional<Bullet> bulletOptional = getAmmo();
+        if (bulletOptional.isPresent()) {
+            Bullet bullet = bulletOptional.get();
+            game.enemyBullets.add(bullet);
+        }
+    }
+
+    @Override
+    public Optional<Bullet> getAmmo() {
+        int chanceToFire = game.getRandomNumber(100 / SpaceInvadersGame.DIFFICULTY);
+        if (chanceToFire != 0) return Optional.empty();
+
         return Optional.of(new EnemyTankBullet(x + 2, y + getHeight(), Direction.DOWN));
     }
 

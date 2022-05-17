@@ -9,7 +9,7 @@ import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.FireballBullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.items.QuestionBrick.Bonus;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
@@ -31,8 +31,7 @@ public class Mario extends Battler {
     private Direction moveDirection = Direction.NONE;
     private Direction faceDirection = Direction.RIGHT;
     public Bonus bonus;
-    public int finishAnimationCounter;
-    private int jumpEnergy;
+    public int finalAnimationCounter;
     private double speed;
 
     public enum Animation {
@@ -42,7 +41,7 @@ public class Mario extends Battler {
     public Mario() {
         super(marioSpawnX(), marioSpawnY());
         setStandingAnimation();
-        finishAnimationCounter = 0;
+        finalAnimationCounter = 0;
         jumpEnergy = 0;
         leftWalkingBound = -4;
         rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;
@@ -59,15 +58,15 @@ public class Mario extends Battler {
 
     public void move() {
         if (isAlive) {
-            controlWalking();
-            controlBounds();
-            controlJumping();
+            processWalking();
+            processWalkingBounds();
+            processJumping();
         } else {
             playDeathAnimation();
         }
     }
 
-    private void controlWalking() {
+    private void processWalking() {
         changeSpeed();
         selectAnimationAccordingToSpeed();
         brakeOnReverseDirectionInput();
@@ -106,7 +105,7 @@ public class Mario extends Battler {
         }
     }
 
-    public void controlBounds() {
+    public void processWalkingBounds() {
         if (x < leftWalkingBound) {
             x = leftWalkingBound;
         } else if (x > rightWalkingBound) {
@@ -114,7 +113,7 @@ public class Mario extends Battler {
         }
     }
 
-    public void controlJumping() {
+    public void processJumping() {
         if (jumpEnergy > 0) {
             setJumpingAnimation();
             loseJumpEnergy();
@@ -135,34 +134,32 @@ public class Mario extends Battler {
         return y < (SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
     }
 
-    private void raise() {
+    @Override
+    protected void raise() {
         y -= JUMP_RAISE_SPEED;
         if (y < JUMP_BOUND) y = JUMP_BOUND;
     }
 
-    private void loseJumpEnergy() {
-        jumpEnergy--;
-    }
-
-    private void descend() {
+    @Override
+    protected void descend() {
         y += JUMP_DESCEND_SPEED;
     }
 
     private void playDeathAnimation() {
         setDeadAnimation();
-        if (finishAnimationCounter < 30) finishAnimationCounter++;
-        if (finishAnimationCounter < 10) return;
-        if (finishAnimationCounter < 15) y -= 2;
-        else if (finishAnimationCounter < 30) y += 3;
+        if (finalAnimationCounter < 30) finalAnimationCounter++;
+        if (finalAnimationCounter < 10) return;
+        if (finalAnimationCounter < 15) y -= 2;
+        else if (finalAnimationCounter < 30) y += 3;
     }
 
     public void playVictoryAnimation() {
-        if (finishAnimationCounter % 20 < 10) {
+        if (finalAnimationCounter % 20 < 10) {
             setJumpingAnimation();
         } else {
             setStandingAnimation();
         }
-        finishAnimationCounter++;
+        finalAnimationCounter++;
     }
 
     private void setStandingAnimation() {
@@ -228,7 +225,7 @@ public class Mario extends Battler {
 
     @Control(Key.SPACE)
     public void shoot() {
-        Optional<Bullet> bulletOptional = fire();
+        Optional<Bullet> bulletOptional = getAmmo();
         if (bulletOptional.isPresent()) {
             Bullet bullet = bulletOptional.get();
             game.addPlayerBullet(bullet);
@@ -241,7 +238,7 @@ public class Mario extends Battler {
     }
 
     @Override
-    public Optional<Bullet> fire() {
+    public Optional<Bullet> getAmmo() {
         if (!isAlive) return Optional.empty();
         if (bonus == null) return Optional.empty();
         if (!bonus.getClass().getName().contains("Mushroom")) return Optional.empty(); // TODO: refactor this crap

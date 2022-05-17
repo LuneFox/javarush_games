@@ -4,13 +4,14 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 
 public class GameObject {
-    private static SpaceInvadersGame game;
+    protected static SpaceInvadersGame game;
     private Sprite sprite;
     public double x;
     public double y;
-    public int lastCollisionX;
-    public int lastCollisionY;
     public boolean isAlive;
+    protected int jumpEnergy;
+    private int lastCollisionX;
+    private int lastCollisionY;
 
     public static void setGame(SpaceInvadersGame game) {
         GameObject.game = game;
@@ -99,5 +100,17 @@ public class GameObject {
     private void memorizeCollisionPoint(int x, int y) {
         lastCollisionX = x;
         lastCollisionY = y;
+    }
+
+    protected void raise() {
+        y--;
+    }
+
+    protected void descend() {
+        y++;
+    }
+
+    protected void loseJumpEnergy() {
+        jumpEnergy--;
     }
 }

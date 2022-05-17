@@ -10,7 +10,6 @@ import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 public class EnemyArmy {
     private static final int ROWS = 3;
@@ -100,15 +99,10 @@ public class EnemyArmy {
         return armyRightBorder >= SpaceInvadersGame.WIDTH;
     }
 
-    public Optional<Bullet> fire(Game game) {
-        Optional<Bullet> bulletOptional = Optional.empty();
-        if (enemyTanks.isEmpty()) return bulletOptional;
-
-        int chanceToFire = game.getRandomNumber(100 / SpaceInvadersGame.COMPLEXITY);
-        if (chanceToFire != 0) return bulletOptional;
-
+    public void attack(Game game) {
+        if (enemyTanks.isEmpty()) return;
         int randomTank = game.getRandomNumber(enemyTanks.size());
-        return enemyTanks.get(randomTank).fire();
+        enemyTanks.get(randomTank).shoot();
     }
 
     public void verifyHit(List<Bullet> bullets) {
