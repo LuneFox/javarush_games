@@ -43,8 +43,11 @@ public abstract class Bonus extends GameObject {
     }
 
     private void eject() {
-        if (!isOnBrick()) raise();
-        else finishedEjectPhase = true;
+        if (isOnBrick()) {
+            finishedEjectPhase = true;
+        } else {
+            raise();
+        }
     }
 
     private boolean isOnBrick() {
