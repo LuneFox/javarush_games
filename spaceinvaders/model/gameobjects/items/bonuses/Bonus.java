@@ -14,6 +14,7 @@ import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 import java.util.List;
 
 public abstract class Bonus extends GameObject {
+    public GameObject overheadIcon;
     private final static int MAX_JUMP_ENERGY = 4;
     private QuestionBrick parentQuestionBrick;
     private final Direction direction;

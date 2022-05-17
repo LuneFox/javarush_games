@@ -197,6 +197,13 @@ public class Mario extends Battler {
         if (moveDirection == Direction.RIGHT) faceDirection = Direction.RIGHT;
         else if (moveDirection == Direction.LEFT) faceDirection = Direction.LEFT;
         super.draw(faceDirection == Direction.LEFT ? Mirror.HORIZONTAL : Mirror.NONE);
+
+        if (bonus != null) {
+            bonus.overheadIcon.setPosition(
+                    x + MarioShape.STAND[0].length / 2.0 - bonus.overheadIcon.getWidth() / 2.0,
+                    y - 3);
+            bonus.overheadIcon.draw();
+        }
     }
 
     public void verifyHit(List<Bullet> bullets) {

@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
@@ -13,6 +14,11 @@ public class Star extends Bonus {
     public Star(double x, double y) {
         super(x, y);
         setStaticView(ObjectShape.STAR);
+        overheadIcon = new GameObject() {
+            {
+                setStaticView(ObjectShape.STAR_OVERHEAD_ICON);
+            }
+        };
     }
 
     @Override

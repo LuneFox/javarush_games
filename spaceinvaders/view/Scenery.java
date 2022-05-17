@@ -11,25 +11,25 @@ import static com.javarush.games.spaceinvaders.SpaceInvadersGame.*;
 public class Scenery {
     private final SpaceInvadersGame game;
 
-    private final GameObject cloud = new GameObject(0, 0) {
+    private final GameObject cloud = new GameObject() {
         {
             setStaticView(DecoShape.CLOUD);
         }
     };
 
-    private final GameObject hill = new GameObject(0, 0) {
+    private final GameObject hill = new GameObject() {
         {
             setStaticView(DecoShape.HILL);
         }
     };
 
-    private final GameObject bush = new GameObject(0, 0) {
+    private final GameObject bush = new GameObject() {
         {
             setStaticView(DecoShape.BUSH);
         }
     };
 
-    private final GameObject floorTile = new GameObject(0, 0) {
+    private final GameObject floorTile = new GameObject() {
         {
             setStaticView(DecoShape.FLOOR);
         }

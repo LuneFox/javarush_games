@@ -1,6 +1,7 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
@@ -10,6 +11,11 @@ public class Mushroom extends Bonus {
     public Mushroom(double x, double y) {
         super(x, y);
         setStaticView(getMushroomSpriteCopy());
+        overheadIcon = new GameObject() {
+            {
+                setStaticView(ObjectShape.MUSHROOM_OVERHEAD_ICON);
+            }
+        };
     }
 
     private int[][] getMushroomSpriteCopy() {

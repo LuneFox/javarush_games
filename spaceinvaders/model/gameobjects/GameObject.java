@@ -17,6 +17,10 @@ public class GameObject {
         GameObject.game = game;
     }
 
+    public GameObject() {
+        this(0, 0);
+    }
+
     public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
