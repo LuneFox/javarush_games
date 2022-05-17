@@ -49,9 +49,17 @@ public class Scenery {
 
 
     private void drawSky() {
+        Color skyColor;
         for (int y = 0; y < HEIGHT; y++) {
+            skyColor = Color.DEEPSKYBLUE;
+            if (y <= 60) skyColor = Color.BLACK;
+            if (y == 63) skyColor = Color.MIDNIGHTBLUE;
+            if (y == 64) skyColor = Color.DARKSLATEBLUE;
+            if (y == 65 || y == 66) skyColor = Color.ROYALBLUE;
+            if (y == 67 || y == 68 || y == 69) skyColor = Color.DODGERBLUE;
+
             for (int x = 0; x < WIDTH; x++) {
-                game.display.drawPixel(x, y, (y > 60) ? Color.DEEPSKYBLUE : Color.BLACK);
+                game.display.drawPixel(x, y, skyColor);
             }
         }
     }
