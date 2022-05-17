@@ -1,8 +1,11 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
+import com.javarush.engine.cell.Key;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.controller.Control;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.FireballBullet;
@@ -37,13 +40,21 @@ public class Mario extends Battler {
     }
 
     public Mario() {
-        super(SpaceInvadersGame.WIDTH / 2.0, SpaceInvadersGame.HEIGHT - MarioShape.STAND.length - SpaceInvadersGame.FLOOR_HEIGHT);
+        super(marioSpawnX(), marioSpawnY());
         setStandingAnimation();
         finishAnimationCounter = 0;
         jumpEnergy = 0;
         leftWalkingBound = -4;
         rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;
         speed = 0;
+    }
+
+    private static double marioSpawnX() {
+        return SpaceInvadersGame.WIDTH / 2.0 - MarioShape.STAND[0].length / 2.0;
+    }
+
+    private static int marioSpawnY() {
+        return SpaceInvadersGame.HEIGHT - SpaceInvadersGame.FLOOR_HEIGHT - MarioShape.STAND.length;
     }
 
     public void move() {
@@ -114,6 +125,7 @@ public class Mario extends Battler {
         }
     }
 
+    @Control(Key.UP)
     public void jump() {
         if (isAboveFloor()) return;
         jumpEnergy = MAX_JUMP_ENERGY;
@@ -214,11 +226,25 @@ public class Mario extends Battler {
         super.kill();
     }
 
+    @Control(Key.SPACE)
+    public void shoot() {
+        Optional<Bullet> bulletOptional = fire();
+        if (bulletOptional.isPresent()) {
+            Bullet bullet = bulletOptional.get();
+            game.addPlayerBullet(bullet);
+        }
+        if (wipeEnemyBullets()) { // TODO: Refactor this crap...
+            game.showFlash = true;
+            Score.add(game.enemyBullets.size() * 5);
+            game.enemyBullets.clear();
+        }
+    }
+
     @Override
     public Optional<Bullet> fire() {
         if (!isAlive) return Optional.empty();
         if (bonus == null) return Optional.empty();
-        if (!bonus.getClass().getName().contains("Mushroom")) return Optional.empty();
+        if (!bonus.getClass().getName().contains("Mushroom")) return Optional.empty(); // TODO: refactor this crap
 
         bonus = null;
 
@@ -236,7 +262,7 @@ public class Mario extends Battler {
     public boolean wipeEnemyBullets() {
         if (!isAlive) return false;
         if (bonus == null) return false;
-        if (!bonus.getClass().getName().contains("Star")) return false;
+        if (!bonus.getClass().getName().contains("Star")) return false; // TODO: refactor this crap
 
         bonus = null;
 
@@ -251,6 +277,7 @@ public class Mario extends Battler {
         return moveDirection;
     }
 
+    @Control({Key.RIGHT, Key.LEFT})
     public void setMoveDirection(Direction moveDirection) {
         this.moveDirection = moveDirection;
     }

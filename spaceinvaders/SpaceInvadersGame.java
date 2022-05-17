@@ -7,6 +7,7 @@ import com.javarush.games.spaceinvaders.controller.Controller;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Battler;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyArmy;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
@@ -55,6 +56,7 @@ public class SpaceInvadersGame extends Game {
         setScreenSize(WIDTH, HEIGHT);
         GameObject.setGame(this);
         ObjectShape.setGame(this);
+        Battler.setGame(this);
         display = new Display(this);
         controller = new Controller(this);
         createGame();
@@ -288,16 +290,6 @@ public class SpaceInvadersGame extends Game {
         if (enemyArmy.getTanksCount() == 0) {
             mario.playVictoryAnimation();
             stopGameWithDelay();
-        }
-    }
-
-    public void marioFire() {
-        Optional<Bullet> bulletOptional = mario.fire();
-        bulletOptional.ifPresent(this::addPlayerBullet);
-        if (mario.wipeEnemyBullets()) {
-            showFlash = true;
-            Score.add(enemyBullets.size() * 5);
-            enemyBullets.clear();
         }
     }
 

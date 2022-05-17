@@ -47,7 +47,7 @@ public class BattleControlStrategy implements ControlStrategy {
         if (game.isGameStopped && game.displayedEnding) {
             game.createGame();
         } else {
-            game.marioFire();
+            game.mario.shoot();
         }
     }
 }

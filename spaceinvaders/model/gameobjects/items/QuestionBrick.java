@@ -11,6 +11,7 @@ import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public class QuestionBrick extends Brick {
     private Bonus bonus;
@@ -30,9 +31,9 @@ public class QuestionBrick extends Brick {
     }
 
     @Override
-    public Bullet fire() {
+    public Optional<Bullet> fire() {
         open();
-        return null;
+        return Optional.empty();
     }
 
     private void open() {
