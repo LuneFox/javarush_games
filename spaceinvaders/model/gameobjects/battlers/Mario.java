@@ -143,6 +143,7 @@ public class Mario extends Battler {
 
     public void playDeathAnimation() {
         setDeadAnimation();
+        this.bonus = null;
         if (finalAnimationCounter < 30) finalAnimationCounter++;
         if (finalAnimationCounter < 10) return;
         if (finalAnimationCounter < 15) y -= 2;
