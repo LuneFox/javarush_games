@@ -87,9 +87,9 @@ public class SpaceInvadersGame extends Game {
 
     private void createBricks() {
         bricks = new ArrayList<>();
-        int height = HEIGHT - 30 - ObjectShape.BRICK.length;
-        IntStream.of(0, 20, 30, 60, 70, 90).forEach(x -> bricks.add(new Brick(x, height)));
-        IntStream.of(10, 80).forEach(x -> bricks.add(new QuestionBrick(x, height)));
+        int y = HEIGHT - 30 - ObjectShape.BRICK.length;
+        IntStream.of(0, 20, 30, 60, 70, 90).forEach(x -> bricks.add(new Brick(x, y)));
+        IntStream.of(10, 80).forEach(x -> bricks.add(new QuestionBrick(x, y)));
     }
 
     @Override
