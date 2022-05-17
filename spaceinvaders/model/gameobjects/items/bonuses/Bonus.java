@@ -34,15 +34,13 @@ public abstract class Bonus extends GameObject {
         game.bricks.forEach(this::verifyHit);
         processJumping();
 
-        if (!finishedJumpPhase) {
-            return;
-        }
+        if (!finishedJumpPhase) return;
 
         slide();
         verifyTouch(game.mario);
     }
 
-    public void eject() {
+    private void eject() {
         if (!isOnBrick()) raise();
         else finishedEjectPhase = true;
     }
@@ -52,9 +50,9 @@ public abstract class Bonus extends GameObject {
         return y == height;
     }
 
-    public abstract void verifyHit(List<Bullet> bullets);
+    protected abstract void verifyHit(List<Bullet> bullets);
 
-    public void verifyHit(Brick brick) {
+    private void verifyHit(Brick brick) {
         if (this.collidesWith(brick, Mirror.NONE)) {
             jump();
         }
@@ -91,6 +89,7 @@ public abstract class Bonus extends GameObject {
             if (x + getWidth() >= 60) return;
             fallOnFloor();
         }
+        checkMovingOutsideBorders();
     }
 
     private void fallOnFloor() {
@@ -102,7 +101,13 @@ public abstract class Bonus extends GameObject {
         return SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT;
     }
 
-    public void verifyTouch(Mario mario) {
+    private void checkMovingOutsideBorders() {
+        if (x + getWidth() < 0 || x > SpaceInvadersGame.WIDTH) {
+            parentQuestionBrick.clearBonuses();
+        }
+    }
+
+    private void verifyTouch(Mario mario) {
         Mirror mirror = (mario.getFaceDirection() == Direction.RIGHT) ? Mirror.NONE : Mirror.HORIZONTAL;
         if (this.collidesWith(mario, mirror)) {
             mario.setBonus(this);

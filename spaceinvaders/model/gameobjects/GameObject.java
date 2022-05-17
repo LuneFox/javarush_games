@@ -53,6 +53,18 @@ public class GameObject {
         sprite.erasePixel(lastCollisionX, lastCollisionY);
     }
 
+    protected void raise() {
+        y--;
+    }
+
+    protected void descend() {
+        y++;
+    }
+
+    protected void loseJumpEnergy() {
+        jumpEnergy--;
+    }
+
     public int getWidth() {
         return sprite.width;
     }
@@ -100,17 +112,5 @@ public class GameObject {
     private void memorizeCollisionPoint(int x, int y) {
         lastCollisionX = x;
         lastCollisionY = y;
-    }
-
-    protected void raise() {
-        y--;
-    }
-
-    protected void descend() {
-        y++;
-    }
-
-    protected void loseJumpEnergy() {
-        jumpEnergy--;
     }
 }
