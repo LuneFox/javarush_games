@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 
 
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
@@ -23,6 +24,13 @@ public class Star extends Bonus {
                 bullet.lastCollisionDate = new Date();
             }
         });
+    }
+
+    @Override
+    public void consume() {
+        game.showFlash = true;
+        Score.add(game.enemyBullets.size() * 5);
+        game.enemyBullets.clear();
     }
 
     private boolean bulletCollisionCooledDown(Bullet bullet) {

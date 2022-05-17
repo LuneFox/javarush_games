@@ -5,7 +5,6 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.controller.Control;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
-import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.FireballBullet;
@@ -225,26 +224,15 @@ public class Mario extends Battler {
 
     @Control(Key.SPACE)
     public void shoot() {
-        Optional<Bullet> bulletOptional = getAmmo();
-        if (bulletOptional.isPresent()) {
-            Bullet bullet = bulletOptional.get();
-            game.addPlayerBullet(bullet);
-        }
-        if (wipeEnemyBullets()) { // TODO: Refactor this crap...
-            game.showFlash = true;
-            Score.add(game.enemyBullets.size() * 5);
-            game.enemyBullets.clear();
-        }
+        if (!isAlive) return;
+        if (bonus == null) return;
+
+        bonus.consume();
+        bonus = null;
     }
 
     @Override
     public Optional<Bullet> getAmmo() {
-        if (!isAlive) return Optional.empty();
-        if (bonus == null) return Optional.empty();
-        if (!bonus.getClass().getName().contains("Mushroom")) return Optional.empty(); // TODO: refactor this crap
-
-        bonus = null;
-
         return Optional.of(new FireballBullet(getFireballSpawnX(), getFireballSpawnY()));
     }
 
@@ -254,16 +242,6 @@ public class Mario extends Battler {
 
     private double getFireballSpawnY() {
         return (y - ObjectShape.FIREBALL_1.length) + 4;
-    }
-
-    public boolean wipeEnemyBullets() {
-        if (!isAlive) return false;
-        if (bonus == null) return false;
-        if (!bonus.getClass().getName().contains("Star")) return false; // TODO: refactor this crap
-
-        bonus = null;
-
-        return true;
     }
 
     /*

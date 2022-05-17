@@ -52,6 +52,8 @@ public abstract class Bonus extends GameObject {
 
     protected abstract void verifyHit(List<Bullet> bullets);
 
+    public abstract void consume();
+
     private void verifyHit(Brick brick) {
         if (this.collidesWith(brick, Mirror.NONE)) {
             jump();
