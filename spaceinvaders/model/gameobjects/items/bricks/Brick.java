@@ -46,7 +46,7 @@ public class Brick extends GameObject implements Shooter {
 
     public void shoot() {
         Optional<Bullet> bulletOptional = getAmmo();
-        bulletOptional.ifPresent(coin -> game.playerBullets.add(coin));
+        bulletOptional.ifPresent(coin -> game.addPlayerBullet(coin));
     }
 
     public Optional<Bullet> getAmmo() {

@@ -99,10 +99,10 @@ public class EnemyArmy {
         return armyRightBorder >= SpaceInvadersGame.WIDTH;
     }
 
-    public void attack(Game game) {
+    public void attack() {
         if (enemyTanks.isEmpty()) return;
-        int randomTank = game.getRandomNumber(enemyTanks.size());
-        enemyTanks.get(randomTank).shoot();
+        int randomTankNumber = (int) (Math.random() * enemyTanks.size());
+        enemyTanks.get(randomTankNumber).shoot();
     }
 
     public void verifyHit(List<Bullet> bullets) {

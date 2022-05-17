@@ -56,13 +56,10 @@ public class Mario extends Battler {
     }
 
     public void move() {
-        if (isAlive) {
-            processWalking();
-            processWalkingBounds();
-            processJumping();
-        } else {
-            playDeathAnimation();
-        }
+        if (!isAlive) return;
+        processWalking();
+        processWalkingBounds();
+        processJumping();
     }
 
     private void processWalking() {
@@ -144,7 +141,7 @@ public class Mario extends Battler {
         y += JUMP_DESCEND_SPEED;
     }
 
-    private void playDeathAnimation() {
+    public void playDeathAnimation() {
         setDeadAnimation();
         if (finalAnimationCounter < 30) finalAnimationCounter++;
         if (finalAnimationCounter < 10) return;

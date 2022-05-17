@@ -12,13 +12,13 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        if (game.isGameStopped) return;
+        if (game.isStopped) return;
         game.mario.jump();
     }
 
     @Override
     public void pressRight() {
-        if (game.isGameStopped) return;
+        if (game.isStopped) return;
         game.mario.setMoveDirection(Direction.RIGHT);
     }
 
@@ -31,7 +31,7 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressLeft() {
-        if (game.isGameStopped) return;
+        if (game.isStopped) return;
         game.mario.setMoveDirection(Direction.LEFT);
     }
 
@@ -44,8 +44,8 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        if (game.isGameStopped && game.displayedEnding) {
-            game.createGame();
+        if (game.isStopped && game.isEndingDisplayed) {
+            game.startNewGame();
         } else {
             game.mario.shoot();
         }

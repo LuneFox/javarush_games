@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
@@ -114,7 +115,7 @@ public abstract class Bonus extends GameObject {
         if (this.collidesWith(mario, mirror)) {
             mario.setBonus(this);
             parentQuestionBrick.clearBonuses();
-            game.increaseScore(10);
+            Score.add(10);
         }
     }
 
