@@ -8,7 +8,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.CoinBullet;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.Optional;
 
@@ -17,7 +17,7 @@ public class Brick extends GameObject implements Shooter {
 
     public Brick(double x, double y) {
         super(x, y);
-        setStaticView(ObjectShape.BRICK);
+        setStaticView(BrickShape.BRICK);
         jumpEnergy = 0;
     }
 
@@ -59,7 +59,7 @@ public class Brick extends GameObject implements Shooter {
     }
 
     private boolean isAboveBrickBase() {
-        int height = SpaceInvadersGame.HEIGHT - 30 - ObjectShape.BRICK.length;
+        int height = SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length;
         return y < height;
     }
 }

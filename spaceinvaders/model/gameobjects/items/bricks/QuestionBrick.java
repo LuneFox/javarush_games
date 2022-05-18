@@ -4,7 +4,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Mushroom;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Star;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -52,9 +52,9 @@ public class QuestionBrick extends Brick {
     @Override
     public void draw() {
         if (bonuses.isEmpty() || bonusIsRevealed) {
-            setStaticView(ObjectShape.QUESTION_BRICK_EMPTY);
+            setStaticView(BrickShape.QUESTION_BRICK_EMPTY);
         } else {
-            setStaticView(ObjectShape.QUESTION_BRICK_FULL);
+            setStaticView(BrickShape.QUESTION_BRICK_FULL);
         }
         if (bonusIsRevealed) getBonus().ifPresent(GameObject::draw);
         super.draw();

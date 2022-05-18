@@ -16,7 +16,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.QuestionB
 import com.javarush.games.spaceinvaders.view.Display;
 import com.javarush.games.spaceinvaders.view.Flash;
 import com.javarush.games.spaceinvaders.view.Scenery;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +42,7 @@ public class SpaceInvadersGame extends Game {
     private EnemyArmy enemyArmy;
     public Mario mario;
     public Flash flash;
-    public int gameOverDelay;
+    private int gameOverDelay;
     public boolean isEndingDisplayed;
     public boolean isStopped;
 
@@ -52,7 +52,6 @@ public class SpaceInvadersGame extends Game {
         setScreenSize(WIDTH, HEIGHT);
 
         GameObject.setGame(this);
-        ObjectShape.setGame(this);
         Battler.setGame(this);
 
         scenery = new Scenery(this);
@@ -87,7 +86,7 @@ public class SpaceInvadersGame extends Game {
 
     private void createBricks() {
         bricks = new ArrayList<>();
-        int y = HEIGHT - 30 - ObjectShape.BRICK.length;
+        int y = HEIGHT - 30 - BrickShape.BRICK.length;
         IntStream.of(0, 20, 30, 60, 70, 90).forEach(x -> bricks.add(new Brick(x, y)));
         IntStream.of(10, 80).forEach(x -> bricks.add(new QuestionBrick(x, y)));
     }
@@ -162,7 +161,9 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void addCoinBullet(Bullet bulletToAdd) {
-        long coinBulletsCount = playerBullets.stream().filter(bullet -> bullet instanceof CoinBullet).count();
+        long coinBulletsCount = playerBullets.stream()
+                .filter(bullet -> bullet instanceof CoinBullet)
+                .count();
 
         if (coinBulletsCount < COIN_BULLETS_MAX) {
             playerBullets.add(bulletToAdd);

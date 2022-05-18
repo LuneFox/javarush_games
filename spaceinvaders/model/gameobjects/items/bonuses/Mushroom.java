@@ -3,7 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
 import java.util.List;
 
@@ -13,15 +13,15 @@ public class Mushroom extends Bonus {
         setStaticView(getMushroomSpriteCopy());
         overheadIcon = new GameObject() {
             {
-                setStaticView(ObjectShape.MUSHROOM_OVERHEAD_ICON);
+                setStaticView(BonusShape.MUSHROOM_OVERHEAD_ICON);
             }
         };
     }
 
     private int[][] getMushroomSpriteCopy() {
-        int[][] sprite = new int[ObjectShape.MUSHROOM.length][ObjectShape.MUSHROOM[0].length];
-        for (int matrixY = 0; matrixY < ObjectShape.MUSHROOM.length; matrixY++) {
-            System.arraycopy(ObjectShape.MUSHROOM[matrixY], 0, sprite[matrixY], 0, ObjectShape.MUSHROOM[0].length);
+        int[][] sprite = new int[BonusShape.MUSHROOM.length][BonusShape.MUSHROOM[0].length];
+        for (int matrixY = 0; matrixY < BonusShape.MUSHROOM.length; matrixY++) {
+            System.arraycopy(BonusShape.MUSHROOM[matrixY], 0, sprite[matrixY], 0, BonusShape.MUSHROOM[0].length);
         }
         return sprite;
     }

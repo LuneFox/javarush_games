@@ -29,7 +29,7 @@ public abstract class Bullet extends GameObject {
         this.dy = -dy;
     }
 
-    protected void multiplySpeed(int times) {
-        dy *= times;
+    protected void doubleSpeed() {
+        dy *= 2;
     }
 }

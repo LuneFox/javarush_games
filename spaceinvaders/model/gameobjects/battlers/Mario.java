@@ -9,8 +9,8 @@ import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.FireballBullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
+import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
 
 import java.util.List;
 import java.util.Optional;
@@ -198,13 +198,16 @@ public class Mario extends Battler {
         if (moveDirection == Direction.RIGHT) faceDirection = Direction.RIGHT;
         else if (moveDirection == Direction.LEFT) faceDirection = Direction.LEFT;
         super.draw(faceDirection == Direction.LEFT ? Mirror.HORIZONTAL : Mirror.NONE);
+        drawBonusOverheadIcon();
+    }
 
-        if (bonus != null) {
-            bonus.overheadIcon.setPosition(
-                    x + MarioShape.STAND[0].length / 2.0 - bonus.overheadIcon.getWidth() / 2.0,
-                    y - 3);
-            bonus.overheadIcon.draw();
-        }
+    private void drawBonusOverheadIcon() {
+        if (bonus == null) return;
+
+        final double bx = x + (getWidth() / 2.0) - (bonus.overheadIcon.getWidth() / 2.0);
+        final double by = y - 3;
+        bonus.overheadIcon.setPosition(bx, by);
+        bonus.overheadIcon.draw();
     }
 
     public void verifyHit(List<Bullet> bullets) {
@@ -242,11 +245,11 @@ public class Mario extends Battler {
     }
 
     private double getFireballSpawnX() {
-        return (x + getWidth() / 2.0) - (ObjectShape.FIREBALL_1.length / 2.0);
+        return (x + getWidth() / 2.0) - (FireballShape.FIREBALL_1.length / 2.0);
     }
 
     private double getFireballSpawnY() {
-        return (y - ObjectShape.FIREBALL_1.length) + 4;
+        return (y - FireballShape.FIREBALL_1.length) + 4;
     }
 
     /*

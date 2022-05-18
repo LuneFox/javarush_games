@@ -9,7 +9,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.Brick;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.QuestionBrick;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.List;
 
@@ -51,7 +51,7 @@ public abstract class Bonus extends GameObject {
     }
 
     private boolean isOnBrick() {
-        int height = SpaceInvadersGame.HEIGHT - 30 - ObjectShape.BRICK.length - getHeight();
+        int height = SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight();
         return y == height;
     }
 
@@ -82,7 +82,7 @@ public abstract class Bonus extends GameObject {
     }
 
     private boolean isAboveBrick() {
-        int height = SpaceInvadersGame.HEIGHT - 30 - ObjectShape.BRICK.length - getHeight();
+        int height = SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight();
         return y < height;
     }
 

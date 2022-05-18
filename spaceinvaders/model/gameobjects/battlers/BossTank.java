@@ -6,7 +6,7 @@ import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyBossTankBullet;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.BossTankShape;
 
 import java.util.Optional;
 
@@ -15,8 +15,8 @@ public class BossTank extends EnemyTank {
         super(x, y);
         score = 100;
         setAnimatedView(Sprite.Loop.ENABLED, 10,
-                ObjectShape.BOSS_TANK_1,
-                ObjectShape.BOSS_TANK_2
+                BossTankShape.BOSS_TANK_1,
+                BossTankShape.BOSS_TANK_2
         );
     }
 
@@ -34,10 +34,10 @@ public class BossTank extends EnemyTank {
         super.kill();
         Score.add(score);
         setAnimatedView(Sprite.Loop.DISABLED, 1,
-                ObjectShape.BOSS_TANK_KILL_1,
-                ObjectShape.BOSS_TANK_KILL_2,
-                ObjectShape.BOSS_TANK_KILL_3,
-                ObjectShape.BOSS_TANK_KILL_4
+                BossTankShape.BOSS_TANK_KILL_1,
+                BossTankShape.BOSS_TANK_KILL_2,
+                BossTankShape.BOSS_TANK_KILL_3,
+                BossTankShape.BOSS_TANK_KILL_4
         );
     }
 }

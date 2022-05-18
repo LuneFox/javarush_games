@@ -6,7 +6,7 @@ import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyTankBullet;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 
 import java.util.Optional;
 
@@ -17,8 +17,8 @@ public class EnemyTank extends Battler {
         super(x, y);
         score = 15;
         setAnimatedView(Sprite.Loop.ENABLED, 5,
-                ObjectShape.TANK_1,
-                ObjectShape.TANK_2
+                TankShape.TANK_1,
+                TankShape.TANK_2
         );
     }
 
@@ -51,9 +51,9 @@ public class EnemyTank extends Battler {
         super.kill();
         Score.add(score);
         setAnimatedView(Sprite.Loop.DISABLED, 1,
-                ObjectShape.TANK_KILL_1,
-                ObjectShape.TANK_KILL_2,
-                ObjectShape.TANK_KILL_3
+                TankShape.TANK_KILL_1,
+                TankShape.TANK_KILL_2,
+                TankShape.TANK_KILL_3
         );
     }
 }

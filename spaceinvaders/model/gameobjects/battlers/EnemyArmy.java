@@ -5,7 +5,8 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.view.shapes.ObjectShape;
+import com.javarush.games.spaceinvaders.view.shapes.BossTankShape;
+import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class EnemyArmy {
     private static final int ROWS = 3;
     private static final int COLUMNS = 10;
-    private static final int STEP = ObjectShape.TANK_1.length + 1;
+    private static final int STEP = TankShape.TANK_1.length + 1;
     private List<EnemyTank> enemyTanks;
     private double speed;
     private Direction direction;
@@ -46,7 +47,7 @@ public class EnemyArmy {
     }
 
     private void addBossTank() {
-        double bossTankX = (STEP * COLUMNS / 2.0) - (ObjectShape.BOSS_TANK_1.length / 2.0);
+        double bossTankX = (STEP * COLUMNS / 2.0) - (BossTankShape.BOSS_TANK_1.length / 2.0);
         double bossTankY = 1;
         BossTank bossTank = new BossTank(bossTankX, bossTankY);
         enemyTanks.add(bossTank);
