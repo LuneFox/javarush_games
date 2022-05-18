@@ -9,7 +9,6 @@ public class GameObject {
     public double x;
     public double y;
     public boolean isAlive;
-    protected int jumpEnergy;
     private int lastCollisionX;
     private int lastCollisionY;
 
@@ -55,18 +54,6 @@ public class GameObject {
 
     public void eraseCollisionPixel() {
         sprite.erasePixel(lastCollisionX, lastCollisionY);
-    }
-
-    protected void raise() {
-        y--;
-    }
-
-    protected void descend() {
-        y++;
-    }
-
-    protected void loseJumpEnergy() {
-        jumpEnergy--;
     }
 
     public int getWidth() {

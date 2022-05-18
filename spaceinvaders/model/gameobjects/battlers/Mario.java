@@ -5,6 +5,7 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.controller.Control;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
@@ -17,19 +18,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class Mario extends Battler {
-    private static final int MAX_JUMP_ENERGY = 5;
     private static final double START_SPEED = 0.6;
     private static final double MAX_SPEED = 2.4;
     private static final double ACCELERATION = 0.2;
-    private static final double JUMP_RAISE_SPEED = 4;
-    private static final double JUMP_DESCEND_SPEED = 2;
-    private static final double JUMP_BOUND = 66;
 
     private final int leftWalkingBound;
     private final int rightWalkingBound;
     private Animation animation;
     private Direction moveDirection = Direction.NONE;
     private Direction faceDirection = Direction.RIGHT;
+    private JumpHelper jumpHelper;
     public Bonus bonus;
     public int finalAnimationCounter;
     private double speed;
@@ -41,11 +39,20 @@ public class Mario extends Battler {
     public Mario() {
         super(marioSpawnX(), marioSpawnY());
         setStandingAnimation();
+        configureJumpHelper();
         finalAnimationCounter = 0;
-        jumpEnergy = 0;
         leftWalkingBound = -4;
         rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;
         speed = 0;
+    }
+
+    private void configureJumpHelper() {
+        jumpHelper = new JumpHelper(this);
+        jumpHelper.setMaxJumpEnergy(5);
+        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
+        jumpHelper.setTopLine(66);
+        jumpHelper.setRaiseSpeed(4);
+        jumpHelper.setDescendSpeed(2);
     }
 
     private static double marioSpawnX() {
@@ -58,12 +65,15 @@ public class Mario extends Battler {
 
     public void move() {
         if (!isAlive) return;
-        processWalking();
-        processWalkingBounds();
-        processJumping();
+        walk();
+        keepInBounds();
+        jumpHelper.progressJump();
+        if (jumpHelper.isAboveBaseLine()) {
+            setJumpingAnimation();
+        }
     }
 
-    private void processWalking() {
+    private void walk() {
         changeSpeed();
         selectAnimationAccordingToSpeed();
         brakeOnReverseDirectionInput();
@@ -102,7 +112,7 @@ public class Mario extends Battler {
         }
     }
 
-    public void processWalkingBounds() {
+    public void keepInBounds() {
         if (x < leftWalkingBound) {
             x = leftWalkingBound;
         } else if (x > rightWalkingBound) {
@@ -110,36 +120,9 @@ public class Mario extends Battler {
         }
     }
 
-    public void processJumping() {
-        if (jumpEnergy > 0) {
-            setJumpingAnimation();
-            loseJumpEnergy();
-            raise();
-        } else if (isAboveFloor()) {
-            setJumpingAnimation();
-            descend();
-        }
-    }
-
     @Control(Key.UP)
     public void jump() {
-        if (isAboveFloor()) return;
-        jumpEnergy = MAX_JUMP_ENERGY;
-    }
-
-    private boolean isAboveFloor() {
-        return y < (SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
-    }
-
-    @Override
-    protected void raise() {
-        y -= JUMP_RAISE_SPEED;
-        if (y < JUMP_BOUND) y = JUMP_BOUND;
-    }
-
-    @Override
-    protected void descend() {
-        y += JUMP_DESCEND_SPEED;
+        jumpHelper.initJump();
     }
 
     public void playDeathAnimation() {

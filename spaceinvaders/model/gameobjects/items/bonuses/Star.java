@@ -14,6 +14,7 @@ public class Star extends Bonus {
     public Star(double x, double y) {
         super(x, y);
         setStaticView(BonusShape.STAR);
+        configureJumpHelper();
         overheadIcon = new GameObject() {
             {
                 setStaticView(BonusShape.STAR_OVERHEAD_ICON);

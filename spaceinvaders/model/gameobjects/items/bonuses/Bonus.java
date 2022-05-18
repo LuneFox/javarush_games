@@ -5,6 +5,7 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.Brick;
@@ -15,15 +16,20 @@ import java.util.List;
 
 public abstract class Bonus extends GameObject {
     public GameObject overheadIcon;
-    private final static int MAX_JUMP_ENERGY = 4;
     private QuestionBrick parentQuestionBrick;
+    private final JumpHelper jumpHelper;
     private final Direction direction;
     private boolean finishedEjectPhase;
-    private boolean finishedJumpPhase;
 
     public Bonus(double x, double y) {
         super(x, y);
+        jumpHelper = new JumpHelper(this);
         direction = (x < 50) ? Direction.RIGHT : Direction.LEFT;
+    }
+
+    protected void configureJumpHelper() {
+        jumpHelper.setMaxJumpEnergy(4);
+        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight());
     }
 
     public void move() {
@@ -34,9 +40,12 @@ public abstract class Bonus extends GameObject {
 
         verifyHit(game.enemyBullets);
         game.bricks.forEach(this::verifyHit);
-        processJumping();
 
-        if (!finishedJumpPhase) return;
+        jumpHelper.progressJump();
+
+        if (!jumpHelper.isFirstJumpFinished()) {
+            return;
+        }
 
         slide();
         verifyTouch(game.mario);
@@ -46,7 +55,7 @@ public abstract class Bonus extends GameObject {
         if (isOnBrick()) {
             finishedEjectPhase = true;
         } else {
-            raise();
+            y--;
         }
     }
 
@@ -61,29 +70,8 @@ public abstract class Bonus extends GameObject {
 
     private void verifyHit(Brick brick) {
         if (this.collidesWith(brick, Mirror.NONE)) {
-            jump();
+            jumpHelper.initJump();
         }
-    }
-
-    private void jump() {
-        if (isAboveBrick()) return;
-        jumpEnergy = MAX_JUMP_ENERGY;
-    }
-
-    private void processJumping() {
-        if (jumpEnergy > 0) {
-            loseJumpEnergy();
-            raise();
-        } else if (isAboveBrick()) {
-            descend();
-            if (isOnBrick())
-                finishedJumpPhase = true;
-        }
-    }
-
-    private boolean isAboveBrick() {
-        int height = SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight();
-        return y < height;
     }
 
     private void slide() {
@@ -93,19 +81,15 @@ public abstract class Bonus extends GameObject {
             fallOnFloor();
         } else if (direction == Direction.LEFT) {
             x -= 1;
-            if (x + getWidth() >= 60) return;
+            if (x + getWidth() >= 63) return;
             fallOnFloor();
         }
         checkMovingOutsideBorders();
     }
 
     private void fallOnFloor() {
-        y += 3;
-        if (y > getFloorHeight()) y = getFloorHeight();
-    }
-
-    private int getFloorHeight() {
-        return SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT;
+        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
+        jumpHelper.setDescendSpeed(3);
     }
 
     private void checkMovingOutsideBorders() {

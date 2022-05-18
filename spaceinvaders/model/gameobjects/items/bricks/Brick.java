@@ -5,6 +5,7 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Shooter;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
@@ -14,12 +15,17 @@ import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 import java.util.Optional;
 
 public class Brick extends GameObject implements Shooter {
-    private static final int MAX_JUMP_ENERGY = 3;
+    private JumpHelper jumpHelper;
 
     public Brick(double x, double y) {
         super(x, y);
         setStaticView(BrickShape.BRICK);
-        jumpEnergy = 0;
+        configureJumpHelper();
+    }
+
+    private void configureJumpHelper() {
+        jumpHelper = new JumpHelper(this);
+        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length);
     }
 
     public void verifyTouch(Mario mario) {
@@ -27,22 +33,13 @@ public class Brick extends GameObject implements Shooter {
 
         final Mirror mirror = (mario.getFaceDirection() == Direction.RIGHT) ? Mirror.NONE : Mirror.HORIZONTAL;
         if (this.collidesWith(mario, mirror)) {
-            jump();
+            jumpHelper.initJump();
             shoot();
         }
     }
 
     public void move() {
-        processJumping();
-    }
-
-    private void processJumping() {
-        if (jumpEnergy > 0) {
-            loseJumpEnergy();
-            raise();
-        } else if (isAboveBrickBase()) {
-            descend();
-        }
+        jumpHelper.progressJump();
     }
 
     public void shoot() {
@@ -52,15 +49,5 @@ public class Brick extends GameObject implements Shooter {
 
     public Optional<Bullet> getAmmo() {
         return BulletFactory.getBullet(BulletType.COIN, x + 2, y);
-    }
-
-    private void jump() {
-        if (isAboveBrickBase()) return;
-        jumpEnergy = MAX_JUMP_ENERGY;
-    }
-
-    private boolean isAboveBrickBase() {
-        int height = SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length;
-        return y < height;
     }
 }
