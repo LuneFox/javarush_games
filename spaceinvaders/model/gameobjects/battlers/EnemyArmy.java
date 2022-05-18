@@ -15,9 +15,10 @@ public class EnemyArmy {
     private static final int ROWS = 3;
     private static final int COLUMNS = 10;
     private static final int STEP = TankShape.TANK_1.length + 1;
+
     private List<EnemyTank> enemyTanks;
-    private double speed;
     private Direction direction;
+    private double speed;
 
     public EnemyArmy() {
         createTanks();
