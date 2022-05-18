@@ -5,7 +5,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 
 public class FireballBullet extends Bullet {
-    public FireballBullet(double x, double y) {
+    FireballBullet(double x, double y) {
         super(x, y, Direction.UP);
         doubleSpeed();
         setAnimatedView(Sprite.Loop.ENABLED, 2,

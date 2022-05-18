@@ -7,7 +7,8 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.FireballBullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
 import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
@@ -241,7 +242,7 @@ public class Mario extends Battler {
 
     @Override
     public Optional<Bullet> getAmmo() {
-        return Optional.of(new FireballBullet(getFireballSpawnX(), getFireballSpawnY()));
+        return BulletFactory.getBullet(BulletType.FIREBALL, getFireballSpawnX(), getFireballSpawnY());
     }
 
     private double getFireballSpawnX() {

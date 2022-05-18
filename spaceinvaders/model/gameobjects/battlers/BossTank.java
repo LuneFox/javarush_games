@@ -1,11 +1,11 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyBossTankBullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.view.shapes.BossTankShape;
 
 import java.util.Optional;
@@ -25,7 +25,7 @@ public class BossTank extends EnemyTank {
         int chanceToFire = game.getRandomNumber(100 / (4 * SpaceInvadersGame.DIFFICULTY));
         if (chanceToFire != 0) return Optional.empty();
 
-        return Optional.of(new EnemyBossTankBullet(x + 3, y + getHeight(), Direction.DOWN));
+        return BulletFactory.getBullet(BulletType.RACING_CAR, x + 3, y + getHeight());
     }
 
     @Override

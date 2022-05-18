@@ -5,8 +5,8 @@ import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.CoinShape;
 
 public class CoinBullet extends Bullet {
-    public CoinBullet(double x, double y, Direction direction) {
-        super(x, y, direction);
+    CoinBullet(double x, double y) {
+        super(x, y, Direction.UP);
         setAnimatedView(Sprite.Loop.ENABLED, 1,
                 CoinShape.COIN_WIDTH_7,
                 CoinShape.COIN_WIDTH_5,

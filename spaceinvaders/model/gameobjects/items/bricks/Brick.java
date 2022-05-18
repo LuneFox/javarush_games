@@ -7,7 +7,8 @@ import com.javarush.games.spaceinvaders.model.Shooter;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.CoinBullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.Optional;
@@ -50,7 +51,7 @@ public class Brick extends GameObject implements Shooter {
     }
 
     public Optional<Bullet> getAmmo() {
-        return Optional.of(new CoinBullet(x + 2, y, Direction.UP));
+        return BulletFactory.getBullet(BulletType.COIN, x + 2, y);
     }
 
     private void jump() {

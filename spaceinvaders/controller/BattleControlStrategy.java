@@ -24,6 +24,7 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void releaseRight() {
+        if (game.isStopped) return;
         if (game.mario.getMoveDirection() == Direction.RIGHT) {
             game.mario.setMoveDirection(Direction.NONE);
         }
@@ -37,6 +38,7 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void releaseLeft() {
+        if (game.isStopped) return;
         if (game.mario.getMoveDirection() == Direction.LEFT) {
             game.mario.setMoveDirection(Direction.NONE);
         }

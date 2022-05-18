@@ -5,7 +5,8 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.EnemyTankBullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 
 import java.util.Optional;
@@ -42,7 +43,7 @@ public class EnemyTank extends Battler {
         int chanceToFire = game.getRandomNumber(100 / SpaceInvadersGame.DIFFICULTY);
         if (chanceToFire != 0) return Optional.empty();
 
-        return Optional.of(new EnemyTankBullet(x + 2, y + getHeight(), Direction.DOWN));
+        return BulletFactory.getBullet(BulletType.TETRIS, x + 2, y + getHeight());
     }
 
     @Override
