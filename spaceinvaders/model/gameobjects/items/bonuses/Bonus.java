@@ -29,7 +29,7 @@ public abstract class Bonus extends GameObject {
 
     protected void configureJumpHelper() {
         jumpHelper.setMaxJumpEnergy(4);
-        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight());
+        jumpHelper.setFloorLevel(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight());
     }
 
     public void move() {
@@ -43,7 +43,7 @@ public abstract class Bonus extends GameObject {
 
         jumpHelper.progressJump();
 
-        if (!jumpHelper.isFirstJumpFinished()) {
+        if (jumpHelper.getJumpCount() < 1) {
             return;
         }
 
@@ -88,7 +88,7 @@ public abstract class Bonus extends GameObject {
     }
 
     private void fallOnFloor() {
-        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
+        jumpHelper.setFloorLevel(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
         jumpHelper.setDescendSpeed(3);
     }
 

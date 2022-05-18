@@ -25,7 +25,7 @@ public class Brick extends GameObject implements Shooter {
 
     private void configureJumpHelper() {
         jumpHelper = new JumpHelper(this);
-        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length);
+        jumpHelper.setFloorLevel(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length);
     }
 
     public void verifyTouch(Mario mario) {

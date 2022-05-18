@@ -49,8 +49,8 @@ public class Mario extends Battler {
     private void configureJumpHelper() {
         jumpHelper = new JumpHelper(this);
         jumpHelper.setMaxJumpEnergy(5);
-        jumpHelper.setBaseLine(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
-        jumpHelper.setTopLine(66);
+        jumpHelper.setFloorLevel(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
+        jumpHelper.setCeilingLevel(66);
         jumpHelper.setRaiseSpeed(4);
         jumpHelper.setDescendSpeed(2);
     }
@@ -68,7 +68,7 @@ public class Mario extends Battler {
         walk();
         keepInBounds();
         jumpHelper.progressJump();
-        if (jumpHelper.isAboveBaseLine()) {
+        if (jumpHelper.isAboveFloor()) {
             setJumpingAnimation();
         }
     }

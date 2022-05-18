@@ -4,56 +4,56 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
 public class JumpHelper {
     private final GameObject object;
-    private int baseLine;
-    private int topLine;
+    private int floorLevel;
+    private int ceilingLevel;
     private int raiseSpeed;
     private int descendSpeed;
     private int jumpEnergy;
     private int maxJumpEnergy;
-    private boolean firstJumpFinished;
+    private long jumpCount;
 
     public JumpHelper(GameObject object) {
         this.object = object;
-        this.baseLine = SpaceInvadersGame.HEIGHT - 1;
+        this.floorLevel = SpaceInvadersGame.HEIGHT - 1;
         this.raiseSpeed = 1;
         this.descendSpeed = 1;
         this.jumpEnergy = 0;
         this.maxJumpEnergy = 3;
-        this.firstJumpFinished = false;
+        this.jumpCount = 0;
     }
 
     public void initJump() {
-        if (isAboveBaseLine()) return;
+        if (isAboveFloor()) return;
         jumpEnergy = maxJumpEnergy;
     }
 
     public void progressJump() {
         if (jumpEnergy > 0) {
-            loseJumpEnergy();
             raise();
-        } else if (isAboveBaseLine()) {
+            loseJumpEnergy();
+        } else if (isAboveFloor()) {
             descend();
-            checkLanding();
+            countJumpsAfterLanding();
         }
     }
 
-    private void checkLanding() {
-        if (isOnBaseLine()) {
-            firstJumpFinished = true;
+    private void countJumpsAfterLanding() {
+        if (isOnFloor()) {
+            jumpCount++;
         }
     }
 
     protected void raise() {
         object.y -= raiseSpeed;
-        if (object.y < topLine) {
-            object.y = topLine;
+        if (object.y < ceilingLevel) {
+            object.y = ceilingLevel;
         }
     }
 
     private void descend() {
         object.y += descendSpeed;
-        if (object.y > baseLine) {
-            object.y = baseLine;
+        if (object.y > floorLevel) {
+            object.y = floorLevel;
         }
     }
 
@@ -61,20 +61,20 @@ public class JumpHelper {
         jumpEnergy--;
     }
 
-    public boolean isAboveBaseLine() {
-        return object.y < baseLine;
+    public boolean isAboveFloor() {
+        return object.y < floorLevel;
     }
 
-    private boolean isOnBaseLine() {
-        return object.y == baseLine;
+    private boolean isOnFloor() {
+        return object.y == floorLevel;
     }
 
-    public void setBaseLine(int baseLine) {
-        this.baseLine = baseLine;
+    public void setFloorLevel(int floorLevel) {
+        this.floorLevel = floorLevel;
     }
 
-    public void setTopLine(int topLine) {
-        this.topLine = topLine;
+    public void setCeilingLevel(int ceilingLevel) {
+        this.ceilingLevel = ceilingLevel;
     }
 
     public void setRaiseSpeed(int raiseSpeed) {
@@ -89,7 +89,7 @@ public class JumpHelper {
         this.maxJumpEnergy = maxJumpEnergy;
     }
 
-    public boolean isFirstJumpFinished() {
-        return firstJumpFinished;
+    public long getJumpCount() {
+        return jumpCount;
     }
 }
