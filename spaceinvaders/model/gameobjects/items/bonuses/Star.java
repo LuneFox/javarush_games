@@ -40,6 +40,6 @@ public class Star extends Bonus {
     }
 
     private boolean bulletCollisionCooledDown(Bullet bullet) {
-        return new Date().getTime() - bullet.lastCollisionDate.getTime() > 250;
+        return new Date().getTime() - bullet.lastCollisionDate.getTime() > 500;
     }
 }
