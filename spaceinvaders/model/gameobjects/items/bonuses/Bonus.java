@@ -20,7 +20,7 @@ public abstract class Bonus extends GameObject implements Movable {
     private QuestionBrick parentQuestionBrick;
     private final JumpHelper jumpHelper;
     private final Direction direction;
-    private boolean finishedEjectPhase;
+    private boolean isEjected;
 
     public Bonus(double x, double y) {
         super(x, y);
@@ -35,30 +35,38 @@ public abstract class Bonus extends GameObject implements Movable {
 
     public void move() {
         if (game.isStopped()) return;
-        if (!finishedEjectPhase) {
+
+        if (!isEjected) {
             eject();
             return;
         }
 
-        verifyHit(game.getEnemyBullets());
-        game.getBricks().forEach(this::verifyHit);
-
-        jumpHelper.progressJump();
+        doThingsAfterEjection();
 
         if (jumpHelper.getJumpCount() < 1) {
             return;
         }
 
-        slide();
-        verifyTouch(game.getMario());
+        doThingsAfterFirstJump();
     }
 
     private void eject() {
         if (isOnBrick()) {
-            finishedEjectPhase = true;
+            isEjected = true;
         } else {
             y--;
         }
+    }
+
+    private void doThingsAfterEjection() {
+        verifyHit(game.getEnemyBullets());
+        game.getBricks().forEach(this::verifyHit);
+        jumpHelper.progressJump();
+    }
+
+    private void doThingsAfterFirstJump() {
+        slide();
+        verifyTouch(game.getMario());
     }
 
     private boolean isOnBrick() {
