@@ -1,15 +1,15 @@
 package com.javarush.games.spaceinvaders.view;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
 import com.javarush.games.spaceinvaders.Drawable;
-import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
 public class Display implements Drawable {
     public static final int SIZE = 100;
-    private final SpaceInvadersGame game;
+    private final Game game;
     private final Pixel[][] matrix;
 
-    public Display(SpaceInvadersGame game) {
+    public Display(Game game) {
         this.game = game;
         this.matrix = createPixelMatrix();
     }

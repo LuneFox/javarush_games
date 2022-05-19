@@ -105,11 +105,11 @@ public class RacerGame extends Game {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 if (y < RoadManager.UPPER_BORDER || y >= RoadManager.LOWER_BORDER) {
-                    display.setCellColor(x, y, Color.SIENNA);
+                    display.drawPixel(x, y, Color.SIENNA);
                 } else if (y == HEIGHT / 2) {
-                    display.setCellColor(x, y, Color.SNOW);
+                    display.drawPixel(x, y, Color.SNOW);
                 } else {
-                    display.setCellColor(x, y, Color.DARKGRAY);
+                    display.drawPixel(x, y, Color.DARKGRAY);
                 }
 
             }

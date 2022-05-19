@@ -2,11 +2,11 @@ package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.model.HitBox;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 
 public class Puddle extends RoadObject {
-    private Arrow arrow = new Arrow(RacerGame.WIDTH - ShapeMatrix.YELLOW_ARROW[0].length - 1, 0,
-            ShapeMatrix.YELLOW_ARROW);
+    private Arrow arrow = new Arrow(RacerGame.WIDTH - Shapes.YELLOW_ARROW[0].length - 1, 0,
+            Shapes.YELLOW_ARROW);
 
     public Puddle(double x, double y) {
         super(RoadObjectType.PUDDLE, x, y);

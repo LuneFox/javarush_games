@@ -2,7 +2,7 @@ package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.model.GameObject;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,8 @@ public class RoadMarking {
 
     public RoadMarking() {
         for (int i = RacerGame.WIDTH + 8; i >= -8; i -= 16) {
-            roadMarking.add(new GameObject(i, (RacerGame.HEIGHT / 2) - (RoadManager.ROAD_WIDTH / 4), ShapeMatrix.ROAD_MARKING));
-            roadMarking.add(new GameObject(i + 8, (RacerGame.HEIGHT / 2) + (RoadManager.ROAD_WIDTH / 4), ShapeMatrix.ROAD_MARKING));
+            roadMarking.add(new GameObject(i, (RacerGame.HEIGHT / 2) - (RoadManager.ROAD_WIDTH / 4), Shapes.ROAD_MARKING));
+            roadMarking.add(new GameObject(i + 8, (RacerGame.HEIGHT / 2) + (RoadManager.ROAD_WIDTH / 4), Shapes.ROAD_MARKING));
         }
     }
 

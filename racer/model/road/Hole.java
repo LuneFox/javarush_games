@@ -2,11 +2,11 @@ package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.model.HitBox;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 
 public class Hole extends RoadObject {
-    private Arrow arrow = new Arrow(RacerGame.WIDTH - ShapeMatrix.RED_ARROW[0].length - 1, 0,
-            ShapeMatrix.RED_ARROW);
+    private Arrow arrow = new Arrow(RacerGame.WIDTH - Shapes.RED_ARROW[0].length - 1, 0,
+            Shapes.RED_ARROW);
 
     public Hole(double x, double y) {
         super(RoadObjectType.HOLE, x, y);

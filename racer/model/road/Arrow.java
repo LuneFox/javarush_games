@@ -1,7 +1,7 @@
 package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.model.GameObject;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 
 public class Arrow extends GameObject {
     public Arrow(int x, int y, int[][] matrix) {
@@ -9,6 +9,6 @@ public class Arrow extends GameObject {
     }
 
     public Arrow(int x, int y) {
-        super(x, y, ShapeMatrix.YELLOW_ARROW);
+        super(x, y, Shapes.YELLOW_ARROW);
     }
 }

@@ -2,7 +2,7 @@ package com.javarush.games.racer.model;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 import com.javarush.games.racer.model.road.RoadManager;
 
 public class DeLorean extends GameObject {
@@ -22,7 +22,7 @@ public class DeLorean extends GameObject {
     private double energy;
 
     public DeLorean() {
-        super(3, (int) (RacerGame.HEIGHT / 2 - ShapeMatrix.DELOREAN_RUN_0.length / 2 + 8), ShapeMatrix.DELOREAN_RUN_0);
+        super(3, (int) (RacerGame.HEIGHT / 2 - Shapes.DELOREAN_RUN_0.length / 2 + 8), Shapes.DELOREAN_RUN_0);
         this.hitBox = new HitBox(9, 6, 20, 28);
         this.verticalDirection = Direction.NONE;
         this.horizontalDirection = Direction.NONE;
@@ -113,7 +113,7 @@ public class DeLorean extends GameObject {
         for (int i = 0; i < width - (this.x - shift); i++) {
             for (int j = 0; j < height; j++) {
                 int colorIndex = matrix[j][i];
-                game.display.setCellColor((int) x + i, (int) y + j, Color.values()[colorIndex]);
+                game.display.drawPixel((int) x + i, (int) y + j, Color.values()[colorIndex]);
             }
         }
         if (this.x > portal.x + 5) {
@@ -126,24 +126,24 @@ public class DeLorean extends GameObject {
 
     public void animateRunning() {
         setAnimation(
-                ShapeMatrix.DELOREAN_RUN_0,
-                ShapeMatrix.DELOREAN_RUN_1,
-                ShapeMatrix.DELOREAN_RUN_2,
-                ShapeMatrix.DELOREAN_RUN_3);
+                Shapes.DELOREAN_RUN_0,
+                Shapes.DELOREAN_RUN_1,
+                Shapes.DELOREAN_RUN_2,
+                Shapes.DELOREAN_RUN_3);
         this.animation = Animation.RUNNING;
     }
 
     public void animateGlowing() {
         setAnimation(
-                ShapeMatrix.DELOREAN_GLOW_0,
-                ShapeMatrix.DELOREAN_GLOW_1,
-                ShapeMatrix.DELOREAN_GLOW_2,
-                ShapeMatrix.DELOREAN_GLOW_3);
+                Shapes.DELOREAN_GLOW_0,
+                Shapes.DELOREAN_GLOW_1,
+                Shapes.DELOREAN_GLOW_2,
+                Shapes.DELOREAN_GLOW_3);
         this.animation = Animation.GLOWING;
     }
 
     public void animateStopped() {
-        setAnimation(ShapeMatrix.DELOREAN_RUN_0);
+        setAnimation(Shapes.DELOREAN_RUN_0);
         this.animation = Animation.STOPPED;
     }
 

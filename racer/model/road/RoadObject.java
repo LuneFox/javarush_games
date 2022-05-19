@@ -1,7 +1,7 @@
 package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.model.GameObject;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 
 public class RoadObject extends GameObject {
     public RoadObjectType type;
@@ -29,13 +29,13 @@ public class RoadObject extends GameObject {
     private static int[][] getMatrix(RoadObjectType type) {
         switch (type) {
             case PUDDLE:
-                return ShapeMatrix.PUDDLE;
+                return Shapes.PUDDLE;
             case HOLE:
-                return ShapeMatrix.HOLE;
+                return Shapes.HOLE;
             case ENERGY:
-                return ShapeMatrix.ENERGY;
+                return Shapes.ENERGY;
             default:
-                return ShapeMatrix.DELOREAN_RUN_0;
+                return Shapes.DELOREAN_RUN_0;
         }
     }
 

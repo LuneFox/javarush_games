@@ -1,7 +1,7 @@
 package com.javarush.games.racer.model;
 
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 
 public class Portal extends GameObject {
 
@@ -11,7 +11,7 @@ public class Portal extends GameObject {
     private int finishTimeOut = 20;
 
     public Portal() {
-        super(0, 0, ShapeMatrix.PORTAL_GROW_0);
+        super(0, 0, Shapes.PORTAL_GROW_0);
         animation = Animation.NONE;
     }
 
@@ -42,18 +42,18 @@ public class Portal extends GameObject {
 
     private void animateActive() {
         setAnimation(
-                ShapeMatrix.PORTAL_0,
-                ShapeMatrix.PORTAL_1,
-                ShapeMatrix.PORTAL_2,
-                ShapeMatrix.PORTAL_3
+                Shapes.PORTAL_0,
+                Shapes.PORTAL_1,
+                Shapes.PORTAL_2,
+                Shapes.PORTAL_3
         );
         animation = Animation.ACTIVE;
     }
 
     private void animateGrowing() {
         setAnimation(
-                ShapeMatrix.PORTAL_GROW_0,
-                ShapeMatrix.PORTAL_GROW_1
+                Shapes.PORTAL_GROW_0,
+                Shapes.PORTAL_GROW_1
         );
         animation = Animation.GROWING;
     }

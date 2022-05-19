@@ -1,9 +1,6 @@
 package com.javarush.games.racer.view;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-public class ShapeMatrix {
+public class Shapes {
 
     public static final int[][] DELOREAN_RUN_0 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},

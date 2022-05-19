@@ -2,15 +2,15 @@ package com.javarush.games.racer.model;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.view.Shapes;
 
 public class TireFlame extends GameObject {
 
     private int drawWidth;
 
     public TireFlame() {
-        super(0, 0, ShapeMatrix.TIRE_FLAME_0);
-        setAnimation(ShapeMatrix.TIRE_FLAME_0, ShapeMatrix.TIRE_FLAME_1);
+        super(0, 0, Shapes.TIRE_FLAME_0);
+        setAnimation(Shapes.TIRE_FLAME_0, Shapes.TIRE_FLAME_1);
         drawWidth = 0;
     }
 
@@ -35,8 +35,8 @@ public class TireFlame extends GameObject {
         for (int i = 0; i < drawWidth; i++) {
             for (int j = 0; j < height; j++) {
                 int colorIndex = matrix[j][i];
-                game.display.setCellColor((int) x + i, (int) y + j, Color.values()[colorIndex]);
-                game.display.setCellColor((int) x + i, (int) y + j - 10, Color.values()[colorIndex]);
+                game.display.drawPixel((int) x + i, (int) y + j, Color.values()[colorIndex]);
+                game.display.drawPixel((int) x + i, (int) y + j - 10, Color.values()[colorIndex]);
             }
         }
     }

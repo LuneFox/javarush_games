@@ -34,7 +34,7 @@ public abstract class Image {
                     continue;
                 } // transparent color
                 try {
-                    GAME.display.setCellColor(
+                    GAME.display.drawPixel(
                             drawX + innerX,
                             drawY + innerY,
                             colors[bitmapData[innerY][innerX]]
@@ -54,13 +54,13 @@ public abstract class Image {
                 } // transparent color
                 try {
                     if (mirror) {
-                        GAME.display.setCellColor(
+                        GAME.display.drawPixel(
                                 drawX + (bitmapData[0].length - 1 - innerX), // flip horizontally
                                 drawY + innerY,
                                 colors[bitmapData[innerY][innerX]]
                         );
                     } else {
-                        GAME.display.setCellColor(
+                        GAME.display.drawPixel(
                                 drawX + innerX,
                                 drawY + (bitmapData.length - 1 - innerY),     // flip vertically
                                 colors[bitmapData[innerY][innerX]]
