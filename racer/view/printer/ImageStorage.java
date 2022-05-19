@@ -6,7 +6,6 @@ import static com.javarush.engine.cell.Color.*;
 import static com.javarush.games.racer.view.printer.ImageCreator.*;
 
 public class ImageStorage {
-    private Color[] colors;
     private final int[][] data;
 
     public ImageStorage(ImageType imageType) {
