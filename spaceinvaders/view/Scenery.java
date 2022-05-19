@@ -1,6 +1,7 @@
 package com.javarush.games.spaceinvaders.view;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.spaceinvaders.Drawable;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
@@ -8,7 +9,7 @@ import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
 
 import static com.javarush.games.spaceinvaders.SpaceInvadersGame.*;
 
-public class Scenery {
+public class Scenery implements Drawable {
     private final SpaceInvadersGame game;
 
     private static final GameObject cloud = new GameObject() {
@@ -56,7 +57,7 @@ public class Scenery {
             if (y == 67 || y == 68 || y == 69) skyColor = Color.DODGERBLUE;
 
             for (int x = 0; x < WIDTH; x++) {
-                game.display.drawPixel(x, y, skyColor);
+                game.getDisplay().drawPixel(x, y, skyColor);
             }
         }
     }

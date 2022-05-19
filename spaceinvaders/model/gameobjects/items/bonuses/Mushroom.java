@@ -39,6 +39,6 @@ public class Mushroom extends Bonus {
 
     @Override
     public void consume() {
-        game.mario.getAmmo().ifPresent(bullet -> game.addPlayerBullet(bullet));
+        game.getMario().getAmmo().ifPresent(bullet -> game.addPlayerBullet(bullet));
     }
 }

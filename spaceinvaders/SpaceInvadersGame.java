@@ -6,6 +6,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.spaceinvaders.controller.Controller;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Battler;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyArmy;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
@@ -21,6 +22,7 @@ import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 /**
  * VERSION 1.05
@@ -34,17 +36,20 @@ public class SpaceInvadersGame extends Game {
     public static final int DIFFICULTY = 5;
 
     private Controller controller;
-    public Display display;
+    private Display display;
     private Scenery scenery;
-    public List<Bullet> enemyBullets;
-    private List<Bullet> playerBullets;
-    public List<Brick> bricks;
+    private Flash flash;
+
     private EnemyArmy enemyArmy;
-    public Mario mario;
-    public Flash flash;
+    private Mario mario;
+
+    private List<Bullet> enemyBullets;
+    private List<Bullet> playerBullets;
+    private List<Brick> bricks;
+
     private int gameOverDelay;
-    public boolean isEndingDisplayed;
-    public boolean isStopped;
+    private boolean isEndingDisplayed;
+    private boolean isStopped;
 
     @Override
     public void initialize() {
@@ -65,7 +70,7 @@ public class SpaceInvadersGame extends Game {
     public void startNewGame() {
         resetValues();
         createAssets();
-        drawScene();
+        drawStage();
     }
 
     private void resetValues() {
@@ -87,31 +92,33 @@ public class SpaceInvadersGame extends Game {
     private void createBricks() {
         bricks = new ArrayList<>();
         int y = HEIGHT - 30 - BrickShape.BRICK.length;
-        IntStream.of(0, 20, 30, 60, 70, 90).forEach(x -> bricks.add(new Brick(x, y)));
-        IntStream.of(10, 80).forEach(x -> bricks.add(new QuestionBrick(x, y)));
+
+        IntStream.of(0, 20, 30, 60, 70, 90)
+                .forEach(x -> bricks.add(new Brick(x, y)));
+        IntStream.of(10, 80)
+                .forEach(x -> bricks.add(new QuestionBrick(x, y)));
     }
 
     @Override
     public void onTurn(int step) {
         moveObjects();
-        checkCollisions();
-        removeDeadObjects();
+        verifyCollisions();
         checkGameOverConditions();
-        enemyArmy.attack();
+        removeDeadObjects();
 
-        drawScene();
+        drawStage();
         setScore(Score.get());
     }
 
     private void moveObjects() {
         mario.move();
         enemyArmy.move();
-        enemyBullets.forEach(Bullet::move);
-        playerBullets.forEach(Bullet::move);
-        bricks.forEach(Brick::move);
+        enemyArmy.attack();
+        Stream.of(enemyBullets, playerBullets, bricks)
+                .forEach(list -> list.forEach(Movable::move));
     }
 
-    private void checkCollisions() {
+    private void verifyCollisions() {
         mario.verifyHit(enemyBullets);
         enemyArmy.verifyHit(playerBullets);
         enemyArmy.verifyHit(enemyBullets);
@@ -119,9 +126,9 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void removeDeadObjects() {
-        enemyBullets.removeIf(bullet -> bullet.y >= HEIGHT - 1 || !bullet.isAlive);
-        playerBullets.removeIf(bullet -> bullet.y + bullet.getHeight() < 0 || !bullet.isAlive);
         enemyArmy.removeDeadTanks();
+        Stream.of(enemyBullets, playerBullets)
+                .forEach(list -> list.removeIf(bullet -> bullet.isOffScreen() || !bullet.isAlive));
     }
 
     private void checkGameOverConditions() {
@@ -131,25 +138,20 @@ public class SpaceInvadersGame extends Game {
 
         if (!mario.isAlive) {
             mario.playDeathAnimation();
-            stopGameWithDelayBeforeEnding();
+            stopGameWithEndingAfterDelay();
         }
 
         if (enemyArmy.getTanksCount() == 0) {
             mario.playVictoryAnimation();
-            stopGameWithDelayBeforeEnding();
+            stopGameWithEndingAfterDelay();
         }
     }
 
-    private void drawScene() {
-        scenery.draw();
-        enemyArmy.draw();
-        playerBullets.forEach(GameObject::draw);
-        bricks.forEach(GameObject::draw);
-        enemyBullets.forEach(GameObject::draw);
-        mario.draw();
-        flash.draw();
-
-        display.draw();
+    private void drawStage() {
+        Stream.of(scenery, enemyArmy).forEach(Drawable::draw);
+        Stream.of(playerBullets, bricks, enemyBullets)
+                .forEach(list -> list.forEach(Drawable::draw));
+        Stream.of(mario, flash, display).forEach(Drawable::draw);
     }
 
     public void addPlayerBullet(Bullet bulletToAdd) {
@@ -163,19 +165,21 @@ public class SpaceInvadersGame extends Game {
                 .count();
     }
 
-    private void stopGameWithDelayBeforeEnding() {
+    private void stopGameWithEndingAfterDelay() {
         isStopped = true;
         gameOverDelay++;
         if (gameOverDelay < 60) return;
-        showEnding(mario.isAlive);
+        displayEnding(mario.isAlive);
     }
 
-    private void showEnding(boolean isVictory) {
+    private void displayEnding(boolean isVictory) {
         stopTurnTimer();
         if (isVictory) {
-            showMessageDialog(Color.NONE, "SCORE: " + Score.get() + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!", Color.WHITE, 20);
+            String message = "SCORE: " + Score.get() + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!";
+            showMessageDialog(Color.NONE, message, Color.WHITE, 20);
         } else {
-            showMessageDialog(Color.NONE, "MAMMA MIA!", Color.RED, 75);
+            String message = "MAMMA MIA!";
+            showMessageDialog(Color.NONE, message, Color.RED, 75);
         }
         isEndingDisplayed = true;
     }
@@ -192,5 +196,37 @@ public class SpaceInvadersGame extends Game {
     @Override
     public void onKeyReleased(Key key) {
         controller.releaseKey(key);
+    }
+
+    /*
+     * Getters
+     */
+
+    public Flash getFlash() {
+        return flash;
+    }
+
+    public Mario getMario() {
+        return mario;
+    }
+
+    public List<Brick> getBricks() {
+        return bricks;
+    }
+
+    public List<Bullet> getEnemyBullets() {
+        return enemyBullets;
+    }
+
+    public Display getDisplay() {
+        return display;
+    }
+
+    public boolean isEndingDisplayed() {
+        return isEndingDisplayed;
+    }
+
+    public boolean isStopped() {
+        return isStopped;
     }
 }

@@ -12,44 +12,44 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        if (game.isStopped) return;
-        game.mario.jump();
+        if (game.isStopped()) return;
+        game.getMario().jump();
     }
 
     @Override
     public void pressRight() {
-        if (game.isStopped) return;
-        game.mario.setMoveDirection(Direction.RIGHT);
+        if (game.isStopped()) return;
+        game.getMario().setMoveDirection(Direction.RIGHT);
     }
 
     @Override
     public void releaseRight() {
-        if (game.isStopped) return;
-        if (game.mario.getMoveDirection() == Direction.RIGHT) {
-            game.mario.setMoveDirection(Direction.NONE);
+        if (game.isStopped()) return;
+        if (game.getMario().getMoveDirection() == Direction.RIGHT) {
+            game.getMario().setMoveDirection(Direction.NONE);
         }
     }
 
     @Override
     public void pressLeft() {
-        if (game.isStopped) return;
-        game.mario.setMoveDirection(Direction.LEFT);
+        if (game.isStopped()) return;
+        game.getMario().setMoveDirection(Direction.LEFT);
     }
 
     @Override
     public void releaseLeft() {
-        if (game.isStopped) return;
-        if (game.mario.getMoveDirection() == Direction.LEFT) {
-            game.mario.setMoveDirection(Direction.NONE);
+        if (game.isStopped()) return;
+        if (game.getMario().getMoveDirection() == Direction.LEFT) {
+            game.getMario().setMoveDirection(Direction.NONE);
         }
     }
 
     @Override
     public void pressSpace() {
-        if (game.isStopped && game.isEndingDisplayed) {
+        if (game.isStopped() && game.isEndingDisplayed()) {
             game.startNewGame();
         } else {
-            game.mario.shoot();
+            game.getMario().shoot();
         }
     }
 }

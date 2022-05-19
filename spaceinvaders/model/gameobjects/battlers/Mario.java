@@ -6,6 +6,7 @@ import com.javarush.games.spaceinvaders.controller.Control;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
+import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
@@ -17,7 +18,7 @@ import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 import java.util.List;
 import java.util.Optional;
 
-public class Mario extends Battler {
+public class Mario extends Battler implements Movable {
     private static final double START_SPEED = 0.6;
     private static final double MAX_SPEED = 2.4;
     private static final double ACCELERATION = 0.2;

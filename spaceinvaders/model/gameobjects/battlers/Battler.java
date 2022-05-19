@@ -1,6 +1,6 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
-import com.javarush.games.spaceinvaders.model.Shooter;
+import com.javarush.games.spaceinvaders.model.gameobjects.Shooter;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 

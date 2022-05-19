@@ -1,9 +1,10 @@
 package com.javarush.games.spaceinvaders.model.gameobjects;
 
+import com.javarush.games.spaceinvaders.Drawable;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 
-public class GameObject {
+public class GameObject implements Drawable {
     protected static SpaceInvadersGame game;
     private Sprite sprite;
     public double x;

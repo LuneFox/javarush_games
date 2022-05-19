@@ -35,9 +35,9 @@ public class Star extends Bonus {
 
     @Override
     public void consume() {
-        game.flash.show();
-        Score.add(game.enemyBullets.size() * 5);
-        game.enemyBullets.clear();
+        game.getFlash().show();
+        Score.add(game.getEnemyBullets().size() * 5);
+        game.getEnemyBullets().clear();
     }
 
     private boolean bulletCollisionCooledDown(Bullet bullet) {

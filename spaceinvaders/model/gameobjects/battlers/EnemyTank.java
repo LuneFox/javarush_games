@@ -34,7 +34,7 @@ public class EnemyTank extends Battler {
         Optional<Bullet> bulletOptional = getAmmo();
         if (bulletOptional.isPresent()) {
             Bullet bullet = bulletOptional.get();
-            game.enemyBullets.add(bullet);
+            game.getEnemyBullets().add(bullet);
         }
     }
 

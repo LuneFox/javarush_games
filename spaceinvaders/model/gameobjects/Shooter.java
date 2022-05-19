@@ -1,4 +1,4 @@
-package com.javarush.games.spaceinvaders.model;
+package com.javarush.games.spaceinvaders.model.gameobjects;
 
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 

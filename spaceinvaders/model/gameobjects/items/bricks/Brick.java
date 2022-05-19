@@ -3,7 +3,8 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items.bricks;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
-import com.javarush.games.spaceinvaders.model.Shooter;
+import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
+import com.javarush.games.spaceinvaders.model.gameobjects.Shooter;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
@@ -14,7 +15,7 @@ import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.Optional;
 
-public class Brick extends GameObject implements Shooter {
+public class Brick extends GameObject implements Shooter, Movable {
     private JumpHelper jumpHelper;
 
     public Brick(double x, double y) {
@@ -39,7 +40,7 @@ public class Brick extends GameObject implements Shooter {
     }
 
     public void move() {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         jumpHelper.progressJump();
     }
 

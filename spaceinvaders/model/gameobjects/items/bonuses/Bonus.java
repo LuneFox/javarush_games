@@ -6,6 +6,7 @@ import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
+import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.Brick;
@@ -14,7 +15,7 @@ import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.List;
 
-public abstract class Bonus extends GameObject {
+public abstract class Bonus extends GameObject implements Movable {
     public GameObject overheadIcon;
     private QuestionBrick parentQuestionBrick;
     private final JumpHelper jumpHelper;
@@ -33,14 +34,14 @@ public abstract class Bonus extends GameObject {
     }
 
     public void move() {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         if (!finishedEjectPhase) {
             eject();
             return;
         }
 
-        verifyHit(game.enemyBullets);
-        game.bricks.forEach(this::verifyHit);
+        verifyHit(game.getEnemyBullets());
+        game.getBricks().forEach(this::verifyHit);
 
         jumpHelper.progressJump();
 
@@ -49,7 +50,7 @@ public abstract class Bonus extends GameObject {
         }
 
         slide();
-        verifyTouch(game.mario);
+        verifyTouch(game.getMario());
     }
 
     private void eject() {

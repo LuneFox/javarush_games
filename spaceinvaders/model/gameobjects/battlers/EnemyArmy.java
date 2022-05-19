@@ -1,9 +1,11 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
+import com.javarush.games.spaceinvaders.Drawable;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.BossTankShape;
 import com.javarush.games.spaceinvaders.view.shapes.TankShape;
@@ -11,7 +13,7 @@ import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnemyArmy {
+public class EnemyArmy implements Movable, Drawable {
     private static final int ROWS = 3;
     private static final int COLUMNS = 10;
     private static final int STEP = TankShape.TANK_1.length + 1;
@@ -61,7 +63,7 @@ public class EnemyArmy {
     }
 
     public void move() {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         if (enemyTanks.isEmpty()) return;
         updateSpeed();
         moveAllTanks();
@@ -104,7 +106,7 @@ public class EnemyArmy {
     }
 
     public void attack() {
-        if (game.isStopped) return;
+        if (game.isStopped()) return;
         if (enemyTanks.isEmpty()) return;
         int randomTankNumber = (int) (Math.random() * enemyTanks.size());
         enemyTanks.get(randomTankNumber).shoot();

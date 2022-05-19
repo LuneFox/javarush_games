@@ -36,7 +36,7 @@ public class Sprite {
                 Color color = Color.values()[matrix[j][i]];
                 double drawX = (mirror == Mirror.HORIZONTAL) ? (x + width - 1 - i) : (x + i);
                 double drawY = (y + j);
-                game.display.drawPixel((int) drawX, (int) drawY, color);
+                game.getDisplay().drawPixel((int) drawX, (int) drawY, color);
             }
         }
     }
