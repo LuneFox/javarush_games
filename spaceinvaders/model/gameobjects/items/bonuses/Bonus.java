@@ -33,6 +33,7 @@ public abstract class Bonus extends GameObject {
     }
 
     public void move() {
+        if (game.isStopped) return;
         if (!finishedEjectPhase) {
             eject();
             return;

@@ -153,41 +153,29 @@ public class SpaceInvadersGame extends Game {
     }
 
     public void addPlayerBullet(Bullet bulletToAdd) {
-        if (bulletToAdd instanceof CoinBullet) {
-            addCoinBullet(bulletToAdd);
-        } else {
-            playerBullets.add(bulletToAdd);
-        }
+        if (bulletToAdd instanceof CoinBullet && countCoinBullets() >= COIN_BULLETS_MAX) return;
+        playerBullets.add(bulletToAdd);
     }
 
-    private void addCoinBullet(Bullet bulletToAdd) {
-        long coinBulletsCount = playerBullets.stream()
+    private long countCoinBullets() {
+        return playerBullets.stream()
                 .filter(bullet -> bullet instanceof CoinBullet)
                 .count();
-
-        if (coinBulletsCount < COIN_BULLETS_MAX) {
-            playerBullets.add(bulletToAdd);
-        }
     }
 
     private void stopGameWithDelayBeforeEnding() {
         isStopped = true;
         gameOverDelay++;
-        if (gameOverDelay >= 60) {
-            showEnding(mario.isAlive);
-        }
+        if (gameOverDelay < 60) return;
+        showEnding(mario.isAlive);
     }
 
     private void showEnding(boolean isVictory) {
         stopTurnTimer();
         if (isVictory) {
-            showMessageDialog(Color.NONE,
-                    "SCORE: " + Score.get() + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!",
-                    Color.WHITE, 20);
+            showMessageDialog(Color.NONE, "SCORE: " + Score.get() + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!", Color.WHITE, 20);
         } else {
-            showMessageDialog(Color.NONE,
-                    "MAMMA MIA!",
-                    Color.RED, 75);
+            showMessageDialog(Color.NONE, "MAMMA MIA!", Color.RED, 75);
         }
         isEndingDisplayed = true;
     }
