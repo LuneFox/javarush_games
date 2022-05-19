@@ -1,16 +1,18 @@
 package com.javarush.games.racer;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.controller.InputEvent;
 import com.javarush.games.racer.model.DeLorean;
 import com.javarush.games.racer.model.Marty;
 import com.javarush.games.racer.model.Portal;
 import com.javarush.games.racer.model.TireFlame;
-import com.javarush.games.racer.view.Bitmap;
-import com.javarush.games.racer.view.Display;
-import com.javarush.games.racer.view.Text;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.model.road.RoadMarking;
+import com.javarush.games.racer.view.Display;
+import com.javarush.games.racer.view.printer.Image;
+import com.javarush.games.racer.view.printer.Printer;
 
 public class RacerGame extends Game {
     public final static String VERSION = "1.01";
@@ -19,7 +21,6 @@ public class RacerGame extends Game {
 
     public final Display display = new Display(this);
     public final InputEvent inputEvent = new InputEvent(this);
-    public final Text text = new Text(Bitmap.NONE, this);
 
     public DeLorean delorean;
     public Portal portal;
@@ -40,7 +41,7 @@ public class RacerGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
-        text.loadAlphabet();
+        Image.setGame(this);
         createGame();
         try {
             showMessageDialog(Color.BLACK, "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
@@ -118,14 +119,14 @@ public class RacerGame extends Game {
 
     private void drawSpeed() {
         if (isStopped) {
-            text.write("88 MPH", Color.WHITE, 2, 0, false);
+            Printer.print("88 MPH", Color.WHITE, 2, 0);
         } else {
-            text.write((int) (delorean.getSpeed() * 10) + " MPH", Color.WHITE, 2, 0, false);
+            Printer.print((int) (delorean.getSpeed() * 10) + " МВЧ", Color.WHITE, 2, 0);
         }
     }
 
     private void drawEnergy() {
-        text.write(delorean.getEnergy() + " ГВТ", Color.YELLOW, WIDTH - 5, 0, true);
+        Printer.print(delorean.getEnergy() + " ГВТ", Color.YELLOW, WIDTH - 1, 0, Printer.Align.RIGHT);
     }
 
     private void drawEnding() {
@@ -135,8 +136,8 @@ public class RacerGame extends Game {
         if (finishTimeOut <= 50) {
             marty.draw(this);
             if (finishTimeOut <= 30) {
-                text.write("ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\"",
-                        Color.WHITE, 3, HEIGHT - 9, false);
+                Printer.print("ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\"",
+                        Color.WHITE, 3, HEIGHT - 9);
             }
         }
     }
