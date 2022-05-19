@@ -1,6 +1,6 @@
 package com.javarush.games.racer.view.printer;
 
-public enum ImageType {
+public enum Symbol {
     SYM_RU_LETTER_A('а', 'a'),
     SYM_RU_LETTER_B('б'),
     SYM_RU_LETTER_V('в', 'b'),
@@ -82,7 +82,7 @@ public enum ImageType {
         return characters;
     }
 
-    ImageType(char... characters) {
+    Symbol(char... characters) {
         this.characters = characters;
     }
 }

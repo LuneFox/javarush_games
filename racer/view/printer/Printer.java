@@ -14,7 +14,7 @@ public class Printer {
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
     private static final Color STROKE_COLOR = Color.SADDLEBROWN;
-    public static final Cache<Character, Image> cache;
+    public static final Cache<Character, Image> SYMBOL_CACHE;
     private static boolean isStrokeEnabled;
 
     public enum Align {
@@ -22,10 +22,10 @@ public class Printer {
     }
 
     static {
-        cache = new Cache<Character, Image>(128) {
+        SYMBOL_CACHE = new Cache<Character, Image>(128) {
             @Override
             protected Image put(Character character) {
-                Arrays.stream(ImageType.values())
+                Arrays.stream(Symbol.values())
                         .filter(element -> element.name().startsWith("SYM_"))
                         .forEach(element -> {
                             for (char c : element.getCharacters()) {
@@ -91,22 +91,22 @@ public class Printer {
             return;
         }
 
-        Image symbol = cache.get(c);
-        if (isStrokeEnabled) stroke(x, y, symbol);
-        symbol.changeColor(color, 1);
-        symbol.draw(x, y);
+        Image image = SYMBOL_CACHE.get(c);
+        if (isStrokeEnabled) stroke(x, y, image);
+        image.changeColor(color, 1);
+        image.draw(x, y);
     }
 
     private static boolean charIsStrokeMarkup(char c) {
         return (c == '<') || (c == '>');
     }
 
-    private static void stroke(int x, int y, Image symbol) {
-        symbol.changeColor(STROKE_COLOR, 1);
-        symbol.draw(x - 1, y);
-        symbol.draw(x + 1, y);
-        symbol.draw(x, y - 1);
-        symbol.draw(x, y + 1);
+    private static void stroke(int x, int y, Image image) {
+        image.changeColor(STROKE_COLOR, 1);
+        image.draw(x - 1, y);
+        image.draw(x + 1, y);
+        image.draw(x, y - 1);
+        image.draw(x, y + 1);
     }
 
     private static int adjustDrawX(String input, int drawX) {
@@ -126,12 +126,12 @@ public class Printer {
 
     public static int calculateWidth(String s) {
         int width = 0;
-        Image symbol;
+        Image image;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
             if (charIsStrokeMarkup(c)) continue;
-            symbol = cache.get(c);
-            width += (symbol.matrix[0].length + CHAR_SPACING);
+            image = SYMBOL_CACHE.get(c);
+            width += (image.matrix[0].length + CHAR_SPACING);
         }
         return width;
     }
