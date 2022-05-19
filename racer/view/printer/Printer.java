@@ -13,6 +13,7 @@ public class Printer {
     public static final int CENTER = Integer.MIN_VALUE;
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
+    private static final Color STROKE_COLOR = Color.SADDLEBROWN;
     public static final Cache<Character, Image> cache;
     private static boolean isStrokeEnabled;
 
@@ -101,7 +102,7 @@ public class Printer {
     }
 
     private static void stroke(int x, int y, Image symbol) {
-        symbol.changeColor(Color.BLACK, 1);
+        symbol.changeColor(STROKE_COLOR, 1);
         symbol.draw(x - 1, y);
         symbol.draw(x + 1, y);
         symbol.draw(x, y - 1);

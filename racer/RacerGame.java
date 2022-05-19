@@ -119,14 +119,14 @@ public class RacerGame extends Game {
 
     private void drawSpeed() {
         if (isStopped) {
-            Printer.print("88 MPH", Color.WHITE, 2, 0);
+            Printer.print("<88 МВЧ>", Color.WHITE, 2, 0);
         } else {
-            Printer.print((int) (delorean.getSpeed() * 10) + " МВЧ", Color.WHITE, 2, 0);
+            Printer.print("<" + (int) (delorean.getSpeed() * 10) + " МВЧ>", Color.WHITE, 2, 0);
         }
     }
 
     private void drawEnergy() {
-        Printer.print(delorean.getEnergy() + " ГВТ", Color.YELLOW, WIDTH - 1, 0, Printer.Align.RIGHT);
+        Printer.print("<" + delorean.getEnergy() + " ГВТ>", Color.YELLOW, WIDTH - 1, 0, Printer.Align.RIGHT);
     }
 
     private void drawEnding() {
@@ -136,7 +136,7 @@ public class RacerGame extends Game {
         if (finishTimeOut <= 50) {
             marty.draw(this);
             if (finishTimeOut <= 30) {
-                Printer.print("ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\"",
+                Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">",
                         Color.WHITE, 3, HEIGHT - 9);
             }
         }
