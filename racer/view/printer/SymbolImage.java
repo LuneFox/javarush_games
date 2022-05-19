@@ -2,12 +2,9 @@ package com.javarush.games.racer.view.printer;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.view.Display;
 
-public class Image {
-    public static final int CENTER = Integer.MIN_VALUE;
-    protected static RacerGame game;
-
+public class SymbolImage {
+    private static RacerGame game;
     private static final Color[] colors = new Color[]{Color.NONE, Color.WHITE};
     public int x;
     public int y;
@@ -16,39 +13,31 @@ public class Image {
     public int[][] matrix;
 
     public static void setGame(RacerGame game) {
-        Image.game = game;
+        SymbolImage.game = game;
     }
 
-    public Image(Symbol type) {
+    SymbolImage(Symbol type) {
         this(type, 0, 0);
     }
 
-    public Image(Symbol symbol, int x, int y) {
+    SymbolImage(Symbol symbol, int x, int y) {
         setPosition(x, y);
-        this.matrix = SymbolDataStorage.getData(symbol);
+        this.matrix = symbol.getMatrix();
         this.height = matrix.length;
         this.width = matrix[0].length;
     }
 
-    public final void setPosition(int drawX, int drawY) {
-        this.x = drawX == CENTER ? getCenterH() : drawX;
-        this.y = drawY == CENTER ? getCenterV() : drawY;
-    }
-
-    private int getCenterH() {
-        return (Display.SIZE / 2) - (matrix[0].length / 2);
-    }
-
-    private int getCenterV() {
-        return (Display.SIZE / 2) - (matrix.length / 2);
-    }
-
-    public final void draw(int x, int y) {
+    final void draw(int x, int y) {
         setPosition(x, y);
         draw();
     }
 
-    public void draw() {
+    final void setPosition(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    void draw() {
         for (int j = 0; j < height; j++) {
             for (int i = 0; i < width; i++) {
 
@@ -68,9 +57,9 @@ public class Image {
         return (pixel == TRANSPARENT || colors[pixel] == Color.NONE);
     }
 
-    public final void changeColor(Color color, int number) {
+    final void changeColor(Color color) {
         try {
-            colors[number] = color;
+            colors[1] = color;
         } catch (IndexOutOfBoundsException e) {
             System.err.println("Could not change color! " + e.getMessage());
         }

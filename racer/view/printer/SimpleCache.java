@@ -8,10 +8,10 @@ import java.util.Map;
  * @param <K> key
  * @param <V> value
  */
-public abstract class Cache<K, V> {
+abstract class SimpleCache<K, V> {
     protected final Map<K, V> cache;
 
-    public Cache(int size) {
+    public SimpleCache(int size) {
         cache = new HashMap<>(size);
     }
 
@@ -23,5 +23,5 @@ public abstract class Cache<K, V> {
         return value;
     }
 
-    protected abstract V put(K key);
+    abstract V put(K key);
 }

@@ -11,7 +11,7 @@ import com.javarush.games.racer.model.TireFlame;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.model.road.RoadMarking;
 import com.javarush.games.racer.view.Display;
-import com.javarush.games.racer.view.printer.Image;
+import com.javarush.games.racer.view.printer.SymbolImage;
 import com.javarush.games.racer.view.printer.Printer;
 
 public class RacerGame extends Game {
@@ -41,7 +41,7 @@ public class RacerGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
-        Image.setGame(this);
+        SymbolImage.setGame(this);
         createGame();
         try {
             showMessageDialog(Color.BLACK, "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
