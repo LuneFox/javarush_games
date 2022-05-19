@@ -78,7 +78,7 @@ public class SpaceInvadersGame extends Game {
 
     private void createAssets() {
         mario = new Mario();
-        enemyArmy = new EnemyArmy();
+        enemyArmy = new EnemyArmy(this);
         enemyBullets = new ArrayList<>();
         playerBullets = new ArrayList<>();
         createBricks();

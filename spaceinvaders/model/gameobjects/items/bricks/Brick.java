@@ -39,6 +39,7 @@ public class Brick extends GameObject implements Shooter {
     }
 
     public void move() {
+        if (game.isStopped) return;
         jumpHelper.progressJump();
     }
 

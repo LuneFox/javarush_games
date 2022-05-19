@@ -30,7 +30,7 @@ public class Mario extends Battler {
     private JumpHelper jumpHelper;
     public Bonus bonus;
     public int finalAnimationCounter;
-    private double speed;
+    private double walkingSpeed;
 
     public enum Animation {
         STANDING, WALKING, JUMPING, BRAKING, DEAD
@@ -43,7 +43,7 @@ public class Mario extends Battler {
         finalAnimationCounter = 0;
         leftWalkingBound = -4;
         rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;
-        speed = 0;
+        walkingSpeed = 0;
     }
 
     private void configureJumpHelper() {
@@ -77,24 +77,24 @@ public class Mario extends Battler {
         changeSpeed();
         selectAnimationAccordingToSpeed();
         brakeOnReverseDirectionInput();
-        x += speed;
+        x += walkingSpeed;
     }
 
     private void changeSpeed() {
         if (moveDirection == Direction.RIGHT) {
-            if (speed == 0) speed = START_SPEED;
-            if (speed < MAX_SPEED) speed += ACCELERATION;
+            if (walkingSpeed == 0) walkingSpeed = START_SPEED;
+            if (walkingSpeed < MAX_SPEED) walkingSpeed += ACCELERATION;
         } else if (moveDirection == Direction.LEFT) {
-            if (speed == 0) speed = -START_SPEED;
-            if (speed > -MAX_SPEED) speed -= ACCELERATION;
+            if (walkingSpeed == 0) walkingSpeed = -START_SPEED;
+            if (walkingSpeed > -MAX_SPEED) walkingSpeed -= ACCELERATION;
         } else if (moveDirection == Direction.NONE) {
-            speed += ((speed > 0) ? -ACCELERATION : ACCELERATION);
-            if (Math.abs(speed) < 0.5) speed = 0;
+            walkingSpeed += ((walkingSpeed > 0) ? -ACCELERATION : ACCELERATION);
+            if (Math.abs(walkingSpeed) < 0.5) walkingSpeed = 0;
         }
     }
 
     private void selectAnimationAccordingToSpeed() {
-        if (Math.abs(speed) > ACCELERATION) {
+        if (Math.abs(walkingSpeed) > ACCELERATION) {
             setWalkingAnimation();
         } else {
             setStandingAnimation();
@@ -102,12 +102,12 @@ public class Mario extends Battler {
     }
 
     private void brakeOnReverseDirectionInput() {
-        if (moveDirection == Direction.RIGHT && speed < ACCELERATION) {
-            speed += ACCELERATION / 2;
+        if (moveDirection == Direction.RIGHT && walkingSpeed < ACCELERATION) {
+            walkingSpeed += ACCELERATION / 2;
             setBrakingAnimation();
         }
-        if (moveDirection == Direction.LEFT && speed > -ACCELERATION) {
-            speed -= ACCELERATION / 2;
+        if (moveDirection == Direction.LEFT && walkingSpeed > -ACCELERATION) {
+            walkingSpeed -= ACCELERATION / 2;
             setBrakingAnimation();
         }
     }
@@ -126,12 +126,14 @@ public class Mario extends Battler {
     }
 
     public void playDeathAnimation() {
+        if (finalAnimationCounter > 30) return;
+        finalAnimationCounter++;
         setDeadAnimation();
         this.bonus = null;
-        if (finalAnimationCounter < 30) finalAnimationCounter++;
-        if (finalAnimationCounter < 10) return;
-        if (finalAnimationCounter < 15) y -= 2;
-        else if (finalAnimationCounter < 30) y += 3;
+
+        if (finalAnimationCounter >= 10) {
+            y += (finalAnimationCounter < 15) ? -2 : 3;
+        }
     }
 
     public void playVictoryAnimation() {

@@ -16,13 +16,15 @@ public class EnemyArmy {
     private static final int COLUMNS = 10;
     private static final int STEP = TankShape.TANK_1.length + 1;
 
+    private final SpaceInvadersGame game;
     private List<EnemyTank> enemyTanks;
     private Direction direction;
     private double speed;
 
-    public EnemyArmy() {
+    public EnemyArmy(SpaceInvadersGame game) {
         createTanks();
         this.direction = Direction.RIGHT;
+        this.game = game;
     }
 
     private void createTanks() {
@@ -59,6 +61,7 @@ public class EnemyArmy {
     }
 
     public void move() {
+        if (game.isStopped) return;
         if (enemyTanks.isEmpty()) return;
         updateSpeed();
         moveAllTanks();
@@ -101,6 +104,7 @@ public class EnemyArmy {
     }
 
     public void attack() {
+        if (game.isStopped) return;
         if (enemyTanks.isEmpty()) return;
         int randomTankNumber = (int) (Math.random() * enemyTanks.size());
         enemyTanks.get(randomTankNumber).shoot();

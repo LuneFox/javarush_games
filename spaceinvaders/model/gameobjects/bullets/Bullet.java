@@ -18,6 +18,7 @@ public abstract class Bullet extends GameObject {
     }
 
     public void move() {
+        if (game.isStopped) return;
         y += dy;
     }
 
