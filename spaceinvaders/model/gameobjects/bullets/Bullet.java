@@ -16,7 +16,7 @@ public abstract class Bullet extends GameObject implements Movable {
         super(x, y);
         dy = (direction == Direction.UP) ? -2 : 2;
         canKillEnemies = false;
-        lastCollisionDate = new Date();
+        lastCollisionDate = new Date(0);
     }
 
     public void move() {

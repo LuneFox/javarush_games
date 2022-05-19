@@ -75,8 +75,8 @@ public class SpaceInvadersGame extends Game {
 
     private void resetValues() {
         Score.reset();
-        gameOverDelay = 0;
         isStopped = false;
+        gameOverDelay = 0;
         isEndingDisplayed = false;
         setTurnTimer(40);
     }
