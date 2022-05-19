@@ -40,11 +40,11 @@ public class SpaceInvadersGame extends Game {
     private Scenery scenery;
     private Flash flash;
 
-    private EnemyArmy enemyArmy;
     private Mario mario;
+    private EnemyArmy enemyArmy;
 
+    private List<Bullet> marioBullets;
     private List<Bullet> enemyBullets;
-    private List<Bullet> playerBullets;
     private List<Brick> bricks;
 
     private int gameOverDelay;
@@ -85,7 +85,7 @@ public class SpaceInvadersGame extends Game {
         mario = new Mario();
         enemyArmy = new EnemyArmy(this);
         enemyBullets = new ArrayList<>();
-        playerBullets = new ArrayList<>();
+        marioBullets = new ArrayList<>();
         createBricks();
     }
 
@@ -114,20 +114,20 @@ public class SpaceInvadersGame extends Game {
         mario.move();
         enemyArmy.move();
         enemyArmy.attack();
-        Stream.of(enemyBullets, playerBullets, bricks)
+        Stream.of(enemyBullets, marioBullets, bricks)
                 .forEach(list -> list.forEach(Movable::move));
     }
 
     private void verifyCollisions() {
         mario.verifyHit(enemyBullets);
-        enemyArmy.verifyHit(playerBullets);
+        enemyArmy.verifyHit(marioBullets);
         enemyArmy.verifyHit(enemyBullets);
         bricks.forEach(brick -> brick.verifyTouch(mario));
     }
 
     private void removeDeadObjects() {
         enemyArmy.removeDeadTanks();
-        Stream.of(enemyBullets, playerBullets)
+        Stream.of(enemyBullets, marioBullets)
                 .forEach(list -> list.removeIf(bullet -> bullet.isOffScreen() || !bullet.isAlive));
     }
 
@@ -149,18 +149,18 @@ public class SpaceInvadersGame extends Game {
 
     private void drawStage() {
         Stream.of(scenery, enemyArmy).forEach(Drawable::draw);
-        Stream.of(playerBullets, bricks, enemyBullets)
+        Stream.of(marioBullets, bricks, enemyBullets)
                 .forEach(list -> list.forEach(Drawable::draw));
         Stream.of(mario, flash, display).forEach(Drawable::draw);
     }
 
     public void addPlayerBullet(Bullet bulletToAdd) {
         if (bulletToAdd instanceof CoinBullet && countCoinBullets() >= COIN_BULLETS_MAX) return;
-        playerBullets.add(bulletToAdd);
+        marioBullets.add(bulletToAdd);
     }
 
     private long countCoinBullets() {
-        return playerBullets.stream()
+        return marioBullets.stream()
                 .filter(bullet -> bullet instanceof CoinBullet)
                 .count();
     }
