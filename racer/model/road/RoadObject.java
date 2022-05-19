@@ -1,6 +1,7 @@
-package com.javarush.games.racer.road;
+package com.javarush.games.racer.model.road;
 
-import com.javarush.games.racer.*;
+import com.javarush.games.racer.model.GameObject;
+import com.javarush.games.racer.view.ShapeMatrix;
 
 public class RoadObject extends GameObject {
     public RoadObjectType type;

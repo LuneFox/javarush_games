@@ -1,6 +1,8 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.controller;
 
 import com.javarush.engine.cell.Key;
+import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.model.Direction;
 
 public class InputEvent {
     private RacerGame game;

@@ -1,9 +1,7 @@
-package com.javarush.games.racer.road;
+package com.javarush.games.racer.model.road;
 
-import com.javarush.games.racer.GameObject;
-import com.javarush.games.racer.HitBox;
+import com.javarush.games.racer.model.HitBox;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.ShapeMatrix;
 
 public class Energy extends RoadObject {
 

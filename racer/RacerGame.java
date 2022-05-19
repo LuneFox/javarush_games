@@ -1,10 +1,16 @@
 package com.javarush.games.racer;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.racer.graphics.Bitmap;
-import com.javarush.games.racer.graphics.Text;
-import com.javarush.games.racer.road.RoadManager;
-import com.javarush.games.racer.road.RoadMarking;
+import com.javarush.games.racer.controller.InputEvent;
+import com.javarush.games.racer.model.DeLorean;
+import com.javarush.games.racer.model.Marty;
+import com.javarush.games.racer.model.Portal;
+import com.javarush.games.racer.model.TireFlame;
+import com.javarush.games.racer.view.Bitmap;
+import com.javarush.games.racer.view.Display;
+import com.javarush.games.racer.view.Text;
+import com.javarush.games.racer.model.road.RoadManager;
+import com.javarush.games.racer.model.road.RoadMarking;
 
 public class RacerGame extends Game {
     public final static String VERSION = "1.01";

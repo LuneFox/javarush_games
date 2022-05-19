@@ -1,4 +1,4 @@
-package com.javarush.games.racer.graphics;
+package com.javarush.games.racer.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;

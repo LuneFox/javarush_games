@@ -1,4 +1,4 @@
-package com.javarush.games.racer.graphics;
+package com.javarush.games.racer.view;
 
 /**
  * A list of all available graphics (tiles, sprites and pictures) to use as words in the code

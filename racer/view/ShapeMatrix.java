@@ -1,4 +1,4 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.view;
 
 import java.util.ArrayList;
 import java.util.Arrays;

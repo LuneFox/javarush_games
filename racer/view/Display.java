@@ -1,13 +1,14 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
+import com.javarush.games.racer.RacerGame;
 
 public class Display {
     private Game game;
     private Pixel[][] matrix;
 
-    Display(Game game) {
+    public Display(Game game) {
         this.game = game;
         this.matrix = new Pixel[100][100];
         for (int y = 0; y < matrix.length; y++) {

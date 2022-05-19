@@ -1,4 +1,4 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.model;
 
 public enum Direction {
     UP, DOWN, RIGHT, LEFT, NONE

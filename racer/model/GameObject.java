@@ -1,6 +1,7 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.model;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.racer.RacerGame;
 
 import java.util.ArrayList;
 import java.util.Arrays;

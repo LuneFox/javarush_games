@@ -1,6 +1,8 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.model;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.view.ShapeMatrix;
 
 public class TireFlame extends GameObject {
 

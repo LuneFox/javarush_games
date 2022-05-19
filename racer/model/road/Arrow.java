@@ -1,7 +1,7 @@
-package com.javarush.games.racer.road;
+package com.javarush.games.racer.model.road;
 
-import com.javarush.games.racer.GameObject;
-import com.javarush.games.racer.ShapeMatrix;
+import com.javarush.games.racer.model.GameObject;
+import com.javarush.games.racer.view.ShapeMatrix;
 
 public class Arrow extends GameObject {
     public Arrow(int x, int y, int[][] matrix) {

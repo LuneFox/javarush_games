@@ -1,7 +1,9 @@
-package com.javarush.games.racer;
+package com.javarush.games.racer.model;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.racer.road.RoadManager;
+import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.view.ShapeMatrix;
+import com.javarush.games.racer.model.road.RoadManager;
 
 public class DeLorean extends GameObject {
     public static final double MAX_SPEED = 8.89;
