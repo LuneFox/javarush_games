@@ -11,23 +11,23 @@ public class SymbolCache {
         cache = new HashMap<>(size);
     }
 
-    SymbolImage get(Character key) {
-        SymbolImage value = cache.get(key);
+    SymbolImage get(Character character) {
+        SymbolImage value = cache.get(character);
 
         if (value == null) {
-            value = put(key);
+            value = put(character);
         }
 
         return value;
     }
 
-    SymbolImage put(Character key) {
+    SymbolImage put(Character character) {
         Arrays.stream(Symbol.values()).forEach(element -> {
-            for (char c : element.getCharacters()) {
+            for (char c : element.getChars()) {
                 cache.put(c, new SymbolImage(element));
             }
         });
 
-        return cache.get(key);
+        return cache.get(character);
     }
 }
