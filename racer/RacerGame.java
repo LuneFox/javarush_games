@@ -11,6 +11,7 @@ import com.javarush.games.racer.model.TireFlame;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.model.road.RoadMarking;
 import com.javarush.games.racer.view.Display;
+import com.javarush.games.racer.view.printer.TextAlign;
 import com.javarush.games.racer.view.printer.SymbolImage;
 import com.javarush.games.racer.view.printer.Printer;
 
@@ -121,12 +122,12 @@ public class RacerGame extends Game {
         if (isStopped) {
             Printer.print("<88 МВЧ>", Color.WHITE, 2, 0);
         } else {
-            Printer.print("<" + (int) (delorean.getSpeed() * 10) + " МВЧ>", Color.WHITE, 2, 0);
+            Printer.print("<" + (int) (delorean.getSpeed() * 10) + " МВЧ>", Color.WHITE, 2, 0, TextAlign.LEFT);
         }
     }
 
     private void drawEnergy() {
-        Printer.print("<" + delorean.getEnergy() + " ГВТ>", Color.YELLOW, WIDTH - 1, 0, Printer.Align.RIGHT);
+        Printer.print("<" + delorean.getEnergy() + " ГВТ>", Color.YELLOW, WIDTH - 1, 0, TextAlign.RIGHT);
     }
 
     private void drawEnding() {
@@ -136,8 +137,7 @@ public class RacerGame extends Game {
         if (finishTimeOut <= 50) {
             marty.draw(this);
             if (finishTimeOut <= 30) {
-                Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">",
-                        Color.WHITE, 3, HEIGHT - 9);
+                Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">", 3, HEIGHT - 9);
             }
         }
     }

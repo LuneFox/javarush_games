@@ -8,8 +8,6 @@ public class SymbolImage {
     private static final Color[] colors = new Color[]{Color.NONE, Color.WHITE};
     public int x;
     public int y;
-    public int width;
-    public int height;
     public int[][] matrix;
 
     public static void setGame(RacerGame game) {
@@ -17,14 +15,7 @@ public class SymbolImage {
     }
 
     SymbolImage(Symbol type) {
-        this(type, 0, 0);
-    }
-
-    SymbolImage(Symbol symbol, int x, int y) {
-        setPosition(x, y);
-        this.matrix = symbol.getMatrix();
-        this.height = matrix.length;
-        this.width = matrix[0].length;
+        this.matrix = type.getMatrix();
     }
 
     final void draw(int x, int y) {
@@ -37,7 +28,10 @@ public class SymbolImage {
         this.y = y;
     }
 
-    void draw() {
+    private void draw() {
+        int height = matrix.length;
+        int width = matrix[0].length;
+
         for (int j = 0; j < height; j++) {
             for (int i = 0; i < width; i++) {
 

@@ -3,60 +3,26 @@ package com.javarush.games.racer.view.printer;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.view.Display;
 
-/**
- * Utility class for drawing text information using symbol images.
- */
-
 public class Printer {
-    public static final int CENTER = Integer.MIN_VALUE;
-    private static final int CHAR_SPACING = 1;
-    private static final int LINE_HEIGHT = 9;
+    private static final SymbolCache CACHE = new SymbolCache(128);
     private static final Color STROKE_COLOR = Color.SADDLEBROWN;
-    public static SymbolCache SYMBOL_CACHE = new SymbolCache(128);
+    private static final int CHAR_SPACING = 1;
     private static boolean isStrokeEnabled;
 
-    public enum Align {
-        LEFT, RIGHT
-    }
-
     public static void print(String text, int x, int y) {
-        print(text, Color.WHITE, x, y, Align.LEFT);
+        print(text, Color.WHITE, x, y, TextAlign.LEFT);
     }
 
     public static void print(String text, Color color, int x, int y) {
-        print(text, color, x, y, Align.LEFT);
+        print(text, color, x, y, TextAlign.LEFT);
     }
 
-    public static void print(String input, Color color, int drawX, int drawY, Align align) {
-        drawX = drawX != CENTER ? drawX : (Display.SIZE / 2) - (calculateWidth(input) / 2);
-        drawY = drawY != CENTER ? drawY : 0;
+    public static void print(String text, Color color, int drawX, int drawY, TextAlign align) {
+        drawX = align != TextAlign.CENTER ? drawX : (Display.SIZE / 2) - (calculateWidth(text) / 2);
+        drawY = align != TextAlign.CENTER ? drawY : 0;
 
-        final int caretBase = drawX;
-
-        class Caret {
-            private int x, y;
-
-            private Caret(int x, int y) {
-                this.x = x;
-                this.y = y;
-            }
-
-            private void gotoNewLine() {
-                x = caretBase;
-                y += LINE_HEIGHT;
-            }
-
-            private void gotoNextSymbol(char c) {
-                x += calculateWidth(Character.toString(c));
-            }
-
-            private void gotoStartPosition(String line) {
-                if (align == Align.RIGHT) x = caretBase - calculateWidth(line);
-            }
-        }
-
-        Caret caret = new Caret(drawX, drawY);
-        String[] lines = input.split("\n");
+        PrinterCaret caret = new PrinterCaret(drawX, drawY, align);
+        String[] lines = text.split("\n");
 
         for (String line : lines) {
 
@@ -72,13 +38,27 @@ public class Printer {
         }
     }
 
+    static int calculateWidth(String s) {
+        int width = 0;
+        SymbolImage image;
+        char[] chars = s.toLowerCase().toCharArray();
+
+        for (char c : chars) {
+            if (charIsStrokeMarkup(c)) continue;
+            image = CACHE.get(c);
+            width += (image.matrix[0].length + CHAR_SPACING);
+        }
+
+        return width;
+    }
+
     private static void drawSymbol(char c, Color color, int x, int y) {
         if (charIsStrokeMarkup(c)) {
             isStrokeEnabled = !isStrokeEnabled;
             return;
         }
 
-        SymbolImage image = SYMBOL_CACHE.get(c);
+        SymbolImage image = CACHE.get(c);
         if (isStrokeEnabled) stroke(x, y, image);
         image.changeColor(color);
         image.draw(x, y);
@@ -94,19 +74,5 @@ public class Printer {
         image.draw(x + 1, y);
         image.draw(x, y - 1);
         image.draw(x, y + 1);
-    }
-
-    private static int calculateWidth(String s) {
-        int width = 0;
-        SymbolImage image;
-        char[] chars = s.toLowerCase().toCharArray();
-
-        for (char c : chars) {
-            if (charIsStrokeMarkup(c)) continue;
-            image = SYMBOL_CACHE.get(c);
-            width += (image.matrix[0].length + CHAR_SPACING);
-        }
-
-        return width;
     }
 }
