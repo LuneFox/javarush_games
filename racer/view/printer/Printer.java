@@ -3,8 +3,6 @@ package com.javarush.games.racer.view.printer;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.view.Display;
 
-import java.util.Arrays;
-
 /**
  * Utility class for drawing text information using symbol images.
  */
@@ -14,31 +12,11 @@ public class Printer {
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
     private static final Color STROKE_COLOR = Color.SADDLEBROWN;
-    public static SimpleCache<Character, SymbolImage> SYMBOL_CACHE;
+    public static SymbolCache SYMBOL_CACHE = new SymbolCache(128);
     private static boolean isStrokeEnabled;
 
     public enum Align {
         LEFT, RIGHT
-    }
-
-    static {
-        fillSymbolsCache();
-    }
-
-    private static void fillSymbolsCache() {
-        SYMBOL_CACHE = new SimpleCache<Character, SymbolImage>(128) {
-            @Override
-            protected SymbolImage put(Character character) {
-
-                Arrays.stream(Symbol.values()).forEach(element -> {
-                    for (char c : element.getCharacters()) {
-                        cache.put(c, new SymbolImage(element));
-                    }
-                });
-
-                return cache.get(character);
-            }
-        };
     }
 
     public static void print(String text, int x, int y) {
