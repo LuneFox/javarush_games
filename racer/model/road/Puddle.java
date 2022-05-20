@@ -15,14 +15,14 @@ public class Puddle extends RoadObject {
     }
 
     @Override
-    public void draw(RacerGame game) {
+    public void draw() {
         if (this.x >= RacerGame.WIDTH) {
-            arrow.y = (int) (this.y + this.matrix.length / 2 - arrow.matrix.length / 2);
+            arrow.y = (int) (this.y + this.getMatrix().length / 2 - arrow.getMatrix().length / 2);
             if (!game.isStopped) {
-                arrow.draw(game);
+                arrow.draw();
             }
         } else {
-            super.draw(game);
+            super.draw();
         }
     }
 }

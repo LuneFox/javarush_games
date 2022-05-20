@@ -1,68 +1,59 @@
 package com.javarush.games.racer.model;
 
-import com.javarush.engine.cell.*;
 import com.javarush.games.racer.RacerGame;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
 public class GameObject {
+    protected static RacerGame game;
+    private Sprite sprite;
     public double x;
     public double y;
-    public int width;
-    public int height;
-    public int[][] matrix;
     protected HitBox hitBox;
 
-    private ArrayList<int[][]> frames;
-    private int currentFrame;
-    private int frameCounter;
+    public static void setGame(RacerGame game) {
+        GameObject.game = game;
+    }
+
+    public GameObject() {
+        this(0, 0);
+    }
 
     public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
-        frames = new ArrayList<>();
-        currentFrame = 0;
     }
 
-    public GameObject(double x, double y, int[][] matrix) {
+    public void setStaticView(int[][] frame) {
+        sprite = new Sprite(game);
+        sprite.setStaticView(frame);
+    }
+
+    public void setAnimatedView(Sprite.Loop loop, int nextFrameDelay, int[][]... frames) {
+        sprite = new Sprite(game);
+        sprite.setAnimatedView(loop, nextFrameDelay, frames);
+    }
+
+    public void draw() {
+        sprite.draw(x, y, Mirror.NONE);
+    }
+
+    public void draw(Mirror mirror) {
+        sprite.draw(x, y, mirror);
+    }
+
+    public int getWidth() {
+        return sprite.width;
+    }
+
+    public int getHeight() {
+        return sprite.height;
+    }
+
+    public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
-        this.matrix = matrix;
-        width = matrix[0].length;
-        height = matrix.length;
-        frames = new ArrayList<>();
-        currentFrame = 0;
     }
 
-    public void draw(RacerGame game) {
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                int colorIndex = matrix[j][i];
-                game.display.drawPixel((int) x + i, (int) y + j, Color.values()[colorIndex]);
-            }
-        }
-    }
-
-    public void animate(RacerGame game, int frameDelay) {
-        if (frameCounter < frameDelay) {
-            frameCounter++;
-        } else {
-            if (currentFrame < frames.size() - 1) {
-                this.matrix = frames.get(++currentFrame);
-            } else {
-                currentFrame = 0;
-                this.matrix = frames.get(currentFrame);
-            }
-            frameCounter = 0;
-        }
-        draw(game);
-    }
-
-    public void setAnimation(int[][]... frames) {
-        this.frames = new ArrayList<>();
-        this.frames.addAll(Arrays.asList(frames));
-        frameCounter = this.frames.size() - 1;
-        currentFrame = 0;
+    public int[][] getMatrix() {
+        return sprite.getMatrix();
     }
 }

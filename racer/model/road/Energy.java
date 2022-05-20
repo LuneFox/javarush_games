@@ -15,9 +15,9 @@ public class Energy extends RoadObject {
     }
 
     @Override
-    public void draw(RacerGame game) {
+    public void draw() {
         if (!isCollected) {
-            super.draw(game);
+            super.draw();
         }
     }
 }

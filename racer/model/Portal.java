@@ -11,13 +11,14 @@ public class Portal extends GameObject {
     private int finishTimeOut = 20;
 
     public Portal() {
-        super(0, 0, Shapes.PORTAL_GROW_0);
+        super(0, 0);
+        setStaticView(Shapes.PORTAL_GROW_0);
         animation = Animation.NONE;
     }
 
     public void align(DeLorean deLorean) {
         if (deLorean.x == 3) {
-            this.x = deLorean.x + deLorean.width - 2;
+            this.x = deLorean.x + deLorean.getWidth() - 2;
             this.y = deLorean.y - 2;
         }
     }
@@ -29,19 +30,19 @@ public class Portal extends GameObject {
         } else if (delorean.getSpeed() >= EXPAND_POINT && animation != Animation.ACTIVE) {
             animateActive();
         }
-        if (delorean.getSpeed() >= DISPLAY_POINT || (game.isStopped && finishTimeOut > 0 )) {
+        if (delorean.getSpeed() >= DISPLAY_POINT || (game.isStopped && finishTimeOut > 0)) {
             if (delorean.getSpeed() < DeLorean.MAX_SPEED - 0.09) {
                 align(delorean);
             }
-            if (game.isStopped){
+            if (game.isStopped) {
                 finishTimeOut--;
             }
-            super.animate(game, 1);
+            super.draw();
         }
     }
 
     private void animateActive() {
-        setAnimation(
+        setAnimatedView(Sprite.Loop.ENABLED, 1,
                 Shapes.PORTAL_0,
                 Shapes.PORTAL_1,
                 Shapes.PORTAL_2,
@@ -51,7 +52,7 @@ public class Portal extends GameObject {
     }
 
     private void animateGrowing() {
-        setAnimation(
+        setAnimatedView(Sprite.Loop.ENABLED, 1,
                 Shapes.PORTAL_GROW_0,
                 Shapes.PORTAL_GROW_1
         );

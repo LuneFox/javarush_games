@@ -13,8 +13,13 @@ public class RoadMarking {
 
     public RoadMarking() {
         for (int i = RacerGame.WIDTH + 8; i >= -8; i -= 16) {
-            roadMarking.add(new GameObject(i, (RacerGame.HEIGHT / 2) - (RoadManager.ROAD_WIDTH / 4), Shapes.ROAD_MARKING));
-            roadMarking.add(new GameObject(i + 8, (RacerGame.HEIGHT / 2) + (RoadManager.ROAD_WIDTH / 4), Shapes.ROAD_MARKING));
+            GameObject marking1 = new GameObject(i, (RacerGame.HEIGHT / 2.0) - (RoadManager.ROAD_WIDTH / 4.0));
+            marking1.setStaticView(Shapes.ROAD_MARKING);
+            roadMarking.add(marking1);
+
+            GameObject marking2 = new GameObject(i + 8, (RacerGame.HEIGHT / 2.0) + (RoadManager.ROAD_WIDTH / 4.0));
+            marking2.setStaticView(Shapes.ROAD_MARKING);
+            roadMarking.add(marking2);
         }
     }
 
@@ -34,9 +39,9 @@ public class RoadMarking {
         }
     }
 
-    public void draw(RacerGame game) {
+    public void draw() {
         for (GameObject item : roadMarking) {
-            item.draw(game);
+            item.draw();
         }
     }
 }

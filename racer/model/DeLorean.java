@@ -24,7 +24,8 @@ public class DeLorean extends GameObject {
     private double energy;
 
     public DeLorean() {
-        super(3, (int) (RacerGame.HEIGHT / 2 - Shapes.DELOREAN_RUN_0.length / 2 + 8), Shapes.DELOREAN_RUN_0);
+        super(3, RacerGame.HEIGHT / 2.0 - Shapes.DELOREAN_RUN_0.length / 2.0 + 8);
+        setStaticView(Shapes.DELOREAN_RUN_0);
         this.hitBox = new HitBox(9, 6, 20, 28);
         this.verticalDirection = Direction.NONE;
         this.horizontalDirection = Direction.NONE;
@@ -41,9 +42,9 @@ public class DeLorean extends GameObject {
         if (y < RoadManager.UPPER_BORDER - 8) {
             speed = (speed / 100) * 99.5;
             y = RoadManager.UPPER_BORDER - 8;
-        } else if (y > RoadManager.LOWER_BORDER - height) {
+        } else if (y > RoadManager.LOWER_BORDER - getHeight()) {
             speed = (speed / 100) * 99.5;
-            y = RoadManager.LOWER_BORDER - height;
+            y = RoadManager.LOWER_BORDER - getHeight();
         }
         switch (verticalDirection) {
             case UP:
@@ -106,15 +107,15 @@ public class DeLorean extends GameObject {
     }
 
     @Override
-    public void draw(RacerGame game) {
+    public void draw() {
         Portal portal = game.getPortal();
         if (speed > MAX_SPEED - 0.09 && !game.isStopped) {
             this.x += 3;
         }
         int shift = (this.x == 3 ? 3 : 6);
-        for (int i = 0; i < width - (this.x - shift); i++) {
-            for (int j = 0; j < height; j++) {
-                int colorIndex = matrix[j][i];
+        for (int i = 0; i < getWidth() - (this.x - shift); i++) {
+            for (int j = 0; j < getHeight(); j++) {
+                int colorIndex = getMatrix()[j][i];
                 game.display.drawPixel((int) x + i, (int) y + j, Color.values()[colorIndex]);
             }
         }
@@ -127,7 +128,7 @@ public class DeLorean extends GameObject {
     // ANIMATIONS
 
     public void animateRunning() {
-        setAnimation(
+        setAnimatedView(Sprite.Loop.ENABLED, 3,
                 Shapes.DELOREAN_RUN_0,
                 Shapes.DELOREAN_RUN_1,
                 Shapes.DELOREAN_RUN_2,
@@ -136,7 +137,7 @@ public class DeLorean extends GameObject {
     }
 
     public void animateGlowing() {
-        setAnimation(
+        setAnimatedView(Sprite.Loop.ENABLED, 3,
                 Shapes.DELOREAN_GLOW_0,
                 Shapes.DELOREAN_GLOW_1,
                 Shapes.DELOREAN_GLOW_2,
@@ -145,7 +146,7 @@ public class DeLorean extends GameObject {
     }
 
     public void animateStopped() {
-        setAnimation(Shapes.DELOREAN_RUN_0);
+        setStaticView(Shapes.DELOREAN_RUN_0);
         this.animation = Animation.STOPPED;
     }
 

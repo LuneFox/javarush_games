@@ -5,8 +5,9 @@ import com.javarush.games.racer.view.Shapes;
 
 public class Marty extends GameObject {
     public Marty() {
-        super(0, 0, Shapes.MARTY);
-        this.y = RacerGame.HEIGHT - height;
-        this.x = RacerGame.WIDTH - width - 5;
+        super(0, 0);
+        setStaticView(Shapes.MARTY);
+        this.y = RacerGame.HEIGHT - getHeight();
+        this.x = RacerGame.WIDTH - getWidth() - 5;
     }
 }

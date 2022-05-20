@@ -19,7 +19,7 @@ public class RoadManager {
 
     public void draw(RacerGame game) {
         for (RoadObject item : items) {
-            item.draw(game);
+            item.draw();
         }
     }
 
@@ -115,9 +115,9 @@ public class RoadManager {
 
     private void deletePassedItems() {
         List<RoadObject> itemsCopy = new ArrayList<>(items);
-        for (RoadObject ro : itemsCopy) {
-            if (ro.x + ro.width < 0) {
-                items.remove(ro);
+        for (RoadObject roadObject : itemsCopy) {
+            if (roadObject.x + roadObject.getWidth() < 0) {
+                items.remove(roadObject);
             }
         }
     }

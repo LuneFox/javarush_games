@@ -5,10 +5,7 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.controller.Control;
 import com.javarush.games.racer.controller.Controller;
-import com.javarush.games.racer.model.DeLorean;
-import com.javarush.games.racer.model.Marty;
-import com.javarush.games.racer.model.Portal;
-import com.javarush.games.racer.model.TireFlame;
+import com.javarush.games.racer.model.*;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.model.road.RoadMarking;
 import com.javarush.games.racer.view.Display;
@@ -43,6 +40,7 @@ public class RacerGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
+        GameObject.setGame(this);
         SymbolImage.setGame(this);
         createGame();
         try {
@@ -84,9 +82,9 @@ public class RacerGame extends Game {
 
     private void drawScene() {
         drawField();
-        roadMarking.draw(this);
+        roadMarking.draw();
         roadManager.draw(this);
-        delorean.animate(this, (int) (10 / delorean.getSpeed() + 0.0001));
+        delorean.draw();
         portal.animate(this, delorean);
         tireFlame.animate(this, delorean);
         drawEnding();
@@ -137,7 +135,7 @@ public class RacerGame extends Game {
             finishTimeOut--;
         }
         if (finishTimeOut <= 50) {
-            marty.draw(this);
+            marty.draw();
             if (finishTimeOut <= 30) {
                 Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">", 3, HEIGHT - 9);
             }
@@ -175,6 +173,6 @@ public class RacerGame extends Game {
     }
 
     public Display getDisplay() {
-        return null;
+        return display;
     }
 }

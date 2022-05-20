@@ -10,9 +10,7 @@ public class RoadObject extends GameObject {
     public RoadObject(RoadObjectType type, double x, double y) {
         super(x, y);
         this.type = type;
-        this.matrix = getMatrix(type);
-        this.width = matrix[0].length;
-        this.height = matrix.length;
+        this.setStaticView(getShape(type));
     }
 
     /**
@@ -26,7 +24,7 @@ public class RoadObject extends GameObject {
     /**
      * Возвращает матрицу изображения объекта в зависимости от его типа.
      */
-    private static int[][] getMatrix(RoadObjectType type) {
+    private static int[][] getShape(RoadObjectType type) {
         switch (type) {
             case PUDDLE:
                 return Shapes.PUDDLE;
@@ -43,11 +41,11 @@ public class RoadObject extends GameObject {
      * Возвращает высоту объекта.
      */
     public static int getHeight(RoadObjectType type) {
-        return getMatrix(type).length;
+        return getShape(type).length;
     }
 
     public static int getWidth(RoadObjectType type) {
-        return getMatrix(type)[0].length;
+        return getShape(type)[0].length;
     }
 
 }
