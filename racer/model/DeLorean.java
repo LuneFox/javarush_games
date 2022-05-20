@@ -1,7 +1,9 @@
 package com.javarush.games.racer.model;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.controller.Control;
 import com.javarush.games.racer.view.Shapes;
 import com.javarush.games.racer.model.road.RoadManager;
 
@@ -162,10 +164,12 @@ public class DeLorean extends GameObject {
         return speed;
     }
 
+    @Control({Key.UP, Key.DOWN})
     public void setVerticalDirection(Direction verticalDirection) {
         this.verticalDirection = verticalDirection;
     }
 
+    @Control({Key.LEFT, Key.RIGHT})
     public void setHorizontalDirection(Direction horizontalDirection) {
         this.horizontalDirection = horizontalDirection;
     }

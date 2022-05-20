@@ -3,7 +3,8 @@ package com.javarush.games.racer;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
-import com.javarush.games.racer.controller.InputEvent;
+import com.javarush.games.racer.controller.Control;
+import com.javarush.games.racer.controller.Controller;
 import com.javarush.games.racer.model.DeLorean;
 import com.javarush.games.racer.model.Marty;
 import com.javarush.games.racer.model.Portal;
@@ -11,9 +12,9 @@ import com.javarush.games.racer.model.TireFlame;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.model.road.RoadMarking;
 import com.javarush.games.racer.view.Display;
-import com.javarush.games.racer.view.printer.TextAlign;
-import com.javarush.games.racer.view.printer.SymbolImage;
 import com.javarush.games.racer.view.printer.Printer;
+import com.javarush.games.racer.view.printer.SymbolImage;
+import com.javarush.games.racer.view.printer.TextAlign;
 
 public class RacerGame extends Game {
     public final static String VERSION = "1.01";
@@ -21,7 +22,7 @@ public class RacerGame extends Game {
     public final static int HEIGHT = 100;
 
     public final Display display = new Display(this);
-    public final InputEvent inputEvent = new InputEvent(this);
+    public final Controller controller = new Controller(this);
 
     public DeLorean delorean;
     public Portal portal;
@@ -66,6 +67,7 @@ public class RacerGame extends Game {
         drawScene();
     }
 
+    @Control(Key.SPACE)
     public void createGame() {
         delorean = new DeLorean();
         portal = new Portal();
@@ -158,17 +160,21 @@ public class RacerGame extends Game {
 
     @Override
     public void onKeyPress(Key key) {
-        inputEvent.keyPress(key);
+        controller.pressKey(key);
     }
 
     @Override
     public void onKeyReleased(Key key) {
-        inputEvent.keyRelease(key);
+        controller.releaseKey(key);
     }
 
     // GETTERS
 
     public Portal getPortal() {
         return portal;
+    }
+
+    public Display getDisplay() {
+        return null;
     }
 }
