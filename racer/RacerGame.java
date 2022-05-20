@@ -83,10 +83,10 @@ public class RacerGame extends Game {
     private void drawScene() {
         drawField();
         roadMarking.draw();
-        roadManager.draw(this);
+        roadManager.draw();
         delorean.draw();
-        portal.animate(this, delorean);
-        tireFlame.animate(this, delorean);
+        portal.draw();
+        tireFlame.draw();
         drawEnding();
         drawSpeed();
         drawEnergy();

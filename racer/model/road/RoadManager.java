@@ -12,12 +12,12 @@ public class RoadManager {
     public static final int LOWER_BORDER = 90;
     public static final int ROAD_WIDTH = RacerGame.HEIGHT - (UPPER_BORDER) - (RacerGame.HEIGHT - LOWER_BORDER);
 
-    private List<RoadObject> items = new ArrayList<>();
+    private final List<RoadObject> items = new ArrayList<>();
 
 
     // OBJECTS CONTROL
 
-    public void draw(RacerGame game) {
+    public void draw() {
         for (RoadObject item : items) {
             item.draw();
         }
@@ -61,8 +61,8 @@ public class RoadManager {
 
     public void generateNewRoadObjects(RacerGame game, DeLorean deLorean) {
         if (RacerGame.allowCountTime && deLorean.getSpeed() > 0) {
-            generatePuddle(game);
-            generateHole(game);
+//            generatePuddle(game);
+//            generateHole(game);
             generateEnergy(game);
         }
     }

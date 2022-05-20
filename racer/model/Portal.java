@@ -1,6 +1,5 @@
 package com.javarush.games.racer.model;
 
-import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.view.Shapes;
 
 public class Portal extends GameObject {
@@ -24,15 +23,16 @@ public class Portal extends GameObject {
     }
 
 
-    public void animate(RacerGame game, DeLorean delorean) {
-        if (delorean.getSpeed() < EXPAND_POINT && animation != Animation.GROWING) {
+    public void draw() {
+        DeLorean deLorean = game.delorean;
+        if (deLorean.getSpeed() < EXPAND_POINT && animation != Animation.GROWING) {
             animateGrowing();
-        } else if (delorean.getSpeed() >= EXPAND_POINT && animation != Animation.ACTIVE) {
+        } else if (deLorean.getSpeed() >= EXPAND_POINT && animation != Animation.ACTIVE) {
             animateActive();
         }
-        if (delorean.getSpeed() >= DISPLAY_POINT || (game.isStopped && finishTimeOut > 0)) {
-            if (delorean.getSpeed() < DeLorean.MAX_SPEED - 0.09) {
-                align(delorean);
+        if (deLorean.getSpeed() >= DISPLAY_POINT || (game.isStopped && finishTimeOut > 0)) {
+            if (deLorean.getSpeed() < DeLorean.MAX_SPEED - 0.09) {
+                align(deLorean);
             }
             if (game.isStopped) {
                 finishTimeOut--;
@@ -52,7 +52,7 @@ public class Portal extends GameObject {
     }
 
     private void animateGrowing() {
-        setAnimatedView(Sprite.Loop.ENABLED, 1,
+        setAnimatedView(Sprite.Loop.ENABLED, 2,
                 Shapes.PORTAL_GROW_0,
                 Shapes.PORTAL_GROW_1
         );
