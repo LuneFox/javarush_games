@@ -31,7 +31,7 @@ public class Portal extends GameObject {
             animateActive();
         }
         if (deLorean.getSpeed() >= DISPLAY_POINT || (game.isStopped && finishTimeOut > 0)) {
-            if (deLorean.getSpeed() < DeLorean.MAX_SPEED - 0.09) {
+            if (deLorean.getSpeed() <= DeLorean.MAX_SPEED) {
                 align(deLorean);
             }
             if (game.isStopped) {

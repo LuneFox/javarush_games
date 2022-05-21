@@ -18,6 +18,7 @@ public class Sprite {
     private int nextFrameDelay;
     private int nextFrameTimer;
     private Loop loop;
+    private final SpriteMask mask;
 
     public enum Loop {
         ENABLED, DISABLED
@@ -26,11 +27,14 @@ public class Sprite {
     public Sprite(RacerGame game) {
         this.game = game;
         this.nextFrameDelay = 1;
+        this.mask = new SpriteMask();
     }
 
     void draw(double x, double y, Mirror mirror) {
         nextFrame();
-        for (int i = 0; i < width; i++) {
+        mask.nextStep(width);
+
+        for (int i = 0; i < (width - mask.getWidth()); i++) {
             for (int j = 0; j < height; j++) {
                 Color color = Color.values()[matrix[j][i]];
                 double drawX = (mirror == Mirror.HORIZONTAL) ? (x + width - 1 - i) : (x + i);
@@ -51,7 +55,7 @@ public class Sprite {
         }
     }
 
-    boolean isAnimationFinished(){
+    boolean isAnimationFinished() {
         return currentFrame >= frames.size();
     }
 
@@ -83,5 +87,13 @@ public class Sprite {
 
     public void setAnimationDelay(int nextFrameDelay) {
         this.nextFrameDelay = nextFrameDelay;
+    }
+
+    void maskIn(int step){
+        mask.startIn(step);
+    }
+
+    void maskOut(int step){
+        mask.startOut(step, width);
     }
 }

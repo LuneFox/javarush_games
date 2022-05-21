@@ -23,7 +23,8 @@ public class RacerGame extends Game {
 
     public DeLorean delorean;
     public Portal portal;
-    public TireFlame tireFlame;
+    public TireFlame rightTireFlame;
+    public TireFlame leftTireFlame;
     public Marty marty;
     public RoadMarking roadMarking;
     public RoadManager roadManager;
@@ -56,20 +57,33 @@ public class RacerGame extends Game {
 
     @Override
     public void onTurn(int step) {
+        checkGameOver();
         roadManager.generateNewRoadObjects(this, delorean);
         roadManager.checkCross(delorean);
+        countTime();
+        moveAll();
+        drawScene();
+    }
+
+    private void checkGameOver() {
+        if (delorean.x > portal.x + 5) {
+            delorean.setSpeed(0);
+            isStopped = true;
+        }
+    }
+
+    private void countTime() {
         if (!isStopped && allowCountTime) {
             time += 40;
         }
-        moveAll();
-        drawScene();
     }
 
     @Control(Key.SPACE)
     public void createGame() {
         delorean = new DeLorean();
         portal = new Portal();
-        tireFlame = new TireFlame();
+        rightTireFlame = new TireFlame(TireFlame.Side.RIGHT);
+        leftTireFlame = new TireFlame(TireFlame.Side.LEFT);
         marty = new Marty();
         roadMarking = new RoadMarking();
         roadManager = new RoadManager();
@@ -86,7 +100,8 @@ public class RacerGame extends Game {
         roadManager.draw();
         delorean.draw();
         portal.draw();
-        tireFlame.draw();
+        rightTireFlame.draw();
+        leftTireFlame.draw();
         drawEnding();
         drawSpeed();
         drawEnergy();

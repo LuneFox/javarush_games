@@ -61,8 +61,8 @@ public class RoadManager {
 
     public void generateNewRoadObjects(RacerGame game, DeLorean deLorean) {
         if (RacerGame.allowCountTime && deLorean.getSpeed() > 0) {
-//            generatePuddle(game);
-//            generateHole(game);
+            generatePuddle(game);
+            generateHole(game);
             generateEnergy(game);
         }
     }

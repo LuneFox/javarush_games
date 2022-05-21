@@ -40,6 +40,14 @@ public class GameObject {
         sprite.draw(x, y, mirror);
     }
 
+    public void maskIn(int step) {
+        sprite.maskIn(step);
+    }
+
+    public void maskOut(int step) {
+        sprite.maskOut(step);
+    }
+
     public int getWidth() {
         return sprite.width;
     }

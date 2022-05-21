@@ -1,6 +1,5 @@
 package com.javarush.games.racer.model;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.controller.Control;
@@ -8,17 +7,18 @@ import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.view.Shapes;
 
 public class DeLorean extends GameObject {
-    public static final double MAX_SPEED = 8.89;
     public static final double MAX_ENERGY = 1.21;
-    private static final double MAX_STEER = 2.0;
+    public static final double MAX_SPEED = 8.89;
     private static final double GLOW_POINT = 6.0;
+    private static final double ENTER_PORTAL_POINT = 8.80;
+    private static final double MAX_STEER = 2.0;
     private static final double BOOST = 0.05;
     private static final double BRAKE = 0.2;
     private static final double SLOWDOWN = 0.025;
     private static final double LEFT_PADDING = 3;
 
-    private Direction verticalDirection;
-    private Direction horizontalDirection;
+    private Direction verDirection;
+    private Direction horDirection;
     private Animation animation;
     private double speed;
     private double acceleration;
@@ -29,26 +29,24 @@ public class DeLorean extends GameObject {
     }
 
     public DeLorean() {
-        super(3, (RacerGame.HEIGHT / 2.0) - (Shapes.DELOREAN_RUN_0.length / 2.0) + 8);
+        super(LEFT_PADDING, (RacerGame.HEIGHT / 2.0) - (Shapes.DELOREAN_RUN_0.length / 2.0) + 8);
         this.hitBox = new HitBox(9, 6, 20, 28);
-        this.verticalDirection = Direction.NONE;
-        this.horizontalDirection = Direction.NONE;
-
-        this.energy = 1.21;
-        this.speed = 8.5;
-
+        this.verDirection = Direction.NONE;
+        this.horDirection = Direction.NONE;
+        this.energy = 0;
+        this.speed = 0;
         setNormalAnimation();
     }
 
     public void steer() {
-        if (!isInDefaultPlace()) return;
+        if (isNotInDefaultPlace()) return;
 
         checkOffRoad();
         changeVerticalPosition();
     }
 
-    private boolean isInDefaultPlace() {
-        return this.x == LEFT_PADDING;
+    private boolean isNotInDefaultPlace() {
+        return this.x != LEFT_PADDING;
     }
 
     private void checkOffRoad() {
@@ -71,25 +69,25 @@ public class DeLorean extends GameObject {
     }
 
     private void changeVerticalPosition() {
-        if (verticalDirection == Direction.UP)
+        if (verDirection == Direction.UP)
             y -= Math.min(speed, MAX_STEER);
-        else if (verticalDirection == Direction.DOWN)
+        else if (verDirection == Direction.DOWN)
             y += Math.min(speed, MAX_STEER);
     }
 
     public void gas() {
-        if (!isInDefaultPlace()) return;
+        if (isNotInDefaultPlace()) return;
 
         changeSpeed();
         changeAnimationBasedOnSpeed();
     }
 
     private void changeSpeed() {
-        if (horizontalDirection == Direction.RIGHT)
+        if (horDirection == Direction.RIGHT)
             accelerate();
-        else if (horizontalDirection == Direction.LEFT)
+        else if (horDirection == Direction.LEFT)
             brake();
-        else if (horizontalDirection == Direction.NONE)
+        else if (horDirection == Direction.NONE)
             slowDown();
     }
 
@@ -158,78 +156,59 @@ public class DeLorean extends GameObject {
 
     @Override
     public void draw() {
-        thrustForwardAtMaxSpeed();
-        if (isInDefaultPlace()) {
-            super.draw();
-        } else {
-            drawDisappearingInPortal();
+        if (speed > ENTER_PORTAL_POINT) {
+            moveTowardsPortal();
         }
-        stopGameAfterPassingPortal();
+
+        super.draw();
     }
 
-    private void thrustForwardAtMaxSpeed() {
-        if (speed > MAX_SPEED - 0.09 && !game.isStopped) {
-            this.x += 3;
+    private void moveTowardsPortal() {
+        int shift = 3;
+
+        if (isNotInDefaultPlace()) {
+            maskIn(shift);
         }
+
+        this.x += shift;
     }
 
-    private void drawDisappearingInPortal() {
-        // TODO: старая логика исчезания в портале, нужно придумать альтернативу
-        int shift = 6;
-        int[][] matrix = getMatrix();
-
-        for (int i = 0; i < getWidth() - (this.x - shift); i++) {
-            for (int j = 0; j < getHeight(); j++) {
-                int colorIndex = matrix[j][i];
-                game.display.drawPixel((int) x + i, (int) y + j, Color.values()[colorIndex]);
-            }
-        }
-    }
-
-    private void stopGameAfterPassingPortal() {
-        Portal portal = game.getPortal();
-
-        if (this.x > portal.x + 5) {
-            speed = 0;
-            game.isStopped = true;
-        }
-    }
 
     /**
-     * Getters, setters, etc.
+     * Getters, setters
      */
 
-    public Direction getVerticalDirection() {
-        return verticalDirection;
+    public Direction getHorDirection() {
+        return horDirection;
     }
 
-    public Direction getHorizontalDirection() {
-        return horizontalDirection;
+    @Control({Key.LEFT, Key.RIGHT})
+    public void setHorDirection(Direction horDirection) {
+        this.horDirection = horDirection;
+    }
+
+    public Direction getVerDirection() {
+        return verDirection;
+    }
+
+    @Control({Key.UP, Key.DOWN})
+    public void setVerDirection(Direction verDirection) {
+        this.verDirection = verDirection;
     }
 
     public double getSpeed() {
         return speed;
     }
 
-    @Control({Key.UP, Key.DOWN})
-    public void setVerticalDirection(Direction verticalDirection) {
-        this.verticalDirection = verticalDirection;
-    }
-
-    @Control({Key.LEFT, Key.RIGHT})
-    public void setHorizontalDirection(Direction horizontalDirection) {
-        this.horizontalDirection = horizontalDirection;
-    }
-
     public void setSpeed(double speed) {
         this.speed = speed;
     }
 
-    public void setEnergy(double energy) {
-        this.energy = energy;
-    }
-
     public double getEnergy() {
         return energy;
+    }
+
+    public void setEnergy(double energy) {
+        this.energy = energy;
     }
 }

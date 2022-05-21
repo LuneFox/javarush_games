@@ -12,49 +12,49 @@ public class RaceStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        game.delorean.setVerticalDirection(Direction.UP);
+        game.delorean.setVerDirection(Direction.UP);
     }
 
     @Override
     public void releaseUp() {
-        if (game.delorean.getVerticalDirection() == Direction.UP) {
-            game.delorean.setVerticalDirection(Direction.NONE);
+        if (game.delorean.getVerDirection() == Direction.UP) {
+            game.delorean.setVerDirection(Direction.NONE);
         }
     }
 
     @Override
     public void pressDown() {
-        game.delorean.setVerticalDirection(Direction.DOWN);
+        game.delorean.setVerDirection(Direction.DOWN);
     }
 
     @Override
     public void releaseDown() {
-        if (game.delorean.getVerticalDirection() == Direction.DOWN) {
-            game.delorean.setVerticalDirection(Direction.NONE);
+        if (game.delorean.getVerDirection() == Direction.DOWN) {
+            game.delorean.setVerDirection(Direction.NONE);
         }
     }
 
     @Override
     public void pressRight() {
-        game.delorean.setHorizontalDirection(Direction.RIGHT);
+        game.delorean.setHorDirection(Direction.RIGHT);
     }
 
     @Override
     public void releaseRight() {
-        if (game.delorean.getHorizontalDirection() == Direction.RIGHT) {
-            game.delorean.setHorizontalDirection(Direction.NONE);
+        if (game.delorean.getHorDirection() == Direction.RIGHT) {
+            game.delorean.setHorDirection(Direction.NONE);
         }
     }
 
     @Override
     public void pressLeft() {
-        game.delorean.setHorizontalDirection(Direction.LEFT);
+        game.delorean.setHorDirection(Direction.LEFT);
     }
 
     @Override
     public void releaseLeft() {
-        if (game.delorean.getHorizontalDirection() == Direction.LEFT) {
-            game.delorean.setHorizontalDirection(Direction.NONE);
+        if (game.delorean.getHorDirection() == Direction.LEFT) {
+            game.delorean.setHorDirection(Direction.NONE);
         }
     }
 
