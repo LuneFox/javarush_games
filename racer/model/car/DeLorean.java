@@ -110,9 +110,9 @@ public class DeLorean extends GameObject {
 
     private void limitMaxSpeed() {
         if (energy < MAX_ENERGY) {
-            speed = Math.min(START_GLOWING_THRESHOLD - 0.1, speed);
+            speed = Math.min(START_GLOWING_THRESHOLD - 0.01, speed);
         } else {
-            speed = Math.min(ENTER_PORTAL_THRESHOLD + 0.1, speed);
+            speed = Math.min(ENTER_PORTAL_THRESHOLD + 0.01, speed);
         }
     }
 
@@ -162,9 +162,10 @@ public class DeLorean extends GameObject {
     }
 
     private void moveIntoPortal() {
-        int shift = 3;
+        final int gapBetweenCarAndPortal = 3;
+        final int shift = 3;
 
-        if (x == PADDING_LEFT + shift) {
+        if (x == PADDING_LEFT + gapBetweenCarAndPortal) {
             maskIn(shift);
         }
 
