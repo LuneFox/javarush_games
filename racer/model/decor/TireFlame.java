@@ -22,6 +22,7 @@ public class TireFlame extends GameObject {
     @Override
     public void draw() {
         if (!game.isStopped) return;
+
         alignToDeLorean();
         maskOut(3);
         super.draw();
@@ -29,7 +30,8 @@ public class TireFlame extends GameObject {
 
     private void alignToDeLorean() {
         DeLorean deLorean = game.delorean;
-        this.x = deLorean.x;
-        this.y = deLorean.y + deLorean.getHeight() - this.getHeight() - ((side == Side.RIGHT) ? 0 : 10);
+        int shift = (side == Side.RIGHT) ? 0 : 10;
+        x = deLorean.x;
+        y = deLorean.y + deLorean.getHeight() - this.getHeight() - shift;
     }
 }

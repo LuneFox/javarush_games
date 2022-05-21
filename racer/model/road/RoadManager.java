@@ -32,7 +32,7 @@ public class RoadManager {
 
     public void checkCross(DeLorean delorean) {
         for (RoadObject item : items) {
-            if (HitBox.isCollision(item, delorean) && delorean.isAtLeftmostPosition()) {
+            if (HitBox.checkFullOverlap(item, delorean) && delorean.isAtLeftmostPosition()) {
                 switch (item.type) {
                     case PUDDLE:
                         delorean.setSpeed((delorean.getSpeed() / 100) * 95);
@@ -85,7 +85,7 @@ public class RoadManager {
         int y = game.getRandomNumber(RoadManager.UPPER_BORDER, RoadManager.LOWER_BORDER - RoadObject.getHeight(type));
         RoadObject newItem = createRoadObject(type, x, y);
         for (RoadObject item : items) {
-            if (HitBox.isCollisionY(item, newItem)) {
+            if (HitBox.checkHorizontalOverlap(item, newItem)) {
                 return;
             }
         }

@@ -11,7 +11,7 @@ public class Hole extends RoadObject {
     public Hole(double x, double y) {
         super(RoadObjectType.HOLE, x, y);
         this.speed = 0;
-        this.hitBox = new HitBox(0, 0, 8, 15);
+        this.hitBox = new HitBox(0, 0, 15, 8);
     }
 
     @Override

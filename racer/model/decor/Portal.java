@@ -17,7 +17,6 @@ public class Portal extends GameObject {
     }
 
     public Portal() {
-        super(0, 0);
         setGrowingAnimation(2);
         this.deLorean = game.delorean;
     }

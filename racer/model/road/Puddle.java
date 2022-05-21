@@ -11,7 +11,7 @@ public class Puddle extends RoadObject {
     public Puddle(double x, double y) {
         super(RoadObjectType.PUDDLE, x, y);
         this.speed = 0;
-        this.hitBox = new HitBox(0, 0, 8, 15);
+        this.hitBox = new HitBox(0, 0, 15, 8);
     }
 
     @Override

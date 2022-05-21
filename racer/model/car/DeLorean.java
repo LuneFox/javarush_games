@@ -31,7 +31,7 @@ public class DeLorean extends GameObject {
 
     public DeLorean() {
         super(PADDING_LEFT, (RacerGame.HEIGHT / 2.0) - (Shapes.DELOREAN_RUN_0.length / 2.0) + 8);
-        this.hitBox = new HitBox(9, 6, 20, 28);
+        this.hitBox = new HitBox(6, 9, 28, 20);
         this.verDirection = Direction.NONE;
         this.horDirection = Direction.NONE;
         this.energy = 0;

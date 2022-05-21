@@ -9,7 +9,7 @@ public class Energy extends RoadObject {
     public Energy(double x, double y) {
         super(RoadObjectType.ENERGY, x, y);
         this.speed = 0;
-        this.hitBox = new HitBox(0, 0, 9, 18);
+        this.hitBox = new HitBox(0, 0, 18, 9);
         isCollected = false;
     }
 

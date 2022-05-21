@@ -1,5 +1,10 @@
 package com.javarush.games.racer.model.gameobjects;
 
+/**
+ * A tool for sprite that gradually hides it from right to left or reveals it from left to right.
+ * Step parameter decides how many rows of pixels get hidden/revealed at each iteration.
+ */
+
 class SpriteMask {
     private int step;
     private State state;
