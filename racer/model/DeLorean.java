@@ -8,20 +8,18 @@ import com.javarush.games.racer.view.Shapes;
 
 public class DeLorean extends GameObject {
     public static final double MAX_ENERGY = 1.21;
-    public static final double MAX_SPEED = 8.89;
-    private static final double GLOW_POINT = 6.0;
+    private static final double PADDING_LEFT = 1;
+    private static final double MAX_STEER_SPEED = 2.0;
+    private static final double ACCELERATION_GAS = 0.05;
+    private static final double ACCELERATION_BRAKE = -0.2;
+    private static final double ACCELERATION_RELEASE = -0.025;
     private static final double ENTER_PORTAL_POINT = 8.80;
-    private static final double MAX_STEER = 2.0;
-    private static final double BOOST = 0.05;
-    private static final double BRAKE = 0.2;
-    private static final double SLOWDOWN = 0.025;
-    private static final double LEFT_PADDING = 3;
+    private static final double START_GLOWING_POINT = 6.0;
 
     private Direction verDirection;
     private Direction horDirection;
     private Animation animation;
     private double speed;
-    private double acceleration;
     private double energy;
 
     private enum Animation {
@@ -29,7 +27,7 @@ public class DeLorean extends GameObject {
     }
 
     public DeLorean() {
-        super(LEFT_PADDING, (RacerGame.HEIGHT / 2.0) - (Shapes.DELOREAN_RUN_0.length / 2.0) + 8);
+        super(PADDING_LEFT, (RacerGame.HEIGHT / 2.0) - (Shapes.DELOREAN_RUN_0.length / 2.0) + 8);
         this.hitBox = new HitBox(9, 6, 20, 28);
         this.verDirection = Direction.NONE;
         this.horDirection = Direction.NONE;
@@ -39,14 +37,14 @@ public class DeLorean extends GameObject {
     }
 
     public void steer() {
-        if (isNotInDefaultPlace()) return;
+        if (!isAtLeftmostPosition()) return;
 
         checkOffRoad();
         changeVerticalPosition();
     }
 
-    private boolean isNotInDefaultPlace() {
-        return this.x != LEFT_PADDING;
+    public boolean isAtLeftmostPosition() {
+        return this.x == PADDING_LEFT;
     }
 
     private void checkOffRoad() {
@@ -70,16 +68,16 @@ public class DeLorean extends GameObject {
 
     private void changeVerticalPosition() {
         if (verDirection == Direction.UP)
-            y -= Math.min(speed, MAX_STEER);
+            y -= Math.min(speed, MAX_STEER_SPEED);
         else if (verDirection == Direction.DOWN)
-            y += Math.min(speed, MAX_STEER);
+            y += Math.min(speed, MAX_STEER_SPEED);
     }
 
     public void gas() {
-        if (isNotInDefaultPlace()) return;
+        if (!isAtLeftmostPosition()) return;
 
         changeSpeed();
-        changeAnimationBasedOnSpeed();
+        selectAnimationBasedOnSpeed();
     }
 
     private void changeSpeed() {
@@ -88,45 +86,44 @@ public class DeLorean extends GameObject {
         else if (horDirection == Direction.LEFT)
             brake();
         else if (horDirection == Direction.NONE)
-            slowDown();
+            release();
     }
 
     private void accelerate() {
-        RacerGame.allowCountTime = true;
-        acceleration = BOOST * (1 - speed * 0.1);
-        speed += acceleration;
-        limitSpeedBeforeMaxEnergy();
-    }
-
-    private void limitSpeedBeforeMaxEnergy() {
-        if (speed >= GLOW_POINT - 0.1 && energy < MAX_ENERGY) {
-            speed = GLOW_POINT - 0.1;
-        }
+        RacerGame.allowCountTime(); // TODO: Перенести активацию на пробег?
+        speed += ACCELERATION_GAS * (1 - speed * 0.1);
+        limitMaxSpeed();
     }
 
     private void brake() {
-        acceleration = BRAKE;
-        speed -= acceleration;
-        limitSpeedBelowZero();
+        speed += ACCELERATION_BRAKE;
+        limitMinSpeed();
     }
 
-    private void slowDown() {
-        acceleration = SLOWDOWN;
-        speed -= acceleration;
-        limitSpeedBelowZero();
+    private void release() {
+        speed += ACCELERATION_RELEASE;
+        limitMinSpeed();
     }
 
-    private void limitSpeedBelowZero() {
-        speed = Math.max(speed, 0);
+    private void limitMaxSpeed() {
+        if (energy < MAX_ENERGY) {
+            speed = Math.min(START_GLOWING_POINT - 0.1, speed);
+        } else {
+            speed = Math.min(ENTER_PORTAL_POINT + 0.1, speed);
+        }
     }
 
-    private void changeAnimationBasedOnSpeed() {
+    private void limitMinSpeed() {
+        speed = Math.max(0, speed);
+    }
+
+    private void selectAnimationBasedOnSpeed() {
         if (speed <= 0) {
             setAnimationDelay(Integer.MAX_VALUE);
-        } else if (speed > 0 && speed < GLOW_POINT) {
+        } else if (speed > 0 && speed < START_GLOWING_POINT) {
             setNormalAnimation();
             setAnimationDelay((int) (10 / speed + 1));
-        } else if (speed >= GLOW_POINT) {
+        } else if (speed >= START_GLOWING_POINT) {
             setGlowingAnimation();
             setAnimationDelay((int) (10 / speed + 1));
         }
@@ -164,7 +161,7 @@ public class DeLorean extends GameObject {
     private void moveTowardsPortal() {
         int shift = 3;
 
-        if (isNotInDefaultPlace()) {
+        if (!isAtLeftmostPosition()) {
             maskIn(shift);
         }
 

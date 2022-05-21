@@ -3,63 +3,75 @@ package com.javarush.games.racer.model;
 import com.javarush.games.racer.view.Shapes;
 
 public class Portal extends GameObject {
-
-    private static final double DISPLAY_POINT = 7.5;
+    private static final double GROW_POINT = 7.5;
     private static final double EXPAND_POINT = 8.0;
+    private final DeLorean deLorean;
     private Animation animation;
-    private int finishTimeOut = 20;
+    private int afterEffectTime = 20;
+
+    private enum Animation {
+        GROWING, EXPANDED
+    }
 
     public Portal() {
         super(0, 0);
-        setStaticView(Shapes.PORTAL_GROW_0);
-        animation = Animation.NONE;
+        setGrowingAnimation(2);
+        this.deLorean = game.delorean;
     }
 
-    public void align(DeLorean deLorean) {
-        if (deLorean.x == 3) {
+    public void draw() {
+        if (game.isStopped) {
+            drawAfterEffect();
+            return;
+        } else
+
+        if (deLorean.getSpeed() < GROW_POINT) {
+            return;
+        }
+
+        alignToDeLorean();
+        selectAnimationBasedOnSpeed();
+        super.draw();
+    }
+
+    private void drawAfterEffect() {
+        if (afterEffectTime > 0) {
+            setGrowingAnimation(1);
+            super.draw();
+            afterEffectTime--;
+        }
+    }
+
+    public void alignToDeLorean() {
+        if (deLorean.isAtLeftmostPosition()) {
             this.x = deLorean.x + deLorean.getWidth() - 2;
             this.y = deLorean.y - 2;
         }
     }
 
-
-    public void draw() {
-        DeLorean deLorean = game.delorean;
-        if (deLorean.getSpeed() < EXPAND_POINT && animation != Animation.GROWING) {
-            animateGrowing();
-        } else if (deLorean.getSpeed() >= EXPAND_POINT && animation != Animation.ACTIVE) {
-            animateActive();
-        }
-        if (deLorean.getSpeed() >= DISPLAY_POINT || (game.isStopped && finishTimeOut > 0)) {
-            if (deLorean.getSpeed() <= DeLorean.MAX_SPEED) {
-                align(deLorean);
-            }
-            if (game.isStopped) {
-                finishTimeOut--;
-            }
-            super.draw();
+    private void selectAnimationBasedOnSpeed() {
+        if (deLorean.getSpeed() < EXPAND_POINT) {
+            setGrowingAnimation(2);
+        } else {
+            setExpandedAnimation();
         }
     }
 
-    private void animateActive() {
+    private void setExpandedAnimation() {
+        if (animation == Animation.EXPANDED) return;
         setAnimatedView(Sprite.Loop.ENABLED, 1,
-                Shapes.PORTAL_0,
-                Shapes.PORTAL_1,
-                Shapes.PORTAL_2,
-                Shapes.PORTAL_3
-        );
-        animation = Animation.ACTIVE;
+                Shapes.PORTAL_EXPANDED_0,
+                Shapes.PORTAL_EXPANDED_1,
+                Shapes.PORTAL_EXPANDED_2,
+                Shapes.PORTAL_EXPANDED_3);
+        animation = Animation.EXPANDED;
     }
 
-    private void animateGrowing() {
-        setAnimatedView(Sprite.Loop.ENABLED, 2,
-                Shapes.PORTAL_GROW_0,
-                Shapes.PORTAL_GROW_1
-        );
+    private void setGrowingAnimation(int delay) {
+        if (animation == Animation.GROWING) return;
+        setAnimatedView(Sprite.Loop.ENABLED, delay,
+                Shapes.PORTAL_GROWING_0,
+                Shapes.PORTAL_GROWING_1);
         animation = Animation.GROWING;
-    }
-
-    private enum Animation {
-        ACTIVE, GROWING, NONE
     }
 }

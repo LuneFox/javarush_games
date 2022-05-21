@@ -245,7 +245,7 @@ public class Shapes {
             {45, 45, 45, 45, 45, 45, 45, 45}
     };
 
-    public static final int[][] PORTAL_0 = new int[][]{
+    public static final int[][] PORTAL_EXPANDED_0 = new int[][]{
             {0, 0, 28, 49, 0, 0, 0},
             {0, 0, 0, 28, 49, 0, 0},
             {0, 0, 0, 28, 28, 49, 0},
@@ -272,7 +272,7 @@ public class Shapes {
             {0, 0, 28, 49, 0, 0, 0}
     };
 
-    public static final int[][] PORTAL_1 = new int[][]{
+    public static final int[][] PORTAL_EXPANDED_1 = new int[][]{
             {0, 0, 137, 83, 0, 0, 0},
             {0, 0, 0, 137, 83, 0, 0},
             {0, 0, 0, 137, 137, 83, 0},
@@ -299,7 +299,7 @@ public class Shapes {
             {0, 0, 137, 83, 0, 0, 0}
     };
 
-    public static final int[][] PORTAL_2 = new int[][]{
+    public static final int[][] PORTAL_EXPANDED_2 = new int[][]{
             {0, 0, 28, 49, 0, 0, 0},
             {0, 0, 0, 28, 49, 0, 0},
             {0, 0, 0, 28, 28, 49, 0},
@@ -326,7 +326,7 @@ public class Shapes {
             {0, 0, 28, 49, 0, 0, 0}
     };
 
-    public static final int[][] PORTAL_3 = new int[][]{
+    public static final int[][] PORTAL_EXPANDED_3 = new int[][]{
             {0, 0, 137, 83, 0, 0, 0},
             {0, 0, 0, 137, 83, 0, 0},
             {0, 0, 0, 137, 137, 83, 0},
@@ -353,7 +353,7 @@ public class Shapes {
             {0, 0, 137, 83, 0, 0, 0}
     };
 
-    public static final int[][] PORTAL_GROW_0 = new int[][]{
+    public static final int[][] PORTAL_GROWING_0 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
@@ -380,7 +380,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 0}
     };
 
-    public static final int[][] PORTAL_GROW_1 = new int[][]{
+    public static final int[][] PORTAL_GROWING_1 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},

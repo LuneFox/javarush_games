@@ -152,7 +152,7 @@ public class RacerGame extends Game {
         if (finishTimeOut <= 50) {
             marty.draw();
             if (finishTimeOut <= 30) {
-                Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">", 3, HEIGHT - 9);
+                Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">", 2, HEIGHT - 9);
             }
         }
     }
@@ -181,10 +181,12 @@ public class RacerGame extends Game {
         controller.releaseKey(key);
     }
 
-    // GETTERS
+    /*
+     * Getters, setters
+     */
 
-    public Portal getPortal() {
-        return portal;
+    public static void allowCountTime() {
+        RacerGame.allowCountTime = true;
     }
 
     public Display getDisplay() {

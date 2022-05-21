@@ -32,7 +32,7 @@ public class RoadManager {
 
     public void checkCross(DeLorean delorean) {
         for (RoadObject item : items) {
-            if (HitBox.isCollision(item, delorean) && delorean.x == 3) {
+            if (HitBox.isCollision(item, delorean) && delorean.isAtLeftmostPosition()) {
                 switch (item.type) {
                     case PUDDLE:
                         delorean.setSpeed((delorean.getSpeed() / 100) * 95);
