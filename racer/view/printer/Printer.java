@@ -38,17 +38,17 @@ public class Printer {
     }
 
     static int calculateWidth(String s) {
-        int width = 0;
+        int result = 0;
         SymbolImage image;
         char[] chars = s.toLowerCase().toCharArray();
 
         for (char c : chars) {
             if (charIsStrokeMarkup(c)) continue;
             image = CACHE.get(c);
-            width += (image.matrix[0].length + CHAR_SPACING);
+            result += image.getWidth() + CHAR_SPACING;
         }
 
-        return width;
+        return result;
     }
 
     private static void drawSymbol(char c, Color color, int x, int y) {

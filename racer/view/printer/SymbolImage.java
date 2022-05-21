@@ -6,9 +6,9 @@ import com.javarush.games.racer.RacerGame;
 public class SymbolImage {
     private static RacerGame game;
     private static final Color[] colors = new Color[]{Color.NONE, Color.WHITE};
-    public int x;
-    public int y;
-    public int[][] matrix;
+    private int x;
+    private int y;
+    private final int[][] matrix;
 
     public static void setGame(RacerGame game) {
         SymbolImage.game = game;
@@ -18,22 +18,19 @@ public class SymbolImage {
         this.matrix = type.getMatrix();
     }
 
-    final void draw(int x, int y) {
+    void draw(int x, int y) {
         setPosition(x, y);
         draw();
     }
 
-    final void setPosition(int x, int y) {
+    private void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
     private void draw() {
-        int height = matrix.length;
-        int width = matrix[0].length;
-
-        for (int j = 0; j < height; j++) {
-            for (int i = 0; i < width; i++) {
+        for (int j = 0; j < getHeight(); j++) {
+            for (int i = 0; i < getWidth(); i++) {
 
                 int pixel = matrix[j][i];
                 if (isPixelTransparent(pixel)) continue;
@@ -46,12 +43,20 @@ public class SymbolImage {
         }
     }
 
+    int getHeight(){
+        return matrix.length;
+    }
+
+    int getWidth(){
+        return matrix[0].length;
+    }
+
     private boolean isPixelTransparent(int pixel) {
         final int TRANSPARENT = 0;
         return (pixel == TRANSPARENT || colors[pixel] == Color.NONE);
     }
 
-    final void changeColor(Color color) {
+    void changeColor(Color color) {
         try {
             colors[1] = color;
         } catch (IndexOutOfBoundsException e) {
