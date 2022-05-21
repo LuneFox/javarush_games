@@ -6,8 +6,8 @@ import com.javarush.games.racer.model.gameobjects.Sprite;
 import com.javarush.games.racer.view.Shapes;
 
 public class Portal extends GameObject {
-    private static final double GROW_POINT = 7.5;
-    private static final double EXPAND_POINT = 8.0;
+    private static final double GROW_THRESHOLD = 7.5;
+    private static final double EXPAND_THRESHOLD = 8.0;
     private final DeLorean deLorean;
     private Animation animation;
     private int afterEffectTime = 20;
@@ -26,9 +26,9 @@ public class Portal extends GameObject {
         if (game.isStopped) {
             drawAfterEffect();
             return;
-        } else
+        }
 
-        if (deLorean.getSpeed() < GROW_POINT) {
+        if (deLorean.getSpeed() < GROW_THRESHOLD) {
             return;
         }
 
@@ -53,7 +53,7 @@ public class Portal extends GameObject {
     }
 
     private void selectAnimationBasedOnSpeed() {
-        if (deLorean.getSpeed() < EXPAND_POINT) {
+        if (deLorean.getSpeed() < EXPAND_THRESHOLD) {
             setGrowingAnimation(2);
         } else {
             setExpandedAnimation();

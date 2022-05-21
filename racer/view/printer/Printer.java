@@ -19,7 +19,6 @@ public class Printer {
 
     public static void print(String text, Color color, int drawX, int drawY, TextAlign align) {
         drawX = align != TextAlign.CENTER ? drawX : (Display.SIZE / 2) - (calculateWidth(text) / 2);
-        drawY = align != TextAlign.CENTER ? drawY : 0;
 
         PrinterCaret caret = new PrinterCaret(drawX, drawY, align);
         String[] lines = text.split("\n");

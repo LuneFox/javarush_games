@@ -16,8 +16,8 @@ public class DeLorean extends GameObject {
     private static final double ACCELERATION_GAS = 0.05;
     private static final double ACCELERATION_BRAKE = -0.2;
     private static final double ACCELERATION_RELEASE = -0.025;
-    private static final double ENTER_PORTAL_POINT = 8.80;
-    private static final double START_GLOWING_POINT = 6.0;
+    private static final double ENTER_PORTAL_THRESHOLD = 8.80;
+    private static final double START_GLOWING_THRESHOLD = 6.0;
 
     private Direction verDirection;
     private Direction horDirection;
@@ -47,7 +47,7 @@ public class DeLorean extends GameObject {
     }
 
     public boolean isAtLeftmostPosition() {
-        return this.x == PADDING_LEFT;
+        return x == PADDING_LEFT;
     }
 
     private void checkOffRoad() {
@@ -110,9 +110,9 @@ public class DeLorean extends GameObject {
 
     private void limitMaxSpeed() {
         if (energy < MAX_ENERGY) {
-            speed = Math.min(START_GLOWING_POINT - 0.1, speed);
+            speed = Math.min(START_GLOWING_THRESHOLD - 0.1, speed);
         } else {
-            speed = Math.min(ENTER_PORTAL_POINT + 0.1, speed);
+            speed = Math.min(ENTER_PORTAL_THRESHOLD + 0.1, speed);
         }
     }
 
@@ -123,10 +123,10 @@ public class DeLorean extends GameObject {
     private void selectAnimationBasedOnSpeed() {
         if (speed <= 0) {
             setAnimationDelay(Integer.MAX_VALUE);
-        } else if (speed > 0 && speed < START_GLOWING_POINT) {
+        } else if (speed > 0 && speed < START_GLOWING_THRESHOLD) {
             setNormalAnimation();
             setAnimationDelay((int) (10 / speed + 1));
-        } else if (speed >= START_GLOWING_POINT) {
+        } else if (speed >= START_GLOWING_THRESHOLD) {
             setGlowingAnimation();
             setAnimationDelay((int) (10 / speed + 1));
         }
@@ -139,7 +139,7 @@ public class DeLorean extends GameObject {
                 Shapes.DELOREAN_RUN_1,
                 Shapes.DELOREAN_RUN_2,
                 Shapes.DELOREAN_RUN_3);
-        this.animation = Animation.NORMAL;
+        animation = Animation.NORMAL;
     }
 
     public void setGlowingAnimation() {
@@ -149,26 +149,26 @@ public class DeLorean extends GameObject {
                 Shapes.DELOREAN_GLOW_1,
                 Shapes.DELOREAN_GLOW_2,
                 Shapes.DELOREAN_GLOW_3);
-        this.animation = Animation.GLOWING;
+        animation = Animation.GLOWING;
     }
 
     @Override
     public void draw() {
-        if (speed > ENTER_PORTAL_POINT) {
-            moveTowardsPortal();
+        if (speed > ENTER_PORTAL_THRESHOLD) {
+            moveIntoPortal();
         }
 
         super.draw();
     }
 
-    private void moveTowardsPortal() {
+    private void moveIntoPortal() {
         int shift = 3;
 
-        if (!isAtLeftmostPosition()) {
+        if (x == PADDING_LEFT + shift) {
             maskIn(shift);
         }
 
-        this.x += shift;
+        x += shift;
     }
 
 
