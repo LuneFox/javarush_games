@@ -11,7 +11,7 @@ import com.javarush.games.racer.model.decor.Portal;
 import com.javarush.games.racer.model.decor.TireFlame;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.road.RoadManager;
-import com.javarush.games.racer.model.road.RoadMarking;
+import com.javarush.games.racer.model.decor.RoadMarkingManager;
 import com.javarush.games.racer.view.Display;
 import com.javarush.games.racer.view.printer.Printer;
 import com.javarush.games.racer.view.printer.SymbolImage;
@@ -30,7 +30,7 @@ public class RacerGame extends Game {
     public TireFlame rightTireFlame;
     public TireFlame leftTireFlame;
     public Marty marty;
-    public RoadMarking roadMarking;
+    public RoadMarkingManager roadMarkingManager;
     public RoadManager roadManager;
 
     public static boolean allowCountTime;
@@ -89,7 +89,7 @@ public class RacerGame extends Game {
         rightTireFlame = new TireFlame(TireFlame.Side.RIGHT);
         leftTireFlame = new TireFlame(TireFlame.Side.LEFT);
         marty = new Marty();
-        roadMarking = new RoadMarking();
+        roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
         finishTimeOut = 100;
         time = 0;
@@ -100,7 +100,7 @@ public class RacerGame extends Game {
 
     private void drawScene() {
         drawField();
-        roadMarking.draw();
+        roadMarkingManager.drawMarkings();
         roadManager.drawRoadObjects();
         delorean.draw();
         portal.draw();
@@ -116,7 +116,7 @@ public class RacerGame extends Game {
         delorean.steer();
         delorean.gas();
         roadManager.moveRoadObjects(delorean.getSpeed());
-        roadMarking.move(delorean.getSpeed());
+        roadMarkingManager.move(delorean.getSpeed());
     }
 
 
