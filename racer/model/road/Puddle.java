@@ -17,7 +17,7 @@ public class Puddle extends RoadObject {
     @Override
     public void draw() {
         if (this.x >= RacerGame.WIDTH) {
-            arrow.y = (int) (this.y + this.getMatrix().length / 2 - arrow.getMatrix().length / 2);
+            arrow.y = (int) (this.y + this.getHeight() / 2 - arrow.getHeight() / 2);
             if (!game.isStopped) {
                 arrow.draw();
             }

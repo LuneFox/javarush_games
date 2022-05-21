@@ -117,9 +117,7 @@ public class DeLorean extends GameObject {
     }
 
     private void limitSpeedBelowZero() {
-        if (speed < 0) {
-            speed = 0;
-        }
+        speed = Math.max(speed, 0);
     }
 
     private void changeAnimationBasedOnSpeed() {

@@ -61,10 +61,6 @@ public class GameObject {
         this.y = y;
     }
 
-    public int[][] getMatrix() { // TODO: Do I really need this?
-        return sprite.getMatrix();
-    }
-
     public void setAnimationDelay(int delay) {
         sprite.setAnimationDelay(delay);
     }

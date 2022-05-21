@@ -81,10 +81,6 @@ public class Sprite {
         this.height = matrix.length;
     }
 
-    public int[][] getMatrix() {
-        return matrix;
-    }
-
     public void setAnimationDelay(int nextFrameDelay) {
         this.nextFrameDelay = nextFrameDelay;
     }
