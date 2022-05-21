@@ -1,5 +1,6 @@
 package com.javarush.games.racer.model.road;
 
+import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.HitBox;
 
 public class Energy extends RoadObject {
@@ -15,8 +16,16 @@ public class Energy extends RoadObject {
 
     @Override
     public void draw() {
-        if (!isCollected) {
-            super.draw();
-        }
+        if (isCollected) return;
+        super.draw();
+    }
+
+    @Override
+    public void onContact(DeLorean deLorean) {
+        if (isCollected) return;
+        if (deLorean.getEnergy() >= DeLorean.MAX_ENERGY) return;
+
+        deLorean.setEnergy(deLorean.getEnergy() + DeLorean.MAX_ENERGY / 10);
+        isCollected = true;
     }
 }

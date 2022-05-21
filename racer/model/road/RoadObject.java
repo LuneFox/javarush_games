@@ -1,5 +1,6 @@
 package com.javarush.games.racer.model.road;
 
+import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.view.Shapes;
 
@@ -37,4 +38,6 @@ public abstract class RoadObject extends GameObject {
     public void move(double boost) {
         this.x -= boost;
     }
+
+    public abstract void onContact(DeLorean deLorean);
 }

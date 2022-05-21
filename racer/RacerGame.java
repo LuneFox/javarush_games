@@ -62,8 +62,8 @@ public class RacerGame extends Game {
     @Override
     public void onTurn(int step) {
         checkGameOver();
-        roadManager.generateNewRoadObjects(this, delorean);
-        roadManager.checkCross(delorean);
+        roadManager.generateNewRoadObjects(delorean);
+        roadManager.checkOverlapsWithCar(delorean);
         countTime();
         moveAll();
         drawScene();
@@ -90,7 +90,7 @@ public class RacerGame extends Game {
         leftTireFlame = new TireFlame(TireFlame.Side.LEFT);
         marty = new Marty();
         roadMarking = new RoadMarking();
-        roadManager = new RoadManager();
+        roadManager = new RoadManager(this);
         finishTimeOut = 100;
         time = 0;
         setTurnTimer(40);
@@ -101,7 +101,7 @@ public class RacerGame extends Game {
     private void drawScene() {
         drawField();
         roadMarking.draw();
-        roadManager.draw();
+        roadManager.drawRoadObjects();
         delorean.draw();
         portal.draw();
         rightTireFlame.draw();
@@ -115,7 +115,7 @@ public class RacerGame extends Game {
     private void moveAll() {
         delorean.steer();
         delorean.gas();
-        roadManager.move(delorean.getSpeed());
+        roadManager.moveRoadObjects(delorean.getSpeed());
         roadMarking.move(delorean.getSpeed());
     }
 
@@ -159,6 +159,10 @@ public class RacerGame extends Game {
                 Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">", 2, HEIGHT - 9);
             }
         }
+    }
+
+    public boolean deloreanHasMaxEnergy() {
+        return delorean.getEnergy() >= DeLorean.MAX_ENERGY;
     }
 
 
