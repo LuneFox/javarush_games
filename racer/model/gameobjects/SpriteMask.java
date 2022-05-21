@@ -1,4 +1,4 @@
-package com.javarush.games.racer.model;
+package com.javarush.games.racer.model.gameobjects;
 
 class SpriteMask {
     private int step;

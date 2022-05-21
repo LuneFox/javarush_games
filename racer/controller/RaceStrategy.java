@@ -1,7 +1,7 @@
 package com.javarush.games.racer.controller;
 
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.model.Direction;
+import com.javarush.games.racer.model.car.Direction;
 
 public class RaceStrategy implements ControlStrategy {
     private final RacerGame game;

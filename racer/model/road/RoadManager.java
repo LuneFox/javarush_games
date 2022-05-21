@@ -1,7 +1,7 @@
 package com.javarush.games.racer.model.road;
 
-import com.javarush.games.racer.model.DeLorean;
-import com.javarush.games.racer.model.HitBox;
+import com.javarush.games.racer.model.car.DeLorean;
+import com.javarush.games.racer.model.gameobjects.HitBox;
 import com.javarush.games.racer.RacerGame;
 
 import java.util.ArrayList;

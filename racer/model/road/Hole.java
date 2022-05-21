@@ -1,6 +1,6 @@
 package com.javarush.games.racer.model.road;
 
-import com.javarush.games.racer.model.HitBox;
+import com.javarush.games.racer.model.gameobjects.HitBox;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.view.Shapes;
 

@@ -1,4 +1,4 @@
-package com.javarush.games.racer.model;
+package com.javarush.games.racer.model.gameobjects;
 
 public class HitBox {
     public int startY;

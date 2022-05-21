@@ -1,4 +1,4 @@
-package com.javarush.games.racer.model;
+package com.javarush.games.racer.model.gameobjects;
 
 import com.javarush.games.racer.RacerGame;
 

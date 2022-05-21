@@ -1,8 +1,11 @@
-package com.javarush.games.racer.model;
+package com.javarush.games.racer.model.car;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.controller.Control;
+import com.javarush.games.racer.model.gameobjects.GameObject;
+import com.javarush.games.racer.model.gameobjects.HitBox;
+import com.javarush.games.racer.model.gameobjects.Sprite;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.view.Shapes;
 
