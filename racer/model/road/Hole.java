@@ -5,11 +5,11 @@ import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.view.Shapes;
 
 public class Hole extends RoadObject {
-    private Arrow arrow = new Arrow(RacerGame.WIDTH - Shapes.RED_ARROW[0].length - 1, 0,
+    private final Arrow arrow = new Arrow(RacerGame.WIDTH - Shapes.RED_ARROW[0].length - 1, 0,
             Shapes.RED_ARROW);
 
-    public Hole(double x, double y) {
-        super(RoadObjectType.HOLE, x, y);
+    public Hole() {
+        super(RoadObjectType.HOLE);
         this.speed = 0;
         this.hitBox = new HitBox(0, 0, 15, 8);
     }

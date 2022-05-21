@@ -3,49 +3,38 @@ package com.javarush.games.racer.model.road;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.view.Shapes;
 
-public class RoadObject extends GameObject {
+public abstract class RoadObject extends GameObject {
     public RoadObjectType type;
     public double speed;
 
-    public RoadObject(RoadObjectType type, double x, double y) {
-        super(x, y);
+    public RoadObject(RoadObjectType type) {
         this.type = type;
         this.setStaticView(getShape(type));
     }
 
-    /**
-     * Метод, отвечающий за передвижение препятствия. У препятствия может быть своя скорость и дополнительная,
-     * которая зависит от скорости движения игрока.
-     */
-    public void move(double boost) {
-        this.x -= boost;
-    }
-
-    /**
-     * Возвращает матрицу изображения объекта в зависимости от его типа.
-     */
-    private static int[][] getShape(RoadObjectType type) {
+    public static RoadObject create(RoadObjectType type) {
         switch (type) {
-            case PUDDLE:
-                return Shapes.PUDDLE;
-            case HOLE:
-                return Shapes.HOLE;
             case ENERGY:
-                return Shapes.ENERGY;
+                return new Energy();
+            case HOLE:
+                return new Hole();
             default:
-                return Shapes.DELOREAN_RUN_0;
+                return new Puddle();
         }
     }
 
-    /**
-     * Возвращает высоту объекта.
-     */
-    public static int getHeight(RoadObjectType type) {
-        return getShape(type).length;
+    private static int[][] getShape(RoadObjectType type) {
+        switch (type) {
+            case ENERGY:
+                return Shapes.ENERGY;
+            case HOLE:
+                return Shapes.HOLE;
+            default:
+                return Shapes.PUDDLE;
+        }
     }
 
-    public static int getWidth(RoadObjectType type) {
-        return getShape(type)[0].length;
+    public void move(double boost) {
+        this.x -= boost;
     }
-
 }

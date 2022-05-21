@@ -5,11 +5,11 @@ import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.view.Shapes;
 
 public class Puddle extends RoadObject {
-    private Arrow arrow = new Arrow(RacerGame.WIDTH - Shapes.YELLOW_ARROW[0].length - 1, 0,
+    private final Arrow arrow = new Arrow(RacerGame.WIDTH - Shapes.YELLOW_ARROW[0].length - 1, 0,
             Shapes.YELLOW_ARROW);
 
-    public Puddle(double x, double y) {
-        super(RoadObjectType.PUDDLE, x, y);
+    public Puddle() {
+        super(RoadObjectType.PUDDLE);
         this.speed = 0;
         this.hitBox = new HitBox(0, 0, 15, 8);
     }

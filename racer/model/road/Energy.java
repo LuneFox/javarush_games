@@ -6,8 +6,8 @@ public class Energy extends RoadObject {
 
     public boolean isCollected;
 
-    public Energy(double x, double y) {
-        super(RoadObjectType.ENERGY, x, y);
+    public Energy() {
+        super(RoadObjectType.ENERGY);
         this.speed = 0;
         this.hitBox = new HitBox(0, 0, 18, 9);
         isCollected = false;

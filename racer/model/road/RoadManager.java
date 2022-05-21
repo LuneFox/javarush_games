@@ -12,26 +12,26 @@ public class RoadManager {
     public static final int LOWER_BORDER = 90;
     public static final int ROAD_WIDTH = RacerGame.HEIGHT - (UPPER_BORDER) - (RacerGame.HEIGHT - LOWER_BORDER);
 
-    private final List<RoadObject> items = new ArrayList<>();
+    private final List<RoadObject> roadObjects = new ArrayList<>();
 
 
     // OBJECTS CONTROL
 
     public void draw() {
-        for (RoadObject item : items) {
+        for (RoadObject item : roadObjects) {
             item.draw();
         }
     }
 
     public void move(double boost) {
-        for (RoadObject item : items) {
+        for (RoadObject item : roadObjects) {
             item.move(item.speed + boost);
         }
         deletePassedItems();
     }
 
     public void checkCross(DeLorean delorean) {
-        for (RoadObject item : items) {
+        for (RoadObject item : roadObjects) {
             if (HitBox.checkFullOverlap(item, delorean) && delorean.isAtLeftmostPosition()) {
                 switch (item.type) {
                     case PUDDLE:
@@ -67,29 +67,21 @@ public class RoadManager {
         }
     }
 
-    private RoadObject createRoadObject(RoadObjectType type, int x, int y) {
-        switch (type) {
-            case PUDDLE:
-                return new Puddle(x, y);
-            case HOLE:
-                return new Hole(x, y);
-            case ENERGY:
-                return new Energy(x, y);
-            default:
-                return null;
-        }
-    }
-
     private void addRoadObject(RoadObjectType type, RacerGame game) {
-        int x = RacerGame.WIDTH * 2 + RoadObject.getWidth(type);
-        int y = game.getRandomNumber(RoadManager.UPPER_BORDER, RoadManager.LOWER_BORDER - RoadObject.getHeight(type));
-        RoadObject newItem = createRoadObject(type, x, y);
-        for (RoadObject item : items) {
-            if (HitBox.checkHorizontalOverlap(item, newItem)) {
+        RoadObject newRoadObject = RoadObject.create(type);
+
+        int x = RacerGame.WIDTH * 2 + newRoadObject.getWidth();
+        int y = game.getRandomNumber(RoadManager.UPPER_BORDER, RoadManager.LOWER_BORDER - newRoadObject.getHeight());
+
+        newRoadObject.setPosition(x, y);
+
+        for (RoadObject roadObject : roadObjects) {
+            if (HitBox.checkVerticalOverlap(roadObject, newRoadObject)) {
                 return;
             }
         }
-        items.add(newItem);
+
+        roadObjects.add(newRoadObject);
     }
 
     private void generatePuddle(RacerGame game) {
@@ -114,10 +106,10 @@ public class RoadManager {
     }
 
     private void deletePassedItems() {
-        List<RoadObject> itemsCopy = new ArrayList<>(items);
+        List<RoadObject> itemsCopy = new ArrayList<>(roadObjects);
         for (RoadObject roadObject : itemsCopy) {
             if (roadObject.x + roadObject.getWidth() < 0) {
-                items.remove(roadObject);
+                roadObjects.remove(roadObject);
             }
         }
     }
@@ -127,7 +119,7 @@ public class RoadManager {
 
     private boolean isTwoPuddlesExist() {
         int count = 0;
-        for (RoadObject ro : items) {
+        for (RoadObject ro : roadObjects) {
             if (ro.type == RoadObjectType.PUDDLE) {
                 count++;
             }
@@ -136,7 +128,7 @@ public class RoadManager {
     }
 
     private boolean isHoleExist() {
-        for (RoadObject ro : items) {
+        for (RoadObject ro : roadObjects) {
             if (ro.type == RoadObjectType.HOLE) {
                 return true;
             }
@@ -145,7 +137,7 @@ public class RoadManager {
     }
 
     private boolean isEnergyExist() {
-        for (RoadObject ro : items) {
+        for (RoadObject ro : roadObjects) {
             if (ro.type == RoadObjectType.ENERGY) {
                 return true;
             }
