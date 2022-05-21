@@ -1,17 +1,17 @@
 package com.javarush.games.racer.view.printer;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.view.Display;
 
 public class SymbolImage {
-    private static RacerGame game;
+    private static Display display;
     private static final Color[] colors = new Color[]{Color.NONE, Color.WHITE};
     private int x;
     private int y;
     private final int[][] matrix;
 
-    public static void setGame(RacerGame game) {
-        SymbolImage.game = game;
+    public static void setDisplay(Display display) {
+        SymbolImage.display = display;
     }
 
     SymbolImage(Symbol type) {
@@ -38,7 +38,7 @@ public class SymbolImage {
                 int drawX = x + i;
                 int drawY = y + j;
 
-                game.display.drawPixel(drawX, drawY, colors[pixel]);
+                display.drawPixel(drawX, drawY, colors[pixel]);
             }
         }
     }

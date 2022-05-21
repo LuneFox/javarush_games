@@ -46,7 +46,7 @@ public class RacerGame extends Game {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         GameObject.setGame(this);
-        SymbolImage.setGame(this);
+        SymbolImage.setDisplay(display);
         createGame();
         try {
             showMessageDialog(Color.BLACK, "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
