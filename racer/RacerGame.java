@@ -14,14 +14,16 @@ import com.javarush.games.racer.model.decor.TireFlame;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.view.Display;
-import com.javarush.games.racer.view.printer.Printer;
+import com.javarush.games.racer.view.Overlay;
 import com.javarush.games.racer.view.printer.SymbolImage;
-import com.javarush.games.racer.view.printer.TextAlign;
 
 import java.util.stream.Stream;
 
+/**
+ * Version 1.02
+ */
+
 public class RacerGame extends Game {
-    public static final String VERSION = "1.01";
     public static final int ENDING_ANIMATION_LENGTH = 100;
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
@@ -37,8 +39,9 @@ public class RacerGame extends Game {
     public Marty marty;
     public RoadMarkingManager roadMarkingManager;
     public RoadManager roadManager;
+    public Overlay overlay;
 
-    private int raceTime;
+    public int raceTime;
     public boolean allowCountingRaceTime;
     public boolean isStopped;
     public int framesAfterStop;
@@ -78,7 +81,8 @@ public class RacerGame extends Game {
         marty = new Marty();
         roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
-    }
+        overlay = new Overlay(this);
+        }
 
     private void resetValues() {
         framesAfterStop = 0;
@@ -94,7 +98,7 @@ public class RacerGame extends Game {
         roadManager.checkOverlapsWithCar(delorean);
 
         moveAll();
-        drawScene();
+        drawAll();
 
         countTime();
         checkGameOver();
@@ -106,13 +110,13 @@ public class RacerGame extends Game {
                 .forEach(manager -> manager.moveObjects(delorean.getSpeed()));
     }
 
-    private void drawScene() {
+    private void drawAll() {
         drawRoad();
         Stream.of(roadMarkingManager, roadManager)
                 .forEach(GameObjectManager::drawObjects);
         Stream.of(delorean, portal, rightTireFlame, leftTireFlame)
                 .forEach(GameObject::draw);
-        drawOverlay();
+        overlay.draw();
         display.draw();
     }
 
@@ -132,46 +136,6 @@ public class RacerGame extends Game {
                 display.drawPixel(x, y, color);
             }
         }
-    }
-
-    private void drawOverlay() {
-        printSpeed();
-        printEnergy();
-        drawEnding();
-    }
-
-    private void printSpeed() {
-        int displaySpeed = isStopped ? 88 : (int) (delorean.getSpeed() * 10);
-        Printer.print("<" + displaySpeed + " МВЧ>",
-                Color.WHITE, 2, 0);
-    }
-
-    private void printEnergy() {
-        Printer.print("<" + delorean.getEnergy() + " ГВТ>",
-                Color.YELLOW, WIDTH - 1, 0, TextAlign.RIGHT);
-    }
-
-    private void drawEnding() {
-        if (!isStopped) return;
-
-        if (framesAfterStop <= ENDING_ANIMATION_LENGTH) {
-            framesAfterStop++;
-        }
-
-        if (framesAfterStop < 50) return;
-
-        marty.draw();
-        if (framesAfterStop < 80) return;
-
-        printResultTime();
-    }
-
-    private void printResultTime() {
-        final int raceTimeSeconds = (raceTime / 1000);
-        final int raceTimeHundredths = (raceTime % 1000) / 10;
-
-        Printer.print("<ВРЕМЯ: " + raceTimeSeconds + "' " + raceTimeHundredths + "\">",
-                Color.WHITE, 0, 12, TextAlign.CENTER);
     }
 
     private void countTime() {
