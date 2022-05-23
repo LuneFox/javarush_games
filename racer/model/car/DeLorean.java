@@ -3,6 +3,7 @@ package com.javarush.games.racer.model.car;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.controller.Control;
+import com.javarush.games.racer.model.decor.EnergyPickupIcon;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.gameobjects.HitBox;
 import com.javarush.games.racer.model.gameobjects.Sprite;
@@ -22,6 +23,7 @@ public class DeLorean extends GameObject {
     private Direction verDirection;
     private Direction horDirection;
     private Animation animation;
+    private EnergyPickupIcon energyPickupIcon;
     private double speed;
     private double energy;
 
@@ -168,6 +170,10 @@ public class DeLorean extends GameObject {
         }
 
         super.draw();
+
+        if (energyPickupIcon != null) {
+            energyPickupIcon.draw();
+        }
     }
 
     private void moveIntoPortal() {
@@ -218,5 +224,9 @@ public class DeLorean extends GameObject {
 
     public void setEnergy(double energy) {
         this.energy = energy;
+    }
+
+    public void setEnergyPickupIcon(EnergyPickupIcon energyPickupIcon) {
+        this.energyPickupIcon = energyPickupIcon;
     }
 }
