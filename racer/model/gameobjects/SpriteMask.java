@@ -57,7 +57,7 @@ class SpriteMask {
         this.state = State.OUT;
     }
 
-    public int getWidth() {
+    int getWidth() {
         return width;
     }
 }

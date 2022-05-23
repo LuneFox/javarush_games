@@ -36,6 +36,10 @@ public class GameObject {
         sprite.draw(x, y, Mirror.NONE);
     }
 
+    public void draw(double x, double y){
+        sprite.draw(x, y, Mirror.NONE);
+    }
+
     public void draw(Mirror mirror) {
         sprite.draw(x, y, mirror);
     }
@@ -46,6 +50,14 @@ public class GameObject {
 
     public void maskOut(int step) {
         sprite.maskOut(step);
+    }
+
+    public void startFlicker() {
+        sprite.startFlicker();
+    }
+
+    public void stopFlicker() {
+        sprite.stopFlicker();
     }
 
     public int getWidth() {

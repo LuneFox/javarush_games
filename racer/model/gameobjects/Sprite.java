@@ -20,6 +20,9 @@ public class Sprite {
     private Loop loop;
     private final SpriteMask mask;
 
+    private boolean flicker;
+    private boolean flickerPhase;
+
     public enum Loop {
         ENABLED, DISABLED
     }
@@ -34,6 +37,8 @@ public class Sprite {
         nextFrame();
         mask.nextStep(width);
 
+        if (flickers()) return;
+
         for (int i = 0; i < (width - mask.getWidth()); i++) {
             for (int j = 0; j < height; j++) {
                 Color color = Color.values()[matrix[j][i]];
@@ -42,6 +47,14 @@ public class Sprite {
                 display.drawPixel((int) drawX, (int) drawY, color);
             }
         }
+    }
+
+    private boolean flickers() {
+        if (flicker) {
+            changeFlickerPhase();
+            return flickerPhase;
+        }
+        return false;
     }
 
     void nextFrame() {
@@ -85,11 +98,23 @@ public class Sprite {
         this.nextFrameDelay = nextFrameDelay;
     }
 
-    void maskIn(int step){
+    void maskIn(int step) {
         mask.startIn(step);
     }
 
-    void maskOut(int step){
+    void maskOut(int step) {
         mask.startOut(step, width);
+    }
+
+    void startFlicker() {
+        this.flicker = true;
+    }
+
+    void stopFlicker() {
+        this.flicker = false;
+    }
+
+    private void changeFlickerPhase() {
+        flickerPhase = !flickerPhase;
     }
 }
