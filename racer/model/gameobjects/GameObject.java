@@ -23,12 +23,12 @@ public class GameObject {
     }
 
     public void setStaticView(int[][] frame) {
-        sprite = new Sprite(game);
+        sprite = new Sprite(game.getDisplay());
         sprite.setStaticView(frame);
     }
 
     public void setAnimatedView(Sprite.Loop loop, int nextFrameDelay, int[][]... frames) {
-        sprite = new Sprite(game);
+        sprite = new Sprite(game.getDisplay());
         sprite.setAnimatedView(loop, nextFrameDelay, frames);
     }
 

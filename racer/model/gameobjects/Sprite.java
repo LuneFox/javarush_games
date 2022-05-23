@@ -1,14 +1,14 @@
 package com.javarush.games.racer.model.gameobjects;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.view.Display;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class Sprite {
-    private final RacerGame game;
+    private final Display display;
     private int[][] matrix;
     int width;
     int height;
@@ -24,8 +24,8 @@ public class Sprite {
         ENABLED, DISABLED
     }
 
-    public Sprite(RacerGame game) {
-        this.game = game;
+    public Sprite(Display display) {
+        this.display = display;
         this.nextFrameDelay = 1;
         this.mask = new SpriteMask();
     }
@@ -39,7 +39,7 @@ public class Sprite {
                 Color color = Color.values()[matrix[j][i]];
                 double drawX = (mirror == Mirror.HORIZONTAL) ? (x + width - 1 - i) : (x + i);
                 double drawY = (y + j);
-                game.getDisplay().drawPixel((int) drawX, (int) drawY, color);
+                display.drawPixel((int) drawX, (int) drawY, color);
             }
         }
     }

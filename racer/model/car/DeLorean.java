@@ -39,44 +39,16 @@ public class DeLorean extends GameObject {
         setNormalAnimation();
     }
 
-    public void steer() {
-        if (!isAtLeftmostPosition()) return;
-
-        checkOffRoad();
-        changeVerticalPosition();
+    public void move() {
+        gas();
+        steer();
     }
 
-    public boolean isAtLeftmostPosition() {
-        return x == PADDING_LEFT;
+    public void stop() {
+        speed = 0;
     }
 
-    private void checkOffRoad() {
-        final int upperLimit = RoadManager.UPPER_BORDER - 8;
-        final int lowerLimit = RoadManager.LOWER_BORDER - getHeight();
-
-        if (y >= upperLimit && y <= lowerLimit) return;
-
-        if (y < upperLimit) {
-            y = upperLimit;
-        } else if (y > lowerLimit) {
-            y = lowerLimit;
-        }
-
-        slowDownFromDirt();
-    }
-
-    private void slowDownFromDirt() {
-        speed = (speed / 100) * 99.5;
-    }
-
-    private void changeVerticalPosition() {
-        if (verDirection == Direction.UP)
-            y -= Math.min(speed, MAX_STEER_SPEED);
-        else if (verDirection == Direction.DOWN)
-            y += Math.min(speed, MAX_STEER_SPEED);
-    }
-
-    public void gas() {
+    private void gas() {
         if (!isAtLeftmostPosition()) return;
 
         changeSpeed();
@@ -93,7 +65,7 @@ public class DeLorean extends GameObject {
     }
 
     private void accelerate() {
-        RacerGame.allowCountTime(); // TODO: Перенести активацию на пробег?
+        game.allowCountTime(); // TODO: Перенести активацию на пробег?
         speed += ACCELERATION_GAS * (1 - speed * 0.1);
         limitMaxSpeed();
     }
@@ -132,7 +104,7 @@ public class DeLorean extends GameObject {
         }
     }
 
-    public void setNormalAnimation() {
+    private void setNormalAnimation() {
         if (animation == Animation.NORMAL) return;
         setAnimatedView(Sprite.Loop.ENABLED, Integer.MAX_VALUE,
                 Shapes.DELOREAN_RUN_0,
@@ -142,7 +114,7 @@ public class DeLorean extends GameObject {
         animation = Animation.NORMAL;
     }
 
-    public void setGlowingAnimation() {
+    private void setGlowingAnimation() {
         if (animation == Animation.GLOWING) return;
         setAnimatedView(Sprite.Loop.ENABLED, Integer.MAX_VALUE,
                 Shapes.DELOREAN_GLOW_0,
@@ -150,6 +122,43 @@ public class DeLorean extends GameObject {
                 Shapes.DELOREAN_GLOW_2,
                 Shapes.DELOREAN_GLOW_3);
         animation = Animation.GLOWING;
+    }
+
+    private void steer() {
+        if (!isAtLeftmostPosition()) return;
+
+        checkOffRoad();
+        changeVerticalPosition();
+    }
+
+    public boolean isAtLeftmostPosition() {
+        return x == PADDING_LEFT;
+    }
+
+    private void checkOffRoad() {
+        final int upperLimit = RoadManager.UPPER_BORDER - 8;
+        final int lowerLimit = RoadManager.LOWER_BORDER - getHeight();
+
+        if (y >= upperLimit && y <= lowerLimit) return;
+
+        if (y < upperLimit) {
+            y = upperLimit;
+        } else if (y > lowerLimit) {
+            y = lowerLimit;
+        }
+
+        slowDownFromDirt();
+    }
+
+    private void slowDownFromDirt() {
+        speed = (speed / 100) * 99.5;
+    }
+
+    private void changeVerticalPosition() {
+        if (verDirection == Direction.UP)
+            y -= Math.min(speed, MAX_STEER_SPEED);
+        else if (verDirection == Direction.DOWN)
+            y += Math.min(speed, MAX_STEER_SPEED);
     }
 
     @Override

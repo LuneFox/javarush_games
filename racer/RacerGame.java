@@ -5,22 +5,27 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.controller.Control;
 import com.javarush.games.racer.controller.Controller;
+import com.javarush.games.racer.model.GameObjectManager;
 import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.decor.Marty;
 import com.javarush.games.racer.model.decor.Portal;
+import com.javarush.games.racer.model.decor.RoadMarkingManager;
 import com.javarush.games.racer.model.decor.TireFlame;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.road.RoadManager;
-import com.javarush.games.racer.model.decor.RoadMarkingManager;
 import com.javarush.games.racer.view.Display;
 import com.javarush.games.racer.view.printer.Printer;
 import com.javarush.games.racer.view.printer.SymbolImage;
 import com.javarush.games.racer.view.printer.TextAlign;
 
+import java.util.stream.Stream;
+
 public class RacerGame extends Game {
-    public final static String VERSION = "1.01";
-    public final static int WIDTH = 100;
-    public final static int HEIGHT = 100;
+    public static final String VERSION = "1.01";
+    public static final int ENDING_ANIMATION_LENGTH = 100;
+    public static final int WIDTH = 100;
+    public static final int HEIGHT = 100;
+    private static final int MILLISECONDS_PER_FRAME = 40;
 
     public final Display display = new Display(this);
     public final Controller controller = new Controller(this);
@@ -33,21 +38,21 @@ public class RacerGame extends Game {
     public RoadMarkingManager roadMarkingManager;
     public RoadManager roadManager;
 
-    public static boolean allowCountTime;
-    public int finishTimeOut;
+    private int raceTime;
+    public boolean allowCountingRaceTime;
     public boolean isStopped;
-    private int time;
-
-
-    // GAME MECHANICS
+    public int framesAfterStop;
 
     @Override
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
+
         GameObject.setGame(this);
         SymbolImage.setDisplay(display);
+
         createGame();
+
         try {
             showMessageDialog(Color.BLACK, "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
                     "Нужно вернуться в Россию будущего, там дороги не нужны!\n" +
@@ -59,31 +64,13 @@ public class RacerGame extends Game {
     }
 
 
-    @Override
-    public void onTurn(int step) {
-        checkGameOver();
-        roadManager.generateNewRoadObjects(delorean);
-        roadManager.checkOverlapsWithCar(delorean);
-        countTime();
-        moveAll();
-        drawScene();
-    }
-
-    private void checkGameOver() {
-        if (delorean.x > portal.x + 5) {
-            delorean.setSpeed(0);
-            isStopped = true;
-        }
-    }
-
-    private void countTime() {
-        if (!isStopped && allowCountTime) {
-            time += 40;
-        }
-    }
-
     @Control(Key.SPACE)
     public void createGame() {
+        createNewGameObjects();
+        resetValues();
+    }
+
+    private void createNewGameObjects() {
         delorean = new DeLorean();
         portal = new Portal();
         rightTireFlame = new TireFlame(TireFlame.Side.RIGHT);
@@ -91,74 +78,117 @@ public class RacerGame extends Game {
         marty = new Marty();
         roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
-        finishTimeOut = 100;
-        time = 0;
-        setTurnTimer(40);
-        isStopped = false;
-        allowCountTime = false;
     }
 
-    private void drawScene() {
-        drawField();
-        roadMarkingManager.drawObjects();
-        roadManager.drawObjects();
-        delorean.draw();
-        portal.draw();
-        rightTireFlame.draw();
-        leftTireFlame.draw();
-        drawEnding();
-        drawSpeed();
-        drawEnergy();
-        display.draw();
+    private void resetValues() {
+        framesAfterStop = 0;
+        raceTime = 0;
+        isStopped = false;
+        allowCountingRaceTime = false;
+        setTurnTimer(MILLISECONDS_PER_FRAME);
+    }
+
+    @Override
+    public void onTurn(int step) {
+        roadManager.generateNewRoadObjects(delorean);
+        roadManager.checkOverlapsWithCar(delorean);
+
+        moveAll();
+        drawScene();
+
+        countTime();
+        checkGameOver();
     }
 
     private void moveAll() {
-        delorean.steer();
-        delorean.gas();
-        roadManager.moveObjects(delorean.getSpeed());
-        roadMarkingManager.moveObjects(delorean.getSpeed());
+        delorean.move();
+        Stream.of(roadMarkingManager, roadManager)
+                .forEach(manager -> manager.moveObjects(delorean.getSpeed()));
     }
 
+    private void drawScene() {
+        drawRoad();
+        Stream.of(roadMarkingManager, roadManager)
+                .forEach(GameObjectManager::drawObjects);
+        Stream.of(delorean, portal, rightTireFlame, leftTireFlame)
+                .forEach(GameObject::draw);
+        drawOverlay();
+        display.draw();
+    }
 
-    // VISUALS & GRAPHICS
-
-    private void drawField() {
+    private void drawRoad() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
+                Color color;
+
                 if (y < RoadManager.UPPER_BORDER || y >= RoadManager.LOWER_BORDER) {
-                    display.drawPixel(x, y, Color.SIENNA);
+                    color = Color.SIENNA;
                 } else if (y == HEIGHT / 2) {
-                    display.drawPixel(x, y, Color.SNOW);
+                    color = Color.SNOW;
                 } else {
-                    display.drawPixel(x, y, Color.DARKGRAY);
+                    color = Color.DARKGRAY;
                 }
 
+                display.drawPixel(x, y, color);
             }
         }
     }
 
-    private void drawSpeed() {
-        if (isStopped) {
-            Printer.print("<88 МВЧ>", Color.WHITE, 2, 0);
-        } else {
-            Printer.print("<" + (int) (delorean.getSpeed() * 10) + " МВЧ>", Color.WHITE, 2, 0, TextAlign.LEFT);
-        }
+    private void drawOverlay() {
+        printSpeed();
+        printEnergy();
+        drawEnding();
     }
 
-    private void drawEnergy() {
-        Printer.print("<" + delorean.getEnergy() + " ГВТ>", Color.YELLOW, WIDTH - 1, 0, TextAlign.RIGHT);
+    private void printSpeed() {
+        int displaySpeed = isStopped ? 88 : (int) (delorean.getSpeed() * 10);
+        Printer.print("<" + displaySpeed + " МВЧ>",
+                Color.WHITE, 2, 0);
+    }
+
+    private void printEnergy() {
+        Printer.print("<" + delorean.getEnergy() + " ГВТ>",
+                Color.YELLOW, WIDTH - 1, 0, TextAlign.RIGHT);
     }
 
     private void drawEnding() {
-        if (isStopped && finishTimeOut > 0) {
-            finishTimeOut--;
+        if (!isStopped) return;
+
+        if (framesAfterStop <= ENDING_ANIMATION_LENGTH) {
+            framesAfterStop++;
         }
-        if (finishTimeOut <= 50) {
-            marty.draw();
-            if (finishTimeOut <= 30) {
-                Printer.print("<ВРЕМЯ: " + (time / 1000) + "' " + (time % 1000) / 10 + "\">", 2, HEIGHT - 9);
-            }
+
+        if (framesAfterStop < 50) return;
+
+        marty.draw();
+        if (framesAfterStop < 80) return;
+
+        printResultTime();
+    }
+
+    private void printResultTime() {
+        final int raceTimeSeconds = (raceTime / 1000);
+        final int raceTimeHundredths = (raceTime % 1000) / 10;
+
+        Printer.print("<ВРЕМЯ: " + raceTimeSeconds + "' " + raceTimeHundredths + "\">",
+                Color.WHITE, 0, 12, TextAlign.CENTER);
+    }
+
+    private void countTime() {
+        if (!isStopped && allowCountingRaceTime) {
+            raceTime += MILLISECONDS_PER_FRAME;
         }
+    }
+
+    private void checkGameOver() {
+        if (deloreanPassedPortal()) {
+            delorean.stop();
+            isStopped = true;
+        }
+    }
+
+    private boolean deloreanPassedPortal() {
+        return delorean.x - portal.x > 5;
     }
 
     public boolean deloreanHasMaxEnergy() {
@@ -166,18 +196,9 @@ public class RacerGame extends Game {
     }
 
 
-    // OVERRIDES
-
-    @Override
-    public void setCellColor(int x, int y, Color color) {
-        if (x < 0 || y < 0 || x > WIDTH - 1 || y > HEIGHT - 1) {
-            return;
-        }
-        super.setCellColor(x, y, color);
-    }
-
-
-    // CONTROLS
+    /*
+     * Controls
+     */
 
     @Override
     public void onKeyPress(Key key) {
@@ -189,12 +210,13 @@ public class RacerGame extends Game {
         controller.releaseKey(key);
     }
 
+
     /*
      * Getters, setters
      */
 
-    public static void allowCountTime() {
-        RacerGame.allowCountTime = true;
+    public void allowCountTime() {
+        allowCountingRaceTime = true;
     }
 
     public Display getDisplay() {

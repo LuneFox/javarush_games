@@ -60,7 +60,7 @@ public class RaceStrategy implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        if (game.isStopped && game.finishTimeOut <= 0) {
+        if (game.isStopped && game.framesAfterStop > RacerGame.ENDING_ANIMATION_LENGTH) {
             game.createGame();
         }
     }

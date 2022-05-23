@@ -38,7 +38,7 @@ public class RoadManager implements GameObjectManager {
 
     public void generateNewRoadObjects(DeLorean deLorean) {
         if (deLorean.getSpeed() <= 0) return;
-        if (!RacerGame.allowCountTime) return;
+        if (!game.allowCountingRaceTime) return;
 
         generatePuddle();
         generateHole();
