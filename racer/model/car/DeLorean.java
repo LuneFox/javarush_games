@@ -28,6 +28,7 @@ public class DeLorean extends GameObject {
     private double speed;
     private double energy;
     private double gas;
+    private double distance;
 
     private enum Animation {
         NORMAL, GLOWING
@@ -41,12 +42,14 @@ public class DeLorean extends GameObject {
         this.energy = 0;
         this.speed = 0;
         this.gas = MAX_GAS;
+        this.distance = 0;
         setNormalAnimation();
     }
 
     public void move() {
         gas();
         steer();
+        countDistance();
     }
 
     public void stop() {
@@ -56,7 +59,6 @@ public class DeLorean extends GameObject {
     private void gas() {
         if (!isAtLeftmostPosition()) return;
 
-        depleteGas();
         changeSpeed();
         selectAnimationBasedOnSpeed();
     }
@@ -78,6 +80,7 @@ public class DeLorean extends GameObject {
     private void accelerate() {
         if (gas > 0) {
             game.allowCountTime(); // TODO: Перенести активацию на пробег?
+            depleteGas();
             speed += ACCELERATION_GAS * (1 - speed * 0.1);
             limitMaxSpeed();
         } else {
@@ -176,6 +179,10 @@ public class DeLorean extends GameObject {
             y += Math.min(speed, MAX_STEER_SPEED);
     }
 
+    private void countDistance() {
+        this.distance += speed / 7.0;
+    }
+
     @Override
     public void draw() {
         if (speed > ENTER_PORTAL_THRESHOLD) {
@@ -237,6 +244,10 @@ public class DeLorean extends GameObject {
 
     public double getGas() {
         return gas;
+    }
+
+    public double getDistance() {
+        return distance;
     }
 
     public void setEnergy(double energy) {

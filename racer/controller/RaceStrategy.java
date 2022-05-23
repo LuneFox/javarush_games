@@ -60,7 +60,8 @@ public class RaceStrategy implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        if (game.isStopped && game.framesAfterStop > RacerGame.ENDING_ANIMATION_LENGTH) {
+        if (game.isStopped && game.framesAfterStop > RacerGame.ENDING_ANIMATION_LENGTH
+                || game.delorean.getGas() <= 0) {
             game.createGame();
         }
     }

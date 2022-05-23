@@ -7,7 +7,6 @@ import com.javarush.games.racer.controller.Control;
 import com.javarush.games.racer.controller.Controller;
 import com.javarush.games.racer.model.GameObjectManager;
 import com.javarush.games.racer.model.car.DeLorean;
-import com.javarush.games.racer.model.decor.Marty;
 import com.javarush.games.racer.model.decor.Portal;
 import com.javarush.games.racer.model.decor.RoadMarkingManager;
 import com.javarush.games.racer.model.decor.TireFlame;
@@ -29,17 +28,17 @@ public class RacerGame extends Game {
     public static final int HEIGHT = 100;
     private static final int MILLISECONDS_PER_FRAME = 40;
 
-    public final Display display = new Display(this);
-    public final Controller controller = new Controller(this);
+    private final Display display = new Display(this);
+    private final Controller controller = new Controller(this);
 
     public DeLorean delorean;
-    public Portal portal;
-    public TireFlame rightTireFlame;
-    public TireFlame leftTireFlame;
-    public Marty marty;
-    public RoadMarkingManager roadMarkingManager;
-    public RoadManager roadManager;
-    public Overlay overlay;
+    private Portal portal;
+    private TireFlame rightTireFlame;
+    private TireFlame leftTireFlame;
+
+    private RoadMarkingManager roadMarkingManager;
+    private RoadManager roadManager;
+    private Overlay overlay;
 
     public int raceTime;
     public boolean allowCountingRaceTime;
@@ -78,7 +77,7 @@ public class RacerGame extends Game {
         portal = new Portal();
         rightTireFlame = new TireFlame(TireFlame.Side.RIGHT);
         leftTireFlame = new TireFlame(TireFlame.Side.LEFT);
-        marty = new Marty();
+
         roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
         overlay = new Overlay(this);

@@ -3,6 +3,7 @@ package com.javarush.games.racer.view;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.model.car.DeLorean;
+import com.javarush.games.racer.model.decor.Marty;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.view.printer.Printer;
 import com.javarush.games.racer.view.printer.TextAlign;
@@ -14,6 +15,7 @@ public class Overlay {
     private final GameObject gasIcon;
     private final GameObject gasMeterBackground;
     private final GameObject gasMeter;
+    public Marty marty;
 
     public Overlay(RacerGame game) {
         this.game = game;
@@ -32,6 +34,8 @@ public class Overlay {
 
         gasMeter = new GameObject(15, 94);
         gasMeter.setStaticView(Shapes.GAS_METER);
+
+        marty = new Marty();
     }
 
     public void draw() {
@@ -54,9 +58,18 @@ public class Overlay {
     }
 
     private void printGas() {
+        double gas = game.delorean.getGas();
+
         gasIcon.draw();
         gasMeterBackground.draw();
-        gasMeter.draw(gasMeter.x + game.delorean.getGas(), gasMeter.y);
+        gasMeter.draw(gasMeter.x + gas, gasMeter.y);
+
+        if (gas == 0) {
+            Printer.print("<НЕТ БЕНЗИНА!>", Color.PINK, 46, 91);
+            if (game.delorean.getSpeed() != 0) return;
+
+            Printer.print("ПРОБЕЛ - НАЧАТЬ ЗАНОВО", Color.LAWNGREEN, 0, 80, TextAlign.CENTER);
+        }
     }
 
     private void drawEnding() {
@@ -68,25 +81,40 @@ public class Overlay {
 
         if (game.framesAfterStop < 50) return;
 
-        game.marty.draw();
+        marty.draw();
         if (game.framesAfterStop < 80) return;
 
         printResultTime();
         if (game.framesAfterStop < 100) return;
 
         printUsedGas();
+        if (game.framesAfterStop < 120) return;
+
+        printDistance();
+        if (game.framesAfterStop < 150) return;
+
+        printAgainInfo();
     }
 
     private void printResultTime() {
         final int raceTimeSeconds = (game.raceTime / 1000);
         final int raceTimeHundredths = (game.raceTime % 1000) / 10;
 
-        Printer.print("<ВРЕМЯ: " + raceTimeSeconds + "' " + raceTimeHundredths + "\">", Color.WHITE, 0, 12, TextAlign.CENTER);
+        Printer.print("ВРЕМЯ: " + raceTimeSeconds + "' " + raceTimeHundredths + "\"", Color.LAWNGREEN, 0, 12, TextAlign.CENTER);
     }
 
     private void printUsedGas() {
         final double usedGas = (DeLorean.MAX_GAS - game.delorean.getGas()) / 10.0;
-        Printer.print("<ИСП. БЕНЗИН: " + roundDouble(usedGas) + " Л.>", Color.WHITE, 0, 21, TextAlign.CENTER);
+        Printer.print("ИСП. БЕНЗИН: " + roundDouble(usedGas) + " Л.", Color.LAWNGREEN, 0, 21, TextAlign.CENTER);
+    }
+
+    private void printDistance() {
+        long distance = (long) game.delorean.getDistance();
+        Printer.print("ДИСТАНЦИЯ: " + distance + " М.", Color.LAWNGREEN, 0, 30, TextAlign.CENTER);
+    }
+
+    private void printAgainInfo() {
+        Printer.print("ПРОБЕЛ - СНОВА", Color.LAWNGREEN, 0, 80, TextAlign.CENTER);
     }
 
     private double roundDouble(double value) {
