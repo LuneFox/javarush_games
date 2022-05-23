@@ -12,6 +12,7 @@ import com.javarush.games.racer.view.Shapes;
 
 public class DeLorean extends GameObject {
     public static final double MAX_ENERGY = 1.21;
+    public static final double MAX_GAS = 23.0;
     private static final double PADDING_LEFT = 1;
     private static final double MAX_STEER_SPEED = 2.0;
     private static final double ACCELERATION_GAS = 0.05;
@@ -26,6 +27,7 @@ public class DeLorean extends GameObject {
     private EnergyPickupIcon energyPickupIcon;
     private double speed;
     private double energy;
+    private double gas;
 
     private enum Animation {
         NORMAL, GLOWING
@@ -38,6 +40,7 @@ public class DeLorean extends GameObject {
         this.horDirection = Direction.NONE;
         this.energy = 0;
         this.speed = 0;
+        this.gas = MAX_GAS;
         setNormalAnimation();
     }
 
@@ -53,8 +56,14 @@ public class DeLorean extends GameObject {
     private void gas() {
         if (!isAtLeftmostPosition()) return;
 
+        depleteGas();
         changeSpeed();
         selectAnimationBasedOnSpeed();
+    }
+
+    private void depleteGas() {
+        if (horDirection != Direction.RIGHT) return;
+        gas = Math.max(gas - 0.02, 0);
     }
 
     private void changeSpeed() {
@@ -67,9 +76,13 @@ public class DeLorean extends GameObject {
     }
 
     private void accelerate() {
-        game.allowCountTime(); // TODO: Перенести активацию на пробег?
-        speed += ACCELERATION_GAS * (1 - speed * 0.1);
-        limitMaxSpeed();
+        if (gas > 0) {
+            game.allowCountTime(); // TODO: Перенести активацию на пробег?
+            speed += ACCELERATION_GAS * (1 - speed * 0.1);
+            limitMaxSpeed();
+        } else {
+            release();
+        }
     }
 
     private void brake() {
@@ -220,6 +233,10 @@ public class DeLorean extends GameObject {
 
     public double getEnergy() {
         return energy;
+    }
+
+    public double getGas() {
+        return gas;
     }
 
     public void setEnergy(double energy) {

@@ -24,7 +24,7 @@ import java.util.stream.Stream;
  */
 
 public class RacerGame extends Game {
-    public static final int ENDING_ANIMATION_LENGTH = 100;
+    public static final int ENDING_ANIMATION_LENGTH = 150;
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
     private static final int MILLISECONDS_PER_FRAME = 40;
