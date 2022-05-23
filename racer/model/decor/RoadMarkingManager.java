@@ -1,12 +1,13 @@
 package com.javarush.games.racer.model.decor;
 
 import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.model.GameObjectManager;
 import com.javarush.games.racer.model.road.RoadManager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoadMarkingManager {
+public class RoadMarkingManager implements GameObjectManager {
     private final List<RoadMarking> markings = new ArrayList<>();
 
     public RoadMarkingManager() {
@@ -29,7 +30,11 @@ public class RoadMarkingManager {
         }
     }
 
-    public void move(double boost) {
+    public void drawObjects() {
+        markings.forEach(RoadMarking::draw);
+    }
+
+    public void moveObjects(double boost) {
         for (RoadMarking marking : markings) {
             if (marking.isOutsideScreen()) {
                 transferBehindRightBorder(marking);
@@ -49,9 +54,5 @@ public class RoadMarkingManager {
                 .mapToDouble(marking -> marking.x)
                 .max()
                 .orElse(0);
-    }
-
-    public void drawMarkings() {
-        markings.forEach(RoadMarking::draw);
     }
 }

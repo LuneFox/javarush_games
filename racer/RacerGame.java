@@ -100,8 +100,8 @@ public class RacerGame extends Game {
 
     private void drawScene() {
         drawField();
-        roadMarkingManager.drawMarkings();
-        roadManager.drawRoadObjects();
+        roadMarkingManager.drawObjects();
+        roadManager.drawObjects();
         delorean.draw();
         portal.draw();
         rightTireFlame.draw();
@@ -115,8 +115,8 @@ public class RacerGame extends Game {
     private void moveAll() {
         delorean.steer();
         delorean.gas();
-        roadManager.moveRoadObjects(delorean.getSpeed());
-        roadMarkingManager.move(delorean.getSpeed());
+        roadManager.moveObjects(delorean.getSpeed());
+        roadMarkingManager.moveObjects(delorean.getSpeed());
     }
 
 

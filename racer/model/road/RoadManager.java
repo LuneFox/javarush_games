@@ -1,5 +1,6 @@
 package com.javarush.games.racer.model.road;
 
+import com.javarush.games.racer.model.GameObjectManager;
 import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.gameobjects.HitBox;
@@ -8,7 +9,7 @@ import com.javarush.games.racer.RacerGame;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RoadManager {
+public class RoadManager implements GameObjectManager {
     public static final int UPPER_BORDER = 10;
     public static final int LOWER_BORDER = 90;
     public static final int ROAD_WIDTH = RacerGame.HEIGHT - (UPPER_BORDER) - (RacerGame.HEIGHT - LOWER_BORDER);
@@ -20,11 +21,11 @@ public class RoadManager {
         this.game = game;
     }
 
-    public void drawRoadObjects() {
+    public void drawObjects() {
         roadObjects.forEach(GameObject::draw);
     }
 
-    public void moveRoadObjects(double boost) {
+    public void moveObjects(double boost) {
         roadObjects.forEach(roadObject -> roadObject.move(roadObject.speed + boost));
         roadObjects.removeIf(roadObject -> roadObject.x + roadObject.getWidth() < 0);
     }
