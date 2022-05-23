@@ -79,35 +79,34 @@ public class EnemyArmy implements Movable, Drawable {
     }
 
     private boolean changeDirectionNearBorder() {
-        if (direction == Direction.LEFT && isNearLeftBorder()) {
+        if (direction == Direction.LEFT && reachedLeftBorder()) {
             direction = Direction.RIGHT;
             return true;
-        } else if (direction == Direction.RIGHT && isNearRightBorder()) {
+        } else if (direction == Direction.RIGHT && reachedRightBorder()) {
             direction = Direction.LEFT;
             return true;
         }
         return false;
     }
 
-    private boolean isNearLeftBorder() {
-        double armyLeftBorder = SpaceInvadersGame.WIDTH;
-        for (EnemyTank tank : enemyTanks) {
-            armyLeftBorder = Math.min(armyLeftBorder, tank.x);
-        }
-        return armyLeftBorder <= 0;
+    private boolean reachedLeftBorder() {
+        return enemyTanks.stream()
+                .mapToDouble(tank -> tank.x)
+                .min()
+                .orElse(SpaceInvadersGame.WIDTH) <= 0;
     }
 
-    private boolean isNearRightBorder() {
-        double armyRightBorder = 0;
-        for (EnemyTank tank : enemyTanks) {
-            armyRightBorder = Math.max(armyRightBorder, tank.x + tank.getWidth());
-        }
-        return armyRightBorder >= SpaceInvadersGame.WIDTH;
+    private boolean reachedRightBorder() {
+        return enemyTanks.stream()
+                .mapToDouble(tank -> tank.x + tank.getWidth())
+                .max()
+                .orElse(0) >= SpaceInvadersGame.WIDTH;
     }
 
     public void attack() {
         if (game.isStopped()) return;
         if (enemyTanks.isEmpty()) return;
+
         int randomTankNumber = (int) (Math.random() * enemyTanks.size());
         enemyTanks.get(randomTankNumber).shoot();
     }
@@ -131,12 +130,11 @@ public class EnemyArmy implements Movable, Drawable {
         bullet.kill();
     }
 
-    public boolean reachedLine(double lineHeight) {
-        double armyBottomBorder = 0;
-        for (EnemyTank tank : enemyTanks) {
-            armyBottomBorder = Math.max(armyBottomBorder, tank.y + tank.getHeight());
-        }
-        return armyBottomBorder > lineHeight;
+    public boolean reachedBottomLine(double lineHeight) {
+        return enemyTanks.stream()
+                .mapToDouble(tank -> tank.y + tank.getHeight())
+                .max()
+                .orElse(0) >= lineHeight - 1;
     }
 
     public void removeDeadTanks() {

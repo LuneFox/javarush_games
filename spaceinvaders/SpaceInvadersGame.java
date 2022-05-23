@@ -132,7 +132,7 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void checkGameOverConditions() {
-        if (enemyArmy.reachedLine(bricks.get(0).y)) {
+        if (enemyArmy.reachedBottomLine(bricks.get(0).y)) {
             mario.kill();
         }
 
