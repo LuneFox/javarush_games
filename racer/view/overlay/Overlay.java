@@ -55,7 +55,8 @@ public class Overlay {
     }
 
     private void printEnergy() {
-        Printer.print("<" + delorean.getEnergy() + " ГВТ>", Color.LAWNGREEN, RacerGame.WIDTH - 8, 0, TextAlign.RIGHT);
+        final double energy = roundDouble(delorean.getEnergy());
+        Printer.print("<" + energy + " ГВТ>", Color.LAWNGREEN, RacerGame.WIDTH - 8, 0, TextAlign.RIGHT);
         energyIcon.draw();
     }
 
