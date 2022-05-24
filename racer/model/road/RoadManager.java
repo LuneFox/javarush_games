@@ -15,19 +15,26 @@ public class RoadManager implements GameObjectManager {
     public static final int ROAD_WIDTH = RacerGame.HEIGHT - (UPPER_BORDER) - (RacerGame.HEIGHT - LOWER_BORDER);
 
     private final RacerGame game;
+    private final Road road;
+    private final RoadMarkingManager roadMarkingManager;
     private final List<RoadObject> roadObjects = new ArrayList<>();
 
     public RoadManager(RacerGame game) {
         this.game = game;
+        this.road = new Road(game.getDisplay());
+        this.roadMarkingManager = new RoadMarkingManager();
     }
 
     public void drawObjects() {
+        road.draw();
+        roadMarkingManager.drawObjects();
         roadObjects.forEach(GameObject::draw);
     }
 
     public void moveObjects(double boost) {
         roadObjects.forEach(roadObject -> roadObject.move(roadObject.speed + boost));
         roadObjects.removeIf(roadObject -> roadObject.x + roadObject.getWidth() < 0);
+        roadMarkingManager.moveObjects(boost);
     }
 
     public void checkOverlapsWithCar(DeLorean delorean) {

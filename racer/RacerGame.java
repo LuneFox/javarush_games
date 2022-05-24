@@ -5,16 +5,12 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.controller.Control;
 import com.javarush.games.racer.controller.Controller;
-import com.javarush.games.racer.model.GameObjectManager;
 import com.javarush.games.racer.model.car.DeLorean;
-import com.javarush.games.racer.model.road.RoadMarkingManager;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.view.Display;
 import com.javarush.games.racer.view.overlay.Overlay;
 import com.javarush.games.racer.view.printer.SymbolImage;
-
-import java.util.stream.Stream;
 
 /**
  * Version 1.02
@@ -30,7 +26,6 @@ public class RacerGame extends Game {
     private Controller controller;
 
     private DeLorean delorean;
-    private RoadMarkingManager roadMarkingManager;
     private RoadManager roadManager;
     private Overlay overlay;
 
@@ -68,7 +63,6 @@ public class RacerGame extends Game {
     private void createNewGameObjects() {
         delorean = new DeLorean();
         controller = new Controller(this);
-        roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
         overlay = new Overlay(this);
     }
@@ -94,35 +88,14 @@ public class RacerGame extends Game {
 
     private void moveAll() {
         delorean.move();
-        Stream.of(roadMarkingManager, roadManager)
-                .forEach(manager -> manager.moveObjects(delorean.getSpeed()));
+        roadManager.moveObjects(delorean.getSpeed());
     }
 
     private void drawAll() {
-        drawRoad();
-        Stream.of(roadMarkingManager, roadManager)
-                .forEach(GameObjectManager::drawObjects);
+        roadManager.drawObjects();
         delorean.draw();
         overlay.draw();
         display.draw();
-    }
-
-    private void drawRoad() {
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
-                Color color;
-
-                if (y < RoadManager.UPPER_BORDER || y >= RoadManager.LOWER_BORDER) {
-                    color = Color.SIENNA;
-                } else if (y == HEIGHT / 2) {
-                    color = Color.SNOW;
-                } else {
-                    color = Color.DARKGRAY;
-                }
-
-                display.drawPixel(x, y, color);
-            }
-        }
     }
 
     private void countTime() {
