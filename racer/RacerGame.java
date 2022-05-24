@@ -40,21 +40,25 @@ public class RacerGame extends Game {
         SymbolImage.setDisplay(display);
 
         createGame();
-
-        try {
-            showMessageDialog(Color.BLACK, "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
-                    "Нужно вернуться в Россию будущего, там дороги не нужны!\n" +
-                    "Собери 1.21 ГВт энергии, чтобы разогнать Делореан до 88 миль в час!\n" +
-                    "Главное — не попадай в лужи, а тем более в ямы!", Color.YELLOW, 15);
-        } catch (NullPointerException ignored) {
-
-        }
+        showOpeningDialogue();
     }
 
     @Control(Key.SPACE)
     public void createGame() {
         createNewGameObjects();
         resetValues();
+    }
+
+    private void showOpeningDialogue() {
+        try {
+            showMessageDialog(Color.BLACK,
+                    "Святые угодники! Мы на российском шоссе 21 века, Марти!\n" +
+                            "Нужно вернуться в Россию будущего, там дороги не нужны!\n" +
+                            "Собери 1.21 ГВт энергии, чтобы разогнать Делореан до 88 миль в час!\n" +
+                            "Главное — не попадай в лужи, а тем более в ямы!", Color.YELLOW, 15);
+        } catch (NullPointerException ignored) {
+
+        }
     }
 
     private void createNewGameObjects() {
