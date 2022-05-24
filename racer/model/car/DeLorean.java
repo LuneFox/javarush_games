@@ -242,6 +242,12 @@ public class DeLorean extends GameObject {
         energyPickUpIcon.draw();
     }
 
+    public void steerRandomly() {
+        double random = Math.random();
+        if (random < 0.1) y--;
+        else if (random < 0.2) y++;
+    }
+
     public boolean passedPortal() {
         return x - portal.x > 5;
     }

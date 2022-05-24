@@ -13,7 +13,7 @@ import com.javarush.games.racer.view.overlay.Overlay;
 import com.javarush.games.racer.view.printer.SymbolImage;
 
 /**
- * Version 1.02
+ * Version 1.03
  */
 
 public class RacerGame extends Game {
