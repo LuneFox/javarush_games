@@ -41,7 +41,6 @@ public class RacerGame extends Game {
     private Overlay overlay;
 
     public int raceTime;
-    public boolean allowCountingRaceTime;
     public boolean isStopped;
     public int framesAfterStop;
 
@@ -81,13 +80,12 @@ public class RacerGame extends Game {
         roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
         overlay = new Overlay(this);
-        }
+    }
 
     private void resetValues() {
         framesAfterStop = 0;
         raceTime = 0;
         isStopped = false;
-        allowCountingRaceTime = false;
         setTurnTimer(MILLISECONDS_PER_FRAME);
     }
 
@@ -138,9 +136,10 @@ public class RacerGame extends Game {
     }
 
     private void countTime() {
-        if (!isStopped && allowCountingRaceTime) {
-            raceTime += MILLISECONDS_PER_FRAME;
-        }
+        if (isStopped) return;
+        if (delorean.getDistance() <= 0) return;
+
+        raceTime += MILLISECONDS_PER_FRAME;
     }
 
     private void checkGameOver() {
@@ -177,10 +176,6 @@ public class RacerGame extends Game {
     /*
      * Getters, setters
      */
-
-    public void allowCountTime() {
-        allowCountingRaceTime = true;
-    }
 
     public Display getDisplay() {
         return display;

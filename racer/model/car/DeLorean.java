@@ -79,7 +79,6 @@ public class DeLorean extends GameObject {
 
     private void accelerate() {
         if (gas > 0) {
-            game.allowCountTime(); // TODO: Перенести активацию на пробег?
             depleteGas();
             speed += ACCELERATION_GAS * (1 - speed * 0.1);
             limitMaxSpeed();
@@ -208,7 +207,7 @@ public class DeLorean extends GameObject {
     }
 
 
-    /**
+    /*
      * Getters, setters
      */
 

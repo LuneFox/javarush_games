@@ -84,36 +84,36 @@ public class Overlay {
         marty.draw();
         if (game.framesAfterStop < 80) return;
 
-        printResultTime();
+        printEndingResultTime();
         if (game.framesAfterStop < 100) return;
 
-        printUsedGas();
+        printEndingUsedGas();
         if (game.framesAfterStop < 120) return;
 
-        printDistance();
+        printEndingDistance();
         if (game.framesAfterStop < 150) return;
 
-        printAgainInfo();
+        printEndingPressSpaceToTryAgain();
     }
 
-    private void printResultTime() {
+    private void printEndingResultTime() {
         final int raceTimeSeconds = (game.raceTime / 1000);
         final int raceTimeHundredths = (game.raceTime % 1000) / 10;
 
         Printer.print("ВРЕМЯ: " + raceTimeSeconds + "' " + raceTimeHundredths + "\"", Color.LAWNGREEN, 0, 12, TextAlign.CENTER);
     }
 
-    private void printUsedGas() {
+    private void printEndingUsedGas() {
         final double usedGas = (DeLorean.MAX_GAS - game.delorean.getGas()) / 10.0;
         Printer.print("ИСП. БЕНЗИН: " + roundDouble(usedGas) + " Л.", Color.LAWNGREEN, 0, 21, TextAlign.CENTER);
     }
 
-    private void printDistance() {
+    private void printEndingDistance() {
         long distance = (long) game.delorean.getDistance();
         Printer.print("ДИСТАНЦИЯ: " + distance + " М.", Color.LAWNGREEN, 0, 30, TextAlign.CENTER);
     }
 
-    private void printAgainInfo() {
+    private void printEndingPressSpaceToTryAgain() {
         Printer.print("ПРОБЕЛ - СНОВА", Color.LAWNGREEN, 0, 80, TextAlign.CENTER);
     }
 
