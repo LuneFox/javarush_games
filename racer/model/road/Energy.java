@@ -29,6 +29,6 @@ public class Energy extends RoadObject {
 
         isCollected = true;
         deLorean.addEnergy();
-        deLorean.setEnergyPickupIcon(new EnergyPickupIcon(deLorean.x + deLorean.getWidth() / 2.0, deLorean.y));
+        deLorean.setEnergyPickUpIcon(new EnergyPickupIcon(deLorean.x + deLorean.getWidth() / 2.0, deLorean.y));
     }
 }

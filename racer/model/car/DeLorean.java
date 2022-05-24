@@ -34,7 +34,9 @@ public class DeLorean extends GameObject {
 
     private final Portal portal;
     private final List<TireFlame> tireFlames;
-    private EnergyPickupIcon energyPickupIcon;
+    private final ThrustFire thrustFire;
+    private EnergyPickupIcon energyPickUpIcon;
+    private final StopSignal stopSignal;
 
     private enum Animation {
         NORMAL, GLOWING
@@ -52,11 +54,13 @@ public class DeLorean extends GameObject {
         setNormalAnimation();
 
         portal = new Portal(this);
+        thrustFire = new ThrustFire(this);
+        stopSignal = new StopSignal(this);
         tireFlames = new ArrayList<>(Arrays.asList(
                 new TireFlame(this, TireFlame.Side.RIGHT),
                 new TireFlame(this, TireFlame.Side.LEFT)
         ));
-        energyPickupIcon = null;
+        energyPickUpIcon = null;
     }
 
     public void move() {
@@ -199,12 +203,9 @@ public class DeLorean extends GameObject {
         }
 
         super.draw();
-
-
-        if (energyPickupIcon != null) {
-            energyPickupIcon.draw();
-        }
-
+        drawThrustFire();
+        drawStopSignal();
+        drawEnergyPickUpIcon();
         tireFlames.forEach(GameObject::draw);
         portal.draw();
     }
@@ -218,6 +219,27 @@ public class DeLorean extends GameObject {
         }
 
         x += shift;
+    }
+
+    private void drawThrustFire() {
+        if (horDirection != Direction.RIGHT) return;
+        if (gas <= 0) return;
+        if (passedPortal()) return;
+
+        thrustFire.draw();
+    }
+
+    private void drawStopSignal() {
+        if (horDirection != Direction.LEFT) return;
+        if (passedPortal()) return;
+
+        stopSignal.draw();
+    }
+
+    private void drawEnergyPickUpIcon() {
+        if (energyPickUpIcon == null) return;
+
+        energyPickUpIcon.draw();
     }
 
     public boolean passedPortal() {
@@ -275,7 +297,7 @@ public class DeLorean extends GameObject {
         return distance;
     }
 
-    public void setEnergyPickupIcon(EnergyPickupIcon energyPickupIcon) {
-        this.energyPickupIcon = energyPickupIcon;
+    public void setEnergyPickUpIcon(EnergyPickupIcon energyPickUpIcon) {
+        this.energyPickUpIcon = energyPickUpIcon;
     }
 }

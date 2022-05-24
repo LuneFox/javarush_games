@@ -494,4 +494,12 @@ public class Shapes {
             {0, 0, 116, 19, 116, 19, 116},
             {0, 0, 116, 116, 116, 116, 116}
     };
+
+
+    public static final int[][] THRUST_FIRE_1 = new int[][]{{0, 5}, {0, 5}, {0, 5}};
+    public static final int[][] THRUST_FIRE_2 = new int[][]{{38, 5}, {59, 5}, {38, 5}};
+    public static final int[][] THRUST_FIRE_3 = new int[][]{{0, 38}, {59, 5}, {0, 38}};
+    public static final int[][] THRUST_FIRE_4 = new int[][]{{0, 59}, {0, 38}, {0, 59}};
+
+    public static final int[][] STOP_SIGNAL = new int[][]{{5}, {5}};
 }
