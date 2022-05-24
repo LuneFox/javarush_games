@@ -11,8 +11,8 @@ import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.view.Shapes;
 
 public class DeLorean extends GameObject {
-    public static final double MAX_ENERGY = 1.21;
-    public static final double MAX_GAS = 23.0;
+    private static final double MAX_ENERGY = 1.21;
+    private static final double MAX_GAS = 23.0;
     private static final double PADDING_LEFT = 1;
     private static final double MAX_STEER_SPEED = 2.0;
     private static final double ACCELERATION_GAS = 0.05;
@@ -24,11 +24,11 @@ public class DeLorean extends GameObject {
     private Direction verDirection;
     private Direction horDirection;
     private Animation animation;
-    private EnergyPickupIcon energyPickupIcon;
     private double speed;
     private double energy;
     private double gas;
     private double distance;
+    private EnergyPickupIcon energyPickupIcon;
 
     private enum Animation {
         NORMAL, GLOWING
@@ -69,12 +69,9 @@ public class DeLorean extends GameObject {
     }
 
     private void changeSpeed() {
-        if (horDirection == Direction.RIGHT)
-            accelerate();
-        else if (horDirection == Direction.LEFT)
-            brake();
-        else if (horDirection == Direction.NONE)
-            release();
+        if (horDirection == Direction.RIGHT) accelerate();
+        else if (horDirection == Direction.LEFT) brake();
+        else if (horDirection == Direction.NONE) release();
     }
 
     private void accelerate() {
@@ -123,6 +120,7 @@ public class DeLorean extends GameObject {
 
     private void setNormalAnimation() {
         if (animation == Animation.NORMAL) return;
+
         setAnimatedView(Sprite.Loop.ENABLED, Integer.MAX_VALUE,
                 Shapes.DELOREAN_RUN_0,
                 Shapes.DELOREAN_RUN_1,
@@ -133,6 +131,7 @@ public class DeLorean extends GameObject {
 
     private void setGlowingAnimation() {
         if (animation == Animation.GLOWING) return;
+
         setAnimatedView(Sprite.Loop.ENABLED, Integer.MAX_VALUE,
                 Shapes.DELOREAN_GLOW_0,
                 Shapes.DELOREAN_GLOW_1,
@@ -164,18 +163,16 @@ public class DeLorean extends GameObject {
             y = lowerLimit;
         }
 
-        slowDownFromDirt();
+        cutSpeedToPercentageOfCurrent(99.5);
     }
 
-    private void slowDownFromDirt() {
-        speed = (speed / 100) * 99.5;
+    public void cutSpeedToPercentageOfCurrent(double percentage) {
+        speed = (speed / 100.0) * percentage;
     }
 
     private void changeVerticalPosition() {
-        if (verDirection == Direction.UP)
-            y -= Math.min(speed, MAX_STEER_SPEED);
-        else if (verDirection == Direction.DOWN)
-            y += Math.min(speed, MAX_STEER_SPEED);
+        if (verDirection == Direction.UP) y -= Math.min(speed, MAX_STEER_SPEED);
+        else if (verDirection == Direction.DOWN) y += Math.min(speed, MAX_STEER_SPEED);
     }
 
     private void countDistance() {
@@ -206,9 +203,21 @@ public class DeLorean extends GameObject {
         x += shift;
     }
 
+    public void addEnergy() {
+        energy += MAX_ENERGY / 10.0;
+    }
+
+    public boolean hasMaxEnergy() {
+        return energy >= MAX_ENERGY;
+    }
+
+    public double getUsedGasInLitres() {
+        return (MAX_GAS - gas) / 10.0;
+    }
+
 
     /*
-     * Getters, setters
+     * Plain getters, setters
      */
 
     public Direction getHorDirection() {
@@ -233,10 +242,6 @@ public class DeLorean extends GameObject {
         return speed;
     }
 
-    public void setSpeed(double speed) {
-        this.speed = speed;
-    }
-
     public double getEnergy() {
         return energy;
     }
@@ -247,10 +252,6 @@ public class DeLorean extends GameObject {
 
     public double getDistance() {
         return distance;
-    }
-
-    public void setEnergy(double energy) {
-        this.energy = energy;
     }
 
     public void setEnergyPickupIcon(EnergyPickupIcon energyPickupIcon) {

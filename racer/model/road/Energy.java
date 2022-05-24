@@ -24,11 +24,10 @@ public class Energy extends RoadObject {
     @Override
     public void onContact(DeLorean deLorean) {
         if (isCollected) return;
-        if (deLorean.getEnergy() >= DeLorean.MAX_ENERGY) return;
+        if (deLorean.hasMaxEnergy()) return;
 
-        deLorean.setEnergy(deLorean.getEnergy() + DeLorean.MAX_ENERGY / 10);
         isCollected = true;
-
+        deLorean.addEnergy();
         deLorean.setEnergyPickupIcon(new EnergyPickupIcon(deLorean.x + deLorean.getWidth() / 2.0, deLorean.y));
     }
 }

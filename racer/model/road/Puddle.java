@@ -13,6 +13,6 @@ public class Puddle extends RoadObject {
 
     @Override
     public void onContact(DeLorean deLorean) {
-        deLorean.setSpeed((deLorean.getSpeed() / 100) * 95);
+        deLorean.cutSpeedToPercentageOfCurrent(95.0);
     }
 }

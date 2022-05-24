@@ -154,7 +154,7 @@ public class RacerGame extends Game {
     }
 
     public boolean deloreanHasMaxEnergy() {
-        return delorean.getEnergy() >= DeLorean.MAX_ENERGY;
+        return delorean.hasMaxEnergy();
     }
 
 

@@ -2,7 +2,6 @@ package com.javarush.games.racer.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.decor.Marty;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.view.printer.Printer;
@@ -104,8 +103,15 @@ public class Overlay {
     }
 
     private void printEndingUsedGas() {
-        final double usedGas = (DeLorean.MAX_GAS - game.delorean.getGas()) / 10.0;
-        Printer.print("ИСП. БЕНЗИН: " + roundDouble(usedGas) + " Л.", Color.LAWNGREEN, 0, 21, TextAlign.CENTER);
+        final double usedGas = roundDouble(game.delorean.getUsedGasInLitres());
+        Printer.print("ИСП. БЕНЗИН: " + usedGas + " Л.", Color.LAWNGREEN, 0, 21, TextAlign.CENTER);
+    }
+
+    private double roundDouble(double value) {
+        long factor = (long) Math.pow(10, 2);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
     }
 
     private void printEndingDistance() {
@@ -115,12 +121,5 @@ public class Overlay {
 
     private void printEndingPressSpaceToTryAgain() {
         Printer.print("ПРОБЕЛ - СНОВА", Color.LAWNGREEN, 0, 80, TextAlign.CENTER);
-    }
-
-    private double roundDouble(double value) {
-        long factor = (long) Math.pow(10, 2);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
     }
 }

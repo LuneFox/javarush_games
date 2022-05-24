@@ -13,6 +13,6 @@ public class Hole extends RoadObject {
 
     @Override
     public void onContact(DeLorean deLorean) {
-        deLorean.setSpeed((deLorean.getSpeed() / 100) * 80);
+        deLorean.cutSpeedToPercentageOfCurrent(80.0);
     }
 }
