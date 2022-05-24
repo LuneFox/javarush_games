@@ -2,9 +2,8 @@ package com.javarush.games.racer.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
-import com.javarush.games.racer.Drawable;
 
-public class Display implements Drawable {
+public class Display {
     public static final int SIZE = 100;
     private final Game game;
     private final Pixel[][] matrix;
