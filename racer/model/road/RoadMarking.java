@@ -1,4 +1,4 @@
-package com.javarush.games.racer.model.decor;
+package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.view.Shapes;

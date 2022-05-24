@@ -1,6 +1,5 @@
-package com.javarush.games.racer.model.decor;
+package com.javarush.games.racer.model.car;
 
-import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.gameobjects.Sprite;
 import com.javarush.games.racer.view.Shapes;
@@ -16,9 +15,9 @@ public class Portal extends GameObject {
         GROWING, EXPANDED
     }
 
-    public Portal() {
+    Portal(DeLorean deLorean) {
         setGrowingAnimation(2);
-        this.deLorean = game.delorean;
+        this.deLorean = deLorean;
     }
 
     public void draw() {
@@ -44,7 +43,7 @@ public class Portal extends GameObject {
         }
     }
 
-    public void alignToDeLorean() {
+    void alignToDeLorean() {
         if (deLorean.isAtLeftmostPosition()) {
             this.x = deLorean.x + deLorean.getWidth() - 2;
             this.y = deLorean.y - 2;

@@ -1,9 +1,9 @@
-package com.javarush.games.racer.view;
+package com.javarush.games.racer.view.overlay;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;
-import com.javarush.games.racer.model.decor.Marty;
 import com.javarush.games.racer.model.gameobjects.GameObject;
+import com.javarush.games.racer.view.Shapes;
 import com.javarush.games.racer.view.printer.Printer;
 import com.javarush.games.racer.view.printer.TextAlign;
 

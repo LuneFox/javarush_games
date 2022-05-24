@@ -7,13 +7,11 @@ import com.javarush.games.racer.controller.Control;
 import com.javarush.games.racer.controller.Controller;
 import com.javarush.games.racer.model.GameObjectManager;
 import com.javarush.games.racer.model.car.DeLorean;
-import com.javarush.games.racer.model.decor.Portal;
-import com.javarush.games.racer.model.decor.RoadMarkingManager;
-import com.javarush.games.racer.model.decor.TireFlame;
+import com.javarush.games.racer.model.road.RoadMarkingManager;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.view.Display;
-import com.javarush.games.racer.view.Overlay;
+import com.javarush.games.racer.view.overlay.Overlay;
 import com.javarush.games.racer.view.printer.SymbolImage;
 
 import java.util.stream.Stream;
@@ -32,9 +30,6 @@ public class RacerGame extends Game {
     private final Controller controller = new Controller(this);
 
     public DeLorean delorean;
-    private Portal portal;
-    private TireFlame rightTireFlame;
-    private TireFlame leftTireFlame;
 
     private RoadMarkingManager roadMarkingManager;
     private RoadManager roadManager;
@@ -73,10 +68,6 @@ public class RacerGame extends Game {
 
     private void createNewGameObjects() {
         delorean = new DeLorean();
-        portal = new Portal();
-        rightTireFlame = new TireFlame(TireFlame.Side.RIGHT);
-        leftTireFlame = new TireFlame(TireFlame.Side.LEFT);
-
         roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
         overlay = new Overlay(this);
@@ -111,8 +102,7 @@ public class RacerGame extends Game {
         drawRoad();
         Stream.of(roadMarkingManager, roadManager)
                 .forEach(GameObjectManager::drawObjects);
-        Stream.of(delorean, portal, rightTireFlame, leftTireFlame)
-                .forEach(GameObject::draw);
+        delorean.draw();
         overlay.draw();
         display.draw();
     }
@@ -143,14 +133,10 @@ public class RacerGame extends Game {
     }
 
     private void checkGameOver() {
-        if (deloreanPassedPortal()) {
+        if (delorean.passedPortal()) {
             delorean.stop();
             isStopped = true;
         }
-    }
-
-    private boolean deloreanPassedPortal() {
-        return delorean.x - portal.x > 5;
     }
 
     public boolean deloreanHasMaxEnergy() {

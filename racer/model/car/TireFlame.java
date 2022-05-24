@@ -1,6 +1,5 @@
-package com.javarush.games.racer.model.decor;
+package com.javarush.games.racer.model.car;
 
-import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.gameobjects.Sprite;
 import com.javarush.games.racer.view.Shapes;
@@ -8,11 +7,11 @@ import com.javarush.games.racer.view.Shapes;
 public class TireFlame extends GameObject {
     private final Side side;
 
-    public enum Side {
+    enum Side {
         LEFT, RIGHT
     }
 
-    public TireFlame(Side side) {
+    TireFlame(Side side) {
         this.side = side;
         setAnimatedView(Sprite.Loop.ENABLED, 3,
                 Shapes.TIRE_FLAME_0,

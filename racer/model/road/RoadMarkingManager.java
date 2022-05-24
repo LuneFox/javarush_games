@@ -1,8 +1,7 @@
-package com.javarush.games.racer.model.decor;
+package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.model.GameObjectManager;
-import com.javarush.games.racer.model.road.RoadManager;
 
 import java.util.ArrayList;
 import java.util.List;

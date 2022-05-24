@@ -1,7 +1,7 @@
 package com.javarush.games.racer.model.road;
 
 import com.javarush.games.racer.model.car.DeLorean;
-import com.javarush.games.racer.model.decor.EnergyPickupIcon;
+import com.javarush.games.racer.model.car.EnergyPickupIcon;
 import com.javarush.games.racer.model.gameobjects.HitBox;
 
 public class Energy extends RoadObject {

@@ -3,12 +3,15 @@ package com.javarush.games.racer.model.car;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.controller.Control;
-import com.javarush.games.racer.model.decor.EnergyPickupIcon;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.model.gameobjects.HitBox;
 import com.javarush.games.racer.model.gameobjects.Sprite;
 import com.javarush.games.racer.model.road.RoadManager;
 import com.javarush.games.racer.view.Shapes;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class DeLorean extends GameObject {
     private static final double MAX_ENERGY = 1.21;
@@ -28,6 +31,9 @@ public class DeLorean extends GameObject {
     private double energy;
     private double gas;
     private double distance;
+
+    private final Portal portal;
+    private final List<TireFlame> tireFlames;
     private EnergyPickupIcon energyPickupIcon;
 
     private enum Animation {
@@ -44,6 +50,13 @@ public class DeLorean extends GameObject {
         this.gas = MAX_GAS;
         this.distance = 0;
         setNormalAnimation();
+
+        portal = new Portal(this);
+        tireFlames = new ArrayList<>(Arrays.asList(
+                new TireFlame(TireFlame.Side.RIGHT),
+                new TireFlame(TireFlame.Side.LEFT)
+        ));
+        energyPickupIcon = null;
     }
 
     public void move() {
@@ -187,9 +200,13 @@ public class DeLorean extends GameObject {
 
         super.draw();
 
+
         if (energyPickupIcon != null) {
             energyPickupIcon.draw();
         }
+
+        tireFlames.forEach(GameObject::draw);
+        portal.draw();
     }
 
     private void moveIntoPortal() {
@@ -201,6 +218,10 @@ public class DeLorean extends GameObject {
         }
 
         x += shift;
+    }
+
+    public boolean passedPortal() {
+        return x - portal.x > 5;
     }
 
     public void addEnergy() {
