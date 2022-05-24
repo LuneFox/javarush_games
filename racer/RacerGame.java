@@ -119,12 +119,13 @@ public class RacerGame extends Game {
         endingAnimationFrames++;
     }
 
-    public boolean deloreanHasMaxEnergy() {
-        return delorean.hasMaxEnergy();
-    }
-
     public boolean isEndingAnimationFinished() {
         return endingAnimationFrames > ENDING_ANIMATION_LENGTH_IN_FRAMES;
+    }
+
+    public boolean deloreanHasMaxEnergy() {
+
+        return delorean.hasMaxEnergy();
     }
 
 
