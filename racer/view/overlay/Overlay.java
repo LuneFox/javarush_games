@@ -1,6 +1,7 @@
 package com.javarush.games.racer.view.overlay;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.racer.NumberUtil;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.GameObject;
@@ -48,20 +49,20 @@ public class Overlay {
     }
 
     private void printSpeed() {
-        int displaySpeed = game.isStopped() ? 88 : (int) (delorean.getSpeed() * 10);
+        final int displaySpeed = game.isStopped() ? 88 : (int) (delorean.getSpeed() * 10);
 
         Printer.print("<" + displaySpeed + " МВЧ>", Color.WHITE, 11, 0);
         speedometerIcon.draw();
     }
 
     private void printEnergy() {
-        final double energy = roundDouble(delorean.getEnergy());
+        final double energy = NumberUtil.roundDouble(delorean.getEnergy());
         Printer.print("<" + energy + " ГВТ>", Color.LAWNGREEN, RacerGame.WIDTH - 8, 0, TextAlign.RIGHT);
         energyIcon.draw();
     }
 
     private void printGas() {
-        double gas = delorean.getGas();
+        final double gas = delorean.getGas();
 
         gasIcon.draw();
         gasMeterBackground.draw();
@@ -96,19 +97,12 @@ public class Overlay {
     }
 
     private void printEndingUsedGas() {
-        final double usedGas = roundDouble(delorean.getUsedGasInLitres());
+        final double usedGas = NumberUtil.roundDouble(delorean.getUsedGasInLitres());
         Printer.print("ИСП. БЕНЗИН: " + usedGas + " Л.", Color.LAWNGREEN, 0, 21, TextAlign.CENTER);
     }
 
-    private double roundDouble(double value) {
-        long factor = (long) Math.pow(10, 2);
-        value = value * factor;
-        long tmp = Math.round(value);
-        return (double) tmp / factor;
-    }
-
     private void printEndingDistance() {
-        long distance = (long) delorean.getDistance();
+        final long distance = (long) delorean.getDistance();
         Printer.print("ДИСТАНЦИЯ: " + distance + " М.", Color.LAWNGREEN, 0, 30, TextAlign.CENTER);
     }
 
