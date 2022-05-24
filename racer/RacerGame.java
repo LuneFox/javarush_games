@@ -17,21 +17,19 @@ import com.javarush.games.racer.view.printer.SymbolImage;
  */
 
 public class RacerGame extends Game {
-    public static final int ENDING_ANIMATION_LENGTH = 150;
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
+    private static final int ENDING_ANIMATION_LENGTH_IN_FRAMES = 150;
     private static final int MILLISECONDS_PER_FRAME = 40;
 
     private final Display display = new Display(this);
     private Controller controller;
-
     private DeLorean delorean;
     private RoadManager roadManager;
     private Overlay overlay;
-
-    public int raceTime;
-    public boolean isStopped;
-    public int framesAfterStop;
+    private int raceTime;
+    private boolean isStopped;
+    private int endingAnimationFrames;
 
     @Override
     public void initialize() {
@@ -53,7 +51,6 @@ public class RacerGame extends Game {
         }
     }
 
-
     @Control(Key.SPACE)
     public void createGame() {
         createNewGameObjects();
@@ -68,7 +65,7 @@ public class RacerGame extends Game {
     }
 
     private void resetValues() {
-        framesAfterStop = 0;
+        endingAnimationFrames = 0;
         raceTime = 0;
         isStopped = false;
         setTurnTimer(MILLISECONDS_PER_FRAME);
@@ -78,12 +75,11 @@ public class RacerGame extends Game {
     public void onTurn(int step) {
         roadManager.generateNewRoadObjects(delorean);
         roadManager.checkOverlapsWithCar(delorean);
-
         moveAll();
         drawAll();
-
-        countTime();
         checkGameOver();
+        countTime();
+        countEndingAnimationFrames();
     }
 
     private void moveAll() {
@@ -98,13 +94,6 @@ public class RacerGame extends Game {
         display.draw();
     }
 
-    private void countTime() {
-        if (isStopped) return;
-        if (delorean.getDistance() <= 0) return;
-
-        raceTime += MILLISECONDS_PER_FRAME;
-    }
-
     private void checkGameOver() {
         if (delorean.passedPortal()) {
             delorean.stop();
@@ -112,8 +101,26 @@ public class RacerGame extends Game {
         }
     }
 
+    private void countTime() {
+        if (isStopped) return;
+        if (delorean.getDistance() <= 0) return;
+
+        raceTime += MILLISECONDS_PER_FRAME;
+    }
+
+    private void countEndingAnimationFrames() {
+        if (!isStopped) return;
+        if (isEndingAnimationFinished()) return;
+
+        endingAnimationFrames++;
+    }
+
     public boolean deloreanHasMaxEnergy() {
         return delorean.hasMaxEnergy();
+    }
+
+    public boolean isEndingAnimationFinished() {
+        return endingAnimationFrames > ENDING_ANIMATION_LENGTH_IN_FRAMES;
     }
 
 
@@ -142,5 +149,17 @@ public class RacerGame extends Game {
 
     public DeLorean getDelorean() {
         return delorean;
+    }
+
+    public int getRaceTime() {
+        return raceTime;
+    }
+
+    public boolean isStopped() {
+        return isStopped;
+    }
+
+    public int getEndingAnimationFrames() {
+        return endingAnimationFrames;
     }
 }

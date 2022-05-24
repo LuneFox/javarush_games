@@ -22,7 +22,7 @@ public class TireFlame extends GameObject {
 
     @Override
     public void draw() {
-        if (!game.isStopped) return;
+        if (!game.isStopped()) return;
 
         alignToDeLorean();
         maskOut(3);

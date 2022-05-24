@@ -21,7 +21,7 @@ public class Portal extends GameObject {
     }
 
     public void draw() {
-        if (game.isStopped) {
+        if (game.isStopped()) {
             drawAfterEffect();
             return;
         }

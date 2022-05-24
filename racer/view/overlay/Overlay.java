@@ -44,11 +44,11 @@ public class Overlay {
         printSpeed();
         printEnergy();
         printGas();
-        drawEnding();
+        drawEnding(game.getEndingAnimationFrames());
     }
 
     private void printSpeed() {
-        int displaySpeed = game.isStopped ? 88 : (int) (delorean.getSpeed() * 10);
+        int displaySpeed = game.isStopped() ? 88 : (int) (delorean.getSpeed() * 10);
 
         Printer.print("<" + displaySpeed + " МВЧ>", Color.WHITE, 11, 0);
         speedometerIcon.draw();
@@ -74,33 +74,22 @@ public class Overlay {
         }
     }
 
-    private void drawEnding() {
-        if (!game.isStopped) return;
-
-        if (game.framesAfterStop <= RacerGame.ENDING_ANIMATION_LENGTH) {
-            game.framesAfterStop++;
-        }
-
-        if (game.framesAfterStop < 50) return;
-
+    private void drawEnding(int frames) {
+        if (frames < 50) return;
         marty.draw();
-        if (game.framesAfterStop < 80) return;
-
+        if (frames < 80) return;
         printEndingResultTime();
-        if (game.framesAfterStop < 100) return;
-
+        if (frames < 100) return;
         printEndingUsedGas();
-        if (game.framesAfterStop < 120) return;
-
+        if (frames < 120) return;
         printEndingDistance();
-        if (game.framesAfterStop < 150) return;
-
+        if (frames < 150) return;
         printEndingPressSpaceToTryAgain();
     }
 
     private void printEndingResultTime() {
-        final int raceTimeSeconds = (game.raceTime / 1000);
-        final int raceTimeHundredths = (game.raceTime % 1000) / 10;
+        final int raceTimeSeconds = (game.getRaceTime() / 1000);
+        final int raceTimeHundredths = (game.getRaceTime() % 1000) / 10;
 
         Printer.print("ВРЕМЯ: " + raceTimeSeconds + "' " + raceTimeHundredths + "\"", Color.LAWNGREEN, 0, 12, TextAlign.CENTER);
     }
