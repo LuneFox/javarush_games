@@ -3,14 +3,13 @@ package com.javarush.games.racer.model.road;
 import com.javarush.games.racer.RacerGame;
 import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.GameObject;
+import com.javarush.games.racer.model.gameobjects.Mirror;
 import com.javarush.games.racer.view.Shapes;
 
 public abstract class RoadObject extends GameObject {
-    public final RoadObjectType type;
-    public double speed;
+    protected double speed;
 
     public RoadObject(RoadObjectType type) {
-        this.type = type;
         this.setStaticView(getShape(type));
     }
 
@@ -38,13 +37,18 @@ public abstract class RoadObject extends GameObject {
 
     @Override
     public void draw() {
+        super.draw(Mirror.NONE);
+    }
+
+    @Override
+    public void draw(Mirror mirror) {
         if (this.x + (this.getWidth() / 2.0) > RacerGame.WIDTH) {
             if (game.isStopped()) return;
             startFlicker();
-            draw(RacerGame.WIDTH - (this.getWidth() / 2.0), this.y);
+            draw(RacerGame.WIDTH - (this.getWidth() / 2.0), this.y, mirror);
         } else {
             stopFlicker();
-            super.draw();
+            super.draw(mirror);
         }
     }
 

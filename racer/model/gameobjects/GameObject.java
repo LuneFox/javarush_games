@@ -33,14 +33,18 @@ public class GameObject {
     }
 
     public void draw() {
-        sprite.draw(x, y, Mirror.NONE);
+        draw(x, y, Mirror.NONE);
     }
 
-    public void draw(double x, double y){
-        sprite.draw(x, y, Mirror.NONE);
+    public void draw(double x, double y) {
+        draw(x, y, Mirror.NONE);
     }
 
     public void draw(Mirror mirror) {
+        draw(x, y, mirror);
+    }
+
+    public void draw(double x, double y, Mirror mirror) {
         sprite.draw(x, y, mirror);
     }
 

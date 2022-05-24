@@ -3,12 +3,13 @@ package com.javarush.games.racer.model.road;
 import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.car.EnergyPickupIcon;
 import com.javarush.games.racer.model.gameobjects.HitBox;
+import com.javarush.games.racer.model.gameobjects.Mirror;
 
 public class Energy extends RoadObject {
 
-    public boolean isCollected;
+    private boolean isCollected;
 
-    public Energy() {
+    Energy() {
         super(RoadObjectType.ENERGY);
         this.speed = 0;
         this.hitBox = new HitBox(0, 0, 18, 9);
@@ -18,7 +19,7 @@ public class Energy extends RoadObject {
     @Override
     public void draw() {
         if (isCollected) return;
-        super.draw();
+        super.draw(Mirror.NONE);
     }
 
     @Override
