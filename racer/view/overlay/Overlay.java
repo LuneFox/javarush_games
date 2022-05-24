@@ -16,7 +16,7 @@ public class Overlay {
     private final GameObject gasIcon;
     private final GameObject gasMeterBackground;
     private final GameObject gasMeter;
-    public Marty marty;
+    private final Marty marty;
 
     public Overlay(RacerGame game) {
         this.game = game;

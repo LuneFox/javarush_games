@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.view.Display;
 
 public class Printer {
-    private static final SymbolCache CACHE = new SymbolCache(128);
+    private static final SymbolCache CACHE = new SymbolCache();
     private static final Color STROKE_COLOR = Color.SADDLEBROWN;
     private static final int CHAR_SPACING = 1;
     private static boolean isStrokeEnabled;

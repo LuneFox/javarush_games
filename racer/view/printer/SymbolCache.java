@@ -7,8 +7,8 @@ import java.util.Map;
 public class SymbolCache {
     private final Map<Character, SymbolImage> cache;
 
-    SymbolCache(int size) {
-        cache = new HashMap<>(size);
+    SymbolCache() {
+        cache = new HashMap<>(128);
     }
 
     SymbolImage get(Character character) {

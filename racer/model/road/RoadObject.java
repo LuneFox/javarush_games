@@ -6,7 +6,7 @@ import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.view.Shapes;
 
 public abstract class RoadObject extends GameObject {
-    public RoadObjectType type;
+    public final RoadObjectType type;
     public double speed;
 
     public RoadObject(RoadObjectType type) {

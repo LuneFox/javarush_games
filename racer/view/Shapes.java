@@ -450,7 +450,7 @@ public class Shapes {
             {0, 0, 14, 14, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 14, 14}
     };
 
-    public static int[][] ENERGY_ICON = new int[][]{
+    public static final int[][] ENERGY_ICON = new int[][]{
             {0, 0, 0, 3, 0},
             {0, 0, 3, 0, 0},
             {0, 59, 0, 0, 0},
@@ -460,7 +460,7 @@ public class Shapes {
             {0, 3, 0, 0, 0}
     };
 
-    public static int[][] SPEEDOMETER_ICON = new int[][]{
+    public static final int[][] SPEEDOMETER_ICON = new int[][]{
             {0, 0, 0, 3, 0, 0, 0},
             {0, 3, 0, 0, 0, 4, 0},
             {0, 0, 0, 22, 0, 0, 0},
@@ -470,7 +470,7 @@ public class Shapes {
             {0, 0, 126, 126, 126, 0, 0}
     };
 
-    public static int[][] GAS_METER_BACKGROUND = new int[][]{
+    public static final int[][] GAS_METER_BACKGROUND = new int[][]{
             {120, 120, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 78, 78},
             {120, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 78, 0, 0},
             {120, 120, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 78, 78, 0},
@@ -478,13 +478,13 @@ public class Shapes {
             {120, 120, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 0, 0}
     };
 
-    public static int[][] GAS_METER = new int[][]{
+    public static final int[][] GAS_METER = new int[][]{
             {59},
             {59},
             {59}
     };
 
-    public static int[][] GAS_ICON = new int[][]{
+    public static final int[][] GAS_ICON = new int[][]{
             {0, 0, 0, 0, 116, 116, 116},
             {142, 34, 0, 116, 0, 0, 116},
             {0, 142, 34, 116, 116, 116, 116},
