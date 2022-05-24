@@ -38,10 +38,10 @@ public abstract class RoadObject extends GameObject {
 
     @Override
     public void draw() {
-        if (this.x + this.getWidth() > RacerGame.WIDTH - 1) {
+        if (this.x + (this.getWidth() / 2.0) > RacerGame.WIDTH) {
             if (game.isStopped()) return;
             startFlicker();
-            draw(RacerGame.WIDTH - this.getWidth() - 1, this.y);
+            draw(RacerGame.WIDTH - (this.getWidth() / 2.0), this.y);
         } else {
             stopFlicker();
             super.draw();
