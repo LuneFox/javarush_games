@@ -53,8 +53,8 @@ public class DeLorean extends GameObject {
 
         portal = new Portal(this);
         tireFlames = new ArrayList<>(Arrays.asList(
-                new TireFlame(TireFlame.Side.RIGHT),
-                new TireFlame(TireFlame.Side.LEFT)
+                new TireFlame(this, TireFlame.Side.RIGHT),
+                new TireFlame(this, TireFlame.Side.LEFT)
         ));
         energyPickupIcon = null;
     }

@@ -27,10 +27,9 @@ public class RacerGame extends Game {
     private static final int MILLISECONDS_PER_FRAME = 40;
 
     private final Display display = new Display(this);
-    private final Controller controller = new Controller(this);
+    private Controller controller;
 
-    public DeLorean delorean;
-
+    private DeLorean delorean;
     private RoadMarkingManager roadMarkingManager;
     private RoadManager roadManager;
     private Overlay overlay;
@@ -68,6 +67,7 @@ public class RacerGame extends Game {
 
     private void createNewGameObjects() {
         delorean = new DeLorean();
+        controller = new Controller(this);
         roadMarkingManager = new RoadMarkingManager();
         roadManager = new RoadManager(this);
         overlay = new Overlay(this);
@@ -165,5 +165,9 @@ public class RacerGame extends Game {
 
     public Display getDisplay() {
         return display;
+    }
+
+    public DeLorean getDelorean() {
+        return delorean;
     }
 }

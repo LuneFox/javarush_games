@@ -6,12 +6,14 @@ import com.javarush.games.racer.view.Shapes;
 
 public class TireFlame extends GameObject {
     private final Side side;
+    private final DeLorean deLorean;
 
     enum Side {
         LEFT, RIGHT
     }
 
-    TireFlame(Side side) {
+    TireFlame(DeLorean deLorean, Side side) {
+        this.deLorean = deLorean;
         this.side = side;
         setAnimatedView(Sprite.Loop.ENABLED, 3,
                 Shapes.TIRE_FLAME_0,
@@ -28,7 +30,6 @@ public class TireFlame extends GameObject {
     }
 
     private void alignToDeLorean() {
-        DeLorean deLorean = game.delorean;
         int shift = (side == Side.RIGHT) ? 0 : 10;
         x = deLorean.x;
         y = deLorean.y + deLorean.getHeight() - this.getHeight() - shift;

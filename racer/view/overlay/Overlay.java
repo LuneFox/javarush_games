@@ -2,6 +2,7 @@ package com.javarush.games.racer.view.overlay;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.racer.RacerGame;
+import com.javarush.games.racer.model.car.DeLorean;
 import com.javarush.games.racer.model.gameobjects.GameObject;
 import com.javarush.games.racer.view.Shapes;
 import com.javarush.games.racer.view.printer.Printer;
@@ -9,6 +10,7 @@ import com.javarush.games.racer.view.printer.TextAlign;
 
 public class Overlay {
     private final RacerGame game;
+    private final DeLorean delorean;
     private final GameObject energyIcon;
     private final GameObject speedometerIcon;
     private final GameObject gasIcon;
@@ -18,6 +20,7 @@ public class Overlay {
 
     public Overlay(RacerGame game) {
         this.game = game;
+        this.delorean = game.getDelorean();
 
         energyIcon = new GameObject(93, 1);
         energyIcon.setStaticView(Shapes.ENERGY_ICON);
@@ -45,19 +48,19 @@ public class Overlay {
     }
 
     private void printSpeed() {
-        int displaySpeed = game.isStopped ? 88 : (int) (game.delorean.getSpeed() * 10);
+        int displaySpeed = game.isStopped ? 88 : (int) (delorean.getSpeed() * 10);
 
         Printer.print("<" + displaySpeed + " МВЧ>", Color.WHITE, 11, 0);
         speedometerIcon.draw();
     }
 
     private void printEnergy() {
-        Printer.print("<" + game.delorean.getEnergy() + " ГВТ>", Color.LAWNGREEN, RacerGame.WIDTH - 8, 0, TextAlign.RIGHT);
+        Printer.print("<" + delorean.getEnergy() + " ГВТ>", Color.LAWNGREEN, RacerGame.WIDTH - 8, 0, TextAlign.RIGHT);
         energyIcon.draw();
     }
 
     private void printGas() {
-        double gas = game.delorean.getGas();
+        double gas = delorean.getGas();
 
         gasIcon.draw();
         gasMeterBackground.draw();
@@ -65,7 +68,7 @@ public class Overlay {
 
         if (gas == 0) {
             Printer.print("<НЕТ БЕНЗИНА!>", Color.PINK, 46, 91);
-            if (game.delorean.getSpeed() != 0) return;
+            if (delorean.getSpeed() != 0) return;
 
             Printer.print("ПРОБЕЛ - НАЧАТЬ ЗАНОВО", Color.LAWNGREEN, 0, 80, TextAlign.CENTER);
         }
@@ -103,7 +106,7 @@ public class Overlay {
     }
 
     private void printEndingUsedGas() {
-        final double usedGas = roundDouble(game.delorean.getUsedGasInLitres());
+        final double usedGas = roundDouble(delorean.getUsedGasInLitres());
         Printer.print("ИСП. БЕНЗИН: " + usedGas + " Л.", Color.LAWNGREEN, 0, 21, TextAlign.CENTER);
     }
 
@@ -115,7 +118,7 @@ public class Overlay {
     }
 
     private void printEndingDistance() {
-        long distance = (long) game.delorean.getDistance();
+        long distance = (long) delorean.getDistance();
         Printer.print("ДИСТАНЦИЯ: " + distance + " М.", Color.LAWNGREEN, 0, 30, TextAlign.CENTER);
     }
 
