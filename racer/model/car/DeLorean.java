@@ -35,8 +35,8 @@ public class DeLorean extends GameObject {
     private final Portal portal;
     private final List<TireFlame> tireFlames;
     private final ThrustFire thrustFire;
-    private EnergyPickupIcon energyPickUpIcon;
     private final StopSignal stopSignal;
+    private EnergyPickupIcon energyPickUpIcon;
 
     private enum Animation {
         NORMAL, GLOWING
