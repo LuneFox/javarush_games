@@ -1,6 +1,8 @@
 package com.javarush.games.game2048;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.game2048.controller.Controller;
+import com.javarush.games.game2048.model.Pocket;
 
 import java.util.ArrayList;
 
@@ -8,16 +10,16 @@ public class Game2048 extends Game {
     private static final String VERSION = "v0.96";
     private static final String[] BALLS = " ,❶,❷,❸,❹,❺,❻,❼,❽,➈,➉,⑪,⑫,⑬,⑭,⑮,⬤".split(",");
     private static final int SIDE = 7;
-    private final InputEvent IE = new InputEvent(this);
+    private final Controller controller = new Controller(this);
     private ArrayList<Pocket> pockets;
     private int[][] field;
     private int rotateDegree;
     private int score;
     private int turnCount;
     private boolean winFlag = false; // сначала даёт завершить ход, и только потом разрешает рисовать победу
-    boolean isStopped = false;
-    boolean whiteBallSet = false;
-    boolean lastResultVictory = false;
+    public boolean isStopped = false;
+    public boolean whiteBallSet = false;
+    public boolean lastResultVictory = false;
 
     @Override
     public void initialize() {
@@ -27,20 +29,6 @@ public class Game2048 extends Game {
         drawScene();
     }
 
-    @Override
-    public void onKeyReleased(Key key) {
-        IE.keyRelease(key);
-    }
-
-    @Override
-    public void onMouseRightClick(int x, int y) {
-        IE.rightClick(x, y);
-    }
-
-    @Override
-    public void onMouseLeftClick(int x, int y) {
-        IE.leftClick(x, y);
-    }
 
     private void createGame() {
         field = new int[SIDE][SIDE];
@@ -50,7 +38,7 @@ public class Game2048 extends Game {
         }
     }
 
-    final void reset() {
+    public final void reset() {
         winFlag = false;
         isStopped = false;
         whiteBallSet = false;
@@ -60,7 +48,7 @@ public class Game2048 extends Game {
         drawScene();
     }
 
-    final void drawScene() {
+    public final void drawScene() {
         for (int y = 0; y < field.length; y++) {
             for (int x = 0; x < field[0].length; x++) {
                 setCellColor(x, y, Color.DARKGREEN);
@@ -78,7 +66,7 @@ public class Game2048 extends Game {
 
     // WIN & LOSE
 
-    final void win() {
+    public final void win() {
         lastResultVictory = true;
         isStopped = true;
         score = 0;
@@ -90,7 +78,7 @@ public class Game2048 extends Game {
                 Color.PALEGOLDENROD, 30);
     }
 
-    final void gameOver(String gameOverMessage) {
+    public final void gameOver(String gameOverMessage) {
         lastResultVictory = false;
         isStopped = true;
         showMessageDialog(Color.BLACK, "Вы проиграли!\n" + gameOverMessage, Color.RED, 30);
@@ -216,7 +204,7 @@ public class Game2048 extends Game {
         return changed;
     }
 
-    final void emptyPocket(int pocketNumber) {
+    public final void emptyPocket(int pocketNumber) {
         boolean changeMade = false;
         Pocket pocket = pockets.get(pocketNumber);
         while (pocket.score > 0 && hasEmptySpace()) {
@@ -242,7 +230,7 @@ public class Game2048 extends Game {
 
     //MOVES
 
-    final void moveLeft() {
+    public final void moveLeft() {
         boolean turnMade = false;
         int whiteBallRow = getWhiteBallRow();
         if (whiteBallSet) {
@@ -270,19 +258,19 @@ public class Game2048 extends Game {
         }
     }
 
-    final void moveRight() {
+    public final void moveRight() {
         rotateClockwise(2);
         moveLeft();
         rotateClockwise(2);
     }
 
-    final void moveUp() {
+    public final void moveUp() {
         rotateClockwise(3);
         moveLeft();
         rotateClockwise(1);
     }
 
-    final void moveDown() {
+    public final void moveDown() {
         rotateClockwise(1);
         moveLeft();
         rotateClockwise(3);
@@ -313,7 +301,7 @@ public class Game2048 extends Game {
         return result;
     }
 
-    final boolean canUserMove() {
+    public final boolean canUserMove() {
         for (int y = 1; y < SIDE - 1; y++) {
             for (int x = 1; x < SIDE - 1; x++) {
                 // пробегаемся по всем шарам построчно
@@ -389,8 +377,33 @@ public class Game2048 extends Game {
         return 0;
     }
 
-    int[][] getField() {
+    public int[][] getField() {
         return field;
+    }
+
+
+    /*
+     * Controls
+     */
+
+    @Override
+    public void onKeyPress(Key key) {
+        controller.pressKey(key);
+    }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        controller.releaseKey(key);
+    }
+
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+        controller.leftClick(x, y);
+    }
+
+    @Override
+    public void onMouseRightClick(int x, int y) {
+        controller.rightClick(x, y);
     }
 }
 
