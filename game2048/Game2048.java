@@ -2,7 +2,7 @@ package com.javarush.games.game2048;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.game2048.controller.Controller;
-import com.javarush.games.game2048.model.BallUtils;
+import com.javarush.games.game2048.model.Utils;
 import com.javarush.games.game2048.model.Pocket;
 
 import java.util.ArrayList;
@@ -93,8 +93,8 @@ public class Game2048 extends Game {
         final int FONT_SIZE = 75;
         setCellValueEx(x, y, Color.GREEN, (ballNumber == 0
                         ? ""
-                        : String.valueOf(BallUtils.BALL_SYMBOLS[ballNumber])),
-                BallUtils.getColorForBallNumber(ballNumber), FONT_SIZE);
+                        : String.valueOf(Utils.BALL_SYMBOLS[ballNumber])),
+                Utils.getColorForBallNumber(ballNumber), FONT_SIZE);
     }
 
     private void drawPockets() {
@@ -171,46 +171,43 @@ public class Game2048 extends Game {
     }
 
     public final void moveLeft() {
-        // ход считается сделанным, если произошли какие-то изменения в матрице после трёх действий для рядов
+        int[][] fieldBeforeMove = Utils.copyField(field);
 
-        boolean turnHasBeenMade = pocketRow();
+        pocketRow();
 
         for (int i = 0; i < field[0].length; i++) {
-            turnHasBeenMade = (compressRow(field[i]) | mergeRow(field[i]) | compressRow(field[i]) | turnHasBeenMade);
+            compressRow(field[i]);
+            mergeRow(field[i]);
+            compressRow(field[i]);
         }
 
-        if (turnHasBeenMade) {
-            createNewBall();
-            turnCount++;
+        if (Utils.fieldsAreEqual(field, fieldBeforeMove)) return;
 
-            if (winFlag) {
-                win();
-            }
+        createNewBall();
+        turnCount++;
+
+        if (winFlag) {
+            win();
         }
     }
 
-    private boolean pocketRow() {
+    private void pocketRow() {
         // в зависимости от угла поворота поля шары забиваются в разные лузы
-        boolean somethingChanged = false;
-
         if (isWhiteBallSet) {
             int whiteBallRow = getWhiteBallRow();
             if ((rotateDegree == 0) && (whiteBallRow == 1 || whiteBallRow == 5)) {
-                somethingChanged = pocket(field[whiteBallRow], pockets.get(whiteBallRow == 1 ? 0 : 1));
+                pocket(field[whiteBallRow], pockets.get(whiteBallRow == 1 ? 0 : 1));
             } else if ((rotateDegree == 90) && (whiteBallRow == 3)) {
-                somethingChanged = pocket(field[whiteBallRow], pockets.get(5));
+                pocket(field[whiteBallRow], pockets.get(5));
             } else if ((rotateDegree == 180) && (whiteBallRow == 1 || whiteBallRow == 5)) {
-                somethingChanged = pocket(field[whiteBallRow], pockets.get(whiteBallRow == 1 ? 3 : 2));
+                pocket(field[whiteBallRow], pockets.get(whiteBallRow == 1 ? 3 : 2));
             } else if ((rotateDegree == 270) && (whiteBallRow == 3)) {
-                somethingChanged = pocket(field[whiteBallRow], pockets.get(4));
+                pocket(field[whiteBallRow], pockets.get(4));
             }
         }
-
-        return somethingChanged;
     }
 
-    private boolean pocket(int[] row, Pocket pocket) {
-        boolean somethingChanged = false;
+    private void pocket(int[] row, Pocket pocket) {
         boolean pocketHasEightBall = false;
 
         if (pocket.isOpen()) {
@@ -231,14 +228,12 @@ public class Game2048 extends Game {
 
                 if (pocket.score > 0) {
                     pocket.close();
-                    somethingChanged = true;
                 }
 
             }
         }
 
         checkGameOverFromPocketing(pocketHasEightBall);
-        return somethingChanged;
     }
 
     private void checkGameOverFromPocketing(boolean pocketHasEightBall) {
@@ -255,8 +250,7 @@ public class Game2048 extends Game {
         return pockets.stream().filter(Pocket::isOpen).count();
     }
 
-    private boolean compressRow(int[] row) {
-        boolean somethingChanged = false;
+    private void compressRow(int[] row) {
         boolean repeat;
 
         do {
@@ -267,27 +261,19 @@ public class Game2048 extends Game {
                     row[i] = row[i + 1];
                     row[i + 1] = 0;
                     repeat = true;
-                    somethingChanged = true;
                 }
             }
 
         } while (repeat);
-
-        return somethingChanged;
     }
 
-    private boolean mergeRow(int[] row) {
-        boolean somethingChanged = false;
-
+    private void mergeRow(int[] row) {
         for (int i = 1; i < row.length - 2; i++) {
             if (row[i] == row[i + 1] && row[i] != 0 && row[i] < 15) {
                 row[i] += 1;
                 row[i + 1] = 0;
-                somethingChanged = true;
             }
         }
-
-        return somethingChanged;
     }
 
     private void rotateClockwise(int times) {
@@ -432,4 +418,3 @@ public class Game2048 extends Game {
         controller.rightClick(x, y);
     }
 }
-
