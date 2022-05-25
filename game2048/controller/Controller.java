@@ -2,6 +2,7 @@ package com.javarush.games.game2048.controller;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.game2048.Game2048;
+import com.javarush.games.game2048.model.FieldUtils;
 
 public class Controller {
     private final ControlStrategy controlStrategy;
@@ -43,7 +44,7 @@ public class Controller {
     }
 
     private void checkGameOver() {
-        if (game.canUserMove()) return;
+        if (FieldUtils.canUserMove(game.getField())) return;
         game.lose("Невозможно совершить ход!");
     }
 }

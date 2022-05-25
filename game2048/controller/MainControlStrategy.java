@@ -75,4 +75,23 @@ public class MainControlStrategy implements ControlStrategy {
         if (!game.isStopped) return;
         game.finish("Пробел — начать заново");
     }
+
+    @Override
+    public void pressEnter() {
+        performRandomMove();
+    }
+
+    private void performRandomMove() {
+        double random = Math.random();
+
+        if (random < 0.25) {
+            releaseUp();
+        } else if (random < 0.5) {
+            releaseDown();
+        } else if (random < 0.75) {
+            releaseLeft();
+        } else {
+            releaseRight();
+        }
+    }
 }

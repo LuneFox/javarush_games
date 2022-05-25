@@ -2,8 +2,9 @@ package com.javarush.games.game2048;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.game2048.controller.Controller;
+import com.javarush.games.game2048.model.FieldUtils;
 import com.javarush.games.game2048.model.Result;
-import com.javarush.games.game2048.model.Utils;
+import com.javarush.games.game2048.model.BallUtils;
 import com.javarush.games.game2048.model.Pocket;
 
 import java.util.ArrayList;
@@ -104,8 +105,8 @@ public class Game2048 extends Game {
         final int FONT_SIZE = 75;
         setCellValueEx(x, y, Color.GREEN, (ballNumber == 0
                         ? ""
-                        : String.valueOf(Utils.BALL_SYMBOLS[ballNumber])),
-                Utils.getColorForBallNumber(ballNumber), FONT_SIZE);
+                        : String.valueOf(BallUtils.BALL_SYMBOLS[ballNumber])),
+                BallUtils.getColorForBallNumber(ballNumber), FONT_SIZE);
     }
 
     private void drawPockets() {
@@ -181,7 +182,7 @@ public class Game2048 extends Game {
     }
 
     public final void moveLeft() {
-        int[][] fieldBeforeMove = Utils.copyField(field);
+        int[][] fieldBeforeMove = FieldUtils.copyField(field);
 
         pocketRow();
 
@@ -191,7 +192,7 @@ public class Game2048 extends Game {
             compressRow(field[i]);
         }
 
-        boolean nothingChanged = Utils.fieldsAreEqual(field, fieldBeforeMove);
+        boolean nothingChanged = FieldUtils.fieldsAreEqual(field, fieldBeforeMove);
 
         if (nothingChanged) return;
 
@@ -266,9 +267,9 @@ public class Game2048 extends Game {
         int[][] fieldBeforeCompress;
 
         do {
-            fieldBeforeCompress = Utils.copyField(field);
+            fieldBeforeCompress = FieldUtils.copyField(field);
             movePositiveNumbersToZerosOnTheLeft(row);
-        } while (!Utils.fieldsAreEqual(field, fieldBeforeCompress));
+        } while (!FieldUtils.fieldsAreEqual(field, fieldBeforeCompress));
     }
 
     private void movePositiveNumbersToZerosOnTheLeft(int[] row) {
@@ -305,49 +306,15 @@ public class Game2048 extends Game {
         }
     }
 
-    public final boolean canUserMove() {
-        for (int y = 1; y < SIDE - 1; y++) {
-            for (int x = 1; x < SIDE - 1; x++) {
-                // пробегаемся по всем шарам построчно
-                if (field[y][x] == 0 || field[y][x] == 16) {
-                    // если ячейка пуста или на ней стоит белый шар (который можно убрать)
-                    return true;
-                } else {
-                    if (field[y][x] == 15) {
-                        // если шар 15-й, пропустить итерацию (его нельзя сливать ни с чем)
-                        continue;
-                    }
-                    if (field[y + 1][x] == field[y][x]) {
-                        // если шар ниже такой же, как и этот
-                        if (y == SIDE - 2) {
-                            // если шаров ниже нет, пропустить итерацию
-                            continue;
-                        }
-                        return true;
-                    }
-                    if (field[y][x + 1] == field[y][x]) {
-                        // если шар правее такой же, как и этот
-                        if (x == SIDE - 2) {
-                            // если шаров правее нет, пропустить итерацию
-                            continue;
-                        }
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
     public final void emptyPocket(int pocketNumber) {
         Pocket pocket = pockets.get(pocketNumber);
 
-        while (pocket.score > 0 && hasEmptySpace()) {
+        while (pocket.score > 0 && FieldUtils.fieldHasEmptySpace(field)) {
             if (pocket.score <= 15) {
                 placeBall(pocket.score / 2);
                 pocket.score -= pocket.score / 2;
 
-                if (!hasEmptySpace()) {
+                if (!FieldUtils.fieldHasEmptySpace(field)) {
                     break;
                 }
 
@@ -362,17 +329,6 @@ public class Game2048 extends Game {
         if (pocket.score == 0) {
             pocket.open();
         }
-    }
-
-    private boolean hasEmptySpace() {
-        for (int y = 1; y < SIDE - 1; y++) {
-            for (int x = 1; x < SIDE - 1; x++) {
-                if (field[y][x] == 0) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private int getWhiteBallRow() {
