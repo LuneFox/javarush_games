@@ -72,8 +72,7 @@ public class MainControlStrategy implements ControlStrategy {
 
     @Override
     public void pressAnyOtherKey() {
-        if (!game.isStopped) return;
-        game.finish("Пробел — начать заново");
+        game.checkResultAndFinish("Пробел — начать заново");
     }
 
     @Override

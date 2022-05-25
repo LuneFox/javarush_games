@@ -25,7 +25,6 @@ public class Game2048 extends Game {
     private int score;
     private int turnCount;
 
-    private boolean winFlag = false; // сначала даёт завершить ход, и только потом разрешает рисовать победу
     private boolean isWhiteBallSet = false;
     public boolean isStopped = false;
 
@@ -47,7 +46,6 @@ public class Game2048 extends Game {
 
     private void resetValues() {
         result = Result.NONE;
-        winFlag = false;
         isStopped = false;
         isWhiteBallSet = false;
         score = 0;
@@ -88,7 +86,7 @@ public class Game2048 extends Game {
     private void drawBackground() {
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                setCellColor(x, y, Color.DARKGREEN);
+                setCellColor(x, y, Color.SADDLEBROWN);
             }
         }
     }
@@ -125,19 +123,19 @@ public class Game2048 extends Game {
         setCellValueEx(6, 6, Color.NONE, VERSION, Color.GREEN, FONT_SIZE);
     }
 
-    public void finish(String message) {
+    public void checkResultAndFinish(String message) {
         if (result == Result.WIN) {
-            win();
+            win(message);
         } else if (result == Result.LOSE) {
             lose(message);
         }
     }
 
-    private void win() {
+    private void win(String message) {
         result = Result.WIN;
         isStopped = true;
         score = sumPocketsScore();
-        showMessageDialog(Color.BLACK, "Победа! Счёт: " + ((score * 100) / turnCount), Color.PALEGOLDENROD, 30);
+        showMessageDialog(Color.BLACK, message + "\nСчёт: " + ((score * 100) / turnCount), Color.PALEGOLDENROD, 30);
     }
 
     private int sumPocketsScore() {
@@ -199,9 +197,7 @@ public class Game2048 extends Game {
         createNewBall();
         turnCount++;
 
-        if (winFlag) {
-            win();
-        }
+        checkResultAndFinish("Победа!");
     }
 
     private void pocketRow() {
@@ -253,7 +249,7 @@ public class Game2048 extends Game {
         if (pocketHasEightBall && !allPocketsClosed()) {
             lose("8-ка забита слишком рано!");
         } else if (pocketHasEightBall && allPocketsClosed()) {
-            winFlag = true;
+            result = Result.WIN;
         } else if (!pocketHasEightBall && allPocketsClosed()) {
             lose("В последней лузе нет 8-ки!");
         }
