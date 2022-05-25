@@ -10,15 +10,18 @@ public class Game2048 extends Game {
     private static final String VERSION = "v0.96";
     private static final String[] BALLS = " ,❶,❷,❸,❹,❺,❻,❼,❽,➈,➉,⑪,⑫,⑬,⑭,⑮,⬤".split(",");
     private static final int SIDE = 7;
+
     private final Controller controller = new Controller(this);
     private ArrayList<Pocket> pockets;
+
     private int[][] field;
     private int rotateDegree;
     private int score;
     private int turnCount;
+
     private boolean winFlag = false; // сначала даёт завершить ход, и только потом разрешает рисовать победу
     public boolean isStopped = false;
-    public boolean whiteBallSet = false;
+    public boolean isWhiteBallSet = false;
     public boolean lastResultVictory = false;
 
     @Override
@@ -41,7 +44,7 @@ public class Game2048 extends Game {
     public final void reset() {
         winFlag = false;
         isStopped = false;
-        whiteBallSet = false;
+        isWhiteBallSet = false;
         score = 0;
         turnCount = 0;
         createGame();
@@ -66,7 +69,15 @@ public class Game2048 extends Game {
 
     // WIN & LOSE
 
-    public final void win() {
+    public void finish() {
+        if (lastResultVictory) {
+            win();
+        } else {
+            gameOver("Пробел — начать заново.");
+        }
+    }
+
+    private void win() {
         lastResultVictory = true;
         isStopped = true;
         score = 0;
@@ -78,7 +89,7 @@ public class Game2048 extends Game {
                 Color.PALEGOLDENROD, 30);
     }
 
-    public final void gameOver(String gameOverMessage) {
+    public void gameOver(String gameOverMessage) {
         lastResultVictory = false;
         isStopped = true;
         showMessageDialog(Color.BLACK, "Вы проиграли!\n" + gameOverMessage, Color.RED, 30);
@@ -205,11 +216,9 @@ public class Game2048 extends Game {
     }
 
     public final void emptyPocket(int pocketNumber) {
-        boolean changeMade = false;
         Pocket pocket = pockets.get(pocketNumber);
         while (pocket.score > 0 && hasEmptySpace()) {
             if (pocket.score <= 15) {
-                changeMade = true;
                 placeBall(pocket.score / 2);
                 pocket.score -= pocket.score / 2;
                 if (!hasEmptySpace()) {
@@ -218,7 +227,6 @@ public class Game2048 extends Game {
                 placeBall(pocket.score);
                 pocket.score -= pocket.score;
             } else {
-                changeMade = true;
                 placeBall(15);
                 pocket.score -= 15;
             }
@@ -232,8 +240,9 @@ public class Game2048 extends Game {
 
     public final void moveLeft() {
         boolean turnMade = false;
-        int whiteBallRow = getWhiteBallRow();
-        if (whiteBallSet) {
+
+        if (isWhiteBallSet) {
+            int whiteBallRow = getWhiteBallRow();
             // в зависимости от угла поворота поля шары забиваются в разные лузы
             if ((rotateDegree == 0) && (whiteBallRow == 1 || whiteBallRow == 5)) {
                 turnMade = pocketRow(field[whiteBallRow], pockets.get(whiteBallRow == 1 ? 0 : 1));
@@ -376,6 +385,17 @@ public class Game2048 extends Game {
         }
         return 0;
     }
+
+    public void placeOrRemoveWhiteBall(int x, int y) {
+        if (isWhiteBallSet && field[y][x] == 16) {
+            field[y][x] = 0;
+            isWhiteBallSet = false;
+        } else if (!isWhiteBallSet && field[y][x] == 0) {
+            field[y][x] = 16;
+            isWhiteBallSet = true;
+        }
+    }
+
 
     public int[][] getField() {
         return field;
