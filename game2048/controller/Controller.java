@@ -44,6 +44,6 @@ public class Controller {
 
     private void checkGameOver() {
         if (game.canUserMove()) return;
-        game.gameOver("Невозможно совершить ход!");
+        game.lose("Невозможно совершить ход!");
     }
 }

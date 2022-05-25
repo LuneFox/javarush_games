@@ -67,7 +67,7 @@ public class MainControlStrategy implements ControlStrategy {
     @Override
     public void pressSpace() {
         if (!game.isStopped) return;
-        game.reset();
+        game.createNewGame();
     }
 
     @Override

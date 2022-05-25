@@ -2,6 +2,7 @@ package com.javarush.games.game2048;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.game2048.controller.Controller;
+import com.javarush.games.game2048.model.Result;
 import com.javarush.games.game2048.model.Utils;
 import com.javarush.games.game2048.model.Pocket;
 
@@ -14,6 +15,7 @@ public class Game2048 extends Game {
 
     private final Controller controller = new Controller(this);
     private ArrayList<Pocket> pockets;
+    private Result result;
 
     private int[][] field;
     private int width;
@@ -23,23 +25,32 @@ public class Game2048 extends Game {
     private int turnCount;
 
     private boolean winFlag = false; // сначала даёт завершить ход, и только потом разрешает рисовать победу
+    private boolean isWhiteBallSet = false;
     public boolean isStopped = false;
-    public boolean isWhiteBallSet = false;
-    public boolean lastResultVictory = false;
 
     @Override
     public void initialize() {
         showGrid(false);
         setScreenSize(SIDE, SIDE);
-        createGame();
-        drawScene();
+        createNewGame();
     }
 
-    private void createGame() {
+    public void createNewGame() {
+        resetValues();
         createField();
         createPockets();
         createNewBall();
         createNewBall();
+        drawScene();
+    }
+
+    private void resetValues() {
+        result = Result.NONE;
+        winFlag = false;
+        isStopped = false;
+        isWhiteBallSet = false;
+        score = 0;
+        turnCount = 0;
     }
 
     private void createField() {
@@ -114,31 +125,30 @@ public class Game2048 extends Game {
     }
 
     public void finish(String message) {
-        if (lastResultVictory) {
+        if (result == Result.WIN) {
             win();
-        } else {
-            gameOver(message);
+        } else if (result == Result.LOSE) {
+            lose(message);
         }
     }
 
     private void win() {
-        lastResultVictory = true;
+        result = Result.WIN;
         isStopped = true;
-        score = 0;
-
-        for (Pocket pocket : pockets) {
-            score += pocket.score;
-        }
-
-        showMessageDialog(Color.BLACK,
-                "Победа! Счёт: " + ((score * 100) / turnCount),
-                Color.PALEGOLDENROD, 30);
+        score = sumPocketsScore();
+        showMessageDialog(Color.BLACK, "Победа! Счёт: " + ((score * 100) / turnCount), Color.PALEGOLDENROD, 30);
     }
 
-    public void gameOver(String gameOverMessage) {
-        lastResultVictory = false;
+    private int sumPocketsScore() {
+        return pockets.stream()
+                .mapToInt(pocket -> pocket.score)
+                .sum();
+    }
+
+    public void lose(String message) {
+        result = Result.LOSE;
         isStopped = true;
-        showMessageDialog(Color.BLACK, "Вы проиграли!\n" + gameOverMessage, Color.RED, 30);
+        showMessageDialog(Color.BLACK, "Вы проиграли!\n" + message, Color.RED, 30);
     }
 
     private void placeBall(int value) {
@@ -152,16 +162,16 @@ public class Game2048 extends Game {
         }
     }
 
-    public final void moveRight() {
-        rotateClockwise(2);
-        moveLeft();
-        rotateClockwise(2);
-    }
-
     public final void moveUp() {
         rotateClockwise(3);
         moveLeft();
         rotateClockwise(1);
+    }
+
+    public final void moveRight() {
+        rotateClockwise(2);
+        moveLeft();
+        rotateClockwise(2);
     }
 
     public final void moveDown() {
@@ -181,7 +191,9 @@ public class Game2048 extends Game {
             compressRow(field[i]);
         }
 
-        if (Utils.fieldsAreEqual(field, fieldBeforeMove)) return;
+        boolean nothingChanged = Utils.fieldsAreEqual(field, fieldBeforeMove);
+
+        if (nothingChanged) return;
 
         createNewBall();
         turnCount++;
@@ -238,11 +250,11 @@ public class Game2048 extends Game {
 
     private void checkGameOverFromPocketing(boolean pocketHasEightBall) {
         if (pocketHasEightBall && countOpenPockets() > 0) {
-            gameOver("8-ка забита слишком рано!");
+            lose("8-ка забита слишком рано!");
         } else if (pocketHasEightBall && countOpenPockets() == 0) {
             winFlag = true;
         } else if (!pocketHasEightBall && countOpenPockets() == 0) {
-            gameOver("В последней лузе нет 8-ки!");
+            lose("В последней лузе нет 8-ки!");
         }
     }
 
@@ -251,28 +263,32 @@ public class Game2048 extends Game {
     }
 
     private void compressRow(int[] row) {
-        boolean repeat;
+        int[][] fieldBeforeCompress;
 
         do {
-            repeat = false;
+            fieldBeforeCompress = Utils.copyField(field);
+            movePositiveNumbersToZerosOnTheLeft(row);
+        } while (!Utils.fieldsAreEqual(field, fieldBeforeCompress));
+    }
 
-            for (int i = 1; i < row.length - 2; i++) {
-                if (row[i] == 0 && row[i + 1] != 0) {
-                    row[i] = row[i + 1];
-                    row[i + 1] = 0;
-                    repeat = true;
-                }
-            }
+    private void movePositiveNumbersToZerosOnTheLeft(int[] row) {
+        for (int i = 1; i < row.length - 2; i++) {
+            if (row[i] != 0) continue;
+            if (row[i + 1] == 0) continue;
 
-        } while (repeat);
+            row[i] = row[i + 1];
+            row[i + 1] = 0;
+        }
     }
 
     private void mergeRow(int[] row) {
         for (int i = 1; i < row.length - 2; i++) {
-            if (row[i] == row[i + 1] && row[i] != 0 && row[i] < 15) {
-                row[i] += 1;
-                row[i + 1] = 0;
-            }
+            if (row[i] == 0) continue;
+            if (row[i] >= 15) continue;
+            if (row[i] != row[i + 1]) continue;
+
+            row[i] += 1;
+            row[i + 1] = 0;
         }
     }
 
@@ -378,16 +394,6 @@ public class Game2048 extends Game {
             field[y][x] = 16;
             isWhiteBallSet = true;
         }
-    }
-
-    public final void reset() {
-        winFlag = false;
-        isStopped = false;
-        isWhiteBallSet = false;
-        score = 0;
-        turnCount = 0;
-        createGame();
-        drawScene();
     }
 
     public int[][] getField() {
