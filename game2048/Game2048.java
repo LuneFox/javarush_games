@@ -69,8 +69,8 @@ public class Game2048 extends Game {
     public final void drawScene() {
         drawBackground();
         drawBalls();
-        drawInfo();
         drawPockets();
+        drawInfo();
     }
 
     private void drawBackground() {
@@ -97,20 +97,20 @@ public class Game2048 extends Game {
                 BallUtils.getColorForBallNumber(ballNumber), FONT_SIZE);
     }
 
-    private void drawInfo() {
-        final int FONT_SIZE = 15;
-        setCellValueEx(6, 0, Color.NONE, "Ходы: " + turnCount, Color.LAWNGREEN, FONT_SIZE);
-        setCellValueEx(6, 6, Color.NONE, VERSION, Color.GREEN, FONT_SIZE);
-    }
-
     private void drawPockets() {
         for (Pocket pocket : pockets) {
             setCellValueEx(
                     pocket.x, pocket.y, Color.NONE,
-                    pocket.score == 0 ? Pocket.POCKET_ICON : String.valueOf(pocket.score),
+                    pocket.score == 0 ? Pocket.ICON : String.valueOf(pocket.score),
                     pocket.score == 0 ? Color.BLACK : Color.WHITE,
                     pocket.score == 0 ? 75 : 40);
         }
+    }
+
+    private void drawInfo() {
+        final int FONT_SIZE = 15;
+        setCellValueEx(6, 0, Color.NONE, "Ходы: " + turnCount, Color.LAWNGREEN, FONT_SIZE);
+        setCellValueEx(6, 6, Color.NONE, VERSION, Color.GREEN, FONT_SIZE);
     }
 
     public void finish(String message) {
@@ -182,6 +182,7 @@ public class Game2048 extends Game {
         if (turnHasBeenMade) {
             createNewBall();
             turnCount++;
+
             if (winFlag) {
                 win();
             }
@@ -212,25 +213,35 @@ public class Game2048 extends Game {
         boolean somethingChanged = false;
         boolean pocketHasEightBall = false;
 
-        if (pocket.open) {
+        if (pocket.isOpen()) {
             for (int i = 1; i < row.length; i++) {
+
                 if (row[i] == 16) {
                     row[i] = 0;
                     row[1] = 16;
                     break;
                 }
+
                 if (row[i] == 8) {
                     pocketHasEightBall = true;
                 }
+
                 pocket.score += row[i];
                 row[i] = 0;
+
                 if (pocket.score > 0) {
-                    pocket.open = false;
+                    pocket.close();
                     somethingChanged = true;
                 }
+
             }
         }
 
+        checkGameOverFromPocketing(pocketHasEightBall);
+        return somethingChanged;
+    }
+
+    private void checkGameOverFromPocketing(boolean pocketHasEightBall) {
         if (pocketHasEightBall && countOpenPockets() > 0) {
             gameOver("8-ка забита слишком рано!");
         } else if (pocketHasEightBall && countOpenPockets() == 0) {
@@ -238,17 +249,10 @@ public class Game2048 extends Game {
         } else if (!pocketHasEightBall && countOpenPockets() == 0) {
             gameOver("В последней лузе нет 8-ки!");
         }
-        return somethingChanged;
     }
 
-    private int countOpenPockets() {
-        int result = 0;
-        for (Pocket pocket : pockets) {
-            if (pocket.open) {
-                result++;
-            }
-        }
-        return result;
+    private long countOpenPockets() {
+        return pockets.stream().filter(Pocket::isOpen).count();
     }
 
     private boolean compressRow(int[] row) {
@@ -257,6 +261,7 @@ public class Game2048 extends Game {
 
         do {
             repeat = false;
+
             for (int i = 1; i < row.length - 2; i++) {
                 if (row[i] == 0 && row[i + 1] != 0) {
                     row[i] = row[i + 1];
@@ -265,6 +270,7 @@ public class Game2048 extends Game {
                     somethingChanged = true;
                 }
             }
+
         } while (repeat);
 
         return somethingChanged;
@@ -352,7 +358,7 @@ public class Game2048 extends Game {
         }
 
         if (pocket.score == 0) {
-            pocket.open = true;
+            pocket.open();
         }
     }
 
