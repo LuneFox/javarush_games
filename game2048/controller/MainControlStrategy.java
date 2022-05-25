@@ -11,6 +11,8 @@ public class MainControlStrategy implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
+        if (game.isStopped) return;
+
         if (y == 0 && x > 0 && x < 6) releaseUp();
         else if (y == 6 && x > 0 && x < 6) releaseDown();
         else if (x == 0 && y > 0 && y < 6) releaseLeft();
@@ -71,6 +73,6 @@ public class MainControlStrategy implements ControlStrategy {
     @Override
     public void pressAnyOtherKey() {
         if (!game.isStopped) return;
-        game.finish();
+        game.finish("Пробел — начать заново");
     }
 }
