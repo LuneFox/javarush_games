@@ -207,7 +207,7 @@ public class Game2048 extends Game {
     private void pocketRow() {
         // в зависимости от угла поворота поля шары забиваются в разные лузы
         if (isWhiteBallSet) {
-            int whiteBallRow = getWhiteBallRow();
+            int whiteBallRow = FieldUtils.getWhiteBallRow(field);
             if ((rotateDegree == 0) && (whiteBallRow == 1 || whiteBallRow == 5)) {
                 pocket(field[whiteBallRow], pockets.get(whiteBallRow == 1 ? 0 : 1));
             } else if ((rotateDegree == 90) && (whiteBallRow == 3)) {
@@ -250,17 +250,17 @@ public class Game2048 extends Game {
     }
 
     private void checkGameOverFromPocketing(boolean pocketHasEightBall) {
-        if (pocketHasEightBall && countOpenPockets() > 0) {
+        if (pocketHasEightBall && !allPocketsClosed()) {
             lose("8-ка забита слишком рано!");
-        } else if (pocketHasEightBall && countOpenPockets() == 0) {
+        } else if (pocketHasEightBall && allPocketsClosed()) {
             winFlag = true;
-        } else if (!pocketHasEightBall && countOpenPockets() == 0) {
+        } else if (!pocketHasEightBall && allPocketsClosed()) {
             lose("В последней лузе нет 8-ки!");
         }
     }
 
-    private long countOpenPockets() {
-        return pockets.stream().filter(Pocket::isOpen).count();
+    private boolean allPocketsClosed() {
+        return pockets.stream().noneMatch(Pocket::isOpen);
     }
 
     private void compressRow(int[] row) {
@@ -314,9 +314,7 @@ public class Game2048 extends Game {
                 placeBall(pocket.score / 2);
                 pocket.score -= pocket.score / 2;
 
-                if (!FieldUtils.fieldHasEmptySpace(field)) {
-                    break;
-                }
+                if (!FieldUtils.fieldHasEmptySpace(field)) break;
 
                 placeBall(pocket.score);
                 pocket.score -= pocket.score;
@@ -329,17 +327,6 @@ public class Game2048 extends Game {
         if (pocket.score == 0) {
             pocket.open();
         }
-    }
-
-    private int getWhiteBallRow() {
-        for (int y = 0; y < field.length; y++) {
-            for (int x = 0; x < field[0].length; x++) {
-                if (field[y][x] == 16) {
-                    return y;
-                }
-            }
-        }
-        return 0;
     }
 
     public void placeOrRemoveWhiteBall(int x, int y) {

@@ -1,9 +1,17 @@
 package com.javarush.games.game2048.model;
 
 public class FieldUtils {
+    private static int height;
+    private static int width;
+
+    private static void getDimensions(int[][] field) {
+        FieldUtils.height = field.length;
+        FieldUtils.width = field[0].length;
+    }
+
     public static int[][] copyField(int[][] field) {
-        int height = field.length;
-        int width = field[0].length;
+        getDimensions(field);
+
         int[][] result = new int[height][width];
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
@@ -14,8 +22,7 @@ public class FieldUtils {
     }
 
     public static boolean fieldsAreEqual(int[][] field, int[][] anotherField) {
-        int height = field.length;
-        int width = field[0].length;
+        getDimensions(field);
 
         if (field.length != anotherField.length) return false;
         if (field[0].length != anotherField[0].length) return false;
@@ -30,8 +37,7 @@ public class FieldUtils {
     }
 
     public static boolean fieldHasEmptySpace(int[][] field) {
-        int height = field.length;
-        int width = field[0].length;
+        getDimensions(field);
 
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
@@ -43,40 +49,59 @@ public class FieldUtils {
         return false;
     }
 
-    public static boolean canUserMove(int[][] field) {
-        int height = field.length;
-        int width = field[0].length;
+    public static int getWhiteBallRow(int[][] field) {
+        getDimensions(field);
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                if (field[y][x] == 16) {
+                    return y;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public static boolean isMovePossible(int[][] field) {
+        getDimensions(field);
 
         for (int y = 1; y < height - 1; y++) {
             for (int x = 1; x < width - 1; x++) {
-                // пробегаемся по всем шарам построчно
-                if (field[y][x] == 0 || field[y][x] == 16) {
-                    // если ячейка пуста или на ней стоит белый шар (который можно убрать)
+
+                final int cell = field[y][x];
+
+                if (isEmptyOrHasWhiteBall(cell)) {
                     return true;
                 } else {
-                    if (field[y][x] == 15) {
-                        // если шар 15-й, пропустить итерацию (его нельзя сливать ни с чем)
-                        continue;
-                    }
-                    if (field[y + 1][x] == field[y][x]) {
-                        // если шар ниже такой же, как и этот
-                        if (y == height - 2) {
-                            // если шаров ниже нет, пропустить итерацию
-                            continue;
-                        }
-                        return true;
-                    }
-                    if (field[y][x + 1] == field[y][x]) {
-                        // если шар правее такой же, как и этот
-                        if (x == width - 2) {
-                            // если шаров правее нет, пропустить итерацию
-                            continue;
-                        }
-                        return true;
-                    }
+                    if (hasMaximumPossibleBall(cell)) continue;
+
+                    if (isLastLine(height, y)) continue;
+                    if (isLastLine(width, x)) continue;
+
+                    final int belowCell = field[y + 1][x];
+                    final int rightCell = field[y][x + 1];
+
+                    if (canMerge(cell, belowCell)) return true;
+                    if (canMerge(cell, rightCell)) return true;
                 }
             }
         }
         return false;
+    }
+
+    private static boolean isLastLine(int dimension, int line) {
+        return line == (dimension - 2);
+    }
+
+    private static boolean isEmptyOrHasWhiteBall(int cellValue) {
+        return cellValue == 0 || cellValue == 16;
+    }
+
+    private static boolean hasMaximumPossibleBall(int cellValue) {
+        return cellValue == 15;
+    }
+
+    public static boolean canMerge(int cell1, int cell2) {
+        return cell1 == cell2;
     }
 }
