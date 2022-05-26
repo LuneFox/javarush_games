@@ -17,6 +17,7 @@ public class MainControlStrategy implements ControlStrategy {
         else if (y == 6 && x > 0 && x < 6) releaseDown();
         else if (x == 0 && y > 0 && y < 6) releaseLeft();
         else if (x == 6 && y > 0 && y < 6) releaseRight();
+        else if (x == 0 && y == 0) game.showHelpDialog();
     }
 
     @Override
@@ -72,7 +73,7 @@ public class MainControlStrategy implements ControlStrategy {
 
     @Override
     public void pressAnyOtherKey() {
-        game.checkResultAndFinish("Пробел — начать заново");
+        game.finishIfResultIsKnown();
     }
 
     @Override

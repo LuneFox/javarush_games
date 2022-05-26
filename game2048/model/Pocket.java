@@ -4,7 +4,7 @@ public class Pocket {
     public final static String ICON = "⬤";
     public int x;
     public int y;
-    public int score;
+    private int score;
     private boolean isOpen;
 
     public Pocket(int x, int y) {
@@ -13,15 +13,27 @@ public class Pocket {
         isOpen = true;
     }
 
+    public void addScore(int amount) {
+        score += amount;
+
+        if (score > 0) {
+            isOpen = false;
+        }
+    }
+
+    public void removeScore(int amount) {
+        score -= amount;
+        if (score == 0) {
+            isOpen = true;
+        }
+    }
+
+    public int getScore() {
+        return score;
+    }
+
     public boolean isOpen() {
         return isOpen;
     }
 
-    public void open() {
-        this.isOpen = true;
-    }
-
-    public void close() {
-        this.isOpen = false;
-    }
 }
