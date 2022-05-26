@@ -29,6 +29,8 @@ public class Controller {
         else if (key == Key.SPACE) controlStrategy.pressSpace();
         else if (key == Key.ENTER) controlStrategy.pressEnter();
         else controlStrategy.pressAnyOtherKey();
+
+        checkGameOver();
     }
 
     public final void releaseKey(Key key) {

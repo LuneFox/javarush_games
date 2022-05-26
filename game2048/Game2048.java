@@ -143,7 +143,7 @@ public class Game2048 extends Game {
         score = sumPocketsScore();
         showMessageDialog(Color.BLACK,
                 message + "\nСчёт: " + ((score * 100) / turnCount) + "\n(Пробел - начать заново)",
-                Color.PALEGOLDENROD, 30);
+                Color.PALEGOLDENROD, 20);
     }
 
     private int sumPocketsScore() {
@@ -157,7 +157,7 @@ public class Game2048 extends Game {
         isStopped = true;
         showMessageDialog(Color.BLACK,
                 "Вы проиграли!\n" + message + "\n(Пробел - начать заново)",
-                Color.RED, 30);
+                Color.RED, 20);
     }
 
     private void placeBall(int value) {

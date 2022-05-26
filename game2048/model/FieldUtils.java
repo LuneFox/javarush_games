@@ -71,28 +71,35 @@ public class FieldUtils {
             for (int x = 1; x < width - 1; x++) {
 
                 final int cell = field[y][x];
+                final int belowCell = field[y + 1][x];
+                final int rightCell = field[y][x + 1];
 
                 if (cell == EMPTY || cell == WHITE_BALL) {
                     return true;
                 } else {
                     if (cell == MAX_BALL) continue;
 
-                    if (isLastLine(height, y)) continue;
-                    if (isLastLine(width, x)) continue;
+                    if (isNotLastLine(height, y)) {
+                        if (isMergePossible(cell, belowCell)) return true;
+                        if (isNotLastLine(width, x)) {
+                            if (isMergePossible(cell, rightCell)) return true;
+                        }
+                    }
 
-                    final int belowCell = field[y + 1][x];
-                    final int rightCell = field[y][x + 1];
-
-                    if (isMergePossible(cell, belowCell)) return true;
-                    if (isMergePossible(cell, rightCell)) return true;
+                    if (isNotLastLine(width, x)) {
+                        if (isMergePossible(cell, rightCell)) return true;
+                        if (isNotLastLine(height, y)) {
+                            if (isMergePossible(cell, belowCell)) return true;
+                        }
+                    }
                 }
             }
         }
         return false;
     }
 
-    private static boolean isLastLine(int dimension, int line) {
-        return line == (dimension - 2);
+    private static boolean isNotLastLine(int dimension, int line) {
+        return line != (dimension - 2);
     }
 
     public static boolean isMergePossible(int cell1, int cell2) {
