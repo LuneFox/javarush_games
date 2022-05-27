@@ -1,4 +1,6 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.model;
+
+import com.javarush.games.snake.SnakeGame;
 
 import java.util.Objects;
 

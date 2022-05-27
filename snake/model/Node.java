@@ -1,6 +1,9 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.model;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.view.Signs;
 
 import java.util.Date;
 
@@ -8,7 +11,7 @@ import java.util.Date;
  * Interactive tile nodes
  */
 
-class Node extends GameObject {
+public class Node extends GameObject {
     private Terrain terrain;
     private Color color;
     private Color bgColor;
@@ -95,7 +98,7 @@ class Node extends GameObject {
 
     //  VISUALS
 
-    void draw(Game game) {
+    public void draw(Game game) {
         this.causeEffect();
         game.setCellValueEx(x, y, bgColor, sign, color, 90);
     }
@@ -141,7 +144,7 @@ class Node extends GameObject {
 
     // GETTERS
 
-    Terrain getTerrain() {
+    public Terrain getTerrain() {
         return terrain;
     }
 

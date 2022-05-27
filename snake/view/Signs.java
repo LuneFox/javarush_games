@@ -1,31 +1,31 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.view;
 
-import com.javarush.games.snake.enums.Graphics;
+import com.javarush.games.snake.model.enums.Graphics;
 
-class Signs {
-    static String headSign;
-    static String deadSign;
-    static String bodySign;
-    static String fieldSign;      // 0
-    static String woodSign;       // 1
-    static String waterSign;      // 2
-    static String fireSign;       // 3
-    static String forestSign1;    // 4
-    static String forestSign2;    // 4
-    static String wormHoleSign;   // 5
-    static String mountainSign;   // 6
-    static String wallSign;       // 7
-    static String sandSign;       // 8
-    static String voidSign;       // 9
-    static String neutralOrb;
-    static String waterOrb;
-    static String fireOrb;
-    static String earthOrb;
-    static String airOrb;
-    static String almightyOrb;
-    static Graphics currentSetting;
+public class Signs {
+    public static String headSign;
+    public static String deadSign;
+    public static String bodySign;
+    public static String fieldSign;      // 0
+    public static String woodSign;       // 1
+    public static String waterSign;      // 2
+    public static String fireSign;       // 3
+    public static String forestSign1;    // 4
+    public static String forestSign2;    // 4
+    public static String wormHoleSign;   // 5
+    public static String mountainSign;   // 6
+    public static String wallSign;       // 7
+    public static String sandSign;       // 8
+    public static String voidSign;       // 9
+    public static String neutralOrb;
+    public static String waterOrb;
+    public static String fireOrb;
+    public static String earthOrb;
+    public static String airOrb;
+    public static String almightyOrb;
+    public static Graphics currentSetting;
 
-    static void set(Graphics graphics) {
+    public static void set(Graphics graphics) {
         switch (graphics) {
             case KANJI:
                 headSign = "頭";

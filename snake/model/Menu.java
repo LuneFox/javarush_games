@@ -1,19 +1,22 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.model;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.snake.enums.Element;
-import com.javarush.games.snake.enums.Graphics;
+import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.enums.Graphics;
+import com.javarush.games.snake.view.Message;
+import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.view.Signs;
 
 import java.util.ArrayList;
-import java.util.List;
 
-class Menu {
+public class Menu {
     private SnakeGame game;
     ArrayList<HelpPage> helpPages = new ArrayList<>();
-    int lastPointerPosition;
+    public int lastPointerPosition;
     int currentHelpPage;
 
-    Menu(SnakeGame game) {
+    public Menu(SnakeGame game) {
         this.game = game;
         Selector.getInstance(game);
     }
@@ -22,7 +25,7 @@ class Menu {
 
     // DISPLAY SCREENS
 
-    void displayMain() {
+    public void displayMain() {
         Screen.set(Screen.Type.MAIN_MENU);
         drawBlackBackground();
         new Message(-1, 5, "✡                     ✡", Color.YELLOW).draw();
@@ -38,7 +41,7 @@ class Menu {
         currentHelpPage = 0;
     }
 
-    void displayOptions() {
+    public void displayOptions() {
         drawBlackBackground();
         Screen.set(Screen.Type.OPTIONS);
         new Message(-1, 7, "OPTIONS", Color.SKYBLUE).draw();
@@ -50,13 +53,13 @@ class Menu {
         new Message(17, 16, (game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE).draw();
     }
 
-    void displayControls() {
+    public void displayControls() {
         drawBlackBackground();
         Screen.set(Screen.Type.CONTROLS);
         HelpPage.getControls().draw(game);
     }
 
-    void displayHelp() {
+    public void displayHelp() {
         helpPages.clear();
         helpPages.add(HelpPage.getGoals());
         helpPages.add(HelpPage.getSnakeAbilities());
@@ -69,21 +72,21 @@ class Menu {
         new Message(-1, 30, "← PAGE " + (currentHelpPage + 1) + "/" + helpPages.size() + " →", Color.WHITE).draw();
     }
 
-    void nextHelpPage() {
+    public void nextHelpPage() {
         if (currentHelpPage + 1 < helpPages.size()) {
             currentHelpPage++;
             displayHelp();
         }
     }
 
-    void previousHelpPage() {
+    public void previousHelpPage() {
         if (currentHelpPage > 0) {
             currentHelpPage--;
             displayHelp();
         }
     }
 
-    void startGame() {
+    public void startGame() {
         Screen.set(Screen.Type.GAME);
         game.createGame();
     }
@@ -91,7 +94,7 @@ class Menu {
 
     // MAP EDITOR (COMMENT PRINT LINES OUT BEFORE UPLOADING TO JAVARUSH)
 
-    void displayMapEditor() {
+    public void displayMapEditor() {
         Screen.set(Screen.Type.MAP_EDIT);
         Node node = new Node(1, 1, game, brush);
         game.getMap().setLayoutNode(1, 1, node.getTerrain());
@@ -99,7 +102,7 @@ class Menu {
         new Message(3, 1, node.getTerrain().name(), Color.WHITE).draw();
     }
 
-    void brushNext() {
+    public void brushNext() {
         if (brush < 9) {
             brush++;
         } else {
@@ -107,7 +110,7 @@ class Menu {
         }
     }
 
-    void brushPrevious() {
+    public void brushPrevious() {
         if (brush > 0) {
             brush--;
         } else {
@@ -115,16 +118,16 @@ class Menu {
         }
     }
 
-    void drawTerrain(int x, int y) {
+    public void drawTerrain(int x, int y) {
         Node node = new Node(x, y, game, brush);
         game.getMap().setLayoutNode(node.x, node.y, node.getTerrain());
     }
 
-    void copyTerrain(int x, int y) {
+    public void copyTerrain(int x, int y) {
         brush = game.getMap().getLayoutNode(x, y).getTerrain().ordinal();
     }
 
-    void printTerrain() {
+    public void printTerrain() {
 /*        Map map = game.getMap();
         System.out.println("new int[][]{");
 
@@ -146,14 +149,14 @@ class Menu {
         System.out.println("});");*/
     }
 
-    void printCoordinate(int x, int y) {
+    public void printCoordinate(int x, int y) {
         // System.out.println(x + "," + y);
     }
 
 
     // UTILITIES
 
-    void selectStageUp() {
+    public void selectStageUp() {
         if (game.getStage() < Map.stages.size() - 2) {
             game.setStage(game.getStage() + 1);
         } else {
@@ -161,7 +164,7 @@ class Menu {
         }
     }
 
-    void selectStageDown() {
+    public void selectStageDown() {
         if (game.getStage() > 0) {
             game.setStage(game.getStage() - 1);
         } else {
@@ -177,7 +180,7 @@ class Menu {
         }
     }
 
-    void switchSymbolSet() {
+    public void switchSymbolSet() {
         if (Signs.currentSetting == Graphics.KANJI) {
             Signs.set(Graphics.EMOJI);
         } else {
@@ -220,13 +223,13 @@ class Menu {
             }
         }
 
-        static void selectDown() {
+        public static void selectDown() {
             if (instance.pointer < instance.entries.size() - 1) {
                 instance.pointer++;
             }
         }
 
-        static void selectUp() {
+        public static void selectUp() {
             if (instance.pointer > 0) {
                 instance.pointer--;
             }
@@ -234,7 +237,7 @@ class Menu {
 
         // MECHANICS
 
-        static boolean nowAt(String option) {
+        public static boolean nowAt(String option) {
             return (option.equals(instance.entries.get(instance.pointer)));
         }
 
@@ -261,7 +264,7 @@ class Menu {
             }
         }
 
-        static void setPointer(int position) {
+        public static void setPointer(int position) {
             instance.pointer = position;
         }
     }

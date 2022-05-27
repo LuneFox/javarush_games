@@ -1,7 +1,8 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.model;
 
-import com.javarush.games.snake.enums.Direction;
-import com.javarush.games.snake.enums.Element;
+import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.enums.Direction;
+import com.javarush.games.snake.model.enums.Element;
 
 import java.util.ArrayList;
 
@@ -9,12 +10,12 @@ import java.util.ArrayList;
  * Contains two-dimensional array of nodes, which are, in fact, interactive tile objects
  */
 
-class Map {
+public class Map {
     private Node[][] layout = new Node[SnakeGame.HEIGHT][SnakeGame.WIDTH];
     ArrayList<WormHole> wormHoles = new ArrayList<>();
-    ArrayList<Orb> orbs = new ArrayList<>();
-    Coordinate snakeStartPlace;
-    Direction snakeStartDirection;
+    public ArrayList<Orb> orbs = new ArrayList<>();
+    public Coordinate snakeStartPlace;
+    public Direction snakeStartDirection;
     private SnakeGame game;
 
     static ArrayList<int[][]> stages = new ArrayList<>();
@@ -172,7 +173,7 @@ class Map {
 
     // CONSTRUCTOR
 
-    Map(int stage, SnakeGame game) {
+    public Map(int stage, SnakeGame game) {
         this.game = game;
         int[][] pattern = stages.get(stage);
         for (int y = 0; y < SnakeGame.HEIGHT; y++) {
@@ -239,11 +240,11 @@ class Map {
 
     // GETTERS
 
-    Node[][] getLayout() {
+    public Node[][] getLayout() {
         return layout;
     }
 
-    Node getLayoutNode(int x, int y) {
+    public Node getLayoutNode(int x, int y) {
         return layout[y][x];
     }
 
@@ -253,7 +254,7 @@ class Map {
         this.layout[y][x] = new Node(x, y, game, terrain.ordinal());
     }
 
-    static class Coordinate {
+    public static class Coordinate {
         public int x;
         public int y;
 

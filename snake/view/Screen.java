@@ -1,4 +1,4 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.view;
 
 import java.util.ArrayList;
 

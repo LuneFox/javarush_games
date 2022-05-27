@@ -1,7 +1,15 @@
 package com.javarush.games.snake;
 
-import com.javarush.engine.cell.*;
-import com.javarush.games.snake.enums.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+import com.javarush.engine.cell.Key;
+import com.javarush.games.snake.controller.InputEvent;
+import com.javarush.games.snake.model.*;
+import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.enums.Graphics;
+import com.javarush.games.snake.view.Message;
+import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.view.Signs;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -10,8 +18,8 @@ import java.util.Date;
 public class SnakeGame extends Game {
     // Global parameters
     public static SnakeGame game;
-    static final int WIDTH = 32;
-    static final int HEIGHT = 32;
+    public static final int WIDTH = 32;
+    public static final int HEIGHT = 32;
     private static final int MAX_TURN_DELAY = 300;
     private InputEvent ie;
     private Menu menu;
@@ -27,8 +35,8 @@ public class SnakeGame extends Game {
     private boolean isStopped;
     private boolean isPaused;
     private int stage;
-    boolean acceleration;
-    boolean speedUpDelay;
+    public boolean acceleration;
+    public boolean speedUpDelay;
 
     // Game objects
     private Snake snake;
@@ -51,7 +59,7 @@ public class SnakeGame extends Game {
         acceleration = true;
     }
 
-    final void createGame() {
+    public final void createGame() {
         // Make new objects
         map = new Map(stage, this);
         snake = new Snake(map.snakeStartPlace.x, map.snakeStartPlace.y, this, map.snakeStartDirection);
@@ -204,7 +212,7 @@ public class SnakeGame extends Game {
 
     }
 
-    void drawMap() {
+    public void drawMap() {
         for (int x = 0; x < WIDTH; x++) {
             for (int y = 0; y < HEIGHT; y++) {
                 map.getLayout()[y][x].draw(this);
@@ -224,7 +232,7 @@ public class SnakeGame extends Game {
         }
     }
 
-    void drawElementsPanel() {
+    public void drawElementsPanel() {
         Color textColor;
         Color bgColor;
         for (Element element : Element.values()) {
@@ -262,11 +270,11 @@ public class SnakeGame extends Game {
 
     // UTILITY & CHECKS
 
-    int getSpeed() {
+    public int getSpeed() {
         return Math.max((SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10)), 100);
     }
 
-    void pause() {
+    public void pause() {
         isPaused = !isPaused;
         if (isPaused) {
             stopTurnTimer();
@@ -297,7 +305,7 @@ public class SnakeGame extends Game {
         }
     }
 
-    boolean outOfBounds(int x, int y) {
+    public boolean outOfBounds(int x, int y) {
         return (x < 0 || y < 4 || x > WIDTH - 1 || y > HEIGHT - 1);
     }
 
@@ -326,15 +334,15 @@ public class SnakeGame extends Game {
 
     // GETTERS
 
-    int getSnakeLength() {
+    public int getSnakeLength() {
         return snakeLength;
     }
 
-    int getLifetime() {
+    public int getLifetime() {
         return lifetime;
     }
 
-    boolean isStopped() {
+    public boolean isStopped() {
         return isStopped;
     }
 
@@ -342,26 +350,26 @@ public class SnakeGame extends Game {
         return snake;
     }
 
-    Menu getMenu() {
+    public Menu getMenu() {
         return menu;
     }
 
-    int getStage() {
+    public int getStage() {
         return stage;
     }
 
-    Map getMap() {
+    public Map getMap() {
         return map;
     }
 
 
     // SETTERS
 
-    void setGameOverReason(String reason) {
+    public void setGameOverReason(String reason) {
         this.gameOverReason = reason;
     }
 
-    void setScore(int score, boolean modify) {
+    public void setScore(int score, boolean modify) {
         if (modify) {
             this.score += score;
         } else {
@@ -369,27 +377,27 @@ public class SnakeGame extends Game {
         }
     }
 
-    void setTurnDelay(int turnDelay) {
+    public void setTurnDelay(int turnDelay) {
         // Sets specific turn delay
         this.turnDelay = turnDelay;
     }
 
-    void setTurnDelay() {
+    public void setTurnDelay() {
         // Sets normal turn delay
         this.turnDelay = getSpeed();
     }
 
-    void setStage(int stage) {
+    public void setStage(int stage) {
         this.stage = stage;
     }
 
-    void setMap(int stage) {
+    public void setMap(int stage) {
         this.map = new Map(stage, this);
     }
 
     // MODIFIERS
 
-    void decreaseLifetime() {
+    public void decreaseLifetime() {
         this.lifetime -= 1;
     }
 }

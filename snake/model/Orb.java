@@ -1,22 +1,24 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.model;
 
 import com.javarush.engine.cell.*;
-import com.javarush.games.snake.enums.Element;
+import com.javarush.games.snake.model.GameObject;
+import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.view.Signs;
 
 import java.util.Date;
 
-class Orb extends GameObject {
-    Element element;
+public class Orb extends GameObject {
+    public Element element;
     private Color color;
     private Color bgColor1;
     private Color bgColor2;
     private String sign;
     private Date blinkTime;
     private boolean blink;
-    boolean isAlive = true;
-    boolean isObtained = false;
+    public boolean isAlive = true;
+    public boolean isObtained = false;
 
-    Orb(int x, int y, Element e) {
+    public Orb(int x, int y, Element e) {
         super(x, y);
         this.element = e;
         switch (e) {
@@ -62,7 +64,7 @@ class Orb extends GameObject {
         blinkTime = new Date();
     }
 
-    void draw(Game game) {
+    public void draw(Game game) {
         if (new Date().getTime() - blinkTime.getTime() > 250) {
             blink = !blink;
             blinkTime = new Date();

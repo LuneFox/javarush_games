@@ -1,6 +1,7 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.view;
 
 import com.javarush.engine.cell.*;
+import com.javarush.games.snake.SnakeGame;
 
 public class Message {
     private int x;
@@ -11,7 +12,7 @@ public class Message {
     private int textSize;
 
 
-    Message(int x, int y, String text, Color color) {
+    public Message(int x, int y, String text, Color color) {
         this.symbols = specialSplit(text);
         this.color = color;
         this.bgColor = Color.BLACK;

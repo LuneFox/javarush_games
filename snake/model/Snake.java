@@ -1,9 +1,14 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.model;
 
-import com.javarush.engine.cell.*;
-import com.javarush.games.snake.enums.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.enums.Direction;
+import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.view.Signs;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 
 /**
  * Class for snake and its elemental abilities
@@ -20,8 +25,8 @@ public class Snake {
     private Date starveTime;
     private int breath;
     private int hunger;
-    boolean isAlive;
-    boolean canChangeElement;
+    public boolean isAlive;
+    public boolean canChangeElement;
 
     // CONSTRUCTOR
 
@@ -43,7 +48,7 @@ public class Snake {
 
     // VISUALS
 
-    void draw() {
+    public void draw() {
         String head = isAlive ? Signs.headSign : Signs.deadSign;
         checkDead();
         drawStripedBody(head);
@@ -64,7 +69,7 @@ public class Snake {
 
     // MECHANICS
 
-    void move() {
+    public void move() {
         canChangeElement = true;
         head = createNewHead();
         if (checkGameOver() | checkEscapeBorders() | checkBiteSelf() || isDeadAfterNodeInteraction(head)) {
@@ -75,7 +80,7 @@ public class Snake {
         removeTail();
     }
 
-    void interactWithOrb(Orb orb) {
+    public void interactWithOrb(Orb orb) {
         if (head.x == orb.x && head.y == orb.y && element != Element.AIR) {
             orb.isAlive = false;
             breath++;
@@ -249,7 +254,7 @@ public class Snake {
         }
     }
 
-    void rotateToNextElement(SnakeGame game) {
+    public void rotateToNextElement(SnakeGame game) {
         if (canChangeElement) {
             Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
             elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
@@ -259,7 +264,7 @@ public class Snake {
         }
     }
 
-    void rotateToPreviousElement(SnakeGame game) {
+    public void rotateToPreviousElement(SnakeGame game) {
         if (canChangeElement) {
             int lastElement = elementsAvailable.size() - 1;
             Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
@@ -270,14 +275,14 @@ public class Snake {
         }
     }
 
-    void clearElements() {
+    public void clearElements() {
         this.elementsAvailable.clear();
     }
 
 
     // UTILITIES AND CHECKS
 
-    boolean canUse(Element element) {
+    public boolean canUse(Element element) {
         return (this.elementsAvailable.contains(element));
     }
 
@@ -336,7 +341,7 @@ public class Snake {
         }
     }
 
-    boolean checkCollision(GameObject obj) {
+    public boolean checkCollision(GameObject obj) {
         return (snakeParts.contains(obj));
     }
 
@@ -365,26 +370,26 @@ public class Snake {
 
     // GETTERS
 
-    int getHunger() {
+    public int getHunger() {
         return hunger;
     }
 
-    Element getElement() {
+    public Element getElement() {
         return element;
     }
 
-    LinkedList<Element> getElementsAvailable() {
+    public LinkedList<Element> getElementsAvailable() {
         return elementsAvailable;
     }
 
-    int getLength() {
+    public int getLength() {
         return snakeParts.size();
     }
 
 
     // SETTERS
 
-    void setDirection(Direction command) { // allows to change direction, but only to another axis
+    public void setDirection(Direction command) { // allows to change direction, but only to another axis
         switch (command) {
             case LEFT:
             case RIGHT:

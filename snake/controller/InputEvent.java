@@ -1,21 +1,25 @@
-package com.javarush.games.snake;
+package com.javarush.games.snake.controller;
 
-import com.javarush.engine.cell.*;
-import com.javarush.games.snake.enums.*;
+import com.javarush.engine.cell.Key;
+import com.javarush.games.snake.model.Menu;
+import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.enums.Direction;
 
-class InputEvent {
+public class InputEvent {
     private SnakeGame game;
     private Snake snake;
     private Menu menu;
 
-    InputEvent(SnakeGame game) {
+    public InputEvent(SnakeGame game) {
         this.game = game;
         this.menu = game.getMenu();
     }
 
     // GENERAL
 
-    void keyPress(Key key) {
+    public void keyPress(Key key) {
         switch (Screen.getCurrent()) {
             case GAME:
                 keyPressInGame(key);
@@ -40,13 +44,13 @@ class InputEvent {
         }
     }
 
-    void keyRelease(Key key) {
+    public void keyRelease(Key key) {
         if (Screen.is(Screen.Type.GAME)) {
             keyReleaseInGame(key);
         }
     }
 
-    void leftClick(int x, int y) {
+    public void leftClick(int x, int y) {
         if (Screen.is(Screen.Type.GAME)) {
             leftClickInGame(x, y);
         } else if (Screen.is(Screen.Type.MAP_EDIT)) {
@@ -54,7 +58,7 @@ class InputEvent {
         }
     }
 
-    void rightClick(int x, int y) {
+    public void rightClick(int x, int y) {
         if (Screen.is(Screen.Type.GAME)) {
             rightClickInGame(x, y);
         } else if (Screen.is(Screen.Type.MAP_EDIT)) {
