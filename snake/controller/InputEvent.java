@@ -2,7 +2,7 @@ package com.javarush.games.snake.controller;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.model.Menu;
-import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.view.Phase;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;
@@ -20,7 +20,7 @@ public class InputEvent {
     // GENERAL
 
     public void keyPress(Key key) {
-        switch (Screen.getCurrent()) {
+        switch (Phase.getCurrent()) {
             case GAME:
                 keyPressInGame(key);
                 break;
@@ -45,23 +45,23 @@ public class InputEvent {
     }
 
     public void keyRelease(Key key) {
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Phase.is(Phase.GAME)) {
             keyReleaseInGame(key);
         }
     }
 
     public void leftClick(int x, int y) {
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Phase.is(Phase.GAME)) {
             leftClickInGame(x, y);
-        } else if (Screen.is(Screen.Type.MAP_EDIT)) {
+        } else if (Phase.is(Phase.MAP_EDIT)) {
             leftClickInMapEditor(x, y);
         }
     }
 
     public void rightClick(int x, int y) {
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Phase.is(Phase.GAME)) {
             rightClickInGame(x, y);
-        } else if (Screen.is(Screen.Type.MAP_EDIT)) {
+        } else if (Phase.is(Phase.MAP_EDIT)) {
             rightClickInMapEditor(x, y);
         }
     }
@@ -204,7 +204,7 @@ public class InputEvent {
             // If game is stopped
             if (key == Key.SPACE) {
                 game.stopTurnTimer();
-                Screen.set(Screen.Type.MAIN_MENU);
+                Phase.set(Phase.MAIN_MENU);
                 Menu.Selector.setPointer(0);
                 menu.displayMain();
             }

@@ -2,7 +2,7 @@ package com.javarush.games.snake.model;
 
 import com.javarush.engine.cell.*;
 import com.javarush.games.snake.SnakeGame;
-import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.view.Phase;
 import com.javarush.games.snake.view.Signs;
 
 import java.util.Date;
@@ -107,7 +107,7 @@ public class Node extends GameObject {
     // MECHANICS
 
     private void causeEffect() { // interact with surrounding nodes
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Phase.is(Phase.GAME)) {
             if (terrain == Terrain.WOOD || terrain == Terrain.FOREST) {
                 setOnFire();
             }

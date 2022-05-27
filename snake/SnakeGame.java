@@ -8,7 +8,7 @@ import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.enums.Graphics;
 import com.javarush.games.snake.view.Message;
-import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.view.Phase;
 import com.javarush.games.snake.view.Signs;
 
 import java.util.ArrayList;
@@ -183,7 +183,7 @@ public class SnakeGame extends Game {
     }
 
     private void drawInterface() {
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Phase.is(Phase.GAME)) {
             new Message(0, 0, "hunger  : ", Color.CORAL).draw();
             new Message(0, 1, "strength: " + (snake.getLength()), Color.WHITE).draw();
             new Message(0, 2, "element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw();
@@ -227,7 +227,7 @@ public class SnakeGame extends Game {
     }
 
     private void drawSnake() {
-        if (Screen.is(Screen.Type.GAME)) {
+        if (Phase.is(Phase.GAME)) {
             snake.draw();
         }
     }

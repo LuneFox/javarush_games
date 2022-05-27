@@ -5,7 +5,7 @@ import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.enums.Graphics;
 import com.javarush.games.snake.view.Message;
-import com.javarush.games.snake.view.Screen;
+import com.javarush.games.snake.view.Phase;
 import com.javarush.games.snake.view.Signs;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class Menu {
     // DISPLAY SCREENS
 
     public void displayMain() {
-        Screen.set(Screen.Type.MAIN_MENU);
+        Phase.set(Phase.MAIN_MENU);
         drawBlackBackground();
         new Message(-1, 5, "✡                     ✡", Color.YELLOW).draw();
         new Message(-1, 5, "✡                   ✡", Color.CYAN).draw();
@@ -43,7 +43,7 @@ public class Menu {
 
     public void displayOptions() {
         drawBlackBackground();
-        Screen.set(Screen.Type.OPTIONS);
+        Phase.set(Phase.OPTIONS);
         new Message(-1, 7, "OPTIONS", Color.SKYBLUE).draw();
         Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
         Selector.draw(2, 12);
@@ -55,7 +55,7 @@ public class Menu {
 
     public void displayControls() {
         drawBlackBackground();
-        Screen.set(Screen.Type.CONTROLS);
+        Phase.set(Phase.CONTROLS);
         HelpPage.getControls().draw(game);
     }
 
@@ -67,7 +67,7 @@ public class Menu {
         helpPages.add(HelpPage.getTips1());
         helpPages.add(HelpPage.getTips2());
         drawBlackBackground();
-        Screen.set(Screen.Type.HELP);
+        Phase.set(Phase.HELP);
         helpPages.get(currentHelpPage).draw(game);
         new Message(-1, 30, "← PAGE " + (currentHelpPage + 1) + "/" + helpPages.size() + " →", Color.WHITE).draw();
     }
@@ -87,7 +87,7 @@ public class Menu {
     }
 
     public void startGame() {
-        Screen.set(Screen.Type.GAME);
+        Phase.set(Phase.GAME);
         game.createGame();
     }
 
@@ -95,7 +95,7 @@ public class Menu {
     // MAP EDITOR (COMMENT PRINT LINES OUT BEFORE UPLOADING TO JAVARUSH)
 
     public void displayMapEditor() {
-        Screen.set(Screen.Type.MAP_EDIT);
+        Phase.set(Phase.MAP_EDIT);
         Node node = new Node(1, 1, game, brush);
         game.getMap().setLayoutNode(1, 1, node.getTerrain());
         game.drawMap();
