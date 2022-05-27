@@ -133,9 +133,11 @@ public class HelpPage {
 
     public void draw(SnakeGame game) {
         messages.forEach(Message::draw);
+
         for (Orb orb : orbs) {
             orb.draw(game);
         }
+
         for (Node node : nodes) {
             node.draw(game);
         }

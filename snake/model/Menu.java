@@ -28,13 +28,13 @@ public class Menu {
     public void displayMain() {
         Phase.set(Phase.MAIN_MENU);
         drawBlackBackground();
-        new Message(-1, 5, "✡                     ✡", Color.YELLOW).draw();
-        new Message(-1, 5, "✡                   ✡", Color.CYAN).draw();
-        new Message(-1, 5, "✡                 ✡", Color.LAWNGREEN).draw();
-        new Message(-1, 5, "✡               ✡", Color.RED).draw();
-        new Message(-1, 5, "ALCHEMY SNAKE", Color.FUCHSIA).draw();
-        new Message(-1, 7, "MASTER OF ELEMENTS", Color.PINK).draw();
-        new Message(-1, 30, "VER " + Strings.VERSION, Color.BLUE).draw();
+        Message.print(-1, 5, "✡                     ✡", Color.YELLOW);
+        Message.print(-1, 5, "✡                   ✡", Color.CYAN);
+        Message.print(-1, 5, "✡                 ✡", Color.LAWNGREEN);
+        Message.print(-1, 5, "✡               ✡", Color.RED);
+        Message.print(-1, 5, "ALCHEMY SNAKE", Color.FUCHSIA);
+        Message.print(-1, 7, "MASTER OF ELEMENTS", Color.PINK);
+        Message.print(-1, 30, "VER " + Strings.VERSION, Color.BLUE);
         Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
         // Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
         Selector.draw(13, 12);
@@ -44,13 +44,13 @@ public class Menu {
     public void displayOptions() {
         drawBlackBackground();
         Phase.set(Phase.OPTIONS);
-        new Message(-1, 7, "OPTIONS", Color.SKYBLUE).draw();
+        Message.print(-1, 7, "OPTIONS", Color.SKYBLUE);
         Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
         Selector.draw(2, 12);
-        new Message(17, 12, "STAGE " + (game.getStage() + 1), Color.WHITE).draw();
-        new Message(17, 14, Signs.currentSetting.toString(), Color.WHITE).draw();
+        Message.print(17, 12, "STAGE " + (game.getStage() + 1), Color.WHITE);
+        Message.print(17, 14, Signs.currentSetting.toString(), Color.WHITE);
         new Orb(23, 14, Element.WATER).draw(game);
-        new Message(17, 16, (game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE).draw();
+        Message.print(17, 16, (game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE);
     }
 
     public void displayControls() {
@@ -69,7 +69,7 @@ public class Menu {
         drawBlackBackground();
         Phase.set(Phase.HELP);
         helpPages.get(currentHelpPage).draw(game);
-        new Message(-1, 30, "← PAGE " + (currentHelpPage + 1) + "/" + helpPages.size() + " →", Color.WHITE).draw();
+        Message.print(-1, 30, "← PAGE " + (currentHelpPage + 1) + "/" + helpPages.size() + " →", Color.WHITE);
     }
 
     public void nextHelpPage() {
@@ -99,7 +99,7 @@ public class Menu {
         Node node = new Node(1, 1, game, brush);
         game.getMap().setLayoutNode(1, 1, node.getTerrain());
         game.drawMap();
-        new Message(3, 1, node.getTerrain().name(), Color.WHITE).draw();
+        Message.print(3, 1, node.getTerrain().name(), Color.WHITE);
     }
 
     public void brushNext() {
@@ -173,8 +173,8 @@ public class Menu {
     }
 
     void drawBlackBackground() {
-        for (int x = 0; x < SnakeGame.WIDTH; x++) {
-            for (int y = 0; y < SnakeGame.HEIGHT; y++) {
+        for (int x = 0; x < SnakeGame.SIZE; x++) {
+            for (int y = 0; y < SnakeGame.SIZE; y++) {
                 game.setCellValueEx(x, y, Color.BLACK, "");
             }
         }
@@ -217,8 +217,7 @@ public class Menu {
                 } else {
                     instance.game.setCellValue(x - 2, y, "");
                 }
-                Message line = new Message(x, y, instance.entries.get(i), (instance.pointer == i ? Color.WHITE : Color.GRAY));
-                line.draw();
+                Message.print(x, y, instance.entries.get(i), (instance.pointer == i ? Color.WHITE : Color.GRAY));
                 y += 2;
             }
         }

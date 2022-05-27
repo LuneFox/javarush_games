@@ -18,8 +18,7 @@ import java.util.Date;
 public class SnakeGame extends Game {
     // Global parameters
     public static SnakeGame game;
-    public static final int WIDTH = 32;
-    public static final int HEIGHT = 32;
+    public static final int SIZE = 32;
     private static final int MAX_TURN_DELAY = 300;
     private InputEvent ie;
     private Menu menu;
@@ -48,7 +47,9 @@ public class SnakeGame extends Game {
 
     public void initialize() {
         showGrid(false);
-        setScreenSize(WIDTH, HEIGHT);
+        setScreenSize(SIZE, SIZE);
+        Message.setGame(this);
+
         Signs.set(Graphics.KANJI);
         game = this;
         menu = new Menu(this);
@@ -152,8 +153,8 @@ public class SnakeGame extends Game {
         int x;
         int y;
         do {
-            x = getRandomNumber(WIDTH);
-            y = getRandomNumber(HEIGHT - 4) + 4;
+            x = getRandomNumber(SIZE);
+            y = getRandomNumber(SIZE - 4) + 4;
             neutralOrb = new Orb(x, y, Element.NEUTRAL);
         } while (isBadPlaceForOrb(x, y));
         orbs.add(neutralOrb);
@@ -184,14 +185,14 @@ public class SnakeGame extends Game {
 
     private void drawInterface() {
         if (Phase.is(Phase.GAME)) {
-            new Message(0, 0, "hunger  : ", Color.CORAL).draw();
-            new Message(0, 1, "strength: " + (snake.getLength()), Color.WHITE).draw();
-            new Message(0, 2, "element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW).draw();
-            new Message(0, 3, "score   : " + score, Color.LIGHTBLUE).draw();
+            Message.print(0, 0, "hunger  : ", Color.CORAL);
+            Message.print(0, 1, "strength: " + (snake.getLength()), Color.WHITE);
+            Message.print(0, 2, "element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW);
+            Message.print(0, 3, "score   : " + score, Color.LIGHTBLUE);
             drawElementsPanel();
             drawHungerBar();
             if (lifetime < 301) {
-                new Message(20, 3, "power: " + lifetime, Color.CORAL).draw();
+                Message.print(20, 3, "power: " + lifetime, Color.CORAL);
             }
         }
     }
@@ -213,8 +214,8 @@ public class SnakeGame extends Game {
     }
 
     public void drawMap() {
-        for (int x = 0; x < WIDTH; x++) {
-            for (int y = 0; y < HEIGHT; y++) {
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
                 map.getLayout()[y][x].draw(this);
             }
         }
@@ -278,9 +279,9 @@ public class SnakeGame extends Game {
         isPaused = !isPaused;
         if (isPaused) {
             stopTurnTimer();
-            new Message(-1, 15, "             ", Color.WHITE).draw();
-            new Message(-1, 16, " SLEEPING... ", Color.WHITE).draw();
-            new Message(-1, 17, "             ", Color.WHITE).draw();
+            Message.print(-1, 15, "             ", Color.WHITE);
+            Message.print(-1, 16, " SLEEPING... ", Color.WHITE);
+            Message.print(-1, 17, "             ", Color.WHITE);
         } else {
             setTurnTimer(turnDelay);
         }
@@ -306,7 +307,7 @@ public class SnakeGame extends Game {
     }
 
     public boolean outOfBounds(int x, int y) {
-        return (x < 0 || y < 4 || x > WIDTH - 1 || y > HEIGHT - 1);
+        return (x < 0 || y < 4 || x > SIZE - 1 || y > SIZE - 1);
     }
 
 

@@ -346,7 +346,7 @@ public class Snake {
     }
 
     private boolean checkEscapeBorders() {
-        if (head.x < 0 || head.x >= SnakeGame.WIDTH || head.y < 4 || head.y >= SnakeGame.HEIGHT) {
+        if (head.x < 0 || head.x >= SnakeGame.SIZE || head.y < 4 || head.y >= SnakeGame.SIZE) {
             isAlive = false;
             game.setGameOverReason(Strings.GAME_OVER_RUNAWAY);
             return true;

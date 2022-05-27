@@ -11,7 +11,7 @@ import java.util.ArrayList;
  */
 
 public class Map {
-    private Node[][] layout = new Node[SnakeGame.HEIGHT][SnakeGame.WIDTH];
+    private Node[][] layout = new Node[SnakeGame.SIZE][SnakeGame.SIZE];
     ArrayList<WormHole> wormHoles = new ArrayList<>();
     public ArrayList<Orb> orbs = new ArrayList<>();
     public Coordinate snakeStartPlace;
@@ -176,8 +176,8 @@ public class Map {
     public Map(int stage, SnakeGame game) {
         this.game = game;
         int[][] pattern = stages.get(stage);
-        for (int y = 0; y < SnakeGame.HEIGHT; y++) {
-            for (int x = 0; x < SnakeGame.WIDTH; x++) {
+        for (int y = 0; y < SnakeGame.SIZE; y++) {
+            for (int x = 0; x < SnakeGame.SIZE; x++) {
                 layout[y][x] = new Node(x, y, game, pattern[y][x]);
             }
         }
