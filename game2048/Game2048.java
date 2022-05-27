@@ -9,8 +9,8 @@ import com.javarush.games.game2048.model.Field;
 import com.javarush.games.game2048.model.Result;
 
 public class Game2048 extends Game {
-    public static final String VERSION = "v0.97";
-    private static final int SIDE = 7;
+    private static final String VERSION = "v0.97";
+    private static final int SIDE = Field.SIDE;
 
     private final Controller controller = new Controller(this);
     private Field field;
@@ -79,7 +79,7 @@ public class Game2048 extends Game {
                 Color.PALEGOLDENROD, 20);
     }
 
-    public void lose(String message) {
+    private void lose(String message) {
         result = Result.LOSE;
         isStopped = true;
         showMessageDialog(Color.BLACK,

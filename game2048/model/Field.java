@@ -7,10 +7,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Field {
-    private static final int SIDE = 7;
+    public static final int SIDE = 7;
     private static final int EMPTY = 0;
     private static final int WHITE_BALL = 16;
     private static final int MAX_BALL = 15;
+    private static final int RANDOM_BALL = -1;
 
     private final Game2048 game;
     private int[][] field;
@@ -27,8 +28,8 @@ public class Field {
         height = field.length;
         isWhiteBallSet = false;
         createPockets();
-        putRandomBall();
-        putRandomBall();
+        putBallToRandomEmptyCell(RANDOM_BALL);
+        putBallToRandomEmptyCell(RANDOM_BALL);
     }
 
     private void createPockets() {
@@ -39,23 +40,16 @@ public class Field {
         );
     }
 
-    private void putRandomBall() {
+    private void putBallToRandomEmptyCell(int value) {
         int y = game.getRandomNumber(SIDE - 2) + 1;
         int x = game.getRandomNumber(SIDE - 2) + 1;
 
-        if (field[y][x] != 0) {
-            putRandomBall();
-        } else {
-            field[y][x] = (game.getRandomNumber(10) > 8 ? 2 : 1);
+        if (value == RANDOM_BALL) {
+            value = (game.getRandomNumber(10) > 8) ? 2 : 1;
         }
-    }
-
-    private void putBall(int value) { // TODO: Merge with putRandomBall
-        int y = game.getRandomNumber(SIDE - 2) + 1;
-        int x = game.getRandomNumber(SIDE - 2) + 1;
 
         if (field[y][x] != 0) {
-            putBall(value);
+            putBallToRandomEmptyCell(value);
         } else {
             field[y][x] = (value);
         }
@@ -128,7 +122,7 @@ public class Field {
 
         if (nothingChanged) return;
 
-        putRandomBall();
+        putBallToRandomEmptyCell(RANDOM_BALL);
         game.increaseTurnCount();
         game.finishIfResultIsKnown();
     }
@@ -254,7 +248,7 @@ public class Field {
                 if (hasNoEmptySpace()) break;
                 extractScoreAndPlaceBall(pocket, pocket.getScore());
             } else {
-                putBall(MAX_BALL);
+                putBallToRandomEmptyCell(MAX_BALL);
                 pocket.removeScore(MAX_BALL);
             }
         }
@@ -273,7 +267,7 @@ public class Field {
 
     private void extractScoreAndPlaceBall(Pocket pocket, int amount) {
         pocket.removeScore(amount);
-        putBall(amount);
+        putBallToRandomEmptyCell(amount);
     }
 
     public void placeOrRemoveWhiteBall(int x, int y) {
