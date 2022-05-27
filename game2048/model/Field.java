@@ -18,7 +18,7 @@ public class Field {
     private final int width;
     private final int height;
     private ArrayList<Pocket> pockets;
-    private int fieldRotationDegrees;
+    private int rotationDegrees;
     private boolean isWhiteBallSet;
 
     public Field(Game2048 game) {
@@ -124,7 +124,7 @@ public class Field {
 
         putBallToRandomEmptyCell(RANDOM_BALL);
         game.increaseTurnCount();
-        game.finishIfResultIsKnown();
+        game.finishIfResultIsAchieved();
     }
 
     private void pocketRow() {
@@ -132,13 +132,13 @@ public class Field {
             final int whiteBallRowNumber = getWhiteBallRowNumber();
             final int[] row = field[whiteBallRowNumber];
 
-            if ((fieldRotationDegrees == 0) && (whiteBallRowNumber == 1 || whiteBallRowNumber == 5)) {
+            if ((rotationDegrees == 0) && (whiteBallRowNumber == 1 || whiteBallRowNumber == 5)) {
                 pocket(row, pockets.get(whiteBallRowNumber == 1 ? 0 : 1));
-            } else if ((fieldRotationDegrees == 90) && (whiteBallRowNumber == 3)) {
+            } else if ((rotationDegrees == 90) && (whiteBallRowNumber == 3)) {
                 pocket(row, pockets.get(5));
-            } else if ((fieldRotationDegrees == 180) && (whiteBallRowNumber == 1 || whiteBallRowNumber == 5)) {
+            } else if ((rotationDegrees == 180) && (whiteBallRowNumber == 1 || whiteBallRowNumber == 5)) {
                 pocket(row, pockets.get(whiteBallRowNumber == 1 ? 3 : 2));
-            } else if ((fieldRotationDegrees == 270) && (whiteBallRowNumber == 3)) {
+            } else if ((rotationDegrees == 270) && (whiteBallRowNumber == 3)) {
                 pocket(row, pockets.get(4));
             }
         }
@@ -225,7 +225,7 @@ public class Field {
 
     private void rotateClockwise(int times) {
         for (int i = 0; i < times; i++) {
-            fieldRotationDegrees = (fieldRotationDegrees == 270 ? 0 : fieldRotationDegrees + 90);
+            rotationDegrees = (rotationDegrees == 270 ? 0 : rotationDegrees + 90);
             int[][] rotatedGameField = new int[SIDE][SIDE];
 
             for (int y = 1; y < field.length - 1; y++) {

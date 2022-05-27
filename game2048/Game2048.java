@@ -62,7 +62,7 @@ public class Game2048 extends Game {
         setCellValueEx(0, 0, Color.NONE, "?", Color.WHITE, 75);
     }
 
-    public void finishIfResultIsKnown() {
+    public void finishIfResultIsAchieved() {
         if (result == Result.WIN) {
             win(resultMessage);
         } else if (result == Result.LOSE) {

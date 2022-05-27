@@ -49,6 +49,6 @@ public class Controller {
         if (game.isMovePossible()) return;
 
         game.setResult(Result.LOSE, "Невозможно совершить ход!");
-        game.finishIfResultIsKnown();
+        game.finishIfResultIsAchieved();
     }
 }

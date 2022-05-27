@@ -68,7 +68,7 @@ public class MainControlStrategy implements ControlStrategy {
 
     @Override
     public void pressAnyOtherKey() {
-        game.finishIfResultIsKnown();
+        game.finishIfResultIsAchieved();
     }
 
     @Override
