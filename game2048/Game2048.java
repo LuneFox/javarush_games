@@ -1,18 +1,19 @@
 package com.javarush.games.game2048;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.game2048.controller.Controller;
 import com.javarush.games.game2048.model.Direction;
 import com.javarush.games.game2048.model.Field;
 import com.javarush.games.game2048.model.Result;
+import com.javarush.games.game2048.view.View;
 
 public class Game2048 extends Game {
-    private static final String VERSION = "v0.97";
+    public static final String VERSION = "v0.97";
     private static final int SIDE = Field.SIDE;
 
     private final Controller controller = new Controller(this);
+    private final View view = new View(this);
     private Field field;
     private Result result;
     private String resultMessage;
@@ -42,24 +43,9 @@ public class Game2048 extends Game {
     }
 
     private void drawScene() {
-        drawBackground();
+        view.drawBackground();
         field.draw();
-        drawInfo();
-    }
-
-    private void drawBackground() {
-        for (int y = 0; y < SIDE; y++) {
-            for (int x = 0; x < SIDE; x++) {
-                setCellColor(x, y, Color.SADDLEBROWN);
-            }
-        }
-    }
-
-    private void drawInfo() {
-        final int FONT_SIZE = 15;
-        setCellValueEx(6, 0, Color.NONE, "Ходы: " + turnCount, Color.LAWNGREEN, FONT_SIZE);
-        setCellValueEx(6, 6, Color.NONE, VERSION, Color.YELLOW, FONT_SIZE);
-        setCellValueEx(0, 0, Color.NONE, "?", Color.WHITE, 75);
+        view.drawInfo();
     }
 
     public void finishIfResultIsAchieved() {
@@ -73,18 +59,14 @@ public class Game2048 extends Game {
     private void win(String message) {
         result = Result.WIN;
         isStopped = true;
-        score = field.sumPocketsScore();
-        showMessageDialog(Color.BLACK,
-                message + "\nСчёт: " + ((score * 100) / turnCount) + "\n(Пробел - начать заново)",
-                Color.PALEGOLDENROD, 20);
+        score = (field.sumPocketsScore() * 100) / turnCount;
+        view.showResultDialog(result, message + "\nСчёт: " + score);
     }
 
     private void lose(String message) {
         result = Result.LOSE;
         isStopped = true;
-        showMessageDialog(Color.BLACK,
-                "Вы проиграли!\n" + message + "\n(Пробел - начать заново)",
-                Color.RED, 20);
+        view.showResultDialog(result, "Вы проиграли!\n" + message);
     }
 
     public void setResult(Result result, String resultMessage) {
@@ -119,18 +101,15 @@ public class Game2048 extends Game {
     }
 
     public void showHelpDialog() {
-        String helpMessage = "Эта версия 2048 сделана по мотивам американского бильярда." +
-                "\nШары складываются по правилам 2048. Цель - забить шар #8 в последнюю открытую лузу." +
-                "\nПравый клик по пустой клетке установит биток, проталкивающий шары в лузы." +
-                "\nЧем меньше сделаете ходов, и чем больше очков в лузах, тем больше будет ваш счёт." +
-                "\nЕсли в последней лузе не будет шара #8 или если вы забьёте его раньше времени," +
-                "\nто проиграете. Клик по лузе высвободит шары, разбив счёт лузы на части." +
-                "\nЗажав клавишу ENTER можно продолжительно совершать случайные ходы. Удачи! :)";
-        showMessageDialog(Color.YELLOW, helpMessage, Color.BLACK, 10);
+        view.showHelpDialog();
     }
 
     public boolean isStopped() {
         return isStopped;
+    }
+
+    public int getTurnCount() {
+        return turnCount;
     }
 
     /*
