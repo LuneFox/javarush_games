@@ -71,4 +71,8 @@ public class Orb extends GameObject {
         }
         game.setCellValueEx(x, y, blink ? bgColor1 : bgColor2, sign, color, 90);
     }
+
+    public boolean hasAffinity(Element element) {
+        return this.element == element;
+    }
 }

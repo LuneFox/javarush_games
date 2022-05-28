@@ -30,7 +30,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         if (MenuSelector.isPointingAt("SYMBOLS")) {
             Sign.switchSet();
         } else if (MenuSelector.isPointingAt("MAP")) {
-            game.selectStageUp();
+            game.selectNextStage();
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             game.isAccelerationEnabled = !game.isAccelerationEnabled;
         }
@@ -42,7 +42,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         if (MenuSelector.isPointingAt("SYMBOLS")) {
             Sign.switchSet();
         } else if (MenuSelector.isPointingAt("MAP")) {
-            game.selectStageDown();
+            game.selectPreviousStage();
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             game.isAccelerationEnabled = !game.isAccelerationEnabled;
         }

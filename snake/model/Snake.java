@@ -5,6 +5,7 @@ import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Sign;
+import com.javarush.games.snake.view.impl.GameFieldView;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,13 +16,13 @@ import java.util.LinkedList;
  */
 
 public class Snake {
-    private SnakeGame game;
+    private final SnakeGame game;
     private Element element;
     private Direction direction;
     private GameObject head;
-    private Color[] bodyColor;
-    private ArrayList<GameObject> snakeParts;
-    private LinkedList<Element> elementsAvailable;
+    private final Color[] bodyColor;
+    private final ArrayList<GameObject> snakeParts;
+    private final LinkedList<Element> elementsAvailable;
     private Date starveTime;
     private int breath;
     private int hunger;
@@ -80,13 +81,13 @@ public class Snake {
         removeTail();
     }
 
-    public void interactWithOrb(Orb orb) {
+    public void eatOrb(Orb orb) {
         if (head.x == orb.x && head.y == orb.y && element != Element.AIR) {
             orb.isAlive = false;
             breath++;
             hunger = 0;
             elongateTail();
-            game.setTurnDelay();
+            game.setNormalTurnDelay();
         }
     }
 
@@ -188,7 +189,7 @@ public class Snake {
                 return true;
             }
             if (game.getMap().getLayoutNode(head.x, head.y).getTerrain() != Node.Terrain.VOID) {
-                game.setScore(1, true);
+                game.addScore(1);
             }
             game.getMap().setLayoutNode(head.x, head.y, Node.Terrain.VOID);
             return true;
@@ -247,31 +248,39 @@ public class Snake {
             }
             if (hunger > 100) {
                 removeTail();
-                game.setScore(-5, true);
+                game.addScore(-5);
                 hunger = 0;
             }
             starveTime = new Date();
         }
     }
 
-    public void rotateToNextElement(SnakeGame game) {
+    public void forceSwitchToElement(Element element) {
+        do {
+            rotateToNextElement();
+        } while (getElement() != element);
+
+        canChangeElement = false;
+    }
+
+    public void rotateToNextElement() {
         if (canChangeElement) {
             Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
             elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
             elementsAvailable.add(movingElement);                  // adding it to the end
             setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
-            game.drawElementsPanel();
+            GameFieldView.getInstance().drawElementsPanel();
         }
     }
 
-    public void rotateToPreviousElement(SnakeGame game) {
+    public void rotateToPreviousElement() {
         if (canChangeElement) {
             int lastElement = elementsAvailable.size() - 1;
             Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
             elementsAvailable.remove(movingElement);                    // removing it from list (it was last)
             elementsAvailable.add(0, movingElement);                    // instantly adding it to the beginning
             setElement(elementsAvailable.get(0));                       // making it new element
-            game.drawElementsPanel();
+            GameFieldView.getInstance().drawElementsPanel();
         }
     }
 
@@ -380,6 +389,10 @@ public class Snake {
 
     public LinkedList<Element> getElementsAvailable() {
         return elementsAvailable;
+    }
+
+    public void learnElement(Element element) {
+        elementsAvailable.add(element);
     }
 
     public int getLength() {

@@ -16,13 +16,13 @@ public class GameFieldControlStrategy implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (game.isStopped()) return;
-        game.snake.rotateToPreviousElement(game);
+        game.snake.rotateToPreviousElement();
     }
 
     @Override
     public void rightClick(int x, int y) {
         if (game.isStopped()) return;
-        game.snake.rotateToNextElement(game);
+        game.snake.rotateToNextElement();
     }
 
     @Override
@@ -87,12 +87,12 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     @Override
     public void pressEnter() {
-        game.snake.rotateToNextElement(game);
+        game.snake.rotateToNextElement();
     }
 
     @Override
     public void pressEscape() {
-        game.snake.rotateToPreviousElement(game);
+        game.snake.rotateToPreviousElement();
     }
 
     @Override
@@ -103,19 +103,19 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     private void setHighSpeed() {
         if (game.isAccelerationEnabled) {
-            if (game.needShortPauseBeforeSpeedUp) {
-                game.setTurnDelay();
+            if (game.isDelayBeforeAccelerationNeeded) {
+                game.setNormalTurnDelay();
             } else {
                 game.setTurnDelay(50);
             }
-            game.needShortPauseBeforeSpeedUp = false;
+            game.isDelayBeforeAccelerationNeeded = false;
         }
     }
 
     private void setNormalSpeed() {
         if (game.isAccelerationEnabled) {
-            game.needShortPauseBeforeSpeedUp = true;
-            game.setTurnDelay(game.getSpeed());
+            game.isDelayBeforeAccelerationNeeded = true;
+            game.setTurnDelay(game.getNormalTurnDelay());
         }
     }
 }

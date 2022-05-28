@@ -20,7 +20,7 @@ public class MapEditorView extends View {
     public void update() {
         Node node = new Node(1, 1, game, brush);
         game.getMap().setLayoutNode(1, 1, node.getTerrain());
-        game.drawMap();
+        GameFieldView.getInstance().drawMap();
         Message.print(3, 1, node.getTerrain().name(), Color.WHITE);
     }
 

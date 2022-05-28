@@ -33,8 +33,8 @@ public class MainMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressEnter() {
         if (MenuSelector.isPointingAt("START")) {
-            Phase.set(Phase.GAME_FIELD);
             game.createGame();
+            Phase.set(Phase.GAME_FIELD);
         } else if (MenuSelector.isPointingAt("OPTIONS")) {
             MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);

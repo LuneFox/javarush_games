@@ -27,6 +27,10 @@ public enum Sign {
     private static SignType usedType;
     private final String[] appearances;
 
+    static {
+        setUsedType(SignType.KANJI);
+    }
+
     Sign(String[] appearances) {
         this.appearances = appearances;
     }
