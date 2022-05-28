@@ -47,13 +47,13 @@ public class Node extends GameObject {
                 this.terrain = Terrain.WATER;
                 this.color = Color.LIGHTBLUE;
                 this.bgColor = Color.DEEPSKYBLUE;
-                this.sign = Sign.getSign(Sign.TERRAIN_WATER);;
+                this.sign = Sign.getSign(Sign.TERRAIN_WATER);
                 break;
             case 3:
                 this.terrain = Terrain.FIRE;
                 this.color = Color.YELLOW;
                 this.bgColor = Color.ORANGERED;
-                this.sign = Sign.getSign(Sign.TERRAIN_FIRE);;
+                this.sign = Sign.getSign(Sign.TERRAIN_FIRE);
                 break;
             case 4:
                 this.terrain = Terrain.FOREST;
@@ -83,7 +83,7 @@ public class Node extends GameObject {
                 this.terrain = Terrain.SAND;
                 this.color = Color.YELLOW;
                 this.bgColor = Color.SANDYBROWN;
-                this.sign = Sign.getSign(Sign.TERRAIN_SAND);;
+                this.sign = Sign.getSign(Sign.TERRAIN_SAND);
                 break;
             case 9:
                 this.terrain = Terrain.VOID;
@@ -108,7 +108,7 @@ public class Node extends GameObject {
     // MECHANICS
 
     private void causeEffect() { // interact with surrounding nodes
-        if (Phase.is(Phase.GAME)) {
+        if (Phase.is(Phase.GAME_FIELD)) {
             if (terrain == Terrain.WOOD || terrain == Terrain.FOREST) {
                 setOnFire();
             }

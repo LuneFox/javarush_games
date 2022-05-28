@@ -11,7 +11,7 @@ import com.javarush.games.snake.view.SignType;
 import java.util.ArrayList;
 
 public class Menu {
-    private SnakeGame game;
+    private final SnakeGame game;
     ArrayList<HelpPage> helpPages = new ArrayList<>();
     public int lastPointerPosition;
     int currentHelpPage;
@@ -43,19 +43,19 @@ public class Menu {
 
     public void displayOptions() {
         drawBlackBackground();
-        Phase.set(Phase.OPTIONS);
+        Phase.set(Phase.OPTIONS_MENU);
         Message.print(-1, 7, "OPTIONS", Color.SKYBLUE);
         Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
         Selector.draw(2, 12);
         Message.print(17, 12, "STAGE " + (game.getStage() + 1), Color.WHITE);
         Message.print(17, 14, Sign.getUsedType().toString(), Color.WHITE);
         new Orb(23, 14, Element.WATER).draw(game);
-        Message.print(17, 16, (game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE);
+        Message.print(17, 16, (game.isAccelerationEnabled) ? "ENABLED" : "DISABLED", Color.WHITE);
     }
 
     public void displayControls() {
         drawBlackBackground();
-        Phase.set(Phase.CONTROLS);
+        Phase.set(Phase.CONTROLS_MENU);
         HelpPage.getControls().draw(game);
     }
 
@@ -67,7 +67,7 @@ public class Menu {
         helpPages.add(HelpPage.getTips1());
         helpPages.add(HelpPage.getTips2());
         drawBlackBackground();
-        Phase.set(Phase.HELP);
+        Phase.set(Phase.HELP_MENU);
         helpPages.get(currentHelpPage).draw(game);
         Message.print(-1, 30, "← PAGE " + (currentHelpPage + 1) + "/" + helpPages.size() + " →", Color.WHITE);
     }
@@ -87,7 +87,7 @@ public class Menu {
     }
 
     public void startGame() {
-        Phase.set(Phase.GAME);
+        Phase.set(Phase.GAME_FIELD);
         game.createGame();
     }
 
@@ -95,7 +95,7 @@ public class Menu {
     // MAP EDITOR (COMMENT PRINT LINES OUT BEFORE UPLOADING TO JAVARUSH)
 
     public void displayMapEditor() {
-        Phase.set(Phase.MAP_EDIT);
+        Phase.set(Phase.MAP_EDITOR);
         Node node = new Node(1, 1, game, brush);
         game.getMap().setLayoutNode(1, 1, node.getTerrain());
         game.drawMap();

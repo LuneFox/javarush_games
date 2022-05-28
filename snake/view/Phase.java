@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 
 public enum Phase {
-    CONTROLS, GAME, HELP, MAIN_MENU, MAP_EDIT, OPTIONS;
+    CONTROLS_MENU, GAME_FIELD, HELP_MENU, MAIN_MENU, MAP_EDITOR, OPTIONS_MENU;
 
     private static final LinkedList<Phase> PHASES;
 

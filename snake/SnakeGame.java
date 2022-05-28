@@ -3,7 +3,7 @@ package com.javarush.games.snake;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
-import com.javarush.games.snake.controller.InputEvent;
+import com.javarush.games.snake.controller.Controller;
 import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Sign;
@@ -20,8 +20,8 @@ public class SnakeGame extends Game {
     public static SnakeGame game;
     public static final int SIZE = 32;
     private static final int MAX_TURN_DELAY = 300;
-    private InputEvent ie;
-    private Menu menu;
+    private Controller controller;
+    public Menu menu;
 
     // Game flow parameters
     private String gameOverReason;
@@ -34,30 +34,30 @@ public class SnakeGame extends Game {
     private boolean isStopped;
     private boolean isPaused;
     private int stage;
-    public boolean acceleration;
-    public boolean speedUpDelay;
+    public boolean isAccelerationEnabled;
+    public boolean needShortPauseBeforeSpeedUp;
 
     // Game objects
-    private Snake snake;
-    private Map map;
-    private Orb neutralOrb;
-    private ArrayList<Orb> orbs;
+    public Snake snake;
+    public Map map;
+    public Orb neutralOrb;
+    public ArrayList<Orb> orbs;
 
     // SETUP
 
     public void initialize() {
         showGrid(false);
         setScreenSize(SIZE, SIZE);
+        SnakeGame.game = this;
         Message.setGame(this);
+        controller = new Controller(this);
 
         Sign.setUsedType(SignType.KANJI);
-        game = this;
         menu = new Menu(this);
-        ie = new InputEvent(this);
         Menu.Selector.setPointer(0);
         menu.displayMain();
         stage = 0;
-        acceleration = true;
+        isAccelerationEnabled = true;
     }
 
     public final void createGame() {
@@ -76,7 +76,7 @@ public class SnakeGame extends Game {
         // Launch
         isStopped = false;
         isPaused = false;
-        speedUpDelay = false;
+        needShortPauseBeforeSpeedUp = false;
         turnDelay = MAX_TURN_DELAY;
         setTurnTimer(turnDelay);
         drawScene();
@@ -184,7 +184,7 @@ public class SnakeGame extends Game {
     }
 
     private void drawInterface() {
-        if (Phase.is(Phase.GAME)) {
+        if (Phase.is(Phase.GAME_FIELD)) {
             Message.print(0, 0, "hunger  : ", Color.CORAL);
             Message.print(0, 1, "strength: " + (snake.getLength()), Color.WHITE);
             Message.print(0, 2, "element : " + (snake.getElementsAvailable().get(0)), Color.YELLOW);
@@ -228,7 +228,7 @@ public class SnakeGame extends Game {
     }
 
     private void drawSnake() {
-        if (Phase.is(Phase.GAME)) {
+        if (Phase.is(Phase.GAME_FIELD)) {
             snake.draw();
         }
     }
@@ -311,28 +311,6 @@ public class SnakeGame extends Game {
     }
 
 
-    // CONTROLS
-
-    @Override
-    public void onKeyPress(Key key) {
-        ie.keyPress(key);
-    }
-
-    @Override
-    public void onKeyReleased(Key key) {
-        ie.keyRelease(key);
-    }
-
-    @Override
-    public void onMouseLeftClick(int x, int y) {
-        ie.leftClick(x, y);
-    }
-
-    @Override
-    public void onMouseRightClick(int x, int y) {
-        ie.rightClick(x, y);
-    }
-
     // GETTERS
 
     public int getSnakeLength() {
@@ -400,5 +378,30 @@ public class SnakeGame extends Game {
 
     public void decreaseLifetime() {
         this.lifetime -= 1;
+    }
+
+
+    /**
+     * Controls
+     */
+
+    @Override
+    public void onKeyPress(Key key) {
+        controller.pressKey(key);
+    }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        controller.releaseKey(key);
+    }
+
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+        controller.leftClick(x, y);
+    }
+
+    @Override
+    public void onMouseRightClick(int x, int y) {
+        controller.rightClick(x, y);
     }
 }
