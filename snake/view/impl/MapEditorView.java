@@ -51,23 +51,29 @@ public class MapEditorView extends View {
 
     public void printTerrain() {
         Map map = game.getMap();
+
         System.out.println("new int[][]{");
 
         for (int y = 0; y < SnakeGame.SIZE; y++) {
             for (int x = 0; x < SnakeGame.SIZE; x++) {
                 int number = (y < 4 ? 9 : map.getLayoutNode(x, y).getTerrain().ordinal());
+
                 if (x == 0) {
                     System.out.print("{");
                 }
+
                 if (x < SnakeGame.SIZE - 1) {
                     System.out.print(number + ", ");
                 }
+
                 if (x == SnakeGame.SIZE - 1) {
                     System.out.print(number);
                     System.out.println("},");
                 }
+
             }
         }
+
         System.out.println("});");
     }
 

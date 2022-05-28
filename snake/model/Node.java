@@ -26,7 +26,7 @@ public class Node extends GameObject {
     // CONSTRUCTOR
 
     public Node(int x, int y, SnakeGame game, int type) {
-        super(x, y, game);
+        super(x, y);
         this.wetDate = new Date();
         this.isMoist = false;
         switch (type) {
