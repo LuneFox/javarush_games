@@ -1,7 +1,7 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
-import com.javarush.games.snake.model.Menu;
+import com.javarush.games.snake.model.MenuSelector;
 
 public class OptionsMenuControlStrategy implements ControlStrategy {
     private static OptionsMenuControlStrategy instance;
@@ -13,23 +13,23 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        Menu.Selector.selectUp();
+        MenuSelector.movePointerUp();
         game.menu.displayOptions();
     }
 
     @Override
     public void pressDown() {
-        Menu.Selector.selectDown();
+        MenuSelector.movePointerDown();
         game.menu.displayOptions();
     }
 
     @Override
     public void pressRight() {
-        if (Menu.Selector.nowAt("SYMBOLS")) {
+        if (MenuSelector.isPointingAt("SYMBOLS")) {
             game.menu.switchSymbolSet();
-        } else if (Menu.Selector.nowAt("MAP")) {
+        } else if (MenuSelector.isPointingAt("MAP")) {
             game.menu.selectStageUp();
-        } else if (Menu.Selector.nowAt("ACCELERATION")) {
+        } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             game.isAccelerationEnabled = !game.isAccelerationEnabled;
         }
         game.menu.displayOptions();
@@ -37,11 +37,11 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
 
     @Override
     public void pressLeft() {
-        if (Menu.Selector.nowAt("SYMBOLS")) {
+        if (MenuSelector.isPointingAt("SYMBOLS")) {
             game.menu.switchSymbolSet();
-        } else if (Menu.Selector.nowAt("MAP")) {
+        } else if (MenuSelector.isPointingAt("MAP")) {
             game.menu.selectStageDown();
-        } else if (Menu.Selector.nowAt("ACCELERATION")) {
+        } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             game.isAccelerationEnabled = !game.isAccelerationEnabled;
         }
         game.menu.displayOptions();
@@ -59,7 +59,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
 
     @Override
     public void pressEscape() {
-        Menu.Selector.setPointer(game.menu.lastPointerPosition);
+        MenuSelector.setPointerPosition(game.menu.lastPointerPosition);
         game.menu.displayMain();
     }
 }

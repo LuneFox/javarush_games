@@ -1,7 +1,7 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
-import com.javarush.games.snake.model.Menu;
+import com.javarush.games.snake.model.MenuSelector;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.view.Phase;
 
@@ -78,7 +78,7 @@ public class GameFieldControlStrategy implements ControlStrategy {
         if (game.isStopped()) {
             game.stopTurnTimer();
             Phase.set(Phase.MAIN_MENU);
-            Menu.Selector.setPointer(0);
+            MenuSelector.setPointerPosition(0);
             game.menu.displayMain();
         } else {
             game.pause();

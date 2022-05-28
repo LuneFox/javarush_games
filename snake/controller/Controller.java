@@ -6,12 +6,8 @@ import com.javarush.games.snake.controller.strategies.*;
 import com.javarush.games.snake.view.Phase;
 
 public class Controller {
-    protected static SnakeGame game;
+    protected static SnakeGame game = SnakeGame.getInstance();
     private ControlStrategy controlStrategy;
-
-    public Controller(SnakeGame game) {
-        Controller.game = game;
-    }
 
     public final void leftClick(int x, int y) {
         controlStrategy = selectStrategyAccordingToPhase();

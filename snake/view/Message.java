@@ -4,18 +4,14 @@ import com.javarush.engine.cell.*;
 import com.javarush.games.snake.SnakeGame;
 
 public class Message {
+    private static final SnakeGame game = SnakeGame.getInstance();
     private static final Color BACKGROUND_COLOR = Color.BLACK;
     private static final int TEXT_SIZE = 90;
-    private static SnakeGame game;
 
     private final int x;
     private final int y;
     private final char[] charSequence;
     private final Color color;
-
-    public static void setGame(SnakeGame game) {
-        Message.game = game;
-    }
 
     public static void print(int x, int y, String text, Color color) {
         Message message = new Message(x, y, text, color);

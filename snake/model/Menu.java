@@ -11,14 +11,13 @@ import com.javarush.games.snake.view.SignType;
 import java.util.ArrayList;
 
 public class Menu {
-    private final SnakeGame game;
+    private static final SnakeGame game = SnakeGame.getInstance();
     ArrayList<HelpPage> helpPages = new ArrayList<>();
     public int lastPointerPosition;
     int currentHelpPage;
 
-    public Menu(SnakeGame game) {
-        this.game = game;
-        Selector.getInstance(game);
+    public Menu() {
+
     }
 
     private int brush;
@@ -35,9 +34,9 @@ public class Menu {
         Message.print(-1, 5, "ALCHEMY SNAKE", Color.FUCHSIA);
         Message.print(-1, 7, "MASTER OF ELEMENTS", Color.PINK);
         Message.print(-1, 30, "VER " + Strings.VERSION, Color.BLUE);
-        Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP");
-        // Selector.setEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
-        Selector.draw(13, 12);
+        MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP");
+        // Selector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
+        MenuSelector.drawMenuEntriesWithPointer(13, 12);
         currentHelpPage = 0;
     }
 
@@ -45,8 +44,8 @@ public class Menu {
         drawBlackBackground();
         Phase.set(Phase.OPTIONS_MENU);
         Message.print(-1, 7, "OPTIONS", Color.SKYBLUE);
-        Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
-        Selector.draw(2, 12);
+        MenuSelector.setMenuEntries("MAP", "SYMBOLS", "ACCELERATION");
+        MenuSelector.drawMenuEntriesWithPointer(2, 12);
         Message.print(17, 12, "STAGE " + (game.getStage() + 1), Color.WHITE);
         Message.print(17, 14, Sign.getUsedType().toString(), Color.WHITE);
         new Orb(23, 14, Element.WATER).draw(game);
@@ -182,85 +181,5 @@ public class Menu {
 
     public void switchSymbolSet() {
         Sign.setUsedType(Sign.getUsedType() == SignType.KANJI ? SignType.EMOJI : SignType.KANJI);
-    }
-
-
-    // INNER CLASSES
-
-    public static class Selector {
-        SnakeGame game;
-        ArrayList<String> entries;
-        static Selector instance;
-        int pointer;
-        private final static String POINTER_SIGN = "→";
-
-
-        // CONSTRUCTOR
-
-        private Selector(SnakeGame game) {
-            this.game = game;
-            entries = new ArrayList<>();
-            this.pointer = 0;
-        }
-
-
-        // VISUALS
-
-        public static void draw(int x, int y) {
-            for (int i = 0; i < instance.entries.size(); i++) {
-                if (instance.pointer == i) {
-                    instance.game.setCellValueEx(x - 2, y, Color.NONE, POINTER_SIGN, Color.YELLOW, 90);
-                } else {
-                    instance.game.setCellValue(x - 2, y, "");
-                }
-                Message.print(x, y, instance.entries.get(i), (instance.pointer == i ? Color.WHITE : Color.GRAY));
-                y += 2;
-            }
-        }
-
-        public static void selectDown() {
-            if (instance.pointer < instance.entries.size() - 1) {
-                instance.pointer++;
-            }
-        }
-
-        public static void selectUp() {
-            if (instance.pointer > 0) {
-                instance.pointer--;
-            }
-        }
-
-        // MECHANICS
-
-        public static boolean nowAt(String option) {
-            return (option.equals(instance.entries.get(instance.pointer)));
-        }
-
-
-        // GETTERS
-
-        static Selector getInstance(SnakeGame game) {
-            if (instance == null) {
-                instance = new Selector(game);
-            }
-            return instance;
-        }
-
-        public static int getPointer() {
-            return instance.pointer;
-        }
-
-        // SETTERS
-
-        static void setEntries(String... strings) {
-            instance.entries.clear();
-            for (String s : strings) {
-                instance.entries.add(s);
-            }
-        }
-
-        public static void setPointer(int position) {
-            instance.pointer = position;
-        }
     }
 }

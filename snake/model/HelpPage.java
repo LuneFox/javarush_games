@@ -69,15 +69,15 @@ public class HelpPage {
         result.messages.add(new Message(3, 19, "BURNING WOOD", Color.WHITE));
         result.messages.add(new Message(3, 21, "TALL WALL", Color.WHITE));
         result.messages.add(new Message(3, 23, "SECRET WORMHOLE", Color.WHITE));
-        result.nodes.add(new Node(1, 7, SnakeGame.game, 0));
-        result.nodes.add(new Node(1, 9, SnakeGame.game, 2));
-        result.nodes.add(new Node(1, 11, SnakeGame.game, 8));
-        result.nodes.add(new Node(1, 13, SnakeGame.game, 4));
-        result.nodes.add(new Node(1, 15, SnakeGame.game, 6));
-        result.nodes.add(new Node(1, 17, SnakeGame.game, 1));
-        result.nodes.add(new Node(1, 19, SnakeGame.game, 3));
-        result.nodes.add(new Node(1, 21, SnakeGame.game, 7));
-        result.nodes.add(new Node(1, 23, SnakeGame.game, 5));
+        result.nodes.add(new Node(1, 7, SnakeGame.getInstance(), 0));
+        result.nodes.add(new Node(1, 9, SnakeGame.getInstance(), 2));
+        result.nodes.add(new Node(1, 11, SnakeGame.getInstance(), 8));
+        result.nodes.add(new Node(1, 13, SnakeGame.getInstance(), 4));
+        result.nodes.add(new Node(1, 15, SnakeGame.getInstance(), 6));
+        result.nodes.add(new Node(1, 17, SnakeGame.getInstance(), 1));
+        result.nodes.add(new Node(1, 19, SnakeGame.getInstance(), 3));
+        result.nodes.add(new Node(1, 21, SnakeGame.getInstance(), 7));
+        result.nodes.add(new Node(1, 23, SnakeGame.getInstance(), 5));
         return result;
     }
 

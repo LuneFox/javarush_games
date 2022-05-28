@@ -17,7 +17,7 @@ import java.util.Date;
 
 public class SnakeGame extends Game {
     // Global parameters
-    public static SnakeGame game;
+    private static SnakeGame instance;
     public static final int SIZE = 32;
     private static final int MAX_TURN_DELAY = 300;
     private Controller controller;
@@ -48,13 +48,12 @@ public class SnakeGame extends Game {
     public void initialize() {
         showGrid(false);
         setScreenSize(SIZE, SIZE);
-        SnakeGame.game = this;
-        Message.setGame(this);
-        controller = new Controller(this);
-
+        SnakeGame.instance = this;
+        controller = new Controller();
         Sign.setUsedType(SignType.KANJI);
-        menu = new Menu(this);
-        Menu.Selector.setPointer(0);
+
+        menu = new Menu();
+        MenuSelector.setPointerPosition(0);
         menu.displayMain();
         stage = 0;
         isAccelerationEnabled = true;
@@ -380,8 +379,11 @@ public class SnakeGame extends Game {
         this.lifetime -= 1;
     }
 
+    public static SnakeGame getInstance() {
+        return instance;
+    }
 
-    /**
+    /*
      * Controls
      */
 

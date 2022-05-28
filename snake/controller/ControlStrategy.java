@@ -4,7 +4,7 @@ package com.javarush.games.snake.controller;
 import com.javarush.games.snake.SnakeGame;
 
 public interface ControlStrategy {
-    SnakeGame game = SnakeGame.game;
+    SnakeGame game = SnakeGame.getInstance();
 
     default void leftClick(int x, int y) {
     }

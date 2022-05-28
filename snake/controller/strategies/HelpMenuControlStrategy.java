@@ -1,7 +1,7 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
-import com.javarush.games.snake.model.Menu;
+import com.javarush.games.snake.model.MenuSelector;
 
 public class HelpMenuControlStrategy implements ControlStrategy {
     private static HelpMenuControlStrategy instance;
@@ -23,7 +23,7 @@ public class HelpMenuControlStrategy implements ControlStrategy {
 
     @Override
     public void pressEscape() {
-        Menu.Selector.setPointer(game.menu.lastPointerPosition);
+        MenuSelector.setPointerPosition(game.menu.lastPointerPosition);
         game.menu.displayMain();
     }
 }
