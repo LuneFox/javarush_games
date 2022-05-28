@@ -6,10 +6,10 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.controller.InputEvent;
 import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
-import com.javarush.games.snake.model.enums.Graphics;
+import com.javarush.games.snake.view.Sign;
+import com.javarush.games.snake.view.SignType;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.Phase;
-import com.javarush.games.snake.view.Signs;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -50,7 +50,7 @@ public class SnakeGame extends Game {
         setScreenSize(SIZE, SIZE);
         Message.setGame(this);
 
-        Signs.set(Graphics.KANJI);
+        Sign.setUsedType(SignType.KANJI);
         game = this;
         menu = new Menu(this);
         ie = new InputEvent(this);

@@ -3,10 +3,10 @@ package com.javarush.games.snake.model;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Element;
-import com.javarush.games.snake.model.enums.Graphics;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.Phase;
-import com.javarush.games.snake.view.Signs;
+import com.javarush.games.snake.view.Sign;
+import com.javarush.games.snake.view.SignType;
 
 import java.util.ArrayList;
 
@@ -48,7 +48,7 @@ public class Menu {
         Selector.setEntries("MAP", "SYMBOLS", "ACCELERATION");
         Selector.draw(2, 12);
         Message.print(17, 12, "STAGE " + (game.getStage() + 1), Color.WHITE);
-        Message.print(17, 14, Signs.currentSetting.toString(), Color.WHITE);
+        Message.print(17, 14, Sign.getUsedType().toString(), Color.WHITE);
         new Orb(23, 14, Element.WATER).draw(game);
         Message.print(17, 16, (game.acceleration) ? "ENABLED" : "DISABLED", Color.WHITE);
     }
@@ -181,11 +181,7 @@ public class Menu {
     }
 
     public void switchSymbolSet() {
-        if (Signs.currentSetting == Graphics.KANJI) {
-            Signs.set(Graphics.EMOJI);
-        } else {
-            Signs.set(Graphics.KANJI);
-        }
+        Sign.setUsedType(Sign.getUsedType() == SignType.KANJI ? SignType.EMOJI : SignType.KANJI);
     }
 
 

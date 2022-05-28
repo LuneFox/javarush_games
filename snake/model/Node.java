@@ -1,9 +1,10 @@
 package com.javarush.games.snake.model;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.view.Phase;
-import com.javarush.games.snake.view.Signs;
+import com.javarush.games.snake.view.Sign;
 
 import java.util.Date;
 
@@ -34,61 +35,61 @@ public class Node extends GameObject {
                 this.terrain = Terrain.FIELD;
                 this.color = Color.LIGHTGREEN;
                 this.bgColor = Color.PALEGREEN;
-                this.sign = Signs.fieldSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_FIELD);
                 break;
             case 1:
                 this.terrain = Terrain.WOOD;
                 this.color = Color.SANDYBROWN;
                 this.bgColor = Color.SADDLEBROWN;
-                this.sign = Signs.woodSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_WOOD);
                 break;
             case 2:
                 this.terrain = Terrain.WATER;
                 this.color = Color.LIGHTBLUE;
                 this.bgColor = Color.DEEPSKYBLUE;
-                this.sign = Signs.waterSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_WATER);;
                 break;
             case 3:
                 this.terrain = Terrain.FIRE;
                 this.color = Color.YELLOW;
                 this.bgColor = Color.ORANGERED;
-                this.sign = Signs.fireSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_FIRE);;
                 break;
             case 4:
                 this.terrain = Terrain.FOREST;
                 this.color = Color.LIGHTGREEN;
                 this.bgColor = Color.FORESTGREEN;
-                this.sign = (game.getRandomNumber(2) == 1) ? Signs.forestSign1 : Signs.forestSign2;
+                this.sign = (game.getRandomNumber(2) == 1) ? Sign.getSign(Sign.TERRAIN_FOREST_1) : Sign.getSign(Sign.TERRAIN_FOREST_2);
                 break;
             case 5:
                 this.terrain = Terrain.WORMHOLE;
                 this.color = Color.PURPLE;
                 this.bgColor = Color.BLACK;
-                this.sign = Signs.wormHoleSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_WORMHOLE);
                 break;
             case 6:
                 this.terrain = Terrain.MOUNTAIN;
                 this.color = Color.ORANGE;
                 this.bgColor = Color.BROWN;
-                this.sign = Signs.mountainSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_MOUNTAIN);
                 break;
             case 7:
                 this.terrain = Terrain.WALL;
                 this.color = Color.WHITE;
                 this.bgColor = Color.GRAY;
-                this.sign = Signs.wallSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_WALL);
                 break;
             case 8:
                 this.terrain = Terrain.SAND;
                 this.color = Color.YELLOW;
                 this.bgColor = Color.SANDYBROWN;
-                this.sign = Signs.sandSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_SAND);;
                 break;
             case 9:
                 this.terrain = Terrain.VOID;
                 this.color = Color.BLACK;
                 this.bgColor = Color.BLACK;
-                this.sign = Signs.voidSign;
+                this.sign = Sign.getSign(Sign.TERRAIN_VOID);
                 break;
             default:
                 break;

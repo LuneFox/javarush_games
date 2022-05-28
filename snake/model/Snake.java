@@ -4,7 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
-import com.javarush.games.snake.view.Signs;
+import com.javarush.games.snake.view.Sign;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,7 +49,7 @@ public class Snake {
     // VISUALS
 
     public void draw() {
-        String head = isAlive ? Signs.headSign : Signs.deadSign;
+        String head = isAlive ? Sign.getSign(Sign.SNAKE_HEAD) : Sign.getSign(Sign.SNAKE_DEAD);
         checkDead();
         drawStripedBody(head);
     }
@@ -61,7 +61,7 @@ public class Snake {
                         head, Color.WHITE, 90);
             } else {
                 game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[i % 2],
-                        Signs.bodySign, Color.WHITE, 90);
+                        Sign.getSign(Sign.SNAKE_BODY), Color.WHITE, 90);
             }
         }
     }
@@ -269,7 +269,7 @@ public class Snake {
             int lastElement = elementsAvailable.size() - 1;
             Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
             elementsAvailable.remove(movingElement);                    // removing it from list (it was last)
-            elementsAvailable.add(0, movingElement);             // instantly adding it to the beginning
+            elementsAvailable.add(0, movingElement);                    // instantly adding it to the beginning
             setElement(elementsAvailable.get(0));                       // making it new element
             game.drawElementsPanel();
         }

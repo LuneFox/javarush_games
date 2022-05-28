@@ -1,9 +1,9 @@
 package com.javarush.games.snake.model;
 
-import com.javarush.engine.cell.*;
-import com.javarush.games.snake.model.GameObject;
+import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
 import com.javarush.games.snake.model.enums.Element;
-import com.javarush.games.snake.view.Signs;
+import com.javarush.games.snake.view.Sign;
 
 import java.util.Date;
 
@@ -26,37 +26,37 @@ public class Orb extends GameObject {
                 color = Color.WHITE;
                 bgColor1 = Color.PURPLE;
                 bgColor2 = Color.MEDIUMVIOLETRED;
-                sign = Signs.neutralOrb;
+                sign = Sign.getSign(Sign.ORB_NEUTRAL);
                 break;
             case WATER:
                 color = Color.WHITE;
                 bgColor1 = Color.BLUE;
                 bgColor2 = Color.DARKBLUE;
-                sign = Signs.waterOrb;
+                sign = Sign.getSign(Sign.ORB_WATER);
                 break;
             case FIRE:
                 color = Color.WHITE;
                 bgColor1 = Color.RED;
                 bgColor2 = Color.ORANGERED;
-                sign = Signs.fireOrb;
+                sign = Sign.getSign(Sign.ORB_FIRE);
                 break;
             case EARTH:
                 color = Color.WHITE;
                 bgColor1 = Color.BROWN;
                 bgColor2 = Color.DARKRED;
-                sign = Signs.earthOrb;
+                sign = Sign.getSign(Sign.ORB_EARTH);
                 break;
             case AIR:
                 color = Color.WHITE;
                 bgColor1 = Color.LIGHTSKYBLUE;
                 bgColor2 = Color.LIGHTBLUE;
-                sign = Signs.airOrb;
+                sign = Sign.getSign(Sign.ORB_AIR);
                 break;
             case ALMIGHTY:
                 color = Color.WHITE;
                 bgColor1 = Color.ORCHID;
                 bgColor2 = Color.MEDIUMORCHID;
-                sign = Signs.almightyOrb;
+                sign = Sign.getSign(Sign.ORB_ALMIGHTY);
                 break;
             default:
                 break;
