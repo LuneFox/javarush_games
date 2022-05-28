@@ -56,8 +56,7 @@ public class Controller {
             case MAP_EDITOR:
                 return MapEditorControlStrategy.getInstance();
             default:
-                return new ControlStrategy() {
-                };
+                throw new IllegalArgumentException("Unimplemented strategy");
         }
     }
 }

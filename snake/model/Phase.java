@@ -41,11 +41,7 @@ public enum Phase {
             case GAME_FIELD:
                 return GameFieldView.getInstance();
             default:
-                return new View() {
-                    @Override
-                    public void update() {
-                    }
-                };
+                throw new IllegalArgumentException("Unimplemented view");
         }
     }
 
