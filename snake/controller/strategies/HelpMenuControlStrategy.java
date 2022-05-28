@@ -2,6 +2,8 @@ package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
 import com.javarush.games.snake.model.MenuSelector;
+import com.javarush.games.snake.model.Phase;
+import com.javarush.games.snake.view.impl.HelpMenuView;
 
 public class HelpMenuControlStrategy implements ControlStrategy {
     private static HelpMenuControlStrategy instance;
@@ -13,17 +15,19 @@ public class HelpMenuControlStrategy implements ControlStrategy {
 
     @Override
     public void pressRight() {
-        game.menu.nextHelpPage();
+        HelpMenuView.getInstance().nextHelpPage();
+        Phase.set(Phase.HELP_MENU);
     }
 
     @Override
     public void pressLeft() {
-        game.menu.previousHelpPage();
+        HelpMenuView.getInstance().previousHelpPage();
+        Phase.set(Phase.HELP_MENU);
     }
 
     @Override
     public void pressEscape() {
-        MenuSelector.setPointerPosition(game.menu.lastPointerPosition);
-        game.menu.displayMain();
+        MenuSelector.loadLastPointerPosition();
+        Phase.set(Phase.MAIN_MENU);
     }
 }

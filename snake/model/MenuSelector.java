@@ -14,6 +14,7 @@ public class MenuSelector {
 
     private final ArrayList<String> menuEntries;
     private int pointerPosition;
+    private int lastPointerPosition;
 
     static {
         instance = new MenuSelector();
@@ -63,16 +64,20 @@ public class MenuSelector {
         return (option.equalsIgnoreCase(currentlySelectedOption));
     }
 
-    static void setMenuEntries(String... strings) {
+    public static void setMenuEntries(String... strings) {
         instance.menuEntries.clear();
         Collections.addAll(instance.menuEntries, strings);
     }
 
-    public static void setPointerPosition(int position) {
-        instance.pointerPosition = position;
+    public static void saveLastPointerPosition() {
+        instance.lastPointerPosition = instance.pointerPosition;
     }
 
-    public static int getPointerPosition() {
-        return instance.pointerPosition;
+    public static void loadLastPointerPosition() {
+        instance.pointerPosition = instance.lastPointerPosition;
+    }
+
+    public static void setPointerPosition(int position) {
+        instance.pointerPosition = position;
     }
 }

@@ -3,7 +3,7 @@ package com.javarush.games.snake.controller;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.controller.strategies.*;
-import com.javarush.games.snake.view.Phase;
+import com.javarush.games.snake.model.Phase;
 
 public class Controller {
     protected static SnakeGame game = SnakeGame.getInstance();
@@ -42,7 +42,7 @@ public class Controller {
     }
 
     private ControlStrategy selectStrategyAccordingToPhase() {
-        switch (Phase.getCurrent()) {
+        switch (Phase.getCurrentPhase()) {
             case GAME_FIELD:
                 return GameFieldControlStrategy.getInstance();
             case HELP_MENU:

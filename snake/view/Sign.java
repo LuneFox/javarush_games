@@ -31,6 +31,10 @@ public enum Sign {
         this.appearances = appearances;
     }
 
+    public static void switchSet() {
+        usedType = (usedType == SignType.KANJI) ? SignType.EMOJI : SignType.KANJI;
+    }
+
     public static String getSign(Sign sign) {
         return sign.appearances[usedType.ordinal()];
     }

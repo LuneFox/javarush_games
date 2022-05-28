@@ -1,7 +1,9 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
+import com.javarush.games.snake.model.Map;
 import com.javarush.games.snake.model.MenuSelector;
+import com.javarush.games.snake.model.Phase;
 
 public class MainMenuControlStrategy implements ControlStrategy {
     private static MainMenuControlStrategy instance;
@@ -14,13 +16,13 @@ public class MainMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressUp() {
         MenuSelector.movePointerUp();
-        game.menu.displayMain();
+        Phase.set(Phase.MAIN_MENU);
     }
 
     @Override
     public void pressDown() {
         MenuSelector.movePointerDown();
-        game.menu.displayMain();
+        Phase.set(Phase.MAIN_MENU);
     }
 
     @Override
@@ -31,25 +33,25 @@ public class MainMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressEnter() {
         if (MenuSelector.isPointingAt("START")) {
-            game.menu.lastPointerPosition = MenuSelector.getPointerPosition();
-            game.menu.startGame();
+            Phase.set(Phase.GAME_FIELD);
+            game.createGame();
         } else if (MenuSelector.isPointingAt("OPTIONS")) {
-            game.menu.lastPointerPosition = MenuSelector.getPointerPosition();
+            MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            game.menu.displayOptions();
+            Phase.set(Phase.OPTIONS_MENU);
         } else if (MenuSelector.isPointingAt("CONTROLS")) {
-            game.menu.lastPointerPosition = MenuSelector.getPointerPosition();
+            MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            game.menu.displayControls();
+            Phase.set(Phase.CONTROLS_MENU);
         } else if (MenuSelector.isPointingAt("HELP")) {
-            game.menu.lastPointerPosition = MenuSelector.getPointerPosition();
+            MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            game.menu.displayHelp();
+            Phase.set(Phase.HELP_MENU);
         } else if (MenuSelector.isPointingAt("EDIT")) {
-            game.menu.lastPointerPosition = MenuSelector.getPointerPosition();
+            MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            game.setMap(game.getStage());
-            game.menu.displayMapEditor();
+            game.setMap(Map.stages.size() - 1);
+            Phase.set(Phase.MAP_EDITOR);
         }
     }
 }

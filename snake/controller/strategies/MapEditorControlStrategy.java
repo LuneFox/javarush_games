@@ -2,6 +2,8 @@ package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
 import com.javarush.games.snake.model.MenuSelector;
+import com.javarush.games.snake.model.Phase;
+import com.javarush.games.snake.view.impl.MapEditorView;
 
 public class MapEditorControlStrategy implements ControlStrategy {
     private static MapEditorControlStrategy instance;
@@ -15,17 +17,17 @@ public class MapEditorControlStrategy implements ControlStrategy {
     public void leftClick(int x, int y) {
         if (game.outOfBounds(x, y)) return;
 
-        game.menu.drawTerrain(x, y);
-        game.menu.displayMapEditor();
+        MapEditorView.getInstance().drawTerrain(x, y);
+        Phase.set(Phase.MAP_EDITOR);
     }
 
     @Override
     public void rightClick(int x, int y) {
         if (game.outOfBounds(x, y)) return;
 
-        game.menu.printCoordinate(x, y);
-        game.menu.copyTerrain(x, y);
-        game.menu.displayMapEditor();
+        MapEditorView.getInstance().printCoordinate(x, y);
+        MapEditorView.getInstance().copyTerrain(x, y);
+        Phase.set(Phase.MAP_EDITOR);
     }
 
     @Override
@@ -40,24 +42,25 @@ public class MapEditorControlStrategy implements ControlStrategy {
 
     @Override
     public void pressRight() {
-        game.menu.brushNext();
-        game.menu.displayMapEditor();
+        MapEditorView.getInstance().brushNext();
+        Phase.set(Phase.MAP_EDITOR);
+
     }
 
     @Override
     public void pressLeft() {
-        game.menu.brushPrevious();
-        game.menu.displayMapEditor();
+        MapEditorView.getInstance().brushPrevious();
+        Phase.set(Phase.MAP_EDITOR);
     }
 
     @Override
     public void pressEnter() {
-        ControlStrategy.super.pressEnter();
+        MapEditorView.getInstance().printTerrain();
     }
 
     @Override
     public void pressEscape() {
-        MenuSelector.setPointerPosition(game.menu.lastPointerPosition);
-        game.menu.displayMain();
+        MenuSelector.loadLastPointerPosition();
+        Phase.set(Phase.MAIN_MENU);
     }
 }

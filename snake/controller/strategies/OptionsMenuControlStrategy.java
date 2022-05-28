@@ -2,6 +2,8 @@ package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
 import com.javarush.games.snake.model.MenuSelector;
+import com.javarush.games.snake.model.Phase;
+import com.javarush.games.snake.view.Sign;
 
 public class OptionsMenuControlStrategy implements ControlStrategy {
     private static OptionsMenuControlStrategy instance;
@@ -14,37 +16,37 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressUp() {
         MenuSelector.movePointerUp();
-        game.menu.displayOptions();
+        Phase.set(Phase.OPTIONS_MENU);
     }
 
     @Override
     public void pressDown() {
         MenuSelector.movePointerDown();
-        game.menu.displayOptions();
+        Phase.set(Phase.OPTIONS_MENU);
     }
 
     @Override
     public void pressRight() {
         if (MenuSelector.isPointingAt("SYMBOLS")) {
-            game.menu.switchSymbolSet();
+            Sign.switchSet();
         } else if (MenuSelector.isPointingAt("MAP")) {
-            game.menu.selectStageUp();
+            game.selectStageUp();
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             game.isAccelerationEnabled = !game.isAccelerationEnabled;
         }
-        game.menu.displayOptions();
+        Phase.set(Phase.OPTIONS_MENU);
     }
 
     @Override
     public void pressLeft() {
         if (MenuSelector.isPointingAt("SYMBOLS")) {
-            game.menu.switchSymbolSet();
+            Sign.switchSet();
         } else if (MenuSelector.isPointingAt("MAP")) {
-            game.menu.selectStageDown();
+            game.selectStageDown();
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             game.isAccelerationEnabled = !game.isAccelerationEnabled;
         }
-        game.menu.displayOptions();
+        Phase.set(Phase.OPTIONS_MENU);
     }
 
     @Override
@@ -59,7 +61,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
 
     @Override
     public void pressEscape() {
-        MenuSelector.setPointerPosition(game.menu.lastPointerPosition);
-        game.menu.displayMain();
+        MenuSelector.loadLastPointerPosition();
+        Phase.set(Phase.MAIN_MENU);
     }
 }

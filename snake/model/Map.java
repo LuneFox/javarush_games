@@ -11,14 +11,14 @@ import java.util.ArrayList;
  */
 
 public class Map {
-    private Node[][] layout = new Node[SnakeGame.SIZE][SnakeGame.SIZE];
+    private final Node[][] layout = new Node[SnakeGame.SIZE][SnakeGame.SIZE];
     ArrayList<WormHole> wormHoles = new ArrayList<>();
     public ArrayList<Orb> orbs = new ArrayList<>();
     public Coordinate snakeStartPlace;
     public Direction snakeStartDirection;
-    private SnakeGame game;
+    private final SnakeGame game;
 
-    static ArrayList<int[][]> stages = new ArrayList<>();
+    public static ArrayList<int[][]> stages = new ArrayList<>();
 
     static {
         {
@@ -250,7 +250,7 @@ public class Map {
 
     // SETTERS
 
-    void setLayoutNode(int x, int y, Node.Terrain terrain) {
+    public void setLayoutNode(int x, int y, Node.Terrain terrain) {
         this.layout[y][x] = new Node(x, y, game, terrain.ordinal());
     }
 

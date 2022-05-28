@@ -3,7 +3,6 @@ package com.javarush.games.snake.model;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.games.snake.SnakeGame;
-import com.javarush.games.snake.view.Phase;
 import com.javarush.games.snake.view.Sign;
 
 import java.util.Date;
@@ -26,7 +25,7 @@ public class Node extends GameObject {
 
     // CONSTRUCTOR
 
-    Node(int x, int y, SnakeGame game, int type) {
+    public Node(int x, int y, SnakeGame game, int type) {
         super(x, y, game);
         this.wetDate = new Date();
         this.isMoist = false;

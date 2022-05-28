@@ -6,10 +6,9 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.controller.Controller;
 import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.Sign;
 import com.javarush.games.snake.view.SignType;
-import com.javarush.games.snake.view.Message;
-import com.javarush.games.snake.view.Phase;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +20,6 @@ public class SnakeGame extends Game {
     public static final int SIZE = 32;
     private static final int MAX_TURN_DELAY = 300;
     private Controller controller;
-    public Menu menu;
 
     // Game flow parameters
     private String gameOverReason;
@@ -52,9 +50,8 @@ public class SnakeGame extends Game {
         controller = new Controller();
         Sign.setUsedType(SignType.KANJI);
 
-        menu = new Menu();
         MenuSelector.setPointerPosition(0);
-        menu.displayMain();
+        Phase.set(Phase.MAIN_MENU);
         stage = 0;
         isAccelerationEnabled = true;
     }
@@ -131,7 +128,7 @@ public class SnakeGame extends Game {
                 orbs.remove(orb);
                 if (orb.element == Element.ALMIGHTY) {
                     snake.clearElements();
-                    menu.selectStageUp();
+                    selectStageUp();
                 }
                 snake.getElementsAvailable().add(orb.element);
                 do {
@@ -309,6 +306,22 @@ public class SnakeGame extends Game {
         return (x < 0 || y < 4 || x > SIZE - 1 || y > SIZE - 1);
     }
 
+    public void selectStageUp() {
+        if (stage < (Map.stages.size() - 2)) {
+            stage++;
+        } else {
+            stage = 0;
+        }
+    }
+
+    public void selectStageDown() {
+        if (stage > 0) {
+            stage--;
+        } else {
+            stage = Map.stages.size() - 2;
+        }
+    }
+
 
     // GETTERS
 
@@ -326,10 +339,6 @@ public class SnakeGame extends Game {
 
     public Snake getSnake() {
         return snake;
-    }
-
-    public Menu getMenu() {
-        return menu;
     }
 
     public int getStage() {
@@ -363,10 +372,6 @@ public class SnakeGame extends Game {
     public void setTurnDelay() {
         // Sets normal turn delay
         this.turnDelay = getSpeed();
-    }
-
-    public void setStage(int stage) {
-        this.stage = stage;
     }
 
     public void setMap(int stage) {
