@@ -1,8 +1,7 @@
-package com.javarush.games.snake.model;
+package com.javarush.games.snake.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
-import com.javarush.games.snake.view.Message;
 
 import java.util.ArrayList;
 import java.util.Collections;

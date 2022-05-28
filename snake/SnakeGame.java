@@ -6,6 +6,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.controller.Controller;
 import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.Sign;
 import com.javarush.games.snake.view.SignType;

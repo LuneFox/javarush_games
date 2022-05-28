@@ -1,7 +1,7 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
-import com.javarush.games.snake.model.MenuSelector;
+import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.Phase;
 
 public class ControlsMenuControlStrategy implements ControlStrategy {

@@ -1,7 +1,7 @@
 package com.javarush.games.snake.view.impl;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.snake.model.MenuSelector;
+import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;
