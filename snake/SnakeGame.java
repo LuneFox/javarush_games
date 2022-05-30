@@ -7,6 +7,7 @@ import com.javarush.games.snake.controller.Controller;
 import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.Orb;
+import com.javarush.games.snake.model.terrain.TerrainType;
 import com.javarush.games.snake.view.Message;
 
 import java.util.ArrayList;
@@ -61,7 +62,7 @@ public class SnakeGame extends Game {
     }
 
     private void createGameObjects() {
-        map = new Map(stage, this);
+        map = new Map(stage);
         snake = new Snake(map.snakeStartPlace.x, map.snakeStartPlace.y, this, map.snakeStartDirection);
         orbs = new ArrayList<>();
         importElementalOrbs();
@@ -95,14 +96,14 @@ public class SnakeGame extends Game {
 
     private boolean isBadPlaceWhenSnakeCanSwim(int x, int y) {
         return snake.checkCollision(neutralOrb)
-                || (map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD
-                && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WATER
-                && map.getLayoutNode(x, y).getTerrain() != Node.Terrain.WOOD);
+                || (map.getTerrain(x, y).getType() != TerrainType.FIELD
+                && map.getTerrain(x, y).getType() != TerrainType.WATER
+                && map.getTerrain(x, y).getType() != TerrainType.WOOD);
     }
 
     private boolean isBadPlaceWhenSnakeCannotSwim(int x, int y) {
         return snake.checkCollision(neutralOrb)
-                || map.getLayoutNode(x, y).getTerrain() != Node.Terrain.FIELD;
+                || map.getTerrain(x, y).getType() != TerrainType.FIELD;
     }
 
     private void resetGameValues() {
@@ -243,7 +244,7 @@ public class SnakeGame extends Game {
     }
 
     public void setMap(int stage) {
-        this.map = new Map(stage, this);
+        this.map = new Map(stage);
     }
 
     /*

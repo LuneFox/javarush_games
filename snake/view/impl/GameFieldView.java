@@ -31,7 +31,7 @@ public class GameFieldView extends View {
 
         for (int x = 0; x < SnakeGame.SIZE; x++) {
             for (int y = 0; y < SnakeGame.SIZE; y++) {
-                map.getLayout()[y][x].draw(game);
+                map.getTerrainMatrix()[y][x].draw(game);
             }
         }
     }

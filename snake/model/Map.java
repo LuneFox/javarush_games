@@ -4,6 +4,8 @@ import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.Orb;
+import com.javarush.games.snake.model.terrain.Terrain;
+import com.javarush.games.snake.model.terrain.TerrainType;
 
 import java.util.ArrayList;
 
@@ -12,12 +14,11 @@ import java.util.ArrayList;
  */
 
 public class Map {
-    private final Node[][] layout = new Node[SnakeGame.SIZE][SnakeGame.SIZE];
+    private final Terrain[][] terrainMatrix = new Terrain[SnakeGame.SIZE][SnakeGame.SIZE];
     ArrayList<WormHole> wormHoles = new ArrayList<>();
     public ArrayList<Orb> orbs = new ArrayList<>();
     public Coordinate snakeStartPlace;
     public Direction snakeStartDirection;
-    private final SnakeGame game;
 
     public static ArrayList<int[][]> stages = new ArrayList<>();
 
@@ -174,12 +175,12 @@ public class Map {
 
     // CONSTRUCTOR
 
-    public Map(int stage, SnakeGame game) {
-        this.game = game;
+    public Map(int stage) {
         int[][] pattern = stages.get(stage);
         for (int y = 0; y < SnakeGame.SIZE; y++) {
             for (int x = 0; x < SnakeGame.SIZE; x++) {
-                layout[y][x] = new Node(x, y, game, pattern[y][x]);
+                int terrainType = pattern[y][x];
+                terrainMatrix[y][x] = Terrain.create(x, y, terrainType);
             }
         }
         switch (stage) {
@@ -241,18 +242,18 @@ public class Map {
 
     // GETTERS
 
-    public Node[][] getLayout() {
-        return layout;
+    public Terrain[][] getTerrainMatrix() {
+        return terrainMatrix;
     }
 
-    public Node getLayoutNode(int x, int y) {
-        return layout[y][x];
+    public Terrain getTerrain(int x, int y) {
+        return terrainMatrix[y][x];
     }
 
     // SETTERS
 
-    public void setLayoutNode(int x, int y, Node.Terrain terrain) {
-        this.layout[y][x] = new Node(x, y, game, terrain.ordinal());
+    public void placeTerrain(int x, int y, TerrainType terrainType) {
+        this.terrainMatrix[y][x] = Terrain.create(x, y, terrainType.ordinal());
     }
 
     public static class Coordinate {

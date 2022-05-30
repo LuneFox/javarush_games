@@ -2,7 +2,7 @@ package com.javarush.games.snake.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
-import com.javarush.games.snake.model.Node;
+import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.enums.Element;
 
@@ -12,12 +12,12 @@ import java.util.List;
 public class HelpPage {
     List<Message> messages;
     List<Orb> orbs;
-    List<Node> nodes;
+    List<Terrain> terrains;
 
     private HelpPage() {
         this.messages = new ArrayList<>();
         this.orbs = new ArrayList<>();
-        this.nodes = new ArrayList<>();
+        this.terrains = new ArrayList<>();
     }
 
     public static HelpPage getGoals() {
@@ -77,20 +77,20 @@ public class HelpPage {
         result.messages.add(new Message(3, 21, "TALL WALL", Color.WHITE));
         result.messages.add(new Message(3, 23, "SECRET WORMHOLE", Color.WHITE));
 
-        result.nodes.add(new Node(1, 7, SnakeGame.getInstance(), 0));
-        result.nodes.add(new Node(1, 9, SnakeGame.getInstance(), 2));
-        result.nodes.add(new Node(1, 11, SnakeGame.getInstance(), 8));
-        result.nodes.add(new Node(1, 13, SnakeGame.getInstance(), 4));
-        result.nodes.add(new Node(1, 15, SnakeGame.getInstance(), 6));
-        result.nodes.add(new Node(1, 17, SnakeGame.getInstance(), 1));
-        result.nodes.add(new Node(1, 19, SnakeGame.getInstance(), 3));
-        result.nodes.add(new Node(1, 21, SnakeGame.getInstance(), 7));
-        result.nodes.add(new Node(1, 23, SnakeGame.getInstance(), 5));
+        result.terrains.add(Terrain.create(1, 7, Terrain.FIELD));
+        result.terrains.add(Terrain.create(1, 9, Terrain.WATER));
+        result.terrains.add(Terrain.create(1, 11, Terrain.SAND));
+        result.terrains.add(Terrain.create(1, 13, Terrain.FOREST));
+        result.terrains.add(Terrain.create(1, 15, Terrain.MOUNTAIN));
+        result.terrains.add(Terrain.create(1, 17, Terrain.WOOD));
+        result.terrains.add(Terrain.create(1, 19, Terrain.FIRE));
+        result.terrains.add(Terrain.create(1, 21, Terrain.WALL));
+        result.terrains.add(Terrain.create(1, 23, Terrain.WORMHOLE));
 
         return result;
     }
 
-    public static HelpPage getTips1(){
+    public static HelpPage getTips1() {
         HelpPage result = new HelpPage();
 
         result.messages.add(new Message(-1, 1, "RULES AND TIPS (1)", Color.SKYBLUE));
@@ -108,7 +108,7 @@ public class HelpPage {
         return result;
     }
 
-    public static HelpPage getTips2(){
+    public static HelpPage getTips2() {
         HelpPage result = new HelpPage();
 
         result.messages.add(new Message(-1, 1, "RULES AND TIPS (2)", Color.SKYBLUE));
@@ -149,6 +149,6 @@ public class HelpPage {
     public void draw(SnakeGame game) {
         messages.forEach(Message::draw);
         orbs.forEach(orb -> orb.draw(game));
-        nodes.forEach(node -> node.draw(game));
+        terrains.forEach(node -> node.draw(game));
     }
 }
