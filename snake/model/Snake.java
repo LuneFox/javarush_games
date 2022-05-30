@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
-/**
- * Class for snake and its elemental abilities
- */
-
 public class Snake {
     private final SnakeGame game;
     private Element element;
@@ -27,8 +23,8 @@ public class Snake {
     private Date starveTime;
     private int breath;
     private int hunger;
-    public boolean isAlive;
-    public boolean canChangeElement;
+    private boolean isAlive;
+    private boolean canChangeElement;
 
     // CONSTRUCTOR
 
@@ -43,6 +39,7 @@ public class Snake {
         this.isAlive = true;
         this.canChangeElement = true;
         this.elementsAvailable.add(Element.NEUTRAL);
+        this.elementsAvailable.add(Element.AIR);
         this.setElement(Element.NEUTRAL);
         this.addParts(x, y, direction, 3);
     }
@@ -59,11 +56,9 @@ public class Snake {
     private void drawStripedBody(String head) {
         for (int i = snakeParts.size() - 1; i >= 0; i--) {
             if (i == 0) {
-                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[1],
-                        head, Color.WHITE, 90);
+                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[1], head, Color.WHITE, 90);
             } else {
-                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[i % 2],
-                        Sign.getSign(Sign.SNAKE_BODY), Color.WHITE, 90);
+                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[i % 2], Sign.getSign(Sign.SNAKE_BODY), Color.WHITE, 90);
             }
         }
     }
@@ -82,14 +77,14 @@ public class Snake {
         removeTail();
     }
 
-    public void eatOrb(Orb orb) {
-        if (head.x == orb.x && head.y == orb.y && element != Element.AIR) {
-            orb.isAlive = false;
-            breath++;
-            hunger = 0;
-            elongateTail();
-            game.setNormalTurnDelay();
-        }
+    public boolean headIsNotTouchingOrb(Orb orb) {
+        return (head.x != orb.x) || (head.y != orb.y) || (element == Element.AIR);
+    }
+
+    public void eat() {
+        breath++;
+        hunger = 0;
+        elongateTail();
     }
 
     private void interactWithNode(Node node) {
@@ -236,7 +231,7 @@ public class Snake {
         snakeParts.remove(snakeParts.size() - 1);
     }
 
-    private void elongateTail() {
+    public void elongateTail() {
         int tail = snakeParts.size() - 1;
         GameObject newTail = new GameObject(snakeParts.get(tail).x, snakeParts.get(tail).y);
         snakeParts.add(newTail);
@@ -460,5 +455,9 @@ public class Snake {
                 this.bodyColor[1] = Color.BLACK;
                 break;
         }
+    }
+
+    public boolean isAlive() {
+        return isAlive;
     }
 }

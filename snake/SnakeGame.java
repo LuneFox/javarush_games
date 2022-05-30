@@ -22,7 +22,6 @@ public class SnakeGame extends Game {
     private Controller controller;
     private String gameOverReason;
     private Date stageStartTimeStamp;
-    private long timeDependentBonusPoints;
     private int turnDelay;
     public int score;
     private int lifetime;
@@ -107,7 +106,6 @@ public class SnakeGame extends Game {
     }
 
     private void resetGameValues() {
-        timeDependentBonusPoints = 300;
         lifetime = 301;
         score = 0;
         turnDelay = MAX_TURN_DELAY;
@@ -117,78 +115,31 @@ public class SnakeGame extends Game {
         stageStartTimeStamp = new Date();
     }
 
-
     public void onTurn(int step) {
-        timeDependentBonusPoints = calculateBonusPoints();
         snake.move();
-        checkOrbs();
-
-        if (!snake.isAlive) gameOver();
-        if (lifetime <= 0) win();
-
+        collectOrbs();
+        checkGameOver();
         setTurnTimer(turnDelay);
         Phase.set(Phase.GAME_FIELD);
     }
 
-    private long calculateBonusPoints() {
+    public long calculateBonusPoints() {
         long stageTimePassed = (new Date().getTime() - stageStartTimeStamp.getTime()) / 1000;
         return Math.max(300 - stageTimePassed, 0);
     }
 
-    private void checkOrbs() {
-        ArrayList<Orb> orbsCopy = new ArrayList<>(orbs);
-        orbsCopy.forEach(orb -> {
-            snake.eatOrb(orb);
-            collectOrb(orb);
-        });
-    }
+    private void collectOrbs() {
+        orbs.forEach(orb -> orb.collect(snake));
+        orbs.removeIf(Orb::isCollected);
 
-    private void collectOrb(Orb orb) {
-        if (orb.isAlive) return;
-
-        if (orb.getElement() == Element.NEUTRAL) {
-            collectNeutralOrb(orb);
-        } else {
-            collectElementalOrb(orb);
+        if (neutralOrb.isCollected()) {
+            createNeutralOrb();
         }
     }
 
-    private void collectNeutralOrb(Orb orb) {
-        orbs.remove(orb);
-        createNeutralOrb();
-        score += timeDependentBonusPoints / 10;
-    }
-
-    private void collectElementalOrb(Orb orb) {
-        if (!orb.isCollected) {
-            orb.isCollected = true;
-            orbs.remove(orb);
-
-            if (orb.getElement() == Element.ALMIGHTY) {
-                snake.clearElements();
-                selectNextStage();
-            }
-
-            snake.learnElement(orb.getElement());
-            snake.forceSwitchToElement(orb.getElement());
-            score += timeDependentBonusPoints;
-        }
-    }
-
-    public void selectNextStage() {
-        if (stage < (Map.stages.size() - 2)) {
-            stage++;
-        } else {
-            stage = 0;
-        }
-    }
-
-    public void selectPreviousStage() {
-        if (stage > 0) {
-            stage--;
-        } else {
-            stage = Map.stages.size() - 2;
-        }
+    private void checkGameOver() {
+        if (!snake.isAlive()) gameOver();
+        if (lifetime <= 0) win();
     }
 
     private void win() {
@@ -235,12 +186,28 @@ public class SnakeGame extends Game {
         Message.print(-1, 17, "             ", color);
     }
 
-    public void addScore(int score) {
+    public void addScore(long score) {
         this.score += score;
     }
 
     public void decreaseLifetime() {
         this.lifetime -= 1;
+    }
+
+    public void selectNextStage() {
+        if (stage < (Map.stages.size() - 2)) {
+            stage++;
+        } else {
+            stage = 0;
+        }
+    }
+
+    public void selectPreviousStage() {
+        if (stage > 0) {
+            stage--;
+        } else {
+            stage = Map.stages.size() - 2;
+        }
     }
 
     public int getSnakeLength() {
