@@ -3,7 +3,7 @@ package com.javarush.games.snake.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.Map;
-import com.javarush.games.snake.model.Orb;
+import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;

@@ -3,6 +3,7 @@ package com.javarush.games.snake.model;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.orbs.Orb;
 
 import java.util.ArrayList;
 
@@ -183,11 +184,11 @@ public class Map {
         }
         switch (stage) {
             case 0: {
-                orbs.add(new Orb(4, 8, Element.WATER));
-                orbs.add(new Orb(27, 27, Element.FIRE));
-                orbs.add(new Orb(15, 18, Element.EARTH));
-                orbs.add(new Orb(15, 9, Element.AIR));
-                orbs.add(new Orb(25, 10, Element.ALMIGHTY));
+                orbs.add(Orb.create(4, 8, Element.WATER));
+                orbs.add(Orb.create(27, 27, Element.FIRE));
+                orbs.add(Orb.create(15, 18, Element.EARTH));
+                orbs.add(Orb.create(15, 9, Element.AIR));
+                orbs.add(Orb.create(25, 10, Element.ALMIGHTY));
                 wormHoles.add(new WormHole(6, 6, 12, 6));
                 wormHoles.add(new WormHole(1, 30, 30, 5));
                 snakeStartPlace = new Coordinate(6, 28);
@@ -195,11 +196,11 @@ public class Map {
                 break;
             }
             case 1: {
-                orbs.add(new Orb(23, 6, Element.WATER));
-                orbs.add(new Orb(9, 28, Element.FIRE));
-                orbs.add(new Orb(2, 6, Element.EARTH));
-                orbs.add(new Orb(14, 12, Element.AIR));
-                orbs.add(new Orb(2, 29, Element.ALMIGHTY));
+                orbs.add(Orb.create(23, 6, Element.WATER));
+                orbs.add(Orb.create(9, 28, Element.FIRE));
+                orbs.add(Orb.create(2, 6, Element.EARTH));
+                orbs.add(Orb.create(14, 12, Element.AIR));
+                orbs.add(Orb.create(2, 29, Element.ALMIGHTY));
                 wormHoles.add(new WormHole(14, 7, 4, 14));
                 wormHoles.add(new WormHole(8, 5, 27, 27));
                 wormHoles.add(new WormHole(5, 6, 17, 17));
@@ -209,11 +210,11 @@ public class Map {
                 break;
             }
             case 2: {
-                orbs.add(new Orb(16, 26, Element.WATER));
-                orbs.add(new Orb(23, 28, Element.FIRE));
-                orbs.add(new Orb(29, 11, Element.EARTH));
-                orbs.add(new Orb(12, 25, Element.AIR));
-                orbs.add(new Orb(6, 10, Element.ALMIGHTY));
+                orbs.add(Orb.create(16, 26, Element.WATER));
+                orbs.add(Orb.create(23, 28, Element.FIRE));
+                orbs.add(Orb.create(29, 11, Element.EARTH));
+                orbs.add(Orb.create(12, 25, Element.AIR));
+                orbs.add(Orb.create(6, 10, Element.ALMIGHTY));
                 wormHoles.add(new WormHole(29, 9, 29, 7));
                 wormHoles.add(new WormHole(18, 23, 20, 23));
                 wormHoles.add(new WormHole(30, 26, 28, 26));
@@ -223,11 +224,11 @@ public class Map {
                 break;
             }
             case 3: {
-                orbs.add(new Orb(1, 6, Element.WATER));
-                orbs.add(new Orb(5, 6, Element.FIRE));
-                orbs.add(new Orb(9, 6, Element.EARTH));
-                orbs.add(new Orb(13, 6, Element.AIR));
-                orbs.add(new Orb(17, 6, Element.ALMIGHTY));
+                orbs.add(Orb.create(1, 6, Element.WATER));
+                orbs.add(Orb.create(5, 6, Element.FIRE));
+                orbs.add(Orb.create(9, 6, Element.EARTH));
+                orbs.add(Orb.create(13, 6, Element.AIR));
+                orbs.add(Orb.create(17, 6, Element.ALMIGHTY));
                 wormHoles.add(new WormHole(0, 0, 0, 0));
                 snakeStartPlace = new Coordinate(10, 10);
                 snakeStartDirection = Direction.RIGHT;

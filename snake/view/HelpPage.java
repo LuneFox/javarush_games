@@ -3,7 +3,7 @@ package com.javarush.games.snake.view;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.Node;
-import com.javarush.games.snake.model.Orb;
+import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.enums.Element;
 
 import java.util.ArrayList;
@@ -33,12 +33,12 @@ public class HelpPage {
         result.messages.add(new Message(-1, 17, "COLLECT TO GROW:", Color.YELLOW));
         result.messages.add(new Message(3, 19, "ORB OF WISDOM", Color.MEDIUMPURPLE));
 
-        result.orbs.add(new Orb(1, 7, Element.WATER));
-        result.orbs.add(new Orb(1, 9, Element.FIRE));
-        result.orbs.add(new Orb(1, 11, Element.EARTH));
-        result.orbs.add(new Orb(1, 13, Element.AIR));
-        result.orbs.add(new Orb(1, 15, Element.ALMIGHTY));
-        result.orbs.add(new Orb(1, 19, Element.NEUTRAL));
+        result.orbs.add(Orb.create(1, 7, Element.WATER));
+        result.orbs.add(Orb.create(1, 9, Element.FIRE));
+        result.orbs.add(Orb.create(1, 11, Element.EARTH));
+        result.orbs.add(Orb.create(1, 13, Element.AIR));
+        result.orbs.add(Orb.create(1, 15, Element.ALMIGHTY));
+        result.orbs.add(Orb.create(1, 19, Element.NEUTRAL));
 
         return result;
     }

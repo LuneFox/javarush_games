@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.view.Sign;
 import com.javarush.games.snake.view.impl.GameFieldView;
 

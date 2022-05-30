@@ -6,6 +6,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.controller.Controller;
 import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.view.Message;
 
 import java.util.ArrayList;
@@ -79,7 +80,7 @@ public class SnakeGame extends Game {
         do {
             x = getRandomNumber(SIZE);
             y = getRandomNumber(SIZE - 4) + 4;
-            neutralOrb = new Orb(x, y, Element.NEUTRAL);
+            neutralOrb = Orb.create(x, y, Element.NEUTRAL);
         } while (isBadPlaceForNeutralOrb(x, y));
 
         orbs.add(neutralOrb);
@@ -145,7 +146,7 @@ public class SnakeGame extends Game {
     private void collectOrb(Orb orb) {
         if (orb.isAlive) return;
 
-        if (orb.hasAffinity(Element.NEUTRAL)) {
+        if (orb.getElement() == Element.NEUTRAL) {
             collectNeutralOrb(orb);
         } else {
             collectElementalOrb(orb);
@@ -159,17 +160,17 @@ public class SnakeGame extends Game {
     }
 
     private void collectElementalOrb(Orb orb) {
-        if (!orb.isObtained) {
-            orb.isObtained = true;
+        if (!orb.isCollected) {
+            orb.isCollected = true;
             orbs.remove(orb);
 
-            if (orb.hasAffinity(Element.ALMIGHTY)) {
+            if (orb.getElement() == Element.ALMIGHTY) {
                 snake.clearElements();
                 selectNextStage();
             }
 
-            snake.learnElement(orb.element);
-            snake.forceSwitchToElement(orb.element);
+            snake.learnElement(orb.getElement());
+            snake.forceSwitchToElement(orb.getElement());
             score += timeDependentBonusPoints;
         }
     }
