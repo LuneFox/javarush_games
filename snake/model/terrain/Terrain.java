@@ -2,10 +2,10 @@ package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
-import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.GameObject;
-import com.javarush.games.snake.model.Phase;
-import com.javarush.games.snake.view.Sign;
+import com.javarush.games.snake.model.Map;
+import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.model.enums.Element;
 
 import java.util.Date;
 
@@ -25,8 +25,8 @@ public abstract class Terrain extends GameObject {
     protected Color color;
     protected Color backgroundColor;
     protected String sign;
-    protected Date becameWetTimeStamp;
-    protected boolean isWet; // water snake was here
+    protected Date startedToDryTimestamp;
+    protected boolean isWet;
 
     public static Terrain create(int x, int y, int type) {
         switch (type) {
@@ -56,45 +56,60 @@ public abstract class Terrain extends GameObject {
 
     protected Terrain(int x, int y) {
         super(x, y);
+        resetStartedToDryTimestamp();
     }
 
     public void draw(Game game) {
-        this.causeEffect();
         game.setCellValueEx(x, y, backgroundColor, sign, color, 90);
     }
 
-    private void causeEffect() { // interact with surrounding nodes
-        if (Phase.is(Phase.GAME_FIELD)) {
-            if (terrainType == TerrainType.WOOD || terrainType == TerrainType.FOREST) {
-                setOnFire();
-            }
+    public void interact(Snake snake) {
+        if (snake.getElement() == Element.ALMIGHTY) {
+            game.decreaseLifetime();
+            turnToVoid();
+        }
+
+        if (this instanceof WaterTerrain) return;
+        snake.takeFullBreath();
+    }
+
+    private void turnToVoid() {
+        replaceWithAnotherTerrain(TerrainType.VOID);
+
+        if (terrainType != TerrainType.VOID) {
+            game.addScore(1);
         }
     }
 
-    private void setOnFire() {
-        if (hasFireNear()) {
+    private void replaceWithAnotherTerrain(TerrainType terrainType) {
+        final Map map = game.getMap();
+        map.putTerrain(x, y, terrainType);
+    }
 
-            int igniteDelay;
-            igniteDelay = isWet ? Math.max(game.getSnakeLength() * 500, 1000) : 1000;
+    public void processPassiveEffects() {
+        // Do nothing by default
+    }
 
-            if (new Date().getTime() - becameWetTimeStamp.getTime() > igniteDelay) {
-                game.getMap().placeTerrain(x, y, TerrainType.FIRE);
+    protected final void ignite() {
+        if (hasFireTerrainNeighbor()) {
+            if (isDry()) {
+                replaceWithAnotherTerrain(TerrainType.FIRE);
             }
-
         } else {
-            becameWetTimeStamp = new Date();
+            resetStartedToDryTimestamp();
         }
     }
 
-    private boolean hasFireNear() {
+    private boolean hasFireTerrainNeighbor() {
         Terrain neighbor;
+
         for (int x = this.x - 1; x <= this.x + 1; x++) {
             for (int y = this.y - 1; y <= this.y + 1; y++) {
-                if (game.outOfBounds(x, y)) {
-                    continue;
-                }
+                if (game.outOfBounds(x, y)) continue;
+
                 neighbor = (game.getMap().getTerrain(x, y));
-                if (neighbor.terrainType == TerrainType.FIRE) {
+
+                if (neighbor instanceof FireTerrain) {
                     return true;
                 }
             }
@@ -102,11 +117,20 @@ public abstract class Terrain extends GameObject {
         return false;
     }
 
-    public TerrainType getType() {
-        return terrainType;
+    private boolean isDry() {
+        int dryingTime = isWet ? Math.max(game.getSnakeLength() * 500, 1000) : 1000;
+        return new Date().getTime() - startedToDryTimestamp.getTime() > dryingTime;
     }
 
-    public void setWet(boolean wet) {
-        isWet = wet;
+    private void resetStartedToDryTimestamp() {
+        startedToDryTimestamp = new Date();
+    }
+
+    public void makeWet() {
+        isWet = true;
+    }
+
+    public TerrainType getType() {
+        return terrainType;
     }
 }

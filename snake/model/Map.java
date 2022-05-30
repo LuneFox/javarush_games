@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class Map {
     private final Terrain[][] terrainMatrix = new Terrain[SnakeGame.SIZE][SnakeGame.SIZE];
-    ArrayList<WormHole> wormHoles = new ArrayList<>();
+    public ArrayList<WormHole> wormHoles = new ArrayList<>();
     public ArrayList<Orb> orbs = new ArrayList<>();
     public Coordinate snakeStartPlace;
     public Direction snakeStartDirection;
@@ -240,7 +240,9 @@ public class Map {
         }
     }
 
-    // GETTERS
+    public void putTerrain(int x, int y, TerrainType terrainType) {
+        this.terrainMatrix[y][x] = Terrain.create(x, y, terrainType.ordinal());
+    }
 
     public Terrain[][] getTerrainMatrix() {
         return terrainMatrix;
@@ -250,29 +252,4 @@ public class Map {
         return terrainMatrix[y][x];
     }
 
-    // SETTERS
-
-    public void placeTerrain(int x, int y, TerrainType terrainType) {
-        this.terrainMatrix[y][x] = Terrain.create(x, y, terrainType.ordinal());
-    }
-
-    public static class Coordinate {
-        public int x;
-        public int y;
-
-        Coordinate(int x, int y) {
-            this.x = x;
-            this.y = y;
-        }
-    }
-
-    static class WormHole {
-        Coordinate location;
-        Coordinate destination;
-
-        WormHole(int xLoc, int yLoc, int xDest, int yDest) {
-            this.location = new Coordinate(xLoc, yLoc);
-            this.destination = new Coordinate(xDest, yDest);
-        }
-    }
 }

@@ -19,7 +19,7 @@ public class MapEditorView extends View {
     @Override
     public void update() {
         Terrain terrain = Terrain.create(1, 1, brush);
-        game.getMap().placeTerrain(1, 1, terrain.getType());
+        game.getMap().putTerrain(1, 1, terrain.getType());
         GameFieldView.getInstance().drawMap();
         Message.print(3, 1, terrain.getType().name(), Color.WHITE);
     }
@@ -42,7 +42,7 @@ public class MapEditorView extends View {
 
     public void drawTerrain(int x, int y) {
         Terrain terrain = Terrain.create(x, y, brush);
-        game.getMap().placeTerrain(terrain.x, terrain.y, terrain.getType());
+        game.getMap().putTerrain(terrain.x, terrain.y, terrain.getType());
     }
 
     public void copyTerrain(int x, int y) {

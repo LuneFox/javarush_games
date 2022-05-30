@@ -121,7 +121,16 @@ public class SnakeGame extends Game {
         collectOrbs();
         checkGameOver();
         setTurnTimer(turnDelay);
+        processTerrainEffects();
         Phase.set(Phase.GAME_FIELD);
+    }
+
+    private void processTerrainEffects() {
+        for (int x = 0; x < SnakeGame.SIZE; x++) {
+            for (int y = 0; y < SnakeGame.SIZE; y++) {
+                map.getTerrainMatrix()[y][x].processPassiveEffects();
+            }
+        }
     }
 
     public long calculateBonusPoints() {

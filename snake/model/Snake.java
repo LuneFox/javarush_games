@@ -6,7 +6,6 @@ import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.terrain.Terrain;
-import com.javarush.games.snake.model.terrain.TerrainType;
 import com.javarush.games.snake.view.Sign;
 import com.javarush.games.snake.view.impl.GameFieldView;
 
@@ -18,7 +17,7 @@ public class Snake {
     private final SnakeGame game;
     private Element element;
     private Direction direction;
-    private GameObject head;
+    public GameObject head;
     private final Color[] bodyColor;
     private final ArrayList<GameObject> snakeParts;
     private final LinkedList<Element> elementsAvailable;
@@ -41,8 +40,7 @@ public class Snake {
         this.isAlive = true;
         this.canChangeElement = true;
         this.elementsAvailable.add(Element.NEUTRAL);
-        this.elementsAvailable.add(Element.AIR);
-        this.setElement(Element.NEUTRAL);
+        this.setElement(Element.EARTH);
         this.addParts(x, y, direction, 3);
     }
 
@@ -64,7 +62,6 @@ public class Snake {
             }
         }
     }
-
 
     // MECHANICS
 
@@ -89,110 +86,18 @@ public class Snake {
         elongateTail();
     }
 
-    private void interactWithNode(Terrain terrain) {
-        if (almightyInteraction()) { // if elements is ALMIGHTY, does action described inside and returns
-            return;
-        }
+    public void kill() {
+        isAlive = false;
+    }
 
-        if (terrain.getType() != TerrainType.WATER) { // take a breath outside water
-            breath = snakeParts.size();
-        }
-
-        switch (terrain.getType()) {
-            case WALL:
-                if (element != Element.AIR) { // air snake can fly over walls
-                    isAlive = false;
-                    game.setGameOverReason(Strings.GAME_OVER_BUMPED);
-                }
-                break;
-
-            case WOOD:
-                if (element == Element.FIRE) { // fire snake sets wood on fire
-                    game.getMap().placeTerrain(getNewHeadX(), getNewHeadY(), TerrainType.FIRE);
-                } else if (element == Element.WATER) { // water snake moistens wood
-                    game.getMap().getTerrain(getNewHeadX(), getNewHeadY()).setWet(true);
-                }
-                break;
-
-            case WATER:
-                if (element == Element.FIRE && getLength() > 3) {
-                    removeTail();
-                }
-                if (element != Element.WATER && element != Element.AIR) {
-                    breath--;
-                }
-                if (breath == -1) {
-                    isAlive = false;
-                }
-                game.setGameOverReason(Strings.GAME_OVER_DROWNED);
-                break;
-
-            case FIRE:
-                if (element == Element.NEUTRAL || element == Element.EARTH) {
-                    isAlive = false; // earth and neutral snakes die
-                    game.setGameOverReason(Strings.GAME_OVER_BURNED);
-                } else if (element == Element.WATER) { // water snake extinguishes burning wood
-                    game.getMap().placeTerrain(getNewHeadX(), getNewHeadY(), TerrainType.WOOD);
-                    game.getMap().getTerrain(getNewHeadX(), getNewHeadY()).setWet(true);
-                }
-                break;
-
-            case FOREST:
-                if (element == Element.FIRE) { // fire snake sets forest on fire
-                    game.getMap().placeTerrain(getNewHeadX(), getNewHeadY(), TerrainType.FIRE);
-                } else if (element != Element.AIR) { // air snake can fly over fire
-                    isAlive = false;
-                    game.setGameOverReason(Strings.GAME_OVER_EATEN);
-                }
-                break;
-
-            case WORMHOLE:
-                if (element != Element.EARTH && element != Element.AIR) { // only earth snake can use wormholes
-                    isAlive = false;
-                    game.setGameOverReason(Strings.GAME_OVER_LOST);
-                } else if (element == Element.EARTH) {
-                    Map map = game.getMap();
-                    for (Map.WormHole wormHole : map.wormHoles) {
-                        if (terrain.x == wormHole.location.x && terrain.y == wormHole.location.y) {
-                            head.x = wormHole.destination.x;
-                            head.y = wormHole.destination.y;
-                        } else if (terrain.x == wormHole.destination.x && terrain.y == wormHole.destination.y) {
-                            head.x = wormHole.location.x;
-                            head.y = wormHole.location.y;
-                        }
-                    }
-                }
-                break;
-
-            case MOUNTAIN:
-                isAlive = false;
-                game.setGameOverReason(Strings.GAME_OVER_MOUNTAIN_COLD);
-                break;
-
-            default:
-                break;
-        }
+    public void takeFullBreath() {
+        breath = snakeParts.size();
     }
 
     private boolean isDeadAfterNodeInteraction(GameObject head) {
         Terrain terrain = game.getMap().getTerrainMatrix()[head.y][head.x];
-        interactWithNode(terrain);
+        terrain.interact(this);
         return (!isAlive);
-    }
-
-    private boolean almightyInteraction() {
-        if (element == Element.ALMIGHTY) {
-            game.decreaseLifetime();
-            if (game.getLifetime() <= 0) {
-                return true;
-            }
-            if (game.getMap().getTerrain(head.x, head.y).getType() != TerrainType.VOID) {
-                game.addScore(1);
-            }
-            game.getMap().placeTerrain(head.x, head.y, TerrainType.VOID);
-            return true;
-        }
-        return false;
     }
 
     private GameObject createNewHead() { // returns a head candidate next to the current head in the direction
@@ -229,7 +134,8 @@ public class Snake {
         return newHead;
     }
 
-    private void removeTail() {
+    public void removeTail() {
+        if (snakeParts.size() <= 3) return;
         snakeParts.remove(snakeParts.size() - 1);
     }
 
@@ -319,7 +225,7 @@ public class Snake {
         }
     }
 
-    private int getNewHeadX() {
+    public int getNewHeadX() {
         switch (direction) {
             case LEFT:
                 return this.snakeParts.get(0).x - 1;
@@ -330,7 +236,7 @@ public class Snake {
         }
     }
 
-    private int getNewHeadY() {
+    public int getNewHeadY() {
         switch (direction) {
             case UP:
                 return this.snakeParts.get(0).y - 1;
@@ -372,6 +278,14 @@ public class Snake {
 
     private boolean checkGameOver() {
         return !isAlive || game.getLifetime() <= 0;
+    }
+
+    public void reduceBreath() {
+        breath--;
+    }
+
+    public boolean isSuffocated() {
+        return breath <= -1;
     }
 
 
