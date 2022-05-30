@@ -40,11 +40,9 @@ public class WormholeTerrain extends Terrain {
 
         for (WormHole wormHole : map.wormHoles) {
             if (x == wormHole.location.x && y == wormHole.location.y) {
-                snake.head.x = wormHole.destination.x;
-                snake.head.y = wormHole.destination.y;
+                snake.warpToDestination(wormHole);
             } else if (x == wormHole.destination.x && y == wormHole.destination.y) {
-                snake.head.x = wormHole.location.x;
-                snake.head.y = wormHole.location.y;
+                snake.warpToLocation(wormHole);
             }
         }
     }

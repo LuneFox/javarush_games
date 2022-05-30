@@ -17,7 +17,7 @@ public class Snake {
     private final SnakeGame game;
     private Element element;
     private Direction direction;
-    public GameObject head;
+    private GameObject head;
     private final Color[] bodyColor;
     private final ArrayList<GameObject> snakeParts;
     private final LinkedList<Element> elementsAvailable;
@@ -40,7 +40,7 @@ public class Snake {
         this.isAlive = true;
         this.canChangeElement = true;
         this.elementsAvailable.add(Element.NEUTRAL);
-        this.setElement(Element.FIRE);
+        this.setElement(Element.EARTH);
         this.addParts(x, y, direction, 3);
     }
 
@@ -74,6 +74,16 @@ public class Snake {
         starve();
         snakeParts.add(0, head);
         removeTail();
+    }
+
+    public void warpToDestination(WormHole wormHole) {
+        head.x = wormHole.destination.x;
+        head.y = wormHole.destination.y;
+    }
+
+    public void warpToLocation(WormHole wormHole) {
+        head.x = wormHole.location.x;
+        head.y = wormHole.location.y;
     }
 
     public boolean headIsNotTouchingOrb(Orb orb) {
