@@ -7,6 +7,7 @@ import com.javarush.games.snake.model.Map;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Element;
 
+import java.util.Arrays;
 import java.util.Date;
 
 public abstract class Terrain extends GameObject {
@@ -56,7 +57,7 @@ public abstract class Terrain extends GameObject {
 
     protected Terrain(int x, int y) {
         super(x, y);
-        resetStartedToDryTimestamp();
+        preventBurning();
     }
 
     public void draw(Game game) {
@@ -90,31 +91,23 @@ public abstract class Terrain extends GameObject {
         // Do nothing by default
     }
 
-    protected final void ignite() {
+    protected final void igniteOnContactWithFire() {
         if (hasFireTerrainNeighbor()) {
             if (isDry()) {
                 replaceWithAnotherTerrain(TerrainType.FIRE);
             }
         } else {
-            resetStartedToDryTimestamp();
+            preventBurning();
         }
     }
 
     private boolean hasFireTerrainNeighbor() {
-        Terrain neighbor;
-
-        for (int x = this.x - 1; x <= this.x + 1; x++) {
-            for (int y = this.y - 1; y <= this.y + 1; y++) {
-                if (game.outOfBounds(x, y)) continue;
-
-                neighbor = (game.getMap().getTerrain(x, y));
-
-                if (neighbor instanceof FireTerrain) {
-                    return true;
-                }
-            }
-        }
-        return false;
+        return Arrays.stream(game.getMap().getTerrainMatrix())
+                .flatMap(Arrays::stream)
+                .filter(terrain -> Math.abs(terrain.x - this.x) <= 1)
+                .filter(terrain -> Math.abs(terrain.y - this.y) <= 1)
+                .filter(terrain -> terrain != this)
+                .anyMatch(terrain -> terrain instanceof FireTerrain);
     }
 
     private boolean isDry() {
@@ -122,7 +115,7 @@ public abstract class Terrain extends GameObject {
         return new Date().getTime() - startedToDryTimestamp.getTime() > dryingTime;
     }
 
-    private void resetStartedToDryTimestamp() {
+    private void preventBurning() {
         startedToDryTimestamp = new Date();
     }
 

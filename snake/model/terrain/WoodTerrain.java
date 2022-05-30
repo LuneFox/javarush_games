@@ -42,6 +42,6 @@ public class WoodTerrain extends Terrain {
 
     @Override
     public void processPassiveEffects() {
-        ignite();
+        igniteOnContactWithFire();
     }
 }

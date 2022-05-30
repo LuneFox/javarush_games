@@ -40,7 +40,7 @@ public class Snake {
         this.isAlive = true;
         this.canChangeElement = true;
         this.elementsAvailable.add(Element.NEUTRAL);
-        this.setElement(Element.EARTH);
+        this.setElement(Element.FIRE);
         this.addParts(x, y, direction, 3);
     }
 
