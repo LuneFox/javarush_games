@@ -50,10 +50,10 @@ public class Snake {
         setElement(Element.NEUTRAL);
         addParts(x, y, direction);
 
-        learnAllElementsForDebug();
+        // learnAllElementsForDebug();
     }
 
-    private void learnAllElementsForDebug() { // TODO: Remove after release
+    private void learnAllElementsForDebug() {
         learnElement(Element.WATER);
         learnElement(Element.FIRE);
         learnElement(Element.EARTH);

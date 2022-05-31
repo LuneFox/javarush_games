@@ -1,10 +1,6 @@
 package com.javarush.games.snake.model.map;
 
-import com.javarush.games.snake.SnakeGame;
-import com.javarush.games.snake.model.map.stages.EmptyStage;
-import com.javarush.games.snake.model.map.stages.Stage1;
-import com.javarush.games.snake.model.map.stages.Stage2;
-import com.javarush.games.snake.model.map.stages.Stage3;
+import com.javarush.games.snake.model.map.stages.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,6 +14,12 @@ public class StageManager {
     static {
         stageList = new ArrayList<>();
         stageList.addAll(Arrays.asList(
+                new Tutorial1(),
+                new Tutorial2(),
+                new Tutorial3(),
+                new Tutorial4(),
+                new Tutorial5(),
+                new Tutorial6(),
                 new Stage1(),
                 new Stage2(),
                 new Stage3())

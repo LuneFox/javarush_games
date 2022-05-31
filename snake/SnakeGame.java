@@ -75,6 +75,10 @@ public class SnakeGame extends Game {
     }
 
     public void onTurn(int step) {
+        if (stage.isCompleted()) {
+            stage.showCompleteMessage();
+            return;
+        }
 
         if (!stage.isStarted()) {
             stage.showBriefingMessage();
@@ -84,6 +88,7 @@ public class SnakeGame extends Game {
         snake.move();
         stage.collectOrbs(snake);
         checkGameOver();
+
         setTurnTimer(turnDelay);
         processPassiveTerrainEffects();
         Phase.set(Phase.GAME_FIELD);
@@ -108,18 +113,17 @@ public class SnakeGame extends Game {
     }
 
     private void gameOver() {
-        stopTurnTimer();
         Phase.set(Phase.GAME_FIELD);
+        stopTurnTimer();
         isStopped = true;
         showMessageDialog(Color.YELLOW, gameOverReason, Color.RED, 27);
     }
 
     private void win() {
+        Phase.set(Phase.GAME_FIELD);
         stopTurnTimer();
         StageManager.selectNextStage();
-        Phase.set(Phase.GAME_FIELD);
         isStopped = true;
-        stage.showCompleteMessage();
     }
 
     public void setNormalTurnDelay() {

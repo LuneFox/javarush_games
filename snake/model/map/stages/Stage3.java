@@ -74,8 +74,11 @@ public class Stage3 extends Stage {
 
     @Override
     protected void createMessages() {
-        briefingMessage = "STAGE 3\nCollect the Almighty Orb!";
-        completeMessage = "STAGE 3 COMPLETE!";
+        briefingMessage = "STAGE 3\nCollect the Orb of Power!" +
+                "\nBecome the God of Snakes and destroy the realm!" +
+                "\n\n~ PRESS SPACE TO START ~";
+        completeMessage = "STAGE 3 COMPLETE!" +
+                "\n\nThis was the last stage... for now!";
     }
 
     @Override

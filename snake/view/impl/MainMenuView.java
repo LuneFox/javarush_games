@@ -27,8 +27,9 @@ public class MainMenuView extends View {
         Message.print(-1, 7, "MASTER OF ELEMENTS", Color.PINK);
         Message.print(-1, 30, "VER " + Strings.VERSION, Color.BLUE);
 
-        // MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP");
-        MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
+        MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP");
+        // MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
+
         Stage stage = game.getStage();
         Message.print(16, 12, "(" + stage.getName() + ")", stage.isClear() ? Color.LAWNGREEN : Color.LIGHTSKYBLUE);
 
