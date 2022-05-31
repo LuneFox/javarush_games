@@ -201,7 +201,7 @@ public class Snake {
         return (newHead.x != orb.x) || (newHead.y != orb.y) || (element == Element.AIR);
     }
 
-    public void forceSwitchToElement(Element element) {
+    public void forceRotationToElement(Element element) {
         do {
             rotateToNextElement();
         } while (getElement() != element);

@@ -22,6 +22,6 @@ public class AlmightyOrb extends Orb{
         super.collect(snake);
         snake.clearElements();
         snake.learnElement(element);
-        snake.forceSwitchToElement(element);
+        snake.forceRotationToElement(element);
     }
 }

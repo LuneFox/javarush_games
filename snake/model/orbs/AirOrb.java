@@ -21,6 +21,6 @@ public class AirOrb extends Orb{
 
         super.collect(snake);
         snake.learnElement(element);
-        snake.forceSwitchToElement(element);
+        snake.forceRotationToElement(element);
     }
 }
