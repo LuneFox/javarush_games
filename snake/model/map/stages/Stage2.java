@@ -8,8 +8,6 @@ import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.map.WormHole;
 import com.javarush.games.snake.model.orbs.Orb;
 
-import java.util.ArrayList;
-
 public class Stage2 extends Stage {
     public Stage2() {
         name = "Stage 2";
