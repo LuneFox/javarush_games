@@ -99,14 +99,14 @@ public class SnakeGame extends Game {
 
     private boolean isBadPlaceWhenSnakeCanSwim(int x, int y) {
         return snake.checkCollision(neutralOrb)
-                || (map.getTerrain(x, y) instanceof FieldTerrain
-                && map.getTerrain(x, y) instanceof WaterTerrain
-                && map.getTerrain(x, y) instanceof WoodTerrain);
+                || (!(map.getTerrain(x, y) instanceof FieldTerrain)
+                && !(map.getTerrain(x, y) instanceof WaterTerrain)
+                && !(map.getTerrain(x, y) instanceof WoodTerrain));
     }
 
     private boolean isBadPlaceWhenSnakeCannotSwim(int x, int y) {
         return snake.checkCollision(neutralOrb)
-                || map.getTerrain(x, y) instanceof FieldTerrain;
+                || !(map.getTerrain(x, y) instanceof FieldTerrain);
     }
 
     private void resetGameValues() {
