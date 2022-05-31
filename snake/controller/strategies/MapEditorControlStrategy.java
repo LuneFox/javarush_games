@@ -1,5 +1,6 @@
 package com.javarush.games.snake.controller.strategies;
 
+import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.controller.ControlStrategy;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.Phase;
@@ -15,7 +16,7 @@ public class MapEditorControlStrategy implements ControlStrategy {
 
     @Override
     public void leftClick(int x, int y) {
-        if (game.outOfBounds(x, y)) return;
+        if (SnakeGame.outOfBounds(x, y)) return;
 
         MapEditorView.getInstance().drawTerrain(x, y);
         Phase.set(Phase.MAP_EDITOR);
@@ -23,7 +24,7 @@ public class MapEditorControlStrategy implements ControlStrategy {
 
     @Override
     public void rightClick(int x, int y) {
-        if (game.outOfBounds(x, y)) return;
+        if (SnakeGame.outOfBounds(x, y)) return;
 
         MapEditorView.getInstance().printCoordinate(x, y);
         MapEditorView.getInstance().copyTerrain(x, y);

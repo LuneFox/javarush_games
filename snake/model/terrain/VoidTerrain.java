@@ -6,7 +6,7 @@ import com.javarush.games.snake.view.Sign;
 public class VoidTerrain extends Terrain {
     public VoidTerrain(int x, int y) {
         super(x, y);
-        this.terrainType = TerrainType.VOID;
+        this.type = TerrainType.VOID;
         this.color = Color.BLACK;
         this.backgroundColor = Color.BLACK;
         this.sign = Sign.getSign(Sign.TERRAIN_VOID);

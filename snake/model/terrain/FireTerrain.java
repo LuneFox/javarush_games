@@ -10,7 +10,7 @@ import com.javarush.games.snake.view.Sign;
 public class FireTerrain extends Terrain {
     public FireTerrain(int x, int y) {
         super(x, y);
-        this.terrainType = TerrainType.FIRE;
+        this.type = TerrainType.FIRE;
         this.color = Color.YELLOW;
         this.backgroundColor = Color.ORANGERED;
         this.sign = Sign.getSign(Sign.TERRAIN_FIRE);
@@ -32,10 +32,10 @@ public class FireTerrain extends Terrain {
                 break;
             case WATER:
                 final Map map = game.getMap();
-                final int headX = snake.getNewHeadX();
-                final int headY = snake.getNewHeadY();
-                map.putTerrain(headX, headY, TerrainType.WOOD);
-                map.getTerrain(headX, headY).isWet = true;
+                final int x = snake.getNewHead().x;
+                final int y = snake.getNewHead().y;
+                map.putTerrain(x, y, TerrainType.WOOD);
+                map.getTerrain(x, y).isWet = true;
                 break;
             default:
                 break;

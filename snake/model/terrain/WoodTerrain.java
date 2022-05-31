@@ -9,7 +9,7 @@ import com.javarush.games.snake.view.Sign;
 public class WoodTerrain extends Terrain {
     public WoodTerrain(int x, int y) {
         super(x, y);
-        this.terrainType = TerrainType.WOOD;
+        this.type = TerrainType.WOOD;
         this.color = Color.SANDYBROWN;
         this.backgroundColor = Color.SADDLEBROWN;
         this.sign = Sign.getSign(Sign.TERRAIN_WOOD);
@@ -24,15 +24,15 @@ public class WoodTerrain extends Terrain {
         if (snakeElement == Element.ALMIGHTY) return;
 
         final Map map = game.getMap();
-        final int headX = snake.getNewHeadX();
-        final int headY = snake.getNewHeadY();
+        final int x = snake.getNewHead().x;
+        final int y = snake.getNewHead().y;
 
         switch (snake.getElement()) {
             case FIRE:
-                map.putTerrain(headX, headY, TerrainType.FIRE);
+                map.putTerrain(x, y, TerrainType.FIRE);
                 break;
             case WATER:
-                final Terrain terrain = map.getTerrain(headX, headY);
+                final Terrain terrain = map.getTerrain(x, y);
                 terrain.makeWet();
                 break;
             default:

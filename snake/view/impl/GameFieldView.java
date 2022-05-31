@@ -47,7 +47,7 @@ public class GameFieldView extends View {
 
     private void drawInterface() {
         final int snakeLength = game.snake.getLength();
-        final Element currentElement = game.snake.getElementsAvailable().get(0);
+        final Element currentElement = game.snake.getAvailableElements().get(0);
         final int score = game.score;
 
         Message.print(0, 0, "hunger  : ", Color.CORAL);
@@ -86,7 +86,7 @@ public class GameFieldView extends View {
 
         for (Element element : Element.values()) {
 
-            final Color textColor = game.snake.canUse(element) ? Color.WHITE : Color.DARKSLATEGRAY;
+            final Color textColor = game.snake.canUseElement(element) ? Color.WHITE : Color.DARKSLATEGRAY;
             Color backgroundColor;
 
             switch (element) {

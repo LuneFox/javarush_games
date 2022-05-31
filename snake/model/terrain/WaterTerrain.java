@@ -9,7 +9,7 @@ import com.javarush.games.snake.view.Sign;
 public class WaterTerrain extends Terrain {
     public WaterTerrain(int x, int y) {
         super(x, y);
-        this.terrainType = TerrainType.WATER;
+        this.type = TerrainType.WATER;
         this.color = Color.LIGHTBLUE;
         this.backgroundColor = Color.DEEPSKYBLUE;
         this.sign = Sign.getSign(Sign.TERRAIN_WATER);
@@ -26,12 +26,12 @@ public class WaterTerrain extends Terrain {
         if (snakeElement == Element.AIR) return;
 
         if (snakeElement == Element.FIRE) {
-            snake.removeTail();
+            snake.loseTail();
         }
 
         snake.reduceBreath();
 
-        if (snake.isSuffocated()){
+        if (snake.isDrowned()){
             snake.kill();
             game.setGameOverReason(Strings.GAME_OVER_DROWNED);
         }

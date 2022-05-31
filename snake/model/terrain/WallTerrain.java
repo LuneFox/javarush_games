@@ -9,7 +9,7 @@ import com.javarush.games.snake.view.Sign;
 public class WallTerrain extends Terrain {
     public WallTerrain(int x, int y) {
         super(x, y);
-        this.terrainType = TerrainType.WALL;
+        this.type = TerrainType.WALL;
         this.color = Color.WHITE;
         this.backgroundColor = Color.GRAY;
         this.sign = Sign.getSign(Sign.TERRAIN_WALL);

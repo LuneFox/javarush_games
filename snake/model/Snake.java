@@ -9,164 +9,204 @@ import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.view.Sign;
 import com.javarush.games.snake.view.impl.GameFieldView;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 
 public class Snake {
+    private static final int MIN_X = 0;
+    private static final int MIN_Y = 4;
+    private static final int MAX_X = SnakeGame.SIZE - 1;
+    private static final int MAX_Y = SnakeGame.SIZE - 1;
+    private static final int MIN_LENGTH = 3;
+
     private final SnakeGame game;
+    private final LinkedList<GameObject> snakeParts;
+    private final LinkedList<Element> availableElements;
     private Element element;
     private Direction direction;
-    private GameObject head;
-    private final Color[] bodyColor;
-    private final ArrayList<GameObject> snakeParts;
-    private final LinkedList<Element> elementsAvailable;
-    private Date starveTime;
+    private GameObject newHead;
+    private Color[] bodyColors;
+    private Date starvingTimestamp;
     private int breath;
     private int hunger;
     private boolean isAlive;
     private boolean canChangeElement;
 
-    // CONSTRUCTOR
-
     public Snake(int x, int y, SnakeGame game, Direction direction) {
         this.game = game;
         this.direction = direction;
-        this.bodyColor = new Color[2];
-        this.elementsAvailable = new LinkedList<>();
-        this.snakeParts = new ArrayList<>();
-        this.hunger = 0;
-        this.starveTime = new Date();
-        this.isAlive = true;
-        this.canChangeElement = true;
-        this.elementsAvailable.add(Element.NEUTRAL);
-        this.setElement(Element.EARTH);
-        this.addParts(x, y, direction, 3);
+
+        bodyColors = new Color[2];
+        availableElements = new LinkedList<>();
+        snakeParts = new LinkedList<>();
+        hunger = 0;
+        starvingTimestamp = new Date();
+        isAlive = true;
+        canChangeElement = true;
+        learnElement(Element.NEUTRAL);
+        setElement(Element.NEUTRAL);
+        addParts(x, y, direction);
+
+        // learnAllElementsForDebug();
     }
 
+    private void learnAllElementsForDebug() { // TODO: Remove after release
+        learnElement(Element.WATER);
+        learnElement(Element.FIRE);
+        learnElement(Element.EARTH);
+        learnElement(Element.AIR);
+        learnElement(Element.ALMIGHTY);
+    }
 
-    // VISUALS
+    private void addParts(int x, int y, Direction direction) {
+        int dx = 0;
+        int dy = 0;
+
+        if (direction == Direction.UP) dy = 1;
+        if (direction == Direction.DOWN) dy = -1;
+        if (direction == Direction.RIGHT) dx = -1;
+        if (direction == Direction.LEFT) dx = 1;
+
+        for (int i = 0; i < MIN_LENGTH; i++) {
+            snakeParts.addLast(new GameObject(x + dx * i, y + dy * i));
+        }
+    }
+
 
     public void draw() {
-        String head = isAlive ? Sign.getSign(Sign.SNAKE_HEAD) : Sign.getSign(Sign.SNAKE_DEAD);
-        checkDead();
-        drawStripedBody(head);
+        changeToDeadElementIfNotAlive();
+        drawHeadAndStripedBody();
     }
 
-    private void drawStripedBody(String head) {
+    private void changeToDeadElementIfNotAlive() {
+        if (isAlive) return;
+        this.setElement(Element.DEAD);
+    }
+
+    private void drawHeadAndStripedBody() {
+        final String headSign = isAlive ? Sign.getSign(Sign.SNAKE_HEAD) : Sign.getSign(Sign.SNAKE_DEAD);
+        final String bodySign = Sign.getSign(Sign.SNAKE_BODY);
+
         for (int i = snakeParts.size() - 1; i >= 0; i--) {
+            final int x = snakeParts.get(i).x;
+            final int y = snakeParts.get(i).y;
+
             if (i == 0) {
-                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[1], head, Color.WHITE, 90);
+                game.setCellValueEx(x, y, bodyColors[1], headSign, Color.WHITE, 90);
             } else {
-                game.setCellValueEx(snakeParts.get(i).x, snakeParts.get(i).y, bodyColor[i % 2], Sign.getSign(Sign.SNAKE_BODY), Color.WHITE, 90);
+                game.setCellValueEx(x, y, bodyColors[i % 2], bodySign, Color.WHITE, 90);
             }
         }
     }
 
-    // MECHANICS
-
     public void move() {
-        canChangeElement = true;
-        head = createNewHead();
-        if (checkGameOver() | checkEscapeBorders() | checkBiteSelf() || isDeadAfterNodeInteraction(head)) {
-            return; // check last only if first 3 didn't return true ^
+        newHead = createNewHead();
+
+        checkEscapeBorders();
+        checkBiteSelf();
+        interactWithTerrain();
+
+        if (isAlive) {
+            snakeParts.addFirst(newHead);
+            snakeParts.removeLast();
+            starve();
+            canChangeElement = true;
         }
-        starve();
-        snakeParts.add(0, head);
-        removeTail();
     }
 
-    public void warpToDestination(WormHole wormHole) {
-        head.x = wormHole.destination.x;
-        head.y = wormHole.destination.y;
+    private GameObject createNewHead() {
+        GameObject head = snakeParts.get(0);
+        GameObject newHead;
+
+        int dx = 0;
+        int dy = 0;
+
+        if (direction == Direction.UP) dy = -1;
+        if (direction == Direction.DOWN) dy = 1;
+        if (direction == Direction.RIGHT) dx = 1;
+        if (direction == Direction.LEFT) dx = -1;
+
+        newHead = new GameObject(head.x + dx, head.y + dy);
+        if (element == Element.ALMIGHTY) {
+            if (newHead.x > MAX_X) newHead.x = MIN_X;
+            if (newHead.x < MIN_X) newHead.x = MAX_X;
+            if (newHead.y > MAX_Y) newHead.y = MIN_Y;
+            if (newHead.x < MIN_Y) newHead.y = MAX_Y;
+        }
+
+        return newHead;
     }
 
-    public void warpToLocation(WormHole wormHole) {
-        head.x = wormHole.location.x;
-        head.y = wormHole.location.y;
+    private void checkEscapeBorders() {
+        if (newHead.x < MIN_X || newHead.x > MAX_X || newHead.y < MIN_Y || newHead.y > MAX_Y) {
+            kill();
+            game.setGameOverReason(Strings.GAME_OVER_RUNAWAY);
+        }
     }
 
-    public boolean headIsNotTouchingOrb(Orb orb) {
-        return (head.x != orb.x) || (head.y != orb.y) || (element == Element.AIR);
-    }
+    private void checkBiteSelf() {
+        if (element == Element.ALMIGHTY) return;
 
-    public void eat() {
-        breath++;
-        hunger = 0;
-        elongateTail();
+        if (checkCollision(newHead)) {
+            kill();
+            game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN);
+        }
     }
 
     public void kill() {
         isAlive = false;
     }
 
-    public void takeFullBreath() {
-        breath = snakeParts.size();
-    }
+    private void interactWithTerrain() {
+        if (SnakeGame.outOfBounds(newHead.x, newHead.y)) return;
 
-    private boolean isDeadAfterNodeInteraction(GameObject head) {
-        Terrain terrain = game.getMap().getTerrainMatrix()[head.y][head.x];
+        Terrain terrain = game.getMap().getTerrainMatrix()[newHead.y][newHead.x];
         terrain.interact(this);
-        return (!isAlive);
-    }
-
-    private GameObject createNewHead() { // returns a head candidate next to the current head in the direction
-        GameObject head = snakeParts.get(0);
-        GameObject newHead;
-        switch (direction) {
-            case UP:
-                newHead = new GameObject(head.x, head.y - 1);
-                if (element == Element.ALMIGHTY && newHead.y < 4) {
-                    newHead = new GameObject(head.x, 31);
-                }
-                break;
-            case LEFT:
-                newHead = new GameObject(head.x - 1, head.y);
-                if (element == Element.ALMIGHTY && newHead.x < 0) {
-                    newHead = new GameObject(31, head.y);
-                }
-                break;
-            case DOWN:
-                newHead = new GameObject(head.x, head.y + 1);
-                if (element == Element.ALMIGHTY && newHead.y > 31) {
-                    newHead = new GameObject(head.x, 4);
-                }
-                break;
-            case RIGHT:
-                newHead = new GameObject(head.x + 1, head.y);
-                if (element == Element.ALMIGHTY && newHead.x > 31) {
-                    newHead = new GameObject(0, head.y);
-                }
-                break;
-            default:
-                throw new UnsupportedOperationException("What direction, again?!");
-        }
-        return newHead;
-    }
-
-    public void removeTail() {
-        if (snakeParts.size() <= 3) return;
-        snakeParts.remove(snakeParts.size() - 1);
-    }
-
-    public void elongateTail() {
-        int tail = snakeParts.size() - 1;
-        GameObject newTail = new GameObject(snakeParts.get(tail).x, snakeParts.get(tail).y);
-        snakeParts.add(newTail);
     }
 
     private void starve() {
-        if (new Date().getTime() - starveTime.getTime() > 300) {
-            if (!(element == Element.ALMIGHTY)) {
-                hunger += getLength() / 5;
-            }
-            if (hunger > 100) {
-                removeTail();
-                game.addScore(-5);
-                hunger = 0;
-            }
-            starveTime = new Date();
+        if (new Date().getTime() - starvingTimestamp.getTime() <= 300) return;
+        if (element == Element.ALMIGHTY) return;
+
+        starvingTimestamp = new Date();
+        hunger += getLength() / 5;
+
+        if (hunger > 100) {
+            loseTail();
+            game.removeScore(5);
+            hunger = 0;
         }
+    }
+
+    public void loseTail() {
+        if (snakeParts.size() <= MIN_LENGTH) return;
+        snakeParts.removeLast();
+    }
+
+    public void eat() {
+        hunger = 0;
+        elongateTail();
+    }
+
+    public void elongateTail() {
+        GameObject tail = snakeParts.getLast();
+        GameObject newTail = new GameObject(tail.x, tail.y);
+        snakeParts.addLast(newTail);
+        breath++;
+    }
+
+    public void warpToDestination(WormHole wormHole) {
+        newHead.x = wormHole.destination.x;
+        newHead.y = wormHole.destination.y;
+    }
+
+    public void warpToLocation(WormHole wormHole) {
+        newHead.x = wormHole.location.x;
+        newHead.y = wormHole.location.y;
+    }
+
+    public boolean headIsNotTouchingOrb(Orb orb) {
+        return (newHead.x != orb.x) || (newHead.y != orb.y) || (element == Element.AIR);
     }
 
     public void forceSwitchToElement(Element element) {
@@ -178,212 +218,116 @@ public class Snake {
     }
 
     public void rotateToNextElement() {
-        if (canChangeElement) {
-            Element movingElement = elementsAvailable.get(0);      // taking element to move (it's current)
-            elementsAvailable.remove(elementsAvailable.get(0));    // removing it from list (it's first)
-            elementsAvailable.add(movingElement);                  // adding it to the end
-            setElement(elementsAvailable.get(0));                  // element that shifted to 0 is a new element
-            GameFieldView.getInstance().drawElementsPanel();
-        }
+        if (!canChangeElement) return;
+
+        availableElements.addLast(availableElements.removeFirst());
+        setElement(availableElements.getFirst());
+        GameFieldView.getInstance().drawElementsPanel();
+        draw();
     }
 
     public void rotateToPreviousElement() {
-        if (canChangeElement) {
-            int lastElement = elementsAvailable.size() - 1;
-            Element movingElement = elementsAvailable.get(lastElement); // taking element to move (last)
-            elementsAvailable.remove(movingElement);                    // removing it from list (it was last)
-            elementsAvailable.add(0, movingElement);                    // instantly adding it to the beginning
-            setElement(elementsAvailable.get(0));                       // making it new element
-            GameFieldView.getInstance().drawElementsPanel();
-        }
+        if (!canChangeElement) return;
+
+        setElement(availableElements.getLast());
+        availableElements.addFirst(availableElements.removeLast());
+        GameFieldView.getInstance().drawElementsPanel();
+        draw();
     }
 
     public void clearElements() {
-        this.elementsAvailable.clear();
+        this.availableElements.clear();
     }
 
-
-    // UTILITIES AND CHECKS
-
-    public boolean canUse(Element element) {
-        return (this.elementsAvailable.contains(element));
-    }
-
-    private void addParts(int x, int y, Direction direction, int amount) {
-        // Used in snake creation
-        switch (direction) {
-            case UP:
-                for (int i = 0; i < amount; i++) {
-                    snakeParts.add(new GameObject(x, y + i));
-                }
-                break;
-            case DOWN:
-                for (int i = 0; i < amount; i++) {
-                    snakeParts.add(new GameObject(x, y - i));
-                }
-                break;
-            case LEFT:
-                for (int i = 0; i < amount; i++) {
-                    snakeParts.add(new GameObject(x + i, y));
-                }
-                break;
-            case RIGHT:
-                for (int i = 0; i < amount; i++) {
-                    snakeParts.add(new GameObject(x - i, y));
-                }
-                break;
-        }
-    }
-
-    public int getNewHeadX() {
-        switch (direction) {
-            case LEFT:
-                return this.snakeParts.get(0).x - 1;
-            case RIGHT:
-                return this.snakeParts.get(0).x + 1;
-            default:
-                return this.snakeParts.get(0).x;
-        }
-    }
-
-    public int getNewHeadY() {
-        switch (direction) {
-            case UP:
-                return this.snakeParts.get(0).y - 1;
-            case DOWN:
-                return this.snakeParts.get(0).y + 1;
-            default:
-                return this.snakeParts.get(0).y;
-        }
-    }
-
-    private void checkDead() {
-        if (!isAlive) {
-            element = Element.DEAD;
-            this.setElement(element);
-        }
+    public boolean canUseElement(Element element) {
+        return (this.availableElements.contains(element));
     }
 
     public boolean checkCollision(GameObject obj) {
-        return (snakeParts.contains(obj));
+        return snakeParts.stream()
+                .anyMatch(part -> part.x == obj.x && part.y == obj.y);
     }
 
-    private boolean checkEscapeBorders() {
-        if (head.x < 0 || head.x >= SnakeGame.SIZE || head.y < 4 || head.y >= SnakeGame.SIZE) {
-            isAlive = false;
-            game.setGameOverReason(Strings.GAME_OVER_RUNAWAY);
-            return true;
+    public LinkedList<Element> getAvailableElements() {
+        return availableElements;
+    }
+
+    public void learnElement(Element element) {
+        if (availableElements.contains(element)) return;
+        availableElements.add(element);
+    }
+
+    public void setDirection(Direction command) {
+        // These guard clauses protect from making a self-eating loop within 1 turn by spamming directional keys
+        if ((command == Direction.LEFT || command == Direction.RIGHT) && isMovingHorizontally()) return;
+        if ((command == Direction.DOWN || command == Direction.UP) && isMovingVertically()) return;
+
+        this.direction = command;
+    }
+
+    private boolean isMovingVertically() {
+        return snakeParts.get(0).x == snakeParts.get(1).x;
+    }
+
+    private boolean isMovingHorizontally() {
+        return snakeParts.get(0).y == snakeParts.get(1).y;
+    }
+
+    private void setElement(Element element) {
+        this.element = element;
+        bodyColors = changeBodyColor(element);
+    }
+
+    private Color[] changeBodyColor(Element element) {
+        switch (element) {
+            case NEUTRAL:
+                return new Color[]{Color.DARKOLIVEGREEN, Color.DARKGREEN};
+            case WATER:
+                return new Color[]{Color.BLUE, Color.DARKBLUE};
+            case FIRE:
+                return new Color[]{Color.YELLOW, Color.RED};
+            case EARTH:
+                return new Color[]{Color.DARKORANGE, Color.BROWN};
+            case AIR:
+                return new Color[]{Color.LIGHTGRAY, Color.LIGHTSKYBLUE};
+            case DEAD:
+                return new Color[]{Color.DARKSLATEGREY, Color.BLACK};
+            case ALMIGHTY:
+                return new Color[]{Color.ORCHID, Color.DEEPPINK};
+            default:
+                return new Color[]{Color.NONE, Color.NONE};
         }
-        return false;
-    }
-
-    private boolean checkBiteSelf() {
-        if (checkCollision(head) && !(element == Element.ALMIGHTY)) {
-            isAlive = false;
-            game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN);
-            return true;
-        }
-        return false;
-    }
-
-    private boolean checkGameOver() {
-        return !isAlive || game.getLifetime() <= 0;
     }
 
     public void reduceBreath() {
         breath--;
     }
 
-    public boolean isSuffocated() {
-        return breath <= -1;
-    }
-
-
-    // GETTERS
-
-    public int getHunger() {
-        return hunger;
-    }
-
-    public Element getElement() {
-        return element;
-    }
-
-    public LinkedList<Element> getElementsAvailable() {
-        return elementsAvailable;
-    }
-
-    public void learnElement(Element element) {
-        elementsAvailable.add(element);
+    public void takeFullBreath() {
+        breath = getLength();
     }
 
     public int getLength() {
         return snakeParts.size();
     }
 
-
-    // SETTERS
-
-    public void setDirection(Direction command) { // allows to change direction, but only to another axis
-        switch (command) {
-            case LEFT:
-            case RIGHT:
-                if (snakeParts.get(0).y == snakeParts.get(1).y) {
-                    return;
-                }
-                this.direction = command;
-                break;
-            case UP:
-            case DOWN:
-                if (snakeParts.get(0).x == snakeParts.get(1).x) {
-                    return;
-                }
-                this.direction = command;
-                break;
-            default:
-                break;
-        }
+    public boolean isDrowned() {
+        return breath <= -1;
     }
 
-    private void setElement(Element element) {
-        this.element = element;
-        switch (element) {
-            case NEUTRAL:
-                this.bodyColor[0] = Color.DARKOLIVEGREEN;
-                this.bodyColor[1] = Color.DARKGREEN;
-                break;
-            case WATER:
-                this.bodyColor[0] = Color.BLUE;
-                this.bodyColor[1] = Color.DARKBLUE;
-                break;
-            case FIRE:
-                this.bodyColor[0] = Color.YELLOW;
-                this.bodyColor[1] = Color.RED;
-                break;
-            case EARTH:
-                this.bodyColor[0] = Color.DARKORANGE;
-                this.bodyColor[1] = Color.BROWN;
-                break;
-            case AIR:
-                this.bodyColor[0] = Color.LIGHTGRAY;
-                this.bodyColor[1] = Color.LIGHTSKYBLUE;
-                break;
-            case DEAD:
-                this.bodyColor[0] = Color.DARKSLATEGRAY;
-                this.bodyColor[1] = Color.BLACK;
-                break;
-            case ALMIGHTY:
-                this.bodyColor[0] = Color.ORCHID;
-                this.bodyColor[1] = Color.DEEPPINK;
-                break;
-            default:
-                this.bodyColor[0] = Color.BLACK;
-                this.bodyColor[1] = Color.BLACK;
-                break;
-        }
+    public Element getElement() {
+        return element;
+    }
+
+    public int getHunger() {
+        return hunger;
     }
 
     public boolean isAlive() {
         return isAlive;
+    }
+
+    public GameObject getNewHead() {
+        return newHead;
     }
 }

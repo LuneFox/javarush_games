@@ -22,7 +22,7 @@ public abstract class Terrain extends GameObject {
     public static final int SAND = 8;
     public static final int VOID = 9;
 
-    protected TerrainType terrainType;
+    protected TerrainType type;
     protected Color color;
     protected Color backgroundColor;
     protected String sign;
@@ -70,16 +70,18 @@ public abstract class Terrain extends GameObject {
             turnToVoid();
         }
 
-        if (this instanceof WaterTerrain) return;
-        snake.takeFullBreath();
+        rechargeSnakeBreath(snake);
     }
 
     private void turnToVoid() {
+        if (this instanceof VoidTerrain) return;
         replaceWithAnotherTerrain(TerrainType.VOID);
+        game.addScore(1);
+    }
 
-        if (terrainType != TerrainType.VOID) {
-            game.addScore(1);
-        }
+    private void rechargeSnakeBreath(Snake snake) {
+        if (this instanceof WaterTerrain) return;
+        snake.takeFullBreath();
     }
 
     private void replaceWithAnotherTerrain(TerrainType terrainType) {
@@ -92,8 +94,8 @@ public abstract class Terrain extends GameObject {
     }
 
     protected final void igniteOnContactWithFire() {
-        if (hasFireTerrainNeighbor()) {
-            if (isDry()) {
+        if (hasFireNeighbor()) {
+            if (isCompletelyDry()) {
                 replaceWithAnotherTerrain(TerrainType.FIRE);
             }
         } else {
@@ -101,7 +103,7 @@ public abstract class Terrain extends GameObject {
         }
     }
 
-    private boolean hasFireTerrainNeighbor() {
+    private boolean hasFireNeighbor() {
         return Arrays.stream(game.getMap().getTerrainMatrix())
                 .flatMap(Arrays::stream)
                 .filter(terrain -> Math.abs(terrain.x - this.x) <= 1)
@@ -110,9 +112,10 @@ public abstract class Terrain extends GameObject {
                 .anyMatch(terrain -> terrain instanceof FireTerrain);
     }
 
-    private boolean isDry() {
-        int dryingTime = isWet ? Math.max(game.getSnakeLength() * 500, 1000) : 1000;
-        return new Date().getTime() - startedToDryTimestamp.getTime() > dryingTime;
+    private boolean isCompletelyDry() {
+        long dryingTime = isWet ? Math.max(game.getSnakeLength() * 500, 1000) : 1000;
+        long timePassed = new Date().getTime() - startedToDryTimestamp.getTime();
+        return timePassed > dryingTime;
     }
 
     private void preventBurning() {
@@ -124,6 +127,6 @@ public abstract class Terrain extends GameObject {
     }
 
     public TerrainType getType() {
-        return terrainType;
+        return type;
     }
 }

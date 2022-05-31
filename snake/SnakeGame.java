@@ -7,7 +7,10 @@ import com.javarush.games.snake.controller.Controller;
 import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.Orb;
+import com.javarush.games.snake.model.terrain.FieldTerrain;
 import com.javarush.games.snake.model.terrain.TerrainType;
+import com.javarush.games.snake.model.terrain.WaterTerrain;
+import com.javarush.games.snake.model.terrain.WoodTerrain;
 import com.javarush.games.snake.view.Message;
 
 import java.util.ArrayList;
@@ -87,7 +90,7 @@ public class SnakeGame extends Game {
     }
 
     private boolean isBadPlaceForNeutralOrb(int x, int y) {
-        if (snake.canUse(Element.WATER) || snake.canUse(Element.ALMIGHTY)) {
+        if (snake.canUseElement(Element.WATER) || snake.canUseElement(Element.ALMIGHTY)) {
             return isBadPlaceWhenSnakeCanSwim(x, y);
         } else {
             return isBadPlaceWhenSnakeCannotSwim(x, y);
@@ -96,14 +99,14 @@ public class SnakeGame extends Game {
 
     private boolean isBadPlaceWhenSnakeCanSwim(int x, int y) {
         return snake.checkCollision(neutralOrb)
-                || (map.getTerrain(x, y).getType() != TerrainType.FIELD
-                && map.getTerrain(x, y).getType() != TerrainType.WATER
-                && map.getTerrain(x, y).getType() != TerrainType.WOOD);
+                || (map.getTerrain(x, y) instanceof FieldTerrain
+                && map.getTerrain(x, y) instanceof WaterTerrain
+                && map.getTerrain(x, y) instanceof WoodTerrain);
     }
 
     private boolean isBadPlaceWhenSnakeCannotSwim(int x, int y) {
         return snake.checkCollision(neutralOrb)
-                || map.getTerrain(x, y).getType() != TerrainType.FIELD;
+                || map.getTerrain(x, y) instanceof FieldTerrain;
     }
 
     private void resetGameValues() {
@@ -117,6 +120,7 @@ public class SnakeGame extends Game {
     }
 
     public void onTurn(int step) {
+        if (lifetime <= 0) return;
         snake.move();
         collectOrbs();
         checkGameOver();
@@ -200,6 +204,10 @@ public class SnakeGame extends Game {
         this.score += score;
     }
 
+    public void removeScore(long score) {
+        this.score -= score;
+    }
+
     public void decreaseLifetime() {
         this.lifetime -= 1;
     }
@@ -224,7 +232,7 @@ public class SnakeGame extends Game {
         return snake.getLength();
     }
 
-    public boolean outOfBounds(int x, int y) {
+    public static boolean outOfBounds(int x, int y) {
         return (x < 0 || y < 4 || x > SIZE - 1 || y > SIZE - 1);
     }
 
