@@ -1,7 +1,7 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
-import com.javarush.games.snake.model.stages.Map;
+import com.javarush.games.snake.model.map.StageManager;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.Phase;
 
@@ -50,7 +50,7 @@ public class MainMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt("EDIT")) {
             MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            game.setMap(Map.stages.size() - 1);
+            game.setStage(StageManager.getCurrentStage());
             Phase.set(Phase.MAP_EDITOR);
         }
     }

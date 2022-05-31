@@ -3,7 +3,6 @@ package com.javarush.games.snake.model.terrain;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.games.snake.model.GameObject;
-import com.javarush.games.snake.model.stages.Map;
 import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Element;
@@ -86,8 +85,7 @@ public abstract class Terrain extends GameObject {
     }
 
     private void replaceWithAnotherTerrain(TerrainType terrainType) {
-        final Map map = game.getMap();
-        map.putTerrain(x, y, terrainType);
+        game.getStage().putTerrain(x, y, terrainType);
     }
 
     public void processPassiveEffects() {
@@ -105,7 +103,7 @@ public abstract class Terrain extends GameObject {
     }
 
     private boolean hasFireNeighbor() {
-        return Arrays.stream(game.getMap().getTerrainMatrix())
+        return Arrays.stream(game.getStage().getTerrainMatrix())
                 .flatMap(Arrays::stream)
                 .filter(terrain -> Math.abs(terrain.x - this.x) <= 1)
                 .filter(terrain -> Math.abs(terrain.y - this.y) <= 1)

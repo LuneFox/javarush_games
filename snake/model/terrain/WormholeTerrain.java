@@ -1,10 +1,10 @@
 package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.snake.model.stages.Map;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
-import com.javarush.games.snake.model.stages.WormHole;
+import com.javarush.games.snake.model.map.Stage;
+import com.javarush.games.snake.model.map.WormHole;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Sign;
 
@@ -36,9 +36,9 @@ public class WormholeTerrain extends Terrain {
     }
 
     private void warp(Snake snake) {
-        Map map = game.getMap();
+        final Stage stage = game.getStage();
 
-        for (WormHole wormHole : map.wormHoles) {
+        for (WormHole wormHole : stage.getWormHoles()) {
             if (wormHole.locationIsAt(x, y)) {
                 wormHole.warpToDestination(snake);
             } else if (wormHole.destinationIsAt(x, y)) {

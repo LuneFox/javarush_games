@@ -2,7 +2,6 @@ package com.javarush.games.snake.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
-import com.javarush.games.snake.model.stages.Map;
 import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.orbs.Orb;
@@ -29,11 +28,9 @@ public class GameFieldView extends View {
     }
 
     public void drawMap() {
-        Map map = game.getMap();
-
         for (int x = 0; x < SnakeGame.SIZE; x++) {
             for (int y = 0; y < SnakeGame.SIZE; y++) {
-                map.getTerrainMatrix()[y][x].draw(game);
+                game.getStage().getTerrainMatrix()[y][x].draw(game);
             }
         }
     }

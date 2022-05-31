@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.view.Sign;
@@ -185,7 +186,8 @@ public class Snake {
     private void interactWithTerrain() {
         if (SnakeGame.outOfBounds(newHead.x, newHead.y)) return;
 
-        Terrain terrain = game.getMap().getTerrainMatrix()[newHead.y][newHead.x];
+        final Stage currentStage = game.getStage();
+        Terrain terrain = currentStage.getTerrainMatrix()[newHead.y][newHead.x];
         terrain.interact(this);
     }
 

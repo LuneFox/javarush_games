@@ -5,11 +5,16 @@ import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.controller.Controller;
 import com.javarush.games.snake.controller.strategies.GameFieldControlStrategy;
-import com.javarush.games.snake.model.*;
+import com.javarush.games.snake.model.Phase;
+import com.javarush.games.snake.model.Score;
+import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.model.Strings;
+import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.map.Stage;
+import com.javarush.games.snake.model.map.StageManager;
 import com.javarush.games.snake.model.orbs.NeutralOrb;
 import com.javarush.games.snake.model.orbs.Orb;
-import com.javarush.games.snake.model.stages.Map;
 import com.javarush.games.snake.model.terrain.FieldTerrain;
 import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.model.terrain.WaterTerrain;
@@ -29,12 +34,11 @@ public class SnakeGame extends Game {
 
     private Controller controller;
     private Snake snake;
-    private Map map;
+    private Stage stage;
     private ArrayList<Orb> orbs;
     private String gameOverReason;
     private Date stageStartTimeStamp;
     private int turnDelay;
-    private int stage;
     private boolean isStopped;
     private boolean isPaused;
 
@@ -52,25 +56,22 @@ public class SnakeGame extends Game {
     private void initializeStartupParameters() {
         instance = this;
         controller = new Controller();
-        stage = 0;
     }
 
     public final void createGame() {
+        stage = StageManager.getCurrentStage();
         createGameObjects();
         resetGameValues();
         setTurnTimer(turnDelay);
     }
 
     private void createGameObjects() {
-        map = new Map(stage);
-        snake = new Snake(map.snakeStartPlace.x, map.snakeStartPlace.y, this, map.snakeStartDirection);
-        orbs = new ArrayList<>();
-        loadElementalOrbsFromMap();
-        createNeutralOrb();
-    }
-
-    private void loadElementalOrbsFromMap() {
-        orbs.addAll(Arrays.asList(map.orbs.get(0), map.orbs.get(1), map.orbs.get(2), map.orbs.get(3), map.orbs.get(4)));
+        stage.initialize();
+        final int snakeX = stage.getSnakeStartPlace().x;
+        final int snakeY = stage.getSnakeStartPlace().y;
+        final Direction snakeDirection = stage.getSnakeStartDirection();
+        snake = new Snake(snakeX, snakeY, this, snakeDirection);
+        orbs = stage.getOrbs();
     }
 
     private void createNeutralOrb() {
@@ -80,7 +81,7 @@ public class SnakeGame extends Game {
     }
 
     private Terrain getTerrainForNeutralOrb() {
-        List<Terrain> applicableTerrains = Arrays.stream(map.getTerrainMatrix())
+        List<Terrain> applicableTerrains = Arrays.stream(stage.getTerrainMatrix())
                 .flatMap(Arrays::stream)
                 .filter(terrain -> !snake.collidesWithObject(terrain))
                 .filter(terrain -> terrain instanceof FieldTerrain
@@ -108,6 +109,12 @@ public class SnakeGame extends Game {
     }
 
     public void onTurn(int step) {
+
+        if (!stage.isStarted()) {
+            stage.showBriefingMessage();
+            return;
+        }
+
         snake.move();
         collectOrbs();
         checkGameOver();
@@ -119,7 +126,7 @@ public class SnakeGame extends Game {
     private void processPassiveTerrainEffects() {
         for (int x = 0; x < SnakeGame.SIZE; x++) {
             for (int y = 0; y < SnakeGame.SIZE; y++) {
-                map.getTerrainMatrix()[y][x].processPassiveEffects();
+                stage.getTerrainMatrix()[y][x].processPassiveEffects();
             }
         }
     }
@@ -140,15 +147,15 @@ public class SnakeGame extends Game {
 
     private void checkGameOver() {
         if (!snake.isAlive()) gameOver();
-        if (snake.getAlmightyPower() <= 0) win();
+        if (stage.isCompleted()) win();
     }
 
     private void win() {
         stopTurnTimer();
-        selectNextStage();
+        StageManager.selectNextStage();
         Phase.set(Phase.GAME_FIELD);
         isStopped = true;
-        showMessageDialog(Color.YELLOW, Strings.VICTORY + Score.get(), Color.GREEN, 27);
+        stage.showCompleteMessage();
     }
 
     private void gameOver() {
@@ -177,22 +184,6 @@ public class SnakeGame extends Game {
         }
     }
 
-    public void selectNextStage() {
-        if (stage < (Map.stages.size() - 2)) {
-            stage++;
-        } else {
-            stage = 0;
-        }
-    }
-
-    public void selectPreviousStage() {
-        if (stage > 0) {
-            stage--;
-        } else {
-            stage = Map.stages.size() - 2;
-        }
-    }
-
     public int getSnakeLength() {
         return snake.getLength();
     }
@@ -205,20 +196,8 @@ public class SnakeGame extends Game {
         return isStopped;
     }
 
-    public int getStage() {
-        return stage;
-    }
-
     public Snake getSnake() {
         return snake;
-    }
-
-    public Map getMap() {
-        return map;
-    }
-
-    public void setMap(int stage) {
-        this.map = new Map(stage);
     }
 
     public void setTurnDelay(int turnDelay) {
@@ -231,6 +210,14 @@ public class SnakeGame extends Game {
 
     public ArrayList<Orb> getOrbs() {
         return orbs;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 
     /*

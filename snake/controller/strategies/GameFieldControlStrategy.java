@@ -81,7 +81,9 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        if (game.isStopped()) {
+        if (!game.getStage().isStarted()) {
+            game.getStage().start();
+        } else if (game.isStopped()) {
             game.stopTurnTimer();
             Phase.set(Phase.MAIN_MENU);
             MenuSelector.setPointerPosition(0);

@@ -1,4 +1,4 @@
-package com.javarush.games.snake.model.stages;
+package com.javarush.games.snake.model.map;
 
 import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.Snake;
@@ -7,7 +7,7 @@ public class WormHole {
     private final Coordinate beginning;
     private final Coordinate destination;
 
-    WormHole(int xLoc, int yLoc, int xDest, int yDest) {
+    public WormHole(int xLoc, int yLoc, int xDest, int yDest) {
         this.beginning = new Coordinate(xLoc, yLoc);
         this.destination = new Coordinate(xDest, yDest);
     }
