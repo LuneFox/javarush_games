@@ -61,7 +61,7 @@ public abstract class Orb extends GameObject {
 
         snake.eat();
         long bonus = game.calculateBonusPoints();
-        game.addScore(element == Element.NEUTRAL ? (bonus / 10) : bonus);
+        game.addScore(this instanceof NeutralOrb ? (bonus / 10) : bonus);
         game.setNormalTurnDelay();
     }
 

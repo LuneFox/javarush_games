@@ -3,6 +3,7 @@ package com.javarush.games.snake.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.Map;
+import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Message;
@@ -46,7 +47,8 @@ public class GameFieldView extends View {
     }
 
     private void drawInterface() {
-        final int snakeLength = game.snake.getLength();
+        final Snake snake = game.getSnake();
+        final int snakeLength = snake.getLength();
         final Element currentElement = game.snake.getAvailableElements().get(0);
         final int score = game.score;
 
@@ -58,9 +60,9 @@ public class GameFieldView extends View {
         drawElementsPanel();
         drawHungerBar();
 
-        if (game.getLifetime() >= 301) return;
+        if (snake.getAlmightyPower() >= 301) return;
 
-        Message.print(20, 3, "power: " + game.getLifetime(), Color.CORAL);
+        Message.print(20, 3, "power: " + snake.getAlmightyPower(), Color.CORAL);
     }
 
     private void drawHungerBar() {
@@ -118,5 +120,12 @@ public class GameFieldView extends View {
                     break;
             }
         }
+    }
+
+    public void drawSleepingLabel() {
+        Color color = Color.WHITE;
+        Message.print(-1, 15, "             ", color);
+        Message.print(-1, 16, " SLEEPING... ", color);
+        Message.print(-1, 17, "             ", color);
     }
 }

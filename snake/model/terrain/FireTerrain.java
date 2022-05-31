@@ -1,6 +1,8 @@
 package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.engine.cell.Game;
+import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.Map;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
@@ -32,8 +34,9 @@ public class FireTerrain extends Terrain {
                 break;
             case WATER:
                 final Map map = game.getMap();
-                final int x = snake.getNewHead().x;
-                final int y = snake.getNewHead().y;
+                final GameObject newHead = snake.getNewHead();
+                final int x = newHead.x;
+                final int y = newHead.y;
                 map.putTerrain(x, y, TerrainType.WOOD);
                 map.getTerrain(x, y).isWet = true;
                 break;

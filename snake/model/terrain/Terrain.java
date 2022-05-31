@@ -66,7 +66,7 @@ public abstract class Terrain extends GameObject {
 
     public void interact(Snake snake) {
         if (snake.getElement() == Element.ALMIGHTY) {
-            game.decreaseLifetime();
+            snake.decreaseAlmightyPower();
             turnToVoid();
         }
 

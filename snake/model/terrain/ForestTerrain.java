@@ -1,6 +1,7 @@
 package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.Map;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
@@ -29,8 +30,10 @@ public class ForestTerrain extends Terrain {
 
         if (snakeElement == Element.FIRE) {
             final Map map = game.getMap();
-            final int x = snake.getNewHead().x;
-            final int y = snake.getNewHead().y;
+            final GameObject newHead = snake.getNewHead();
+            final int x = newHead.x;
+            final int y = newHead.y;
+
             map.putTerrain(x, y, TerrainType.FIRE);
             return;
         }

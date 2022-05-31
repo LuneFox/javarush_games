@@ -4,18 +4,24 @@ import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.controller.Controller;
-import com.javarush.games.snake.model.*;
+import com.javarush.games.snake.model.Map;
+import com.javarush.games.snake.model.Phase;
+import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.orbs.NeutralOrb;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.terrain.FieldTerrain;
-import com.javarush.games.snake.model.terrain.TerrainType;
+import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.model.terrain.WaterTerrain;
 import com.javarush.games.snake.model.terrain.WoodTerrain;
-import com.javarush.games.snake.view.Message;
+import com.javarush.games.snake.view.impl.GameFieldView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class SnakeGame extends Game {
@@ -24,21 +30,19 @@ public class SnakeGame extends Game {
     private static final int MAX_TURN_DELAY = 300;
 
     private Controller controller;
+    public Snake snake;
+    public Map map;
+    public ArrayList<Orb> orbs;
     private String gameOverReason;
     private Date stageStartTimeStamp;
     private int turnDelay;
     public int score;
-    private int lifetime;
     private int stage;
+
     private boolean isStopped;
     private boolean isPaused;
     public boolean isAccelerationEnabled;
     public boolean isDelayBeforeAccelerationNeeded;
-
-    public Snake snake;
-    public Map map;
-    public Orb neutralOrb;
-    public ArrayList<Orb> orbs;
 
     public static SnakeGame getInstance() {
         return instance;
@@ -68,49 +72,40 @@ public class SnakeGame extends Game {
         map = new Map(stage);
         snake = new Snake(map.snakeStartPlace.x, map.snakeStartPlace.y, this, map.snakeStartDirection);
         orbs = new ArrayList<>();
-        importElementalOrbs();
+        loadElementalOrbsFromMap();
         createNeutralOrb();
     }
 
-    private void importElementalOrbs() {
+    private void loadElementalOrbsFromMap() {
         orbs.addAll(Arrays.asList(map.orbs.get(0), map.orbs.get(1), map.orbs.get(2), map.orbs.get(3), map.orbs.get(4)));
     }
 
     private void createNeutralOrb() {
-        int x;
-        int y;
-
-        do {
-            x = getRandomNumber(SIZE);
-            y = getRandomNumber(SIZE - 4) + 4;
-            neutralOrb = Orb.create(x, y, Element.NEUTRAL);
-        } while (isBadPlaceForNeutralOrb(x, y));
-
+        Terrain terrain = getTerrainForNeutralOrb();
+        Orb neutralOrb = Orb.create(terrain.x, terrain.y, Element.NEUTRAL);
         orbs.add(neutralOrb);
     }
 
-    private boolean isBadPlaceForNeutralOrb(int x, int y) {
-        if (snake.canUseElement(Element.WATER) || snake.canUseElement(Element.ALMIGHTY)) {
-            return isBadPlaceWhenSnakeCanSwim(x, y);
-        } else {
-            return isBadPlaceWhenSnakeCannotSwim(x, y);
+    private Terrain getTerrainForNeutralOrb() {
+        List<Terrain> applicableTerrains = Arrays.stream(map.getTerrainMatrix())
+                .flatMap(Arrays::stream)
+                .filter(terrain -> !snake.collidesWithObject(terrain))
+                .filter(terrain -> terrain instanceof FieldTerrain
+                        || terrain instanceof WaterTerrain
+                        || terrain instanceof WoodTerrain)
+                .collect(Collectors.toList());
+
+        if (!snake.canUseElement(Element.WATER) && !snake.canUseElement(Element.ALMIGHTY)) {
+            applicableTerrains = applicableTerrains.stream()
+                    .filter(terrain -> terrain instanceof FieldTerrain)
+                    .collect(Collectors.toList());
         }
-    }
 
-    private boolean isBadPlaceWhenSnakeCanSwim(int x, int y) {
-        return snake.checkCollision(neutralOrb)
-                || (!(map.getTerrain(x, y) instanceof FieldTerrain)
-                && !(map.getTerrain(x, y) instanceof WaterTerrain)
-                && !(map.getTerrain(x, y) instanceof WoodTerrain));
-    }
-
-    private boolean isBadPlaceWhenSnakeCannotSwim(int x, int y) {
-        return snake.checkCollision(neutralOrb)
-                || !(map.getTerrain(x, y) instanceof FieldTerrain);
+        int random = getRandomNumber(applicableTerrains.size() - 1);
+        return applicableTerrains.get(random);
     }
 
     private void resetGameValues() {
-        lifetime = 301;
         score = 0;
         turnDelay = MAX_TURN_DELAY;
         isDelayBeforeAccelerationNeeded = false;
@@ -120,16 +115,15 @@ public class SnakeGame extends Game {
     }
 
     public void onTurn(int step) {
-        if (lifetime <= 0) return;
         snake.move();
         collectOrbs();
         checkGameOver();
         setTurnTimer(turnDelay);
-        processTerrainEffects();
+        processPassiveTerrainEffects();
         Phase.set(Phase.GAME_FIELD);
     }
 
-    private void processTerrainEffects() {
+    private void processPassiveTerrainEffects() {
         for (int x = 0; x < SnakeGame.SIZE; x++) {
             for (int y = 0; y < SnakeGame.SIZE; y++) {
                 map.getTerrainMatrix()[y][x].processPassiveEffects();
@@ -146,14 +140,14 @@ public class SnakeGame extends Game {
         orbs.forEach(orb -> orb.collect(snake));
         orbs.removeIf(Orb::isCollected);
 
-        if (neutralOrb.isCollected()) {
+        if (orbs.stream().noneMatch(orb -> orb instanceof NeutralOrb)) {
             createNeutralOrb();
         }
     }
 
     private void checkGameOver() {
         if (!snake.isAlive()) gameOver();
-        if (lifetime <= 0) win();
+        if (snake.getAlmightyPower() <= 0) win();
     }
 
     private void win() {
@@ -170,11 +164,6 @@ public class SnakeGame extends Game {
         showMessageDialog(Color.YELLOW, gameOverReason, Color.RED, 27);
     }
 
-
-    public void setTurnDelay(int turnDelay) {
-        this.turnDelay = turnDelay;
-    }
-
     public void setNormalTurnDelay() {
         this.turnDelay = getNormalTurnDelay();
     }
@@ -185,19 +174,13 @@ public class SnakeGame extends Game {
 
     public void pause() {
         isPaused = !isPaused;
+
         if (isPaused) {
             stopTurnTimer();
-            drawSleepingLabel();
+            GameFieldView.getInstance().drawSleepingLabel();
         } else {
             setTurnTimer(turnDelay);
         }
-    }
-
-    private void drawSleepingLabel() {
-        Color color = Color.WHITE;
-        Message.print(-1, 15, "             ", color);
-        Message.print(-1, 16, " SLEEPING... ", color);
-        Message.print(-1, 17, "             ", color);
     }
 
     public void addScore(long score) {
@@ -206,10 +189,6 @@ public class SnakeGame extends Game {
 
     public void removeScore(long score) {
         this.score -= score;
-    }
-
-    public void decreaseLifetime() {
-        this.lifetime -= 1;
     }
 
     public void selectNextStage() {
@@ -240,14 +219,6 @@ public class SnakeGame extends Game {
         return isStopped;
     }
 
-    public int getLifetime() {
-        return lifetime;
-    }
-
-    public void setGameOverReason(String reason) {
-        this.gameOverReason = reason;
-    }
-
     public int getStage() {
         return stage;
     }
@@ -262,6 +233,14 @@ public class SnakeGame extends Game {
 
     public void setMap(int stage) {
         this.map = new Map(stage);
+    }
+
+    public void setTurnDelay(int turnDelay) {
+        this.turnDelay = turnDelay;
+    }
+
+    public void setGameOverReason(String reason) {
+        this.gameOverReason = reason;
     }
 
     /*

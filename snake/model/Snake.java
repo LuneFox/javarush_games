@@ -29,6 +29,7 @@ public class Snake {
     private Date starvingTimestamp;
     private int breath;
     private int hunger;
+    private int almightyPower;
     private boolean isAlive;
     private boolean canChangeElement;
 
@@ -40,6 +41,7 @@ public class Snake {
         availableElements = new LinkedList<>();
         snakeParts = new LinkedList<>();
         hunger = 0;
+        almightyPower = 301;
         starvingTimestamp = new Date();
         isAlive = true;
         canChangeElement = true;
@@ -47,7 +49,7 @@ public class Snake {
         setElement(Element.NEUTRAL);
         addParts(x, y, direction);
 
-        // learnAllElementsForDebug();
+        learnAllElementsForDebug();
     }
 
     private void learnAllElementsForDebug() { // TODO: Remove after release
@@ -131,7 +133,7 @@ public class Snake {
             if (newHead.x > MAX_X) newHead.x = MIN_X;
             if (newHead.x < MIN_X) newHead.x = MAX_X;
             if (newHead.y > MAX_Y) newHead.y = MIN_Y;
-            if (newHead.x < MIN_Y) newHead.y = MAX_Y;
+            if (newHead.y < MIN_Y) newHead.y = MAX_Y;
         }
 
         return newHead;
@@ -147,7 +149,7 @@ public class Snake {
     private void checkBiteSelf() {
         if (element == Element.ALMIGHTY) return;
 
-        if (checkCollision(newHead)) {
+        if (collidesWithObject(newHead)) {
             kill();
             game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN);
         }
@@ -218,6 +220,7 @@ public class Snake {
     }
 
     public void rotateToNextElement() {
+        if (game.isStopped()) return;
         if (!canChangeElement) return;
 
         availableElements.addLast(availableElements.removeFirst());
@@ -227,6 +230,7 @@ public class Snake {
     }
 
     public void rotateToPreviousElement() {
+        if (game.isStopped()) return;
         if (!canChangeElement) return;
 
         setElement(availableElements.getLast());
@@ -243,7 +247,7 @@ public class Snake {
         return (this.availableElements.contains(element));
     }
 
-    public boolean checkCollision(GameObject obj) {
+    public boolean collidesWithObject(GameObject obj) {
         return snakeParts.stream()
                 .anyMatch(part -> part.x == obj.x && part.y == obj.y);
     }
@@ -299,6 +303,10 @@ public class Snake {
         }
     }
 
+    public void decreaseAlmightyPower() {
+        almightyPower--;
+    }
+
     public void reduceBreath() {
         breath--;
     }
@@ -321,6 +329,10 @@ public class Snake {
 
     public int getHunger() {
         return hunger;
+    }
+
+    public int getAlmightyPower() {
+        return almightyPower;
     }
 
     public boolean isAlive() {
