@@ -30,7 +30,7 @@ public class GameFieldView extends View {
 
     public void drawField() {
         for (int x = 0; x < SnakeGame.SIZE; x++) {
-            for (int y = 4; y < SnakeGame.SIZE; y++) {
+            for (int y = 0; y < SnakeGame.SIZE; y++) {
                 game.getStage().getTerrainMatrix()[y][x].draw(game);
             }
         }

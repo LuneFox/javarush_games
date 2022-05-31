@@ -37,12 +37,17 @@ public class SnakeGame extends Game {
         showGrid(false);
         setScreenSize(SIZE, SIZE);
         initializeStartupParameters();
+        updateStage();
         Phase.set(Phase.MAIN_MENU);
     }
 
     private void initializeStartupParameters() {
         instance = this;
         controller = new Controller();
+    }
+
+    public void updateStage(){
+        stage = StageManager.getCurrentStage();
     }
 
     public final void createGame() {

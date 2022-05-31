@@ -1,6 +1,7 @@
 package com.javarush.games.snake.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.view.Message;
@@ -17,6 +18,7 @@ public class MainMenuView extends View {
     @Override
     public void update() {
         drawBlackBackground();
+        game.updateStage();
         Message.print(-1, 5, "✡                     ✡", Color.YELLOW);
         Message.print(-1, 5, "✡                   ✡", Color.CYAN);
         Message.print(-1, 5, "✡                 ✡", Color.LAWNGREEN);
@@ -27,7 +29,9 @@ public class MainMenuView extends View {
 
         // MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP");
         MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
+        Stage stage = game.getStage();
+        Message.print(16, 12, "(" + stage.getName() + ")", stage.isClear() ? Color.LAWNGREEN : Color.LIGHTSKYBLUE);
 
-        MenuSelector.drawMenuEntriesWithPointer(13, 12);
+        MenuSelector.drawMenuEntriesWithPointer(10, 12);
     }
 }

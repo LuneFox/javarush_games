@@ -1,5 +1,6 @@
 package com.javarush.games.snake.model.map;
 
+import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.map.stages.EmptyStage;
 import com.javarush.games.snake.model.map.stages.Stage1;
 import com.javarush.games.snake.model.map.stages.Stage2;

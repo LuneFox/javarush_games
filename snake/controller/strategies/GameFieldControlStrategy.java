@@ -85,7 +85,6 @@ public class GameFieldControlStrategy implements ControlStrategy {
             game.getStage().start();
         } else if (game.isStopped()) {
             game.stopTurnTimer();
-            Phase.set(Phase.MAIN_MENU);
             MenuSelector.setPointerPosition(0);
             Phase.set(Phase.MAIN_MENU);
         } else {
