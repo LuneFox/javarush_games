@@ -4,10 +4,8 @@ import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.snake.controller.Controller;
-import com.javarush.games.snake.model.Map;
-import com.javarush.games.snake.model.Phase;
-import com.javarush.games.snake.model.Snake;
-import com.javarush.games.snake.model.Strings;
+import com.javarush.games.snake.controller.strategies.GameFieldControlStrategy;
+import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.NeutralOrb;
 import com.javarush.games.snake.model.orbs.Orb;
@@ -23,26 +21,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
 public class SnakeGame extends Game {
-    private static SnakeGame instance;
     public static final int SIZE = 32;
     private static final int MAX_TURN_DELAY = 300;
+    private static SnakeGame instance;
 
     private Controller controller;
-    public Snake snake;
-    public Map map;
-    public ArrayList<Orb> orbs;
+    private Snake snake;
+    private Map map;
+    private ArrayList<Orb> orbs;
     private String gameOverReason;
     private Date stageStartTimeStamp;
     private int turnDelay;
-    public int score;
     private int stage;
-
     private boolean isStopped;
     private boolean isPaused;
-    public boolean isAccelerationEnabled;
-    public boolean isDelayBeforeAccelerationNeeded;
 
     public static SnakeGame getInstance() {
         return instance;
@@ -59,7 +52,6 @@ public class SnakeGame extends Game {
         instance = this;
         controller = new Controller();
         stage = 0;
-        isAccelerationEnabled = true;
     }
 
     public final void createGame() {
@@ -106,12 +98,12 @@ public class SnakeGame extends Game {
     }
 
     private void resetGameValues() {
-        score = 0;
+        Score.reset();
         turnDelay = MAX_TURN_DELAY;
-        isDelayBeforeAccelerationNeeded = false;
         isStopped = false;
         isPaused = false;
         stageStartTimeStamp = new Date();
+        GameFieldControlStrategy.getInstance().reset();
     }
 
     public void onTurn(int step) {
@@ -152,9 +144,10 @@ public class SnakeGame extends Game {
 
     private void win() {
         stopTurnTimer();
+        selectNextStage();
         Phase.set(Phase.GAME_FIELD);
         isStopped = true;
-        showMessageDialog(Color.YELLOW, Strings.VICTORY + score, Color.GREEN, 27);
+        showMessageDialog(Color.YELLOW, Strings.VICTORY + Score.get(), Color.GREEN, 27);
     }
 
     private void gameOver() {
@@ -181,14 +174,6 @@ public class SnakeGame extends Game {
         } else {
             setTurnTimer(turnDelay);
         }
-    }
-
-    public void addScore(long score) {
-        this.score += score;
-    }
-
-    public void removeScore(long score) {
-        this.score -= score;
     }
 
     public void selectNextStage() {
@@ -241,6 +226,10 @@ public class SnakeGame extends Game {
 
     public void setGameOverReason(String reason) {
         this.gameOverReason = reason;
+    }
+
+    public ArrayList<Orb> getOrbs() {
+        return orbs;
     }
 
     /*

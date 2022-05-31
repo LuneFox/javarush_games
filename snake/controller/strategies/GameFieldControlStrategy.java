@@ -1,35 +1,41 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
+import com.javarush.games.snake.model.Options;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.Phase;
 
 public class GameFieldControlStrategy implements ControlStrategy {
     private static GameFieldControlStrategy instance;
+    private boolean isDelayBeforeAccelerationNeeded;
 
     public static GameFieldControlStrategy getInstance() {
         if (instance == null) instance = new GameFieldControlStrategy();
         return instance;
     }
 
+    public void reset() {
+        isDelayBeforeAccelerationNeeded = true;
+    }
+
     @Override
     public void leftClick(int x, int y) {
         if (game.isStopped()) return;
-        game.snake.rotateToPreviousElement();
+        game.getSnake().rotateToPreviousElement();
     }
 
     @Override
     public void rightClick(int x, int y) {
         if (game.isStopped()) return;
-        game.snake.rotateToNextElement();
+        game.getSnake().rotateToNextElement();
     }
 
     @Override
     public void pressUp() {
         if (game.isStopped()) return;
         setHighSpeed();
-        game.snake.setDirection(Direction.UP);
+        game.getSnake().setDirection(Direction.UP);
     }
 
     @Override
@@ -41,7 +47,7 @@ public class GameFieldControlStrategy implements ControlStrategy {
     public void pressDown() {
         if (game.isStopped()) return;
         setHighSpeed();
-        game.snake.setDirection(Direction.DOWN);
+        game.getSnake().setDirection(Direction.DOWN);
     }
 
     @Override
@@ -53,7 +59,7 @@ public class GameFieldControlStrategy implements ControlStrategy {
     public void pressRight() {
         setHighSpeed();
         if (game.isStopped()) return;
-        game.snake.setDirection(Direction.RIGHT);
+        game.getSnake().setDirection(Direction.RIGHT);
     }
 
     @Override
@@ -65,7 +71,7 @@ public class GameFieldControlStrategy implements ControlStrategy {
     public void pressLeft() {
         setHighSpeed();
         if (game.isStopped()) return;
-        game.snake.setDirection(Direction.LEFT);
+        game.getSnake().setDirection(Direction.LEFT);
     }
 
     @Override
@@ -87,12 +93,12 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     @Override
     public void pressEnter() {
-        game.snake.rotateToNextElement();
+        game.getSnake().rotateToNextElement();
     }
 
     @Override
     public void pressEscape() {
-        game.snake.rotateToPreviousElement();
+        game.getSnake().rotateToPreviousElement();
     }
 
     @Override
@@ -102,19 +108,19 @@ public class GameFieldControlStrategy implements ControlStrategy {
     }
 
     private void setHighSpeed() {
-        if (game.isAccelerationEnabled) {
-            if (game.isDelayBeforeAccelerationNeeded) {
+        if (Options.isAccelerationEnabled()) {
+            if (isDelayBeforeAccelerationNeeded) {
                 game.setNormalTurnDelay();
             } else {
                 game.setTurnDelay(50);
             }
-            game.isDelayBeforeAccelerationNeeded = false;
+            isDelayBeforeAccelerationNeeded = false;
         }
     }
 
     private void setNormalSpeed() {
-        if (game.isAccelerationEnabled) {
-            game.isDelayBeforeAccelerationNeeded = true;
+        if (Options.isAccelerationEnabled()) {
+            isDelayBeforeAccelerationNeeded = true;
             game.setTurnDelay(game.getNormalTurnDelay());
         }
     }

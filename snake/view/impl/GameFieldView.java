@@ -3,6 +3,7 @@ package com.javarush.games.snake.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.Map;
+import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.enums.Element;
@@ -28,7 +29,7 @@ public class GameFieldView extends View {
     }
 
     public void drawMap() {
-        Map map = game.map;
+        Map map = game.getMap();
 
         for (int x = 0; x < SnakeGame.SIZE; x++) {
             for (int y = 0; y < SnakeGame.SIZE; y++) {
@@ -38,19 +39,19 @@ public class GameFieldView extends View {
     }
 
     private void drawOrbs() {
-        List<Orb> orbs = game.orbs;
+        List<Orb> orbs = game.getOrbs();
         orbs.forEach(orb -> orb.draw(game));
     }
 
     private void drawSnake() {
-        game.snake.draw();
+        game.getSnake().draw();
     }
 
     private void drawInterface() {
         final Snake snake = game.getSnake();
         final int snakeLength = snake.getLength();
-        final Element currentElement = game.snake.getAvailableElements().get(0);
-        final int score = game.score;
+        final Element currentElement = game.getSnake().getAvailableElements().get(0);
+        final long score = Score.get();
 
         Message.print(0, 0, "hunger  : ", Color.CORAL);
         Message.print(0, 1, "strength: " + snakeLength, Color.WHITE);
@@ -69,26 +70,26 @@ public class GameFieldView extends View {
         for (int x = 0; x < 20; x++) {
             Color barColor;
 
-            if (100 - game.snake.getHunger() > 50) {
+            if (100 - game.getSnake().getHunger() > 50) {
                 barColor = Color.GREEN;
-            } else if (100 - game.snake.getHunger() > 25) {
+            } else if (100 - game.getSnake().getHunger() > 25) {
                 barColor = Color.YELLOW;
             } else {
                 barColor = Color.RED;
             }
 
-            barColor = ((100 - game.snake.getHunger()) / 5 <= x) ? Color.BLACK : barColor;
+            barColor = ((100 - game.getSnake().getHunger()) / 5 <= x) ? Color.BLACK : barColor;
 
             game.setCellColor(x + 10, 0, barColor);
         }
     }
 
     public void drawElementsPanel() {
-        final Element snakeElement = game.snake.getElement();
+        final Element snakeElement = game.getSnake().getElement();
 
         for (Element element : Element.values()) {
 
-            final Color textColor = game.snake.canUseElement(element) ? Color.WHITE : Color.DARKSLATEGRAY;
+            final Color textColor = game.getSnake().canUseElement(element) ? Color.WHITE : Color.DARKSLATEGRAY;
             Color backgroundColor;
 
             switch (element) {

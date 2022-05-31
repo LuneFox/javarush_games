@@ -175,7 +175,7 @@ public class Snake {
 
         if (hunger > 100) {
             loseTail();
-            game.removeScore(5);
+            Score.remove(5);
             hunger = 0;
         }
     }

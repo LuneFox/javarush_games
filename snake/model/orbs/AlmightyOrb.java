@@ -23,7 +23,5 @@ public class AlmightyOrb extends Orb{
         snake.clearElements();
         snake.learnElement(element);
         snake.forceSwitchToElement(element);
-
-        game.selectNextStage();
     }
 }

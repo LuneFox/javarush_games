@@ -3,6 +3,7 @@ package com.javarush.games.snake.model.orbs;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.games.snake.model.GameObject;
+import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Element;
 
@@ -61,7 +62,7 @@ public abstract class Orb extends GameObject {
 
         snake.eat();
         long bonus = game.calculateBonusPoints();
-        game.addScore(this instanceof NeutralOrb ? (bonus / 10) : bonus);
+        Score.add(this instanceof NeutralOrb ? (bonus / 10) : bonus);
         game.setNormalTurnDelay();
     }
 

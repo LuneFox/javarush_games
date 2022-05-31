@@ -1,6 +1,7 @@
 package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
+import com.javarush.games.snake.model.Options;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.Phase;
 import com.javarush.games.snake.view.Sign;
@@ -32,7 +33,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt("MAP")) {
             game.selectNextStage();
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
-            game.isAccelerationEnabled = !game.isAccelerationEnabled;
+            Options.switchAccelerationEnabled();
         }
         Phase.set(Phase.OPTIONS_MENU);
     }
@@ -44,7 +45,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt("MAP")) {
             game.selectPreviousStage();
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
-            game.isAccelerationEnabled = !game.isAccelerationEnabled;
+            Options.switchAccelerationEnabled();
         }
         Phase.set(Phase.OPTIONS_MENU);
     }
