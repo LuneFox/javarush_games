@@ -1,11 +1,31 @@
 package com.javarush.games.snake.model;
 
 public class WormHole {
-    public Coordinate location;
-    public Coordinate destination;
+    private final Coordinate beginning;
+    private final Coordinate destination;
 
     WormHole(int xLoc, int yLoc, int xDest, int yDest) {
-        this.location = new Coordinate(xLoc, yLoc);
+        this.beginning = new Coordinate(xLoc, yLoc);
         this.destination = new Coordinate(xDest, yDest);
+    }
+
+    public void warpToDestination(Snake snake) {
+        final GameObject newHead = snake.getNewHead();
+        newHead.x = destination.x;
+        newHead.y = destination.y;
+    }
+
+    public void warpToBeginning(Snake snake) {
+        final GameObject newHead = snake.getNewHead();
+        newHead.x = beginning.x;
+        newHead.y = beginning.y;
+    }
+
+    public boolean locationIsAt(int x, int y) {
+        return beginning.x == x && beginning.y == y;
+    }
+
+    public boolean destinationIsAt(int x, int y) {
+        return destination.x == x && destination.y == y;
     }
 }

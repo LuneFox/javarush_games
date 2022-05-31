@@ -197,16 +197,6 @@ public class Snake {
         breath++;
     }
 
-    public void warpToDestination(WormHole wormHole) {
-        newHead.x = wormHole.destination.x;
-        newHead.y = wormHole.destination.y;
-    }
-
-    public void warpToLocation(WormHole wormHole) {
-        newHead.x = wormHole.location.x;
-        newHead.y = wormHole.location.y;
-    }
-
     public boolean headIsNotTouchingOrb(Orb orb) {
         return (newHead.x != orb.x) || (newHead.y != orb.y) || (element == Element.AIR);
     }
