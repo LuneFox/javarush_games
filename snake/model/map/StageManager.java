@@ -1,5 +1,6 @@
 package com.javarush.games.snake.model.map;
 
+import com.javarush.games.snake.model.map.stages.EmptyStage;
 import com.javarush.games.snake.model.map.stages.Stage1;
 import com.javarush.games.snake.model.map.stages.Stage2;
 import com.javarush.games.snake.model.map.stages.Stage3;
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class StageManager {
     private static final List<Stage> stageList;
+    private static final Stage emptyStage;
     private static int currentStage;
 
     static {
@@ -19,11 +21,16 @@ public class StageManager {
                 new Stage2(),
                 new Stage3())
         );
+        emptyStage = new EmptyStage();
         currentStage = 0;
     }
 
     public static Stage getCurrentStage() {
         return stageList.get(currentStage);
+    }
+
+    public static Stage getEmptyStage() {
+        return emptyStage;
     }
 
     public static void selectNextStage() {

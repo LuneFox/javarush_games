@@ -50,7 +50,7 @@ public class MainMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt("EDIT")) {
             MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            game.setStage(StageManager.getCurrentStage());
+            game.setStage(StageManager.getEmptyStage());
             Phase.set(Phase.MAP_EDITOR);
         }
     }

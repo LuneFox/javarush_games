@@ -112,7 +112,8 @@ public abstract class Terrain extends GameObject {
     }
 
     private boolean isCompletelyDry() {
-        long dryingTime = isWet ? Math.max(game.getSnakeLength() * 500, 1000) : 1000;
+        final Snake snake = game.getSnake();
+        long dryingTime = isWet ? Math.max(snake.getLength() * 500, 1000) : 1000;
         long timePassed = new Date().getTime() - startedToDryTimestamp.getTime();
         return timePassed > dryingTime;
     }

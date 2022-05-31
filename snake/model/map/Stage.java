@@ -2,13 +2,17 @@ package com.javarush.games.snake.model.map;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Direction;
+import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.model.orbs.NeutralOrb;
 import com.javarush.games.snake.model.orbs.Orb;
-import com.javarush.games.snake.model.terrain.Terrain;
-import com.javarush.games.snake.model.terrain.TerrainType;
+import com.javarush.games.snake.model.terrain.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public abstract class Stage {
     protected static final int[] VOID_ROW = new int[32];
@@ -32,6 +36,7 @@ public abstract class Stage {
 
     public Stage() {
         name = "Unnamed";
+        initialize();
     }
 
     public void initialize() {
@@ -91,6 +96,42 @@ public abstract class Stage {
 
     public Terrain getTerrain(int x, int y) {
         return terrainMatrix[y][x];
+    }
+
+    public void createNeutralOrb() {
+        Terrain terrain = getTerrainForNeutralOrb();
+        Orb neutralOrb = Orb.create(terrain.x, terrain.y, Element.NEUTRAL);
+        orbs.add(neutralOrb);
+    }
+
+    private Terrain getTerrainForNeutralOrb() {
+        Snake snake = game.getSnake();
+
+        List<Terrain> applicableTerrains = Arrays.stream(terrainMatrix)
+                .flatMap(Arrays::stream)
+                .filter(terrain -> !snake.collidesWithObject(terrain))
+                .filter(terrain -> terrain instanceof FieldTerrain
+                        || terrain instanceof WaterTerrain
+                        || terrain instanceof WoodTerrain)
+                .collect(Collectors.toList());
+
+        if (!snake.canUseElement(Element.WATER) && !snake.canUseElement(Element.ALMIGHTY)) {
+            applicableTerrains = applicableTerrains.stream()
+                    .filter(terrain -> terrain instanceof FieldTerrain)
+                    .collect(Collectors.toList());
+        }
+
+        int random = game.getRandomNumber(applicableTerrains.size() - 1);
+        return applicableTerrains.get(random);
+    }
+
+    public void collectOrbs(Snake snake) {
+        orbs.forEach(orb -> orb.collect(snake));
+        orbs.removeIf(Orb::isCollected);
+
+        if (orbs.stream().noneMatch(orb -> orb instanceof NeutralOrb)) {
+            createNeutralOrb();
+        }
     }
 
     /*
