@@ -43,7 +43,7 @@ public class MapEditorControlStrategy implements ControlStrategy {
 
     @Override
     public void pressRight() {
-        MapEditorView.getInstance().brushNext();
+        MapEditorView.getInstance().selectNextSample();
         Phase.set(Phase.MAP_EDITOR);
 
     }
