@@ -1,11 +1,9 @@
 package com.javarush.games.snake.model.map.stages;
 
-import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Coordinate;
 import com.javarush.games.snake.model.map.Stage;
-import com.javarush.games.snake.model.map.WormHole;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.view.Sign;
 

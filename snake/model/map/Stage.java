@@ -81,11 +81,11 @@ public abstract class Stage {
     }
 
     public void showBriefingMessage() {
-        game.showMessageDialog(Color.YELLOW, briefingMessage, Color.BLACK, 15);
+        game.showMessageDialog(Color.YELLOW, briefingMessage, Color.BLACK, 10);
     }
 
     public void showCompleteMessage() {
-        game.showMessageDialog(Color.YELLOW, completeMessage, Color.BLACK, 15);
+        game.showMessageDialog(Color.YELLOW, completeMessage, Color.BLACK, 10);
     }
 
     public void putTerrain(int x, int y, TerrainType terrainType) {

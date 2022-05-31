@@ -6,7 +6,6 @@ import com.javarush.games.snake.model.map.Coordinate;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.map.WormHole;
 import com.javarush.games.snake.model.orbs.AirOrb;
-import com.javarush.games.snake.model.orbs.EarthOrb;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.view.Sign;
 

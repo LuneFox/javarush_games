@@ -6,10 +6,7 @@ import com.javarush.games.snake.model.map.Coordinate;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.orbs.EarthOrb;
 import com.javarush.games.snake.model.orbs.Orb;
-import com.javarush.games.snake.model.terrain.FireTerrain;
 import com.javarush.games.snake.view.Sign;
-
-import java.util.Arrays;
 
 public class Tutorial4 extends Stage {
     public Tutorial4() {

@@ -1,6 +1,5 @@
 package com.javarush.games.snake.model.map.stages;
 
-import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Coordinate;
