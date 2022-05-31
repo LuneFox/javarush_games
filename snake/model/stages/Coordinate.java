@@ -1,4 +1,4 @@
-package com.javarush.games.snake.model;
+package com.javarush.games.snake.model.stages;
 
 public class Coordinate {
     public int x;

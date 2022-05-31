@@ -60,6 +60,37 @@ public class Snake {
         learnElement(Element.ALMIGHTY);
     }
 
+    public void learnElement(Element element) {
+        if (availableElements.contains(element)) return;
+        availableElements.add(element);
+    }
+
+    private void setElement(Element element) {
+        this.element = element;
+        bodyColors = changeBodyColor(element);
+    }
+
+    private Color[] changeBodyColor(Element element) {
+        switch (element) {
+            case NEUTRAL:
+                return new Color[]{Color.DARKOLIVEGREEN, Color.DARKGREEN};
+            case WATER:
+                return new Color[]{Color.BLUE, Color.DARKBLUE};
+            case FIRE:
+                return new Color[]{Color.YELLOW, Color.RED};
+            case EARTH:
+                return new Color[]{Color.DARKORANGE, Color.BROWN};
+            case AIR:
+                return new Color[]{Color.LIGHTGRAY, Color.LIGHTSKYBLUE};
+            case DEAD:
+                return new Color[]{Color.DARKSLATEGREY, Color.BLACK};
+            case ALMIGHTY:
+                return new Color[]{Color.ORCHID, Color.DEEPPINK};
+            default:
+                return new Color[]{Color.NONE, Color.NONE};
+        }
+    }
+
     private void addParts(int x, int y, Direction direction) {
         int dx = 0;
         int dy = 0;
@@ -74,18 +105,7 @@ public class Snake {
         }
     }
 
-
     public void draw() {
-        changeToDeadElementIfNotAlive();
-        drawHeadAndStripedBody();
-    }
-
-    private void changeToDeadElementIfNotAlive() {
-        if (isAlive) return;
-        this.setElement(Element.DEAD);
-    }
-
-    private void drawHeadAndStripedBody() {
         final String headSign = isAlive ? Sign.getSign(Sign.SNAKE_HEAD) : Sign.getSign(Sign.SNAKE_DEAD);
         final String bodySign = Sign.getSign(Sign.SNAKE_BODY);
 
@@ -101,6 +121,7 @@ public class Snake {
         }
     }
 
+
     public void move() {
         newHead = createNewHead();
 
@@ -113,6 +134,8 @@ public class Snake {
             snakeParts.removeLast();
             starve();
             canChangeElement = true;
+        } else {
+            setElement(Element.DEAD);
         }
     }
 
@@ -203,38 +226,26 @@ public class Snake {
 
     public void forceRotationToElement(Element element) {
         do {
-            rotateToNextElement();
+            rotateElement(Direction.RIGHT);
         } while (getElement() != element);
 
         canChangeElement = false;
     }
 
-    public void rotateToNextElement() {
+    public void rotateElement(Direction direction) {
         if (game.isStopped()) return;
         if (!canChangeElement) return;
 
-        availableElements.addLast(availableElements.removeFirst());
-        setElement(availableElements.getFirst());
+        if (direction == Direction.RIGHT) {
+            availableElements.addLast(availableElements.removeFirst());
+            setElement(availableElements.getFirst());
+        } else if (direction == Direction.LEFT) {
+            setElement(availableElements.getLast());
+            availableElements.addFirst(availableElements.removeLast());
+        }
+
         GameFieldView.getInstance().drawElementsPanel();
         draw();
-    }
-
-    public void rotateToPreviousElement() {
-        if (game.isStopped()) return;
-        if (!canChangeElement) return;
-
-        setElement(availableElements.getLast());
-        availableElements.addFirst(availableElements.removeLast());
-        GameFieldView.getInstance().drawElementsPanel();
-        draw();
-    }
-
-    public void clearElements() {
-        this.availableElements.clear();
-    }
-
-    public boolean canUseElement(Element element) {
-        return (this.availableElements.contains(element));
     }
 
     public boolean collidesWithObject(GameObject obj) {
@@ -244,11 +255,6 @@ public class Snake {
 
     public LinkedList<Element> getAvailableElements() {
         return availableElements;
-    }
-
-    public void learnElement(Element element) {
-        if (availableElements.contains(element)) return;
-        availableElements.add(element);
     }
 
     public void setDirection(Direction command) {
@@ -267,30 +273,12 @@ public class Snake {
         return snakeParts.get(0).y == snakeParts.get(1).y;
     }
 
-    private void setElement(Element element) {
-        this.element = element;
-        bodyColors = changeBodyColor(element);
+    public boolean canUseElement(Element element) {
+        return (this.availableElements.contains(element));
     }
 
-    private Color[] changeBodyColor(Element element) {
-        switch (element) {
-            case NEUTRAL:
-                return new Color[]{Color.DARKOLIVEGREEN, Color.DARKGREEN};
-            case WATER:
-                return new Color[]{Color.BLUE, Color.DARKBLUE};
-            case FIRE:
-                return new Color[]{Color.YELLOW, Color.RED};
-            case EARTH:
-                return new Color[]{Color.DARKORANGE, Color.BROWN};
-            case AIR:
-                return new Color[]{Color.LIGHTGRAY, Color.LIGHTSKYBLUE};
-            case DEAD:
-                return new Color[]{Color.DARKSLATEGREY, Color.BLACK};
-            case ALMIGHTY:
-                return new Color[]{Color.ORCHID, Color.DEEPPINK};
-            default:
-                return new Color[]{Color.NONE, Color.NONE};
-        }
+    public void clearElements() {
+        this.availableElements.clear();
     }
 
     public void decreaseAlmightyPower() {

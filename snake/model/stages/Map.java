@@ -1,4 +1,4 @@
-package com.javarush.games.snake.model;
+package com.javarush.games.snake.model.stages;
 
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.enums.Direction;

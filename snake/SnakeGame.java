@@ -9,6 +9,7 @@ import com.javarush.games.snake.model.*;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.NeutralOrb;
 import com.javarush.games.snake.model.orbs.Orb;
+import com.javarush.games.snake.model.stages.Map;
 import com.javarush.games.snake.model.terrain.FieldTerrain;
 import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.model.terrain.WaterTerrain;

@@ -1,10 +1,10 @@
 package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.snake.model.Map;
+import com.javarush.games.snake.model.stages.Map;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
-import com.javarush.games.snake.model.WormHole;
+import com.javarush.games.snake.model.stages.WormHole;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Sign;
 

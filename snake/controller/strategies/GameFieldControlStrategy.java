@@ -22,13 +22,13 @@ public class GameFieldControlStrategy implements ControlStrategy {
     @Override
     public void leftClick(int x, int y) {
         if (game.isStopped()) return;
-        game.getSnake().rotateToPreviousElement();
+        game.getSnake().rotateElement(Direction.LEFT);
     }
 
     @Override
     public void rightClick(int x, int y) {
         if (game.isStopped()) return;
-        game.getSnake().rotateToNextElement();
+        game.getSnake().rotateElement(Direction.RIGHT);
     }
 
     @Override
@@ -93,12 +93,12 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     @Override
     public void pressEnter() {
-        game.getSnake().rotateToNextElement();
+        game.getSnake().rotateElement(Direction.RIGHT);
     }
 
     @Override
     public void pressEscape() {
-        game.getSnake().rotateToPreviousElement();
+        game.getSnake().rotateElement(Direction.LEFT);
     }
 
     @Override
