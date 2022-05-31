@@ -153,6 +153,7 @@ public class Snake {
         if (direction == Direction.LEFT) dx = -1;
 
         newHead = new GameObject(head.x + dx, head.y + dy);
+
         if (element == Element.ALMIGHTY) {
             if (newHead.x > MAX_X) newHead.x = MIN_X;
             if (newHead.x < MIN_X) newHead.x = MAX_X;
