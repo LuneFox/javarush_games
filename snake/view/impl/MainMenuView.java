@@ -18,7 +18,7 @@ public class MainMenuView extends View {
     @Override
     public void update() {
         drawBlackBackground();
-        game.updateStage();
+        game.loadStage();
         Message.print(-1, 5, "✡                     ✡", Color.YELLOW);
         Message.print(-1, 5, "✡                   ✡", Color.CYAN);
         Message.print(-1, 5, "✡                 ✡", Color.LAWNGREEN);

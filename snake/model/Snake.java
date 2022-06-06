@@ -34,7 +34,7 @@ public class Snake {
     private boolean isAlive;
     private boolean canChangeElement;
 
-    public Snake(int x, int y, SnakeGame game, Direction direction) {
+    public Snake(SnakeGame game, int x, int y, Direction direction) {
         this.game = game;
         this.direction = direction;
 

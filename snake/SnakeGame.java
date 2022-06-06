@@ -36,7 +36,7 @@ public class SnakeGame extends Game {
         showGrid(false);
         setScreenSize(SIZE, SIZE);
         initializeStartupParameters();
-        updateStage();
+        loadStage();
         Phase.proceed(Phase.MAIN_MENU);
     }
 
@@ -45,27 +45,28 @@ public class SnakeGame extends Game {
         controller = new Controller();
     }
 
-    public void updateStage(){
-        stage = StageManager.getCurrentStage();
-    }
-
     public final void createGame() {
-        stage = StageManager.getCurrentStage();
-        createGameObjects();
-        resetGameValues();
+        loadStage();
+        createSnake();
+        resetValues();
         setTurnTimer(turnDelay);
     }
 
-    private void createGameObjects() {
-        stage.initialize();
+    public void loadStage() {
+        stage = StageManager.getCurrentStage();
+    }
+
+    private void createSnake() {
         final int snakeX = stage.getSnakeStartPlace().x;
         final int snakeY = stage.getSnakeStartPlace().y;
         final Direction snakeDirection = stage.getSnakeStartDirection();
-        snake = new Snake(snakeX, snakeY, this, snakeDirection);
+
+        snake = new Snake(this, snakeX, snakeY, snakeDirection);
     }
 
-    private void resetGameValues() {
+    private void resetValues() {
         Score.reset();
+        stage.initialize();
         turnDelay = MAX_TURN_DELAY;
         isStopped = false;
         isPaused = false;
@@ -83,13 +84,16 @@ public class SnakeGame extends Game {
             return;
         }
 
+        makeTurn();
+        setTurnTimer(turnDelay);
+        Phase.proceed(Phase.GAME_FIELD);
+    }
+
+    private void makeTurn() {
         snake.move();
         stage.checkOrbCollision(snake);
         processPassiveTerrainEffects();
         checkGameOver();
-
-        setTurnTimer(turnDelay);
-        Phase.proceed(Phase.GAME_FIELD);
     }
 
     private void processPassiveTerrainEffects() {
@@ -98,11 +102,6 @@ public class SnakeGame extends Game {
                 stage.getTerrain(x, y).processPassiveEffects();
             }
         }
-    }
-
-    public long calculateBonusPoints() {
-        long stageTimePassed = (new Date().getTime() - stage.getStartTime()) / 1000;
-        return Math.max(300 - stageTimePassed, 0);
     }
 
     private void checkGameOver() {
@@ -143,8 +142,17 @@ public class SnakeGame extends Game {
         }
     }
 
+    public long calculateBonusPoints() {
+        long stageTimePassed = (getCurrentTime() - stage.getStartTime()) / 1000;
+        return Math.max(300 - stageTimePassed, 0);
+    }
+
     public static boolean outOfBounds(int x, int y) {
         return (x < 0 || y < 4 || x > SIZE - 1 || y > SIZE - 1);
+    }
+
+    public long getCurrentTime() {
+        return new Date().getTime();
     }
 
     public boolean isStopped() {
