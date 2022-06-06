@@ -11,6 +11,7 @@ import com.javarush.games.snake.model.terrain.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,6 +28,7 @@ public abstract class Stage {
     protected Direction snakeStartDirection;
     protected String briefingMessage;
     protected String completeMessage;
+    protected Date startTimeStamp;
     protected boolean isStarted;
     protected boolean isClear;
 
@@ -78,6 +80,7 @@ public abstract class Stage {
 
     public void start() {
         isStarted = true;
+        this.startTimeStamp = new Date();
     }
 
     public void showBriefingMessage() {
@@ -130,6 +133,10 @@ public abstract class Stage {
         if (orbs.stream().noneMatch(orb -> orb instanceof NeutralOrb)) {
             createNeutralOrb();
         }
+    }
+
+    public long getStartTime() {
+        return startTimeStamp.getTime();
     }
 
     /*

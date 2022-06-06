@@ -24,7 +24,6 @@ public class SnakeGame extends Game {
     private Snake snake;
     private Stage stage;
     private String gameOverReason;
-    private Date stageStartTimeStamp;
     private int turnDelay;
     private boolean isStopped;
     private boolean isPaused;
@@ -70,7 +69,6 @@ public class SnakeGame extends Game {
         turnDelay = MAX_TURN_DELAY;
         isStopped = false;
         isPaused = false;
-        stageStartTimeStamp = new Date();
         GameFieldControlStrategy.getInstance().reset();
     }
 
@@ -103,7 +101,7 @@ public class SnakeGame extends Game {
     }
 
     public long calculateBonusPoints() {
-        long stageTimePassed = (new Date().getTime() - stageStartTimeStamp.getTime()) / 1000;
+        long stageTimePassed = (new Date().getTime() - stage.getStartTime()) / 1000;
         return Math.max(300 - stageTimePassed, 0);
     }
 

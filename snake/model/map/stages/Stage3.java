@@ -10,7 +10,7 @@ import com.javarush.games.snake.model.orbs.Orb;
 
 public class Stage3 extends Stage {
     public Stage3() {
-        name = "Stage 3";
+        name = "STAGE 3";
     }
 
     @Override
@@ -72,7 +72,8 @@ public class Stage3 extends Stage {
 
     @Override
     protected void createMessages() {
-        briefingMessage = "STAGE 3\nCollect the Orb of Power!" +
+        briefingMessage = name + "" +
+                "\nCollect the Orb of Power!" +
                 "\nBecome the God of Snakes and destroy the realm!" +
                 "\n\n~ PRESS SPACE TO START ~";
         completeMessage = "STAGE 3 COMPLETE!" +
