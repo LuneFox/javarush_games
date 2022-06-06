@@ -18,13 +18,13 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressUp() {
         MenuSelector.movePointerUp();
-        Phase.set(Phase.OPTIONS_MENU);
+        Phase.proceed(Phase.OPTIONS_MENU);
     }
 
     @Override
     public void pressDown() {
         MenuSelector.movePointerDown();
-        Phase.set(Phase.OPTIONS_MENU);
+        Phase.proceed(Phase.OPTIONS_MENU);
     }
 
     @Override
@@ -36,7 +36,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             Options.switchAccelerationEnabled();
         }
-        Phase.set(Phase.OPTIONS_MENU);
+        Phase.proceed(Phase.OPTIONS_MENU);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt("ACCELERATION")) {
             Options.switchAccelerationEnabled();
         }
-        Phase.set(Phase.OPTIONS_MENU);
+        Phase.proceed(Phase.OPTIONS_MENU);
     }
 
     @Override
@@ -64,6 +64,6 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressEscape() {
         MenuSelector.loadLastPointerPosition();
-        Phase.set(Phase.MAIN_MENU);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 }

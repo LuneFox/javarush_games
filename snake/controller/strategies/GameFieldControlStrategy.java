@@ -2,6 +2,7 @@ package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
 import com.javarush.games.snake.model.Options;
+import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.Phase;
@@ -81,12 +82,14 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        if (!game.getStage().isStarted()) {
-            game.getStage().start();
+        final Stage stage = game.getStage();
+
+        if (stage.isNotStarted()) {
+            stage.start();
         } else if (game.isStopped()) {
             game.stopTurnTimer();
             MenuSelector.setPointerPosition(0);
-            Phase.set(Phase.MAIN_MENU);
+            Phase.proceed(Phase.MAIN_MENU);
         } else {
             game.pause();
         }

@@ -13,15 +13,15 @@ public class WormHole {
     }
 
     public void warpToDestination(Snake snake) {
-        final GameObject newHead = snake.getNewHead();
-        newHead.x = destination.x;
-        newHead.y = destination.y;
+        final GameObject snakeNewHead = snake.getNewHead();
+        snakeNewHead.x = destination.x;
+        snakeNewHead.y = destination.y;
     }
 
     public void warpToBeginning(Snake snake) {
-        final GameObject newHead = snake.getNewHead();
-        newHead.x = beginning.x;
-        newHead.y = beginning.y;
+        final GameObject snakeNewHead = snake.getNewHead();
+        snakeNewHead.x = beginning.x;
+        snakeNewHead.y = beginning.y;
     }
 
     public boolean locationIsAt(int x, int y) {

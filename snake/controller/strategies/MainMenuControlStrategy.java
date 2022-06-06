@@ -16,13 +16,13 @@ public class MainMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressUp() {
         MenuSelector.movePointerUp();
-        Phase.set(Phase.MAIN_MENU);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 
     @Override
     public void pressDown() {
         MenuSelector.movePointerDown();
-        Phase.set(Phase.MAIN_MENU);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 
     @Override
@@ -34,24 +34,24 @@ public class MainMenuControlStrategy implements ControlStrategy {
     public void pressEnter() {
         if (MenuSelector.isPointingAt("START")) {
             game.createGame();
-            Phase.set(Phase.GAME_FIELD);
+            Phase.proceed(Phase.GAME_FIELD);
         } else if (MenuSelector.isPointingAt("OPTIONS")) {
             MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            Phase.set(Phase.OPTIONS_MENU);
+            Phase.proceed(Phase.OPTIONS_MENU);
         } else if (MenuSelector.isPointingAt("CONTROLS")) {
             MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            Phase.set(Phase.CONTROLS_MENU);
+            Phase.proceed(Phase.CONTROLS_MENU);
         } else if (MenuSelector.isPointingAt("HELP")) {
             MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
-            Phase.set(Phase.HELP_MENU);
+            Phase.proceed(Phase.HELP_MENU);
         } else if (MenuSelector.isPointingAt("EDIT")) {
             MenuSelector.saveLastPointerPosition();
             MenuSelector.setPointerPosition(0);
             game.setStage(StageManager.getEmptyStage());
-            Phase.set(Phase.MAP_EDITOR);
+            Phase.proceed(Phase.MAP_EDITOR);
         }
     }
 }

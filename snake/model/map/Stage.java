@@ -126,7 +126,7 @@ public abstract class Stage {
         return applicableTerrains.get(random);
     }
 
-    public void collectOrbs(Snake snake) {
+    public void checkOrbCollision(Snake snake) {
         orbs.forEach(orb -> orb.collect(snake));
         orbs.removeIf(Orb::isCollected);
 
@@ -167,8 +167,8 @@ public abstract class Stage {
         return snakeStartDirection;
     }
 
-    public boolean isStarted() {
-        return isStarted;
+    public boolean isNotStarted() {
+        return !isStarted;
     }
 
     public boolean isClear() {

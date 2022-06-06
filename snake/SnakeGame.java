@@ -37,7 +37,7 @@ public class SnakeGame extends Game {
         setScreenSize(SIZE, SIZE);
         initializeStartupParameters();
         updateStage();
-        Phase.set(Phase.MAIN_MENU);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 
     private void initializeStartupParameters() {
@@ -78,24 +78,24 @@ public class SnakeGame extends Game {
             return;
         }
 
-        if (!stage.isStarted()) {
+        if (stage.isNotStarted()) {
             stage.showBriefingMessage();
             return;
         }
 
         snake.move();
-        stage.collectOrbs(snake);
+        stage.checkOrbCollision(snake);
+        processPassiveTerrainEffects();
         checkGameOver();
 
         setTurnTimer(turnDelay);
-        processPassiveTerrainEffects();
-        Phase.set(Phase.GAME_FIELD);
+        Phase.proceed(Phase.GAME_FIELD);
     }
 
     private void processPassiveTerrainEffects() {
         for (int x = 0; x < SnakeGame.SIZE; x++) {
             for (int y = 0; y < SnakeGame.SIZE; y++) {
-                stage.getTerrainMatrix()[y][x].processPassiveEffects();
+                stage.getTerrain(x, y).processPassiveEffects();
             }
         }
     }
@@ -111,14 +111,14 @@ public class SnakeGame extends Game {
     }
 
     private void gameOver() {
-        Phase.set(Phase.GAME_FIELD);
+        Phase.proceed(Phase.GAME_FIELD);
         stopTurnTimer();
         isStopped = true;
         showMessageDialog(Color.YELLOW, gameOverReason, Color.RED, 27);
     }
 
     private void win() {
-        Phase.set(Phase.GAME_FIELD);
+        Phase.proceed(Phase.GAME_FIELD);
         stopTurnTimer();
         StageManager.selectNextStage();
         isStopped = true;

@@ -16,18 +16,18 @@ public class HelpMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressRight() {
         HelpMenuView.getInstance().nextHelpPage();
-        Phase.set(Phase.HELP_MENU);
+        Phase.proceed(Phase.HELP_MENU);
     }
 
     @Override
     public void pressLeft() {
         HelpMenuView.getInstance().previousHelpPage();
-        Phase.set(Phase.HELP_MENU);
+        Phase.proceed(Phase.HELP_MENU);
     }
 
     @Override
     public void pressEscape() {
         MenuSelector.loadLastPointerPosition();
-        Phase.set(Phase.MAIN_MENU);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 }

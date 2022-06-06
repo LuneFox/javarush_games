@@ -15,6 +15,6 @@ public class ControlsMenuControlStrategy implements ControlStrategy {
     @Override
     public void pressEscape() {
         MenuSelector.loadLastPointerPosition();
-        Phase.set(Phase.MAIN_MENU);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 }

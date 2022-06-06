@@ -19,7 +19,7 @@ public class MapEditorControlStrategy implements ControlStrategy {
         if (SnakeGame.outOfBounds(x, y)) return;
 
         MapEditorView.getInstance().drawTerrain(x, y);
-        Phase.set(Phase.MAP_EDITOR);
+        Phase.proceed(Phase.MAP_EDITOR);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class MapEditorControlStrategy implements ControlStrategy {
 
         MapEditorView.getInstance().printCoordinate(x, y);
         MapEditorView.getInstance().copyTerrain(x, y);
-        Phase.set(Phase.MAP_EDITOR);
+        Phase.proceed(Phase.MAP_EDITOR);
     }
 
     @Override
@@ -44,14 +44,14 @@ public class MapEditorControlStrategy implements ControlStrategy {
     @Override
     public void pressRight() {
         MapEditorView.getInstance().selectNextSample();
-        Phase.set(Phase.MAP_EDITOR);
+        Phase.proceed(Phase.MAP_EDITOR);
 
     }
 
     @Override
     public void pressLeft() {
         MapEditorView.getInstance().brushPrevious();
-        Phase.set(Phase.MAP_EDITOR);
+        Phase.proceed(Phase.MAP_EDITOR);
     }
 
     @Override
@@ -62,6 +62,6 @@ public class MapEditorControlStrategy implements ControlStrategy {
     @Override
     public void pressEscape() {
         MenuSelector.loadLastPointerPosition();
-        Phase.set(Phase.MAIN_MENU);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 }

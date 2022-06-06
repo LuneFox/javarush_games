@@ -16,12 +16,18 @@ public enum Phase {
         PHASES.addAll(Arrays.asList(Phase.values()));
     }
 
-    public static void set(Phase phase) {
-        if (phase != getCurrentPhase()) {
-            PHASES.remove(phase);
-            PHASES.addFirst(phase);
-        }
+    public static void proceed(Phase phase) {
+        change(phase);
+        updateView(phase);
+    }
 
+    private static void change(Phase phase) {
+        if (phase == getCurrentPhase()) return;
+        PHASES.remove(phase);
+        PHASES.addFirst(phase);
+    }
+
+    private static void updateView(Phase phase) {
         View view = getView(phase);
         view.update();
     }
