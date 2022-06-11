@@ -5,12 +5,13 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
+import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.Brick;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.QuestionBrick;
+import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelperBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.List;
@@ -18,19 +19,20 @@ import java.util.List;
 public abstract class Bonus extends GameObject implements Movable {
     public GameObject overheadIcon;
     private QuestionBrick parentQuestionBrick;
-    private final JumpHelper jumpHelper;
+    private JumpHelper jumpHelper;
     private final Direction direction;
     private boolean isEjected;
 
     public Bonus(double x, double y) {
         super(x, y);
-        jumpHelper = new JumpHelper(this);
         direction = (x < 50) ? Direction.RIGHT : Direction.LEFT;
     }
 
-    protected void configureJumpHelper() {
-        jumpHelper.setMaxJumpEnergy(4);
-        jumpHelper.setFloorLevel(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight());
+    protected void buildJumpHelper() {
+        jumpHelper = new JumpHelperBuilder(this)
+                .setMaxJumpEnergy(4)
+                .setFloorLevel(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length - getHeight())
+                .build();
     }
 
     public void move() {

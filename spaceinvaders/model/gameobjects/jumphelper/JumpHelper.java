@@ -1,25 +1,33 @@
-package com.javarush.games.spaceinvaders.model.gameobjects;
+package com.javarush.games.spaceinvaders.model.gameobjects.jumphelper;
 
-import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 
 public class JumpHelper {
     private final GameObject object;
     private int floorLevel;
-    private int ceilingLevel;
-    private int raiseSpeed;
+    private final int ceilingLevel;
+    private final int raiseSpeed;
     private int descendSpeed;
     private int jumpEnergy;
-    private int maxJumpEnergy;
+    private final int maxJumpEnergy;
     private long jumpCount;
 
-    public JumpHelper(GameObject object) {
+    JumpHelper(GameObject object,
+                      int floorLevel,
+                      int ceilingLevel,
+                      int raiseSpeed,
+                      int descendSpeed,
+                      int jumpEnergy,
+                      int maxJumpEnergy,
+                      long jumpCount) {
         this.object = object;
-        this.floorLevel = SpaceInvadersGame.HEIGHT - 1;
-        this.raiseSpeed = 1;
-        this.descendSpeed = 1;
-        this.jumpEnergy = 0;
-        this.maxJumpEnergy = 3;
-        this.jumpCount = 0;
+        this.floorLevel = floorLevel;
+        this.ceilingLevel = ceilingLevel;
+        this.raiseSpeed = raiseSpeed;
+        this.descendSpeed = descendSpeed;
+        this.jumpEnergy = jumpEnergy;
+        this.maxJumpEnergy = maxJumpEnergy;
+        this.jumpCount = jumpCount;
     }
 
     public void initJump() {
@@ -73,20 +81,8 @@ public class JumpHelper {
         this.floorLevel = floorLevel;
     }
 
-    public void setCeilingLevel(int ceilingLevel) {
-        this.ceilingLevel = ceilingLevel;
-    }
-
-    public void setRaiseSpeed(int raiseSpeed) {
-        this.raiseSpeed = raiseSpeed;
-    }
-
     public void setDescendSpeed(int descendSpeed) {
         this.descendSpeed = descendSpeed;
-    }
-
-    public void setMaxJumpEnergy(int maxJumpEnergy) {
-        this.maxJumpEnergy = maxJumpEnergy;
     }
 
     public long getJumpCount() {

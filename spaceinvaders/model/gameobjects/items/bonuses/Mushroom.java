@@ -11,7 +11,7 @@ public class Mushroom extends Bonus {
     public Mushroom(double x, double y) {
         super(x, y);
         setStaticView(getMushroomSpriteCopy());
-        configureJumpHelper();
+        buildJumpHelper();
         overheadIcon = new GameObject() {
             {
                 setStaticView(BonusShape.MUSHROOM_OVERHEAD_ICON);

@@ -6,27 +6,25 @@ import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.Shooter;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
+import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
+import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelperBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.Optional;
 
 public class Brick extends GameObject implements Shooter, Movable {
-    private JumpHelper jumpHelper;
+    private final JumpHelper jumpHelper;
 
     public Brick(double x, double y) {
         super(x, y);
         setStaticView(BrickShape.BRICK);
-        configureJumpHelper();
-    }
-
-    private void configureJumpHelper() {
-        jumpHelper = new JumpHelper(this);
-        jumpHelper.setFloorLevel(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length);
+        jumpHelper = new JumpHelperBuilder(this)
+                .setFloorLevel(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length)
+                .build();
     }
 
     public void verifyTouch(Mario mario) {

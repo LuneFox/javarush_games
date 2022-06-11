@@ -5,13 +5,14 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.controller.Control;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
-import com.javarush.games.spaceinvaders.model.gameobjects.JumpHelper;
+import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
+import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelperBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 
@@ -25,10 +26,10 @@ public class Mario extends Battler implements Movable {
 
     private final int leftWalkingBound;
     private final int rightWalkingBound;
+    private final JumpHelper jumpHelper;
     private Animation animation;
     private Direction moveDirection = Direction.NONE;
     private Direction faceDirection = Direction.RIGHT;
-    private JumpHelper jumpHelper;
     public Bonus bonus;
     public int finalAnimationCounter;
     private double walkingSpeed;
@@ -40,20 +41,17 @@ public class Mario extends Battler implements Movable {
     public Mario() {
         super(marioSpawnX(), marioSpawnY());
         setStandingAnimation();
-        configureJumpHelper();
         finalAnimationCounter = 0;
         leftWalkingBound = -4;
         rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;
         walkingSpeed = 0;
-    }
-
-    private void configureJumpHelper() {
-        jumpHelper = new JumpHelper(this);
-        jumpHelper.setMaxJumpEnergy(5);
-        jumpHelper.setFloorLevel(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT);
-        jumpHelper.setCeilingLevel(66);
-        jumpHelper.setRaiseSpeed(4);
-        jumpHelper.setDescendSpeed(2);
+        jumpHelper = new JumpHelperBuilder(this)
+                .setMaxJumpEnergy(5)
+                .setFloorLevel(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT)
+                .setCeilingLevel(66)
+                .setRaiseSpeed(4)
+                .setDescendSpeed(2)
+                .build();
     }
 
     private static double marioSpawnX() {
