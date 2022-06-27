@@ -9,7 +9,9 @@ import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.board.field.FieldDao;
 import com.javarush.games.minesweeper.model.player.Player;
+import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
+import com.javarush.games.minesweeper.model.shop.items.Dice;
 import com.javarush.games.minesweeper.model.shop.items.Shield;
 
 import java.util.List;
@@ -133,12 +135,16 @@ public class BoardManager {
 
         cell.open();
 
+        addMove();
+        addMoney(cell);
+        addTimerBonusScore();
+        addDiceBonusScore(cell);
+
         if (cell.isEmpty()) {
             isRecursiveMove = true;
             fieldDao.getNeighborCells(cell, Cell::isClosed).forEach(this::openCell);
         }
 
-        registerScoreAndMoney(cell);
         checkVictory();
     }
 
@@ -181,29 +187,25 @@ public class BoardManager {
         game.lose();
     }
 
-    private void registerScoreAndMoney(Cell cell) {
-        addPlayerMove();
-        addTimerScore();
-        useDice(cell);
-        earnMoneyFromCell(cell);
-    }
-
-    private void addPlayerMove() {
+    private void addMove() {
         if (isRecursiveMove()) return;
         game.getPlayer().addMove();
     }
 
-    private void addTimerScore() {
+    private void addTimerBonusScore() {
         if (isRecursiveMove) return;
-        game.getScore().addTimerScore();
+        final Score score = game.getScore();
+        score.addTimerScore();
         timer.reset();
     }
 
-    private void useDice(Cell cell) {
-        game.getShop().getDice().use(cell);
+    private void addDiceBonusScore(Cell cell) {
+        final Shop shop = game.getShop();
+        final Dice dice = shop.getDice();
+        dice.use(cell);
     }
 
-    private void earnMoneyFromCell(Cell cell) {
+    private void addMoney(Cell cell) {
         final Player player = game.getPlayer();
         player.gainMoney(cell.produceMoney());
     }
@@ -227,8 +229,8 @@ public class BoardManager {
             return;
         }
 
-        addPlayerMove();
-        addTimerScore();
+        addMove();
+        addTimerBonusScore();
         flagManager.returnFlagToShop(cell);
 
         if (cell.isMined()) {

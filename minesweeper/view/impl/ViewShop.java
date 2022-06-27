@@ -104,7 +104,7 @@ public class ViewShop extends View {
         final long currentScore = game.getPlayer().getScore().getCurrentScore();
         final long countMoves = game.getPlayer().getMoves();
         Printer.print("Очки:" + currentScore, Theme.SHOP_SCORE.getColor(), 13, 80);
-        Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 83, 80, Printer.Align.RIGHT);
+        Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 88, 80, Printer.Align.RIGHT);
     }
 
     public static void shakeMoney() {
