@@ -84,7 +84,7 @@ public class MinesweeperGame extends Game {
         player.reset();
         shop.reset();
         isStopped = false;
-        result = Result.UNKNOWN;
+        result = Result.UNDEFINED;
     }
 
     public void win() {
