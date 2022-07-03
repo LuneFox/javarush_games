@@ -7,7 +7,7 @@ import com.javarush.games.minesweeper.model.shop.items.Dice;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Results {
+public class GameStatistics {
     private static MinesweeperGame game;
     private static final Map<String, String> table = new HashMap<>();
 
@@ -31,7 +31,7 @@ public class Results {
     }
 
     private static String getResult() {
-        return game.isResultVictory() ? "<победа!>" : "<не повезло!>";
+        return game.isWon() ? "<победа!>" : "<не повезло!>";
     }
 
     private static String getTotalScore() {
@@ -45,7 +45,7 @@ public class Results {
     }
 
     private static String getMinesScoreInfo() {
-        if (!game.isResultVictory()) return "не учтено";
+        if (!game.isWon()) return "не учтено";
         long countMines = game.getAllCells(Cell::isMined).size();
         return countMines + "*" + 20 * Options.getDifficulty() + " = " +
                 countMines * 20 * Options.getDifficulty();
@@ -57,7 +57,7 @@ public class Results {
     }
 
     private static String getMoneyScoreInfo() {
-        if (!game.isResultVictory()) return "не учтено";
+        if (!game.isWon()) return "не учтено";
         final int money = game.getPlayer().getMoneyBalance();
         return money + "*" + Options.getDifficulty() + " = " +
                 money * Options.getDifficulty();
@@ -95,6 +95,6 @@ public class Results {
     }
 
     public static void setGame(MinesweeperGame game) {
-        Results.game = game;
+        GameStatistics.game = game;
     }
 }

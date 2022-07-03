@@ -9,7 +9,7 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.Results;
+import com.javarush.games.minesweeper.model.GameStatistics;
 import com.javarush.games.minesweeper.view.View;
 
 
@@ -68,10 +68,10 @@ public class ViewGameOver extends View {
 
     private void drawBanner() {
         victoryWindow.draw(Image.CENTER, Image.CENTER);
-        Image face = game.isResultVictory() ? happyFace : sadFace;
+        Image face = game.isWon() ? happyFace : sadFace;
         face.draw(Image.CENTER, Image.CENTER);
-        Printer.print(Results.get("result"), Theme.LABEL.getColor(), 18, 33);
-        Printer.print("счёт: " + Results.get("total"), Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
+        Printer.print(GameStatistics.get("result"), Theme.LABEL.getColor(), 18, 33);
+        Printer.print("счёт: " + GameStatistics.get("total"), Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
     }
 
     private boolean waitForDelay() {

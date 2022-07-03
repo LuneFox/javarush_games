@@ -41,12 +41,12 @@ public class Score {
     }
 
     public int getMoneyScore() {
-        if (!game.isResultVictory()) return 0;
+        if (!game.isWon()) return 0;
         return game.getPlayer().getMoneyBalance() * Options.getDifficulty();
     }
 
     public int getMinesScore() {
-        if (!game.isResultVictory()) return 0;
+        if (!game.isWon()) return 0;
         int minesCount = game.getAllCells(Cell::isMined).size();
         return minesCount * 20 * Options.getDifficulty();
     }

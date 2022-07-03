@@ -6,10 +6,7 @@ import com.javarush.engine.cell.Key;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.Results;
+import com.javarush.games.minesweeper.model.*;
 import com.javarush.games.minesweeper.model.board.BoardManager;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.player.Player;
@@ -35,8 +32,8 @@ public class MinesweeperGame extends Game {
     private BoardManager boardManager;
     private Shop shop;
     private Player player;
+    private Result result;
     private boolean isStopped;
-    private boolean isResultVictory;
 
     /**
      * Everything that happens during the launch and before the user starts interacting.
@@ -50,7 +47,7 @@ public class MinesweeperGame extends Game {
 
         Phase.setUp(this);
         InteractiveObject.setGame(this);
-        Results.setGame(this);
+        GameStatistics.setGame(this);
         Score.setGame(this);
         display = new Display();
         controller = new Controller(this);
@@ -87,26 +84,26 @@ public class MinesweeperGame extends Game {
         player.reset();
         shop.reset();
         isStopped = false;
-        isResultVictory = false;
+        result = Result.UNKNOWN;
     }
 
     public void win() {
-        finish(true);
+        finish(Result.WIN);
         player.getScore().registerTopScore();
     }
 
     public void lose() {
-        finish(false);
+        finish(Result.LOSE);
         shop.getDice().hide();
         boardManager.revealMines();
     }
 
-    private void finish(boolean isVictory) {
-        isStopped = true;
-        isResultVictory = isVictory;
+    private void finish(Result result) {
+        this.isStopped = true;
+        this.result = result;
         View.setGameOverShowDelay(30);
         Phase.setActive(Phase.GAME_OVER);
-        Results.update();
+        GameStatistics.update();
     }
 
     /*
@@ -216,8 +213,8 @@ public class MinesweeperGame extends Game {
         return boardManager.getTimer().getScoreBonus();
     }
 
-    public boolean isResultVictory() {
-        return isResultVictory;
+    public boolean isWon() {
+        return result == Result.WIN;
     }
 
     public boolean isRecursiveMove() {

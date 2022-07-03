@@ -11,7 +11,7 @@ import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.gui.interactive.PageSelector;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
-import com.javarush.games.minesweeper.model.Results;
+import com.javarush.games.minesweeper.model.GameStatistics;
 import com.javarush.games.minesweeper.view.View;
 
 public class ViewScore extends View {
@@ -58,13 +58,13 @@ public class ViewScore extends View {
                         "щиты:\n" +
                         "скорость:\n\n" +
                         "итого:",
-                Results.get("cells") + "\n" +
-                        Results.get("dice_total") + "\n" +
-                        Results.get("mines") + "\n" +
-                        Results.get("money") + "\n" +
-                        Results.get("shield") + "\n" +
-                        Results.get("timer") + "\n\n" +
-                        Results.get("total")
+                GameStatistics.get("cells") + "\n" +
+                        GameStatistics.get("dice_total") + "\n" +
+                        GameStatistics.get("mines") + "\n" +
+                        GameStatistics.get("money") + "\n" +
+                        GameStatistics.get("shield") + "\n" +
+                        GameStatistics.get("timer") + "\n\n" +
+                        GameStatistics.get("total")
         );
     }
 
@@ -74,10 +74,10 @@ public class ViewScore extends View {
                         "затронуто ячеек:\n" +
                         "бонус сложности:\n\n" +
                         "в общем счёте:",
-                Results.get("dice_luck") + "\n" +
-                        Results.get("dice_rolls") + "\n" +
-                        Results.get("difficulty") + "\n\n\n" +
-                        Results.get("dice_multiply")
+                GameStatistics.get("dice_luck") + "\n" +
+                        GameStatistics.get("dice_rolls") + "\n" +
+                        GameStatistics.get("difficulty") + "\n\n\n" +
+                        GameStatistics.get("dice_multiply")
         );
     }
 
