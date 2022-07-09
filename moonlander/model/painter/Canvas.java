@@ -224,9 +224,12 @@ public class Canvas extends DrawableObject {
     }
 
     public void export() {
-        String consoleResult = Util.exportArrayToCode(colorMatrix, editAreaX, editAreaY, true);
-        String browserResult = Util.exportArrayToCode(colorMatrix, editAreaX, editAreaY, false);
+        // Export to console, uncomment only when using locally in IDE
+        // String consoleResult = Util.exportArrayToCode(colorMatrix, editAreaX, editAreaY, true);
         // System.out.println(consoleResult);
+
+        String browserResult = Util.exportArrayToCode(colorMatrix, editAreaX, editAreaY, false);
+
         game.setCellValueEx(0, 0, Color.BLACK, browserResult, Color.BLACK, 1);
         Painter.showHelp("Массив цветов эскпортирован в код!\n\n" +
                 "Кликни где-нибудь сбоку от игры в пустое место, нажми Ctrl+Shift+C (исследовать элемент)\n" +

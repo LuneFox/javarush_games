@@ -156,21 +156,29 @@ public class Util {
         result.append("new int[][]{");
         for (int y = 0; y < bottomBound; y++) {
             for (int x = 0; x < rightBound; x++) {
+
                 if (x == 0) {
                     if (includeLineBreaks) result.append("\n");
-                    result.append("{").append(array[y][x]).append(",");
+                    result.append("{");
+                    result.append(array[y][x]);
+                    result.append(rightBound == 1 ? "}" : ",");
                 } else if (x < rightBound - 1) {
-                    result.append(array[y][x]).append(",");
-                } else if (x == rightBound - 1) {
-                    result.append(array[y][x]).append("}");
+                    result.append(array[y][x]);
+                    result.append(",");
+                } else {
+                    result.append(array[y][x]);
+                    result.append("}");
                 }
+
                 if (x == rightBound - 1 && y != bottomBound - 1) {
                     result.append(",");
                 }
             }
         }
+
         if (includeLineBreaks) result.append("\n");
         result.append("}");
+
         return result.toString();
     }
 }
