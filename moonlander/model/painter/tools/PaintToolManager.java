@@ -10,12 +10,12 @@ import java.util.Map;
 public class PaintToolManager {
     private static final Map<PaintToolType, PaintTool> TOOLS;
     private static final MoonLanderGame game;
-    private static PaintTool currentTool;
+    private static PaintTool selectedTool;
     private static PaintTool previousTool;
 
     private static final String PENCIL_ICON = "\uD83D\uDD8D️";
     private static final String PICKER_ICON = "\uD83E\uDDEA";
-    private static final String FILLER_ICON = "\uD83E\uDEA3";
+    private static final String FILLER_ICON = "\uD83E\uDD43";
     private static final String REPLACER_ICON = "\uD83C\uDFA8";
     private static final String ERASER_ICON = "\uD83E\uDDFC";
     private static final String LINE_ICON = "/";
@@ -41,7 +41,7 @@ public class PaintToolManager {
 
     public static PaintTool selectTool(PaintToolType type) {
         rememberPreviousTool();
-        currentTool = TOOLS.get(type);
+        selectedTool = TOOLS.get(type);
         TOOLS.values().forEach(tool -> tool.setAwaitingSecondClick(false));
         return TOOLS.get(type);
     }
@@ -51,48 +51,50 @@ public class PaintToolManager {
     }
 
     private static void rememberPreviousTool() {
-        if (game.painter != null) {
-            if (game.painter.selectedTool != TOOLS.get(PaintToolType.PICKER)) {
-                previousTool = game.painter.selectedTool;
-            }
+        if (game.painter == null) return;
+        if (game.painter.selectedTool != TOOLS.get(PaintToolType.PICKER)) {
+            previousTool = game.painter.selectedTool;
         }
     }
 
     public static PaintTool getPreviousTool() {
         if (previousTool == null) return TOOLS.get(PaintToolType.PENCIL);
-        currentTool = previousTool;
+        selectedTool = previousTool;
         return previousTool;
     }
 
-    public static void drawToolPanel() {
-        Color bgColor;
+    public static void drawToolsPanel() {
+        drawTools();
+        drawExtraMarks();
+    }
 
-        bgColor = currentTool == TOOLS.get(PaintToolType.PENCIL) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(1, 1, bgColor, PENCIL_ICON, Color.WHITE, 90);
+    private static void drawTools() {
+        drawTool(PaintToolType.PENCIL, PENCIL_ICON, 1, 90);
+        drawTool(PaintToolType.PICKER, PICKER_ICON, 2, 90);
+        drawTool(PaintToolType.FILLER, FILLER_ICON, 3, 90);
+        drawTool(PaintToolType.REPLACER, REPLACER_ICON, 4, 90);
+        drawTool(PaintToolType.ERASER, ERASER_ICON, 5, 90);
+        drawTool(PaintToolType.LINE, LINE_ICON, 7, 90);
+        drawTool(PaintToolType.RECTANGLE, RECTANGLE_ICON, 8, 90);
+        drawTool(PaintToolType.CIRCLE, CIRCLE_ICON, 9, 80);
+    }
 
-        bgColor = currentTool == TOOLS.get(PaintToolType.PICKER) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(2, 1, bgColor, PICKER_ICON, Color.WHITE, 90);
+    private static void drawTool(PaintToolType type, String icon, int drawX, int textSize) {
+        Color bgColor = (selectedTool == TOOLS.get(type))
+                ? Color.DARKGREEN
+                : Color.NONE;
+        game.setCellValueEx(drawX, 1, bgColor, icon, Color.WHITE, textSize);
+    }
 
-        bgColor = currentTool == TOOLS.get(PaintToolType.FILLER) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(3, 1, bgColor, FILLER_ICON, Color.WHITE, 90);
+    private static void drawExtraMarks() {
+        drawSecondClickAwaitMark(PaintToolType.LINE, 7);
+        drawSecondClickAwaitMark(PaintToolType.RECTANGLE, 8);
+        drawSecondClickAwaitMark(PaintToolType.CIRCLE, 9);
+    }
 
-        bgColor = currentTool == TOOLS.get(PaintToolType.REPLACER) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(4, 1, bgColor, REPLACER_ICON, Color.WHITE, 90);
-
-        bgColor = currentTool == TOOLS.get(PaintToolType.ERASER) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(5, 1, bgColor, ERASER_ICON, Color.WHITE, 90);
-
-        bgColor = currentTool == TOOLS.get(PaintToolType.LINE) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(7, 1, bgColor, LINE_ICON, Color.WHITE, 90);
-        if (getTool(PaintToolType.LINE).isAwaitingSecondClick()) game.setCellValueEx(7, 0, Color.BLACK, "●", Color.RED, 90);
-
-        bgColor = currentTool == TOOLS.get(PaintToolType.RECTANGLE) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(8, 1, bgColor, RECTANGLE_ICON, Color.WHITE, 90);
-        if (getTool(PaintToolType.RECTANGLE).isAwaitingSecondClick()) game.setCellValueEx(8, 0, Color.BLACK, "●", Color.RED, 90);
-
-        bgColor = currentTool == TOOLS.get(PaintToolType.CIRCLE) ? Color.DARKGREEN : Color.NONE;
-        game.setCellValueEx(9, 1, bgColor, CIRCLE_ICON, Color.WHITE, 80);
-        if (getTool(PaintToolType.CIRCLE).isAwaitingSecondClick()) game.setCellValueEx(9, 0, Color.BLACK, "●", Color.RED, 90);
-
+    private static void drawSecondClickAwaitMark(PaintToolType type, int x) {
+        if (getTool(type).isAwaitingSecondClick()) {
+            game.setCellValueEx(x, 0, Color.BLACK, "●", Color.RED, 90);
+        }
     }
 }

@@ -30,7 +30,7 @@ public class Painter implements Drawable {
         canvas.draw();
         colorPalette.draw();
         undoManager.draw();
-        PaintToolManager.drawToolPanel();
+        PaintToolManager.drawToolsPanel();
         drawButtons();
     }
 
