@@ -1,10 +1,11 @@
-package com.javarush.games.moonlander.model.painter.tools;
+package com.javarush.games.moonlander.model.painter.tools.impl;
 
 import com.javarush.games.moonlander.model.painter.Canvas;
 import com.javarush.games.moonlander.model.painter.Click;
 import com.javarush.games.moonlander.model.painter.Painter;
+import com.javarush.games.moonlander.model.painter.tools.PaintTool;
 
-class FillerTool implements PaintTool {
+public class FillerTool implements PaintTool {
     private int usedColor;
     private Canvas canvas;
     private int[][] matrix;
@@ -42,7 +43,8 @@ class FillerTool implements PaintTool {
 
     @Override
     public String getDescription() {
-        return "Инструмент: ЗАЛИВКА\n\nЗаливает ограниченную область цветом.";
+        return "Инструмент: ЗАЛИВКА" +
+                "\n\nЗаливает ограниченную область цветом.";
     }
 
     @Override

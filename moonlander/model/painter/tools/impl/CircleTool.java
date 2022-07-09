@@ -1,8 +1,9 @@
-package com.javarush.games.moonlander.model.painter.tools;
+package com.javarush.games.moonlander.model.painter.tools.impl;
 
 import com.javarush.games.moonlander.model.painter.Canvas;
 import com.javarush.games.moonlander.model.painter.Click;
 import com.javarush.games.moonlander.model.painter.Painter;
+import com.javarush.games.moonlander.model.painter.tools.PaintTool;
 
 public class CircleTool implements PaintTool {
     private Canvas canvas;
@@ -72,10 +73,11 @@ public class CircleTool implements PaintTool {
 
     @Override
     public String getDescription() {
-        return "Инструмент: ОКРУЖНОСТЬ\n\nРисует окружность с указанным радиусом.\n" +
-                "Нужно поставить две точки. Первая - центр окружности.\n" +
-                "Вторая - длина радиуса окружности по отношению к центру.\n" +
-                "Если не нужна точка в центре - перед установкой второй точки надо нажать UNDO.";
+        return "Инструмент: ОКРУЖНОСТЬ" +
+                "\n\nРисует окружность с указанным радиусом." +
+                "\nНужно поставить две точки. Первая - центр окружности." +
+                "\nВторая - длина радиуса окружности по отношению к центру." +
+                "\nЕсли не нужна точка в центре - перед установкой второй точки надо нажать UNDO.";
     }
 
     @Override

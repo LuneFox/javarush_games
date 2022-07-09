@@ -2,6 +2,7 @@ package com.javarush.games.moonlander.model.painter.tools;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.moonlander.MoonLanderGame;
+import com.javarush.games.moonlander.model.painter.tools.impl.*;
 
 import java.util.EnumMap;
 import java.util.Map;

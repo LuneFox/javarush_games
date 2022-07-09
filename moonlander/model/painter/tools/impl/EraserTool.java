@@ -1,9 +1,10 @@
-package com.javarush.games.moonlander.model.painter.tools;
+package com.javarush.games.moonlander.model.painter.tools.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.moonlander.model.painter.Canvas;
 import com.javarush.games.moonlander.model.painter.Click;
 import com.javarush.games.moonlander.model.painter.Painter;
+import com.javarush.games.moonlander.model.painter.tools.PaintTool;
 
 public class EraserTool implements PaintTool {
     @Override
@@ -17,8 +18,9 @@ public class EraserTool implements PaintTool {
 
     @Override
     public String getDescription() {
-        return "Инструмент: ЛАСТИК\n\nДелает указанный пиксель прозрачным.\n" +
-                "Быстрый выбор - клавиша ESC.";
+        return "Инструмент: ЛАСТИК" +
+                "\n\nДелает указанный пиксель прозрачным." +
+                "\nБыстрый выбор - клавиша ESC.";
     }
 
     @Override

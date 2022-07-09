@@ -1,8 +1,9 @@
-package com.javarush.games.moonlander.model.painter.tools;
+package com.javarush.games.moonlander.model.painter.tools.impl;
 
 import com.javarush.games.moonlander.model.painter.Canvas;
 import com.javarush.games.moonlander.model.painter.Click;
 import com.javarush.games.moonlander.model.painter.Painter;
+import com.javarush.games.moonlander.model.painter.tools.PaintTool;
 
 public class RectangleTool implements PaintTool {
     private int x1;
@@ -58,8 +59,9 @@ public class RectangleTool implements PaintTool {
 
     @Override
     public String getDescription() {
-        return "Инструмент: ПРЯМОУГОЛЬНИК\n\nРисует прямоугольник между двумя точками.\n" +
-                "Нужно поставить две точки в противоположных углах.";
+        return "Инструмент: ПРЯМОУГОЛЬНИК" +
+                "\n\nРисует прямоугольник между двумя точками." +
+                "\nНужно поставить две точки в противоположных углах.";
     }
 
     @Override

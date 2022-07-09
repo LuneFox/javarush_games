@@ -1,8 +1,9 @@
-package com.javarush.games.moonlander.model.painter.tools;
+package com.javarush.games.moonlander.model.painter.tools.impl;
 
 import com.javarush.games.moonlander.model.painter.Canvas;
 import com.javarush.games.moonlander.model.painter.Click;
 import com.javarush.games.moonlander.model.painter.Painter;
+import com.javarush.games.moonlander.model.painter.tools.PaintTool;
 
 public class LineTool implements PaintTool {
     private int x1;
@@ -91,8 +92,9 @@ public class LineTool implements PaintTool {
 
     @Override
     public String getDescription() {
-        return "Инструмент: ЛИНИЯ\n\nРисует прямую линию между двумя точками.\n" +
-                "Сначала нужно поставить первую точку, затем вторую.";
+        return "Инструмент: ЛИНИЯ" +
+                "\n\nРисует прямую линию между двумя точками." +
+                "\nСначала нужно поставить первую точку, затем вторую.";
     }
 
     @Override

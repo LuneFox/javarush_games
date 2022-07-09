@@ -1,11 +1,13 @@
-package com.javarush.games.moonlander.model.painter.tools;
+package com.javarush.games.moonlander.model.painter.tools.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.moonlander.model.painter.Canvas;
 import com.javarush.games.moonlander.model.painter.Click;
 import com.javarush.games.moonlander.model.painter.Painter;
+import com.javarush.games.moonlander.model.painter.tools.PaintTool;
+import com.javarush.games.moonlander.model.painter.tools.PaintToolManager;
 
-class PickerTool implements PaintTool {
+public class PickerTool implements PaintTool {
     @Override
     public void use(Painter painter, int x, int y, Click click) {
         Canvas canvas = painter.canvas;
@@ -26,8 +28,10 @@ class PickerTool implements PaintTool {
 
     @Override
     public String getDescription() {
-        return "Инструмент: ПИПЕТКА\n\nКопирует цвет пикселя и\nпереключается на предыдущий инструмент.\n" +
-                "Быстрый выбор - клавиша SPACE.";
+        return "Инструмент: ПИПЕТКА" +
+                "\n\nКопирует цвет пикселя и" +
+                "\nпереключается на предыдущий инструмент." +
+                "\nБыстрый выбор - клавиша SPACE.";
     }
 
     @Override
