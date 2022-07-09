@@ -29,4 +29,9 @@ class PickerTool implements PaintTool {
         return "Инструмент: ПИПЕТКА\n\nКопирует цвет пикселя и\nпереключается на предыдущий инструмент.\n" +
                 "Быстрый выбор - клавиша SPACE.";
     }
+
+    @Override
+    public String getIcon() {
+        return "\uD83E\uDDEA";
+    }
 }

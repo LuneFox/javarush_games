@@ -8,6 +8,8 @@ public interface PaintTool {
 
     String getDescription();
 
+    String getIcon();
+
     default boolean isAwaitingSecondClick() {
         return false;
     }

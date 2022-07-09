@@ -6,21 +6,11 @@ import com.javarush.games.moonlander.MoonLanderGame;
 import java.util.EnumMap;
 import java.util.Map;
 
-
 public class PaintToolManager {
     private static final Map<PaintToolType, PaintTool> TOOLS;
     private static final MoonLanderGame game;
     private static PaintTool selectedTool;
     private static PaintTool previousTool;
-
-    private static final String PENCIL_ICON = "\uD83D\uDD8D️";
-    private static final String PICKER_ICON = "\uD83E\uDDEA";
-    private static final String FILLER_ICON = "\uD83E\uDD43";
-    private static final String REPLACER_ICON = "\uD83C\uDFA8";
-    private static final String ERASER_ICON = "\uD83E\uDDFC";
-    private static final String LINE_ICON = "/";
-    private static final String RECTANGLE_ICON = "□";
-    private static final String CIRCLE_ICON = "◯";
 
     static {
         game = MoonLanderGame.getInstance();
@@ -69,21 +59,22 @@ public class PaintToolManager {
     }
 
     private static void drawTools() {
-        drawTool(PaintToolType.PENCIL, PENCIL_ICON, 1, 90);
-        drawTool(PaintToolType.PICKER, PICKER_ICON, 2, 90);
-        drawTool(PaintToolType.FILLER, FILLER_ICON, 3, 90);
-        drawTool(PaintToolType.REPLACER, REPLACER_ICON, 4, 90);
-        drawTool(PaintToolType.ERASER, ERASER_ICON, 5, 90);
-        drawTool(PaintToolType.LINE, LINE_ICON, 7, 90);
-        drawTool(PaintToolType.RECTANGLE, RECTANGLE_ICON, 8, 90);
-        drawTool(PaintToolType.CIRCLE, CIRCLE_ICON, 9, 80);
+        drawToolIcon(PaintToolType.PENCIL, 1);
+        drawToolIcon(PaintToolType.PICKER, 2);
+        drawToolIcon(PaintToolType.FILLER, 3);
+        drawToolIcon(PaintToolType.REPLACER, 4);
+        drawToolIcon(PaintToolType.ERASER, 5);
+        drawToolIcon(PaintToolType.LINE, 7);
+        drawToolIcon(PaintToolType.RECTANGLE, 8);
+        drawToolIcon(PaintToolType.CIRCLE, 9);
     }
 
-    private static void drawTool(PaintToolType type, String icon, int drawX, int textSize) {
-        Color bgColor = (selectedTool == TOOLS.get(type))
+    private static void drawToolIcon(PaintToolType type, int drawX) {
+        final PaintTool tool = TOOLS.get(type);
+        Color bgColor = (selectedTool == tool)
                 ? Color.DARKGREEN
                 : Color.NONE;
-        game.setCellValueEx(drawX, 1, bgColor, icon, Color.WHITE, textSize);
+        game.setCellValueEx(drawX, 1, bgColor, tool.getIcon(), Color.WHITE, 80);
     }
 
     private static void drawExtraMarks() {
@@ -94,7 +85,7 @@ public class PaintToolManager {
 
     private static void drawSecondClickAwaitMark(PaintToolType type, int x) {
         if (getTool(type).isAwaitingSecondClick()) {
-            game.setCellValueEx(x, 0, Color.BLACK, "●", Color.RED, 90);
+            game.setCellValueEx(x, 0, Color.BLACK, "●", Color.RED, 80);
         }
     }
 }

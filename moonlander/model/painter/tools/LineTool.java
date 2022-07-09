@@ -95,6 +95,11 @@ public class LineTool implements PaintTool {
                 "Сначала нужно поставить первую точку, затем вторую.";
     }
 
+    @Override
+    public String getIcon() {
+        return "/";
+    }
+
     public boolean isAwaitingSecondClick() {
         return isAwaitingSecondClick;
     }

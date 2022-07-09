@@ -78,6 +78,11 @@ public class CircleTool implements PaintTool {
                 "Если не нужна точка в центре - перед установкой второй точки надо нажать UNDO.";
     }
 
+    @Override
+    public String getIcon() {
+        return "◯";
+    }
+
     public boolean isAwaitingSecondClick() {
         return isAwaitingSecondClick;
     }

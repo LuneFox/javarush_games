@@ -20,4 +20,9 @@ public class EraserTool implements PaintTool {
         return "Инструмент: ЛАСТИК\n\nДелает указанный пиксель прозрачным.\n" +
                 "Быстрый выбор - клавиша ESC.";
     }
+
+    @Override
+    public String getIcon() {
+        return "\uD83E\uDDFC";
+    }
 }

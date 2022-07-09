@@ -20,4 +20,9 @@ class PencilTool implements PaintTool {
         return "Инструмент: КАРАНДАШ\n\nПерекрашивает пиксель выбранным цветом.\n" +
                 "Быстрый выбор - клавиша ENTER.";
     }
+
+    @Override
+    public String getIcon() {
+        return "\uD83D\uDD8D️";
+    }
 }

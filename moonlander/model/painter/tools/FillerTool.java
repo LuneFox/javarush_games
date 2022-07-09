@@ -44,4 +44,9 @@ class FillerTool implements PaintTool {
     public String getDescription() {
         return "Инструмент: ЗАЛИВКА\n\nЗаливает ограниченную область цветом.";
     }
+
+    @Override
+    public String getIcon() {
+        return "\uD83E\uDD43";
+    }
 }

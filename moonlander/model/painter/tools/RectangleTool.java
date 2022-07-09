@@ -62,6 +62,11 @@ public class RectangleTool implements PaintTool {
                 "Нужно поставить две точки в противоположных углах.";
     }
 
+    @Override
+    public String getIcon() {
+        return "□";
+    }
+
     public boolean isAwaitingSecondClick() {
         return isAwaitingSecondClick;
     }
