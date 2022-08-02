@@ -33,7 +33,6 @@ public class RectangleTool implements PaintTool {
             } else {
                 if (y > y1) {
                     drawRectangle(colorMatrix, color, x, y1, x1, y);
-
                 } else {
                     drawRectangle(colorMatrix, color, x, y, x1, y1);
                 }

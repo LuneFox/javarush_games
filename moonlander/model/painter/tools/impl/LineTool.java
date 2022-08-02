@@ -30,6 +30,22 @@ public class LineTool implements PaintTool {
         }
     }
 
+    private void drawLine(int[][] colorMatrix, int color, int x1, int y1, int x2, int y2) {
+        if (Math.abs(y2 - y1) < Math.abs(x2 - x1)) {
+            if (x1 > x2) {
+                drawLineLow(colorMatrix, color, x2, y2, x1, y1);
+            } else {
+                drawLineLow(colorMatrix, color, x1, y1, x2, y2);
+            }
+        } else {
+            if (y1 > y2) {
+                drawLineHigh(colorMatrix, color, x2, y2, x1, y1);
+            } else {
+                drawLineHigh(colorMatrix, color, x1, y1, x2, y2);
+            }
+        }
+    }
+
     private void drawLineLow(int[][] colorMatrix, int color, int x1, int y1, int x2, int y2) {
         int deltaX = x2 - x1;
         int deltaY = y2 - y1;
@@ -72,23 +88,6 @@ public class LineTool implements PaintTool {
             }
         }
     }
-
-    private void drawLine(int[][] colorMatrix, int color, int x1, int y1, int x2, int y2) {
-        if (Math.abs(y2 - y1) < Math.abs(x2 - x1)) {
-            if (x1 > x2) {
-                drawLineLow(colorMatrix, color, x2, y2, x1, y1);
-            } else {
-                drawLineLow(colorMatrix, color, x1, y1, x2, y2);
-            }
-        } else {
-            if (y1 > y2) {
-                drawLineHigh(colorMatrix, color, x2, y2, x1, y1);
-            } else {
-                drawLineHigh(colorMatrix, color, x1, y1, x2, y2);
-            }
-        }
-    }
-
 
     @Override
     public String getDescription() {
