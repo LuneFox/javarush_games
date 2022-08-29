@@ -35,24 +35,30 @@ public class Controller {
         strategyMap.put(null, new ControlDisabled());
     }
 
-    public final void leftClick(int x, int y) {
-        if (isInvalidInput(x, y)) return;
-        game.setRecursiveMove(false);
-        game.setFlagExplosionAllowed(false);
-        selectStrategy(x, y);
-        strategy.leftClick(x, y);
+    public static boolean clickedOnUpperHalf() {
+        return lastClickY < 50;
     }
 
-    public final void rightClick(int x, int y) {
+    public final void click(int x, int y, Click click) {
+        // System.out.printf(click + ": %d %d%n", x, y);
         if (isInvalidInput(x, y)) return;
-        game.setRecursiveMove(false);
-        selectStrategy(x, y);
-        strategy.rightClick(x, y);
+
+        lastClickY = y;
+        game.restrictFlagExplosion();
+        game.stopRecursion();
+        selectStrategy();
+
+        if (click == Click.LEFT) {
+            strategy.leftClick(x, y);
+        } else {
+            strategy.rightClick(x, y);
+        }
     }
 
     public final void pressKey(Key key) {
-        if (isInvalidInput(0, 99)) return;
-        selectStrategy(0, 99); // Key presses never miss the screen
+        if (isInvalidInput(0, 0)) return;
+
+        selectStrategy();
         if (key == Key.UP) strategy.pressUp();
         else if (key == Key.DOWN) strategy.pressDown();
         else if (key == Key.LEFT) strategy.pressLeft();
@@ -64,17 +70,13 @@ public class Controller {
         else strategy.pressOther();
     }
 
-    private void selectStrategy(int x, int y) {
-        // System.out.printf("%d %d%n", x, y);
-        lastClickY = y;
-        this.strategy = strategyMap.get(Phase.getActive());
+    private void selectStrategy() {
+        strategy = strategyMap.get(Phase.getActive());
     }
 
     private boolean isInvalidInput(int x, int y) {
-        return !Button.isAnimationFinished() || !Util.isWithinScreen(x, y) || View.getGameOverShowDelay() > 0;
-    }
-
-    public static boolean clickedOnUpperHalf() {
-        return lastClickY < 50;
+        return !(Button.isAnimationFinished()
+                && Util.isWithinScreen(x, y)
+                && View.getGameOverShowDelay() <= 0);
     }
 }

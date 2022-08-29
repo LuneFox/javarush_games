@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
+import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
@@ -181,6 +182,14 @@ public class MinesweeperGame extends Game {
         return player.countFlags();
     }
 
+    public void stopRecursion() {
+        boardManager.setRecursiveMove(false);
+    }
+
+    public void restrictFlagExplosion() {
+        boardManager.setFlagExplosionAllowed(false);
+    }
+
     /*
      * Plain getters
      */
@@ -233,14 +242,6 @@ public class MinesweeperGame extends Game {
      * Plain setters
      */
 
-    public void setRecursiveMove(boolean enable) {
-        boardManager.setRecursiveMove(enable);
-    }
-
-    public void setFlagExplosionAllowed(boolean enable) {
-        boardManager.setFlagExplosionAllowed(enable);
-    }
-
     public void setInterlacedEffect(boolean enabled) {
         display.setInterlaceEnabled(enabled);
     }
@@ -256,12 +257,12 @@ public class MinesweeperGame extends Game {
 
     @Override
     public void onMouseLeftClick(int x, int y) {
-        controller.leftClick(x, y);
+        controller.click(x, y, Click.LEFT);
     }
 
     @Override
     public void onMouseRightClick(int x, int y) {
-        controller.rightClick(x, y);
+        controller.click(x, y, Click.RIGHT);
     }
 
     @Override
