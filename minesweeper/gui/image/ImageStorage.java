@@ -219,7 +219,7 @@ public class ImageStorage {
                 break;
             case SHOP_HEADER_COIN:
                 setColors(YELLOW, ORANGE);
-                data = makeArray(4, "011011121112111211220220");
+                data = makeArray("011011121112111211220220", 4);
                 break;
             case GUI_BUTTON:
                 setColors(Theme.BUTTON_BG.getColor(), BLACK, Theme.BUTTON_BORDER.getColor());
@@ -227,11 +227,11 @@ public class ImageStorage {
                 break;
             case GUI_ARROW:
                 setColors(Theme.LABEL.getColor(), WHITE);
-                data = makeArray(5, "11000011000011000011001100110011000");
+                data = makeArray("11000011000011000011001100110011000", 5);
                 break;
             case GUI_DIFFICULTY_BAR:
                 setColors(GREEN, BLACK);
-                data = makeArray(3, "020212212212212212020");
+                data = makeArray("020212212212212212020", 3);
                 break;
             case GUI_BACKGROUND:
                 setColors(Theme.MAIN_MENU_BG.getColor(), NONE, Theme.MAIN_MENU_BORDER.getColor());
@@ -279,27 +279,27 @@ public class ImageStorage {
                 break;
             case BOARD_DICE_1:
                 setColors(WHITE, RED, BLACK);
-                data = makeArray(8, "1111111011111113111111131112111311111113111111131111111303333333");
+                data = makeArray("1111111011111113111111131112111311111113111111131111111303333333", 8);
                 break;
             case BOARD_DICE_2:
                 setColors(WHITE, BLACK, BLACK);
-                data = makeArray(8, "1111111011111213111111131111111311111113121111131111111303333333");
+                data = makeArray("1111111011111213111111131111111311111113121111131111111303333333", 8);
                 break;
             case BOARD_DICE_3:
                 setColors(WHITE, BLACK, BLACK);
-                data = makeArray(8, "1111111011111213111111131112111311111113121111131111111303333333");
+                data = makeArray("1111111011111213111111131112111311111113121111131111111303333333", 8);
                 break;
             case BOARD_DICE_4:
                 setColors(WHITE, BLACK, BLACK);
-                data = makeArray(8, "1111111012111213111111131111111311111113121112131111111303333333");
+                data = makeArray("1111111012111213111111131111111311111113121112131111111303333333", 8);
                 break;
             case BOARD_DICE_5:
                 setColors(WHITE, BLACK, BLACK);
-                data = makeArray(8, "1111111012111213111111131112111311111113121112131111111303333333");
+                data = makeArray("1111111012111213111111131112111311111113121112131111111303333333", 8);
                 break;
             case BOARD_DICE_6:
                 setColors(WHITE, BLACK, BLACK);
-                data = makeArray(8, "1111111012111213111111131211121311111113121112131111111303333333");
+                data = makeArray("1111111012111213111111131211121311111113121112131111111303333333", 8);
                 break;
             case BOARD_SCANNER_FRAME:
                 setColors(NONE, NONE, BLUE);
@@ -417,214 +417,214 @@ public class ImageStorage {
              * Symbols
              */
             case SYM_RU_LETTER_A:
-                data = makeArray(4, "0000000001101001111110011001");
+                data = makeArray("0000000001101001111110011001", 4);
                 break;
             case SYM_RU_LETTER_B:
-                data = makeArray(4, "0000000011111000111010011110");
+                data = makeArray("0000000011111000111010011110", 4);
                 break;
             case SYM_RU_LETTER_V:
-                data = makeArray(4, "0000000011101001111010011110");
+                data = makeArray("0000000011101001111010011110", 4);
                 break;
             case SYM_RU_LETTER_G:
-                data = makeArray(3, "000000111100100100100");
+                data = makeArray("000000111100100100100", 3);
                 break;
             case SYM_RU_LETTER_D:
-                data = makeArray(5, "0000000000001100101001010010101111110001");
+                data = makeArray("0000000000001100101001010010101111110001", 5);
                 break;
             case SYM_RU_LETTER_YE:
-                data = makeArray(4, "0000000011111000111010001111");
+                data = makeArray("0000000011111000111010001111", 4);
                 break;
             case SYM_RU_LETTER_YO:
-                data = makeArray(4, "1010000011111000111010001111");
+                data = makeArray("1010000011111000111010001111", 4);
                 break;
             case SYM_RU_LETTER_J:
-                data = makeArray(5, "00000000001010110101011101010110101");
+                data = makeArray("00000000001010110101011101010110101", 5);
                 break;
             case SYM_RU_LETTER_Z:
-                data = makeArray(4, "0000000011100001011000011110");
+                data = makeArray("0000000011100001011000011110", 4);
                 break;
             case SYM_RU_LETTER_I:
-                data = makeArray(4, "0000000010011001101111011001");
+                data = makeArray("0000000010011001101111011001", 4);
                 break;
             case SYM_RU_LETTER_IKR:
-                data = makeArray(4, "0110000010011001101111011001");
+                data = makeArray("0110000010011001101111011001", 4);
                 break;
             case SYM_RU_LETTER_K:
-                data = makeArray(4, "0000000010011010110010101001");
+                data = makeArray("0000000010011010110010101001", 4);
                 break;
             case SYM_RU_LETTER_L:
-                data = makeArray(4, "0000000000110101010101011001");
+                data = makeArray("0000000000110101010101011001", 4);
                 break;
             case SYM_RU_LETTER_M:
-                data = makeArray(5, "00000000001000111011101011000110001");
+                data = makeArray("00000000001000111011101011000110001", 5);
                 break;
             case SYM_RU_LETTER_N:
-                data = makeArray(4, "0000000010011001111110011001");
+                data = makeArray("0000000010011001111110011001", 4);
                 break;
             case SYM_RU_LETTER_O:
-                data = makeArray(4, "0000000001101001100110010110");
+                data = makeArray("0000000001101001100110010110", 4);
                 break;
             case SYM_RU_LETTER_P:
-                data = makeArray(4, "0000000011111001100110011001");
+                data = makeArray("0000000011111001100110011001", 4);
                 break;
             case SYM_RU_LETTER_R:
-                data = makeArray(4, "0000000011101001111010001000");
+                data = makeArray("0000000011101001111010001000", 4);
                 break;
             case SYM_RU_LETTER_S:
-                data = makeArray(4, "0000000001111000100010000111");
+                data = makeArray("0000000001111000100010000111", 4);
                 break;
             case SYM_RU_LETTER_T:
-                data = makeArray(3, "000000111010010010010");
+                data = makeArray("000000111010010010010", 3);
                 break;
             case SYM_RU_LETTER_U:
-                data = makeArray(4, "0000000010011001011100011110");
+                data = makeArray("0000000010011001011100011110", 4);
                 break;
             case SYM_RU_LETTER_F:
-                data = makeArray(5, "00000000000111010101101010111000100");
+                data = makeArray("00000000000111010101101010111000100", 5);
                 break;
             case SYM_RU_LETTER_H:
-                data = makeArray(4, "0000000010011001011010011001");
+                data = makeArray("0000000010011001011010011001", 4);
                 break;
             case SYM_RU_LETTER_C:
-                data = makeArray(5, "0000000000100101001010010100101111100001");
+                data = makeArray("0000000000100101001010010100101111100001", 5);
                 break;
             case SYM_RU_LETTER_CH:
-                data = makeArray(4, "0000000010011001011100010001");
+                data = makeArray("0000000010011001011100010001", 4);
                 break;
             case SYM_RU_LETTER_SHA:
-                data = makeArray(5, "00000000001010110101101011010111111");
+                data = makeArray("00000000001010110101101011010111111", 5);
                 break;
             case SYM_RU_LETTER_SCHA:
-                data = makeArray(6, "000000000000101010101010101010101010111111000001");
+                data = makeArray("000000000000101010101010101010101010111111000001", 6);
                 break;
             case SYM_RU_LETTER_SOFT:
-                data = makeArray(4, "0000000010001000111010011110");
+                data = makeArray("0000000010001000111010011110", 4);
                 break;
             case SYM_RU_LETTER_Y:
-                data = makeArray(6, "000000000000100001100001111001100101111001");
+                data = makeArray("000000000000100001100001111001100101111001", 6);
                 break;
             case SYM_RU_LETTER_HARD:
-                data = makeArray(5, "00000000001100001000011100100101110");
+                data = makeArray("00000000001100001000011100100101110", 5);
                 break;
             case SYM_RU_LETTER_E:
-                data = makeArray(4, "0000000011100001011100011110");
+                data = makeArray("0000000011100001011100011110", 4);
                 break;
             case SYM_RU_LETTER_YU:
-                data = makeArray(6, "000000000000100110101001111001101001100110");
+                data = makeArray("000000000000100110101001111001101001100110", 6);
                 break;
             case SYM_RU_LETTER_YA:
-                data = makeArray(4, "0000000001111001011101011001");
+                data = makeArray("0000000001111001011101011001", 4);
                 break;
             case SYM_EN_LETTER_D:
-                data = makeArray(4, "0000000011101001100110011110");
+                data = makeArray("0000000011101001100110011110", 4);
                 break;
             case SYM_EN_LETTER_F:
-                data = makeArray(4, "0000000011111000111010001000");
+                data = makeArray("0000000011111000111010001000", 4);
                 break;
             case SYM_EN_LETTER_G:
-                data = makeArray(4, "0000000001111000101110010110");
+                data = makeArray("0000000001111000101110010110", 4);
                 break;
             case SYM_EN_LETTER_I:
-                data = makeArray(3, "000000111010010010111");
+                data = makeArray("000000111010010010111", 3);
                 break;
             case SYM_EN_LETTER_J:
-                data = makeArray(4, "0000000001110010001010100100");
+                data = makeArray("0000000001110010001010100100", 4);
                 break;
             case SYM_EN_LETTER_L:
-                data = makeArray(3, "000000100100100100111");
+                data = makeArray("000000100100100100111", 3);
                 break;
             case SYM_EN_LETTER_N:
-                data = makeArray(4, "0000000010011001110110111001");
+                data = makeArray("0000000010011001110110111001", 4);
                 break;
             case SYM_EN_LETTER_Q:
-                data = makeArray(4, "0000000001101001100110100101");
+                data = makeArray("0000000001101001100110100101", 4);
                 break;
             case SYM_EN_LETTER_R:
-                data = makeArray(4, "0000000011101001111010101001");
+                data = makeArray("0000000011101001111010101001", 4);
                 break;
             case SYM_EN_LETTER_S:
-                data = makeArray(4, "0000000001111000011000011110");
+                data = makeArray("0000000001111000011000011110", 4);
                 break;
             case SYM_EN_LETTER_U:
-                data = makeArray(4, "0000000010011001100110010110");
+                data = makeArray("0000000010011001100110010110", 4);
                 break;
             case SYM_EN_LETTER_V:
-                data = makeArray(5, "00000000001000110001100010101000100");
+                data = makeArray("00000000001000110001100010101000100", 5);
                 break;
             case SYM_EN_LETTER_W:
-                data = makeArray(5, "00000000001000110001101011101110001");
+                data = makeArray("00000000001000110001101011101110001", 5);
                 break;
             case SYM_EN_LETTER_X:
-                data = makeArray(5, "00000000001000101010001000101010001");
+                data = makeArray("00000000001000101010001000101010001", 5);
                 break;
             case SYM_EN_LETTER_Y:
-                data = makeArray(5, "00000000001000101010001000010000100");
+                data = makeArray("00000000001000101010001000010000100", 5);
                 break;
             case SYM_EN_LETTER_Z:
-                data = makeArray(4, "0000000011110001011010001111");
+                data = makeArray("0000000011110001011010001111", 4);
                 break;
             case SYM_SYMBOL_DOT:
-                data = makeArray(1, "0000001");
+                data = makeArray("0000001", 1);
                 break;
             case SYM_SYMBOL_COMMA:
-                data = makeArray(2, "0000000000010110");
+                data = makeArray("0000000000010110", 2);
                 break;
             case SYM_SYMBOL_COLON:
-                data = makeArray(1, "0001010");
+                data = makeArray("0001010", 1);
                 break;
             case SYM_SYMBOL_EXCLAMATION:
-                data = makeArray(1, "0011101");
+                data = makeArray("0011101", 1);
                 break;
             case SYM_SYMBOL_QUESTION:
-                data = makeArray(4, "0000000001100001011000000100");
+                data = makeArray("0000000001100001011000000100", 4);
                 break;
             case SYM_SYMBOL_SLASH:
-                data = makeArray(3, "000001001010010100100");
+                data = makeArray("000001001010010100100", 3);
                 break;
             case SYM_SYMBOL_DASH:
-                data = makeArray(2, "00000000110000");
+                data = makeArray("00000000110000", 2);
                 break;
             case SYM_SYMBOL_EQUALS:
-                data = makeArray(2, "00000011001100");
+                data = makeArray("00000011001100", 2);
                 break;
             case SYM_SYMBOL_ASTERISK:
-                data = makeArray(3, "000000000101010101000");
+                data = makeArray("000000000101010101000", 3);
                 break;
             case SYM_DIGIT_0:
-                data = makeArray(3, "000000111101101101111");
+                data = makeArray("000000111101101101111", 3);
                 break;
             case SYM_DIGIT_1:
-                data = makeArray(3, "000000110010010010111");
+                data = makeArray("000000110010010010111", 3);
                 break;
             case SYM_DIGIT_2:
-                data = makeArray(3, "000000111001111100111");
+                data = makeArray("000000111001111100111", 3);
                 break;
             case SYM_DIGIT_3:
-                data = makeArray(3, "000000111001111001111");
+                data = makeArray("000000111001111001111", 3);
                 break;
             case SYM_DIGIT_4:
-                data = makeArray(3, "000000101101111001001");
+                data = makeArray("000000101101111001001", 3);
                 break;
             case SYM_DIGIT_5:
-                data = makeArray(3, "000000111100111001111");
+                data = makeArray("000000111100111001111", 3);
                 break;
             case SYM_DIGIT_6:
-                data = makeArray(3, "000000111100111101111");
+                data = makeArray("000000111100111101111", 3);
                 break;
             case SYM_DIGIT_7:
-                data = makeArray(3, "000000111001001001001");
+                data = makeArray("000000111001001001001", 3);
                 break;
             case SYM_DIGIT_8:
-                data = makeArray(3, "000000111101111101111");
+                data = makeArray("000000111101111101111", 3);
                 break;
             case SYM_DIGIT_9:
-                data = makeArray(3, "000000111101111001111");
+                data = makeArray("000000111101111001111", 3);
                 break;
             case SYM_SYMBOL_SQ_BRACKET_L:
-                data = makeArray(2, "0011101010101011");
+                data = makeArray("0011101010101011", 2);
                 break;
             case SYM_SYMBOL_SQ_BRACKET_R:
-                data = makeArray(2, "0011010101010111");
+                data = makeArray("0011010101010111", 2);
                 break;
             case SYM_SYMBOL_SPACE:
                 data = new int[1][3];

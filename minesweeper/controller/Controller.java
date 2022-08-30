@@ -30,6 +30,10 @@ public class Controller {
     }
 
     static {
+        createStrategies();
+    }
+
+    private static void createStrategies() {
         ControlStrategyFactory factory = new ControlStrategyFactory();
         Arrays.stream(Phase.values()).forEach(phase -> strategyMap.put(phase, factory.createStrategy(phase)));
         strategyMap.put(null, new ControlDisabled());

@@ -48,13 +48,15 @@ public abstract class Button extends InteractiveObject {
     }
 
     private Image createBody(int posX, int posY, boolean addShadow) {
+
         Image body = new Image(ImageType.GUI_BUTTON, posX, posY) {
             @Override
             public int[][] getMatrixFromStorage(ImageType imageType) {
                 return ImageCreator.createFrame(Button.this.width, Button.this.height, addShadow, true);
             }
         };
-        body.colors = new Color[]{Color.NONE, Theme.BUTTON_BG.getColor(), Color.BLACK, Theme.BUTTON_BORDER.getColor()};
+
+        body.setColors(new Color[]{Color.NONE, Theme.BUTTON_BG.getColor(), Color.BLACK, Theme.BUTTON_BORDER.getColor()});
         return body;
     }
 

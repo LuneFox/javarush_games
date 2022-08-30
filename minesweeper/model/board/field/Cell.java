@@ -26,6 +26,10 @@ public class Cell extends InteractiveObject {
     private Image sprite;
 
     static {
+        createSprites();
+    }
+
+    private static void createSprites() {
         for (int i = 0; i < 10; i++) {
             sprites.put(i, ImageType.valueOf("BOARD_" + i));
         }
@@ -41,6 +45,7 @@ public class Cell extends InteractiveObject {
     @Override
     public void draw() {
         background.draw();
+
         if (isFlagged || isOpen) {
             sprite.draw();
         }
@@ -53,12 +58,14 @@ public class Cell extends InteractiveObject {
 
     public void setGraphicsForOpenedState() {
         if (!isOpen) return;
+
         selectBackgroundForOpenedState();
         selectSpriteForOpenedState();
     }
 
     private void selectBackgroundForOpenedState() {
-        background.matrix = background.getMatrixFromStorage(ImageType.CELL_OPENED);
+        background.setMatrix(background.getMatrixFromStorage(ImageType.CELL_OPENED));
+
         if (isGameOverCause) setBackgroundColor(Color.RED);
         else if (isShielded) setBackgroundColor(Color.YELLOW);
         else if (isScanned) setBackgroundColor(Theme.CELL_SCANNED.getColor());

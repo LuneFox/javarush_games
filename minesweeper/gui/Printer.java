@@ -131,7 +131,7 @@ public class Printer {
         for (char c : chars) {
             if (charIsStrokeMarkup(c)) continue;
             symbol = cache.get(c);
-            width += (symbol.matrix[0].length + CHAR_SPACING);
+            width += (symbol.getMatrix()[0].length + CHAR_SPACING);
         }
         return width;
     }

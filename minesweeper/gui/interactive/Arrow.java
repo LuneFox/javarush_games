@@ -2,6 +2,7 @@ package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
+import com.javarush.games.minesweeper.gui.image.Mirror;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
 public class Arrow extends InteractiveObject {
@@ -45,7 +46,7 @@ public class Arrow extends InteractiveObject {
         } else {
             setBasePosition();
         }
-        arrowImage.draw(direction == Direction.RIGHT ? Image.Mirror.NONE : Image.Mirror.HORIZONTAL);
+        arrowImage.draw(direction == Direction.RIGHT ? Mirror.NONE : Mirror.HORIZONTAL);
     }
 
     private void setBasePosition() {

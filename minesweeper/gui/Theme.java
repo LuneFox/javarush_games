@@ -2,7 +2,7 @@ package com.javarush.games.minesweeper.gui;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.image.Image;
+import com.javarush.games.minesweeper.gui.image.ImageManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -183,7 +183,7 @@ public enum Theme {
 
     public static void set(int themeNumber, MinesweeperGame game) {
         Theme.currentNumber = themeNumber;
-        Image.reloadAllCreatedImagesColors();
+        ImageManager.reloadAllImagesColors();
         game.refreshOpenedCellsGraphics();
     }
 

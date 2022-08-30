@@ -35,7 +35,7 @@ public class DifficultySelector extends InteractiveObject {
         for (int i = 0; i < bars.length; i++) {
             int x = getBarHorizontalPosition(i);
             Image bar = new Image(ImageType.GUI_DIFFICULTY_BAR, x, this.y);
-            bar.setUnableToReloadColors(true);
+            bar.lockColors();
 
             if (i > 6) {
                 bar.changeColor(Color.RED, 1);

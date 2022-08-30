@@ -6,23 +6,14 @@ import com.javarush.games.minesweeper.gui.Display;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.view.View;
 
-import java.util.HashSet;
-import java.util.Set;
-
 public class Image extends InteractiveObject {
     public static final Cache<ImageType, Image> cache;
     public static final int CENTER = Integer.MIN_VALUE;
-    public static final Set<Image> allCreatedImages = new HashSet<>();
 
     private final ImageType type;
-    public int[][] matrix;
-    public Color[] colors;
-    private boolean isUnableToReloadColors;
-
-
-    public enum Mirror {
-        HORIZONTAL, VERTICAL, NONE
-    }
+    private int[][] matrix;
+    private Color[] colors;
+    private boolean isColorLocked;
 
     static {
         cache = new Cache<ImageType, Image>(ImageType.values().length) {
@@ -50,7 +41,7 @@ public class Image extends InteractiveObject {
         this.matrix = getMatrixFromStorage(type);
         this.height = matrix.length;
         this.width = matrix[0].length;
-        Image.allCreatedImages.add(this);
+        ImageManager.addImage(this);
     }
 
     public final void setPosition(int drawX, int drawY) {
@@ -105,17 +96,30 @@ public class Image extends InteractiveObject {
         }
     }
 
-    public static void reloadAllCreatedImagesColors() {
-        for (Image image : allCreatedImages) {
-            if (image.isUnableToReloadColors) {
-                continue;
-            }
-            ImageStorage storage = new ImageStorage(image.type);
-            image.colors = storage.getColors();
-        }
+    public void lockColors() {
+        isColorLocked = true;
     }
 
-    public void setUnableToReloadColors(boolean unableToReloadColors) {
-        isUnableToReloadColors = unableToReloadColors;
+
+    // Getters, setters
+
+    public ImageType getType() {
+        return type;
+    }
+
+    public boolean isColorLocked() {
+        return isColorLocked;
+    }
+
+    public void setColors(Color[] colors) {
+        this.colors = colors;
+    }
+
+    public int[][] getMatrix() {
+        return matrix;
+    }
+
+    public void setMatrix(int[][] matrix) {
+        this.matrix = matrix;
     }
 }
