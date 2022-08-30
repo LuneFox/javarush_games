@@ -46,7 +46,7 @@ public class Controller {
         lastClickY = y;
         game.restrictFlagExplosion();
         game.stopRecursion();
-        selectStrategy();
+        selectStrategyAccordingToActivePhase();
 
         if (click == Click.LEFT) {
             strategy.leftClick(x, y);
@@ -58,7 +58,8 @@ public class Controller {
     public final void pressKey(Key key) {
         if (isInvalidInput(0, 0)) return;
 
-        selectStrategy();
+        selectStrategyAccordingToActivePhase();
+
         if (key == Key.UP) strategy.pressUp();
         else if (key == Key.DOWN) strategy.pressDown();
         else if (key == Key.LEFT) strategy.pressLeft();
@@ -70,7 +71,7 @@ public class Controller {
         else strategy.pressOther();
     }
 
-    private void selectStrategy() {
+    private void selectStrategyAccordingToActivePhase() {
         strategy = strategyMap.get(Phase.getActive());
     }
 

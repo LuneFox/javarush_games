@@ -3,6 +3,7 @@ package com.javarush.games.minesweeper.controller;
 import com.javarush.games.minesweeper.model.Phase;
 
 public interface ControlStrategy {
+
     default void leftClick(int x, int y) {
         Phase.leftClickOnCurrentView(x, y);
     }

@@ -19,13 +19,15 @@ public class FloatingImage extends Image {
 
     private void shiftVertically(double maxDistance, int y) {
         shift += (directionDown ? STEP : -STEP);
+
         if (Math.abs(shift) > maxDistance) {
-            reverseDirection();
+            changeDirection();
         }
+
         this.y = (int) (y + shift);
     }
 
-    private void reverseDirection() {
+    private void changeDirection() {
         directionDown = !directionDown;
     }
 }
