@@ -61,7 +61,9 @@ public class DifficultySelector extends InteractiveObject {
     }
 
     private void drawBars() {
-        for (int i = 0; i < (difficultySetting / 5); i++) {
+        final int barsCount = difficultySetting / 5;
+
+        for (int i = 0; i < barsCount; i++) {
             bars[i].draw();
         }
     }

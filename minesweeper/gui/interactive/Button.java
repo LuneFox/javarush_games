@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Effect;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -31,8 +32,8 @@ public abstract class Button extends InteractiveObject {
         this.width = Printer.calculateWidth(text) + DEFAULT_MARGIN;
         this.height = DEFAULT_HEIGHT;
         this.labelOffset = DEFAULT_OFFSET;
-        this.unpressedBody = createBody(posX, posY, true);
-        this.pressedBody = createBody(posX, posY, false);
+        this.unpressedBody = createBody(posX, posY, Effect.SHADOW, Effect.STROKE);
+        this.pressedBody = createBody(posX, posY, Effect.STROKE);
         this.linkView(view);
     }
 
@@ -42,17 +43,17 @@ public abstract class Button extends InteractiveObject {
         this.width = width;
         this.height = height;
         this.labelOffset = ((width - Printer.calculateWidth(text)) / 2) + 1;
-        this.unpressedBody = createBody(posX, posY, true);
-        this.pressedBody = createBody(posX, posY, false);
+        this.unpressedBody = createBody(posX, posY, Effect.SHADOW, Effect.STROKE);
+        this.pressedBody = createBody(posX, posY, Effect.STROKE);
         this.linkView(view);
     }
 
-    private Image createBody(int posX, int posY, boolean addShadow) {
+    private Image createBody(int posX, int posY, Effect... effects) {
 
         Image body = new Image(ImageType.GUI_BUTTON, posX, posY) {
             @Override
             public int[][] getMatrixFromStorage(ImageType imageType) {
-                return ImageCreator.createFrame(Button.this.width, Button.this.height, addShadow, true);
+                return ImageCreator.createFrame(Button.this.width, Button.this.height, effects);
             }
         };
 

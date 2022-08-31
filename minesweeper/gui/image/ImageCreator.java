@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.gui.image;
 
+import com.javarush.games.minesweeper.gui.Effect;
+
 import java.util.Arrays;
 
 /**
@@ -93,18 +95,25 @@ public class ImageCreator {
     private static final int FRAME_COLOR_SHADOW = 2;
     private static final int FRAME_COLOR_STROKE = 3;
 
-    public static int[][] createFrame(int sizeX, int sizeY, boolean addShadow, boolean addStroke) {
-        // Image with shadow is 1 px taller and wider
-        if (addShadow) {
-            sizeX++;
-            sizeY++;
-        }
+    public static int[][] createFrame(int sizeX, int sizeY, Effect... effects) {
+        final boolean addShadow = Arrays.asList(effects).contains(Effect.SHADOW);
+        final boolean addStroke = Arrays.asList(effects).contains(Effect.STROKE);
 
-        int[][] frame = new int[sizeY][sizeX];
+        int[][] frame = new int[addShadow ? ++sizeY : sizeY][addShadow ? ++sizeX : sizeX];
         fillBackground(frame);
+
         if (addShadow) addFrameShadow(frame);
         if (addStroke) addInnerStroke(frame, addShadow);
+
         return frame;
+    }
+
+    private static void fillBackground(int[][] frame) {
+        for (int y = 0; y < frame.length; y++) {
+            for (int x = 0; x < frame[0].length; x++) {
+                frame[y][x] = FRAME_COLOR_BACKGROUND;
+            }
+        }
     }
 
     private static void addFrameShadow(int[][] frame) {
@@ -119,15 +128,9 @@ public class ImageCreator {
         }
     }
 
-    private static void addInnerStroke(int[][] frame, boolean shadow) {
-        int sizeY = frame.length;
-        int sizeX = frame[0].length;
-
-        // If shadow is drawn, shrink the drawing zone back to normal window
-        if (shadow) {
-            sizeX--;
-            sizeY--;
-        }
+    private static void addInnerStroke(int[][] frame, boolean addShadow) {
+        int sizeY = frame.length - (addShadow ? 1 : 0);
+        int sizeX = frame[0].length - (addShadow ? 1 : 0);
 
         // Draw top and bottom lines
         for (int x = 0; x < sizeX; x++) {
@@ -142,13 +145,6 @@ public class ImageCreator {
         }
     }
 
-    private static void fillBackground(int[][] frame) {
-        for (int y = 0; y < frame.length; y++) {
-            for (int x = 0; x < frame[0].length; x++) {
-                frame[y][x] = FRAME_COLOR_BACKGROUND;
-            }
-        }
-    }
 
     // CELL GENERATION
 
@@ -166,9 +162,11 @@ public class ImageCreator {
         for (int x = 0; x < sizeX; x++) {
             cell[0][x] = CELL_LIGHT_COLOR;
         }
+
         for (int y = 0; y < sizeY; y++) {
             cell[y][0] = CELL_LIGHT_COLOR;
         }
+
         if (up) {
             for (int x = 1; x < sizeX; x++) {
                 cell[sizeY - 1][x] = CELL_SHADOW_COLOR;

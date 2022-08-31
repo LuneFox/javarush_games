@@ -1,6 +1,7 @@
 package com.javarush.games.minesweeper.gui.image;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.minesweeper.gui.Effect;
 import com.javarush.games.minesweeper.gui.Theme;
 
 import static com.javarush.engine.cell.Color.*;
@@ -235,47 +236,47 @@ public class ImageStorage {
                 break;
             case GUI_BACKGROUND:
                 setColors(Theme.MAIN_MENU_BG.getColor(), NONE, Theme.MAIN_MENU_BORDER.getColor());
-                data = createFrame(100, 100, false, true);
+                data = createFrame(100, 100, Effect.STROKE);
                 break;
             case SHOP_SHOWCASE_PANEL:
                 setColors(Theme.SHOP_BG.getColor(), BLACK, Theme.SHOP_BORDER.getColor());
-                data = createFrame(80, 80, true, true);
+                data = createFrame(80, 80, Effect.SHADOW, Effect.STROKE);
                 break;
             case SHOP_HEADER_PANEL:
                 setColors(Theme.SHOP_HEADER_FOOTER.getColor(), BLACK, Theme.SHOP_BORDER.getColor());
-                data = createFrame(80, 12, false, true);
+                data = createFrame(80, 12, Effect.STROKE);
                 break;
             case SHOP_SHOWCASE_FRAME:
                 setColors(Theme.SHOP_ITEM_BG.getColor(), BLACK, GREEN);
-                data = createFrame(20, 20, true, true);
+                data = createFrame(20, 20, Effect.SHADOW, Effect.STROKE);
                 break;
             case SHOP_SHOWCASE_FRAME_PRESSED:
                 setColors(Theme.SHOP_ITEM_BG.getColor(), BLACK, GREEN);
-                data = createFrame(20, 20, false, true);
+                data = createFrame(20, 20, Effect.STROKE);
                 break;
             case GUI_VICTORY_WINDOW:
                 setColors(Theme.SHOP_HEADER_FOOTER.getColor(), BLACK, Theme.BUTTON_BG.getColor());
-                data = createFrame(70, 35, true, true);
+                data = createFrame(70, 35, Effect.SHADOW, Effect.STROKE);
                 break;
             case GUI_SWITCH_HANDLE:
                 setColors(RED, BLACK, Theme.LABEL.getColor());
-                data = createFrame(4, 7, false, true);
+                data = createFrame(4, 7, Effect.STROKE);
                 break;
             case GUI_SWITCH_RAIL:
                 setColors(BLACK, NONE, NONE);
-                data = createFrame(12, 3, false, false);
+                data = createFrame(12, 3);
                 break;
             case GUI_SURROUND_FRAME:
                 setColors(NONE, NONE, BLUE);
-                data = createFrame(100, 100, false, true);
+                data = createFrame(100, 100, Effect.STROKE);
                 break;
             case GUI_THEME_PALETTE:
                 setColors(GRAY, WHITE, BLACK);
-                data = createFrame(10, 10, false, true);
+                data = createFrame(10, 10, Effect.STROKE);
                 break;
             case GUI_POPUP_MESSAGE:
                 setColors(BLACK, BLACK, BLACK);
-                data = createFrame(90, 11, false, false);
+                data = createFrame(90, 11);
                 break;
             case BOARD_DICE_1:
                 setColors(WHITE, RED, BLACK);
@@ -303,7 +304,7 @@ public class ImageStorage {
                 break;
             case BOARD_SCANNER_FRAME:
                 setColors(NONE, NONE, BLUE);
-                data = createFrame(29, 29, false, true);
+                data = createFrame(29, 29, Effect.STROKE);
                 break;
             case BOARD_BOMB_FRAME:
                 colors = values();
