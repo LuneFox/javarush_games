@@ -17,9 +17,11 @@ public abstract class Cache<K, V> {
 
     public V get(K key) {
         V value = cache.get(key);
+
         if (value == null) {
             value = put(key);
         }
+
         return value;
     }
 

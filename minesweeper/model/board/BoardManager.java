@@ -44,7 +44,7 @@ public class BoardManager {
     public void reset() {
         fieldDao.createNewField();
         plantMines();
-        enumerateMinedCells();
+        updateAllCountMinedNeighbors();
         timer.reset();
         isRecursiveMove = false;
         isFirstMove = true;
@@ -52,17 +52,20 @@ public class BoardManager {
 
     private void plantMines() {
         double numberOfMinesToPlant = (Options.getDifficulty() / 1.5);
+
         while (fieldDao.getAllCells(Cell::isMined).size() < numberOfMinesToPlant) {
             int randomX = game.getRandomNumber(10);
             int randomY = game.getRandomNumber(10);
+
             Cell cell = getCell(randomX, randomY);
+
             if (!cell.isMined()) {
                 cell.setMined(true);
             }
         }
     }
 
-    public void enumerateMinedCells() {
+    public void updateAllCountMinedNeighbors() {
         fieldDao.getAllCells(Cell::isNumerable).forEach(cell -> {
             final int minesCount = fieldDao.getNeighborCells(cell, Cell::isMined).size();
             cell.setCountMinedNeighbors(minesCount);
@@ -89,6 +92,7 @@ public class BoardManager {
 
     public void interactWithLeftClick(int x, int y) {
         Cell cell = fieldDao.getCellByCoordinates(x, y);
+
         if (cell.isShop()) {
             Phase.setActive(Phase.SHOP);
             return;
@@ -104,13 +108,17 @@ public class BoardManager {
 
     public void interactWithRightClick(int x, int y) {
         Cell cell = fieldDao.getCellByCoordinates(x, y);
+
         if (cell.isShop()) {
-            PopUpMessage.show("двери магазина");
+            PopUpMessage.show("Двери магазина");
             return;
         }
 
-        flagManager.swapFlag(cell);  // works only on closed cells
-        openSurroundingCells(cell);  // works only on open cells
+        if (cell.isClosed()) {
+            flagManager.swapFlag(cell);
+        } else {
+            openSurroundingCells(cell);
+        }
     }
 
     /*
@@ -161,6 +169,7 @@ public class BoardManager {
             reset();
             cell = getCell(cell.x, cell.y);
         }
+
         return cell;
     }
 
@@ -246,7 +255,7 @@ public class BoardManager {
         } else {
             cell.destroy();
         }
-        enumerateMinedCells();
+        updateAllCountMinedNeighbors();
         checkVictory();
     }
 
