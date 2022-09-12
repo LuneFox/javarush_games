@@ -336,7 +336,7 @@ public class BoardManager {
 
     public void refreshOpenedCellsGraphics() {
         if (game.isStopped()) return;
-        fieldDao.getAllCells(Cell::isOpen).forEach(Cell::drawContent);
+        fieldDao.getAllCells(Cell::isOpen).forEach(Cell::setRevealedContent);
     }
 
 
