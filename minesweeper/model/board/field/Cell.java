@@ -51,30 +51,30 @@ public class Cell extends InteractiveObject {
         }
     }
 
-    public void open() {
+    public void reveal() {
         isOpen = true;
-        setGraphicsForOpenedState();
+        drawContent();
     }
 
-    public void setGraphicsForOpenedState() {
+    public void drawContent() {
         if (!isOpen) return;
 
-        selectBackgroundForOpenedState();
-        selectSpriteForOpenedState();
+        setRevealedBackground();
+        setRevealedSprite();
     }
 
-    private void selectBackgroundForOpenedState() {
+    private void setRevealedBackground() {
         background.setMatrix(background.getMatrixFromStorage(ImageType.CELL_OPENED));
 
         if (isGameOverCause) setBackgroundColor(Color.RED);
         else if (isShielded) setBackgroundColor(Color.YELLOW);
         else if (isScanned) setBackgroundColor(Theme.CELL_SCANNED.getColor());
         else if (isDestroyed) setBackgroundColor(Color.DARKSLATEGRAY);
-        else if (isFlagged) setBackgroundColor(Color.GREEN); // flagged cells get opened only when mines are revealed
+        else if (isFlagged) setBackgroundColor(Color.GREEN); // highlights correct position at game over
         else setBackgroundColor(Theme.CELL_BG_DOWN.getColor());
     }
 
-    private void selectSpriteForOpenedState() {
+    private void setRevealedSprite() {
         if (isNumerable()) setSprite(countMinedNeighbors);
         else if (isShop) setSprite(ImageType.BOARD_SHOP);
         else if (isDestroyed) setSprite(ImageType.BOARD_DESTROYED);
@@ -87,7 +87,7 @@ public class Cell extends InteractiveObject {
             isMined = false;
             wasMinedBeforeDestruction = true;
         }
-        open();
+        reveal();
     }
 
     private void setBackgroundColor(Color color) {

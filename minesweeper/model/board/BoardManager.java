@@ -141,7 +141,7 @@ public class BoardManager {
             }
         }
 
-        cell.open();
+        cell.reveal();
 
         addMove();
         addMoney(cell);
@@ -331,17 +331,17 @@ public class BoardManager {
     }
 
     public void revealMines() {
-        fieldDao.getAllCells(Cell::isMined).forEach(Cell::open);
+        fieldDao.getAllCells(Cell::isMined).forEach(Cell::reveal);
     }
 
     public void refreshOpenedCellsGraphics() {
         if (game.isStopped()) return;
-        fieldDao.getAllCells(Cell::isOpen).forEach(Cell::setGraphicsForOpenedState);
+        fieldDao.getAllCells(Cell::isOpen).forEach(Cell::drawContent);
     }
 
 
     /*
-     * Cheats
+     * ---------------------------------------------- Cheats ----------------------------------------------
      */
 
     @DeveloperOption

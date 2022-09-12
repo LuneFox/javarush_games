@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class Timer extends InteractiveObject {
     private final float TIME_LIMIT = 500F;
-    private final Color[] COLORS;
+    private final Color[] COLORS = new Color[]{Color.RED, Color.DEEPPINK};
     private float time;
     private long lastTickTime;
 
@@ -24,9 +24,8 @@ public class Timer extends InteractiveObject {
         y = 0;
         height = 1;
         width = 100;
-        COLORS = new Color[]{Color.RED, Color.DEEPPINK};
         time = 0;
-        lastTickTime = getTime();
+        lastTickTime = getCurrentTime();
     }
 
     public void draw() {
@@ -43,13 +42,13 @@ public class Timer extends InteractiveObject {
 
     public void tick() {
         if (!game.isStopped() && timeIsUp()) {
-            loseByTimeOut();
+            initiateLoseByTimeout();
         } else {
             countDown();
         }
     }
 
-    private void loseByTimeOut() {
+    private void initiateLoseByTimeout() {
         Phase.setActive(Phase.BOARD);
         PopUpMessage.show("Время вышло!");
         game.lose();
@@ -57,10 +56,10 @@ public class Timer extends InteractiveObject {
 
     private void countDown() {
         if (!Options.isTimerEnabled()) return;
-        if (getTime() - lastTickTime < 1000) return;
+        if (getCurrentTime() - lastTickTime < 1000) return;
         time = (time > 0) ? time - Options.getDifficulty() : 0;
         swapColor();
-        lastTickTime = getTime();
+        lastTickTime = getCurrentTime();
     }
 
     public void swapColor() {
@@ -72,7 +71,7 @@ public class Timer extends InteractiveObject {
     public void reset() {
         if (Options.isTimerEnabled()) {
             time = TIME_LIMIT;
-            lastTickTime = getTime();
+            lastTickTime = getCurrentTime();
         }
     }
 
@@ -84,7 +83,7 @@ public class Timer extends InteractiveObject {
         return (Options.isTimerEnabled()) ? ((int) (time / 50) * (Options.getDifficulty() / 5)) : 0;
     }
 
-    private long getTime() {
+    private long getCurrentTime() {
         return new Date().getTime();
     }
 }
