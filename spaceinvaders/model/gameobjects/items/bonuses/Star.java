@@ -1,6 +1,7 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 
 
+import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
@@ -36,7 +37,7 @@ public class Star extends Bonus {
     @Override
     public void consume() {
         game.getFlash().show();
-        Score.add(game.getEnemyBullets().size() * 5);
+        Score.add(game.getEnemyBullets().size());
         game.getEnemyBullets().clear();
     }
 

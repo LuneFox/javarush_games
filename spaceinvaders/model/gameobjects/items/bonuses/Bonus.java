@@ -115,7 +115,7 @@ public abstract class Bonus extends GameObject implements Movable {
         if (this.collidesWith(mario, mirror)) {
             mario.setBonus(this);
             parentQuestionBrick.clearBonuses();
-            Score.add(10);
+            Score.add(9 + SpaceInvadersGame.getStage());
         }
     }
 

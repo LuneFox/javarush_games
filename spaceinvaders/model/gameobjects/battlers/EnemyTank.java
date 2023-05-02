@@ -12,7 +12,7 @@ import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 import java.util.Optional;
 
 public class EnemyTank extends Battler {
-    protected int score;
+    protected int scoreForKill;
     protected int[][] MOVE_1;
     protected int[][] MOVE_2;
     protected int[][] KILL_1;
@@ -21,10 +21,9 @@ public class EnemyTank extends Battler {
 
     public EnemyTank(double x, double y) {
         super(x, y);
-        score = 15;
-        hitPoints = (SpaceInvadersGame.getStage() / 5) + 1;
         setAnimationSprites();
         setDefaultAnimation();
+        setHitPointsAndScore();
     }
 
     protected void setAnimationSprites() {
@@ -33,6 +32,11 @@ public class EnemyTank extends Battler {
         KILL_1 = TankShape.TANK_KILL_1;
         KILL_2 = TankShape.TANK_KILL_2;
         KILL_3 = TankShape.TANK_KILL_3;
+    }
+
+    protected void setHitPointsAndScore() {
+        hitPoints = (SpaceInvadersGame.getStage() / 5) + 1;
+        scoreForKill = 9 + hitPoints * SpaceInvadersGame.getStage();
     }
 
     public void move(Direction direction, double speed) {
@@ -69,7 +73,7 @@ public class EnemyTank extends Battler {
     public void kill() {
         if (!isAlive) return;
         super.kill();
-        Score.add(score);
+        Score.add(scoreForKill);
         setHitAnimation();
     }
 

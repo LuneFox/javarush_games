@@ -1,11 +1,12 @@
 package com.javarush.games.spaceinvaders.model;
 
+import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+
 import java.util.Date;
 
 public class Score {
     private static int score;
     private static int topScore;
-    public static Date startTime;
 
     static {
         reset();
@@ -13,18 +14,11 @@ public class Score {
 
     public static void reset() {
         score = 0;
-        startTime = new Date();
     }
 
     public static void add(int amount) {
-        score += amount * getMultiplier();
+        score += amount * SpaceInvadersGame.getStage();
         updateTopScore();
-    }
-
-    private static int getMultiplier() {
-        long millis = new Date().getTime() - startTime.getTime();
-        int seconds = (int) millis / 1000;
-        return Math.max(100 - seconds, 0);
     }
 
     private static void updateTopScore() {

@@ -11,8 +11,12 @@ import java.util.Optional;
 public class BossTank extends EnemyTank {
     public BossTank(double x, double y) {
         super(x, y);
-        score = 100;
+    }
+
+    @Override
+    protected void setHitPointsAndScore() {
         hitPoints = SpaceInvadersGame.getStage();
+        scoreForKill = 50 * hitPoints;
     }
 
     @Override
