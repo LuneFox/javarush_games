@@ -2,8 +2,6 @@ package com.javarush.games.spaceinvaders.model;
 
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
-import java.util.Date;
-
 public class Score {
     private static int score;
     private static int topScore;

@@ -1,7 +1,6 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 
 
-import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
