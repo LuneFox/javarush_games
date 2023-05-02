@@ -36,7 +36,6 @@ public class SpaceInvadersGame extends Game {
     public static final int HEIGHT = 100;
     public static final int COIN_BULLETS_MAX = 2;
     public static final int FLOOR_HEIGHT = 4;
-    public static final int DIFFICULTY = 5;
     private static int stage;
 
     private Controller controller;
