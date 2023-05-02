@@ -118,7 +118,7 @@ public class SpaceInvadersGame extends Game {
         removeDeadObjects();
 
         drawStage();
-        setScore(Score.get());
+        setScore(Score.getScore());
     }
 
     private void moveObjects() {
@@ -171,7 +171,8 @@ public class SpaceInvadersGame extends Game {
     }
 
     private static void printStageAndScoreInfo() {
-        Printer.print(String.valueOf(Score.get()), Color.DARKBLUE, 99, 1, TextAlign.RIGHT);
+        Printer.print(String.valueOf(Score.getScore()), Color.DARKBLUE, 100, 50, TextAlign.CENTER);
+        Printer.print("TOP: " + Score.getTopScore(), Color.DARKBLUE, 100, 1, TextAlign.RIGHT);
         Printer.print("Stage " + stage, Color.DARKBLUE, 1, 1);
     }
 
@@ -196,7 +197,7 @@ public class SpaceInvadersGame extends Game {
     private void displayEnding(boolean isVictory) {
         stopTurnTimer();
         if (isVictory) {
-            String message = "SCORE: " + Score.get() + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!";
+            String message = "SCORE: " + Score.getScore() + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!";
             showMessageDialog(Color.NONE, message, Color.WHITE, 20);
         } else {
             String message = "MAMMA MIA!";
@@ -249,5 +250,9 @@ public class SpaceInvadersGame extends Game {
 
     public boolean isStopped() {
         return isStopped;
+    }
+
+    public static int getStage() {
+        return stage;
     }
 }

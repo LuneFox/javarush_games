@@ -41,6 +41,7 @@ public class Mario extends Battler implements Movable {
     public Mario() {
         super(marioSpawnX(), marioSpawnY());
         setStandingAnimation();
+        hitPoints = 1;
         finalAnimationCounter = 0;
         leftWalkingBound = -4;
         rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;

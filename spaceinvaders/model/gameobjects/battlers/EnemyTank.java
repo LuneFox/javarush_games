@@ -13,20 +13,39 @@ import java.util.Optional;
 
 public class EnemyTank extends Battler {
     protected int score;
+    protected int[][] MOVE_1;
+    protected int[][] MOVE_2;
+    protected int[][] KILL_1;
+    protected int[][] KILL_2;
+    protected int[][] KILL_3;
 
     public EnemyTank(double x, double y) {
         super(x, y);
         score = 15;
-        setAnimatedView(Sprite.Loop.ENABLED, 5,
-                TankShape.TANK_1,
-                TankShape.TANK_2
-        );
+        hitPoints = (SpaceInvadersGame.getStage() / 5) + 1;
+        setAnimationSprites();
+        setDefaultAnimation();
+    }
+
+    protected void setAnimationSprites() {
+        MOVE_1 = TankShape.TANK_1;
+        MOVE_2 = TankShape.TANK_2;
+        KILL_1 = TankShape.TANK_KILL_1;
+        KILL_2 = TankShape.TANK_KILL_2;
+        KILL_3 = TankShape.TANK_KILL_3;
     }
 
     public void move(Direction direction, double speed) {
+        if (isAlive) {
+            setDefaultAnimation();
+        }
         if (direction == Direction.RIGHT) x += speed;
         else if (direction == Direction.LEFT) x -= speed;
         else if (direction == Direction.DOWN) y += 2;
+    }
+
+    protected void setDefaultAnimation() {
+        setAnimatedView(Sprite.Loop.ENABLED, 5, MOVE_1, MOVE_2);
     }
 
     @Override
@@ -40,7 +59,7 @@ public class EnemyTank extends Battler {
 
     @Override
     public Optional<Bullet> getAmmo() {
-        int chanceToFire = game.getRandomNumber(100 / SpaceInvadersGame.DIFFICULTY);
+        int chanceToFire = game.getRandomNumber((100 / SpaceInvadersGame.getStage()) + 1);
         if (chanceToFire != 0) return Optional.empty();
 
         return BulletFactory.getBullet(BulletType.TETRIS, x + 2, y + getHeight());
@@ -51,10 +70,14 @@ public class EnemyTank extends Battler {
         if (!isAlive) return;
         super.kill();
         Score.add(score);
-        setAnimatedView(Sprite.Loop.DISABLED, 1,
-                TankShape.TANK_KILL_1,
-                TankShape.TANK_KILL_2,
-                TankShape.TANK_KILL_3
-        );
+        setHitAnimation();
+    }
+
+    protected void setHitAnimation() {
+        if (isAlive) {
+            setStaticView(KILL_1);
+        } else {
+            setAnimatedView(Sprite.Loop.DISABLED, 1, KILL_1, KILL_2, KILL_3);
+        }
     }
 }

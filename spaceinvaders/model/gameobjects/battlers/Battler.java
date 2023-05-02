@@ -7,6 +7,8 @@ import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import java.util.Optional;
 
 public abstract class Battler extends GameObject implements Shooter {
+    protected int hitPoints;
+
     public Battler(double x, double y) {
         super(x, y);
     }
@@ -14,6 +16,10 @@ public abstract class Battler extends GameObject implements Shooter {
     public abstract Optional<Bullet> getAmmo();
 
     public void kill() {
-        isAlive = false;
+        if (hitPoints > 1) {
+            hitPoints--;
+        } else {
+            isAlive = false;
+        }
     }
 }
