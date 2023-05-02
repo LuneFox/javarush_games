@@ -17,6 +17,9 @@ import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.QuestionB
 import com.javarush.games.spaceinvaders.view.Display;
 import com.javarush.games.spaceinvaders.view.Flash;
 import com.javarush.games.spaceinvaders.view.Scenery;
+import com.javarush.games.spaceinvaders.view.printer.Printer;
+import com.javarush.games.spaceinvaders.view.printer.SymbolImage;
+import com.javarush.games.spaceinvaders.view.printer.TextAlign;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 import java.util.ArrayList;
@@ -34,6 +37,7 @@ public class SpaceInvadersGame extends Game {
     public static final int COIN_BULLETS_MAX = 2;
     public static final int FLOOR_HEIGHT = 4;
     public static final int DIFFICULTY = 5;
+    private static int stage;
 
     private Controller controller;
     private Display display;
@@ -63,6 +67,7 @@ public class SpaceInvadersGame extends Game {
         flash = new Flash(this);
         display = new Display(this);
         controller = new Controller(this);
+        SymbolImage.setDisplay(display);
 
         startNewGame();
     }
@@ -74,7 +79,13 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void resetValues() {
-        Score.reset();
+        if (mario == null || mario.isAlive) {
+            stage++;
+        } else {
+            Score.reset();
+            stage = 1;
+        }
+
         isStopped = false;
         gameOverDelay = 0;
         isEndingDisplayed = false;
@@ -148,10 +159,20 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void drawStage() {
-        Stream.of(scenery, enemyArmy).forEach(Drawable::draw);
-        Stream.of(marioBullets, bricks, enemyBullets)
-                .forEach(list -> list.forEach(Drawable::draw));
-        Stream.of(mario, flash, display).forEach(Drawable::draw);
+        scenery.draw();
+        printStageAndScoreInfo();
+        enemyArmy.draw();
+        marioBullets.forEach(GameObject::draw);
+        bricks.forEach(GameObject::draw);
+        enemyBullets.forEach(GameObject::draw);
+        mario.draw();
+        flash.draw();
+        display.draw();
+    }
+
+    private static void printStageAndScoreInfo() {
+        Printer.print(String.valueOf(Score.get()), Color.DARKBLUE, 99, 1, TextAlign.RIGHT);
+        Printer.print("Stage " + stage, Color.DARKBLUE, 1, 1);
     }
 
     public void addPlayerBullet(Bullet bulletToAdd) {
