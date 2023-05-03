@@ -5,6 +5,7 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
@@ -22,6 +23,7 @@ public abstract class Bonus extends GameObject implements Movable {
     private JumpHelper jumpHelper;
     private final Direction direction;
     private boolean isEjected;
+    protected BulletType bulletType;
 
     public Bonus(double x, double y) {
         super(x, y);
@@ -66,7 +68,7 @@ public abstract class Bonus extends GameObject implements Movable {
         jumpHelper.progressJump();
     }
 
-    private void doThingsAfterFirstJump() {
+    protected void doThingsAfterFirstJump() {
         slide();
         verifyTouch(game.getMario());
     }
@@ -121,5 +123,9 @@ public abstract class Bonus extends GameObject implements Movable {
 
     public void setParentQuestionBrick(QuestionBrick parentQuestionBrick) {
         this.parentQuestionBrick = parentQuestionBrick;
+    }
+
+    public BulletType getBulletType() {
+        return bulletType;
     }
 }

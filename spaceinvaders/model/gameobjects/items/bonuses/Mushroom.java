@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
+import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class Mushroom extends Bonus {
                 setStaticView(BonusShape.MUSHROOM_OVERHEAD_ICON);
             }
         };
+        bulletType = BulletType.FIREBALL;
     }
 
     private int[][] getMushroomSpriteCopy() {

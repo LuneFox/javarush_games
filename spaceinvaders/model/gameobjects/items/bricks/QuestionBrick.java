@@ -1,6 +1,7 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.items.bricks;
 
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.ArkanoidBall;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Mushroom;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Star;
@@ -41,8 +42,9 @@ public class QuestionBrick extends Brick {
 
     private Bonus getRandomBonus() {
         List<Bonus> bonusList = new ArrayList<>();
-        bonusList.add(new Mushroom(x, y));
-        bonusList.add(new Star(x, y));
+        // bonusList.add(new Mushroom(x, y));
+        // bonusList.add(new Star(x, y));
+        bonusList.add(new ArkanoidBall(x + 2, y));
 
         Bonus bonus = bonusList.get(game.getRandomNumber(bonusList.size()));
         bonus.setParentQuestionBrick(this);
@@ -65,7 +67,7 @@ public class QuestionBrick extends Brick {
         else return Optional.empty();
     }
 
-    public void clearBonuses(){
+    public void clearBonuses() {
         bonuses.clear();
     }
 }

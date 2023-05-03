@@ -13,6 +13,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
 import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelperBuilder;
+import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 
@@ -227,15 +228,25 @@ public class Mario extends Battler implements Movable {
 
     @Override
     public Optional<Bullet> getAmmo() {
-        return BulletFactory.getBullet(BulletType.FIREBALL, getFireballSpawnX(), getFireballSpawnY());
+        switch (bonus.getBulletType()) {
+            case FIREBALL:
+                return BulletFactory.getBullet(BulletType.FIREBALL,
+                        getBulletSpawnX(FireballShape.FIREBALL_1),
+                        getBulletSpawnY(FireballShape.FIREBALL_1));
+            case ARKANOID_BALL:
+                return BulletFactory.getBullet(BulletType.ARKANOID_BALL,
+                        getBulletSpawnX(BonusShape.ARKANOID_BALL),
+                        getBulletSpawnY(BonusShape.ARKANOID_BALL));
+        }
+        return Optional.empty();
     }
 
-    private double getFireballSpawnX() {
-        return (x + getWidth() / 2.0) - (FireballShape.FIREBALL_1.length / 2.0);
+    private double getBulletSpawnX(int[][] shape) {
+        return (x + getWidth() / 2.0) - (shape.length / 2.0);
     }
 
-    private double getFireballSpawnY() {
-        return (y - FireballShape.FIREBALL_1.length) + 4;
+    private double getBulletSpawnY(int[][] shape) {
+        return (y - shape.length) + 4;
     }
 
     /*

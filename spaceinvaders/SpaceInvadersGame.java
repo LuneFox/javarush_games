@@ -32,6 +32,7 @@ import java.util.stream.Stream;
  */
 
 public class SpaceInvadersGame extends Game {
+    private static SpaceInvadersGame instance;
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
     public static final int COIN_BULLETS_MAX = 2;
@@ -62,6 +63,7 @@ public class SpaceInvadersGame extends Game {
         GameObject.setGame(this);
         Battler.setGame(this);
 
+        instance = this;
         scenery = new Scenery(this);
         flash = new Flash(this);
         display = new Display(this);
@@ -253,5 +255,9 @@ public class SpaceInvadersGame extends Game {
 
     public static int getStage() {
         return stage;
+    }
+
+    public static SpaceInvadersGame getInstance() {
+        return instance;
     }
 }

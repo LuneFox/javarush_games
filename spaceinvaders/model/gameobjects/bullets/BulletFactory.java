@@ -9,6 +9,8 @@ public class BulletFactory {
                 return Optional.of(new CoinBullet(x, y));
             case FIREBALL:
                 return Optional.of(new FireballBullet(x, y));
+            case ARKANOID_BALL:
+                return Optional.of(new ArkanoidBallBullet(x, y));
             case TETRIS:
                 return Optional.of(new TetrisBullet(x, y));
             case RACING_CAR:
