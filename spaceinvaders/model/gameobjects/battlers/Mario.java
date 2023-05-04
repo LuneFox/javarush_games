@@ -30,7 +30,7 @@ public class Mario extends Battler implements Movable {
     private final JumpHelper jumpHelper;
     private Animation animation;
     private Direction moveDirection = Direction.NONE;
-    private Direction faceDirection = Direction.RIGHT;
+    private Direction faceDirection = Direction.LEFT;
     public Bonus bonus;
     public int finalAnimationCounter;
     private double walkingSpeed;
@@ -57,7 +57,7 @@ public class Mario extends Battler implements Movable {
     }
 
     private static double marioSpawnX() {
-        return SpaceInvadersGame.WIDTH / 2.0 - MarioShape.STAND[0].length / 2.0;
+        return SpaceInvadersGame.WIDTH - MarioShape.STAND[0].length -3;
     }
 
     private static int marioSpawnY() {

@@ -124,7 +124,7 @@ public class EnemyArmy implements Movable, Drawable {
         if (!bullet.canKillEnemies) return;
         if (!bullet.isAlive) return;
         if (!enemyTank.isAlive) return;
-        if (!enemyTank.collidesWith(bullet, Mirror.NONE)) return;
+        if (!bullet.collidesWith(enemyTank, Mirror.NONE)) return;
 
         enemyTank.kill();
         bullet.kill();
@@ -143,5 +143,9 @@ public class EnemyArmy implements Movable, Drawable {
 
     public int getTanksCount() {
         return enemyTanks.size();
+    }
+
+    public List<EnemyTank> getEnemyTanks() {
+        return enemyTanks;
     }
 }

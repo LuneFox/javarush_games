@@ -10,8 +10,8 @@ public class GameObject implements Drawable {
     public double x;
     public double y;
     public boolean isAlive;
-    private int lastCollisionX;
-    private int lastCollisionY;
+    protected int lastCollisionX;
+    protected int lastCollisionY;
 
     public static void setGame(SpaceInvadersGame game) {
         GameObject.game = game;
@@ -73,6 +73,30 @@ public class GameObject implements Drawable {
     /*
      * Collisions
      */
+
+    public OverlapForm getOverlapForm(GameObject anotherObject) {
+        // Return the form of overlapped rectangle area (wide, high or even) depending on how objects overlap
+        if (!this.collidesWith(anotherObject, Mirror.NONE)) {
+            return OverlapForm.NONE;
+        }
+
+        double xOverlap = Math.max(0, Math.min(
+                this.x + this.getWidth(), anotherObject.x + anotherObject.getWidth())
+                - Math.max(this.x, anotherObject.x));
+        double yOverlap = Math.max(0, Math.min(
+                this.y + this.getHeight(), anotherObject.y + anotherObject.getHeight())
+                - Math.max(this.y, anotherObject.y));
+
+        if (yOverlap * xOverlap == 0) {
+            return OverlapForm.NONE;
+        } else if (yOverlap > xOverlap) {
+            return OverlapForm.HIGH;
+        } else if (xOverlap > yOverlap) {
+            return OverlapForm.WIDE;
+        } else {
+            return OverlapForm.EVEN;
+        }
+    }
 
     public boolean collidesWith(GameObject anotherObject, Mirror mirror) {
         // Check if any other object's pixels collide with this object's pixels, return true at first collision

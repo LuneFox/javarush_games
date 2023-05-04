@@ -42,8 +42,8 @@ public class QuestionBrick extends Brick {
 
     private Bonus getRandomBonus() {
         List<Bonus> bonusList = new ArrayList<>();
-        // bonusList.add(new Mushroom(x, y));
-        // bonusList.add(new Star(x, y));
+        bonusList.add(new Mushroom(x, y));
+        bonusList.add(new Star(x, y));
         bonusList.add(new ArkanoidBall(x + 2, y));
 
         Bonus bonus = bonusList.get(game.getRandomNumber(bonusList.size()));

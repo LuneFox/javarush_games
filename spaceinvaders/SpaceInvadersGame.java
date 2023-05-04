@@ -28,7 +28,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * VERSION 1.05
+ * VERSION 1.06
  */
 
 public class SpaceInvadersGame extends Game {
@@ -239,6 +239,10 @@ public class SpaceInvadersGame extends Game {
 
     public List<Bullet> getEnemyBullets() {
         return enemyBullets;
+    }
+
+    public EnemyArmy getEnemyArmy() {
+        return enemyArmy;
     }
 
     public Display getDisplay() {

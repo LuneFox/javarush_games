@@ -40,7 +40,7 @@ public class Star extends Bonus {
         game.getEnemyBullets().clear();
     }
 
-    private boolean bulletCollisionCooledDown(Bullet bullet) {
+    protected boolean bulletCollisionCooledDown(Bullet bullet) {
         return new Date().getTime() - bullet.lastCollisionDate.getTime() > 500;
     }
 }
