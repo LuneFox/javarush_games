@@ -72,8 +72,13 @@ public class EnemyTank extends Battler {
     @Override
     public void kill() {
         if (!isAlive) return;
+
         super.kill();
-        Score.add(scoreForKill);
+
+        if (!isAlive) {
+            Score.add(scoreForKill);
+        }
+
         setHitAnimation();
     }
 
