@@ -138,6 +138,8 @@ public class Mario extends Battler implements Movable {
     }
 
     public void playVictoryAnimation() {
+        setMoveDirection(Direction.NONE);
+
         if (finalAnimationCounter % 20 < 10) {
             setJumpingAnimation();
         } else {
