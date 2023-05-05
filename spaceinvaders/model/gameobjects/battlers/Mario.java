@@ -5,6 +5,7 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.controller.Control;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
@@ -57,7 +58,7 @@ public class Mario extends Battler implements Movable {
     }
 
     private static double marioSpawnX() {
-        return SpaceInvadersGame.WIDTH - MarioShape.STAND[0].length -3;
+        return SpaceInvadersGame.WIDTH - MarioShape.STAND[0].length - 3;
     }
 
     private static int marioSpawnY() {
@@ -216,6 +217,14 @@ public class Mario extends Battler implements Movable {
     @Override
     public void kill() {
         if (!isAlive) return;
+
+        // Remove bonus instead of death, lose the score gained for picking it up
+        if (bonus != null) {
+            bonus = null;
+            Score.add(-9 - SpaceInvadersGame.getStage());
+            return;
+        }
+
         super.kill();
     }
 
