@@ -18,6 +18,7 @@ public class EnemyTank extends Battler {
     protected int[][] KILL_1;
     protected int[][] KILL_2;
     protected int[][] KILL_3;
+    private boolean wasHit;     // for correct animation
 
     public EnemyTank(double x, double y) {
         super(x, y);
@@ -40,8 +41,9 @@ public class EnemyTank extends Battler {
     }
 
     public void move(Direction direction, double speed) {
-        if (isAlive) {
+        if (isAlive && wasHit) {
             setDefaultAnimation();
+            wasHit = false;
         }
         if (direction == Direction.RIGHT) x += speed;
         else if (direction == Direction.LEFT) x -= speed;
@@ -85,6 +87,7 @@ public class EnemyTank extends Battler {
     protected void setHitAnimation() {
         if (isAlive) {
             setStaticView(KILL_1);
+            wasHit = true;
         } else {
             setAnimatedView(Sprite.Loop.DISABLED, 1, KILL_1, KILL_2, KILL_3);
         }
