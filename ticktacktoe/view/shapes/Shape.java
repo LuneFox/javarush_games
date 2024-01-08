@@ -25,4 +25,21 @@ public class Shape {
             {0, 0, 2, 1, 1, 1, 2, 0, 0},
             {0, 0, 0, 2, 2, 2, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
+
+    public static final int[][] WHITE_DISK = swapBlackAndWhite(BLACK_DISK);
+
+    private static int[][] swapBlackAndWhite(int[][] original) {
+        int[][] result = new int[original.length][original[0].length];
+        for (int y = 0; y < original.length; y++) {
+            for (int x = 0; x < original.length; x++) {
+                if (original[y][x] == 1) {
+                    result[y][x] = 2;
+                } else if (original[y][x] == 2) {
+                    result[y][x] = 1;
+                } else
+                    result[y][x] = original[y][x];
+            }
+        }
+        return result;
+    }
 }

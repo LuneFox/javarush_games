@@ -54,7 +54,7 @@ public class Field extends GameObject {
         }
     }
 
-    public void putDisk(int x, int y) {
-        disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11);
+    public void putDisk(int x, int y, Side side) {
+        disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, side);
     }
 }
