@@ -28,10 +28,13 @@ public class TicTacToeGame extends Game {
         GameObject.setGame(this);
         display = new Display(this);
         controller = new Controller(this);
+        SymbolImage.setDisplay(display);
+        createNewGame();
+    }
+
+    public void createNewGame() {
         field = new Field();
         isStopped = false;
-        SymbolImage.setDisplay(display);
-        field.draw();
     }
 
     @Override

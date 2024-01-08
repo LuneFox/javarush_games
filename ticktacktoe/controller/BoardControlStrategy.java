@@ -13,6 +13,7 @@ public class BoardControlStrategy implements ControlStrategy {
 
     @Override
     public void click(int x, int y, Click click) {
+        if (x < 10 || y < 10 || x > 90 || y > 90) return;
         int logicalX = (x - 10) / 10;
         int logicalY = (y - 10) / 10;
         if (click == Click.LEFT) {
