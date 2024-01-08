@@ -2,6 +2,7 @@ package com.javarush.games.ticktacktoe.model.gameobjects;
 
 import com.javarush.games.ticktacktoe.Drawable;
 import com.javarush.games.ticktacktoe.TicTacToeGame;
+import com.javarush.games.ticktacktoe.model.Mirror;
 
 public class GameObject implements Drawable {
     protected static TicTacToeGame game;

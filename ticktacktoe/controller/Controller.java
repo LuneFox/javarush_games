@@ -8,8 +8,11 @@ public class Controller {
     private final ControlStrategy controlStrategy;
 
     public Controller(TicTacToeGame game) {
-        this.controlStrategy = new ControlStrategy() {
-        };
+        this.controlStrategy = new BoardControlStrategy(game);
+    }
+
+    public final void click(int x, int y, Click click) {
+        controlStrategy.click(x, y, click);
     }
 
     public final void pressKey(Key key) {

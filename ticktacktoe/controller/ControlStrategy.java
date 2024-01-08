@@ -2,6 +2,9 @@ package com.javarush.games.ticktacktoe.controller;
 
 
 public interface ControlStrategy {
+    default void click(int x, int y, Click click) {
+    }
+
     default void pressUp() {
     }
 

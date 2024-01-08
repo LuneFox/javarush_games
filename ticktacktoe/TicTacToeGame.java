@@ -1,8 +1,10 @@
 package com.javarush.games.ticktacktoe;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 
+import com.javarush.engine.cell.Key;
+import com.javarush.games.ticktacktoe.controller.Click;
+import com.javarush.games.ticktacktoe.model.gameobjects.Field;
 import com.javarush.games.ticktacktoe.model.gameobjects.GameObject;
 import com.javarush.games.ticktacktoe.controller.Controller;
 import com.javarush.games.ticktacktoe.view.*;
@@ -14,24 +16,68 @@ public class TicTacToeGame extends Game {
     public static final int HEIGHT = 100;
     private Controller controller;
     private Display display;
+    private Field field;
+    private boolean isStopped;
 
     @Override
     public void initialize() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
+        setTurnTimer(40);
+        instance = this;
         GameObject.setGame(this);
-
         display = new Display(this);
         controller = new Controller(this);
-
+        field = new Field();
+        isStopped = false;
         SymbolImage.setDisplay(display);
+        field.draw();
+    }
 
-        Printer.print("Hello, Tic-Tac-Toe!", Color.YELLOW, 15, 15, TextAlign.CENTER);
+    @Override
+    public void onTurn(int step) {
+        field.draw();
         display.draw();
     }
 
+    /*
+     * Controls
+     */
+
+    @Override
+    public void onKeyPress(Key key) {
+        controller.pressKey(key);
+    }
+
+    @Override
+    public void onKeyReleased(Key key) {
+        controller.releaseKey(key);
+    }
+
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+        controller.click(x, y, Click.LEFT);
+    }
+
+    @Override
+    public void onMouseRightClick(int x, int y) {
+        controller.click(x, y, Click.RIGHT);
+    }
+
+    /*
+     * Getters
+     */
+
     public Display getDisplay() {
         return display;
+    }
+
+    public boolean isStopped() {
+        return isStopped;
+    }
+
+    public Field getField() {
+        return field;
     }
 
     public static TicTacToeGame getInstance() {
