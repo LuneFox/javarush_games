@@ -82,14 +82,12 @@ public class Field extends GameObject {
     }
 
     private void flipEnemyDisks(int diskX, int diskY) {
-        flipInDirection(diskX, diskY, -1, 0);
-        flipInDirection(diskX, diskY, 0, -1);
-        flipInDirection(diskX, diskY, 1, 0);
-        flipInDirection(diskX, diskY, 0, 1);
-        flipInDirection(diskX, diskY, 1, 1);
-        flipInDirection(diskX, diskY, -1, -1);
-        flipInDirection(diskX, diskY, 1, -1);
-        flipInDirection(diskX, diskY, -1, 1);
+        for (int y = -1; y <= 1; y++) {
+            for (int x = -1; x <= 1; x++) {
+                if (x == 0 && y == 0) continue;
+                flipInDirection(diskX, diskY, x, y);
+            }
+        }
     }
 
     private void flipInDirection(int diskX, int diskY, int dirX, int dirY) {
@@ -105,6 +103,9 @@ public class Field extends GameObject {
     }
 
     private LinkedList<Disk> getLineToFlip(int diskX, int diskY, int dirX, int dirY) {
+        // Keeps adding disks in the line until it hits the player's disk or the edge.
+        // If it meets player's disk, returns the line. Otherwise, returns an empty line (nothing).
+
         LinkedList<Disk> line = new LinkedList<>();
 
         diskX += dirX;
@@ -114,8 +115,7 @@ public class Field extends GameObject {
             Disk disk = disks[diskY][diskX];
 
             if (disk == null) {
-                line.clear();
-                return line;
+                break;
             }
 
             if (disk.getSide() == game.getCurrentPlayer()) {
