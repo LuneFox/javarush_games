@@ -19,15 +19,15 @@ public class Disk extends GameObject {
                     Shape.BLACK_DISK_FLIP_2,
                     Shape.BLACK_DISK_FLIP_3,
                     Shape.BLACK_DISK_FLIP_4,
-                    Shape.BLACK_DISK_FLIP_5);
+                    Shape.WHITE_DISK);
         } else if (side == Side.WHITE) {
             side = Side.BLACK;
             setAnimatedView(Sprite.Loop.DISABLED, 1,
-                    Shape.WHITE_DISK_FLIP_1,
-                    Shape.WHITE_DISK_FLIP_2,
-                    Shape.WHITE_DISK_FLIP_3,
-                    Shape.WHITE_DISK_FLIP_4,
-                    Shape.WHITE_DISK_FLIP_5);
+                    Shape.BLACK_DISK_FLIP_4,
+                    Shape.BLACK_DISK_FLIP_3,
+                    Shape.BLACK_DISK_FLIP_2,
+                    Shape.BLACK_DISK_FLIP_1,
+                    Shape.BLACK_DISK);
         }
     }
 

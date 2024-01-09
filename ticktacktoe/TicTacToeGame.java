@@ -26,9 +26,9 @@ public class TicTacToeGame extends Game {
         setScreenSize(WIDTH, HEIGHT);
         setTurnTimer(40);
         instance = this;
-        GameObject.setGame(this);
         display = new Display(this);
         controller = new Controller(this);
+        GameObject.setGame(this);
         SymbolImage.setDisplay(display);
         createNewGame();
     }
