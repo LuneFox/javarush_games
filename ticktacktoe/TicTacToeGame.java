@@ -20,23 +20,39 @@ public class TicTacToeGame extends Game {
     private Field field;
     private boolean isStopped;
 
+    /*
+     * Game start
+     */
+
     @Override
     public void initialize() {
+        setupEnvironment();
+        bindAssets();
+        createNewGame();
+    }
+
+    private void setupEnvironment() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         setTurnTimer(40);
+    }
+
+    private void bindAssets() {
         instance = this;
         display = new Display(this);
         controller = new Controller(this);
         GameObject.setGame(this);
         SymbolImage.setDisplay(display);
-        createNewGame();
     }
 
     public void createNewGame() {
         field = new Field();
         isStopped = false;
     }
+
+    /*
+     * Time flow
+     */
 
     @Override
     public void onTurn(int step) {

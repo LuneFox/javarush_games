@@ -12,12 +12,17 @@ public class BoardControlStrategy implements ControlStrategy {
 
     @Override
     public void click(int x, int y, Click click) {
-        if (x < 10 || y < 10 || x > 90 || y > 90) return;
+        if (isClickOffBoard(x, y)) return;
+
         game.getField().clickOnBoard(x, y, click);
     }
 
     @Override
     public void pressSpace() {
         game.createNewGame();
+    }
+
+    private boolean isClickOffBoard(int x, int y) {
+        return (x < 10 || y < 10 || x > 90 || y > 90);
     }
 }

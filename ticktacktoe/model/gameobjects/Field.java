@@ -15,21 +15,24 @@ public class Field extends GameObject {
 
     public Field() {
         this.disks = new Disk[8][8];
+        putStartingDisks();
+    }
+
+    private void putStartingDisks() {
         putDisk(3, 3, Side.WHITE);
+        putDisk(4, 4, Side.WHITE);
         putDisk(3, 4, Side.BLACK);
         putDisk(4, 3, Side.BLACK);
-        putDisk(4, 4, Side.WHITE);
     }
 
     @Override
     public void draw() {
-        drawTableAndBoard();
+        TABLE.draw();
+        drawBoard();
         drawDisks();
     }
 
-    private void drawTableAndBoard() {
-        TABLE.draw();
-
+    private static void drawBoard() {
         for (int y = 1; y < 9; y++) {
             for (int x = 1; x < 9; x++) {
                 CELL.setPosition(x * 10, y * 10);
