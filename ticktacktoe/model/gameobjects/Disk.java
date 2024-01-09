@@ -34,4 +34,8 @@ public class Disk extends GameObject {
     private void setView() {
         super.setStaticView(this.side == Side.BLACK ? Shape.BLACK_DISK : Shape.WHITE_DISK);
     }
+
+    public Side getSide() {
+        return side;
+    }
 }

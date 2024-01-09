@@ -8,6 +8,7 @@ import com.javarush.games.ticktacktoe.controller.Click;
 import com.javarush.games.ticktacktoe.model.gameobjects.Field;
 import com.javarush.games.ticktacktoe.model.gameobjects.GameObject;
 import com.javarush.games.ticktacktoe.controller.Controller;
+import com.javarush.games.ticktacktoe.model.gameobjects.Side;
 import com.javarush.games.ticktacktoe.view.*;
 import com.javarush.games.ticktacktoe.view.printer.*;
 
@@ -15,9 +16,12 @@ public class TicTacToeGame extends Game {
     private static TicTacToeGame instance;
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
+
     private Controller controller;
     private Display display;
     private Field field;
+
+    private Side currentPlayer;
     private boolean isStopped;
 
     /*
@@ -47,7 +51,14 @@ public class TicTacToeGame extends Game {
 
     public void createNewGame() {
         field = new Field();
+        currentPlayer = Side.BLACK;
         isStopped = false;
+    }
+
+    public void changePlayer() {
+        if (currentPlayer == Side.BLACK) {
+            currentPlayer = Side.WHITE;
+        } else currentPlayer = Side.BLACK;
     }
 
     /*
@@ -89,6 +100,10 @@ public class TicTacToeGame extends Game {
      * Getters
      */
 
+    public static TicTacToeGame getInstance() {
+        return instance;
+    }
+
     public Display getDisplay() {
         return display;
     }
@@ -101,7 +116,7 @@ public class TicTacToeGame extends Game {
         return field;
     }
 
-    public static TicTacToeGame getInstance() {
-        return instance;
+    public Side getCurrentPlayer() {
+        return currentPlayer;
     }
 }
