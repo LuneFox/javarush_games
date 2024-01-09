@@ -1,8 +1,7 @@
 package com.javarush.games.ticktacktoe.model.gameobjects;
 
+import com.javarush.games.ticktacktoe.controller.Click;
 import com.javarush.games.ticktacktoe.view.shapes.Shape;
-
-import java.util.Arrays;
 
 public class Field extends GameObject {
     private final static GameObject CELL = new GameObject();
@@ -11,26 +10,32 @@ public class Field extends GameObject {
 
     static {
         CELL.setStaticView(Shape.FIELD_CELL_SHAPE);
-        fillBackground();
+        TABLE.setStaticView(Shape.TABLE);
     }
 
     public Field() {
         this.disks = new Disk[8][8];
-    }
-
-    private static void fillBackground() {
-        int[][] bg = new int[100][100];
-        int[] row = new int[100];
-        int color = 45;
-        Arrays.fill(row, color);
-        Arrays.fill(bg, row);
-        TABLE.setStaticView(bg);
+        putDisk(3, 3, Side.WHITE);
+        putDisk(3, 4, Side.BLACK);
+        putDisk(4, 3, Side.BLACK);
+        putDisk(4, 4, Side.WHITE);
     }
 
     @Override
     public void draw() {
-        drawBoard();
+        drawTableAndBoard();
         drawDisks();
+    }
+
+    private void drawTableAndBoard() {
+        TABLE.draw();
+
+        for (int y = 1; y < 9; y++) {
+            for (int x = 1; x < 9; x++) {
+                CELL.setPosition(x * 10, y * 10);
+                CELL.draw();
+            }
+        }
     }
 
     private void drawDisks() {
@@ -43,18 +48,24 @@ public class Field extends GameObject {
         }
     }
 
-    private void drawBoard() {
-        TABLE.draw();
 
-        for (int y = 1; y < 9; y++) {
-            for (int x = 1; x < 9; x++) {
-                CELL.setPosition(x * 10, y * 10);
-                CELL.draw();
-            }
+    public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
+        int boardClickX = (mouseClickX - 10) / 10;
+        int boardClickY = (mouseClickY - 10) / 10;
+
+        if (click == Click.LEFT) {
+            putDisk(boardClickX, boardClickY, Side.BLACK);
+        } else {
+            putDisk(boardClickX, boardClickY, Side.WHITE);
         }
     }
 
-    public void putDisk(int x, int y, Side side) {
+    private void putDisk(int x, int y, Side side) {
+        if (disks[y][x] != null) {
+            disks[y][x].flip();
+            return;
+        }
+
         disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, side);
     }
 }

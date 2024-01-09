@@ -8,13 +8,30 @@ public class Disk extends GameObject {
     public Disk(double x, double y, Side side) {
         super(x, y);
         this.side = side;
-        super.setStaticView(this.side == Side.BLACK ? Shape.BLACK_DISK : Shape.WHITE_DISK);
+        setView();
     }
 
     public void flip() {
-        if (side == Side.BLACK) side = Side.WHITE;
-        else if (side == Side.WHITE) side = Side.BLACK;
+        if (side == Side.BLACK) {
+            side = Side.WHITE;
+            setAnimatedView(Sprite.Loop.DISABLED, 1,
+                    Shape.BLACK_DISK_FLIP_1,
+                    Shape.BLACK_DISK_FLIP_2,
+                    Shape.BLACK_DISK_FLIP_3,
+                    Shape.BLACK_DISK_FLIP_4,
+                    Shape.BLACK_DISK_FLIP_5);
+        } else if (side == Side.WHITE) {
+            side = Side.BLACK;
+            setAnimatedView(Sprite.Loop.DISABLED, 1,
+                    Shape.WHITE_DISK_FLIP_1,
+                    Shape.WHITE_DISK_FLIP_2,
+                    Shape.WHITE_DISK_FLIP_3,
+                    Shape.WHITE_DISK_FLIP_4,
+                    Shape.WHITE_DISK_FLIP_5);
+        }
+    }
 
-        //TODO:  flip logic and animations here
+    private void setView() {
+        super.setStaticView(this.side == Side.BLACK ? Shape.BLACK_DISK : Shape.WHITE_DISK);
     }
 }

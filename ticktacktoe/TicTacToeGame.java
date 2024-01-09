@@ -1,5 +1,6 @@
 package com.javarush.games.ticktacktoe;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 
 import com.javarush.engine.cell.Key;
@@ -40,6 +41,7 @@ public class TicTacToeGame extends Game {
     @Override
     public void onTurn(int step) {
         field.draw();
+        Printer.print("РЕВЕРСИ", Color.YELLOW, 1, 1, TextAlign.CENTER);
         display.draw();
     }
 
