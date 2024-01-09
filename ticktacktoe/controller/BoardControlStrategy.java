@@ -23,6 +23,6 @@ public class BoardControlStrategy implements ControlStrategy {
     }
 
     private boolean isClickOffBoard(int x, int y) {
-        return (x < 10 || y < 10 || x > 90 || y > 90);
+        return (x < 10 || y < 10 || x >= 90 || y >= 90);
     }
 }

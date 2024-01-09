@@ -50,8 +50,8 @@ public class TicTacToeGame extends Game {
     }
 
     public void createNewGame() {
-        field = new Field();
         currentPlayer = Side.BLACK;
+        field = new Field();
         isStopped = false;
     }
 
