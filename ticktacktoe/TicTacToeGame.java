@@ -23,6 +23,9 @@ public class TicTacToeGame extends Game {
 
     private Side currentPlayer;
     private String victoryMessage;
+    private boolean isComputerTurn;
+    private boolean isStarted;
+    private long cpuThinkingTime;
 
     /*
      * Game start
@@ -51,13 +54,19 @@ public class TicTacToeGame extends Game {
 
     public void createNewGame() {
         currentPlayer = Side.BLACK;
+        isComputerTurn = false;
         field = new Field();
+        isStarted = false;
     }
 
     public void changePlayer() {
         if (currentPlayer == Side.BLACK) {
             currentPlayer = Side.WHITE;
-        } else currentPlayer = Side.BLACK;
+        } else {
+            currentPlayer = Side.BLACK;
+        }
+
+        isComputerTurn = !isComputerTurn;
     }
 
     /*
@@ -67,16 +76,38 @@ public class TicTacToeGame extends Game {
     @Override
     public void onTurn(int step) {
         field.draw();
+        printTextInfo();
+        cpuMove();
+        printVictoryMessage();
+        display.draw();
+    }
 
-        Printer.print("РЕВЕРСИ", Color.SLATEGRAY, 1, 1, TextAlign.CENTER);
+    private void printTextInfo() {
+        Printer.print("РЕВЕРСИ", Color.LIGHTSLATEGRAY, 1, 1, TextAlign.CENTER);
         Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
         Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
 
+        if (!isStarted){
+            Printer.print("ИГРА ЗА БЕЛЫХ - ENTER", Color.SLATEGRAY, 1, 91, TextAlign.CENTER);
+        }
+    }
+
+    private void cpuMove() {
+        if (isComputerTurn) {
+            if (cpuThinkingTime < 100) cpuThinkingTime++;
+            if (cpuThinkingTime < 15) Printer.print(" ", Color.YELLOW, 50, 89, TextAlign.CENTER);
+            else if (cpuThinkingTime < 30) Printer.print(".", Color.YELLOW, 50, 89, TextAlign.CENTER);
+            else if (cpuThinkingTime < 45) Printer.print(". .", Color.YELLOW, 50, 89, TextAlign.CENTER);
+            else if (cpuThinkingTime < 60) Printer.print(". . .", Color.YELLOW, 50, 89, TextAlign.CENTER);
+            field.makeCpuMove();
+        }
+    }
+
+    private void printVictoryMessage() {
         if (field.noMovesLeft()) {
             checkWinner();
             Printer.print(victoryMessage, Color.YELLOW, 1, 91, TextAlign.CENTER);
         }
-        display.draw();
     }
 
     private void checkWinner() {
@@ -134,5 +165,29 @@ public class TicTacToeGame extends Game {
 
     public Side getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public boolean isComputerTurn() {
+        return isComputerTurn;
+    }
+
+    public void setComputerTurn(boolean computerTurn) {
+        isComputerTurn = computerTurn;
+    }
+
+    public long getCpuThinkingTime() {
+        return cpuThinkingTime;
+    }
+
+    public void setCpuThinkingTime(long cpuThinkingTime) {
+        this.cpuThinkingTime = cpuThinkingTime;
+    }
+
+    public boolean isStarted() {
+        return isStarted;
+    }
+
+    public void setStarted(boolean started) {
+        isStarted = started;
     }
 }

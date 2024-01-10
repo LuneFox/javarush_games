@@ -23,8 +23,11 @@ public class BoardControlStrategy implements ControlStrategy {
     }
 
     @Override
-    public void pressUp() {
-        game.getField().makeRandomMove();
+    public void pressEnter() {
+        if (!game.isStarted()) {
+            game.setComputerTurn(true);
+            game.setStarted(true);
+        }
     }
 
     private boolean isClickOffBoard(int x, int y) {

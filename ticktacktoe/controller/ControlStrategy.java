@@ -34,4 +34,11 @@ public interface ControlStrategy {
 
     default void releaseSpace() {
     }
+
+    default void pressEnter() {
+    }
+
+    default void releaseEnter() {
+
+    }
 }

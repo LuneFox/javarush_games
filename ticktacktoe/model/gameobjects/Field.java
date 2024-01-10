@@ -13,6 +13,7 @@ public class Field extends GameObject {
     private final ArrayList<LegalMoveMark> legalMoveMarks;
     private boolean noMovesLeft;
 
+
     static {
         CELL.setStaticView(Shape.FIELD_CELL_SHAPE);
         TABLE.setStaticView(Shape.TABLE);
@@ -70,6 +71,40 @@ public class Field extends GameObject {
 
     public void makeMove(int x, int y) {
         if (!moveIsLegal(x, y)) return;
+        if (game.isComputerTurn()) return;
+
+        game.setStarted(true);
+        putDisk(x, y);
+        flipEnemyDisks(x, y);
+
+        game.changePlayer();
+        markLegalMoves();
+
+        if (legalMoveMarks.isEmpty()) {
+            game.changePlayer();
+            markLegalMoves();
+
+            if (legalMoveMarks.isEmpty()) {
+                noMovesLeft = true;
+            }
+        }
+
+        game.setCpuThinkingTime(0);
+    }
+
+    public void makeCpuMove(){
+        if (!game.isComputerTurn()) return;
+        if (game.getCpuThinkingTime() < 50) return;
+
+        game.setStarted(true);
+
+        int availableMovesNumber = legalMoveMarks.size();
+
+        if (availableMovesNumber == 0) return;
+
+        int randomMove = (int) (Math.random() * availableMovesNumber);
+        int x = legalMoveMarks.get(randomMove).getBoardX();
+        int y = legalMoveMarks.get(randomMove).getBoardY();
 
         putDisk(x, y);
         flipEnemyDisks(x, y);
@@ -85,6 +120,8 @@ public class Field extends GameObject {
                 noMovesLeft = true;
             }
         }
+
+        game.setCpuThinkingTime(0);
     }
 
     public void makeRandomMove() {
@@ -223,5 +260,13 @@ public class Field extends GameObject {
 
     private boolean isOutOfBoard(int x, int y) {
         return (x < 0 || x > 7 || y < 0 || y > 7);
+    }
+
+    public void passTurnToComputer() {
+        game.setComputerTurn(true);
+    }
+
+    public void passTurnToPlayer() {
+        game.setComputerTurn(false);
     }
 }
