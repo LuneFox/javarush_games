@@ -12,6 +12,10 @@ import com.javarush.games.ticktacktoe.model.gameobjects.Side;
 import com.javarush.games.ticktacktoe.view.*;
 import com.javarush.games.ticktacktoe.view.printer.*;
 
+/**
+ * Version 1.0
+ */
+
 public class TicTacToeGame extends Game {
     private static TicTacToeGame instance;
     public static final int WIDTH = 100;
@@ -83,8 +87,8 @@ public class TicTacToeGame extends Game {
     }
 
     private void printTextInfo() {
-        Printer.print("РЕВЕРСИ", Color.LIGHTSLATEGRAY, 1, 1, TextAlign.CENTER);
-        Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
+        Printer.print("<РЕВЕРСИ>", Color.LIGHTSLATEGRAY, 1, 0, TextAlign.CENTER);
+                Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
         Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
 
         if (!isStarted){
@@ -107,6 +111,7 @@ public class TicTacToeGame extends Game {
         if (field.noMovesLeft()) {
             checkWinner();
             Printer.print(victoryMessage, Color.YELLOW, 1, 91, TextAlign.CENTER);
+            isComputerTurn = false;
         }
     }
 

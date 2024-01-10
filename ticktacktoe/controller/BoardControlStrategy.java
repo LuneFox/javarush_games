@@ -13,12 +13,14 @@ public class BoardControlStrategy implements ControlStrategy {
     @Override
     public void click(int x, int y, Click click) {
         if (isClickOffBoard(x, y)) return;
+        if (game.isComputerTurn()) return;
 
         game.getField().clickOnBoard(x, y, click);
     }
 
     @Override
     public void pressSpace() {
+        if (game.isComputerTurn()) return;
         game.createNewGame();
     }
 

@@ -5,7 +5,7 @@ import com.javarush.games.ticktacktoe.view.Display;
 
 public class Printer {
     private static final SymbolCache CACHE = new SymbolCache();
-    private static final Color STROKE_COLOR = Color.SADDLEBROWN;
+    private static final Color STROKE_COLOR = Color.DARKSLATEBLUE;
     private static final int CHAR_SPACING = 1;
     private static boolean isStrokeEnabled;
 

@@ -11,6 +11,7 @@ public class Field extends GameObject {
     private final static GameObject TABLE = new GameObject();
     private final Disk[][] disks;
     private final ArrayList<LegalMoveMark> legalMoveMarks;
+    private final LastMoveMark lastMoveMark;
     private boolean noMovesLeft;
 
 
@@ -22,6 +23,7 @@ public class Field extends GameObject {
     public Field() {
         this.disks = new Disk[8][8];
         legalMoveMarks = new ArrayList<>();
+        lastMoveMark = new LastMoveMark();
         putStartingDisks();
         markLegalMoves();
         noMovesLeft = false;
@@ -44,6 +46,7 @@ public class Field extends GameObject {
         drawBoard();
         drawDisks();
         drawLegalMoveMarks();
+        lastMoveMark.draw();
     }
 
     private static void drawBoard() {
@@ -89,10 +92,11 @@ public class Field extends GameObject {
             }
         }
 
+        placeLastMoveMark(x, y);
         game.setCpuThinkingTime(0);
     }
 
-    public void makeCpuMove(){
+    public void makeCpuMove() {
         if (!game.isComputerTurn()) return;
         if (game.getCpuThinkingTime() < 50) return;
 
@@ -121,18 +125,12 @@ public class Field extends GameObject {
             }
         }
 
+        placeLastMoveMark(x, y);
         game.setCpuThinkingTime(0);
     }
 
-    public void makeRandomMove() {
-        int availableMovesNumber = legalMoveMarks.size();
-
-        if (availableMovesNumber == 0) return;
-
-        int randomMove = (int) (Math.random() * availableMovesNumber);
-        int moveX = legalMoveMarks.get(randomMove).getBoardX();
-        int moveY = legalMoveMarks.get(randomMove).getBoardY();
-        makeMove(moveX, moveY);
+    private void placeLastMoveMark(int x, int y) {
+        lastMoveMark.setPosition(x * 10 + 15, y * 10 + 14);
     }
 
     private boolean moveIsLegal(int moveX, int moveY) {
@@ -260,13 +258,5 @@ public class Field extends GameObject {
 
     private boolean isOutOfBoard(int x, int y) {
         return (x < 0 || x > 7 || y < 0 || y > 7);
-    }
-
-    public void passTurnToComputer() {
-        game.setComputerTurn(true);
-    }
-
-    public void passTurnToPlayer() {
-        game.setComputerTurn(false);
     }
 }

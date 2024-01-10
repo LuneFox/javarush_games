@@ -95,4 +95,5 @@ public class Shape {
 
     public static final int[][] LEGAL_MOVE_MARK_BLACK = new int[][]{{1}};
     public static final int[][] LEGAL_MOVE_MARK_WHITE = new int[][]{{2}};
+    public static final int[][] LAST_MOVE_MARK = new int[][]{{5}};
 }
