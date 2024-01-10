@@ -93,5 +93,6 @@ public class Shape {
             {0, 0, 0, 1, 1, 1, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
-    public static final int[][] LEGAL_MOVE_MARK = new int[][]{{5}};
+    public static final int[][] LEGAL_MOVE_MARK_BLACK = new int[][]{{1}};
+    public static final int[][] LEGAL_MOVE_MARK_WHITE = new int[][]{{2}};
 }

@@ -41,7 +41,7 @@ public class Field extends GameObject {
         TABLE.draw();
         drawBoard();
         drawDisks();
-        legalMoveMarks.forEach(GameObject::draw);
+        drawLegalMoveMarks();
     }
 
     private static void drawBoard() {
@@ -54,29 +54,43 @@ public class Field extends GameObject {
     }
 
     private void drawDisks() {
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                if (disks[y][x] != null) {
-                    disks[y][x].draw();
-                }
-            }
-        }
+        getAllDisks().forEach(GameObject::draw);
+    }
+
+    private void drawLegalMoveMarks() {
+        legalMoveMarks.forEach(GameObject::draw);
     }
 
     public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
         if (click == Click.LEFT) {
-            putDisk(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
+            makeMove(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
         }
     }
 
-    private void putDisk(int x, int y) {
-        if (disks[y][x] != null) return;
+    public void makeMove(int x, int y) {
         if (!moveIsLegal(x, y)) return;
 
-        disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, game.getCurrentPlayer());
+        putDisk(x, y);
         flipEnemyDisks(x, y);
+
         game.changePlayer();
         markLegalMoves();
+
+        if (legalMoveMarks.isEmpty()) {
+            game.changePlayer();
+            markLegalMoves();
+        }
+    }
+
+    public void makeRandomMove() {
+        int availableMovesNumber = legalMoveMarks.size();
+
+        if (availableMovesNumber == 0) return;
+
+        int randomMove = (int) (Math.random() * availableMovesNumber);
+        int moveX = legalMoveMarks.get(randomMove).getBoardX();
+        int moveY = legalMoveMarks.get(randomMove).getBoardY();
+        makeMove(moveX, moveY);
     }
 
     private boolean moveIsLegal(int moveX, int moveY) {
@@ -90,6 +104,13 @@ public class Field extends GameObject {
         }
 
         return legal;
+    }
+
+    private void putDisk(int x, int y) {
+        if (disks[y][x] != null) return;
+
+        Side diskSide = game.getCurrentPlayer();
+        disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, diskSide);
     }
 
     private void flipEnemyDisks(int diskX, int diskY) {
@@ -119,7 +140,10 @@ public class Field extends GameObject {
                 }
             }
         }
-        legalMoveMarks.forEach(GameObject::draw);
+        legalMoveMarks.forEach(mark -> {
+            mark.matchPlayerColor();
+            mark.draw();
+        });
     }
 
     private boolean checkIfMoveIsLegal(int posX, int posY) {
@@ -171,16 +195,24 @@ public class Field extends GameObject {
         return line;
     }
 
+    public int countDisks(Side side) {
+        return (int) getAllDisks().stream().filter(disk -> disk.getSide() == side).count();
+    }
+
+    private ArrayList<Disk> getAllDisks() {
+        ArrayList<Disk> result = new ArrayList<>();
+
+        for (int y = 0; y < 8; y++) {
+            for (int x = 0; x < 8; x++) {
+                if (disks[y][x] != null) {
+                    result.add(disks[y][x]);
+                }
+            }
+        }
+        return result;
+    }
+
     private boolean isOutOfBoard(int x, int y) {
         return (x < 0 || x > 7 || y < 0 || y > 7);
     }
-
-    /*
-     * Getters
-     */
-
-    public Disk[][] getDisks() {
-        return disks;
-    }
-
 }

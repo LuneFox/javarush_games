@@ -68,7 +68,9 @@ public class TicTacToeGame extends Game {
     @Override
     public void onTurn(int step) {
         field.draw();
-        Printer.print("РЕВЕРСИ", Color.YELLOW, 1, 1, TextAlign.CENTER);
+        Printer.print("РЕВЕРСИ", Color.SLATEGRAY, 1, 1, TextAlign.CENTER);
+        Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
+        Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
         display.draw();
     }
 
