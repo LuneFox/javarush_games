@@ -4,6 +4,7 @@ import com.javarush.games.ticktacktoe.controller.Click;
 import com.javarush.games.ticktacktoe.view.shapes.Shape;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Field extends GameObject {
@@ -21,6 +22,7 @@ public class Field extends GameObject {
         this.disks = new Disk[8][8];
         legalMoveMarks = new ArrayList<>();
         putStartingDisks();
+        markLegalMoves();
     }
 
     private void putStartingDisks() {
@@ -32,7 +34,6 @@ public class Field extends GameObject {
 
     private void putStartingDisk(int x, int y, Side side) {
         disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, side);
-        markLegalMoves();
     }
 
     @Override
@@ -64,18 +65,13 @@ public class Field extends GameObject {
 
     public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
         if (click == Click.LEFT) {
-            putDisk(mouseToBoard(mouseClickX), mouseToBoard(mouseClickY));
+            putDisk(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
         }
-    }
-
-    private int mouseToBoard(int value) {
-        // converts mouse click coordinate into board click coordinate from 0 to 7
-        return ((value - 10) / 10);
     }
 
     private void putDisk(int x, int y) {
         if (disks[y][x] != null) return;
-        if (moveIsNotLegal(x, y)) return;
+        if (!moveIsLegal(x, y)) return;
 
         disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, game.getCurrentPlayer());
         flipEnemyDisks(x, y);
@@ -83,17 +79,17 @@ public class Field extends GameObject {
         markLegalMoves();
     }
 
-    private boolean moveIsNotLegal(int x, int y) {
-        boolean allowMove = false;
+    private boolean moveIsLegal(int moveX, int moveY) {
+        boolean legal = false;
 
         for (LegalMoveMark legalMoveMark : legalMoveMarks) {
-            if (mouseToBoard((int) legalMoveMark.x) == x && mouseToBoard((int) legalMoveMark.y) == y) {
-                allowMove = true;
+            if (legalMoveMark.getBoardX() == moveX && legalMoveMark.getBoardY() == moveY) {
+                legal = true;
                 break;
             }
         }
 
-        return !allowMove;
+        return legal;
     }
 
     private void flipEnemyDisks(int diskX, int diskY) {

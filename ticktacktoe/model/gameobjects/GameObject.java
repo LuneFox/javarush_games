@@ -57,4 +57,12 @@ public class GameObject implements Drawable {
         this.x = x;
         this.y = y;
     }
+
+    public int getBoardX() {
+        return (int) ((x - 10) / 10);
+    }
+
+    public int getBoardY() {
+        return (int) ((y - 10) / 10);
+    }
 }
