@@ -22,7 +22,7 @@ public class TicTacToeGame extends Game {
     private Field field;
 
     private Side currentPlayer;
-    private boolean isStopped;
+    private String victoryMessage;
 
     /*
      * Game start
@@ -52,7 +52,6 @@ public class TicTacToeGame extends Game {
     public void createNewGame() {
         currentPlayer = Side.BLACK;
         field = new Field();
-        isStopped = false;
     }
 
     public void changePlayer() {
@@ -68,10 +67,29 @@ public class TicTacToeGame extends Game {
     @Override
     public void onTurn(int step) {
         field.draw();
+
         Printer.print("РЕВЕРСИ", Color.SLATEGRAY, 1, 1, TextAlign.CENTER);
         Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
         Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
+
+        if (field.noMovesLeft()) {
+            checkWinner();
+            Printer.print(victoryMessage, Color.YELLOW, 1, 91, TextAlign.CENTER);
+        }
         display.draw();
+    }
+
+    private void checkWinner() {
+        int countBlack = field.countDisks(Side.BLACK);
+        int countWhite = field.countDisks(Side.WHITE);
+
+        if (countBlack > countWhite) {
+            victoryMessage = "Победили чёрные!";
+        } else if (countWhite > countBlack) {
+            victoryMessage = "Победили белые!";
+        } else {
+            victoryMessage = "Ничья!";
+        }
     }
 
     /*
@@ -108,10 +126,6 @@ public class TicTacToeGame extends Game {
 
     public Display getDisplay() {
         return display;
-    }
-
-    public boolean isStopped() {
-        return isStopped;
     }
 
     public Field getField() {

@@ -4,7 +4,6 @@ import com.javarush.games.ticktacktoe.controller.Click;
 import com.javarush.games.ticktacktoe.view.shapes.Shape;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Field extends GameObject {
@@ -12,6 +11,7 @@ public class Field extends GameObject {
     private final static GameObject TABLE = new GameObject();
     private final Disk[][] disks;
     private final ArrayList<LegalMoveMark> legalMoveMarks;
+    private boolean noMovesLeft;
 
     static {
         CELL.setStaticView(Shape.FIELD_CELL_SHAPE);
@@ -23,6 +23,7 @@ public class Field extends GameObject {
         legalMoveMarks = new ArrayList<>();
         putStartingDisks();
         markLegalMoves();
+        noMovesLeft = false;
     }
 
     private void putStartingDisks() {
@@ -79,6 +80,10 @@ public class Field extends GameObject {
         if (legalMoveMarks.isEmpty()) {
             game.changePlayer();
             markLegalMoves();
+
+            if (legalMoveMarks.isEmpty()) {
+                noMovesLeft = true;
+            }
         }
     }
 
@@ -210,6 +215,10 @@ public class Field extends GameObject {
             }
         }
         return result;
+    }
+
+    public boolean noMovesLeft() {
+        return noMovesLeft;
     }
 
     private boolean isOutOfBoard(int x, int y) {
