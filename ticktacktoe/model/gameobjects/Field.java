@@ -5,6 +5,7 @@ import com.javarush.games.ticktacktoe.view.shapes.Shape;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.stream.Collectors;
 
 public class Field extends GameObject {
     private final static GameObject CELL = new GameObject();
@@ -106,9 +107,21 @@ public class Field extends GameObject {
 
         if (availableMovesNumber == 0) return;
 
-        int randomMove = (int) (Math.random() * availableMovesNumber);
-        int x = legalMoveMarks.get(randomMove).getBoardX();
-        int y = legalMoveMarks.get(randomMove).getBoardY();
+        int x;
+        int y;
+
+        final ArrayList<LegalMoveMark> bestMoveMarks = getBestMoveMarks();
+
+        if (!bestMoveMarks.isEmpty()) {
+            int availableBestMovesNumber = bestMoveMarks.size();
+            int randomBestMove = (int) (Math.random() * availableBestMovesNumber);
+            x = bestMoveMarks.get(randomBestMove).getBoardX();
+            y = bestMoveMarks.get(randomBestMove).getBoardY();
+        } else {
+            int randomNormalMove = (int) (Math.random() * availableMovesNumber);
+            x = legalMoveMarks.get(randomNormalMove).getBoardX();
+            y = legalMoveMarks.get(randomNormalMove).getBoardY();
+        }
 
         putDisk(x, y);
         flipEnemyDisks(x, y);
@@ -127,6 +140,16 @@ public class Field extends GameObject {
 
         placeLastMoveMark(x, y);
         game.setCpuThinkingTime(0);
+    }
+
+    private ArrayList<LegalMoveMark> getBestMoveMarks() {
+        return legalMoveMarks.stream()
+                .filter(legalMoveMark -> (
+                        legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 0)
+                        || (legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 7)
+                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 0)
+                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 7))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private void placeLastMoveMark(int x, int y) {
