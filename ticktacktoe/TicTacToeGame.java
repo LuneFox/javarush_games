@@ -88,6 +88,7 @@ public class TicTacToeGame extends Game {
 
     private void printTextInfo() {
         Printer.print("<РЕВЕРСИ>", Color.LIGHTSLATEGRAY, 1, 0, TextAlign.CENTER);
+        Printer.print("1.1", Color.DARKOLIVEGREEN, 100, 0, TextAlign.RIGHT);
                 Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
         Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
 
