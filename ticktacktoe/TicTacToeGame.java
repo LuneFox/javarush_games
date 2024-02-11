@@ -13,7 +13,7 @@ import com.javarush.games.ticktacktoe.view.*;
 import com.javarush.games.ticktacktoe.view.printer.*;
 
 /**
- * Version 1.0
+ * Version 1.1
  */
 
 public class TicTacToeGame extends Game {
