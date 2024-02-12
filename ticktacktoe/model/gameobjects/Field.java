@@ -41,6 +41,10 @@ public class Field extends GameObject {
         disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, side);
     }
 
+    /*
+     * GRAPHICS
+     */
+
     @Override
     public void draw() {
         TABLE.draw();
@@ -67,44 +71,32 @@ public class Field extends GameObject {
         legalMoveMarks.forEach(GameObject::draw);
     }
 
+    /*
+     * CONTROL
+     */
+
     public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
         if (click == Click.LEFT) {
-            makeMove(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
+            makePlayerTurn(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
         }
     }
 
-    public void makeMove(int x, int y) {
+    /*
+     * TURNS
+     */
+
+    public void makePlayerTurn(int x, int y) {
         if (!moveIsLegal(x, y)) return;
         if (game.isComputerTurn()) return;
 
-        game.setStarted(true);
-        putDisk(x, y);
-        flipEnemyDisks(x, y);
-
-        game.changePlayer();
-        markLegalMoves();
-
-        if (legalMoveMarks.isEmpty()) {
-            game.changePlayer();
-            markLegalMoves();
-
-            if (legalMoveMarks.isEmpty()) {
-                noMovesLeft = true;
-            }
-        }
-
-        placeLastMoveMark(x, y);
-        game.setCpuThinkingTime(0);
+        makeTurn(x, y);
     }
 
-    public void makeCpuMove() {
+    public void makeCpuTurn() {
         if (!game.isComputerTurn()) return;
         if (game.getCpuThinkingTime() < 50) return;
 
-        game.setStarted(true);
-
         int availableMovesNumber = legalMoveMarks.size();
-
         if (availableMovesNumber == 0) return;
 
         int x;
@@ -115,31 +107,52 @@ public class Field extends GameObject {
         if (!bestMoveMarks.isEmpty()) {
             int availableBestMovesNumber = bestMoveMarks.size();
             int randomBestMove = (int) (Math.random() * availableBestMovesNumber);
-            x = bestMoveMarks.get(randomBestMove).getBoardX();
-            y = bestMoveMarks.get(randomBestMove).getBoardY();
+            LegalMoveMark bestMove = bestMoveMarks.get(randomBestMove);
+
+            x = bestMove.getBoardX();
+            y = bestMove.getBoardY();
         } else {
             int randomNormalMove = (int) (Math.random() * availableMovesNumber);
-            x = legalMoveMarks.get(randomNormalMove).getBoardX();
-            y = legalMoveMarks.get(randomNormalMove).getBoardY();
+            LegalMoveMark normalMove = legalMoveMarks.get(randomNormalMove);
+
+            x = normalMove.getBoardX();
+            y = normalMove.getBoardY();
         }
 
+        makeTurn(x, y);
+    }
+
+    private void makeTurn(int x, int y) {
+        putDiskAndFlip(x, y);
+        changePlayer();
+        placeLastMoveMark(x, y);
+        checkAvailableMoves();
+        game.setStarted(true);
+        game.setCpuThinkingTime(0);
+    }
+
+    private void putDiskAndFlip(int x, int y) {
         putDisk(x, y);
         flipEnemyDisks(x, y);
+    }
 
+    private void changePlayer() {
         game.changePlayer();
         markLegalMoves();
+    }
 
+    private void checkAvailableMoves() {
         if (legalMoveMarks.isEmpty()) {
-            game.changePlayer();
-            markLegalMoves();
+            changePlayer();
 
             if (legalMoveMarks.isEmpty()) {
                 noMovesLeft = true;
             }
         }
+    }
 
-        placeLastMoveMark(x, y);
-        game.setCpuThinkingTime(0);
+    private void placeLastMoveMark(int x, int y) {
+        lastMoveMark.setPosition(x * 10 + 15, y * 10 + 14);
     }
 
     private ArrayList<LegalMoveMark> getBestMoveMarks() {
@@ -150,10 +163,6 @@ public class Field extends GameObject {
                         || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 0)
                         || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 7))
                 .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    private void placeLastMoveMark(int x, int y) {
-        lastMoveMark.setPosition(x * 10 + 15, y * 10 + 14);
     }
 
     private boolean moveIsLegal(int moveX, int moveY) {

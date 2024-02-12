@@ -104,7 +104,7 @@ public class TicTacToeGame extends Game {
             else if (cpuThinkingTime < 30) Printer.print(".", Color.YELLOW, 50, 89, TextAlign.CENTER);
             else if (cpuThinkingTime < 45) Printer.print(". .", Color.YELLOW, 50, 89, TextAlign.CENTER);
             else if (cpuThinkingTime < 60) Printer.print(". . .", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            field.makeCpuMove();
+            field.makeCpuTurn();
         }
     }
 
