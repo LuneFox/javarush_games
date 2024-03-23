@@ -102,10 +102,9 @@ public class Field extends GameObject {
 
     private BestMove getBestMove(int availableMovesNumber) {
         // does random placements except when corners are available
+        final ArrayList<LegalMoveMark> bestMoveMarks = getBestMoveMarks();
         int x;
         int y;
-
-        final ArrayList<LegalMoveMark> bestMoveMarks = getBestMoveMarks();
 
         if (!bestMoveMarks.isEmpty()) {
             int availableBestMovesNumber = bestMoveMarks.size();
