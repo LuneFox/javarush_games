@@ -2,7 +2,6 @@ package com.javarush.games.ticktacktoe.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
-import com.javarush.games.ticktacktoe.Drawable;
 
 public class Display implements Drawable {
     public static final int SIZE = 100;
