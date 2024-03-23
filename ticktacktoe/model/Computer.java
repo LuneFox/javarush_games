@@ -11,7 +11,7 @@ public class Computer {
     private final TicTacToeGame game;
 
     private long thinkingTime;
-    private long thinkingSpeed = 5;
+    private long thinkingSpeed;
     private long speedMessageShowDelay;
 
     public Computer(TicTacToeGame game, long thinkingSpeed) {
