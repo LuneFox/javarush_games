@@ -77,7 +77,7 @@ public class Field extends GameObject {
 
     public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
         if (click == Click.LEFT) {
-            makePlayerTurn(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
+            doPlayerTurn(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
         }
     }
 
@@ -85,16 +85,15 @@ public class Field extends GameObject {
      * TURNS
      */
 
-    public void makePlayerTurn(int x, int y) {
+    public void doPlayerTurn(int x, int y) {
         if (!moveIsLegal(x, y)) return;
         if (game.isComputerTurn()) return;
 
         makeTurn(x, y);
     }
 
-    public void makeCpuTurn() {
+    public void doCpuTurn() {
         if (!game.isComputerTurn()) return;
-        if (game.getCpuThinkingTime() < 50) return;
 
         int availableMovesNumber = legalMoveMarks.size();
         if (availableMovesNumber == 0) return;
@@ -127,8 +126,8 @@ public class Field extends GameObject {
         changePlayer();
         placeLastMoveMark(x, y);
         checkAvailableMoves();
-        game.setStarted(true);
-        game.setCpuThinkingTime(0);
+        game.start();
+        game.resetCpuThinkingTime();
     }
 
     private void putDiskAndFlip(int x, int y) {

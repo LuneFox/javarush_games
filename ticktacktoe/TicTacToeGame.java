@@ -12,24 +12,22 @@ import com.javarush.games.ticktacktoe.model.gameobjects.Side;
 import com.javarush.games.ticktacktoe.view.*;
 import com.javarush.games.ticktacktoe.view.printer.*;
 
-/**
- * Version 1.1
- */
-
 public class TicTacToeGame extends Game {
     private static TicTacToeGame instance;
     public static final int WIDTH = 100;
     public static final int HEIGHT = 100;
+    private static final String VERSION = "1.2";
 
     private Controller controller;
     private Display display;
     private Field field;
 
     private Side currentPlayer;
-    private String victoryMessage;
     private boolean isComputerTurn;
     private boolean isStarted;
     private long cpuThinkingTime;
+    private long cpuThinkingSpeed = 5;
+    private long cpuThinkingSpeedMessageShowDelay;
 
     /*
      * Game start
@@ -37,18 +35,18 @@ public class TicTacToeGame extends Game {
 
     @Override
     public void initialize() {
-        setupEnvironment();
-        bindAssets();
-        createNewGame();
+        setupJavaRushGamesEnvironment();
+        createAndLinkAssets();
+        setupNewGame();
     }
 
-    private void setupEnvironment() {
+    private void setupJavaRushGamesEnvironment() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         setTurnTimer(40);
     }
 
-    private void bindAssets() {
+    private void createAndLinkAssets() {
         instance = this;
         display = new Display(this);
         controller = new Controller(this);
@@ -56,7 +54,7 @@ public class TicTacToeGame extends Game {
         SymbolImage.setDisplay(display);
     }
 
-    public void createNewGame() {
+    public void setupNewGame() {
         currentPlayer = Side.BLACK;
         isComputerTurn = false;
         field = new Field();
@@ -64,12 +62,7 @@ public class TicTacToeGame extends Game {
     }
 
     public void changePlayer() {
-        if (currentPlayer == Side.BLACK) {
-            currentPlayer = Side.WHITE;
-        } else {
-            currentPlayer = Side.BLACK;
-        }
-
+        currentPlayer = (currentPlayer == Side.BLACK ? Side.WHITE : Side.BLACK);
         isComputerTurn = !isComputerTurn;
     }
 
@@ -80,53 +73,83 @@ public class TicTacToeGame extends Game {
     @Override
     public void onTurn(int step) {
         field.draw();
+        processCpuMove(cpuThinkingSpeed);
         printTextInfo();
-        cpuMove();
-        printVictoryMessage();
         display.draw();
     }
 
-    private void printTextInfo() {
-        Printer.print("<РЕВЕРСИ>", Color.LIGHTSLATEGRAY, 1, 0, TextAlign.CENTER);
-        Printer.print("1.1", Color.DARKOLIVEGREEN, 100, 0, TextAlign.RIGHT);
-                Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
-        Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
-
-        if (!isStarted){
-            Printer.print("ИГРА ЗА БЕЛЫХ - ENTER", Color.SLATEGRAY, 1, 91, TextAlign.CENTER);
-        }
-    }
-
-    private void cpuMove() {
+    private void processCpuMove(long speed) {
         if (isComputerTurn) {
-            if (cpuThinkingTime < 100) cpuThinkingTime++;
-            if (cpuThinkingTime < 15) Printer.print(" ", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            else if (cpuThinkingTime < 30) Printer.print(".", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            else if (cpuThinkingTime < 45) Printer.print(". .", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            else if (cpuThinkingTime < 60) Printer.print(". . .", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            field.makeCpuTurn();
-        }
-    }
+            if (cpuThinkingTime < speed) Printer.print(" ", Color.YELLOW, 50, 89, TextAlign.CENTER);
+            else if (cpuThinkingTime < speed * 3) Printer.print(".", Color.YELLOW, 50, 89, TextAlign.CENTER);
+            else if (cpuThinkingTime < speed * 5) Printer.print(". .", Color.YELLOW, 50, 89, TextAlign.CENTER);
+            else if (cpuThinkingTime < speed * 7) Printer.print(". . .", Color.YELLOW, 50, 89, TextAlign.CENTER);
 
-    private void printVictoryMessage() {
+            if (cpuThinkingTime < speed * 8) {
+                cpuThinkingTime++;
+                return;
+            }
+
+            field.doCpuTurn();
+        }
+
         if (field.noMovesLeft()) {
-            checkWinner();
-            Printer.print(victoryMessage, Color.YELLOW, 1, 91, TextAlign.CENTER);
             isComputerTurn = false;
         }
     }
 
-    private void checkWinner() {
+    private void printTextInfo() {
+        Printer.print("<РЕВЕРСИ>", Color.LIGHTSLATEGRAY, 1, 0, TextAlign.CENTER);
+        Printer.print(VERSION, Color.DARKOLIVEGREEN, 100, 0, TextAlign.RIGHT);
+        Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
+        Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
+
+        if (cpuThinkingSpeedMessageShowDelay > 0) {
+            Printer.print("СКОРОСТЬ: " + (11 - cpuThinkingSpeed), Color.LAWNGREEN, 1, 91, TextAlign.CENTER);
+            cpuThinkingSpeedMessageShowDelay--;
+            return;
+        }
+
+        if (!isStarted) {
+            Printer.print("ИГРА ЗА БЕЛЫХ - ENTER", Color.SLATEGRAY, 1, 91, TextAlign.CENTER);
+        }
+
+        if (field.noMovesLeft()) {
+            printVictoryMessage();
+        }
+
+    }
+
+    private void printVictoryMessage() {
+        String victoryMessage = getVictoryMessage();
+        Printer.print(victoryMessage, Color.YELLOW, 1, 91, TextAlign.CENTER);
+    }
+
+    private String getVictoryMessage() {
         int countBlack = field.countDisks(Side.BLACK);
         int countWhite = field.countDisks(Side.WHITE);
 
         if (countBlack > countWhite) {
-            victoryMessage = "Победили чёрные!";
+            return "Победили чёрные!";
         } else if (countWhite > countBlack) {
-            victoryMessage = "Победили белые!";
+            return "Победили белые!";
         } else {
-            victoryMessage = "Ничья!";
+            return "Ничья!";
         }
+    }
+
+    public void increaseCpuSpeed() {
+        cpuThinkingSpeedMessageShowDelay = 20;
+
+        if (cpuThinkingSpeed <= 1) return;
+        cpuThinkingSpeed--;
+    }
+
+    public void decreaseCpuSpeed() {
+        cpuThinkingSpeedMessageShowDelay = 20;
+
+        if (cpuThinkingSpeed >= 10) return;
+        cpuThinkingSpeed++;
     }
 
     /*
@@ -154,7 +177,7 @@ public class TicTacToeGame extends Game {
     }
 
     /*
-     * Getters
+     * Getters and setters
      */
 
     public static TicTacToeGame getInstance() {
@@ -173,27 +196,23 @@ public class TicTacToeGame extends Game {
         return currentPlayer;
     }
 
-    public boolean isComputerTurn() {
-        return isComputerTurn;
-    }
-
-    public void setComputerTurn(boolean computerTurn) {
-        isComputerTurn = computerTurn;
-    }
-
-    public long getCpuThinkingTime() {
-        return cpuThinkingTime;
-    }
-
-    public void setCpuThinkingTime(long cpuThinkingTime) {
-        this.cpuThinkingTime = cpuThinkingTime;
-    }
-
     public boolean isStarted() {
         return isStarted;
     }
 
-    public void setStarted(boolean started) {
-        isStarted = started;
+    public void start() {
+        isStarted = true;
+    }
+
+    public boolean isComputerTurn() {
+        return isComputerTurn;
+    }
+
+    public void setComputerTurn() {
+        isComputerTurn = true;
+    }
+
+    public void resetCpuThinkingTime() {
+        this.cpuThinkingTime = 0;
     }
 }
