@@ -27,19 +27,19 @@ public class BoardControlStrategy implements ControlStrategy {
     @Override
     public void pressEnter() {
         if (!game.isStarted()) {
-            game.setComputerTurn();
+            game.setComputerTurn(false);
             game.start();
         }
     }
 
     @Override
     public void pressRight() {
-        game.increaseCpuSpeed();
+        game.getComputer().increaseSpeed();
     }
 
     @Override
     public void pressLeft() {
-        game.decreaseCpuSpeed();
+        game.getComputer().decreaseSpeed();
     }
 
     private boolean isClickOffBoard(int x, int y) {

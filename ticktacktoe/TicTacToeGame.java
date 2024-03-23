@@ -5,6 +5,7 @@ import com.javarush.engine.cell.Game;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.ticktacktoe.controller.Click;
+import com.javarush.games.ticktacktoe.model.Computer;
 import com.javarush.games.ticktacktoe.model.gameobjects.Field;
 import com.javarush.games.ticktacktoe.model.gameobjects.GameObject;
 import com.javarush.games.ticktacktoe.controller.Controller;
@@ -21,13 +22,11 @@ public class TicTacToeGame extends Game {
     private Controller controller;
     private Display display;
     private Field field;
+    private Computer computer;
 
     private Side currentPlayer;
     private boolean isComputerTurn;
     private boolean isStarted;
-    private long cpuThinkingTime;
-    private long cpuThinkingSpeed = 5;
-    private long cpuThinkingSpeedMessageShowDelay;
 
     /*
      * Game start
@@ -50,6 +49,7 @@ public class TicTacToeGame extends Game {
         instance = this;
         display = new Display(this);
         controller = new Controller(this);
+        computer = new Computer(this, 5);
         GameObject.setGame(this);
         SymbolImage.setDisplay(display);
     }
@@ -73,29 +73,13 @@ public class TicTacToeGame extends Game {
     @Override
     public void onTurn(int step) {
         field.draw();
-        processCpuMove(cpuThinkingSpeed);
+
+        if (isComputerTurn) {
+            computer.takeTurn();
+        }
+
         printTextInfo();
         display.draw();
-    }
-
-    private void processCpuMove(long speed) {
-        if (isComputerTurn) {
-            if (cpuThinkingTime < speed) Printer.print(" ", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            else if (cpuThinkingTime < speed * 3) Printer.print(".", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            else if (cpuThinkingTime < speed * 5) Printer.print(". .", Color.YELLOW, 50, 89, TextAlign.CENTER);
-            else if (cpuThinkingTime < speed * 7) Printer.print(". . .", Color.YELLOW, 50, 89, TextAlign.CENTER);
-
-            if (cpuThinkingTime < speed * 8) {
-                cpuThinkingTime++;
-                return;
-            }
-
-            field.doCpuTurn();
-        }
-
-        if (field.noMovesLeft()) {
-            isComputerTurn = false;
-        }
     }
 
     private void printTextInfo() {
@@ -104,9 +88,7 @@ public class TicTacToeGame extends Game {
         Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
         Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
 
-        if (cpuThinkingSpeedMessageShowDelay > 0) {
-            Printer.print("СКОРОСТЬ: " + (11 - cpuThinkingSpeed), Color.LAWNGREEN, 1, 91, TextAlign.CENTER);
-            cpuThinkingSpeedMessageShowDelay--;
+        if (computer.showSpeedSetting()) {
             return;
         }
 
@@ -115,14 +97,9 @@ public class TicTacToeGame extends Game {
         }
 
         if (field.noMovesLeft()) {
-            printVictoryMessage();
+            Printer.print(getVictoryMessage(), Color.YELLOW, 1, 91, TextAlign.CENTER);
         }
 
-    }
-
-    private void printVictoryMessage() {
-        String victoryMessage = getVictoryMessage();
-        Printer.print(victoryMessage, Color.YELLOW, 1, 91, TextAlign.CENTER);
     }
 
     private String getVictoryMessage() {
@@ -136,20 +113,6 @@ public class TicTacToeGame extends Game {
         } else {
             return "Ничья!";
         }
-    }
-
-    public void increaseCpuSpeed() {
-        cpuThinkingSpeedMessageShowDelay = 20;
-
-        if (cpuThinkingSpeed <= 1) return;
-        cpuThinkingSpeed--;
-    }
-
-    public void decreaseCpuSpeed() {
-        cpuThinkingSpeedMessageShowDelay = 20;
-
-        if (cpuThinkingSpeed >= 10) return;
-        cpuThinkingSpeed++;
     }
 
     /*
@@ -192,6 +155,10 @@ public class TicTacToeGame extends Game {
         return field;
     }
 
+    public Computer getComputer() {
+        return computer;
+    }
+
     public Side getCurrentPlayer() {
         return currentPlayer;
     }
@@ -208,11 +175,7 @@ public class TicTacToeGame extends Game {
         return isComputerTurn;
     }
 
-    public void setComputerTurn() {
-        isComputerTurn = true;
-    }
-
-    public void resetCpuThinkingTime() {
-        this.cpuThinkingTime = 0;
+    public void setComputerTurn(boolean computerTurn) {
+        isComputerTurn = computerTurn;
     }
 }

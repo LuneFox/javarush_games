@@ -77,7 +77,7 @@ public class Field extends GameObject {
 
     public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
         if (click == Click.LEFT) {
-            doPlayerTurn(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
+            doManualTurn(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
         }
     }
 
@@ -85,19 +85,23 @@ public class Field extends GameObject {
      * TURNS
      */
 
-    public void doPlayerTurn(int x, int y) {
+    public void doManualTurn(int x, int y) {
         if (!moveIsLegal(x, y)) return;
         if (game.isComputerTurn()) return;
 
         makeTurn(x, y);
     }
 
-    public void doCpuTurn() {
-        if (!game.isComputerTurn()) return;
-
+    public void doAutomaticTurn() {
         int availableMovesNumber = legalMoveMarks.size();
         if (availableMovesNumber == 0) return;
 
+        final BestMove bestMove = getBestMove(availableMovesNumber);
+        makeTurn(bestMove.getX(), bestMove.getY());
+    }
+
+    private BestMove getBestMove(int availableMovesNumber) {
+        // does random placements except when corners are available
         int x;
         int y;
 
@@ -117,8 +121,17 @@ public class Field extends GameObject {
             x = normalMove.getBoardX();
             y = normalMove.getBoardY();
         }
+        return new BestMove(x, y);
+    }
 
-        makeTurn(x, y);
+    private ArrayList<LegalMoveMark> getBestMoveMarks() {
+        return legalMoveMarks.stream()
+                .filter(legalMoveMark -> (
+                        legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 0)
+                        || (legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 7)
+                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 0)
+                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 7))
+                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private void makeTurn(int x, int y) {
@@ -127,7 +140,6 @@ public class Field extends GameObject {
         placeLastMoveMark(x, y);
         checkAvailableMoves();
         game.start();
-        game.resetCpuThinkingTime();
     }
 
     private void putDiskAndFlip(int x, int y) {
@@ -152,16 +164,6 @@ public class Field extends GameObject {
 
     private void placeLastMoveMark(int x, int y) {
         lastMoveMark.setPosition(x * 10 + 15, y * 10 + 14);
-    }
-
-    private ArrayList<LegalMoveMark> getBestMoveMarks() {
-        return legalMoveMarks.stream()
-                .filter(legalMoveMark -> (
-                        legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 0)
-                        || (legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 7)
-                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 0)
-                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 7))
-                .collect(Collectors.toCollection(ArrayList::new));
     }
 
     private boolean moveIsLegal(int moveX, int moveY) {
