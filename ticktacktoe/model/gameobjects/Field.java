@@ -93,34 +93,18 @@ public class Field extends GameObject {
     }
 
     public void doAutomaticTurn() {
-        int availableMovesNumber = legalMoveMarks.size();
-        if (availableMovesNumber == 0) return;
+        if (legalMoveMarks.isEmpty()) return;
 
-        final BestMove bestMove = getBestMove(availableMovesNumber);
-        makeTurn(bestMove.getX(), bestMove.getY());
+        final Move move = getOptimalMove();
+        makeTurn(move.getX(), move.getY());
     }
 
-    private BestMove getBestMove(int availableMovesNumber) {
+    private Move getOptimalMove() {
         // does random placements except when corners are available
         final ArrayList<LegalMoveMark> bestMoveMarks = getBestMoveMarks();
-        int x;
-        int y;
-
-        if (!bestMoveMarks.isEmpty()) {
-            int availableBestMovesNumber = bestMoveMarks.size();
-            int randomBestMove = (int) (Math.random() * availableBestMovesNumber);
-            LegalMoveMark bestMove = bestMoveMarks.get(randomBestMove);
-
-            x = bestMove.getBoardX();
-            y = bestMove.getBoardY();
-        } else {
-            int randomNormalMove = (int) (Math.random() * availableMovesNumber);
-            LegalMoveMark normalMove = legalMoveMarks.get(randomNormalMove);
-
-            x = normalMove.getBoardX();
-            y = normalMove.getBoardY();
-        }
-        return new BestMove(x, y);
+        LegalMoveMark optimalMove =
+                bestMoveMarks.isEmpty() ? getRandomMark(legalMoveMarks) : getRandomMark(bestMoveMarks);
+        return new Move(optimalMove.getBoardX(), optimalMove.getBoardY());
     }
 
     private ArrayList<LegalMoveMark> getBestMoveMarks() {
@@ -131,6 +115,12 @@ public class Field extends GameObject {
                         || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 0)
                         || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 7))
                 .collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    private LegalMoveMark getRandomMark(ArrayList<LegalMoveMark> marks) {
+        int availableMovesNumber = marks.size();
+        int randomMove = (int) (Math.random() * availableMovesNumber);
+        return marks.get(randomMove);
     }
 
     private void makeTurn(int x, int y) {
