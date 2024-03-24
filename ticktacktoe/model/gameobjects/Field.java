@@ -1,11 +1,8 @@
 package com.javarush.games.ticktacktoe.model.gameobjects;
 
-import com.javarush.games.ticktacktoe.controller.Click;
 import com.javarush.games.ticktacktoe.view.shapes.Shape;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.stream.Collectors;
 
 public class Field extends GameObject {
     private final static GameObject CELL = new GameObject();
@@ -25,33 +22,15 @@ public class Field extends GameObject {
         this.disks = new Disk[8][8];
         legalMoveMarks = new ArrayList<>();
         lastMoveMark = new LastMoveMark();
-        putStartingDisks();
-        markLegalMoves();
         noMovesLeft = false;
     }
-
-    private void putStartingDisks() {
-        putStartingDisk(3, 3, Side.WHITE);
-        putStartingDisk(4, 4, Side.WHITE);
-        putStartingDisk(3, 4, Side.BLACK);
-        putStartingDisk(4, 3, Side.BLACK);
-    }
-
-    private void putStartingDisk(int x, int y, Side side) {
-        disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, side);
-    }
-
-    /*
-     * GRAPHICS
-     */
 
     @Override
     public void draw() {
         TABLE.draw();
         drawBoard();
         drawDisks();
-        drawLegalMoveMarks();
-        lastMoveMark.draw();
+        drawMoveMarks();
     }
 
     private static void drawBoard() {
@@ -67,90 +46,16 @@ public class Field extends GameObject {
         getAllDisks().forEach(GameObject::draw);
     }
 
-    private void drawLegalMoveMarks() {
+    private void drawMoveMarks() {
         legalMoveMarks.forEach(GameObject::draw);
+        lastMoveMark.draw();
     }
 
-    /*
-     * CONTROL
-     */
-
-    public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
-        if (click == Click.LEFT) {
-            doManualTurn(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
-        }
-    }
-
-    /*
-     * TURNS
-     */
-
-    public void doManualTurn(int x, int y) {
-        if (!moveIsLegal(x, y)) return;
-        if (game.isComputerTurn()) return;
-
-        makeTurn(x, y);
-    }
-
-    public void doAutomaticTurn() {
-        if (legalMoveMarks.isEmpty()) return;
-
-        final Move move = getOptimalMove();
-        makeTurn(move.getX(), move.getY());
-    }
-
-    private Move getOptimalMove() {
-        // does random placements except when corners are available
-        final ArrayList<LegalMoveMark> bestMoveMarks = getBestMoveMarks();
-        LegalMoveMark optimalMove =
-                bestMoveMarks.isEmpty() ? getRandomMark(legalMoveMarks) : getRandomMark(bestMoveMarks);
-        return new Move(optimalMove.getBoardX(), optimalMove.getBoardY());
-    }
-
-    private ArrayList<LegalMoveMark> getBestMoveMarks() {
-        return legalMoveMarks.stream()
-                .filter(legalMoveMark -> (
-                        legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 0)
-                        || (legalMoveMark.getBoardX() == 0 && legalMoveMark.getBoardY() == 7)
-                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 0)
-                        || (legalMoveMark.getBoardX() == 7 && legalMoveMark.getBoardY() == 7))
-                .collect(Collectors.toCollection(ArrayList::new));
-    }
-
-    private LegalMoveMark getRandomMark(ArrayList<LegalMoveMark> marks) {
-        int availableMovesNumber = marks.size();
-        int randomMove = (int) (Math.random() * availableMovesNumber);
-        return marks.get(randomMove);
-    }
-
-    private void makeTurn(int x, int y) {
-        game.start();
-        putDiskAndFlip(x, y);
-        game.changePlayer();
-        placeLastMoveMark(x, y);
-        checkAvailableMoves();
-    }
-
-    private void putDiskAndFlip(int x, int y) {
-        putDisk(x, y);
-        flipEnemyDisks(x, y);
-    }
-
-    private void checkAvailableMoves() {
-        if (legalMoveMarks.isEmpty()) {
-            game.changePlayer();
-
-            if (legalMoveMarks.isEmpty()) {
-                noMovesLeft = true;
-            }
-        }
-    }
-
-    private void placeLastMoveMark(int x, int y) {
+    public void placeLastMoveMark(int x, int y) {
         lastMoveMark.setPosition(x * 10 + 15, y * 10 + 14);
     }
 
-    private boolean moveIsLegal(int moveX, int moveY) {
+    public boolean moveIsLegal(int moveX, int moveY) {
         boolean legal = false;
 
         for (LegalMoveMark legalMoveMark : legalMoveMarks) {
@@ -163,93 +68,14 @@ public class Field extends GameObject {
         return legal;
     }
 
-    private void putDisk(int x, int y) {
-        if (disks[y][x] != null) return;
+    public void checkAvailableMoves() {
+        if (legalMoveMarks.isEmpty()) {
+            game.changePlayer();
 
-        Side diskSide = game.getCurrentPlayer();
-        disks[y][x] = new Disk(x * 10 + 11, y * 10 + 11, diskSide);
-    }
-
-    private void flipEnemyDisks(int diskX, int diskY) {
-        for (int y = -1; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                if (x == 0 && y == 0) continue;
-                flipInDirection(diskX, diskY, x, y);
+            if (legalMoveMarks.isEmpty()) {
+                noMovesLeft = true;
             }
         }
-    }
-
-    private void flipInDirection(int diskX, int diskY, int dirX, int dirY) {
-        LinkedList<Disk> line = getLineToFlip(diskX, diskY, dirX, dirY);
-
-        if (!line.isEmpty()) {
-            line.forEach(Disk::flip);
-        }
-    }
-
-    public void markLegalMoves() {
-        legalMoveMarks.clear();
-        for (int y = 0; y < 8; y++) {
-            for (int x = 0; x < 8; x++) {
-                if (disks[y][x] != null) continue;
-                if (checkIfMoveIsLegal(x, y)) {
-                    legalMoveMarks.add(new LegalMoveMark(x * 10 + 15, y * 10 + 15));
-                }
-            }
-        }
-        legalMoveMarks.forEach(mark -> {
-            mark.matchPlayerColor();
-            mark.draw();
-        });
-    }
-
-    private boolean checkIfMoveIsLegal(int posX, int posY) {
-        for (int y = -1; y <= 1; y++) {
-            for (int x = -1; x <= 1; x++) {
-                if (x == 0 && y == 0) {
-                    continue;
-                }
-
-                if (checkInDirection(posX, posY, x, y)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean checkInDirection(int posX, int posY, int dirX, int dirY) {
-        LinkedList<Disk> line = getLineToFlip(posX, posY, dirX, dirY);
-        return !line.isEmpty();
-    }
-
-    private LinkedList<Disk> getLineToFlip(int diskX, int diskY, int dirX, int dirY) {
-        // Keeps adding disks in the line until it hits the player's disk or the edge.
-        // If it meets player's disk, returns the line. Otherwise, returns an empty line (nothing).
-
-        LinkedList<Disk> line = new LinkedList<>();
-
-        diskX += dirX;
-        diskY += dirY;
-
-        while (!isOutOfBoard(diskX, diskY)) {
-            Disk disk = disks[diskY][diskX];
-
-            if (disk == null) {
-                break;
-            }
-
-            if (disk.getSide() == game.getCurrentPlayer()) {
-                return line;
-            }
-
-            line.add(disk);
-            diskX += dirX;
-            diskY += dirY;
-        }
-
-        line.clear();
-        return line;
     }
 
     public int countDisks(Side side) {
@@ -269,11 +95,23 @@ public class Field extends GameObject {
         return result;
     }
 
+    public boolean isOutOfBoard(int x, int y) {
+        return (x < 0 || x > 7 || y < 0 || y > 7);
+    }
+
     public boolean noMovesLeft() {
         return noMovesLeft;
     }
 
-    private boolean isOutOfBoard(int x, int y) {
-        return (x < 0 || x > 7 || y < 0 || y > 7);
+    public boolean noLegalMoves() {
+        return legalMoveMarks.isEmpty();
+    }
+
+    public Disk[][] getDisks() {
+        return disks;
+    }
+
+    public ArrayList<LegalMoveMark> getLegalMoveMarks() {
+        return legalMoveMarks;
     }
 }

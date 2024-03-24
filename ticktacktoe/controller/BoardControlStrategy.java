@@ -15,7 +15,7 @@ public class BoardControlStrategy implements ControlStrategy {
         if (isClickOffBoard(x, y)) return;
         if (game.isComputerTurn()) return;
 
-        game.getField().clickOnBoard(x, y, click);
+        game.clickOnBoard(x, y, click);
     }
 
     @Override

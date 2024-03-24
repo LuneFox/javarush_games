@@ -5,6 +5,7 @@ import com.javarush.engine.cell.Game;
 
 import com.javarush.engine.cell.Key;
 import com.javarush.games.ticktacktoe.controller.Click;
+import com.javarush.games.ticktacktoe.model.BoardManager;
 import com.javarush.games.ticktacktoe.model.Computer;
 import com.javarush.games.ticktacktoe.model.gameobjects.Field;
 import com.javarush.games.ticktacktoe.model.gameobjects.GameObject;
@@ -23,6 +24,7 @@ public class TicTacToeGame extends Game {
     private Display display;
     private Field field;
     private Computer computer;
+    private BoardManager manager;
     private Side currentPlayer;
     private boolean isComputerTurn;
     private boolean isStarted;
@@ -54,16 +56,18 @@ public class TicTacToeGame extends Game {
     }
 
     public void setupNewGame() {
+        isStarted = false;
         currentPlayer = Side.BLACK;
         isComputerTurn = false;
         field = new Field();
-        isStarted = false;
+        manager = new BoardManager(this, field);
+        manager.setupNewGame();
     }
 
     public void changePlayer() {
         currentPlayer = (currentPlayer == Side.BLACK ? Side.WHITE : Side.BLACK);
         isComputerTurn = !isComputerTurn;
-        field.markLegalMoves();
+        manager.markLegalMoves();
     }
 
     /*
@@ -138,6 +142,12 @@ public class TicTacToeGame extends Game {
         controller.click(x, y, Click.RIGHT);
     }
 
+    public void clickOnBoard(int mouseClickX, int mouseClickY, Click click) {
+        if (click == Click.LEFT) {
+            manager.doManualTurn(Click.toBoard(mouseClickX), Click.toBoard(mouseClickY));
+        }
+    }
+
     /*
      * Getters and setters
      */
@@ -160,6 +170,10 @@ public class TicTacToeGame extends Game {
 
     public Side getCurrentPlayer() {
         return currentPlayer;
+    }
+
+    public BoardManager getManager() {
+        return manager;
     }
 
     public boolean isStarted() {

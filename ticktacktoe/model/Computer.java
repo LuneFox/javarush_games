@@ -37,7 +37,7 @@ public class Computer {
         Field field = game.getField();
 
         if (!isThinking(thinkingSpeed)) {
-            field.doAutomaticTurn();
+            game.getManager().doAutomaticTurn();
             resetThinkingTime();
         }
 
