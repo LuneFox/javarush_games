@@ -98,7 +98,6 @@ public class TicTacToeGame extends Game {
         if (field.noMovesLeft()) {
             Printer.print(getVictoryMessage(), Color.YELLOW, 1, 91, TextAlign.CENTER);
         }
-
     }
 
     private String getVictoryMessage() {
