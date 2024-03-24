@@ -23,7 +23,6 @@ public class TicTacToeGame extends Game {
     private Display display;
     private Field field;
     private Computer computer;
-
     private Side currentPlayer;
     private boolean isComputerTurn;
     private boolean isStarted;
