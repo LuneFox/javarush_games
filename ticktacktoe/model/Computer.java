@@ -14,9 +14,9 @@ public class Computer {
     private long thinkingSpeed;
     private long speedMessageShowDelay;
 
-    public Computer(TicTacToeGame game, long thinkingSpeed) {
+    public Computer(TicTacToeGame game) {
         this.game = game;
-        this.thinkingSpeed = thinkingSpeed;
+        this.thinkingSpeed = 5;
     }
 
     public void increaseSpeed() {

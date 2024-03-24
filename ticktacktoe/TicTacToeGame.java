@@ -49,7 +49,7 @@ public class TicTacToeGame extends Game {
         instance = this;
         display = new Display(this);
         controller = new Controller(this);
-        computer = new Computer(this, 5);
+        computer = new Computer(this);
         GameObject.setGame(this);
         SymbolImage.setDisplay(display);
     }
