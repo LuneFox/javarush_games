@@ -124,11 +124,11 @@ public class Field extends GameObject {
     }
 
     private void makeTurn(int x, int y) {
+        game.start();
         putDiskAndFlip(x, y);
-        changePlayer();
+        game.changePlayer();
         placeLastMoveMark(x, y);
         checkAvailableMoves();
-        game.start();
     }
 
     private void putDiskAndFlip(int x, int y) {
@@ -136,14 +136,9 @@ public class Field extends GameObject {
         flipEnemyDisks(x, y);
     }
 
-    private void changePlayer() {
-        game.changePlayer();
-        markLegalMoves();
-    }
-
     private void checkAvailableMoves() {
         if (legalMoveMarks.isEmpty()) {
-            changePlayer();
+            game.changePlayer();
 
             if (legalMoveMarks.isEmpty()) {
                 noMovesLeft = true;
@@ -192,7 +187,7 @@ public class Field extends GameObject {
         }
     }
 
-    private void markLegalMoves() {
+    public void markLegalMoves() {
         legalMoveMarks.clear();
         for (int y = 0; y < 8; y++) {
             for (int x = 0; x < 8; x++) {

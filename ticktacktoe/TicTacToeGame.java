@@ -63,6 +63,7 @@ public class TicTacToeGame extends Game {
     public void changePlayer() {
         currentPlayer = (currentPlayer == Side.BLACK ? Side.WHITE : Side.BLACK);
         isComputerTurn = !isComputerTurn;
+        field.markLegalMoves();
     }
 
     /*
