@@ -27,8 +27,8 @@ public class BoardControlStrategy implements ControlStrategy {
     @Override
     public void pressEnter() {
         if (!game.isStarted()) {
-            game.setComputerTurn(false);
             game.start();
+            game.setComputerTurn(true);
         }
     }
 
