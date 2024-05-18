@@ -1,6 +1,11 @@
 package com.javarush.games.ticktacktoe.controller;
 
 
+/**
+ * Стратегия для управления игрой
+ *
+ * @author LuneFox, 2024
+ */
 public interface ControlStrategy {
     default void click(int x, int y, Click click) {
     }
