@@ -7,7 +7,7 @@ import com.javarush.games.ticktacktoe.view.printer.SymbolImage;
 /**
  * Виртуальный экран для регистрации изображения до вывода результирующего кадра.
  *
- * @author LuneFox, 2024
+ * @author LuneFox
  */
 public class Display implements Drawable {
     /** Ширина и высота экрана в пикселях */
@@ -60,7 +60,8 @@ public class Display implements Drawable {
     /**
      * Рисует пиксель на существующем кадре, если он не прозрачный
      *
-     * @param x,y   координаты пикселя
+     * @param x     x координата пикселя
+     * @param y     y координата пикселя
      * @param color цвет пикселя
      */
     public void drawPixel(int x, int y, Color color) {

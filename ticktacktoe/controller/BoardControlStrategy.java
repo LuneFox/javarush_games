@@ -6,7 +6,7 @@ import com.javarush.games.ticktacktoe.TicTacToeGame;
 /**
  * Стратегия управления во время отображения игрового поля
  *
- * @author LuneFox, 2024
+ * @author LuneFox
  */
 public class BoardControlStrategy implements ControlStrategy {
     /** Экземпляр игры, к которой привязано управление */

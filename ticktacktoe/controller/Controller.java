@@ -6,7 +6,7 @@ import com.javarush.games.ticktacktoe.TicTacToeGame;
 /**
  * Контроллер для управления игрой.
  *
- * @author LuneFox, 2024
+ * @author LuneFox
  */
 public class Controller {
     /** Стратегия, задающая конкретное управление */

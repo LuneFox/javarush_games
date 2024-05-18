@@ -17,7 +17,7 @@ import com.javarush.games.ticktacktoe.view.printer.*;
 /**
  * Классическая игра "Реверси" ("Отелло")
  *
- * @author LuneFox, 2024
+ * @author LuneFox
  * @version 1.2
  */
 
