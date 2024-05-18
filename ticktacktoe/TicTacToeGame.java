@@ -14,47 +14,67 @@ import com.javarush.games.ticktacktoe.model.gameobjects.Side;
 import com.javarush.games.ticktacktoe.view.*;
 import com.javarush.games.ticktacktoe.view.printer.*;
 
+/**
+ * @author LuneFox, 2024
+ * @version 1.2
+ */
+
 public class TicTacToeGame extends Game {
+    /** Экземпляр игры */
     private static TicTacToeGame instance;
+    /** Ширина игрового поля */
     public static final int WIDTH = 100;
+    /** Высота игрового поля */
     public static final int HEIGHT = 100;
+    /** Версия для отображения на экране */
     private static final String VERSION = "1.2";
 
-    private Controller controller;
-    private Display display;
+    /** Контроллер для считывания команд управления */
+    private final Controller controller;
+    /** Экран для отрисовки графики */
+    private final Display display;
+    /** Игровое поле */
     private Field field;
-    private Computer computer;
+    /** Класс для управления игровыми элементами на поле */
     private BoardManager manager;
+    /** Виртуальный соперник - компьютер */
+    private final Computer computer;
+    /** Сторона, чей сейчас ход (белые или чёрные) */
     private Side currentPlayer;
+    /** Флаг, что сейчас ход компьютера */
     private boolean isComputerTurn;
+    /** Флаг, что игра уже началась */
     private boolean isStarted;
 
-    /*
-     * Game start
-     */
+    public TicTacToeGame(){
+        instance = this;
+        display = new Display(this);
+        controller = new Controller(this);
+        computer = new Computer(this);
+        GameObject.setGame(this);
+    }
 
+    /**
+     * Инициализация игры
+     */
     @Override
     public void initialize() {
         setupJavaRushGamesEnvironment();
-        createAndLinkAssets();
         setupNewGame();
     }
 
+    /**
+     * Установка базовых переменных для игрового движка
+     */
     private void setupJavaRushGamesEnvironment() {
         showGrid(false);
         setScreenSize(WIDTH, HEIGHT);
         setTurnTimer(40);
     }
 
-    private void createAndLinkAssets() {
-        instance = this;
-        display = new Display(this);
-        controller = new Controller(this);
-        computer = new Computer(this);
-        GameObject.setGame(this);
-        SymbolImage.setDisplay(display);
-    }
-
+    /**
+     * Установка параметров для начала новой игры
+     */
     public void setupNewGame() {
         isStarted = false;
         currentPlayer = Side.BLACK;
@@ -64,16 +84,19 @@ public class TicTacToeGame extends Game {
         manager.setupNewGame();
     }
 
+    /**
+     * Передача хода
+     */
     public void changePlayer() {
         currentPlayer = (currentPlayer == Side.BLACK ? Side.WHITE : Side.BLACK);
         isComputerTurn = !isComputerTurn;
         manager.markLegalMoves();
     }
 
-    /*
-     * Time flow
+    /**
+     * Методы, которые вызываются каждый игровой шаг
+     * @param step Счётчик шагов
      */
-
     @Override
     public void onTurn(int step) {
         field.draw();
@@ -86,6 +109,9 @@ public class TicTacToeGame extends Game {
         display.draw();
     }
 
+    /**
+     * Текстовая информация, которая отобажается на игровом поле
+     */
     private void printTextInfo() {
         Printer.print("<РЕВЕРСИ>", Color.LIGHTSLATEGRAY, 1, 0, TextAlign.CENTER);
         Printer.print(VERSION, Color.DARKOLIVEGREEN, 100, 0, TextAlign.RIGHT);
@@ -105,6 +131,9 @@ public class TicTacToeGame extends Game {
         }
     }
 
+    /**
+     * Подсчитывает количество дисков на поле и возвращает сообщение о победителе
+     */
     private String getVictoryMessage() {
         int countBlack = field.countDisks(Side.BLACK);
         int countWhite = field.countDisks(Side.WHITE);
@@ -118,9 +147,7 @@ public class TicTacToeGame extends Game {
         }
     }
 
-    /*
-     * Controls
-     */
+    // Управление
 
     @Override
     public void onKeyPress(Key key) {
@@ -148,9 +175,8 @@ public class TicTacToeGame extends Game {
         }
     }
 
-    /*
-     * Getters and setters
-     */
+
+    // Геттеры, сеттеры
 
     public static TicTacToeGame getInstance() {
         return instance;

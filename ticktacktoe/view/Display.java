@@ -2,6 +2,7 @@ package com.javarush.games.ticktacktoe.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
+import com.javarush.games.ticktacktoe.view.printer.SymbolImage;
 
 public class Display implements Drawable {
     public static final int SIZE = 100;
@@ -11,6 +12,7 @@ public class Display implements Drawable {
     public Display(Game game) {
         this.game = game;
         this.matrix = createPixelMatrix();
+        SymbolImage.setDisplay(this);
     }
 
     public static boolean isWithinScreen(int x, int y) {
