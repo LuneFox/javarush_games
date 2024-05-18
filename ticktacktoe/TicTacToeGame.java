@@ -148,6 +148,13 @@ public class TicTacToeGame extends Game {
         }
     }
 
+    /**
+     * Устанавливает, что игра началась
+     */
+    public void start() {
+        if (!isStarted) isStarted = true;
+    }
+
     // Управление
 
     @Override
@@ -205,10 +212,6 @@ public class TicTacToeGame extends Game {
 
     public boolean isStarted() {
         return isStarted;
-    }
-
-    public void start() {
-        isStarted = true;
     }
 
     public boolean isComputerTurn() {

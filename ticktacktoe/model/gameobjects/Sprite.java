@@ -2,7 +2,6 @@ package com.javarush.games.ticktacktoe.model.gameobjects;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.ticktacktoe.TicTacToeGame;
-import com.javarush.games.ticktacktoe.model.Mirror;
 
 import java.util.ArrayList;
 import java.util.Arrays;
