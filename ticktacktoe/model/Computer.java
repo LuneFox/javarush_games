@@ -1,6 +1,7 @@
 package com.javarush.games.ticktacktoe.model;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.ticktacktoe.Message;
 import com.javarush.games.ticktacktoe.TicTacToeGame;
 import com.javarush.games.ticktacktoe.model.gameobjects.Field;
 import com.javarush.games.ticktacktoe.view.printer.Printer;
@@ -70,7 +71,7 @@ public class Computer {
 
     public boolean showSpeedSetting() {
         if (speedMessageShowDelay > 0) {
-            Printer.print("СКОРОСТЬ: " + getSpeedForDisplay(), Color.LAWNGREEN, 1, 91, TextAlign.CENTER);
+            Printer.print(Message.COMPUTER_SPEED + getSpeedForDisplay(), Color.LAWNGREEN, 1, 91, TextAlign.CENTER);
             speedMessageShowDelay--;
             return true;
         }

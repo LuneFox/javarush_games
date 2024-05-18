@@ -15,6 +15,7 @@ import com.javarush.games.ticktacktoe.view.*;
 import com.javarush.games.ticktacktoe.view.printer.*;
 
 /**
+ * Классическая игра "Реверси" ("Отелло")
  * @author LuneFox, 2024
  * @version 1.2
  */
@@ -26,8 +27,6 @@ public class TicTacToeGame extends Game {
     public static final int WIDTH = 100;
     /** Высота игрового поля */
     public static final int HEIGHT = 100;
-    /** Версия для отображения на экране */
-    private static final String VERSION = "1.2";
 
     /** Контроллер для считывания команд управления */
     private final Controller controller;
@@ -110,11 +109,11 @@ public class TicTacToeGame extends Game {
     }
 
     /**
-     * Текстовая информация, которая отобажается на игровом поле
+     * Отображение текстовой информации на игровом поле
      */
     private void printTextInfo() {
-        Printer.print("<РЕВЕРСИ>", Color.LIGHTSLATEGRAY, 1, 0, TextAlign.CENTER);
-        Printer.print(VERSION, Color.DARKOLIVEGREEN, 100, 0, TextAlign.RIGHT);
+        Printer.print(Message.GAME_NAME, Color.LIGHTSLATEGRAY, 1, 0, TextAlign.CENTER);
+        Printer.print(Message.VERSION, Color.DARKOLIVEGREEN, 100, 0, TextAlign.RIGHT);
         Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
         Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
 
@@ -123,7 +122,7 @@ public class TicTacToeGame extends Game {
         }
 
         if (!isStarted) {
-            Printer.print("ИГРА ЗА БЕЛЫХ - ENTER", Color.SLATEGRAY, 1, 91, TextAlign.CENTER);
+            Printer.print(Message.CHOOSE_WHITE_SIDE, Color.SLATEGRAY, 1, 91, TextAlign.CENTER);
         }
 
         if (field.noMovesLeft()) {
@@ -139,11 +138,11 @@ public class TicTacToeGame extends Game {
         int countWhite = field.countDisks(Side.WHITE);
 
         if (countBlack > countWhite) {
-            return "Победили чёрные!";
+            return Message.VICTORY_BLACK;
         } else if (countWhite > countBlack) {
-            return "Победили белые!";
+            return Message.VICTORY_WHITE;
         } else {
-            return "Ничья!";
+            return Message.VICTORY_DRAW;
         }
     }
 
