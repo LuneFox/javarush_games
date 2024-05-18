@@ -16,6 +16,7 @@ import com.javarush.games.ticktacktoe.view.printer.*;
 
 /**
  * Классическая игра "Реверси" ("Отелло")
+ *
  * @author LuneFox, 2024
  * @version 1.2
  */
@@ -94,6 +95,7 @@ public class TicTacToeGame extends Game {
 
     /**
      * Методы, которые вызываются каждый игровой шаг
+     *
      * @param step Счётчик шагов
      */
     @Override

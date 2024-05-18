@@ -3,7 +3,13 @@ package com.javarush.games.ticktacktoe.controller;
 
 import com.javarush.games.ticktacktoe.TicTacToeGame;
 
+/**
+ * Стратегия управления во время отображения игрового поля
+ *
+ * @author LuneFox, 2024
+ */
 public class BoardControlStrategy implements ControlStrategy {
+    /** Экземпляр игры, к которой привязано управление */
     private final TicTacToeGame game;
 
     public BoardControlStrategy(TicTacToeGame game) {
@@ -42,6 +48,9 @@ public class BoardControlStrategy implements ControlStrategy {
         game.getComputer().decreaseSpeed();
     }
 
+    /**
+     * Проверка на клик за пределами игровой доски
+     */
     private boolean isClickOffBoard(int x, int y) {
         return (x < 10 || y < 10 || x >= 90 || y >= 90);
     }
