@@ -1,4 +1,4 @@
-package com.javarush.games.ticktacktoe;
+package com.javarush.games.ticktacktoe.model;
 
 /**
  * Текст сообщений для отображения в игре

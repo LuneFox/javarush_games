@@ -1,7 +1,6 @@
 package com.javarush.games.ticktacktoe.model;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.ticktacktoe.Message;
 import com.javarush.games.ticktacktoe.TicTacToeGame;
 import com.javarush.games.ticktacktoe.model.gameobjects.Field;
 import com.javarush.games.ticktacktoe.view.printer.Printer;
