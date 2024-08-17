@@ -8,6 +8,7 @@ import com.javarush.games.ticktacktoe.view.printer.TextAlign;
 
 /**
  * Виртуальный соперник для игры
+ *
  * @author LuneFox
  */
 public class Computer {

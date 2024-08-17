@@ -2,7 +2,13 @@ package com.javarush.games.ticktacktoe.model.gameobjects;
 
 import com.javarush.games.ticktacktoe.view.shapes.Shape;
 
+/**
+ * Диск - игровая фишка в игре "реверси"
+ *
+ * @author LuneFox
+ */
 public class Disk extends GameObject {
+    /** Принадлежность диска чёрной или белой стороне */
     private Side side;
 
     public Disk(double x, double y, Side side) {
@@ -11,6 +17,10 @@ public class Disk extends GameObject {
         setView();
     }
 
+    /**
+     * Перевернуть диск.
+     * Меняется его сторона и устанавливается одноразовая анимация.
+     */
     public void flip() {
         if (side == Side.BLACK) {
             side = Side.WHITE;
@@ -31,6 +41,9 @@ public class Disk extends GameObject {
         }
     }
 
+    /**
+     * Установка внешнего вида в зависимости от стороны
+     */
     private void setView() {
         super.setStaticView(this.side == Side.BLACK ? Shape.BLACK_DISK : Shape.WHITE_DISK);
     }

@@ -2,17 +2,15 @@ package com.javarush.games.ticktacktoe.view.shapes;
 
 import java.util.Arrays;
 
+/**
+ * Класс, содержащий готовые массивы изображений (по терминологии JavaRush - формы)
+ * Каждый элемент массива это код цвета из движка JavaRush Games.
+ * Легко создать такой массив можно <a href="https://javarush.com/projects/apps/134119">здесь</a>
+ *
+ * @author LuneFox
+ */
 public class Shape {
-    public static final int[][] TABLE = drawTable();
-
-    private static int[][] drawTable() {
-        int[][] result = new int[100][100];
-        int[] row = new int[100];
-        Arrays.fill(row, 45);
-        Arrays.fill(result, row);
-        return result;
-    }
-
+    /** Клетка поля */
     public static final int[][] FIELD_CELL_SHAPE = new int[][]{
             {131, 126, 131, 126, 131, 126, 131, 126, 131, 126, 131},
             {126, 140, 128, 140, 128, 140, 128, 140, 128, 140, 126},
@@ -24,9 +22,8 @@ public class Shape {
             {126, 140, 128, 140, 128, 140, 128, 140, 128, 140, 126},
             {131, 128, 140, 128, 140, 128, 140, 128, 140, 128, 131},
             {126, 140, 128, 140, 128, 140, 128, 140, 128, 140, 126},
-            {131, 126, 131, 126, 131, 126, 131, 126, 131, 126, 131}
-    };
-
+            {131, 126, 131, 126, 131, 126, 131, 126, 131, 126, 131}};
+    /** Диск чёрной стороной вверх */
     public static final int[][] BLACK_DISK = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 1, 1, 1, 0, 0, 0},
@@ -37,7 +34,7 @@ public class Shape {
             {0, 0, 2, 1, 1, 1, 2, 0, 0},
             {0, 0, 0, 2, 2, 2, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+    /** Переворот чёрного диска, кадр 1 */
     public static final int[][] BLACK_DISK_FLIP_1 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -48,7 +45,7 @@ public class Shape {
             {0, 0, 2, 2, 2, 2, 2, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+    /** Переворот чёрного диска, кадр 2 */
     public static final int[][] BLACK_DISK_FLIP_2 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -59,7 +56,7 @@ public class Shape {
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+    /** Переворот чёрного диска, кадр 3 */
     public static final int[][] BLACK_DISK_FLIP_3 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -70,7 +67,7 @@ public class Shape {
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+    /** Переворот чёрного диска, кадр 4 */
     public static final int[][] BLACK_DISK_FLIP_4 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -81,7 +78,7 @@ public class Shape {
             {0, 0, 1, 1, 1, 1, 1, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+    /** Диск белой стороной вверх */
     public static final int[][] WHITE_DISK = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 2, 2, 2, 0, 0, 0},
@@ -92,8 +89,26 @@ public class Shape {
             {0, 0, 1, 2, 2, 2, 1, 0, 0},
             {0, 0, 0, 1, 1, 1, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0}};
-
+    /** Маркер доступного хода для чёрных */
     public static final int[][] LEGAL_MOVE_MARK_BLACK = new int[][]{{1}};
+    /** Маркер доступного хода для белых */
     public static final int[][] LEGAL_MOVE_MARK_WHITE = new int[][]{{2}};
+    /** Маркер последнего совершённого хода */
     public static final int[][] LAST_MOVE_MARK = new int[][]{{5}};
+    /** Стол на фоне */
+    public static final int[][] TABLE = drawTable();
+
+    /**
+     * Заполнить массив цветов для стола
+     *
+     * @return массив цветов для стола
+     */
+    private static int[][] drawTable() {
+        int color = 45;
+        int[][] result = new int[100][100];
+        int[] row = new int[100];
+        Arrays.fill(row, color);
+        Arrays.fill(result, row);
+        return result;
+    }
 }
