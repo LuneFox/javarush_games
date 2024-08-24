@@ -9,6 +9,7 @@ import com.javarush.games.ticktacktoe.view.Display;
  * @author LuneFox
  */
 public class SymbolImage {
+
     /** Экран, на котором изображение выводится */
     private static Display display;
     /** Набор цветов, которыми печатается символ */

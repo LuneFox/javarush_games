@@ -8,7 +8,8 @@ import com.javarush.games.ticktacktoe.TicTacToeGame;
  *
  * @author LuneFox
  */
-public class GameObject implements Drawable {
+public abstract class GameObject implements Drawable {
+
     /** Экземпляр игры */
     protected static TicTacToeGame game;
     /** Спрайт */

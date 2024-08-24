@@ -10,6 +10,7 @@ import java.util.Map;
  * @author LuneFox
  */
 public class SymbolCache {
+    /** Кэш в виде map */
     private final Map<Character, SymbolImage> cache;
 
     SymbolCache() {

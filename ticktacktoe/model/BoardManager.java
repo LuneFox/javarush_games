@@ -2,6 +2,7 @@ package com.javarush.games.ticktacktoe.model;
 
 import com.javarush.games.ticktacktoe.TicTacToeGame;
 import com.javarush.games.ticktacktoe.model.gameobjects.*;
+import com.javarush.games.ticktacktoe.model.gameobjects.field.Field;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
  * @author LuneFox
  */
 public class BoardManager {
+
     /** Экземпляр игры */
     private final TicTacToeGame game;
     /** Игровое поле, которым управляет менеджер */

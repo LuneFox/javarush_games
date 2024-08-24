@@ -6,6 +6,7 @@ package com.javarush.games.ticktacktoe.view.printer;
  * @author LuneFox
  */
 public enum TextAlign {
+
     /** По правой стороне */
     RIGHT,
     /** По левой стороне */

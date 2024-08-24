@@ -6,5 +6,6 @@ package com.javarush.games.ticktacktoe.model.gameobjects;
  * @author LuneFox
  */
 public enum Mirror {
+
     HORIZONTAL, NONE
 }

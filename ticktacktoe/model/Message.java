@@ -6,6 +6,7 @@ package com.javarush.games.ticktacktoe.model;
  * @author LuneFox
  */
 public class Message {
+
     /** Версия игры */
     public static final String VERSION = "1.2";
     /** Название игры */

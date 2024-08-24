@@ -1,6 +1,6 @@
-package com.javarush.games.ticktacktoe.model.gameobjects;
+package com.javarush.games.ticktacktoe.model.gameobjects.field;
 
-import com.javarush.games.ticktacktoe.view.shapes.Shape;
+import com.javarush.games.ticktacktoe.model.gameobjects.*;
 
 import java.util.ArrayList;
 
@@ -11,10 +11,11 @@ import java.util.ArrayList;
  * @author LuneFox
  */
 public class Field extends GameObject {
+
     /** Клетка поля для отрисовки */
-    private final static GameObject CELL = new GameObject();
+    private final static Cell CELL = new Cell();
     /** Стол - область за клетками для отрисовки */
-    private final static GameObject TABLE = new GameObject();
+    private final static Table TABLE = new Table();
     /** Массив из игровых дисков */
     private final Disk[][] disks;
     /** Маркеры, которыми помечаются допустимые для хода клетки */
@@ -23,12 +24,6 @@ public class Field extends GameObject {
     private final LastMoveMark lastMoveMark;
     /** Состояние поля, когда ни одной стороне невозможно совершить ход */
     private boolean noMovesLeft;
-
-
-    static {
-        CELL.setStaticView(Shape.FIELD_CELL_SHAPE);
-        TABLE.setStaticView(Shape.TABLE);
-    }
 
     public Field() {
         this.disks = new Disk[8][8];
@@ -40,21 +35,9 @@ public class Field extends GameObject {
     @Override
     public void draw() {
         TABLE.draw();
-        drawBoard();
+        CELL.drawAsBoard();
         drawDisks();
         drawMoveMarks();
-    }
-
-    /**
-     * Отрисовка клетки 64 раза (получается доска 8х8, которая лежит по центру)
-     */
-    private static void drawBoard() {
-        for (int y = 1; y < 9; y++) {
-            for (int x = 1; x < 9; x++) {
-                CELL.setPosition(x * 10, y * 10);
-                CELL.draw();
-            }
-        }
     }
 
     /**

@@ -10,6 +10,7 @@ import com.javarush.games.ticktacktoe.view.printer.SymbolImage;
  * @author LuneFox
  */
 public class Display implements Drawable {
+
     /** Ширина и высота экрана в пикселях */
     public static final int SIZE = 100;
     /** Игра, к которой привязан экран */

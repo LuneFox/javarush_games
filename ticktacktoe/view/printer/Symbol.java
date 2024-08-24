@@ -7,6 +7,7 @@ package com.javarush.games.ticktacktoe.view.printer;
  * @author LuneFox
  */
 enum Symbol {
+
     // Русский алфавит
     RUS_A(makeArray(4, "0000000001101001111110011001"), 'а', 'a'),
     RUS_B(makeArray(4, "0000000011111000111010011110"), 'б'),

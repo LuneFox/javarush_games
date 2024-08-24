@@ -7,6 +7,7 @@ package com.javarush.games.ticktacktoe.controller;
  * @author LuneFox
  */
 public interface ControlStrategy {
+
     /**
      * Клик мышью
      *

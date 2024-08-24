@@ -9,6 +9,7 @@ import com.javarush.games.ticktacktoe.TicTacToeGame;
  * @author LuneFox
  */
 public class BoardControlStrategy implements ControlStrategy {
+
     /** Экземпляр игры, к которой привязано управление */
     private final TicTacToeGame game;
 

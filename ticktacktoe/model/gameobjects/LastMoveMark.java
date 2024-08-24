@@ -8,6 +8,7 @@ import com.javarush.games.ticktacktoe.view.shapes.Shape;
  * @author LuneFox
  */
 public class LastMoveMark extends GameObject {
+
     public LastMoveMark() {
         super.setStaticView(Shape.LAST_MOVE_MARK);
     }

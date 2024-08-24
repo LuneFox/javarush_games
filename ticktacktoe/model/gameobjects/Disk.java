@@ -19,19 +19,17 @@ public class Disk extends GameObject {
 
     /**
      * Перевернуть диск.
-     * Меняется его сторона и устанавливается одноразовая анимация.
+     * Устанавливается одноразовая анимация, затем меняется сторона.
      */
     public void flip() {
         if (side == Side.BLACK) {
-            side = Side.WHITE;
             setAnimatedView(Sprite.Loop.DISABLED, 1,
                     Shape.BLACK_DISK_FLIP_1,
                     Shape.BLACK_DISK_FLIP_2,
                     Shape.BLACK_DISK_FLIP_3,
                     Shape.BLACK_DISK_FLIP_4,
                     Shape.WHITE_DISK);
-        } else if (side == Side.WHITE) {
-            side = Side.BLACK;
+        } else {
             setAnimatedView(Sprite.Loop.DISABLED, 1,
                     Shape.BLACK_DISK_FLIP_4,
                     Shape.BLACK_DISK_FLIP_3,
@@ -39,6 +37,7 @@ public class Disk extends GameObject {
                     Shape.BLACK_DISK_FLIP_1,
                     Shape.BLACK_DISK);
         }
+        side = Side.flip(side);
     }
 
     /**

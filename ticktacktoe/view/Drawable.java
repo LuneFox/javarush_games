@@ -6,5 +6,6 @@ package com.javarush.games.ticktacktoe.view;
  * @author LuneFox
  */
 public interface Drawable {
+
     void draw();
 }

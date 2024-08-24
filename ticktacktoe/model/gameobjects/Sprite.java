@@ -11,6 +11,7 @@ import java.util.List;
  * Спрайт (двумерное изображение) которое можно назначить игровому объекту.
  */
 public class Sprite {
+
     /** Экземпляр игры */
     private final TicTacToeGame game;
     /** Матрица пикселей-цветов */

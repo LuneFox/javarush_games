@@ -13,6 +13,8 @@ import java.util.List;
  * @author LuneFox
  */
 public class Printer {
+
+    private static final PrinterCaret CARET = PrinterCaret.getInstance();
     /** Кэш использованных символов */
     private static final SymbolCache CACHE = new SymbolCache();
     /** Цвет текста по умолчанию */
@@ -60,17 +62,29 @@ public class Printer {
      */
     public static void print(String text, Color color, int drawX, int drawY, TextAlign align) {
         drawX = align != TextAlign.CENTER ? drawX : (Display.SIZE / 2) - (calculateWidth(text) / 2);
-        PrinterCaret caret = new PrinterCaret(drawX, drawY, align);
+        CARET.set(drawX, drawY, align);
         String[] lines = text.split("\n");
         for (String line : lines) {
-            caret.shiftForRightAlignedText(line);
-            char[] sequence = line.toLowerCase().toCharArray();
-            for (char c : sequence) {
-                drawSymbol(c, color, caret.x, caret.y);
-                caret.gotoNextSymbol(c);
-            }
-            caret.gotoNewLine();
+            printLine(color, line);
         }
+    }
+
+    /**
+     * Печать одной строки
+     *
+     * @param color цвет
+     * @param line  строка
+     */
+    private static void printLine(Color color, String line) {
+        if (CARET.isAlignRight()) {
+            CARET.shiftLeftByTextWidth(line);
+        }
+        char[] sequence = line.toLowerCase().toCharArray();
+        for (char c : sequence) {
+            drawSymbol(c, color, CARET.x, CARET.y);
+            CARET.gotoNextSymbol(c);
+        }
+        CARET.gotoNewLine();
     }
 
     /**

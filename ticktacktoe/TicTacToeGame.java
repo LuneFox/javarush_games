@@ -8,7 +8,7 @@ import com.javarush.games.ticktacktoe.controller.Click;
 import com.javarush.games.ticktacktoe.model.BoardManager;
 import com.javarush.games.ticktacktoe.model.Computer;
 import com.javarush.games.ticktacktoe.model.Message;
-import com.javarush.games.ticktacktoe.model.gameobjects.Field;
+import com.javarush.games.ticktacktoe.model.gameobjects.field.Field;
 import com.javarush.games.ticktacktoe.model.gameobjects.GameObject;
 import com.javarush.games.ticktacktoe.controller.Controller;
 import com.javarush.games.ticktacktoe.model.gameobjects.Side;
@@ -23,6 +23,7 @@ import com.javarush.games.ticktacktoe.view.printer.*;
  */
 
 public class TicTacToeGame extends Game {
+
     /** Экземпляр игры */
     private static TicTacToeGame instance;
     /** Ширина игрового поля */
@@ -89,7 +90,7 @@ public class TicTacToeGame extends Game {
      * Передача хода
      */
     public void changePlayer() {
-        currentPlayer = (currentPlayer == Side.BLACK ? Side.WHITE : Side.BLACK);
+        currentPlayer = Side.flip(currentPlayer);
         isComputerTurn = !isComputerTurn;
         manager.markLegalMoves();
     }
@@ -119,17 +120,12 @@ public class TicTacToeGame extends Game {
         Printer.print(Message.VERSION, Color.DARKOLIVEGREEN, 100, 0, TextAlign.RIGHT);
         Printer.print(String.valueOf(field.countDisks(Side.BLACK)), Color.BLACK, 1, 46, TextAlign.LEFT);
         Printer.print(String.valueOf(field.countDisks(Side.WHITE)), Color.WHITE, 100, 46, TextAlign.RIGHT);
-
-        if (computer.showSpeedSetting()) {
-            return;
-        }
-
-        if (!isStarted) {
-            Printer.print(Message.CHOOSE_WHITE_SIDE, Color.SLATEGRAY, 1, 91, TextAlign.CENTER);
-        }
-
-        if (field.noMovesLeft()) {
-            Printer.print(getVictoryMessage(), Color.YELLOW, 1, 91, TextAlign.CENTER);
+        if (!computer.showSpeedSetting()) {
+            if (!isStarted) {
+                Printer.print(Message.CHOOSE_WHITE_SIDE, Color.SLATEGRAY, 1, 91, TextAlign.CENTER);
+            } else if (field.noMovesLeft()) {
+                Printer.print(getVictoryMessage(), Color.YELLOW, 1, 91, TextAlign.CENTER);
+            }
         }
     }
 

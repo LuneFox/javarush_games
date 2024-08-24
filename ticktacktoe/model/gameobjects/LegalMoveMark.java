@@ -9,6 +9,7 @@ import com.javarush.games.ticktacktoe.view.shapes.Shape;
  * @author LuneFox
  */
 public class LegalMoveMark extends GameObject {
+
     public LegalMoveMark(double x, double y) {
         super(x, y);
         super.setStaticView(Shape.LEGAL_MOVE_MARK_BLACK);

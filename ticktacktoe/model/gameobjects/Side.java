@@ -6,5 +6,16 @@ package com.javarush.games.ticktacktoe.model.gameobjects;
  * @author LuneFox
  */
 public enum Side {
-    BLACK, WHITE
+
+    BLACK, WHITE;
+
+    /**
+     * Выдаёт противоположный цвет
+     *
+     * @param side входной цвет
+     * @return противоположный цвет
+     */
+    public static Side flip(Side side) {
+        return side == WHITE ? BLACK : WHITE;
+    }
 }
