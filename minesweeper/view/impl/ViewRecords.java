@@ -11,14 +11,17 @@ import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.javarush.engine.cell.Color.*;
 
 public class ViewRecords extends View {
 
     private static final String TITLE = "<Лучшие игроки>";
-    private static final Map<Integer, List<String>> RECORDS = new HashMap<>();
+    private static final Map<Integer, List<String>> RECORDS;
     private static final Image PRIZE_CUP = new Image(ImageType.PICTURE_PRIZE_CUP);
     private static final Image BACKGROUND = Image.cache.get(ImageType.GUI_BACKGROUND);
     private final Button closeButton = new Button(88, 2, "x", this) {
@@ -29,16 +32,16 @@ public class ViewRecords extends View {
         }
     };
 
-    public ViewRecords(MinesweeperGame game) {
-        super(game);
-        fillRecords();
-    }
-
-    private static void fillRecords() {
+    static {
+        RECORDS = new HashMap<>();
         RECORDS.put(1, Arrays.asList("Dim", "2700224", "43263"));
         RECORDS.put(2, Arrays.asList("Gans Electro", "3136750", "42030"));
         RECORDS.put(3, Arrays.asList("Pavlo Plynko", "28219", "37890"));
         RECORDS.put(4, Arrays.asList("Михаил Васильев", "2700224", "37125"));
+    }
+
+    public ViewRecords(MinesweeperGame game) {
+        super(game);
     }
 
     @Override
