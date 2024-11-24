@@ -11,18 +11,16 @@ import com.javarush.games.minesweeper.gui.interactive.Button;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
 
+import java.util.*;
+
 import static com.javarush.engine.cell.Color.*;
 
 public class ViewRecords extends View {
 
-    private static final String[] RECORDS = new String[]{
-            "<Лучшие игроки>",
-            "Dim\nID 2700224", "43263",
-            "Gans Electro\nID 3136750", "42030",
-            "Pavlo Plynko\nID 28219", "37890",
-            "Михаил Васильев\nID 2522974", "37125"
-    };
-
+    private static final String TITLE = "<Лучшие игроки>";
+    private static Map<Integer, List<String>> records;
+    private static final Image PRIZE_CUP = new Image(ImageType.PICTURE_PRIZE_CUP);
+    private static final Image BACKGROUND = Image.cache.get(ImageType.GUI_BACKGROUND);
     private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
         public void onLeftClick() {
@@ -30,17 +28,24 @@ public class ViewRecords extends View {
             Phase.setActive(Phase.MAIN);
         }
     };
-    private static final Image PRIZE_CUP = new Image(ImageType.PICTURE_PRIZE_CUP);
-    private static final Image BACKGROUND = Image.cache.get(ImageType.GUI_BACKGROUND);
 
     public ViewRecords(MinesweeperGame game) {
         super(game);
+        fillRecords();
+    }
+
+    private static void fillRecords() {
+        records = new HashMap<>();
+        records.put(1, Arrays.asList("Dim", "2700224", "43263"));
+        records.put(2, Arrays.asList("Gans Electro", "3136750", "42030"));
+        records.put(3, Arrays.asList("Pavlo Plynko", "28219", "37890"));
+        records.put(4, Arrays.asList("Михаил Васильев", "2700224", "37125"));
     }
 
     @Override
     public void update() {
         BACKGROUND.draw();
-        Printer.print(RECORDS[0], Theme.LABEL.getColor(), Printer.CENTER, 2);
+        Printer.print(TITLE, Theme.LABEL.getColor(), Printer.CENTER, 2);
         closeButton.draw();
         drawPrizeCups();
         drawEntries();
@@ -64,14 +69,14 @@ public class ViewRecords extends View {
 
     private void drawEntries() {
         Color[] colors = new Color[]{WHITE, GOLD, SILVER, PALEGOLDENROD, LIGHTGREY};
-        int gap = 20;
-        int firstLine = 17 - gap;
-        int secondLine = firstLine + 9;
-        int color = 0;
-        int record = 0;
-        for (int i = 1; i < 5; i++) {
-            Printer.print(RECORDS[++record], colors[++color], 19, firstLine += gap);
-            Printer.print(RECORDS[++record], colors[0], 98, secondLine += gap, Align.RIGHT);
+        int gapBetweenEntries = 20;
+        int topLine = 17 - gapBetweenEntries;
+        int bottomLine = topLine + 9;
+        int currentColor = 0;
+        for (int i = 1; i <= records.size(); i++) {
+            Printer.print(records.get(i).get(0), colors[++currentColor], 19, topLine += gapBetweenEntries);
+            Printer.print("\nID " + records.get(i).get(1), colors[currentColor], 19, topLine);
+            Printer.print(records.get(i).get(2), colors[0], 98, bottomLine += gapBetweenEntries, Align.RIGHT);
         }
         super.update();
     }
