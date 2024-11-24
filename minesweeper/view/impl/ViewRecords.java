@@ -64,17 +64,14 @@ public class ViewRecords extends View {
 
     private void drawEntries() {
         Color[] colors = new Color[]{WHITE, GOLD, SILVER, PALEGOLDENROD, LIGHTGREY};
-        int firstLine = 17;
+        int gap = 20;
+        int firstLine = 17 - gap;
         int secondLine = firstLine + 9;
         int color = 0;
         int record = 0;
-        int gap = 20;
-
         for (int i = 1; i < 5; i++) {
-            Printer.print(RECORDS[++record], colors[++color], 19, firstLine);
-            Printer.print(RECORDS[++record], colors[0], 98, secondLine, Align.RIGHT);
-            firstLine += gap;
-            secondLine += gap;
+            Printer.print(RECORDS[++record], colors[++color], 19, firstLine += gap);
+            Printer.print(RECORDS[++record], colors[0], 98, secondLine += gap, Align.RIGHT);
         }
         super.update();
     }
