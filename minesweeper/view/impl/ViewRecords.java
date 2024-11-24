@@ -15,9 +15,10 @@ import static com.javarush.engine.cell.Color.*;
 
 public class ViewRecords extends View {
 
-    final String[] RECORDS = new String[]{
+    private static final String[] RECORDS = new String[]{
             "<Лучшие игроки>",
             "Dim\nID 2700224", "43263",
+            "Gans Electro\nID 3136750", "42030",
             "Pavlo Plynko\nID 28219", "37890",
             "Михаил Васильев\nID 2522974", "37125"
     };
@@ -29,8 +30,8 @@ public class ViewRecords extends View {
             Phase.setActive(Phase.MAIN);
         }
     };
-    final Image prizeCup = new Image(ImageType.PICTURE_PRIZE_CUP);
-    final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
+    private static final Image PRIZE_CUP = new Image(ImageType.PICTURE_PRIZE_CUP);
+    private static final Image BACKGROUND = Image.cache.get(ImageType.GUI_BACKGROUND);
 
     public ViewRecords(MinesweeperGame game) {
         super(game);
@@ -38,7 +39,7 @@ public class ViewRecords extends View {
 
     @Override
     public void update() {
-        background.draw();
+        BACKGROUND.draw();
         Printer.print(RECORDS[0], Theme.LABEL.getColor(), Printer.CENTER, 2);
         closeButton.draw();
         drawPrizeCups();
@@ -48,27 +49,33 @@ public class ViewRecords extends View {
     private void drawPrizeCups() {
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
-                prizeCup.changeColor(GOLD, 1);
-                prizeCup.changeColor(YELLOW, 2);
+                PRIZE_CUP.changeColor(GOLD, 1);
+                PRIZE_CUP.changeColor(YELLOW, 2);
             } else if (i == 1) {
-                prizeCup.changeColor(SILVER, 1);
-                prizeCup.changeColor(WHITE, 2);
+                PRIZE_CUP.changeColor(SILVER, 1);
+                PRIZE_CUP.changeColor(WHITE, 2);
             } else {
-                prizeCup.changeColor(DARKGOLDENROD, 1);
-                prizeCup.changeColor(PALEGOLDENROD, 2);
+                PRIZE_CUP.changeColor(DARKGOLDENROD, 1);
+                PRIZE_CUP.changeColor(PALEGOLDENROD, 2);
             }
-            prizeCup.draw(2, 18 + (30 * i));
+            PRIZE_CUP.draw(2, 18 + (20 * i));
         }
     }
 
     private void drawEntries() {
-        Color[] colors = new Color[]{WHITE, GOLD, SILVER, PALEGOLDENROD};
-        Printer.print(RECORDS[1], colors[1], 19, 17);
-        Printer.print(RECORDS[2], colors[0], 98, 26, Align.RIGHT);
-        Printer.print(RECORDS[3], colors[2], 19, 47);
-        Printer.print(RECORDS[4], colors[0], 98, 56, Align.RIGHT);
-        Printer.print(RECORDS[5], colors[3], 19, 77);
-        Printer.print(RECORDS[6], colors[0], 98, 86, Align.RIGHT);
+        Color[] colors = new Color[]{WHITE, GOLD, SILVER, PALEGOLDENROD, LIGHTGREY};
+        int firstLine = 17;
+        int secondLine = firstLine + 9;
+        int color = 0;
+        int record = 0;
+        int gap = 20;
+
+        for (int i = 1; i < 5; i++) {
+            Printer.print(RECORDS[++record], colors[++color], 19, firstLine);
+            Printer.print(RECORDS[++record], colors[0], 98, secondLine, Align.RIGHT);
+            firstLine += gap;
+            secondLine += gap;
+        }
         super.update();
     }
 }
