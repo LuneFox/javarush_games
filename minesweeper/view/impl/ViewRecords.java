@@ -35,6 +35,7 @@ public class ViewRecords extends View {
 
     static {
         RECORDS = new HashMap<>();
+        // Position, name, JavaRush ID, score
         RECORDS.put(1, Arrays.asList("Dim", "2700224", "43263"));
         RECORDS.put(2, Arrays.asList("Gans Electro", "3136750", "42030"));
         RECORDS.put(3, Arrays.asList("Pavlo Plynko", "28219", "37890"));
@@ -76,8 +77,11 @@ public class ViewRecords extends View {
         int bottomLine = topLine + 9;
         int currentColor = 0;
         for (int i = 1; i <= RECORDS.size(); i++) {
+            // Name (top line, left)
             Printer.print(RECORDS.get(i).get(0), colors[++currentColor], 19, topLine += GAP_BETWEEN_ENTRIES);
+            // JavaRush ID (bottom line, left)
             Printer.print("\nID " + RECORDS.get(i).get(1), colors[currentColor], 19, topLine);
+            // Score (bottom line, right)
             Printer.print(RECORDS.get(i).get(2), colors[0], 98, bottomLine += GAP_BETWEEN_ENTRIES, Align.RIGHT);
         }
         super.update();
