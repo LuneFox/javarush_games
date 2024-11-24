@@ -24,6 +24,7 @@ public class ViewRecords extends View {
     private static final Map<Integer, List<String>> RECORDS;
     private static final Image PRIZE_CUP = new Image(ImageType.PICTURE_PRIZE_CUP);
     private static final Image BACKGROUND = Image.cache.get(ImageType.GUI_BACKGROUND);
+    private static final int GAP_BETWEEN_ENTRIES = 20;
     private final Button closeButton = new Button(88, 2, "x", this) {
         @Override
         public void onLeftClick() {
@@ -65,20 +66,19 @@ public class ViewRecords extends View {
                 PRIZE_CUP.changeColor(DARKGOLDENROD, 1);
                 PRIZE_CUP.changeColor(PALEGOLDENROD, 2);
             }
-            PRIZE_CUP.draw(2, 18 + (20 * i));
+            PRIZE_CUP.draw(2, 18 + (GAP_BETWEEN_ENTRIES * i));
         }
     }
 
     private void drawEntries() {
         Color[] colors = new Color[]{WHITE, GOLD, SILVER, PALEGOLDENROD, LIGHTGREY};
-        int gapBetweenEntries = 20;
-        int topLine = 17 - gapBetweenEntries;
+        int topLine = 17 - GAP_BETWEEN_ENTRIES;
         int bottomLine = topLine + 9;
         int currentColor = 0;
         for (int i = 1; i <= RECORDS.size(); i++) {
-            Printer.print(RECORDS.get(i).get(0), colors[++currentColor], 19, topLine += gapBetweenEntries);
+            Printer.print(RECORDS.get(i).get(0), colors[++currentColor], 19, topLine += GAP_BETWEEN_ENTRIES);
             Printer.print("\nID " + RECORDS.get(i).get(1), colors[currentColor], 19, topLine);
-            Printer.print(RECORDS.get(i).get(2), colors[0], 98, bottomLine += gapBetweenEntries, Align.RIGHT);
+            Printer.print(RECORDS.get(i).get(2), colors[0], 98, bottomLine += GAP_BETWEEN_ENTRIES, Align.RIGHT);
         }
         super.update();
     }
