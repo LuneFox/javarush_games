@@ -31,4 +31,10 @@ public interface ControlStrategy {
 
     default void releaseSpace() {
     }
+
+    default void pressPause() {
+    }
+
+    default void releasePause() {
+    }
 }

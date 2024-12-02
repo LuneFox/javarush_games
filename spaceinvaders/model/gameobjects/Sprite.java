@@ -42,6 +42,7 @@ public class Sprite {
     }
 
     void nextFrame() {
+        if (game.isPaused()) return;
         if (nextFrameTimer++ % nextFrameDelay != 0) return;
 
         if (!isAnimationFinished()) {

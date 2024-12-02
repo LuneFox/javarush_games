@@ -51,8 +51,10 @@ public class SpaceInvadersGame extends Game {
     private List<Bullet> enemyBullets;
     private List<Brick> bricks;
 
+    private static char showPauseTimer;
     private int gameOverDelay;
     private boolean isEndingDisplayed;
+    private boolean isPaused;
     private boolean isStopped;
 
     @Override
@@ -113,13 +115,14 @@ public class SpaceInvadersGame extends Game {
 
     @Override
     public void onTurn(int step) {
-        moveObjects();
-        verifyCollisions();
-        checkGameOverConditions();
-        removeDeadObjects();
-
+        if (!isPaused) {
+            moveObjects();
+            verifyCollisions();
+            checkGameOverConditions();
+            removeDeadObjects();
+            setScore(Score.getScore());
+        }
         drawStage();
-        setScore(Score.getScore());
     }
 
     private void moveObjects() {
@@ -168,6 +171,7 @@ public class SpaceInvadersGame extends Game {
         enemyBullets.forEach(GameObject::draw);
         mario.draw();
         flash.draw();
+        printPause();
         display.draw();
     }
 
@@ -175,6 +179,13 @@ public class SpaceInvadersGame extends Game {
         Printer.print(String.valueOf(Score.getScore()), Color.DARKBLUE, 100, 50, TextAlign.CENTER);
         Printer.print("TOP: " + Score.getTopScore(), Color.DARKBLUE, 100, 1, TextAlign.RIGHT);
         Printer.print("Stage " + stage, Color.DARKBLUE, 1, 1);
+
+    }
+
+    private static void printPause() {
+        if (instance.isPaused) {
+            Printer.print(showPauseTimer++ % 10 < 5 ? "PAUSE" : "", Color.WHITE, 100, 50, TextAlign.CENTER);
+        }
     }
 
     public void addPlayerBullet(Bullet bulletToAdd) {
@@ -205,6 +216,10 @@ public class SpaceInvadersGame extends Game {
             showMessageDialog(Color.NONE, message, Color.RED, 75);
         }
         isEndingDisplayed = true;
+    }
+
+    public void pause() {
+        isPaused = !isPaused;
     }
 
     /*
@@ -251,6 +266,10 @@ public class SpaceInvadersGame extends Game {
 
     public boolean isEndingDisplayed() {
         return isEndingDisplayed;
+    }
+
+    public boolean isPaused() {
+        return isPaused;
     }
 
     public boolean isStopped() {
