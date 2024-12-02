@@ -16,6 +16,7 @@ public class Controller {
         else if (key == Key.LEFT) controlStrategy.pressLeft();
         else if (key == Key.RIGHT) controlStrategy.pressRight();
         else if (key == Key.SPACE) controlStrategy.pressSpace();
+        else if (key == Key.PAUSE) controlStrategy.pressPause();
     }
 
     public final void releaseKey(Key key) {
@@ -24,5 +25,6 @@ public class Controller {
         else if (key == Key.LEFT) controlStrategy.releaseLeft();
         else if (key == Key.RIGHT) controlStrategy.releaseRight();
         else if (key == Key.SPACE) controlStrategy.releaseSpace();
+        else if (key == Key.PAUSE) controlStrategy.releasePause();
     }
 }

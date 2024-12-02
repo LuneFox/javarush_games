@@ -13,7 +13,7 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressUp() {
-        if (game.isStopped()) return;
+        if (game.isStopped() || game.isPaused()) return;
 
         Mario mario = game.getMario();
         mario.jump();
@@ -21,7 +21,7 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressRight() {
-        if (game.isStopped()) return;
+        if (game.isStopped() || game.isPaused()) return;
 
         Mario mario = game.getMario();
         mario.setMoveDirection(Direction.RIGHT);
@@ -39,7 +39,7 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressLeft() {
-        if (game.isStopped()) return;
+        if (game.isStopped() || game.isPaused()) return;
 
         Mario mario = game.getMario();
         mario.setMoveDirection(Direction.LEFT);
@@ -63,5 +63,10 @@ public class BattleControlStrategy implements ControlStrategy {
             Mario mario = game.getMario();
             mario.shoot();
         }
+    }
+
+    @Override
+    public void pressPause() {
+        game.pause();
     }
 }
