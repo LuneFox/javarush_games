@@ -15,4 +15,9 @@ public class FireballBullet extends Bullet {
                 FireballShape.FIREBALL_4);
         canKillEnemies = true;
     }
+
+    @Override
+    public void kill() {
+        // Can't be destroyed
+    }
 }

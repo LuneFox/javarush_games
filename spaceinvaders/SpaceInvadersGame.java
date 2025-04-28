@@ -28,7 +28,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
- * VERSION 1.07
+ * VERSION 1.08
  */
 
 public class SpaceInvadersGame extends Game {

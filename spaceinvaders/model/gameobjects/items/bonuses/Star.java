@@ -37,7 +37,10 @@ public class Star extends Bonus {
     public void consume() {
         game.getFlash().show();
         Score.add(game.getEnemyBullets().size());
-        game.getEnemyBullets().clear();
+        game.getEnemyBullets().forEach(bullet -> {
+            bullet.inverseDirection();
+            bullet.canKillEnemies = true;
+        });
     }
 
     protected boolean bulletCollisionCooledDown(Bullet bullet) {

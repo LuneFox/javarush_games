@@ -89,12 +89,16 @@ public class GameObject implements Drawable {
 
         if (yOverlap * xOverlap == 0) {
             return OverlapForm.NONE;
+        }
+
+        // Add small threshold to handle near-equal cases
+        final double threshold = 0.5;
+        if (Math.abs(yOverlap - xOverlap) < threshold) {
+            return OverlapForm.EVEN;
         } else if (yOverlap > xOverlap) {
             return OverlapForm.HIGH;
-        } else if (xOverlap > yOverlap) {
-            return OverlapForm.WIDE;
         } else {
-            return OverlapForm.EVEN;
+            return OverlapForm.WIDE;
         }
     }
 

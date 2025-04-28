@@ -97,36 +97,37 @@ public class ArkanoidBallBullet extends Bullet {
         Mario mario = SpaceInvadersGame.getInstance().getMario();
         OverlapForm form = getOverlapForm(mario);
 
+        // Учитываем положение мяча относительно Марио для более точного отскока
+        double hitPosition = (x - mario.x) / mario.getWidth();
+
         switch (form) {
             case WIDE:
                 dy = -dy;
-                doAdditionalKick(mario);
-                lastCollisionDate = new Date();
+                // Меняем dx в зависимости от того, в какую часть Марио попал мяч
+                dx += (int) (hitPosition * 2);
                 break;
             case HIGH:
                 dx = -dx;
-                doAdditionalKick(mario);
-                lastCollisionDate = new Date();
                 break;
             case EVEN:
                 dy = -dy;
                 dx = -dx;
-                doAdditionalKick(mario);
-                lastCollisionDate = new Date();
                 break;
             default:
-                break;
+                return;
         }
-    }
 
-    private void doAdditionalKick(Mario mario) {
-        switch (mario.getMoveDirection()) {
-            case RIGHT:
-                x += 2;
-                break;
-            case LEFT:
-                x -= 2;
-                break;
+        // Добавляем "удар" в зависимости от направления движения Марио
+        if (mario.getMoveDirection() == Direction.RIGHT) {
+            dx += 1;
+        } else if (mario.getMoveDirection() == Direction.LEFT) {
+            dx -= 1;
         }
+
+        // Ограничиваем максимальную скорость
+        dx = Math.max(-5, Math.min(5, dx));
+        dy = Math.max(-5, Math.min(5, dy));
+
+        lastCollisionDate = new Date();
     }
 }
