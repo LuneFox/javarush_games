@@ -7,7 +7,7 @@ public enum Strings {
     VERSION("1.21", "1.21"),
 
     // Main menu
-    MAIN_TITLE("ALCHEMY SNAKE", "ЗМЕЯ-АЛХИМИК"),
+    MAIN_TITLE("ALCHEMY SNAKE", "ЗМЕЙКА АЛХИМИКА"),
     MAIN_SUBTITLE("MASTER OF ELEMENTS", "МАСТЕР СТИХИЙ"),
     MAIN_VERSION("VER ", "ВЕРСИЯ "),
 
@@ -99,10 +99,10 @@ public enum Strings {
     // Help: controls
     HELP_CONTROLS_TITLE("CONTROLS", "УПРАВЛЕНИЕ"),
     HELP_CONTROL_ARROWS("↑ ↓ ← →       :", "↑ ↓ ← →       :"),
-    HELP_CONTROL_HOLD("HOLD DIRECTION:", "ДЕРЖАТЬ КУРС:"),
-    HELP_CONTROL_ENTER("ENTER, R-CLICK:", "ENTER, ПКМ:"),
-    HELP_CONTROL_ESC("ESC,   L-CLICK:", "ESC, ЛКМ:"),
-    HELP_CONTROL_SPACE_GAME("SPACE (GAME)  :", "ПРОБЕЛ (ИГРА):"),
+    HELP_CONTROL_HOLD("HOLD DIRECTION:", "ДЕРЖАТЬ КУРС  :"),
+    HELP_CONTROL_ENTER("ENTER, R-CLICK:", "ENTER, ПКМ    :"),
+    HELP_CONTROL_ESC("ESC,   L-CLICK:", "ESC, ЛКМ      :"),
+    HELP_CONTROL_SPACE_GAME("SPACE (GAME)  :", "ПРОБЕЛ (ИГРА) :"),
     HELP_CONTROL_SPACE_OVER("SPACE (G.OVER):", "ПРОБЕЛ (КОНЕЦ):"),
     HELP_CONTROL_DIRECTION("DIRECTION", "НАПРАВЛЕНИЕ"),
     HELP_CONTROL_ACCELERATE("ACCELERATE", "УСКОРЕНИЕ"),
@@ -118,7 +118,7 @@ public enum Strings {
     HUD_ELEMENT("element : ", "стихия  : "),
     HUD_SCORE("score   : ", "счёт    : "),
     HUD_POWER("power: ", "мощь: "),
-    GAME_SLEEPING(" SLEEPING... ", " СПИТ... "),
+    GAME_SLEEPING(" SLEEPING... ", "   СПИТ...   "),
 
     ELEMENT_NEUTRAL("NEUTRAL", "НЕЙТРАЛЬНАЯ"),
     ELEMENT_WATER("WATER", "ВОДА"),
@@ -169,7 +169,7 @@ public enum Strings {
 
     // Tutorial 1
     TUTORIAL_1_BRIEFING("%s\nAlchemy Snake feeds on Orbs of Wisdom.\nThey look like this: %s\nCollect 3 of them!\n\n~ PRESS SPACE TO START ~",
-            "%s\nЗмея-алхимик питается Сферами Мудрости.\nОни выглядят так: %s\nСоберите 3 из них!\n\n~ ПРОБЕЛ — НАЧАТЬ ~"),
+            "%s\nЗмейка алхимика питается Сферами Мудрости.\nОни выглядят так: %s\nСоберите 3 из них!\n\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     TUTORIAL_1_COMPLETE("%s COMPLETE!\nGOOD JOB!\n\n~ PRESS SPACE TO RETURN ~",
             "%s ПРОЙДЕНО!\nМОЛОДЕЦ!\n\n~ ПРОБЕЛ — В МЕНЮ ~"),
 
