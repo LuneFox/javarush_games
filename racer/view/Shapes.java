@@ -1,7 +1,16 @@
 package com.javarush.games.racer.view;
 
+/**
+ * Static table of pixel-art matrices used by sprites, HUD icons and effects.
+ * Every matrix is row-major {@code int[height][width]}: the first index is the row (y, growing
+ * down), the second is the column (x, growing right), and each value is an ordinal into
+ * {@code Color.values()} where 0 means transparent. Dimensions below are rows by columns; the
+ * inline notes on the DeLorean frames say 20 x 37 while the literals actually hold 20 rows by 36
+ * columns. This class is data only and has no methods.
+ */
 public class Shapes {
 
+    /** DeLorean normal RUN animation frame 0 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_RUN_0 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 85, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -25,6 +34,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** DeLorean normal RUN animation frame 1 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_RUN_1 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 85, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -48,6 +58,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** DeLorean normal RUN animation frame 2 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_RUN_2 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 85, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -71,6 +82,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** DeLorean normal RUN animation frame 3 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_RUN_3 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 85, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -94,6 +106,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** DeLorean GLOW animation frame 0 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_GLOW_0 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 14, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -117,6 +130,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** DeLorean GLOW animation frame 1 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_GLOW_1 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 85, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -140,6 +154,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** DeLorean GLOW animation frame 2 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_GLOW_2 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 85, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -163,6 +178,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** DeLorean GLOW animation frame 3 of 4 (inline note says 20x37; matrix is 20x36). */
     public static final int[][] DELOREAN_GLOW_3 = new int[][]{ // 20 x 37
             {1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {1, 85, 85, 85, 1, 0, 0, 0, 0, 1, 1, 51, 49, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -186,10 +202,12 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 45, 1, 1, 1, 1, 45, 45, 45, 45, 45, 0, 0}
     };
 
+    /** One white road-marking dash, 1 row x 5 columns. */
     public static final int[][] ROAD_MARKING = new int[][]{
             {2, 2, 2, 2, 2},
     };
 
+    /** Still water puddle obstacle, 14 rows x 21 columns; the frame before any splash. */
     public static final int[][] PUDDLE = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -206,6 +224,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};
 
+    /** First puddle-splash animation frame, 14 rows x 21 columns; droplets around the puddle. */
     public static final int[][] PUDDLE_SPLASH_1 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 14, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 14, 14, 0, 0, 0, 0, 0, 0, 14, 14, 14, 0, 0, 0, 0},
@@ -223,6 +242,7 @@ public class Shapes {
             {0, 0, 0, 14, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 14, 0}
     };
 
+    /** Second puddle-splash animation frame, 14 rows x 21 columns; droplets spread outwards. */
     public static final int[][] PUDDLE_SPLASH_2 = new int[][]{
             {0, 0, 0, 14, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 14, 0, 0},
             {0, 0, 0, 0, 0, 14, 14, 0, 0, 0, 0, 14, 0, 0, 0, 14, 14, 0, 0, 0, 0},
@@ -241,6 +261,7 @@ public class Shapes {
     };
 
 
+    /** Hole obstacle, 8 rows x 15 columns; a hole in the asphalt. */
     public static final int[][] HOLE = new int[][]{
             {0, 0, 0, 0, 51, 51, 51, 51, 51, 51, 51, 0, 0, 0, 0},
             {0, 0, 51, 51, 45, 45, 45, 45, 45, 45, 45, 51, 51, 0, 0},
@@ -252,6 +273,7 @@ public class Shapes {
             {0, 0, 0, 0, 51, 51, 51, 51, 51, 51, 51, 0, 0, 0, 0}
     };
 
+    /** Collectible energy pickup, 10 rows x 8 columns; a lightning bolt in a bordered cell. */
     public static final int[][] ENERGY = new int[][]{
             {6, 6, 6, 6, 6, 0, 10, 0},
             {6, 88, 0, 0, 6, 6, 6, 88},
@@ -265,6 +287,7 @@ public class Shapes {
             {45, 45, 45, 45, 45, 45, 45, 45}
     };
 
+    /** Fully expanded portal animation frame 0 of 4, 24 rows x 7 columns. */
     public static final int[][] PORTAL_EXPANDED_0 = new int[][]{
             {0, 0, 28, 49, 0, 0, 0},
             {0, 0, 0, 28, 49, 0, 0},
@@ -292,6 +315,7 @@ public class Shapes {
             {0, 0, 28, 49, 0, 0, 0}
     };
 
+    /** Fully expanded portal animation frame 1 of 4, 24 rows x 7 columns. */
     public static final int[][] PORTAL_EXPANDED_1 = new int[][]{
             {0, 0, 137, 83, 0, 0, 0},
             {0, 0, 0, 137, 83, 0, 0},
@@ -319,6 +343,7 @@ public class Shapes {
             {0, 0, 137, 83, 0, 0, 0}
     };
 
+    /** Fully expanded portal animation frame 2 of 4, 24 rows x 7 columns. */
     public static final int[][] PORTAL_EXPANDED_2 = new int[][]{
             {0, 0, 28, 49, 0, 0, 0},
             {0, 0, 0, 28, 49, 0, 0},
@@ -346,6 +371,7 @@ public class Shapes {
             {0, 0, 28, 49, 0, 0, 0}
     };
 
+    /** Fully expanded portal animation frame 3 of 4, 24 rows x 7 columns. */
     public static final int[][] PORTAL_EXPANDED_3 = new int[][]{
             {0, 0, 137, 83, 0, 0, 0},
             {0, 0, 0, 137, 83, 0, 0},
@@ -373,6 +399,7 @@ public class Shapes {
             {0, 0, 137, 83, 0, 0, 0}
     };
 
+    /** Growing portal animation frame 0 of 2, 24 rows x 7 columns; only a thin core is visible. */
     public static final int[][] PORTAL_GROWING_0 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
@@ -400,6 +427,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 0}
     };
 
+    /** Growing portal animation frame 1 of 2, 24 rows x 7 columns; the core is taller. */
     public static final int[][] PORTAL_GROWING_1 = new int[][]{
             {0, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0},
@@ -427,6 +455,7 @@ public class Shapes {
             {0, 0, 0, 0, 0, 0, 0}
     };
 
+    /** Tire-flame animation frame 0 of 2, 4 rows x 33 columns; a repeating rear-wheel flame strip. */
     public static final int[][] TIRE_FLAME_0 = new int[][]{
             {0, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 0},
             {0, 0, 4, 0, 111, 0, 4, 0, 111, 0, 4, 0, 111, 0, 4, 0, 111, 0, 4, 0, 111, 0, 4, 0, 111, 0, 4, 0, 111, 0, 4, 0, 0},
@@ -434,6 +463,7 @@ public class Shapes {
             {134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134, 139, 134}
     };
 
+    /** Tire-flame animation frame 1 of 2, 4 rows x 33 columns; the flame tips are shifted. */
     public static final int[][] TIRE_FLAME_1 = new int[][]{
             {0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0},
             {0, 0, 4, 0, 23, 0, 4, 0, 23, 0, 4, 0, 23, 0, 4, 0, 23, 0, 4, 0, 23, 0, 4, 0, 23, 0, 4, 0, 23, 0, 4, 0, 0},
@@ -441,6 +471,7 @@ public class Shapes {
             {134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134, 25, 134}
     };
 
+    /** Marty McFly standing sprite, 46 rows x 19 columns; shown on the lower verge in the ending. */
     public static final int[][] MARTY = new int[][]{
             {0, 0, 0, 0, 0, 0, 0, 0, 92, 92, 131, 131, 131, 0, 0, 0, 0, 0, 0},
             {0, 0, 0, 0, 0, 0, 0, 0, 92, 131, 92, 92, 131, 131, 0, 0, 0, 0, 0},
@@ -490,6 +521,7 @@ public class Shapes {
             {0, 0, 14, 14, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 14, 14, 14}
     };
 
+    /** HUD energy icon, 7 rows x 5 columns; a small lightning bolt beside the gigawatt readout. */
     public static final int[][] ENERGY_ICON = new int[][]{
             {0, 0, 0, 3, 0},
             {0, 0, 3, 0, 0},
@@ -500,6 +532,7 @@ public class Shapes {
             {0, 3, 0, 0, 0}
     };
 
+    /** HUD speedometer icon, 7 rows x 7 columns; a dial beside the speed readout. */
     public static final int[][] SPEEDOMETER_ICON = new int[][]{
             {0, 0, 0, 3, 0, 0, 0},
             {0, 3, 0, 0, 0, 4, 0},
@@ -510,6 +543,7 @@ public class Shapes {
             {0, 0, 126, 126, 126, 0, 0}
     };
 
+    /** Empty gas-gauge frame, 5 rows x 32 columns; the bar is drawn over it. */
     public static final int[][] GAS_METER_BACKGROUND = new int[][]{
             {120, 120, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 78, 78},
             {120, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 78, 0, 0},
@@ -518,12 +552,14 @@ public class Shapes {
             {120, 120, 120, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 78, 0, 0}
     };
 
+    /** One-cell-wide gas bar, 3 rows x 1 column; Overlay shifts it right by the remaining fuel. */
     public static final int[][] GAS_METER = new int[][]{
             {59},
             {59},
             {59}
     };
 
+    /** HUD gas-pump icon, 8 rows x 7 columns, shown beside the gauge. */
     public static final int[][] GAS_ICON = new int[][]{
             {0, 0, 0, 0, 116, 116, 116},
             {142, 34, 0, 116, 0, 0, 116},
@@ -536,10 +572,15 @@ public class Shapes {
     };
 
 
+    /** Thrust-flame animation frame 1 of 4, 3 rows x 2 columns; the dimmest exhaust flicker. */
     public static final int[][] THRUST_FIRE_1 = new int[][]{{0, 5}, {0, 5}, {0, 5}};
+    /** Thrust-flame animation frame 2 of 4, 3 rows x 2 columns; a brighter exhaust flame. */
     public static final int[][] THRUST_FIRE_2 = new int[][]{{38, 5}, {59, 5}, {38, 5}};
+    /** Thrust-flame animation frame 3 of 4, 3 rows x 2 columns; the flame pattern swaps sides. */
     public static final int[][] THRUST_FIRE_3 = new int[][]{{0, 38}, {59, 5}, {0, 38}};
+    /** Thrust-flame animation frame 4 of 4, 3 rows x 2 columns; the brightest exhaust flame. */
     public static final int[][] THRUST_FIRE_4 = new int[][]{{0, 59}, {0, 38}, {0, 59}};
 
+    /** Two-cell brake-light signal, 2 rows x 1 column, drawn at the rear while braking. */
     public static final int[][] STOP_SIGNAL = new int[][]{{5}, {5}};
 }

@@ -1,5 +1,10 @@
 package com.javarush.games.racer.view.printer;
 
+/**
+ * Glyphs of the hand-made pixel font. Each constant owns a bitmap (rows of indices into
+ * {@code Color.values()}, where 0 is transparent) and one or more characters that select it, so
+ * Russian letters and their Latin lookalikes share the same glyph.
+ */
 enum Symbol {
     RUS_A(makeArray(4, "0000000001101001111110011001"), 'а', 'a'),
     RUS_B(makeArray(4, "0000000011111000111010011110"), 'б'),
@@ -82,11 +87,28 @@ enum Symbol {
     private final char[] chars;
     private final int[][] matrix;
 
+    /**
+     * Stores the bitmap and the characters that select this glyph.
+     *
+     * @param matrix pixel rows, 0 for transparent and 1 for the drawn colour
+     * @param chars characters that resolve to this glyph; the first is usually the Russian letter
+     */
     Symbol(int[][] matrix, char... chars) {
         this.matrix = matrix;
         this.chars = chars;
     }
 
+    /**
+     * Decodes a flat string of decimal digits into a row-major glyph matrix, one digit per pixel.
+     * The height is inferred as {@code string.length() / width}, and exactly {@code width * height}
+     * digits are read, so trailing digits of a string whose length is not a multiple of the width
+     * are silently ignored. No validation is done: a string shorter than the width yields an empty
+     * matrix, which later breaks width lookups.
+     *
+     * @param width number of columns
+     * @param string digits in row-major order, each in the range 0-9
+     * @return decoded matrix of {@code string.length() / width} rows and {@code width} columns
+     */
     private static int[][] makeArray(int width, String string) {
         final int CHAR_AND_INT_DIFFERENCE = 48;
         int height = string.length() / width;
@@ -103,10 +125,20 @@ enum Symbol {
         return result;
     }
 
+    /**
+     * Returns the characters that map to this glyph.
+     *
+     * @return the backing character array, not a copy
+     */
     char[] getChars() {
         return chars;
     }
 
+    /**
+     * Returns the glyph bitmap.
+     *
+     * @return the backing matrix, not a copy, with the first index as row
+     */
     int[][] getMatrix() {
         return matrix;
     }
