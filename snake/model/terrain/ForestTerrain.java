@@ -39,7 +39,7 @@ public class ForestTerrain extends Terrain {
         }
 
         snake.kill();
-        game.setGameOverReason(Strings.GAME_OVER_EATEN);
+        game.setGameOverReason(Strings.GAME_OVER_EATEN.get());
     }
 
     @Override

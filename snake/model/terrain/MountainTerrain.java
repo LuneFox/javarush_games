@@ -22,6 +22,6 @@ public class MountainTerrain extends Terrain {
         if (snake.getElement() == Element.ALMIGHTY) return;
 
         snake.kill();
-        game.setGameOverReason(Strings.GAME_OVER_MOUNTAIN_COLD);
+        game.setGameOverReason(Strings.GAME_OVER_MOUNTAIN.get());
     }
 }

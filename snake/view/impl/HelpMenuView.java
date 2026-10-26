@@ -1,6 +1,7 @@
 package com.javarush.games.snake.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.view.HelpPage;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;
@@ -29,7 +30,7 @@ public class HelpMenuView extends View {
         drawBlackBackground();
         helpPages.get(currentHelpPage).draw(game);
 
-        String pagination = "← PAGE " + (currentHelpPage + 1) + "/" + helpPages.size() + " →";
+        String pagination = Strings.HELP_PAGE.format(currentHelpPage + 1, helpPages.size());
         Message.print(-1, 30, pagination, Color.WHITE);
     }
 

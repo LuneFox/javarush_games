@@ -2,6 +2,7 @@ package com.javarush.games.snake.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.Strings;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,7 +12,7 @@ public class MenuSelector {
     private static final MenuSelector instance;
     private static final String POINTER_SIGN = "→";
 
-    private final ArrayList<String> menuEntries;
+    private final ArrayList<Strings> menuEntries;
     private int pointerPosition;
     private int lastPointerPosition;
 
@@ -33,7 +34,7 @@ public class MenuSelector {
     }
 
     private static void drawEntry(int x, int y, int position) {
-        final String text = instance.menuEntries.get(position);
+        final String text = instance.menuEntries.get(position).get();
         final Color color = instance.pointerPosition == position ? Color.WHITE : Color.GRAY;
         Message.print(x, y, text, color);
     }
@@ -58,14 +59,14 @@ public class MenuSelector {
         instance.pointerPosition--;
     }
 
-    public static boolean isPointingAt(String option) {
-        String currentlySelectedOption = instance.menuEntries.get(instance.pointerPosition);
-        return (option.equalsIgnoreCase(currentlySelectedOption));
+    public static boolean isPointingAt(Strings option) {
+        Strings currentlySelectedOption = instance.menuEntries.get(instance.pointerPosition);
+        return option == currentlySelectedOption;
     }
 
-    public static void setMenuEntries(String... strings) {
+    public static void setMenuEntries(Strings... entries) {
         instance.menuEntries.clear();
-        Collections.addAll(instance.menuEntries, strings);
+        Collections.addAll(instance.menuEntries, entries);
     }
 
     public static void saveLastPointerPosition() {

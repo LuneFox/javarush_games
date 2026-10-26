@@ -32,7 +32,7 @@ public class WormholeTerrain extends Terrain {
         }
 
         snake.kill();
-        game.setGameOverReason(Strings.GAME_OVER_LOST);
+        game.setGameOverReason(Strings.GAME_OVER_LOST.get());
     }
 
     private void warp(Snake snake) {

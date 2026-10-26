@@ -25,6 +25,6 @@ public class WallTerrain extends Terrain {
         if (snakeElement == Element.ALMIGHTY) return;
 
         snake.kill();
-        game.setGameOverReason(Strings.GAME_OVER_BUMPED);
+        game.setGameOverReason(Strings.GAME_OVER_BUMPED.get());
     }
 }

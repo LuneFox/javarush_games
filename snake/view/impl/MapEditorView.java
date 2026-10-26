@@ -2,6 +2,7 @@ package com.javarush.games.snake.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.model.terrain.TerrainType;
@@ -30,7 +31,7 @@ public class MapEditorView extends View {
     private void drawSamplePreview() {
         Terrain terrain = Terrain.create(1, 1, sample);
         game.getStage().putTerrain(1, 1, terrain.getType());
-        Message.print(3, 1, terrain.getType().name(), Color.WHITE);
+        Message.print(3, 1, Strings.getTerrainName(terrain.getType()), Color.WHITE);
     }
 
     public void selectNextSample() {

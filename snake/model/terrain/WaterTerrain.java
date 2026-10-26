@@ -33,7 +33,7 @@ public class WaterTerrain extends Terrain {
 
         if (snake.isDrowned()){
             snake.kill();
-            game.setGameOverReason(Strings.GAME_OVER_DROWNED);
+            game.setGameOverReason(Strings.GAME_OVER_DROWNED.get());
         }
     }
 }

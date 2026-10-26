@@ -3,6 +3,7 @@ package com.javarush.games.snake.model.map;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.NeutralOrb;
@@ -19,7 +20,7 @@ public abstract class Stage {
     protected static final int[] VOID_ROW = new int[32];
     protected static final SnakeGame game = SnakeGame.getInstance();
 
-    protected String name;
+    protected Strings name;
     protected int[][] terrainCodeMatrix;
     protected Terrain[][] terrainMatrix;
     protected ArrayList<Orb> orbs;
@@ -37,7 +38,11 @@ public abstract class Stage {
     }
 
     public Stage() {
-        name = "Unnamed";
+        this(Strings.STAGE_UNNAMED);
+    }
+
+    public Stage(Strings name) {
+        this.name = name;
         initialize();
     }
 
@@ -144,7 +149,7 @@ public abstract class Stage {
      */
 
     public String getName() {
-        return name;
+        return name.get();
     }
 
     public Terrain[][] getTerrainMatrix() {

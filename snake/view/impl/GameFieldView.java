@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.enums.Element;
@@ -52,17 +53,17 @@ public class GameFieldView extends View {
         final Element currentElement = game.getSnake().getAvailableElements().get(0);
         final long score = Score.get();
 
-        Message.print(0, 0, "hunger  : ", Color.CORAL);
-        Message.print(0, 1, "strength: " + snakeLength, Color.WHITE);
-        Message.print(0, 2, "element : " + currentElement, Color.YELLOW);
-        Message.print(0, 3, "score   : " + score, Color.LIGHTBLUE);
+        Message.print(0, 0, Strings.HUD_HUNGER.get(), Color.CORAL);
+        Message.print(0, 1, Strings.HUD_STRENGTH.get() + snakeLength, Color.WHITE);
+        Message.print(0, 2, Strings.HUD_ELEMENT.get() + Strings.getElementName(currentElement), Color.YELLOW);
+        Message.print(0, 3, Strings.HUD_SCORE.get() + score, Color.LIGHTBLUE);
 
         drawElementsPanel();
         drawHungerBar();
 
         if (snake.getAlmightyPower() >= 301) return;
 
-        Message.print(20, 3, "power: " + snake.getAlmightyPower(), Color.CORAL);
+        Message.print(20, 3, Strings.HUD_POWER.get() + snake.getAlmightyPower(), Color.CORAL);
     }
 
     private void drawHungerBar() {
@@ -90,42 +91,47 @@ public class GameFieldView extends View {
 
             final Color textColor = game.getSnake().canUseElement(element) ? Color.WHITE : Color.DARKSLATEGRAY;
             Color backgroundColor;
+            int x;
 
             switch (element) {
                 case NEUTRAL:
                     backgroundColor = snakeElement == element ? Color.PURPLE : Color.BLACK;
-                    game.setCellValueEx(24, 2, backgroundColor, "N", textColor, 90);
+                    x = 24;
                     break;
                 case WATER:
                     backgroundColor = snakeElement == element ? Color.BLUE : Color.BLACK;
-                    game.setCellValueEx(25, 2, backgroundColor, "W", textColor, 90);
+                    x = 25;
                     break;
                 case FIRE:
                     backgroundColor = snakeElement == element ? Color.RED : Color.BLACK;
-                    game.setCellValueEx(26, 2, backgroundColor, "F", textColor, 90);
+                    x = 26;
                     break;
                 case EARTH:
                     backgroundColor = snakeElement == element ? Color.BROWN : Color.BLACK;
-                    game.setCellValueEx(27, 2, backgroundColor, "E", textColor, 90);
+                    x = 27;
                     break;
                 case AIR:
                     backgroundColor = snakeElement == element ? Color.LIGHTSKYBLUE : Color.BLACK;
-                    game.setCellValueEx(28, 2, backgroundColor, "A", textColor, 90);
+                    x = 28;
                     break;
                 case ALMIGHTY:
                     backgroundColor = snakeElement == element ? Color.ORCHID : Color.BLACK;
-                    game.setCellValueEx(29, 2, backgroundColor, "S", textColor, 90);
+                    x = 29;
                     break;
                 default:
-                    break;
+                    continue;
             }
+
+            final String label = Strings.getElementShortName(element);
+            final int labelSize = (label.length() > 1) ? 60 : 90;
+            game.setCellValueEx(x, 2, backgroundColor, label, textColor, labelSize);
         }
     }
 
     public void drawSleepingLabel() {
         Color color = Color.WHITE;
         Message.print(-1, 15, "             ", color);
-        Message.print(-1, 16, " SLEEPING... ", color);
+        Message.print(-1, 16, Strings.GAME_SLEEPING.get(), color);
         Message.print(-1, 17, "             ", color);
     }
 }

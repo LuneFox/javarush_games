@@ -2,6 +2,7 @@ package com.javarush.games.snake.view.impl;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.model.Options;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.map.StageManager;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.model.orbs.Orb;
@@ -21,12 +22,13 @@ public class OptionsMenuView extends View {
     @Override
     public void update() {
         drawBlackBackground();
-        Message.print(-1, 7, "OPTIONS", Color.SKYBLUE);
-        MenuSelector.setMenuEntries("MAP", "SYMBOLS", "ACCELERATION");
+        Message.print(-1, 7, Strings.OPTIONS_TITLE.get(), Color.SKYBLUE);
+        MenuSelector.setMenuEntries(Strings.MENU_MAP, Strings.MENU_SYMBOLS, Strings.MENU_ACCELERATION, Strings.MENU_LANGUAGE);
         MenuSelector.drawMenuEntriesWithPointer(2, 12);
         Message.print(17, 12, StageManager.getCurrentStage().getName(), Color.WHITE);
-        Message.print(17, 14, Sign.getUsedType().toString(), Color.WHITE);
+        Message.print(17, 14, Sign.getUsedType().getLocalizedName(), Color.WHITE);
         Orb.create(23, 14, Element.WATER).draw(game);
-        Message.print(17, 16, (Options.isAccelerationEnabled()) ? "ENABLED" : "DISABLED", Color.WHITE);
+        Message.print(17, 16, (Options.isAccelerationEnabled() ? Strings.OPTION_ENABLED : Strings.OPTION_DISABLED).get(), Color.WHITE);
+        Message.print(17, 18, Options.getLanguage().getDisplayName(), Color.WHITE);
     }
 }

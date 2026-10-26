@@ -23,15 +23,15 @@ public class MainMenuView extends View {
         Message.print(-1, 5, "✡                   ✡", Color.CYAN);
         Message.print(-1, 5, "✡                 ✡", Color.LAWNGREEN);
         Message.print(-1, 5, "✡               ✡", Color.RED);
-        Message.print(-1, 5, "ALCHEMY SNAKE", Color.FUCHSIA);
-        Message.print(-1, 7, "MASTER OF ELEMENTS", Color.PINK);
-        Message.print(-1, 30, "VER " + Strings.VERSION, Color.BLUE);
+        Message.print(-1, 5, Strings.MAIN_TITLE.get(), Color.FUCHSIA);
+        Message.print(-1, 7, Strings.MAIN_SUBTITLE.get(), Color.PINK);
+        Message.print(-1, 30, Strings.MAIN_VERSION.get() + Strings.VERSION.get(), Color.BLUE);
 
-        MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP");
-        // MenuSelector.setMenuEntries("START", "OPTIONS", "CONTROLS", "HELP", "EDIT");
+        MenuSelector.setMenuEntries(Strings.MENU_START, Strings.MENU_OPTIONS, Strings.MENU_CONTROLS, Strings.MENU_HELP);
+        // MenuSelector.setMenuEntries(Strings.MENU_START, Strings.MENU_OPTIONS, Strings.MENU_CONTROLS, Strings.MENU_HELP, Strings.MENU_EDIT);
 
         Stage stage = game.getStage();
-        Message.print(16, 12, "(" + stage.getName() + ")", stage.isClear() ? Color.LAWNGREEN : Color.LIGHTSKYBLUE);
+        Message.print(18, 12, "(" + stage.getName() + ")", stage.isClear() ? Color.LAWNGREEN : Color.LIGHTSKYBLUE);
 
         MenuSelector.drawMenuEntriesWithPointer(10, 12);
     }

@@ -2,6 +2,7 @@ package com.javarush.games.snake.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.model.enums.Element;
@@ -23,15 +24,15 @@ public class HelpPage {
     public static HelpPage getGoals() {
         HelpPage result = new HelpPage();
 
-        result.messages.add(new Message(-1, 1, "GAME GOALS", Color.SKYBLUE));
-        result.messages.add(new Message(-1, 5, "COLLECT TO WIN:", Color.YELLOW));
-        result.messages.add(new Message(3, 7, "ORB OF WATER", Color.LIGHTBLUE));
-        result.messages.add(new Message(3, 9, "ORB OF FIRE", Color.RED));
-        result.messages.add(new Message(3, 11, "ORB OF EARTH", Color.ORANGE));
-        result.messages.add(new Message(3, 13, "ORB OF AIR", Color.CYAN));
-        result.messages.add(new Message(3, 15, "ORB OF POWER", Color.MAGENTA));
-        result.messages.add(new Message(-1, 17, "COLLECT TO GROW:", Color.YELLOW));
-        result.messages.add(new Message(3, 19, "ORB OF WISDOM", Color.MEDIUMPURPLE));
+        result.messages.add(new Message(-1, 1, Strings.HELP_GOALS_TITLE.get(), Color.SKYBLUE));
+        result.messages.add(new Message(-1, 5, Strings.HELP_GOALS_WIN.get(), Color.YELLOW));
+        result.messages.add(new Message(3, 7, Strings.HELP_ORB_WATER.get(), Color.LIGHTBLUE));
+        result.messages.add(new Message(3, 9, Strings.HELP_ORB_FIRE.get(), Color.RED));
+        result.messages.add(new Message(3, 11, Strings.HELP_ORB_EARTH.get(), Color.ORANGE));
+        result.messages.add(new Message(3, 13, Strings.HELP_ORB_AIR.get(), Color.CYAN));
+        result.messages.add(new Message(3, 15, Strings.HELP_ORB_POWER.get(), Color.MAGENTA));
+        result.messages.add(new Message(-1, 17, Strings.HELP_GOALS_GROW.get(), Color.YELLOW));
+        result.messages.add(new Message(3, 19, Strings.HELP_ORB_WISDOM.get(), Color.MEDIUMPURPLE));
 
         result.orbs.add(Orb.create(1, 7, Element.WATER));
         result.orbs.add(Orb.create(1, 9, Element.FIRE));
@@ -46,19 +47,19 @@ public class HelpPage {
     public static HelpPage getSnakeAbilities() {
         HelpPage result = new HelpPage();
 
-        result.messages.add(new Message(-1, 1, "SNAKE ABILITIES", Color.SKYBLUE));
-        result.messages.add(new Message(1, 5, "— NEUTRAL SNAKE", Color.LIGHTGREEN));
-        result.messages.add(new Message(3, 7, "NO SPECIAL POWERS", Color.WHITE));
-        result.messages.add(new Message(1, 9, "— WATER SNAKE", Color.LIGHTBLUE));
-        result.messages.add(new Message(3, 11, "CAN SWIM AND PUT OUT FIRE", Color.WHITE));
-        result.messages.add(new Message(1, 13, "— FIRE SNAKE", Color.RED));
-        result.messages.add(new Message(3, 15, "CAN BURN WOOD, HATES WATER", Color.WHITE));
-        result.messages.add(new Message(1, 17, "— EARTH SNAKE", Color.ORANGE));
-        result.messages.add(new Message(3, 19, "CAN USE WORMHOLES", Color.WHITE));
-        result.messages.add(new Message(1, 21, "— AIR SNAKE", Color.CYAN));
-        result.messages.add(new Message(3, 23, "FLIES OVER WALLS, CAN'T EAT", Color.WHITE));
-        result.messages.add(new Message(1, 25, "— ALMIGHTY SNAKE", Color.MAGENTA));
-        result.messages.add(new Message(3, 27, "INVULNERABLE SPACE EATER", Color.WHITE));
+        result.messages.add(new Message(-1, 1, Strings.HELP_ABILITIES_TITLE.get(), Color.SKYBLUE));
+        result.messages.add(new Message(1, 5, Strings.HELP_NEUTRAL_NAME.get(), Color.LIGHTGREEN));
+        result.messages.add(new Message(3, 7, Strings.HELP_NEUTRAL_DESC.get(), Color.WHITE));
+        result.messages.add(new Message(1, 9, Strings.HELP_WATER_NAME.get(), Color.LIGHTBLUE));
+        result.messages.add(new Message(3, 11, Strings.HELP_WATER_DESC.get(), Color.WHITE));
+        result.messages.add(new Message(1, 13, Strings.HELP_FIRE_NAME.get(), Color.RED));
+        result.messages.add(new Message(3, 15, Strings.HELP_FIRE_DESC.get(), Color.WHITE));
+        result.messages.add(new Message(1, 17, Strings.HELP_EARTH_NAME.get(), Color.ORANGE));
+        result.messages.add(new Message(3, 19, Strings.HELP_EARTH_DESC.get(), Color.WHITE));
+        result.messages.add(new Message(1, 21, Strings.HELP_AIR_NAME.get(), Color.CYAN));
+        result.messages.add(new Message(3, 23, Strings.HELP_AIR_DESC.get(), Color.WHITE));
+        result.messages.add(new Message(1, 25, Strings.HELP_ALMIGHTY_NAME.get(), Color.MAGENTA));
+        result.messages.add(new Message(3, 27, Strings.HELP_ALMIGHTY_DESC.get(), Color.WHITE));
 
         return result;
     }
@@ -66,16 +67,16 @@ public class HelpPage {
     public static HelpPage getTypesOfTerrain() {
         HelpPage result = new HelpPage();
 
-        result.messages.add(new Message(-1, 1, "TYPES OF TERRAIN", Color.SKYBLUE));
-        result.messages.add(new Message(3, 7, "GRASS FIELD", Color.WHITE));
-        result.messages.add(new Message(3, 9, "DEEP WATER", Color.WHITE));
-        result.messages.add(new Message(3, 11, "DRY SAND", Color.WHITE));
-        result.messages.add(new Message(3, 13, "DENSE FOREST", Color.WHITE));
-        result.messages.add(new Message(3, 15, "IMPASSABLE MOUNTAIN", Color.WHITE));
-        result.messages.add(new Message(3, 17, "WOODEN FLOOR", Color.WHITE));
-        result.messages.add(new Message(3, 19, "BURNING WOOD", Color.WHITE));
-        result.messages.add(new Message(3, 21, "TALL WALL", Color.WHITE));
-        result.messages.add(new Message(3, 23, "SECRET WORMHOLE", Color.WHITE));
+        result.messages.add(new Message(-1, 1, Strings.HELP_TERRAIN_TITLE.get(), Color.SKYBLUE));
+        result.messages.add(new Message(3, 7, Strings.TERRAIN_FIELD.get(), Color.WHITE));
+        result.messages.add(new Message(3, 9, Strings.TERRAIN_WATER.get(), Color.WHITE));
+        result.messages.add(new Message(3, 11, Strings.TERRAIN_SAND.get(), Color.WHITE));
+        result.messages.add(new Message(3, 13, Strings.TERRAIN_FOREST.get(), Color.WHITE));
+        result.messages.add(new Message(3, 15, Strings.TERRAIN_MOUNTAIN.get(), Color.WHITE));
+        result.messages.add(new Message(3, 17, Strings.TERRAIN_WOOD.get(), Color.WHITE));
+        result.messages.add(new Message(3, 19, Strings.TERRAIN_FIRE.get(), Color.WHITE));
+        result.messages.add(new Message(3, 21, Strings.TERRAIN_WALL.get(), Color.WHITE));
+        result.messages.add(new Message(3, 23, Strings.TERRAIN_WORMHOLE.get(), Color.WHITE));
 
         result.terrains.add(Terrain.create(1, 7, Terrain.FIELD));
         result.terrains.add(Terrain.create(1, 9, Terrain.WATER));
@@ -93,17 +94,17 @@ public class HelpPage {
     public static HelpPage getTips1() {
         HelpPage result = new HelpPage();
 
-        result.messages.add(new Message(-1, 1, "RULES AND TIPS (1)", Color.SKYBLUE));
-        result.messages.add(new Message(1, 5, "YOU SHOULD COLLECT ALL ORBS", Color.WHITE));
-        result.messages.add(new Message(1, 7, "AS FAST AS POSSIBLE.", Color.WHITE));
-        result.messages.add(new Message(1, 10, "EATING ELEMENTAL ORBS LETS", Color.YELLOW));
-        result.messages.add(new Message(1, 12, "YOU USE THEIR ELEMENTS.", Color.YELLOW));
-        result.messages.add(new Message(1, 15, "PICKING UP AN ELEMENTAL ORB", Color.LAWNGREEN));
-        result.messages.add(new Message(1, 17, "SWITCHES YOU TO ITS ELEMENT.", Color.LAWNGREEN));
-        result.messages.add(new Message(1, 20, "YOU CAN'T SWAP ELEMENTS", Color.CYAN));
-        result.messages.add(new Message(1, 22, "WHILE EATING A NEW ONE.", Color.CYAN));
-        result.messages.add(new Message(1, 25, "YOU CAN TURN & SWAP ELEMENTS", Color.MAGENTA));
-        result.messages.add(new Message(1, 27, "EVEN WHILE SLEEPING.", Color.MAGENTA));
+        result.messages.add(new Message(-1, 1, Strings.HELP_TIPS1_TITLE.get(), Color.SKYBLUE));
+        result.messages.add(new Message(1, 5, Strings.HELP_TIPS1_COLLECT.get(), Color.WHITE));
+        result.messages.add(new Message(1, 7, Strings.HELP_TIPS1_FAST.get(), Color.WHITE));
+        result.messages.add(new Message(1, 10, Strings.HELP_TIPS1_EAT.get(), Color.YELLOW));
+        result.messages.add(new Message(1, 12, Strings.HELP_TIPS1_USE.get(), Color.YELLOW));
+        result.messages.add(new Message(1, 15, Strings.HELP_TIPS1_PICK.get(), Color.LAWNGREEN));
+        result.messages.add(new Message(1, 17, Strings.HELP_TIPS1_SWITCH.get(), Color.LAWNGREEN));
+        result.messages.add(new Message(1, 20, Strings.HELP_TIPS1_NOSWAP.get(), Color.CYAN));
+        result.messages.add(new Message(1, 22, Strings.HELP_TIPS1_WHILE.get(), Color.CYAN));
+        result.messages.add(new Message(1, 25, Strings.HELP_TIPS1_TURN.get(), Color.MAGENTA));
+        result.messages.add(new Message(1, 27, Strings.HELP_TIPS1_SLEEP.get(), Color.MAGENTA));
 
         return result;
     }
@@ -111,17 +112,17 @@ public class HelpPage {
     public static HelpPage getTips2() {
         HelpPage result = new HelpPage();
 
-        result.messages.add(new Message(-1, 1, "RULES AND TIPS (2)", Color.SKYBLUE));
-        result.messages.add(new Message(1, 5, "A LONG SNAKE BECOMES", Color.ORANGE));
-        result.messages.add(new Message(1, 7, "FASTER AND STRONGER.", Color.ORANGE));
-        result.messages.add(new Message(1, 10, "BUT A LONGER SNAKE", Color.GOLD));
-        result.messages.add(new Message(1, 12, "WANTS TO EAT MORE OFTEN.", Color.GOLD));
-        result.messages.add(new Message(1, 15, "A HUNGRY SNAKE LOSES ITS TAIL", Color.PINK));
-        result.messages.add(new Message(1, 17, "AND BECOMES A LITTLE SHORTER.", Color.PINK));
-        result.messages.add(new Message(1, 20, "A LONGER WATER SNAKE PUTS", Color.PEACHPUFF));
-        result.messages.add(new Message(1, 22, "OUT FIRE MORE EFFICIENTLY.", Color.PEACHPUFF));
-        result.messages.add(new Message(1, 25, "ALSO, A FIRE SNAKE MELTS", Color.LIGHTBLUE));
-        result.messages.add(new Message(1, 27, "WITH EVERY STEP IN THE WATER!", Color.LIGHTBLUE));
+        result.messages.add(new Message(-1, 1, Strings.HELP_TIPS2_TITLE.get(), Color.SKYBLUE));
+        result.messages.add(new Message(1, 5, Strings.HELP_TIPS2_LONG.get(), Color.ORANGE));
+        result.messages.add(new Message(1, 7, Strings.HELP_TIPS2_FASTER.get(), Color.ORANGE));
+        result.messages.add(new Message(1, 10, Strings.HELP_TIPS2_BUT.get(), Color.GOLD));
+        result.messages.add(new Message(1, 12, Strings.HELP_TIPS2_HUNGRY.get(), Color.GOLD));
+        result.messages.add(new Message(1, 15, Strings.HELP_TIPS2_TAIL.get(), Color.PINK));
+        result.messages.add(new Message(1, 17, Strings.HELP_TIPS2_SHORTER.get(), Color.PINK));
+        result.messages.add(new Message(1, 20, Strings.HELP_TIPS2_WATER.get(), Color.PEACHPUFF));
+        result.messages.add(new Message(1, 22, Strings.HELP_TIPS2_EFFICIENT.get(), Color.PEACHPUFF));
+        result.messages.add(new Message(1, 25, Strings.HELP_TIPS2_FIRE.get(), Color.LIGHTBLUE));
+        result.messages.add(new Message(1, 27, Strings.HELP_TIPS2_MELT.get(), Color.LIGHTBLUE));
 
         return result;
     }
@@ -129,19 +130,19 @@ public class HelpPage {
     public static HelpPage getControls() {
         HelpPage result = new HelpPage();
 
-        result.messages.add(new Message(-1, 7, "CONTROLS", Color.SKYBLUE));
-        result.messages.add(new Message(1, 11, "↑ ↓ ← →       :", Color.YELLOW));
-        result.messages.add(new Message(1, 13, "HOLD DIRECTION:", Color.YELLOW));
-        result.messages.add(new Message(1, 15, "ENTER, R-CLICK:", Color.YELLOW));
-        result.messages.add(new Message(1, 17, "ESC,   L-CLICK:", Color.YELLOW));
-        result.messages.add(new Message(1, 21, "SPACE (GAME)  :", Color.YELLOW));
-        result.messages.add(new Message(1, 23, "SPACE (G.OVER):", Color.YELLOW));
-        result.messages.add(new Message(17, 11, "DIRECTION", Color.WHITE));
-        result.messages.add(new Message(17, 13, "ACCELERATE", Color.WHITE));
-        result.messages.add(new Message(17, 15, "NEXT ELEMENT", Color.WHITE));
-        result.messages.add(new Message(17, 17, "PREV ELEMENT", Color.WHITE));
-        result.messages.add(new Message(17, 21, "SLEEP", Color.WHITE));
-        result.messages.add(new Message(17, 23, "BACK TO MENU", Color.WHITE));
+        result.messages.add(new Message(-1, 7, Strings.HELP_CONTROLS_TITLE.get(), Color.SKYBLUE));
+        result.messages.add(new Message(1, 11, Strings.HELP_CONTROL_ARROWS.get(), Color.YELLOW));
+        result.messages.add(new Message(1, 13, Strings.HELP_CONTROL_HOLD.get(), Color.YELLOW));
+        result.messages.add(new Message(1, 15, Strings.HELP_CONTROL_ENTER.get(), Color.YELLOW));
+        result.messages.add(new Message(1, 17, Strings.HELP_CONTROL_ESC.get(), Color.YELLOW));
+        result.messages.add(new Message(1, 21, Strings.HELP_CONTROL_SPACE_GAME.get(), Color.YELLOW));
+        result.messages.add(new Message(1, 23, Strings.HELP_CONTROL_SPACE_OVER.get(), Color.YELLOW));
+        result.messages.add(new Message(17, 11, Strings.HELP_CONTROL_DIRECTION.get(), Color.WHITE));
+        result.messages.add(new Message(17, 13, Strings.HELP_CONTROL_ACCELERATE.get(), Color.WHITE));
+        result.messages.add(new Message(17, 15, Strings.HELP_CONTROL_NEXT.get(), Color.WHITE));
+        result.messages.add(new Message(17, 17, Strings.HELP_CONTROL_PREV.get(), Color.WHITE));
+        result.messages.add(new Message(17, 21, Strings.HELP_CONTROL_SLEEP.get(), Color.WHITE));
+        result.messages.add(new Message(17, 23, Strings.HELP_CONTROL_BACK.get(), Color.WHITE));
 
         return result;
     }

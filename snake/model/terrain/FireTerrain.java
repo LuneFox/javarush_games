@@ -29,7 +29,7 @@ public class FireTerrain extends Terrain {
             case NEUTRAL:
             case EARTH:
                 snake.kill();
-                game.setGameOverReason(Strings.GAME_OVER_BURNED);
+                game.setGameOverReason(Strings.GAME_OVER_BURNED.get());
                 break;
             case WATER:
                 final Stage stage = game.getStage();

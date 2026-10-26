@@ -1,6 +1,7 @@
 package com.javarush.games.snake.model.map.stages;
 
 import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Coordinate;
@@ -10,7 +11,7 @@ import com.javarush.games.snake.model.orbs.Orb;
 
 public class Stage1 extends Stage {
     public Stage1() {
-        this.name = "STAGE 1";
+        super(Strings.STAGE_LEVEL_1);
     }
 
     @Override
@@ -70,11 +71,8 @@ public class Stage1 extends Stage {
 
     @Override
     protected void createMessages() {
-        briefingMessage = name +
-                "\nCollect the Orb of Power!" +
-                "\nBecome the God of Snakes and destroy the realm!" +
-                "\n\n~ PRESS SPACE TO START ~";
-        completeMessage = "STAGE 1 COMPLETE!";
+        briefingMessage = Strings.LEVEL_BRIEFING.format(getName());
+        completeMessage = Strings.LEVEL_COMPLETE.format(getName());
     }
 
     @Override

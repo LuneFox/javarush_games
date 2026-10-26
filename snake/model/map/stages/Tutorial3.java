@@ -1,5 +1,6 @@
 package com.javarush.games.snake.model.map.stages;
 
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Coordinate;
@@ -12,7 +13,7 @@ import java.util.Arrays;
 
 public class Tutorial3 extends Stage {
     public Tutorial3() {
-        this.name = "TUTORIAL 3";
+        super(Strings.STAGE_TUTORIAL_3);
     }
 
     @Override
@@ -66,14 +67,9 @@ public class Tutorial3 extends Stage {
 
     @Override
     protected void createMessages() {
-        briefingMessage = name +
-                "\nLet's learn something about the elements." +
-                "\nEat the Orb of Water (" + Sign.getSign(Sign.ORB_WATER) + ") to be able to swim." +
-                "\nThe water snake can extinguish fire (" + Sign.getSign(Sign.TERRAIN_FIRE) + ")." +
-                "\nNow put out the fire on the right side!" +
-                "\n~ PRESS SPACE TO START ~";
-        completeMessage = "TUTORIAL 3 COMPLETE!\nEXCELLENT WORK!" +
-                "\n\n~ PRESS SPACE TO RETURN ~";
+        briefingMessage = Strings.TUTORIAL_3_BRIEFING.format(getName(),
+                Sign.getSign(Sign.ORB_WATER), Sign.getSign(Sign.TERRAIN_FIRE));
+        completeMessage = Strings.TUTORIAL_3_COMPLETE.format(getName());
     }
 
     @Override

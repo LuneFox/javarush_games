@@ -167,7 +167,7 @@ public class Snake {
     private void checkEscapeBorders() {
         if (newHead.x < MIN_X || newHead.x > MAX_X || newHead.y < MIN_Y || newHead.y > MAX_Y) {
             kill();
-            game.setGameOverReason(Strings.GAME_OVER_RUNAWAY);
+            game.setGameOverReason(Strings.GAME_OVER_RUNAWAY.get());
         }
     }
 
@@ -176,7 +176,7 @@ public class Snake {
 
         if (collidesWithObject(newHead)) {
             kill();
-            game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN);
+            game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN.get());
         }
     }
 

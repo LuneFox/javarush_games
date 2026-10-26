@@ -1,6 +1,7 @@
 package com.javarush.games.snake.model.map.stages;
 
 import com.javarush.games.snake.model.Snake;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Coordinate;
@@ -10,7 +11,7 @@ import com.javarush.games.snake.model.orbs.Orb;
 
 public class EmptyStage extends Stage {
     public EmptyStage() {
-        this.name = "Empty";
+        super(Strings.STAGE_EMPTY);
     }
 
     @Override
@@ -69,8 +70,8 @@ public class EmptyStage extends Stage {
 
     @Override
     protected void createMessages() {
-        briefingMessage = "TESTING STAGE";
-        completeMessage = "TEST COMPLETE";
+        briefingMessage = Strings.EMPTY_BRIEFING.get();
+        completeMessage = Strings.EMPTY_COMPLETE.get();
     }
 
     @Override
