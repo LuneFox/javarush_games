@@ -50,7 +50,7 @@ public class HelpPage {
         result.messages.add(new Message(1, 5, "— NEUTRAL SNAKE", Color.LIGHTGREEN));
         result.messages.add(new Message(3, 7, "NO SPECIAL POWERS", Color.WHITE));
         result.messages.add(new Message(1, 9, "— WATER SNAKE", Color.LIGHTBLUE));
-        result.messages.add(new Message(3, 11, "CAN SWIM, PUT OUT FIRE", Color.WHITE));
+        result.messages.add(new Message(3, 11, "CAN SWIM AND PUT OUT FIRE", Color.WHITE));
         result.messages.add(new Message(1, 13, "— FIRE SNAKE", Color.RED));
         result.messages.add(new Message(3, 15, "CAN BURN WOOD, HATES WATER", Color.WHITE));
         result.messages.add(new Message(1, 17, "— EARTH SNAKE", Color.ORANGE));
@@ -112,16 +112,16 @@ public class HelpPage {
         HelpPage result = new HelpPage();
 
         result.messages.add(new Message(-1, 1, "RULES AND TIPS (2)", Color.SKYBLUE));
-        result.messages.add(new Message(1, 5, "LONG SNAKE BECOMES", Color.ORANGE));
+        result.messages.add(new Message(1, 5, "A LONG SNAKE BECOMES", Color.ORANGE));
         result.messages.add(new Message(1, 7, "FASTER AND STRONGER.", Color.ORANGE));
-        result.messages.add(new Message(1, 10, "BUT, LONGER SNAKE", Color.GOLD));
+        result.messages.add(new Message(1, 10, "BUT A LONGER SNAKE", Color.GOLD));
         result.messages.add(new Message(1, 12, "WANTS TO EAT MORE OFTEN.", Color.GOLD));
-        result.messages.add(new Message(1, 15, "HUNGRY SNAKE LOSES ITS TAIL", Color.PINK));
-        result.messages.add(new Message(1, 17, "AND BECOMES LITTLE SHORTER.", Color.PINK));
-        result.messages.add(new Message(1, 20, "LONGER WATER SNAKE PUTS", Color.PEACHPUFF));
+        result.messages.add(new Message(1, 15, "A HUNGRY SNAKE LOSES ITS TAIL", Color.PINK));
+        result.messages.add(new Message(1, 17, "AND BECOMES A LITTLE SHORTER.", Color.PINK));
+        result.messages.add(new Message(1, 20, "A LONGER WATER SNAKE PUTS", Color.PEACHPUFF));
         result.messages.add(new Message(1, 22, "OUT FIRE MORE EFFICIENTLY.", Color.PEACHPUFF));
-        result.messages.add(new Message(1, 25, "ALSO, FIRE SNAKE MELTS", Color.LIGHTBLUE));
-        result.messages.add(new Message(1, 27, "EVERY STEP IN THE WATER!", Color.LIGHTBLUE));
+        result.messages.add(new Message(1, 25, "ALSO, A FIRE SNAKE MELTS", Color.LIGHTBLUE));
+        result.messages.add(new Message(1, 27, "WITH EVERY STEP IN THE WATER!", Color.LIGHTBLUE));
 
         return result;
     }

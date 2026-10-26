@@ -67,7 +67,7 @@ public class Tutorial6 extends Stage {
     protected void createMessages() {
         briefingMessage = name +
                 "\nWhoa! It's the legendary ORB OF POWER... behind the wall again!" +
-                "\nBut there are no wormholes around this time..." +
+                "\nBut there are no wormholes this time..." +
                 "\nHow about eating the Air Orb (" + Sign.getSign(Sign.ORB_AIR) + ") to fly over walls?" +
                 "\nPress ESC or ENTER to switch elements and land." +
                 "\n~ PRESS SPACE TO START ~";

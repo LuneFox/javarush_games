@@ -69,7 +69,7 @@ public class Tutorial3 extends Stage {
         briefingMessage = name +
                 "\nLet's learn something about the elements." +
                 "\nEat the Orb of Water (" + Sign.getSign(Sign.ORB_WATER) + ") to be able to swim." +
-                "\nWater snake can extinguish fire (" + Sign.getSign(Sign.TERRAIN_FIRE) + ")." +
+                "\nThe water snake can extinguish fire (" + Sign.getSign(Sign.TERRAIN_FIRE) + ")." +
                 "\nNow put out the fire on the right side!" +
                 "\n~ PRESS SPACE TO START ~";
         completeMessage = "TUTORIAL 3 COMPLETE!\nEXCELLENT WORK!" +

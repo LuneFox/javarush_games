@@ -261,7 +261,7 @@ public class Snake {
     }
 
     public void setDirection(Direction command) {
-        // These guard clauses protect from making a self-eating loop within 1 turn by spamming directional keys
+        // These guard clauses prevent a self-eating loop within one turn when directional keys are spammed
         if ((command == Direction.LEFT || command == Direction.RIGHT) && isMovingHorizontally()) return;
         if ((command == Direction.DOWN || command == Direction.UP) && isMovingVertically()) return;
 

@@ -74,8 +74,8 @@ public class Tutorial2 extends Stage {
     protected void createMessages() {
         briefingMessage = name +
                 "\nLook, it's a river! But our snake can't swim yet." +
-                "\nIt will drown if it gets fully in water: " + Sign.getSign(Sign.TERRAIN_WATER) +
-                "\nGet longer, make a bridge and cross the river!" +
+                "\nIt will drown if it goes fully into the water: " + Sign.getSign(Sign.TERRAIN_WATER) +
+                "\nGrow longer, build a bridge and cross the river!" +
                 "\n\n~ PRESS SPACE TO START ~";
         completeMessage = "TUTORIAL 2 COMPLETE!\nYOU SUCCESSFULLY CROSSED THE RIVER!" +
                 "\n\n~ PRESS SPACE TO RETURN ~";

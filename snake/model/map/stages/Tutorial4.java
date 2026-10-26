@@ -66,8 +66,8 @@ public class Tutorial4 extends Stage {
     @Override
     protected void createMessages() {
         briefingMessage = name +
-                "\nDense forest is guarding the Earth Orb!" +
-                "\nLuckily, we can eat Fire Orb (" + Sign.getSign(Sign.ORB_FIRE) + ") to set wood aflame!" +
+                "\nThe dense forest is guarding the Earth Orb!" +
+                "\nLuckily, we can eat the Fire Orb (" + Sign.getSign(Sign.ORB_FIRE) + ") to set wood aflame!" +
                 "\nGet rid of the trees (" + Sign.getSign(Sign.TERRAIN_FOREST_1) + ") and grab the Earth Orb!" +
                 "\n\n~ PRESS SPACE TO START ~";
         completeMessage = "TUTORIAL 4 COMPLETE!\nYOU'RE ON FIRE!" +

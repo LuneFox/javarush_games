@@ -72,8 +72,8 @@ public class Tutorial5 extends Stage {
     @Override
     protected void createMessages() {
         briefingMessage = name +
-                "\nIsn't it an Air Orb behind the wall?..." +
-                "\nLet's eat Earth Orb (" + Sign.getSign(Sign.ORB_EARTH) + ") to be able to enter wormholes!" +
+                "\nIsn't there an Air Orb behind the wall?..." +
+                "\nLet's eat the Earth Orb (" + Sign.getSign(Sign.ORB_EARTH) + ") to be able to enter wormholes!" +
                 "\nBut which wormhole (" + Sign.getSign(Sign.TERRAIN_WORMHOLE) + ") leads to the Air Orb?..." +
                 "\nWell, let's try and guess!" +
                 "\n\n~ PRESS SPACE TO START ~";
