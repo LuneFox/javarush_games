@@ -36,10 +36,10 @@ public class ViewRecords extends View {
     static {
         RECORDS = new HashMap<>();
         // Position, name, JavaRush ID, score
-        RECORDS.put(1, Arrays.asList("Dim", "2700224", "43263"));
-        RECORDS.put(2, Arrays.asList("Gans Electro", "3136750", "42030"));
+        RECORDS.put(1, Arrays.asList("Gans Electro", "3136750", "47421"));
+        RECORDS.put(2, Arrays.asList("Dim", "2700224", "43263"));
         RECORDS.put(3, Arrays.asList("Pavlo Plynko", "28219", "37890"));
-        RECORDS.put(4, Arrays.asList("Михаил Васильев", "2700224", "37125"));
+        RECORDS.put(4, Arrays.asList("Михаил Васильев", "2522974", "37125"));
     }
 
     public ViewRecords(MinesweeperGame game) {
