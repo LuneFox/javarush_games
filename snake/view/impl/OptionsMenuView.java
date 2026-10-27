@@ -33,5 +33,6 @@ public class OptionsMenuView extends View {
         Orb.create(23, 14, Element.WATER).draw(game);
         Message.print(17, 16, (Options.isAccelerationEnabled() ? Strings.OPTION_ENABLED : Strings.OPTION_DISABLED).get(), Color.WHITE);
         Message.print(17, 18, Options.getLanguage().getDisplayName(), Color.WHITE);
+        drawEscapeHint();
     }
 }

@@ -18,5 +18,6 @@ public class ControlsMenuView extends View {
     public void update() {
         drawBlackBackground();
         HelpPage.getControls().draw(game);
+        drawEscapeHint();
     }
 }

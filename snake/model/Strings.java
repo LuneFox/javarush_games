@@ -121,6 +121,9 @@ public enum Strings {
     HUD_POWER("power: ", "мощь: "),
     GAME_SLEEPING(" SLEEPING... ", "   СПИТ...   "),
 
+    // Подсказки
+    HINT_ESC_BACK("ESC - BACK", "ESC - НАЗАД"),
+
     ELEMENT_NEUTRAL("NEUTRAL", "НЕЙТРАЛЬНАЯ"),
     ELEMENT_WATER("WATER", "ВОДА"),
     ELEMENT_FIRE("FIRE", "ОГОНЬ"),

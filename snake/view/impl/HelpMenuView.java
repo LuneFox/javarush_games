@@ -41,6 +41,7 @@ public class HelpMenuView extends View {
 
         final String pagination = Strings.HELP_PAGE.format(currentPageIndex + 1, helpPages.size());
         Message.print(-1, PAGINATION_Y, pagination, Color.WHITE);
+        drawEscapeHint();
     }
 
     /** Листает вперёд. */

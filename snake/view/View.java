@@ -2,9 +2,14 @@ package com.javarush.games.snake.view;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
+import com.javarush.games.snake.model.Strings;
 
 /** Базовый экран с обновлением и заливкой фона. */
 public abstract class View {
+    private static final int ESC_HINT_X = 0;
+    private static final int ESC_HINT_Y = SnakeGame.SIZE - 1;
+    private static final Color ESC_HINT_COLOR = Color.GRAY;
+
     protected static SnakeGame game = SnakeGame.getInstance();
 
     /** Обновляет содержимое экрана. */
@@ -17,5 +22,10 @@ public abstract class View {
                 game.setCellValueEx(x, y, Color.BLACK, "");
             }
         }
+    }
+
+    /** Рисует подсказку «Esc - назад» в левом нижнем углу. */
+    protected void drawEscapeHint() {
+        Message.print(ESC_HINT_X, ESC_HINT_Y, Strings.HINT_ESC_BACK.get(), ESC_HINT_COLOR);
     }
 }
