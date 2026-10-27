@@ -4,31 +4,33 @@ import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.Snake;
 
 public class WormHole {
-    private final Coordinate beginning;
-    private final Coordinate destination;
+    private final Coordinate entrance;
+    private final Coordinate exit;
 
-    public WormHole(int xLoc, int yLoc, int xDest, int yDest) {
-        this.beginning = new Coordinate(xLoc, yLoc);
-        this.destination = new Coordinate(xDest, yDest);
+    public WormHole(int entranceX, int entranceY, int exitX, int exitY) {
+        this.entrance = new Coordinate(entranceX, entranceY);
+        this.exit = new Coordinate(exitX, exitY);
     }
 
-    public void warpToDestination(Snake snake) {
-        final GameObject snakeNewHead = snake.getNewHead();
-        snakeNewHead.x = destination.x;
-        snakeNewHead.y = destination.y;
+    public void warpToExit(Snake snake) {
+        moveHeadTo(snake, exit);
     }
 
-    public void warpToBeginning(Snake snake) {
-        final GameObject snakeNewHead = snake.getNewHead();
-        snakeNewHead.x = beginning.x;
-        snakeNewHead.y = beginning.y;
+    public void warpToEntrance(Snake snake) {
+        moveHeadTo(snake, entrance);
     }
 
-    public boolean locationIsAt(int x, int y) {
-        return beginning.x == x && beginning.y == y;
+    private void moveHeadTo(Snake snake, Coordinate destination) {
+        final GameObject head = snake.getNewHead();
+        head.x = destination.x;
+        head.y = destination.y;
     }
 
-    public boolean destinationIsAt(int x, int y) {
-        return destination.x == x && destination.y == y;
+    public boolean isEntranceAt(int x, int y) {
+        return entrance.x == x && entrance.y == y;
+    }
+
+    public boolean isExitAt(int x, int y) {
+        return exit.x == x && exit.y == y;
     }
 }

@@ -1,21 +1,21 @@
 package com.javarush.games.snake.model;
 
 public class Score {
-    private static long score;
+    private long value;
 
-    public static void reset() {
-        score = 0;
+    public void reset() {
+        value = 0;
     }
 
-    public static void add(long amount) {
-        score += amount;
+    public void add(long amount) {
+        value += amount;
     }
 
-    public static void remove(long amount) {
-        score -= amount;
+    public void remove(long amount) {
+        value -= amount;
     }
 
-    public static long get() {
-        return score;
+    public long get() {
+        return value;
     }
 }

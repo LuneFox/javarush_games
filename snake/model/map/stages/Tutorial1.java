@@ -73,10 +73,6 @@ public class Tutorial1 extends Stage {
 
     @Override
     public boolean isCompleted() {
-        if (orbs.size() <= 1) {
-            isClear = true;
-            return true;
-        }
-        return false;
+        return completeIf(orbs.size() <= 1);
     }
 }

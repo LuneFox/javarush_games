@@ -8,7 +8,8 @@ import com.javarush.games.snake.controller.strategies.GameFieldControlStrategy;
 import com.javarush.games.snake.model.Phase;
 import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
-import com.javarush.games.snake.model.enums.Direction;
+import com.javarush.games.snake.model.Strings;
+import com.javarush.games.snake.model.map.Coordinate;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.map.StageManager;
 import com.javarush.games.snake.view.impl.GameFieldView;
@@ -17,13 +18,26 @@ import java.util.Date;
 
 public class SnakeGame extends Game {
     public static final int SIZE = 32;
+    public static final int HUD_ROWS = 4;
+    public static final int PLAYFIELD_MIN_X = 0;
+    public static final int PLAYFIELD_MIN_Y = HUD_ROWS;
+    public static final int PLAYFIELD_MAX_X = SIZE - 1;
+    public static final int PLAYFIELD_MAX_Y = SIZE - 1;
+
     private static final int MAX_TURN_DELAY = 300;
+    private static final int MIN_TURN_DELAY = 100;
+    private static final int TURN_DELAY_STEP = 10;
+    private static final int MAX_ORB_BONUS = 300;
+    private static final int GAME_OVER_TEXT_SIZE = 27;
+
     private static SnakeGame instance;
+
+    private final Score score = new Score();
 
     private Controller controller;
     private Snake snake;
     private Stage stage;
-    private String gameOverReason;
+    private Strings gameOverReason;
     private int turnDelay;
     private boolean isStopped;
     private boolean isPaused;
@@ -33,22 +47,21 @@ public class SnakeGame extends Game {
     }
 
     public void initialize() {
-        showGrid(false);
-        setScreenSize(SIZE, SIZE);
-        initializeStartupParameters();
-        loadStage();
-        Phase.proceed(Phase.MAIN_MENU);
-    }
-
-    private void initializeStartupParameters() {
+        // Other game classes capture getInstance() in their static fields,
+        // so the instance must be published before they are loaded.
         instance = this;
         controller = new Controller();
+
+        showGrid(false);
+        setScreenSize(SIZE, SIZE);
+        loadStage();
+        Phase.proceed(Phase.MAIN_MENU);
     }
 
     public final void createGame() {
         loadStage();
         createSnake();
-        resetValues();
+        resetGameState();
         setTurnTimer(turnDelay);
     }
 
@@ -57,15 +70,13 @@ public class SnakeGame extends Game {
     }
 
     private void createSnake() {
-        final int snakeX = stage.getSnakeStartPlace().x;
-        final int snakeY = stage.getSnakeStartPlace().y;
-        final Direction snakeDirection = stage.getSnakeStartDirection();
+        final Coordinate start = stage.getSnakeStartPlace();
 
-        snake = new Snake(this, snakeX, snakeY, snakeDirection);
+        snake = new Snake(this, start.x, start.y, stage.getSnakeStartDirection());
     }
 
-    private void resetValues() {
-        Score.reset();
+    private void resetGameState() {
+        score.reset();
         stage.initialize();
         gameOverReason = null;
         turnDelay = MAX_TURN_DELAY;
@@ -77,12 +88,12 @@ public class SnakeGame extends Game {
     public void onTurn(int step) {
         if (isStopped || isPaused) return;
 
-        if (stage.isNotStarted()) {
+        if (!stage.isStarted()) {
             stage.showBriefingMessage();
             return;
         }
 
-        makeTurn();
+        performTurn();
 
         if (isStopped) return;
 
@@ -90,38 +101,43 @@ public class SnakeGame extends Game {
         Phase.proceed(Phase.GAME_FIELD);
     }
 
-    private void makeTurn() {
+    private void performTurn() {
         snake.move();
 
         // A dead snake must not eat orbs or change the world anymore.
         if (!snake.isAlive()) {
-            checkGameOver();
+            checkGameState();
             return;
         }
 
-        stage.checkOrbCollision(snake);
-        processPassiveTerrainEffects();
-        checkGameOver();
+        stage.collectOrbs(snake);
+        applyPassiveTerrainEffects();
+        checkGameState();
     }
 
-    private void processPassiveTerrainEffects() {
-        for (int x = 0; x < SnakeGame.SIZE; x++) {
-            for (int y = 0; y < SnakeGame.SIZE; y++) {
-                stage.getTerrain(x, y).processPassiveEffects();
+    private void applyPassiveTerrainEffects() {
+        for (int x = 0; x < SIZE; x++) {
+            for (int y = 0; y < SIZE; y++) {
+                stage.getTerrain(x, y).applyPassiveEffect();
             }
         }
     }
 
-    private void checkGameOver() {
-        if (!snake.isAlive()) gameOver();
-        else if (stage.isCompleted()) win();
+    private void checkGameState() {
+        if (!snake.isAlive()) {
+            gameOver();
+        } else if (stage.isCompleted()) {
+            win();
+        }
     }
 
     private void gameOver() {
         isStopped = true;
         stopTurnTimer();
         Phase.proceed(Phase.GAME_FIELD);
-        showMessageDialog(Color.YELLOW, gameOverReason, Color.RED, 27);
+
+        final Strings reason = gameOverReason == null ? Strings.GAME_OVER_UNKNOWN : gameOverReason;
+        showMessageDialog(Color.YELLOW, reason.get(), Color.RED, GAME_OVER_TEXT_SIZE);
     }
 
     private void win() {
@@ -132,15 +148,16 @@ public class SnakeGame extends Game {
         StageManager.selectNextStage();
     }
 
-    public void setNormalTurnDelay() {
+    public void applyNormalTurnDelay() {
         this.turnDelay = getNormalTurnDelay();
     }
 
     public int getNormalTurnDelay() {
-        return Math.max(SnakeGame.MAX_TURN_DELAY - (snake.getLength() * 10), 100);
+        int delay = MAX_TURN_DELAY - snake.getLength() * TURN_DELAY_STEP;
+        return Math.max(delay, MIN_TURN_DELAY);
     }
 
-    public void pause() {
+    public void togglePause() {
         isPaused = !isPaused;
 
         if (isPaused) {
@@ -151,16 +168,17 @@ public class SnakeGame extends Game {
         }
     }
 
-    public long calculateBonusPoints() {
-        long stageTimePassed = (getCurrentTime() - stage.getStartTime()) / 1000;
-        return Math.max(300 - stageTimePassed, 0);
+    public long calculateOrbBonus() {
+        long secondsInStage = (currentTimeMillis() - stage.getStartTimeMillis()) / 1000;
+        return Math.max(MAX_ORB_BONUS - secondsInStage, 0);
     }
 
-    public static boolean outOfBounds(int x, int y) {
-        return (x < 0 || y < 4 || x > SIZE - 1 || y > SIZE - 1);
+    public static boolean isOutOfBounds(int x, int y) {
+        return x < PLAYFIELD_MIN_X || x > PLAYFIELD_MAX_X
+                || y < PLAYFIELD_MIN_Y || y > PLAYFIELD_MAX_Y;
     }
 
-    public long getCurrentTime() {
+    private static long currentTimeMillis() {
         return new Date().getTime();
     }
 
@@ -172,11 +190,15 @@ public class SnakeGame extends Game {
         return snake;
     }
 
+    public Score getScore() {
+        return score;
+    }
+
     public void setTurnDelay(int turnDelay) {
         this.turnDelay = turnDelay;
     }
 
-    public void setGameOverReason(String reason) {
+    public void setGameOverReason(Strings reason) {
         this.gameOverReason = reason;
     }
 

@@ -153,6 +153,8 @@ public enum Strings {
             "Змея укусила себя до смерти!\nНеужели вы ТАК голодны?"),
     GAME_OVER_MOUNTAIN("Snake bumped into a mountain!\nAlways avoid them!",
             "Змея врезалась в гору!\nОбходите их стороной!"),
+    GAME_OVER_UNKNOWN("Snake died for unknown reasons.",
+            "Змея погибла по неизвестной причине."),
 
     // Stage names
     STAGE_TUTORIAL_1("TUTORIAL 1", "ОБУЧЕНИЕ 1"),

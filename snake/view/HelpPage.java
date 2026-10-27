@@ -11,14 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HelpPage {
-    List<Message> messages;
-    List<Orb> orbs;
-    List<Terrain> terrains;
+    private final List<Message> messages;
+    private final List<Drawable> boardObjects;
 
     private HelpPage() {
         this.messages = new ArrayList<>();
-        this.orbs = new ArrayList<>();
-        this.terrains = new ArrayList<>();
+        this.boardObjects = new ArrayList<>();
     }
 
     public static HelpPage getGoals() {
@@ -34,12 +32,12 @@ public class HelpPage {
         result.messages.add(new Message(-1, 17, Strings.HELP_GOALS_GROW.get(), Color.YELLOW));
         result.messages.add(new Message(3, 19, Strings.HELP_ORB_WISDOM.get(), Color.MEDIUMPURPLE));
 
-        result.orbs.add(Orb.create(1, 7, Element.WATER));
-        result.orbs.add(Orb.create(1, 9, Element.FIRE));
-        result.orbs.add(Orb.create(1, 11, Element.EARTH));
-        result.orbs.add(Orb.create(1, 13, Element.AIR));
-        result.orbs.add(Orb.create(1, 15, Element.ALMIGHTY));
-        result.orbs.add(Orb.create(1, 19, Element.NEUTRAL));
+        result.boardObjects.add(Orb.create(1, 7, Element.WATER));
+        result.boardObjects.add(Orb.create(1, 9, Element.FIRE));
+        result.boardObjects.add(Orb.create(1, 11, Element.EARTH));
+        result.boardObjects.add(Orb.create(1, 13, Element.AIR));
+        result.boardObjects.add(Orb.create(1, 15, Element.ALMIGHTY));
+        result.boardObjects.add(Orb.create(1, 19, Element.NEUTRAL));
 
         return result;
     }
@@ -78,15 +76,15 @@ public class HelpPage {
         result.messages.add(new Message(3, 21, Strings.TERRAIN_WALL.get(), Color.WHITE));
         result.messages.add(new Message(3, 23, Strings.TERRAIN_WORMHOLE.get(), Color.WHITE));
 
-        result.terrains.add(Terrain.create(1, 7, Terrain.FIELD));
-        result.terrains.add(Terrain.create(1, 9, Terrain.WATER));
-        result.terrains.add(Terrain.create(1, 11, Terrain.SAND));
-        result.terrains.add(Terrain.create(1, 13, Terrain.FOREST));
-        result.terrains.add(Terrain.create(1, 15, Terrain.MOUNTAIN));
-        result.terrains.add(Terrain.create(1, 17, Terrain.WOOD));
-        result.terrains.add(Terrain.create(1, 19, Terrain.FIRE));
-        result.terrains.add(Terrain.create(1, 21, Terrain.WALL));
-        result.terrains.add(Terrain.create(1, 23, Terrain.WORMHOLE));
+        result.boardObjects.add(Terrain.create(1, 7, Terrain.FIELD));
+        result.boardObjects.add(Terrain.create(1, 9, Terrain.WATER));
+        result.boardObjects.add(Terrain.create(1, 11, Terrain.SAND));
+        result.boardObjects.add(Terrain.create(1, 13, Terrain.FOREST));
+        result.boardObjects.add(Terrain.create(1, 15, Terrain.MOUNTAIN));
+        result.boardObjects.add(Terrain.create(1, 17, Terrain.WOOD));
+        result.boardObjects.add(Terrain.create(1, 19, Terrain.FIRE));
+        result.boardObjects.add(Terrain.create(1, 21, Terrain.WALL));
+        result.boardObjects.add(Terrain.create(1, 23, Terrain.WORMHOLE));
 
         return result;
     }
@@ -149,7 +147,6 @@ public class HelpPage {
 
     public void draw(SnakeGame game) {
         messages.forEach(Message::draw);
-        orbs.forEach(orb -> orb.draw(game));
-        terrains.forEach(node -> node.draw(game));
+        boardObjects.forEach(object -> object.draw(game));
     }
 }

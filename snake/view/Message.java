@@ -1,6 +1,6 @@
 package com.javarush.games.snake.view;
 
-import com.javarush.engine.cell.*;
+import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 
 public class Message {
@@ -10,27 +10,38 @@ public class Message {
 
     private final int x;
     private final int y;
-    private final char[] charSequence;
+    private final char[] symbols;
     private final Color color;
 
     public static void print(int x, int y, String text, Color color) {
-        Message message = new Message(x, y, text, color);
-        message.draw();
+        new Message(x, y, text, color).draw();
     }
 
     public Message(int x, int y, String text, Color color) {
-        this.charSequence = text.toUpperCase().toCharArray();
+        this.symbols = text.toUpperCase().toCharArray();
         this.color = color;
-        this.x = (x >= 0) && (x < SnakeGame.SIZE) ? x : (SnakeGame.SIZE / 2) - (charSequence.length / 2);
-        this.y = (y >= 0) && (y < SnakeGame.SIZE) ? y : (SnakeGame.SIZE / 2);
+        this.x = resolveX(x, symbols.length);
+        this.y = resolveY(y);
+    }
+
+    private static int resolveX(int x, int textLength) {
+        if (x >= 0 && x < SnakeGame.SIZE) return x;
+
+        return (SnakeGame.SIZE / 2) - (textLength / 2);
+    }
+
+    private static int resolveY(int y) {
+        if (y >= 0 && y < SnakeGame.SIZE) return y;
+
+        return SnakeGame.SIZE / 2;
     }
 
     public void draw() {
-        if (x + charSequence.length > SnakeGame.SIZE || x < 0) return;
+        if (x < 0 || x + symbols.length > SnakeGame.SIZE) return;
 
-        for (int i = 0; i < charSequence.length; i++) {
-            String symbol = String.valueOf(charSequence[i]);
-            game.setCellValueEx(i + this.x, this.y, BACKGROUND_COLOR, symbol, color, TEXT_SIZE);
+        for (int i = 0; i < symbols.length; i++) {
+            final String symbol = String.valueOf(symbols[i]);
+            game.setCellValueEx(x + i, y, BACKGROUND_COLOR, symbol, color, TEXT_SIZE);
         }
     }
 }

@@ -9,19 +9,14 @@ public class Options {
         }
     }
 
-    private static boolean accelerationEnabled;
-    private static Language language;
-
-    static {
-        accelerationEnabled = true;
-        language = Language.ENGLISH;
-    }
+    private static boolean accelerationEnabled = true;
+    private static Language language = Language.ENGLISH;
 
     public static boolean isAccelerationEnabled() {
         return accelerationEnabled;
     }
 
-    public static void switchAccelerationEnabled() {
+    public static void toggleAcceleration() {
         accelerationEnabled = !accelerationEnabled;
     }
 
@@ -29,11 +24,7 @@ public class Options {
         return language;
     }
 
-    public static void setLanguage(Language language) {
-        Options.language = language;
-    }
-
-    public static void switchLanguage() {
+    public static void toggleLanguage() {
         language = (language == Language.ENGLISH) ? Language.RUSSIAN : Language.ENGLISH;
     }
 }

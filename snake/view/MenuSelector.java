@@ -6,30 +6,29 @@ import com.javarush.games.snake.model.Strings;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class MenuSelector {
     private static final SnakeGame game = SnakeGame.getInstance();
-    private static final MenuSelector instance;
+    private static final MenuSelector instance = new MenuSelector();
     private static final String POINTER_SIGN = "→";
+    private static final int POINTER_TEXT_SIZE = 90;
+    private static final int POINTER_OFFSET = 2;
+    private static final int ENTRY_SPACING = 2;
 
-    private final ArrayList<Strings> menuEntries;
+    private final List<Strings> menuEntries;
     private int pointerPosition;
     private int lastPointerPosition;
 
-    static {
-        instance = new MenuSelector();
-    }
-
     private MenuSelector() {
         menuEntries = new ArrayList<>();
-        pointerPosition = 0;
     }
 
     public static void drawMenuEntriesWithPointer(int x, int y) {
         for (int position = 0; position < instance.menuEntries.size(); position++) {
             drawEntry(x, y, position);
             drawPointer(x, y, position);
-            y += 2;
+            y += ENTRY_SPACING;
         }
     }
 
@@ -40,12 +39,12 @@ public class MenuSelector {
     }
 
     private static void drawPointer(int x, int y, int position) {
-        x -= 2;
+        final int pointerX = x - POINTER_OFFSET;
 
         if (instance.pointerPosition == position) {
-            game.setCellValueEx(x, y, Color.NONE, POINTER_SIGN, Color.YELLOW, 90);
+            game.setCellValueEx(pointerX, y, Color.NONE, POINTER_SIGN, Color.YELLOW, POINTER_TEXT_SIZE);
         } else {
-            game.setCellValue(x, y, "");
+            game.setCellValue(pointerX, y, "");
         }
     }
 
@@ -60,8 +59,8 @@ public class MenuSelector {
     }
 
     public static boolean isPointingAt(Strings option) {
-        Strings currentlySelectedOption = instance.menuEntries.get(instance.pointerPosition);
-        return option == currentlySelectedOption;
+        final Strings selectedOption = instance.menuEntries.get(instance.pointerPosition);
+        return option == selectedOption;
     }
 
     public static void setMenuEntries(Strings... entries) {

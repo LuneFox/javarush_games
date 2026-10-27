@@ -1,19 +1,28 @@
 package com.javarush.games.snake.model.map;
 
-import com.javarush.games.snake.model.map.stages.*;
+import com.javarush.games.snake.model.map.stages.EmptyStage;
+import com.javarush.games.snake.model.map.stages.Stage1;
+import com.javarush.games.snake.model.map.stages.Stage2;
+import com.javarush.games.snake.model.map.stages.Stage3;
+import com.javarush.games.snake.model.map.stages.Tutorial1;
+import com.javarush.games.snake.model.map.stages.Tutorial2;
+import com.javarush.games.snake.model.map.stages.Tutorial3;
+import com.javarush.games.snake.model.map.stages.Tutorial4;
+import com.javarush.games.snake.model.map.stages.Tutorial5;
+import com.javarush.games.snake.model.map.stages.Tutorial6;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 public class StageManager {
-    private static final List<Stage> stageList;
+    private static final List<Stage> stages;
     private static final Stage emptyStage;
-    private static int currentStage;
+    private static int currentStageIndex;
 
     static {
-        stageList = new ArrayList<>();
-        stageList.addAll(Arrays.asList(
+        stages = new ArrayList<>();
+        stages.addAll(Arrays.asList(
                 new Tutorial1(),
                 new Tutorial2(),
                 new Tutorial3(),
@@ -25,11 +34,19 @@ public class StageManager {
                 new Stage3())
         );
         emptyStage = new EmptyStage();
-        currentStage = 0;
+        currentStageIndex = 0;
+        initializeStages();
+    }
+
+    private static void initializeStages() {
+        for (Stage stage : stages) {
+            stage.initialize();
+        }
+        emptyStage.initialize();
     }
 
     public static Stage getCurrentStage() {
-        return stageList.get(currentStage);
+        return stages.get(currentStageIndex);
     }
 
     public static Stage getEmptyStage() {
@@ -37,18 +54,10 @@ public class StageManager {
     }
 
     public static void selectNextStage() {
-        if (currentStage < stageList.size() - 1) {
-            currentStage++;
-        } else {
-            currentStage = 0;
-        }
+        currentStageIndex = (currentStageIndex + 1) % stages.size();
     }
 
     public static void selectPreviousStage() {
-        if (currentStage > 0) {
-            currentStage--;
-        } else {
-            currentStage = stageList.size() - 1;
-        }
+        currentStageIndex = (currentStageIndex - 1 + stages.size()) % stages.size();
     }
 }

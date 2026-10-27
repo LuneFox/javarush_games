@@ -3,21 +3,26 @@ package com.javarush.games.snake.model.orbs;
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.games.snake.model.GameObject;
-import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Element;
+import com.javarush.games.snake.view.Drawable;
+import com.javarush.games.snake.view.Sign;
 
 import java.util.Date;
 
-public abstract class Orb extends GameObject {
-    protected Element element;
-    protected String sign;
-    protected Color color;
-    protected Color backgroundColor1;
-    protected Color backgroundColor2;
-    protected Date blinkTimeStamp;
+public abstract class Orb extends GameObject implements Drawable {
+    private static final int SYMBOL_TEXT_SIZE = 90;
+    private static final int BLINK_INTERVAL_MS = 250;
+    private static final int WISDOM_SCORE_DIVIDER = 10;
+
+    private final Element element;
+    private final String sign;
+    private final Color backgroundColorOn;
+    private final Color backgroundColorOff;
+
+    private Date blinkTimeStamp;
     private boolean blinkState;
-    private boolean isCollected = false;
+    private boolean isCollected;
 
     public static Orb create(int x, int y, Element element) {
         switch (element) {
@@ -36,38 +41,52 @@ public abstract class Orb extends GameObject {
         }
     }
 
-    protected Orb(int x, int y) {
+    protected Orb(int x, int y, Element element, Color backgroundColorOn, Color backgroundColorOff, Sign symbol) {
         super(x, y);
+        this.element = element;
+        this.backgroundColorOn = backgroundColorOn;
+        this.backgroundColorOff = backgroundColorOff;
+        this.sign = Sign.getSign(symbol);
         blinkTimeStamp = new Date();
     }
 
-    public void draw(Game game) {
+    @Override
+    public void draw(Game target) {
         if (isCollected) return;
 
-        flipBlinkState();
-        Color background = blinkState ? backgroundColor1 : backgroundColor2;
-        game.setCellValueEx(x, y, background, sign, color, 90);
+        updateBlinkState();
+        final Color backgroundColor = blinkState ? backgroundColorOn : backgroundColorOff;
+        target.setCellValueEx(x, y, backgroundColor, sign, Color.WHITE, SYMBOL_TEXT_SIZE);
     }
 
-    private void flipBlinkState() {
-        if (new Date().getTime() - blinkTimeStamp.getTime() <= 250) return;
+    private void updateBlinkState() {
+        if (new Date().getTime() - blinkTimeStamp.getTime() <= BLINK_INTERVAL_MS) return;
+
         blinkState = !blinkState;
         blinkTimeStamp = new Date();
     }
 
-    public void collect(Snake snake) {
-        if (snake.headIsNotTouchingOrb(this)) return;
+    public final void collect(Snake snake) {
+        if (!snake.isHeadTouchingOrb(this)) return;
 
         isCollected = true;
 
         snake.eat();
-        long bonus = game.calculateBonusPoints();
-        Score.add(this instanceof NeutralOrb ? (bonus / 10) : bonus);
-        game.setNormalTurnDelay();
+        game.getScore().add(calculateScore());
+        game.applyNormalTurnDelay();
+        applyEffect(snake);
     }
 
-    public Element getElement() {
-        return element;
+    private long calculateScore() {
+        final long bonus = game.calculateOrbBonus();
+        return element == Element.NEUTRAL ? bonus / WISDOM_SCORE_DIVIDER : bonus;
+    }
+
+    protected void applyEffect(Snake snake) {
+        if (element == Element.NEUTRAL) return;
+
+        snake.learnElement(element);
+        snake.switchToElement(element);
     }
 
     public boolean isCollected() {

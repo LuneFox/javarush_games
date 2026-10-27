@@ -2,14 +2,15 @@ package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
 import com.javarush.games.snake.model.Options;
-import com.javarush.games.snake.model.map.Stage;
-import com.javarush.games.snake.view.MenuSelector;
-import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.Phase;
+import com.javarush.games.snake.model.enums.Direction;
+import com.javarush.games.snake.view.MenuSelector;
 
 public class GameFieldControlStrategy implements ControlStrategy {
+    private static final int ACCELERATED_TURN_DELAY = 50;
+
     private static GameFieldControlStrategy instance;
-    private boolean isDelayBeforeAccelerationNeeded;
+    private boolean isFirstDirectionPress;
 
     public static GameFieldControlStrategy getInstance() {
         if (instance == null) instance = new GameFieldControlStrategy();
@@ -17,81 +18,67 @@ public class GameFieldControlStrategy implements ControlStrategy {
     }
 
     public void reset() {
-        isDelayBeforeAccelerationNeeded = true;
+        isFirstDirectionPress = true;
     }
 
     @Override
     public void leftClick(int x, int y) {
-        if (game.isStopped()) return;
         game.getSnake().rotateElement(Direction.LEFT);
     }
 
     @Override
     public void rightClick(int x, int y) {
-        if (game.isStopped()) return;
         game.getSnake().rotateElement(Direction.RIGHT);
     }
 
     @Override
     public void pressUp() {
-        if (game.isStopped()) return;
-        setHighSpeed();
-        game.getSnake().setDirection(Direction.UP);
-    }
-
-    @Override
-    public void releaseUp() {
-        setNormalSpeed();
+        pressDirection(Direction.UP);
     }
 
     @Override
     public void pressDown() {
-        if (game.isStopped()) return;
-        setHighSpeed();
-        game.getSnake().setDirection(Direction.DOWN);
-    }
-
-    @Override
-    public void releaseDown() {
-        setNormalSpeed();
+        pressDirection(Direction.DOWN);
     }
 
     @Override
     public void pressRight() {
-        if (game.isStopped()) return;
-        setHighSpeed();
-        game.getSnake().setDirection(Direction.RIGHT);
-    }
-
-    @Override
-    public void releaseRight() {
-        setNormalSpeed();
+        pressDirection(Direction.RIGHT);
     }
 
     @Override
     public void pressLeft() {
-        if (game.isStopped()) return;
-        setHighSpeed();
-        game.getSnake().setDirection(Direction.LEFT);
+        pressDirection(Direction.LEFT);
+    }
+
+    @Override
+    public void releaseUp() {
+        releaseDirection();
+    }
+
+    @Override
+    public void releaseDown() {
+        releaseDirection();
+    }
+
+    @Override
+    public void releaseRight() {
+        releaseDirection();
     }
 
     @Override
     public void releaseLeft() {
-        setNormalSpeed();
+        releaseDirection();
     }
 
     @Override
     public void pressSpace() {
-        final Stage stage = game.getStage();
-
-        if (stage.isNotStarted()) {
-            stage.start();
+        if (!game.getStage().isStarted()) {
+            game.getStage().start();
         } else if (game.isStopped()) {
-            game.stopTurnTimer();
-            MenuSelector.setPointerPosition(0);
-            Phase.proceed(Phase.MAIN_MENU);
+            returnToMainMenu();
         } else {
-            game.pause();
+            game.togglePause();
         }
     }
 
@@ -108,24 +95,35 @@ public class GameFieldControlStrategy implements ControlStrategy {
     @Override
     public void pressPause() {
         if (game.isStopped()) return;
-        game.pause();
+
+        game.togglePause();
     }
 
-    private void setHighSpeed() {
-        if (Options.isAccelerationEnabled()) {
-            if (isDelayBeforeAccelerationNeeded) {
-                game.setNormalTurnDelay();
-            } else {
-                game.setTurnDelay(50);
-            }
-            isDelayBeforeAccelerationNeeded = false;
-        }
+    private void pressDirection(Direction direction) {
+        if (game.isStopped()) return;
+
+        applyAcceleration();
+        game.getSnake().setDirection(direction);
     }
 
-    private void setNormalSpeed() {
-        if (Options.isAccelerationEnabled()) {
-            isDelayBeforeAccelerationNeeded = true;
-            game.setTurnDelay(game.getNormalTurnDelay());
-        }
+    private void releaseDirection() {
+        if (!Options.isAccelerationEnabled()) return;
+
+        isFirstDirectionPress = true;
+        game.setTurnDelay(game.getNormalTurnDelay());
+    }
+
+    private void applyAcceleration() {
+        if (!Options.isAccelerationEnabled()) return;
+
+        int delay = isFirstDirectionPress ? game.getNormalTurnDelay() : ACCELERATED_TURN_DELAY;
+        game.setTurnDelay(delay);
+        isFirstDirectionPress = false;
+    }
+
+    private void returnToMainMenu() {
+        game.stopTurnTimer();
+        MenuSelector.setPointerPosition(0);
+        Phase.proceed(Phase.MAIN_MENU);
     }
 }

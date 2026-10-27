@@ -1,6 +1,5 @@
 package com.javarush.games.snake.model.map.stages;
 
-import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
@@ -79,11 +78,6 @@ public class Stage3 extends Stage {
 
     @Override
     public boolean isCompleted() {
-        Snake snake = game.getSnake();
-        if (snake.getAlmightyPower() <= 0) {
-            isClear = true;
-            return true;
-        }
-        return false;
+        return completeIf(game.getSnake().getAlmightyPower() <= 0);
     }
 }

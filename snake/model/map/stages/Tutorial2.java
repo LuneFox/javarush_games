@@ -10,6 +10,8 @@ import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.view.Sign;
 
 public class Tutorial2 extends Stage {
+    private static final int CROSSED_RIVER_X = 22;
+
     public Tutorial2() {
         super(Strings.STAGE_TUTORIAL_2);
     }
@@ -79,13 +81,8 @@ public class Tutorial2 extends Stage {
 
     @Override
     public boolean isCompleted() {
-        GameObject snakeHead = game.getSnake().getNewHead();
-        if (snakeHead == null) return false;
+        final GameObject snakeHead = game.getSnake().getNewHead();
 
-        if (snakeHead.x > 22) {
-            isClear = true;
-            return true;
-        }
-        return false;
+        return snakeHead != null && completeIf(snakeHead.x > CROSSED_RIVER_X);
     }
 }

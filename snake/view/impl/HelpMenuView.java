@@ -7,11 +7,15 @@ import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class HelpMenuView extends View {
+    private static final int PAGINATION_Y = 30;
+
     private static HelpMenuView instance;
+
     private final ArrayList<HelpPage> helpPages = new ArrayList<>();
-    int currentHelpPage;
+    private int currentPageIndex;
 
     public static HelpMenuView getInstance() {
         if (instance == null) instance = new HelpMenuView();
@@ -20,29 +24,31 @@ public class HelpMenuView extends View {
 
     @Override
     public void update() {
+        // Pages are rebuilt on every update, so they follow the current language and symbol set.
         helpPages.clear();
-        helpPages.add(HelpPage.getGoals());
-        helpPages.add(HelpPage.getSnakeAbilities());
-        helpPages.add(HelpPage.getTypesOfTerrain());
-        helpPages.add(HelpPage.getTips1());
-        helpPages.add(HelpPage.getTips2());
+        Collections.addAll(helpPages,
+                HelpPage.getGoals(),
+                HelpPage.getSnakeAbilities(),
+                HelpPage.getTypesOfTerrain(),
+                HelpPage.getTips1(),
+                HelpPage.getTips2());
 
         drawBlackBackground();
-        helpPages.get(currentHelpPage).draw(game);
+        helpPages.get(currentPageIndex).draw(game);
 
-        String pagination = Strings.HELP_PAGE.format(currentHelpPage + 1, helpPages.size());
-        Message.print(-1, 30, pagination, Color.WHITE);
+        final String pagination = Strings.HELP_PAGE.format(currentPageIndex + 1, helpPages.size());
+        Message.print(-1, PAGINATION_Y, pagination, Color.WHITE);
     }
 
-    public void nextHelpPage() {
-        if (currentHelpPage + 1 < helpPages.size()) {
-            currentHelpPage++;
+    public void showNextPage() {
+        if (currentPageIndex + 1 < helpPages.size()) {
+            currentPageIndex++;
         }
     }
 
-    public void previousHelpPage() {
-        if (currentHelpPage > 0) {
-            currentHelpPage--;
+    public void showPreviousPage() {
+        if (currentPageIndex > 0) {
+            currentPageIndex--;
         }
     }
 }

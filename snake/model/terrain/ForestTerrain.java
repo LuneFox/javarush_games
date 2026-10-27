@@ -1,6 +1,7 @@
 package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
@@ -10,13 +11,13 @@ import com.javarush.games.snake.view.Sign;
 
 public class ForestTerrain extends Terrain {
     public ForestTerrain(int x, int y) {
-        super(x, y);
-        this.type = TerrainType.FOREST;
-        this.color = Color.LIGHTGREEN;
-        this.backgroundColor = Color.FORESTGREEN;
-        this.sign = (game.getRandomNumber(2) == 1)
-                ? Sign.getSign(Sign.TERRAIN_FOREST_1)
-                : Sign.getSign(Sign.TERRAIN_FOREST_2);
+        super(x, y, TerrainType.FOREST, Color.LIGHTGREEN, Color.FORESTGREEN, randomForestSign());
+    }
+
+    private static Sign randomForestSign() {
+        final SnakeGame game = SnakeGame.getInstance();
+
+        return game.getRandomNumber(2) == 1 ? Sign.TERRAIN_FOREST_1 : Sign.TERRAIN_FOREST_2;
     }
 
     @Override
@@ -30,20 +31,18 @@ public class ForestTerrain extends Terrain {
 
         if (snakeElement == Element.FIRE) {
             final GameObject newHead = snake.getNewHead();
-            final int x = newHead.x;
-            final int y = newHead.y;
-
             final Stage stage = game.getStage();
-            stage.putTerrain(x, y, TerrainType.FIRE);
+
+            stage.putTerrain(newHead.x, newHead.y, TerrainType.FIRE);
             return;
         }
 
         snake.kill();
-        game.setGameOverReason(Strings.GAME_OVER_EATEN.get());
+        game.setGameOverReason(Strings.GAME_OVER_EATEN);
     }
 
     @Override
-    public void processPassiveEffects() {
-        igniteOnContactWithFire();
+    public void applyPassiveEffect() {
+        igniteFromAdjacentFire();
     }
 }

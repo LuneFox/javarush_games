@@ -2,10 +2,10 @@ package com.javarush.games.snake.controller.strategies;
 
 import com.javarush.games.snake.controller.ControlStrategy;
 import com.javarush.games.snake.model.Options;
+import com.javarush.games.snake.model.Phase;
 import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.map.StageManager;
 import com.javarush.games.snake.view.MenuSelector;
-import com.javarush.games.snake.model.Phase;
 import com.javarush.games.snake.view.Sign;
 
 public class OptionsMenuControlStrategy implements ControlStrategy {
@@ -35,10 +35,11 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt(Strings.MENU_MAP)) {
             StageManager.selectNextStage();
         } else if (MenuSelector.isPointingAt(Strings.MENU_ACCELERATION)) {
-            Options.switchAccelerationEnabled();
+            Options.toggleAcceleration();
         } else if (MenuSelector.isPointingAt(Strings.MENU_LANGUAGE)) {
-            Options.switchLanguage();
+            Options.toggleLanguage();
         }
+
         Phase.proceed(Phase.OPTIONS_MENU);
     }
 
@@ -49,10 +50,11 @@ public class OptionsMenuControlStrategy implements ControlStrategy {
         } else if (MenuSelector.isPointingAt(Strings.MENU_MAP)) {
             StageManager.selectPreviousStage();
         } else if (MenuSelector.isPointingAt(Strings.MENU_ACCELERATION)) {
-            Options.switchAccelerationEnabled();
+            Options.toggleAcceleration();
         } else if (MenuSelector.isPointingAt(Strings.MENU_LANGUAGE)) {
-            Options.switchLanguage();
+            Options.toggleLanguage();
         }
+
         Phase.proceed(Phase.OPTIONS_MENU);
     }
 

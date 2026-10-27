@@ -5,47 +5,41 @@ import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.map.WormHole;
-import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Sign;
 
 public class WormholeTerrain extends Terrain {
     public WormholeTerrain(int x, int y) {
-        super(x, y);
-        this.type = TerrainType.WORMHOLE;
-        this.color = Color.PURPLE;
-        this.backgroundColor = Color.BLACK;
-        this.sign = Sign.getSign(Sign.TERRAIN_WORMHOLE);
+        super(x, y, TerrainType.WORMHOLE, Color.PURPLE, Color.BLACK, Sign.TERRAIN_WORMHOLE);
     }
 
     @Override
     public void interact(Snake snake) {
         super.interact(snake);
 
-        final Element snakeElement = snake.getElement();
-
-        if (snakeElement == Element.ALMIGHTY) return;
-        if (snakeElement == Element.AIR) return;
-
-        if (snakeElement == Element.EARTH) {
-            warp(snake);
-            return;
+        switch (snake.getElement()) {
+            case ALMIGHTY:
+            case AIR:
+                return;
+            case EARTH:
+                warp(snake);
+                return;
+            default:
+                snake.kill();
+                game.setGameOverReason(Strings.GAME_OVER_LOST);
         }
-
-        snake.kill();
-        game.setGameOverReason(Strings.GAME_OVER_LOST.get());
     }
 
     private void warp(Snake snake) {
         final Stage stage = game.getStage();
 
         for (WormHole wormHole : stage.getWormHoles()) {
-            if (wormHole.locationIsAt(x, y)) {
-                wormHole.warpToDestination(snake);
+            if (wormHole.isEntranceAt(x, y)) {
+                wormHole.warpToExit(snake);
                 return;
             }
 
-            if (wormHole.destinationIsAt(x, y)) {
-                wormHole.warpToBeginning(snake);
+            if (wormHole.isExitAt(x, y)) {
+                wormHole.warpToEntrance(snake);
                 return;
             }
         }

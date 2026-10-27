@@ -9,11 +9,7 @@ import com.javarush.games.snake.view.Sign;
 
 public class WoodTerrain extends Terrain {
     public WoodTerrain(int x, int y) {
-        super(x, y);
-        this.type = TerrainType.WOOD;
-        this.color = Color.SANDYBROWN;
-        this.backgroundColor = Color.SADDLEBROWN;
-        this.sign = Sign.getSign(Sign.TERRAIN_WOOD);
+        super(x, y, TerrainType.WOOD, Color.SANDYBROWN, Color.SADDLEBROWN, Sign.TERRAIN_WOOD);
     }
 
     @Override
@@ -23,19 +19,17 @@ public class WoodTerrain extends Terrain {
         final Element snakeElement = snake.getElement();
 
         if (snakeElement == Element.ALMIGHTY) return;
+        if (snakeElement != Element.FIRE && snakeElement != Element.WATER) return;
 
-        final Stage stage = game.getStage();
         final GameObject newHead = snake.getNewHead();
-        final int x = newHead.x;
-        final int y = newHead.y;
+        final Stage stage = game.getStage();
 
-        switch (snake.getElement()) {
+        switch (snakeElement) {
             case FIRE:
-                stage.putTerrain(x, y, TerrainType.FIRE);
+                stage.putTerrain(newHead.x, newHead.y, TerrainType.FIRE);
                 break;
             case WATER:
-                final Terrain terrain = stage.getTerrain(x, y);
-                terrain.makeWet();
+                stage.getTerrain(newHead.x, newHead.y).makeWet();
                 break;
             default:
                 break;
@@ -43,7 +37,7 @@ public class WoodTerrain extends Terrain {
     }
 
     @Override
-    public void processPassiveEffects() {
-        igniteOnContactWithFire();
+    public void applyPassiveEffect() {
+        igniteFromAdjacentFire();
     }
 }

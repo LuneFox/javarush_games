@@ -3,15 +3,20 @@ package com.javarush.games.snake.view.impl;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.snake.SnakeGame;
 import com.javarush.games.snake.model.Strings;
-import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.terrain.Terrain;
 import com.javarush.games.snake.model.terrain.TerrainType;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;
 
 public class MapEditorView extends View {
+    private static final int PREVIEW_X = 1;
+    private static final int PREVIEW_Y = 1;
+    private static final int SAMPLE_LABEL_X = 3;
+    private static final int SAMPLE_LABEL_Y = 1;
+
     private static MapEditorView instance;
-    private int sample;
+
+    private TerrainType sample = TerrainType.FIELD;
 
     public static MapEditorView getInstance() {
         if (instance == null) instance = new MapEditorView();
@@ -29,32 +34,33 @@ public class MapEditorView extends View {
     }
 
     private void drawSamplePreview() {
-        Terrain terrain = Terrain.create(1, 1, sample);
-        game.getStage().putTerrain(1, 1, terrain.getType());
-        Message.print(3, 1, Strings.getTerrainName(terrain.getType()), Color.WHITE);
+        game.getStage().putTerrain(PREVIEW_X, PREVIEW_Y, sample);
+        Message.print(SAMPLE_LABEL_X, SAMPLE_LABEL_Y, Strings.getTerrainName(sample), Color.WHITE);
     }
 
     public void selectNextSample() {
-        sample = (sample < 9) ? (sample + 1) : 0;
+        sample = shiftSample(1);
         update();
     }
 
     public void brushPrevious() {
-        sample = (sample > 0) ? (sample - 1) : 9;
+        sample = shiftSample(-1);
         update();
     }
 
+    private TerrainType shiftSample(int offset) {
+        final TerrainType[] types = TerrainType.values();
+        final int index = (sample.ordinal() + offset + types.length) % types.length;
+
+        return types[index];
+    }
+
     public void drawTerrain(int x, int y) {
-        Terrain terrain = Terrain.create(x, y, sample);
-        final TerrainType type = terrain.getType();
-        final Stage stage = game.getStage();
-        stage.putTerrain(terrain.x, terrain.y, type);
+        game.getStage().putTerrain(x, y, sample);
     }
 
     public void copyTerrain(int x, int y) {
-        final Stage stage = game.getStage();
-        final Terrain terrain = stage.getTerrain(x, y);
-        sample = terrain.getType().ordinal();
+        sample = game.getStage().getTerrain(x, y).getType();
     }
 
     public void printTerrain() {
@@ -62,25 +68,19 @@ public class MapEditorView extends View {
 
         for (int y = 0; y < SnakeGame.SIZE; y++) {
             for (int x = 0; x < SnakeGame.SIZE; x++) {
-
                 final Terrain terrain = game.getStage().getTerrain(x, y);
-                final TerrainType type = terrain.getType();
-
-                int number = (y < 4 ? 9 : type.ordinal());
+                final int code = y < SnakeGame.HUD_ROWS ? Terrain.VOID : terrain.getType().ordinal();
 
                 if (x == 0) {
                     System.out.print("{");
                 }
 
                 if (x < SnakeGame.SIZE - 1) {
-                    System.out.print(number + ", ");
-                }
-
-                if (x == SnakeGame.SIZE - 1) {
-                    System.out.print(number);
+                    System.out.print(code + ", ");
+                } else {
+                    System.out.print(code);
                     System.out.println("},");
                 }
-
             }
         }
 

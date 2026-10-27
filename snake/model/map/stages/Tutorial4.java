@@ -73,10 +73,8 @@ public class Tutorial4 extends Stage {
 
     @Override
     public boolean isCompleted() {
-        if (orbs.stream().noneMatch(orb -> orb instanceof EarthOrb)) {
-            isClear = true;
-            return true;
-        }
-        return false;
+        final boolean isEarthOrbCollected = orbs.stream().noneMatch(orb -> orb instanceof EarthOrb);
+
+        return completeIf(isEarthOrbCollected);
     }
 }

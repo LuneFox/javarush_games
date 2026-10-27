@@ -8,11 +8,7 @@ import com.javarush.games.snake.view.Sign;
 
 public class WaterTerrain extends Terrain {
     public WaterTerrain(int x, int y) {
-        super(x, y);
-        this.type = TerrainType.WATER;
-        this.color = Color.LIGHTBLUE;
-        this.backgroundColor = Color.DEEPSKYBLUE;
-        this.sign = Sign.getSign(Sign.TERRAIN_WATER);
+        super(x, y, TerrainType.WATER, Color.LIGHTBLUE, Color.DEEPSKYBLUE, Sign.TERRAIN_WATER);
     }
 
     @Override
@@ -31,9 +27,9 @@ public class WaterTerrain extends Terrain {
 
         snake.reduceBreath();
 
-        if (snake.isDrowned()){
+        if (snake.isDrowned()) {
             snake.kill();
-            game.setGameOverReason(Strings.GAME_OVER_DROWNED.get());
+            game.setGameOverReason(Strings.GAME_OVER_DROWNED);
         }
     }
 }

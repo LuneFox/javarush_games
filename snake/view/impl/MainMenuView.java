@@ -1,13 +1,33 @@
 package com.javarush.games.snake.view.impl;
 
 import com.javarush.engine.cell.Color;
+import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.view.MenuSelector;
-import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;
 
 public class MainMenuView extends View {
+    private static final int TITLE_Y = 5;
+    private static final int SUBTITLE_Y = 7;
+    private static final int VERSION_Y = 30;
+    private static final int MENU_X = 10;
+    private static final int MENU_Y = 12;
+    private static final int STAGE_NAME_X = 18;
+
+    private static final String[] TITLE_FRAME = {
+            "✡                     ✡",
+            "✡                   ✡",
+            "✡                 ✡",
+            "✡               ✡"
+    };
+    private static final Color[] TITLE_FRAME_COLORS = {
+            Color.YELLOW,
+            Color.CYAN,
+            Color.LAWNGREEN,
+            Color.RED
+    };
+
     private static MainMenuView instance;
 
     public static MainMenuView getInstance() {
@@ -19,20 +39,25 @@ public class MainMenuView extends View {
     public void update() {
         drawBlackBackground();
         game.loadStage();
-        Message.print(-1, 5, "✡                     ✡", Color.YELLOW);
-        Message.print(-1, 5, "✡                   ✡", Color.CYAN);
-        Message.print(-1, 5, "✡                 ✡", Color.LAWNGREEN);
-        Message.print(-1, 5, "✡               ✡", Color.RED);
-        Message.print(-1, 5, Strings.MAIN_TITLE.get(), Color.FUCHSIA);
-        Message.print(-1, 7, Strings.MAIN_SUBTITLE.get(), Color.PINK);
-        Message.print(-1, 30, Strings.MAIN_VERSION.get() + Strings.VERSION.get(), Color.BLUE);
+        drawTitleFrame();
+
+        Message.print(-1, TITLE_Y, Strings.MAIN_TITLE.get(), Color.FUCHSIA);
+        Message.print(-1, SUBTITLE_Y, Strings.MAIN_SUBTITLE.get(), Color.PINK);
+        Message.print(-1, VERSION_Y, Strings.MAIN_VERSION.get() + Strings.VERSION.get(), Color.BLUE);
 
         MenuSelector.setMenuEntries(Strings.MENU_START, Strings.MENU_OPTIONS, Strings.MENU_CONTROLS, Strings.MENU_HELP);
         // MenuSelector.setMenuEntries(Strings.MENU_START, Strings.MENU_OPTIONS, Strings.MENU_CONTROLS, Strings.MENU_HELP, Strings.MENU_EDIT);
 
-        Stage stage = game.getStage();
-        Message.print(18, 12, "(" + stage.getName() + ")", stage.isClear() ? Color.LAWNGREEN : Color.LIGHTSKYBLUE);
+        final Stage stage = game.getStage();
+        Message.print(STAGE_NAME_X, MENU_Y, "(" + stage.getName() + ")",
+                stage.isClear() ? Color.LAWNGREEN : Color.LIGHTSKYBLUE);
 
-        MenuSelector.drawMenuEntriesWithPointer(10, 12);
+        MenuSelector.drawMenuEntriesWithPointer(MENU_X, MENU_Y);
+    }
+
+    private void drawTitleFrame() {
+        for (int i = 0; i < TITLE_FRAME.length; i++) {
+            Message.print(-1, TITLE_Y, TITLE_FRAME[i], TITLE_FRAME_COLORS[i]);
+        }
     }
 }

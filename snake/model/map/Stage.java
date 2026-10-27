@@ -8,7 +8,11 @@ import com.javarush.games.snake.model.enums.Direction;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.orbs.NeutralOrb;
 import com.javarush.games.snake.model.orbs.Orb;
-import com.javarush.games.snake.model.terrain.*;
+import com.javarush.games.snake.model.terrain.FieldTerrain;
+import com.javarush.games.snake.model.terrain.Terrain;
+import com.javarush.games.snake.model.terrain.TerrainType;
+import com.javarush.games.snake.model.terrain.WaterTerrain;
+import com.javarush.games.snake.model.terrain.WoodTerrain;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,25 +21,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class Stage {
-    protected static final int[] VOID_ROW = new int[32];
+    protected static final int[] VOID_ROW = createVoidRow();
     protected static final SnakeGame game = SnakeGame.getInstance();
 
-    protected Strings name;
+    private final Strings name;
+
     protected int[][] terrainCodeMatrix;
     protected Terrain[][] terrainMatrix;
-    protected ArrayList<Orb> orbs;
-    protected ArrayList<WormHole> wormHoles;
+    protected List<Orb> orbs;
+    protected List<WormHole> wormHoles;
     protected Coordinate snakeStartPlace;
     protected Direction snakeStartDirection;
     protected String briefingMessage;
     protected String completeMessage;
-    protected Date startTimeStamp;
-    protected boolean isStarted;
     protected boolean isClear;
 
-    static {
-        Arrays.fill(VOID_ROW, 9);
-    }
+    private Date startTimeStamp;
+    private boolean isStarted;
 
     public Stage() {
         this(Strings.STAGE_UNNAMED);
@@ -43,7 +45,12 @@ public abstract class Stage {
 
     public Stage(Strings name) {
         this.name = name;
-        initialize();
+    }
+
+    private static int[] createVoidRow() {
+        int[] row = new int[SnakeGame.SIZE];
+        Arrays.fill(row, Terrain.VOID);
+        return row;
     }
 
     public void initialize() {
@@ -67,8 +74,8 @@ public abstract class Stage {
 
         for (int y = 0; y < height; y++) {
             for (int x = 0; x < width; x++) {
-                int terrainType = terrainCodeMatrix[y][x];
-                terrainMatrix[y][x] = Terrain.create(x, y, terrainType);
+                final int terrainCode = terrainCodeMatrix[y][x];
+                terrainMatrix[y][x] = Terrain.create(x, y, terrainCode);
             }
         }
     }
@@ -83,9 +90,16 @@ public abstract class Stage {
 
     public abstract boolean isCompleted();
 
+    protected final boolean completeIf(boolean condition) {
+        if (!condition) return false;
+
+        isClear = true;
+        return true;
+    }
+
     public void start() {
         isStarted = true;
-        this.startTimeStamp = new Date();
+        startTimeStamp = new Date();
     }
 
     public void showBriefingMessage() {
@@ -97,31 +111,28 @@ public abstract class Stage {
     }
 
     public void putTerrain(int x, int y, TerrainType terrainType) {
-        terrainMatrix[y][x] = Terrain.create(x, y, terrainType.ordinal());
+        terrainMatrix[y][x] = Terrain.create(x, y, terrainType);
     }
 
     public Terrain getTerrain(int x, int y) {
         return terrainMatrix[y][x];
     }
 
-    public void createNeutralOrb() {
-        Terrain terrain = getTerrainForNeutralOrb();
+    public void spawnNeutralOrb() {
+        final Terrain terrain = findTerrainForNeutralOrb();
 
         if (terrain == null) return;
 
-        Orb neutralOrb = Orb.create(terrain.x, terrain.y, Element.NEUTRAL);
-        orbs.add(neutralOrb);
+        orbs.add(Orb.create(terrain.x, terrain.y, Element.NEUTRAL));
     }
 
-    private Terrain getTerrainForNeutralOrb() {
-        Snake snake = game.getSnake();
+    private Terrain findTerrainForNeutralOrb() {
+        final Snake snake = game.getSnake();
 
         List<Terrain> applicableTerrains = Arrays.stream(terrainMatrix)
                 .flatMap(Arrays::stream)
-                .filter(terrain -> !snake.collidesWithObject(terrain))
-                .filter(terrain -> terrain instanceof FieldTerrain
-                        || terrain instanceof WaterTerrain
-                        || terrain instanceof WoodTerrain)
+                .filter(terrain -> !snake.occupiesCellOf(terrain))
+                .filter(this::canHoldNeutralOrb)
                 .collect(Collectors.toList());
 
         if (!snake.canUseElement(Element.WATER) && !snake.canUseElement(Element.ALMIGHTY)) {
@@ -133,26 +144,33 @@ public abstract class Stage {
         if (applicableTerrains.isEmpty()) return null;
 
         // getRandomNumber(bound) never returns the bound itself, so the size is passed as is.
-        int random = game.getRandomNumber(applicableTerrains.size());
+        final int random = game.getRandomNumber(applicableTerrains.size());
         return applicableTerrains.get(random);
     }
 
-    public void checkOrbCollision(Snake snake) {
+    private boolean canHoldNeutralOrb(Terrain terrain) {
+        return terrain instanceof FieldTerrain
+                || terrain instanceof WaterTerrain
+                || terrain instanceof WoodTerrain;
+    }
+
+    public void collectOrbs(Snake snake) {
         orbs.forEach(orb -> orb.collect(snake));
         orbs.removeIf(Orb::isCollected);
+        spawnNeutralOrbIfMissing();
+    }
 
-        if (orbs.stream().noneMatch(orb -> orb instanceof NeutralOrb)) {
-            createNeutralOrb();
+    private void spawnNeutralOrbIfMissing() {
+        final boolean hasNeutralOrb = orbs.stream().anyMatch(orb -> orb instanceof NeutralOrb);
+
+        if (!hasNeutralOrb) {
+            spawnNeutralOrb();
         }
     }
 
-    public long getStartTime() {
+    public long getStartTimeMillis() {
         return startTimeStamp.getTime();
     }
-
-    /*
-     * Getters
-     */
 
     public String getName() {
         return name.get();
@@ -162,11 +180,11 @@ public abstract class Stage {
         return terrainMatrix;
     }
 
-    public ArrayList<Orb> getOrbs() {
+    public List<Orb> getOrbs() {
         return orbs;
     }
 
-    public ArrayList<WormHole> getWormHoles() {
+    public List<WormHole> getWormHoles() {
         return wormHoles;
     }
 
@@ -178,8 +196,8 @@ public abstract class Stage {
         return snakeStartDirection;
     }
 
-    public boolean isNotStarted() {
-        return !isStarted;
+    public boolean isStarted() {
+        return isStarted;
     }
 
     public boolean isClear() {

@@ -21,7 +21,8 @@ Stick to APIs already used by the project and the game engine. Convenience APIs 
 JDK are not automatically available on the JavaRush side.
 
 Known-safe examples already used here: `String`, `StringBuilder`, `String.charAt/length`,
-`String.valueOf`, collections, streams, enums, lambdas, `Date`, and the game engine API.
+`String.valueOf`, collections, streams, enums, lambdas, plain interfaces and abstract classes,
+small utility classes, `Date`, and the game engine API.
 
 Avoid unless already present in the project:
 
@@ -30,6 +31,16 @@ Avoid unless already present in the project:
 - regex-heavy APIs (`replaceAll`, `matches`, `split` with patterns)
 - `java.time`, `java.nio`, `java.util.Optional` and similar newer convenience APIs
 - files, sockets, threads, reflection
+
+## New types are fine
+
+Adding new source files is allowed. If an interface, abstract class, value object or small
+utility class makes the design clearer, extract it — the file being new is not a reason to
+avoid it. New types must follow the same rules as the existing code:
+
+- Java 8 and only the supported API subset listed above;
+- no new external dependency, no file/network/thread/reflection APIs;
+- the new file is present in the JavaRush web project and is picked up on publication.
 
 ## Incident that prompted this note
 
@@ -48,15 +59,16 @@ server rejected the class. The fix was a small `%s`/`%d` replacement helper usin
 `StringBuilder`, `String.charAt/length`, and `toString()`.
 See `snake/model/Strings.java`.
 
-A second risk was relying on a newly added `Language.java` file. The enum was moved into the
-existing `snake/model/Options.java`, so the publication no longer depends on a new file being
-picked up. When adding new source files, verify they exist in the JavaRush web project before
-publishing.
+A second risk was relying on a newly added `Language.java` file that the JavaRush web project
+did not pick up. The enum was moved into the existing `snake/model/Options.java` at the time.
+That was a project-sync problem, not a ban on new files: new types are fine (see “New types
+are fine” above), but verify that the JavaRush project contains the file before publishing.
 
 ## Verification checklist
 
 1. Compile with an actual JDK 8 (`javac 1.8.x`), not only `javac --release 8` on a newer JDK.
 2. Search the changed code for APIs outside the supported subset.
-3. Check that all referenced source files are present in the JavaRush project.
+3. Check that all referenced source files (including newly added ones) are present in the
+   JavaRush project.
 4. Publish, or at minimum test the game locally with the JavaRush engine jar.
 5. Do not treat “compiles locally” as “publishes on JavaRush.”

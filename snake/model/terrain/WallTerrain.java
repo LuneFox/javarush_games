@@ -8,11 +8,7 @@ import com.javarush.games.snake.view.Sign;
 
 public class WallTerrain extends Terrain {
     public WallTerrain(int x, int y) {
-        super(x, y);
-        this.type = TerrainType.WALL;
-        this.color = Color.WHITE;
-        this.backgroundColor = Color.GRAY;
-        this.sign = Sign.getSign(Sign.TERRAIN_WALL);
+        super(x, y, TerrainType.WALL, Color.WHITE, Color.GRAY, Sign.TERRAIN_WALL);
     }
 
     @Override
@@ -25,6 +21,6 @@ public class WallTerrain extends Terrain {
         if (snakeElement == Element.ALMIGHTY) return;
 
         snake.kill();
-        game.setGameOverReason(Strings.GAME_OVER_BUMPED.get());
+        game.setGameOverReason(Strings.GAME_OVER_BUMPED);
     }
 }

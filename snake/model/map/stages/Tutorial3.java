@@ -74,12 +74,10 @@ public class Tutorial3 extends Stage {
 
     @Override
     public boolean isCompleted() {
-        if (Arrays.stream(terrainMatrix)
+        final boolean isFireExtinguished = Arrays.stream(terrainMatrix)
                 .flatMap(Arrays::stream)
-                .noneMatch(terrain -> terrain instanceof FireTerrain)) {
-            isClear = true;
-            return true;
-        }
-        return false;
+                .noneMatch(terrain -> terrain instanceof FireTerrain);
+
+        return completeIf(isFireExtinguished);
     }
 }

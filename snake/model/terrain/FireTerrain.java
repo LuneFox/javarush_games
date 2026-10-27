@@ -10,11 +10,7 @@ import com.javarush.games.snake.view.Sign;
 
 public class FireTerrain extends Terrain {
     public FireTerrain(int x, int y) {
-        super(x, y);
-        this.type = TerrainType.FIRE;
-        this.color = Color.YELLOW;
-        this.backgroundColor = Color.ORANGERED;
-        this.sign = Sign.getSign(Sign.TERRAIN_FIRE);
+        super(x, y, TerrainType.FIRE, Color.YELLOW, Color.ORANGERED, Sign.TERRAIN_FIRE);
     }
 
     @Override
@@ -29,15 +25,13 @@ public class FireTerrain extends Terrain {
             case NEUTRAL:
             case EARTH:
                 snake.kill();
-                game.setGameOverReason(Strings.GAME_OVER_BURNED.get());
+                game.setGameOverReason(Strings.GAME_OVER_BURNED);
                 break;
             case WATER:
                 final Stage stage = game.getStage();
                 final GameObject newHead = snake.getNewHead();
-                final int x = newHead.x;
-                final int y = newHead.y;
-                stage.putTerrain(x, y, TerrainType.WOOD);
-                stage.getTerrain(x, y).isWet = true;
+                stage.putTerrain(newHead.x, newHead.y, TerrainType.WOOD);
+                stage.getTerrain(newHead.x, newHead.y).makeWet();
                 break;
             default:
                 break;
