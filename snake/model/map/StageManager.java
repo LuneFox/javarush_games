@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/** Список уровней и текущий выбранный уровень. */
 public class StageManager {
     private static final List<Stage> stages;
     private static final Stage emptyStage;
@@ -38,6 +39,7 @@ public class StageManager {
         initializeStages();
     }
 
+    /** Инициализирует все уровни при старте. */
     private static void initializeStages() {
         for (Stage stage : stages) {
             stage.initialize();
@@ -45,18 +47,22 @@ public class StageManager {
         emptyStage.initialize();
     }
 
+    /** Возвращает текущий уровень. */
     public static Stage getCurrentStage() {
         return stages.get(currentStageIndex);
     }
 
+    /** Возвращает пустой уровень для редактора. */
     public static Stage getEmptyStage() {
         return emptyStage;
     }
 
+    /** Выбирает следующий уровень по кругу. */
     public static void selectNextStage() {
         currentStageIndex = (currentStageIndex + 1) % stages.size();
     }
 
+    /** Выбирает предыдущий уровень по кругу. */
     public static void selectPreviousStage() {
         currentStageIndex = (currentStageIndex - 1 + stages.size()) % stages.size();
     }

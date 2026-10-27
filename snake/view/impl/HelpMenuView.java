@@ -9,6 +9,7 @@ import com.javarush.games.snake.view.View;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/** Экран помощи с листанием. */
 public class HelpMenuView extends View {
     private static final int PAGINATION_Y = 30;
 
@@ -17,14 +18,16 @@ public class HelpMenuView extends View {
     private final ArrayList<HelpPage> helpPages = new ArrayList<>();
     private int currentPageIndex;
 
+    /** Возвращает единственный экземпляр. */
     public static HelpMenuView getInstance() {
         if (instance == null) instance = new HelpMenuView();
         return instance;
     }
 
+    /** Собирает страницы и рисует текущую. */
     @Override
     public void update() {
-        // Pages are rebuilt on every update, so they follow the current language and symbol set.
+        // Страницы пересобираются при обновлении, чтобы учитывать язык и набор символов.
         helpPages.clear();
         Collections.addAll(helpPages,
                 HelpPage.getGoals(),
@@ -40,12 +43,14 @@ public class HelpMenuView extends View {
         Message.print(-1, PAGINATION_Y, pagination, Color.WHITE);
     }
 
+    /** Листает вперёд. */
     public void showNextPage() {
         if (currentPageIndex + 1 < helpPages.size()) {
             currentPageIndex++;
         }
     }
 
+    /** Листает назад. */
     public void showPreviousPage() {
         if (currentPageIndex > 0) {
             currentPageIndex--;

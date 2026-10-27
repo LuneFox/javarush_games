@@ -8,11 +8,14 @@ import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.map.WormHole;
 import com.javarush.games.snake.model.orbs.Orb;
 
+/** Второй обычный уровень. */
 public class Stage2 extends Stage {
+    /** Создаёт второй уровень. */
     public Stage2() {
         super(Strings.STAGE_LEVEL_2);
     }
 
+    /** Задаёт карту уровня кодами местности. */
     @Override
     protected void createTerrainCodeMatrix() {
         terrainCodeMatrix = new int[][]{VOID_ROW, VOID_ROW, VOID_ROW, VOID_ROW,
@@ -47,6 +50,7 @@ public class Stage2 extends Stage {
         };
     }
 
+    /** Расставляет орбы уровня. */
     @Override
     protected void createOrbs() {
         orbs.add(Orb.create(23, 6, Element.WATER));
@@ -56,6 +60,7 @@ public class Stage2 extends Stage {
         orbs.add(Orb.create(2, 29, Element.ALMIGHTY));
     }
 
+    /** Задаёт червоточины уровня. */
     @Override
     protected void createWormHoles() {
         wormHoles.add(new WormHole(14, 7, 4, 14));
@@ -64,18 +69,21 @@ public class Stage2 extends Stage {
         wormHoles.add(new WormHole(11, 6, 17, 6));
     }
 
+    /** Задаёт стартовую точку и направление змейки. */
     @Override
     protected void defineSnakeStartingPlace() {
         snakeStartPlace = new Coordinate(27, 4);
         snakeStartDirection = Direction.LEFT;
     }
 
+    /** Формирует тексты брифинга и завершения. */
     @Override
     protected void createMessages() {
         briefingMessage = Strings.LEVEL_BRIEFING.format(getName());
         completeMessage = Strings.LEVEL_COMPLETE.format(getName());
     }
 
+    /** Проверяет условие прохождения уровня. */
     @Override
     public boolean isCompleted() {
         return completeIf(game.getSnake().getAlmightyPower() <= 0);

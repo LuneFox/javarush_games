@@ -10,6 +10,7 @@ import com.javarush.games.snake.view.Sign;
 
 import java.util.Date;
 
+/** Клетка местности и её реакция на змейку. */
 public abstract class Terrain extends GameObject implements Drawable {
     public static final int FIELD = 0;
     public static final int WOOD = 1;
@@ -35,12 +36,14 @@ public abstract class Terrain extends GameObject implements Drawable {
     private Date startedToDryTimestamp;
     private boolean isWet;
 
+    /** Создаёт местность по коду или типу. */
     public static Terrain create(int x, int y, TerrainType type) {
         return create(x, y, type.ordinal());
     }
 
+    /** Создаёт местность по коду или типу. */
     public static Terrain create(int x, int y, int terrainCode) {
-        // Terrain codes match the declaration order of TerrainType.
+        // Коды местности соответствуют порядку объявления TerrainType.
         switch (terrainCode) {
             case FIELD:
                 return new FieldTerrain(x, y);
@@ -66,6 +69,7 @@ public abstract class Terrain extends GameObject implements Drawable {
         }
     }
 
+    /** Создаёт клетку местности с заданным видом. */
     protected Terrain(int x, int y, TerrainType type, Color color, Color backgroundColor, Sign symbol) {
         super(x, y);
         this.type = type;
@@ -75,11 +79,13 @@ public abstract class Terrain extends GameObject implements Drawable {
         restartDryingTimer();
     }
 
+    /** Рисует клетку местности. */
     @Override
     public void draw(Game target) {
         target.setCellValueEx(x, y, backgroundColor, sign, color, SYMBOL_TEXT_SIZE);
     }
 
+    /** Реагирует на попадание змейки в клетку. */
     public void interact(Snake snake) {
         if (snake.getElement() == Element.ALMIGHTY) {
             snake.decreaseAlmightyPower();
@@ -89,6 +95,7 @@ public abstract class Terrain extends GameObject implements Drawable {
         refillSnakeBreath(snake);
     }
 
+    /** Превращает клетку в пустоту и даёт очко. */
     private void turnToVoid() {
         if (this instanceof VoidTerrain) return;
 
@@ -96,20 +103,24 @@ public abstract class Terrain extends GameObject implements Drawable {
         game.getScore().add(POINTS_PER_DESTROYED_TERRAIN);
     }
 
+    /** Восстанавливает воздух змейки (кроме воды). */
     private void refillSnakeBreath(Snake snake) {
         if (this instanceof WaterTerrain) return;
 
         snake.takeFullBreath();
     }
 
+    /** Заменяет клетку другой местностью. */
     private void replaceWith(TerrainType terrainType) {
         game.getStage().putTerrain(x, y, terrainType);
     }
 
+    /** Применяет пассивный эффект клетки за ход. */
     public void applyPassiveEffect() {
-        // Do nothing by default
+        // По умолчанию ничего не делает
     }
 
+    /** Поджигает клетку от соседнего огня. */
     protected final void igniteFromAdjacentFire() {
         if (!hasAdjacentFire()) {
             restartDryingTimer();
@@ -121,6 +132,7 @@ public abstract class Terrain extends GameObject implements Drawable {
         }
     }
 
+    /** Есть ли рядом огонь. */
     private boolean hasAdjacentFire() {
         final Terrain[][] matrix = game.getStage().getTerrainMatrix();
 
@@ -141,6 +153,7 @@ public abstract class Terrain extends GameObject implements Drawable {
         return false;
     }
 
+    /** Достаточно ли клетка высохла для огня. */
     private boolean isDryEnoughToBurn() {
         final long dryingTime = isWet
                 ? Math.max(game.getSnake().getLength() * WET_DRYING_TIME_PER_SEGMENT_MS, DRYING_TIME_MS)
@@ -150,15 +163,18 @@ public abstract class Terrain extends GameObject implements Drawable {
         return timePassed > dryingTime;
     }
 
+    /** Начинает отсчёт высыхания заново. */
     private void restartDryingTimer() {
         startedToDryTimestamp = new Date();
     }
 
+    /** Делает клетку мокрой и сбрасывает таймер. */
     public void makeWet() {
         isWet = true;
         restartDryingTimer();
     }
 
+    /** Возвращает тип местности. */
     public TerrainType getType() {
         return type;
     }

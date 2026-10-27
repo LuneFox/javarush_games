@@ -8,6 +8,7 @@ import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;
 
+/** Игровое поле и HUD. */
 public class GameFieldView extends View {
     private static final int HUNGER_BAR_X = 10;
     private static final int HUNGER_BAR_Y = 0;
@@ -25,11 +26,13 @@ public class GameFieldView extends View {
 
     private static GameFieldView instance;
 
+    /** Возвращает единственный экземпляр. */
     public static GameFieldView getInstance() {
         if (instance == null) instance = new GameFieldView();
         return instance;
     }
 
+    /** Обновляет поле, орбы, змейку и HUD. */
     @Override
     public void update() {
         drawField();
@@ -38,6 +41,7 @@ public class GameFieldView extends View {
         drawInterface();
     }
 
+    /** Рисует все клетки поля. */
     public void drawField() {
         for (int x = 0; x < SnakeGame.SIZE; x++) {
             for (int y = 0; y < SnakeGame.SIZE; y++) {
@@ -46,14 +50,17 @@ public class GameFieldView extends View {
         }
     }
 
+    /** Рисует орбы. */
     private void drawOrbs() {
         game.getStage().getOrbs().forEach(orb -> orb.draw(game));
     }
 
+    /** Рисует змейку. */
     private void drawSnake() {
         game.getSnake().draw(game);
     }
 
+    /** Рисует HUD. */
     private void drawInterface() {
         final Snake snake = game.getSnake();
 
@@ -70,6 +77,7 @@ public class GameFieldView extends View {
         }
     }
 
+    /** Рисует шкалу голода. */
     private void drawHungerBar() {
         final int hungerLeft = Snake.MAX_HUNGER - game.getSnake().getHunger();
 
@@ -81,16 +89,19 @@ public class GameFieldView extends View {
         }
     }
 
+    /** Пуст ли сегмент шкалы голода. */
     private boolean isBarSegmentEmpty(int hungerLeft, int segment) {
         return hungerLeft / HUNGER_POINTS_PER_SEGMENT <= segment;
     }
 
+    /** Цвет шкалы по остатку голода. */
     private Color hungerColor(int hungerLeft) {
         if (hungerLeft > HUNGER_GREEN_ABOVE) return Color.GREEN;
         if (hungerLeft > HUNGER_YELLOW_ABOVE) return Color.YELLOW;
         return Color.RED;
     }
 
+    /** Рисует панель стихий. */
     public void drawElementsPanel() {
         final Snake snake = game.getSnake();
         final Element currentElement = snake.getElement();
@@ -109,6 +120,7 @@ public class GameFieldView extends View {
         }
     }
 
+    /** X-позиция стихии на панели. */
     private int elementPanelX(Element element) {
         switch (element) {
             case NEUTRAL:
@@ -128,6 +140,7 @@ public class GameFieldView extends View {
         }
     }
 
+    /** Цвет стихии на панели. */
     private Color elementColor(Element element) {
         switch (element) {
             case NEUTRAL:
@@ -147,6 +160,7 @@ public class GameFieldView extends View {
         }
     }
 
+    /** Показывает надпись «спит». */
     public void drawSleepingLabel() {
         Message.print(-1, SLEEPING_LABEL_Y - 1, SLEEPING_LABEL_BORDER, Color.WHITE);
         Message.print(-1, SLEEPING_LABEL_Y, Strings.GAME_SLEEPING.get(), Color.WHITE);

@@ -7,11 +7,14 @@ import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.map.WormHole;
 import com.javarush.games.snake.view.Sign;
 
+/** Червоточина для земляной змейки. */
 public class WormholeTerrain extends Terrain {
+    /** Создаёт клетку червоточины. */
     public WormholeTerrain(int x, int y) {
         super(x, y, TerrainType.WORMHOLE, Color.PURPLE, Color.BLACK, Sign.TERRAIN_WORMHOLE);
     }
 
+    /** Реагирует на попадание змейки в клетку. */
     @Override
     public void interact(Snake snake) {
         super.interact(snake);
@@ -29,6 +32,7 @@ public class WormholeTerrain extends Terrain {
         }
     }
 
+    /** Переносит змейку между входом и выходом. */
     private void warp(Snake snake) {
         final Stage stage = game.getStage();
 

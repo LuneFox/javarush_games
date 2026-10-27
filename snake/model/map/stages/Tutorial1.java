@@ -8,11 +8,14 @@ import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.view.Sign;
 
+/** Обучение 1: сбор нейтральных орбов. */
 public class Tutorial1 extends Stage {
+    /** Создаёт первый обучающий уровень. */
     public Tutorial1() {
         super(Strings.STAGE_TUTORIAL_1);
     }
 
+    /** Задаёт карту уровня кодами местности. */
     @Override
     protected void createTerrainCodeMatrix() {
         terrainCodeMatrix = new int[][]{VOID_ROW, VOID_ROW, VOID_ROW, VOID_ROW,
@@ -47,6 +50,7 @@ public class Tutorial1 extends Stage {
         };
     }
 
+    /** Расставляет орбы уровня. */
     @Override
     protected void createOrbs() {
         orbs.add(Orb.create(10, 10, Element.NEUTRAL));
@@ -55,22 +59,26 @@ public class Tutorial1 extends Stage {
         orbs.add(Orb.create(25, 25, Element.NEUTRAL));
     }
 
+    /** Задаёт червоточины уровня. */
     @Override
     protected void createWormHoles() {
     }
 
+    /** Задаёт стартовую точку и направление змейки. */
     @Override
     protected void defineSnakeStartingPlace() {
         snakeStartPlace = new Coordinate(3, 27);
         snakeStartDirection = Direction.UP;
     }
 
+    /** Формирует тексты брифинга и завершения. */
     @Override
     protected void createMessages() {
         briefingMessage = Strings.TUTORIAL_1_BRIEFING.format(getName(), Sign.getSign(Sign.ORB_NEUTRAL));
         completeMessage = Strings.TUTORIAL_1_COMPLETE.format(getName());
     }
 
+    /** Проверяет условие прохождения уровня. */
     @Override
     public boolean isCompleted() {
         return completeIf(orbs.size() <= 1);

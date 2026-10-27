@@ -7,11 +7,14 @@ import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.view.Sign;
 
+/** Деревянный пол: горит и намокает. */
 public class WoodTerrain extends Terrain {
+    /** Создаёт деревянный пол. */
     public WoodTerrain(int x, int y) {
         super(x, y, TerrainType.WOOD, Color.SANDYBROWN, Color.SADDLEBROWN, Sign.TERRAIN_WOOD);
     }
 
+    /** Реагирует на попадание змейки в клетку. */
     @Override
     public void interact(Snake snake) {
         super.interact(snake);
@@ -36,6 +39,7 @@ public class WoodTerrain extends Terrain {
         }
     }
 
+    /** Применяет пассивный эффект клетки за ход. */
     @Override
     public void applyPassiveEffect() {
         igniteFromAdjacentFire();

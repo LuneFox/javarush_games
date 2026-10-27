@@ -16,6 +16,7 @@ import com.javarush.games.snake.view.impl.GameFieldView;
 
 import java.util.Date;
 
+/** Главный класс игры: состояние, ход, таймер и ввод. */
 public class SnakeGame extends Game {
     public static final int SIZE = 32;
     public static final int HUD_ROWS = 4;
@@ -42,13 +43,15 @@ public class SnakeGame extends Game {
     private boolean isStopped;
     private boolean isPaused;
 
+    /** Возвращает единственный экземпляр игры. */
     public static SnakeGame getInstance() {
         return instance;
     }
 
+    /** Настраивает экран, контроллер и стартовое меню. */
     public void initialize() {
-        // Other game classes capture getInstance() in their static fields,
-        // so the instance must be published before they are loaded.
+        // Другие классы игры сохраняют getInstance() в статических полях,
+        // поэтому экземпляр нужно опубликовать до их загрузки.
         instance = this;
         controller = new Controller();
 
@@ -58,6 +61,7 @@ public class SnakeGame extends Game {
         Phase.proceed(Phase.MAIN_MENU);
     }
 
+    /** Начинает новую игру на текущем уровне. */
     public final void createGame() {
         loadStage();
         createSnake();
@@ -65,16 +69,19 @@ public class SnakeGame extends Game {
         setTurnTimer(turnDelay);
     }
 
+    /** Загружает текущий уровень из менеджера уровней. */
     public void loadStage() {
         stage = StageManager.getCurrentStage();
     }
 
+    /** Создаёт змейку в стартовой точке уровня. */
     private void createSnake() {
         final Coordinate start = stage.getSnakeStartPlace();
 
         snake = new Snake(this, start.x, start.y, stage.getSnakeStartDirection());
     }
 
+    /** Сбрасывает счёт, уровень и флаги перед игрой. */
     private void resetGameState() {
         score.reset();
         stage.initialize();
@@ -85,6 +92,7 @@ public class SnakeGame extends Game {
         GameFieldControlStrategy.getInstance().reset();
     }
 
+    /** Обрабатывает один тик игрового таймера. */
     public void onTurn(int step) {
         if (isStopped || isPaused) return;
 
@@ -101,10 +109,11 @@ public class SnakeGame extends Game {
         Phase.proceed(Phase.GAME_FIELD);
     }
 
+    /** Выполняет ход змейки и обновление мира. */
     private void performTurn() {
         snake.move();
 
-        // A dead snake must not eat orbs or change the world anymore.
+        // Мёртвая змея не должна есть орбы и менять мир.
         if (!snake.isAlive()) {
             checkGameState();
             return;
@@ -115,6 +124,7 @@ public class SnakeGame extends Game {
         checkGameState();
     }
 
+    /** Применяет пассивные эффекты всех клеток поля. */
     private void applyPassiveTerrainEffects() {
         for (int x = 0; x < SIZE; x++) {
             for (int y = 0; y < SIZE; y++) {
@@ -123,6 +133,7 @@ public class SnakeGame extends Game {
         }
     }
 
+    /** Проверяет смерть змейки и прохождение уровня. */
     private void checkGameState() {
         if (!snake.isAlive()) {
             gameOver();
@@ -131,6 +142,7 @@ public class SnakeGame extends Game {
         }
     }
 
+    /** Останавливает игру и показывает причину смерти. */
     private void gameOver() {
         isStopped = true;
         stopTurnTimer();
@@ -140,6 +152,7 @@ public class SnakeGame extends Game {
         showMessageDialog(Color.YELLOW, reason.get(), Color.RED, GAME_OVER_TEXT_SIZE);
     }
 
+    /** Останавливает игру, показывает прохождение и берёт следующий уровень. */
     private void win() {
         isStopped = true;
         stopTurnTimer();
@@ -148,15 +161,18 @@ public class SnakeGame extends Game {
         StageManager.selectNextStage();
     }
 
+    /** Восстанавливает обычную задержку хода. */
     public void applyNormalTurnDelay() {
         this.turnDelay = getNormalTurnDelay();
     }
 
+    /** Вычисляет обычную задержку по длине змейки. */
     public int getNormalTurnDelay() {
         int delay = MAX_TURN_DELAY - snake.getLength() * TURN_DELAY_STEP;
         return Math.max(delay, MIN_TURN_DELAY);
     }
 
+    /** Ставит игру на паузу или снимает её. */
     public void togglePause() {
         isPaused = !isPaused;
 
@@ -168,67 +184,79 @@ public class SnakeGame extends Game {
         }
     }
 
+    /** Считает бонус за орб по времени с начала уровня. */
     public long calculateOrbBonus() {
         long secondsInStage = (currentTimeMillis() - stage.getStartTimeMillis()) / 1000;
         return Math.max(MAX_ORB_BONUS - secondsInStage, 0);
     }
 
+    /** Проверяет, находится ли клетка вне игрового поля. */
     public static boolean isOutOfBounds(int x, int y) {
         return x < PLAYFIELD_MIN_X || x > PLAYFIELD_MAX_X
                 || y < PLAYFIELD_MIN_Y || y > PLAYFIELD_MAX_Y;
     }
 
+    /** Возвращает текущее время в миллисекундах. */
     private static long currentTimeMillis() {
         return new Date().getTime();
     }
 
+    /** Остановлена ли игра. */
     public boolean isStopped() {
         return isStopped;
     }
 
+    /** Возвращает змейку. */
     public Snake getSnake() {
         return snake;
     }
 
+    /** Возвращает счёт текущей игры. */
     public Score getScore() {
         return score;
     }
 
+    /** Задаёт задержку между ходами. */
     public void setTurnDelay(int turnDelay) {
         this.turnDelay = turnDelay;
     }
 
+    /** Запоминает причину смерти для финального сообщения. */
     public void setGameOverReason(Strings reason) {
         this.gameOverReason = reason;
     }
 
+    /** Подменяет текущий уровень (используется редактором). */
     public void setStage(Stage stage) {
         this.stage = stage;
     }
 
+    /** Возвращает текущий уровень. */
     public Stage getStage() {
         return stage;
     }
 
-    /*
-     * Controls
-     */
+    /* Управление */
 
+    /** Передаёт нажатие клавиши контроллеру. */
     @Override
     public void onKeyPress(Key key) {
         controller.pressKey(key);
     }
 
+    /** Передаёт отпускание клавиши контроллеру. */
     @Override
     public void onKeyReleased(Key key) {
         controller.releaseKey(key);
     }
 
+    /** Передаёт левый клик контроллеру. */
     @Override
     public void onMouseLeftClick(int x, int y) {
         controller.leftClick(x, y);
     }
 
+    /** Передаёт правый клик контроллеру. */
     @Override
     public void onMouseRightClick(int x, int y) {
         controller.rightClick(x, y);

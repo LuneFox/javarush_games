@@ -9,17 +9,21 @@ import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.view.Sign;
 
+/** Лес: убивает змейку, горит от огня. */
 public class ForestTerrain extends Terrain {
+    /** Создаёт клетку леса. */
     public ForestTerrain(int x, int y) {
         super(x, y, TerrainType.FOREST, Color.LIGHTGREEN, Color.FORESTGREEN, randomForestSign());
     }
 
+    /** Случайно выбирает символ леса. */
     private static Sign randomForestSign() {
         final SnakeGame game = SnakeGame.getInstance();
 
         return game.getRandomNumber(2) == 1 ? Sign.TERRAIN_FOREST_1 : Sign.TERRAIN_FOREST_2;
     }
 
+    /** Реагирует на попадание змейки в клетку. */
     @Override
     public void interact(Snake snake) {
         super.interact(snake);
@@ -41,6 +45,7 @@ public class ForestTerrain extends Terrain {
         game.setGameOverReason(Strings.GAME_OVER_EATEN);
     }
 
+    /** Применяет пассивный эффект клетки за ход. */
     @Override
     public void applyPassiveEffect() {
         igniteFromAdjacentFire();

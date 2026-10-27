@@ -9,13 +9,16 @@ import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.model.orbs.Orb;
 import com.javarush.games.snake.view.Sign;
 
+/** Обучение 2: переправа через реку. */
 public class Tutorial2 extends Stage {
     private static final int CROSSED_RIVER_X = 22;
 
+    /** Создаёт второй обучающий уровень. */
     public Tutorial2() {
         super(Strings.STAGE_TUTORIAL_2);
     }
 
+    /** Задаёт карту уровня кодами местности. */
     @Override
     protected void createTerrainCodeMatrix() {
         terrainCodeMatrix = new int[][]{VOID_ROW, VOID_ROW, VOID_ROW, VOID_ROW,
@@ -50,6 +53,7 @@ public class Tutorial2 extends Stage {
         };
     }
 
+    /** Расставляет орбы уровня. */
     @Override
     protected void createOrbs() {
         orbs.add(Orb.create(2, 6, Element.NEUTRAL));
@@ -63,22 +67,26 @@ public class Tutorial2 extends Stage {
         orbs.add(Orb.create(25, 16, Element.ALMIGHTY));
     }
 
+    /** Задаёт червоточины уровня. */
     @Override
     protected void createWormHoles() {
     }
 
+    /** Задаёт стартовую точку и направление змейки. */
     @Override
     protected void defineSnakeStartingPlace() {
         snakeStartPlace = new Coordinate(3, 27);
         snakeStartDirection = Direction.UP;
     }
 
+    /** Формирует тексты брифинга и завершения. */
     @Override
     protected void createMessages() {
         briefingMessage = Strings.TUTORIAL_2_BRIEFING.format(getName(), Sign.getSign(Sign.TERRAIN_WATER));
         completeMessage = Strings.TUTORIAL_2_COMPLETE.format(getName());
     }
 
+    /** Проверяет условие прохождения уровня. */
     @Override
     public boolean isCompleted() {
         final GameObject snakeHead = game.getSnake().getNewHead();

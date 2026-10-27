@@ -10,15 +10,18 @@ import com.javarush.games.snake.model.enums.Element;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Страница помощи: строки и объекты поля. */
 public class HelpPage {
     private final List<Message> messages;
     private final List<Drawable> boardObjects;
 
+    /** Создаёт пустую страницу. */
     private HelpPage() {
         this.messages = new ArrayList<>();
         this.boardObjects = new ArrayList<>();
     }
 
+    /** Страница «Цели игры». */
     public static HelpPage getGoals() {
         HelpPage result = new HelpPage();
 
@@ -42,6 +45,7 @@ public class HelpPage {
         return result;
     }
 
+    /** Страница «Возможности змеи». */
     public static HelpPage getSnakeAbilities() {
         HelpPage result = new HelpPage();
 
@@ -62,6 +66,7 @@ public class HelpPage {
         return result;
     }
 
+    /** Страница «Виды местности». */
     public static HelpPage getTypesOfTerrain() {
         HelpPage result = new HelpPage();
 
@@ -89,6 +94,7 @@ public class HelpPage {
         return result;
     }
 
+    /** Страница «Правила и советы (1)». */
     public static HelpPage getTips1() {
         HelpPage result = new HelpPage();
 
@@ -107,6 +113,7 @@ public class HelpPage {
         return result;
     }
 
+    /** Страница «Правила и советы (2)». */
     public static HelpPage getTips2() {
         HelpPage result = new HelpPage();
 
@@ -125,6 +132,7 @@ public class HelpPage {
         return result;
     }
 
+    /** Страница «Управление». */
     public static HelpPage getControls() {
         HelpPage result = new HelpPage();
 
@@ -145,6 +153,7 @@ public class HelpPage {
         return result;
     }
 
+    /** Рисует строки и объекты страницы. */
     public void draw(SnakeGame game) {
         messages.forEach(Message::draw);
         boardObjects.forEach(object -> object.draw(game));

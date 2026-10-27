@@ -6,11 +6,14 @@ import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.view.Sign;
 
+/** Вода: не-водяная змейка может утонуть. */
 public class WaterTerrain extends Terrain {
+    /** Создаёт клетку воды. */
     public WaterTerrain(int x, int y) {
         super(x, y, TerrainType.WATER, Color.LIGHTBLUE, Color.DEEPSKYBLUE, Sign.TERRAIN_WATER);
     }
 
+    /** Реагирует на попадание змейки в клетку. */
     @Override
     public void interact(Snake snake) {
         super.interact(snake);

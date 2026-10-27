@@ -8,14 +8,14 @@ import com.javarush.games.snake.view.impl.MainMenuView;
 import com.javarush.games.snake.view.impl.MapEditorView;
 import com.javarush.games.snake.view.impl.OptionsMenuView;
 
-/**
- * Maps a game phase to the screen that renders it.
- */
+/** Сопоставляет фазу игры и экран. */
 public final class ViewFactory {
 
+    /** Утилитный класс, создавать не нужно. */
     private ViewFactory() {
     }
 
+    /** Возвращает экран для фазы. */
     public static View getView(Phase phase) {
         switch (phase) {
             case MAIN_MENU:

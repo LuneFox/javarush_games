@@ -8,11 +8,14 @@ import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.view.Sign;
 
+/** Огонь: сжигает змейку и плавит воду. */
 public class FireTerrain extends Terrain {
+    /** Создаёт клетку огня. */
     public FireTerrain(int x, int y) {
         super(x, y, TerrainType.FIRE, Color.YELLOW, Color.ORANGERED, Sign.TERRAIN_FIRE);
     }
 
+    /** Реагирует на попадание змейки в клетку. */
     @Override
     public void interact(Snake snake) {
         super.interact(snake);

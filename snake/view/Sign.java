@@ -1,5 +1,6 @@
 package com.javarush.games.snake.view;
 
+/** Наборы символов для объектов (кандзи или эмодзи). */
 public enum Sign {
     SNAKE_HEAD(new String[]{"頭", "\uD83D\uDC32"}),
     SNAKE_DEAD(new String[]{"死", "\uD83D\uDC80"}),
@@ -31,22 +32,27 @@ public enum Sign {
         setUsedType(SignType.KANJI);
     }
 
+    /** Хранит варианты символа. */
     Sign(String[] appearances) {
         this.appearances = appearances;
     }
 
+    /** Переключает набор символов. */
     public static void switchSet() {
         usedType = (usedType == SignType.KANJI) ? SignType.EMOJI : SignType.KANJI;
     }
 
+    /** Возвращает символ в текущем наборе. */
     public static String getSign(Sign sign) {
         return sign.appearances[usedType.ordinal()];
     }
 
+    /** Задаёт набор символов. */
     public static void setUsedType(SignType type) {
         Sign.usedType = type;
     }
 
+    /** Возвращает текущий набор. */
     public static SignType getUsedType() {
         return usedType;
     }

@@ -5,26 +5,31 @@ import com.javarush.games.snake.model.Phase;
 import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.view.impl.HelpMenuView;
 
+/** Управление экраном помощи. */
 public class HelpMenuControlStrategy implements ControlStrategy {
     private static HelpMenuControlStrategy instance;
 
+    /** Возвращает единственный экземпляр. */
     public static HelpMenuControlStrategy getInstance() {
         if (instance == null) instance = new HelpMenuControlStrategy();
         return instance;
     }
 
+    /** Листает страницы помощи вперёд. */
     @Override
     public void pressRight() {
         HelpMenuView.getInstance().showNextPage();
         Phase.proceed(Phase.HELP_MENU);
     }
 
+    /** Листает страницы помощи назад. */
     @Override
     public void pressLeft() {
         HelpMenuView.getInstance().showPreviousPage();
         Phase.proceed(Phase.HELP_MENU);
     }
 
+    /** Возвращает в главное меню. */
     @Override
     public void pressEscape() {
         MenuSelector.loadLastPointerPosition();

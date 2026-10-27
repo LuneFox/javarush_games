@@ -13,6 +13,7 @@ import com.javarush.games.snake.view.impl.GameFieldView;
 import java.util.Date;
 import java.util.LinkedList;
 
+/** Змейка: сегменты, стихия, движение и взаимодействие с полем. */
 public class Snake implements Drawable {
     public static final int MAX_HUNGER = 100;
     public static final int FULL_ALMIGHTY_POWER = 301;
@@ -41,6 +42,7 @@ public class Snake implements Drawable {
     private boolean isAlive;
     private boolean canChangeElement;
 
+    /** Создаёт змейку из трёх сегментов в заданной точке. */
     public Snake(SnakeGame game, int x, int y, Direction direction) {
         this.game = game;
         this.direction = direction;
@@ -56,16 +58,19 @@ public class Snake implements Drawable {
         addInitialParts(x, y, direction);
     }
 
+    /** Добавляет стихию в доступные. */
     public final void learnElement(Element element) {
         if (availableElements.contains(element)) return;
         availableElements.add(element);
     }
 
+    /** Делает стихию текущей и обновляет цвета. */
     private void setElement(Element element) {
         this.element = element;
         bodyColors = bodyColorsFor(element);
     }
 
+    /** Возвращает цвета тела для стихии. */
     private Color[] bodyColorsFor(Element element) {
         switch (element) {
             case NEUTRAL:
@@ -87,6 +92,7 @@ public class Snake implements Drawable {
         }
     }
 
+    /** Добавляет стартовые сегменты позади головы. */
     private void addInitialParts(int x, int y, Direction direction) {
         for (int i = 0; i < MIN_LENGTH; i++) {
             snakeParts.addLast(new GameObject(
@@ -95,6 +101,7 @@ public class Snake implements Drawable {
         }
     }
 
+    /** Рисует сегменты змейки в клетках поля. */
     @Override
     public void draw(Game target) {
         final String headSign = isAlive ? Sign.getSign(Sign.SNAKE_HEAD) : Sign.getSign(Sign.SNAKE_DEAD);
@@ -112,6 +119,7 @@ public class Snake implements Drawable {
         }
     }
 
+    /** Делает шаг: голова, проверки, местность и хвост. */
     public void move() {
         newHead = createNewHead();
 
@@ -130,6 +138,7 @@ public class Snake implements Drawable {
         canChangeElement = true;
     }
 
+    /** Создаёт клетку новой головы по направлению. */
     private GameObject createNewHead() {
         final GameObject head = snakeParts.get(0);
         final GameObject headCandidate = new GameObject(
@@ -143,6 +152,7 @@ public class Snake implements Drawable {
         return headCandidate;
     }
 
+    /** Переносит голову на противоположный край (всемогущая). */
     private void wrapAroundField(GameObject headCandidate) {
         if (headCandidate.x > MAX_X) headCandidate.x = MIN_X;
         if (headCandidate.x < MIN_X) headCandidate.x = MAX_X;
@@ -150,6 +160,7 @@ public class Snake implements Drawable {
         if (headCandidate.y < MIN_Y) headCandidate.y = MAX_Y;
     }
 
+    /** Убивает змейку при выходе за поле. */
     private void checkBorders() {
         if (SnakeGame.isOutOfBounds(newHead.x, newHead.y)) {
             kill();
@@ -157,10 +168,11 @@ public class Snake implements Drawable {
         }
     }
 
+    /** Убивает змейку при укусе собственного тела. */
     private void checkBiteSelf() {
         if (element == Element.ALMIGHTY) return;
 
-        // The last segment leaves its cell during this very turn, so it must not be checked.
+        // Последний сегмент покидает клетку в этом же ходу, поэтому его не проверяем.
         for (int i = 0; i < snakeParts.size() - 1; i++) {
             GameObject part = snakeParts.get(i);
 
@@ -172,17 +184,20 @@ public class Snake implements Drawable {
         }
     }
 
+    /** Помечает змейку мёртвой и меняет её вид. */
     public void kill() {
         isAlive = false;
         setElement(Element.DEAD);
     }
 
+    /** Передаёт клетку под новой головой местности. */
     private void interactWithTerrain() {
         if (SnakeGame.isOutOfBounds(newHead.x, newHead.y)) return;
 
         game.getStage().getTerrain(newHead.x, newHead.y).interact(this);
     }
 
+    /** Начисляет голод и отнимает хвост при переедании. */
     private void applyStarvation() {
         if (element == Element.ALMIGHTY) return;
         if (!starvationIntervalPassed()) return;
@@ -197,38 +212,44 @@ public class Snake implements Drawable {
         }
     }
 
+    /** Прошёл ли интервал между начислениями голода. */
     private boolean starvationIntervalPassed() {
         return new Date().getTime() - starvingTimestamp.getTime() > STARVATION_INTERVAL_MS;
     }
 
+    /** Убирает последний сегмент, если длина позволяет. */
     public void loseTail() {
         if (snakeParts.size() <= MIN_LENGTH) return;
         snakeParts.removeLast();
     }
 
+    /** Сбрасывает голод и удлиняет змейку. */
     public void eat() {
         hunger = 0;
         elongateTail();
     }
 
+    /** Добавляет сегмент в хвост. */
     private void elongateTail() {
         final GameObject tail = snakeParts.getLast();
         snakeParts.addLast(new GameObject(tail.x, tail.y));
         breath++;
     }
 
+    /** Стоит ли голова на орбе (воздушная змейка не ест). */
     public boolean isHeadTouchingOrb(Orb orb) {
         if (newHead == null) return false;
 
         return newHead.x == orb.x && newHead.y == orb.y && element != Element.AIR;
     }
 
+    /** Принудительно делает стихию текущей. */
     public void switchToElement(Element target) {
         if (!availableElements.contains(target)) {
             availableElements.add(target);
         }
 
-        // The loop always finishes: the target is guaranteed to be in the non-empty list.
+        // Цикл конечен: целевая стихия гарантированно есть в непустом списке.
         while (availableElements.getFirst() != target) {
             availableElements.addLast(availableElements.removeFirst());
         }
@@ -237,6 +258,7 @@ public class Snake implements Drawable {
         canChangeElement = false;
     }
 
+    /** Переключает стихию влево или вправо. */
     public void rotateElement(Direction rotation) {
         if (game.isStopped() || !canChangeElement) return;
 
@@ -252,79 +274,97 @@ public class Snake implements Drawable {
         draw(game);
     }
 
+    /** Занята ли клетка объекта каким-либо сегментом. */
     public boolean occupiesCellOf(GameObject object) {
         return snakeParts.stream()
                 .anyMatch(part -> part.x == object.x && part.y == object.y);
     }
 
+    /** Задаёт направление, не разрешая разворот. */
     public void setDirection(Direction requestedDirection) {
-        // These guards prevent reversing into the snake's own body within one turn.
+        // Эти проверки не дают развернуться в собственное тело за один ход.
         if (isHorizontalDirection(requestedDirection) && isMovingHorizontally()) return;
         if (isVerticalDirection(requestedDirection) && isMovingVertically()) return;
 
         this.direction = requestedDirection;
     }
 
+    /** Горизонтальное ли направление. */
     private boolean isHorizontalDirection(Direction direction) {
         return direction == Direction.LEFT || direction == Direction.RIGHT;
     }
 
+    /** Вертикальное ли направление. */
     private boolean isVerticalDirection(Direction direction) {
         return direction == Direction.UP || direction == Direction.DOWN;
     }
 
+    /** Движется ли змейка по вертикали. */
     private boolean isMovingVertically() {
         return snakeParts.get(0).x == snakeParts.get(1).x;
     }
 
+    /** Движется ли змейка по горизонтали. */
     private boolean isMovingHorizontally() {
         return snakeParts.get(0).y == snakeParts.get(1).y;
     }
 
+    /** Доступна ли стихия. */
     public boolean canUseElement(Element element) {
         return availableElements.contains(element);
     }
 
+    /** Забывает все стихии. */
     public void clearElements() {
         availableElements.clear();
     }
 
+    /** Тратит единицу силы всемогущей змейки. */
     public void decreaseAlmightyPower() {
         almightyPower--;
     }
 
+    /** Уменьшает запас воздуха. */
     public void reduceBreath() {
         breath--;
     }
 
+    /** Восстанавливает воздух по длине змейки. */
     public void takeFullBreath() {
         breath = getLength();
     }
 
+    /** Возвращает длину змейки. */
     public int getLength() {
         return snakeParts.size();
     }
 
+    /** Закончился ли воздух. */
     public boolean isDrowned() {
         return breath < 0;
     }
 
+    /** Возвращает текущую стихию. */
     public Element getElement() {
         return element;
     }
 
+    /** Возвращает уровень голода. */
     public int getHunger() {
         return hunger;
     }
 
+    /** Возвращает остаток силы. */
     public int getAlmightyPower() {
         return almightyPower;
     }
 
+    /** Жива ли змейка. */
     public boolean isAlive() {
         return isAlive;
     }
 
+    /** Возвращает клетку головы после последнего шага. */
     public GameObject getNewHead() {
         return newHead;
     }

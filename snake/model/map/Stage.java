@@ -20,6 +20,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/** Уровень: карта, орбы, червоточины и условие завершения. */
 public abstract class Stage {
     protected static final int[] VOID_ROW = createVoidRow();
     protected static final SnakeGame game = SnakeGame.getInstance();
@@ -39,20 +40,24 @@ public abstract class Stage {
     private Date startTimeStamp;
     private boolean isStarted;
 
+    /** Создаёт безымянный уровень. */
     public Stage() {
         this(Strings.STAGE_UNNAMED);
     }
 
+    /** Создаёт уровень с заданным названием. */
     public Stage(Strings name) {
         this.name = name;
     }
 
+    /** Создаёт строку пустоты для HUD. */
     private static int[] createVoidRow() {
         int[] row = new int[SnakeGame.SIZE];
         Arrays.fill(row, Terrain.VOID);
         return row;
     }
 
+    /** Пересоздаёт карту, орбы, червоточины и сообщения. */
     public void initialize() {
         orbs = new ArrayList<>();
         wormHoles = new ArrayList<>();
@@ -65,8 +70,10 @@ public abstract class Stage {
         isStarted = false;
     }
 
+    /** Задаёт карту уровня кодами местности. */
     protected abstract void createTerrainCodeMatrix();
 
+    /** Создаёт объекты местности по кодам карты. */
     protected void renderTerrainMatrix() {
         final int height = terrainCodeMatrix.length;
         final int width = terrainCodeMatrix[0].length;
@@ -80,16 +87,22 @@ public abstract class Stage {
         }
     }
 
+    /** Расставляет орбы уровня. */
     protected abstract void createOrbs();
 
+    /** Задаёт червоточины уровня. */
     protected abstract void createWormHoles();
 
+    /** Задаёт стартовую точку и направление змейки. */
     protected abstract void defineSnakeStartingPlace();
 
+    /** Формирует тексты брифинга и завершения. */
     protected abstract void createMessages();
 
+    /** Проверяет условие прохождения уровня. */
     public abstract boolean isCompleted();
 
+    /** Помечает уровень пройденным, если условие выполнено. */
     protected final boolean completeIf(boolean condition) {
         if (!condition) return false;
 
@@ -97,27 +110,33 @@ public abstract class Stage {
         return true;
     }
 
+    /** Запускает уровень и запоминает время старта. */
     public void start() {
         isStarted = true;
         startTimeStamp = new Date();
     }
 
+    /** Показывает брифинг уровня. */
     public void showBriefingMessage() {
         game.showMessageDialog(Color.YELLOW, briefingMessage, Color.BLACK, 10);
     }
 
+    /** Показывает сообщение о прохождении. */
     public void showCompleteMessage() {
         game.showMessageDialog(Color.YELLOW, completeMessage, Color.BLACK, 10);
     }
 
+    /** Кладёт местность в клетку. */
     public void putTerrain(int x, int y, TerrainType terrainType) {
         terrainMatrix[y][x] = Terrain.create(x, y, terrainType);
     }
 
+    /** Возвращает местность клетки. */
     public Terrain getTerrain(int x, int y) {
         return terrainMatrix[y][x];
     }
 
+    /** Создаёт нейтральный орб в подходящей клетке. */
     public void spawnNeutralOrb() {
         final Terrain terrain = findTerrainForNeutralOrb();
 
@@ -126,6 +145,7 @@ public abstract class Stage {
         orbs.add(Orb.create(terrain.x, terrain.y, Element.NEUTRAL));
     }
 
+    /** Ищет свободную клетку для нейтрального орба. */
     private Terrain findTerrainForNeutralOrb() {
         final Snake snake = game.getSnake();
 
@@ -143,23 +163,26 @@ public abstract class Stage {
 
         if (applicableTerrains.isEmpty()) return null;
 
-        // getRandomNumber(bound) never returns the bound itself, so the size is passed as is.
+        // getRandomNumber(bound) не возвращает bound, поэтому передаётся размер.
         final int random = game.getRandomNumber(applicableTerrains.size());
         return applicableTerrains.get(random);
     }
 
+    /** Может ли клетка содержать нейтральный орб. */
     private boolean canHoldNeutralOrb(Terrain terrain) {
         return terrain instanceof FieldTerrain
                 || terrain instanceof WaterTerrain
                 || terrain instanceof WoodTerrain;
     }
 
+    /** Собирает орбы под головой и добавляет новый при необходимости. */
     public void collectOrbs(Snake snake) {
         orbs.forEach(orb -> orb.collect(snake));
         orbs.removeIf(Orb::isCollected);
         spawnNeutralOrbIfMissing();
     }
 
+    /** Создаёт нейтральный орб, если его нет. */
     private void spawnNeutralOrbIfMissing() {
         final boolean hasNeutralOrb = orbs.stream().anyMatch(orb -> orb instanceof NeutralOrb);
 
@@ -168,38 +191,47 @@ public abstract class Stage {
         }
     }
 
+    /** Время старта уровня в миллисекундах. */
     public long getStartTimeMillis() {
         return startTimeStamp.getTime();
     }
 
+    /** Название уровня на текущем языке. */
     public String getName() {
         return name.get();
     }
 
+    /** Матрица местности уровня. */
     public Terrain[][] getTerrainMatrix() {
         return terrainMatrix;
     }
 
+    /** Орбы уровня. */
     public List<Orb> getOrbs() {
         return orbs;
     }
 
+    /** Червоточины уровня. */
     public List<WormHole> getWormHoles() {
         return wormHoles;
     }
 
+    /** Стартовая точка змейки. */
     public Coordinate getSnakeStartPlace() {
         return snakeStartPlace;
     }
 
+    /** Стартовое направление змейки. */
     public Direction getSnakeStartDirection() {
         return snakeStartDirection;
     }
 
+    /** Запущен ли уровень. */
     public boolean isStarted() {
         return isStarted;
     }
 
+    /** Пройден ли уровень. */
     public boolean isClear() {
         return isClear;
     }

@@ -11,11 +11,14 @@ import com.javarush.games.snake.view.Sign;
 
 import java.util.Arrays;
 
+/** Обучение 3: вода и огонь. */
 public class Tutorial3 extends Stage {
+    /** Создаёт третий обучающий уровень. */
     public Tutorial3() {
         super(Strings.STAGE_TUTORIAL_3);
     }
 
+    /** Задаёт карту уровня кодами местности. */
     @Override
     protected void createTerrainCodeMatrix() {
         terrainCodeMatrix = new int[][]{VOID_ROW, VOID_ROW, VOID_ROW, VOID_ROW,
@@ -50,21 +53,25 @@ public class Tutorial3 extends Stage {
         };
     }
 
+    /** Расставляет орбы уровня. */
     @Override
     protected void createOrbs() {
         orbs.add(Orb.create(2, 6, Element.WATER));
     }
 
+    /** Задаёт червоточины уровня. */
     @Override
     protected void createWormHoles() {
     }
 
+    /** Задаёт стартовую точку и направление змейки. */
     @Override
     protected void defineSnakeStartingPlace() {
         snakeStartPlace = new Coordinate(3, 27);
         snakeStartDirection = Direction.UP;
     }
 
+    /** Формирует тексты брифинга и завершения. */
     @Override
     protected void createMessages() {
         briefingMessage = Strings.TUTORIAL_3_BRIEFING.format(getName(),
@@ -72,6 +79,7 @@ public class Tutorial3 extends Stage {
         completeMessage = Strings.TUTORIAL_3_COMPLETE.format(getName());
     }
 
+    /** Проверяет условие прохождения уровня. */
     @Override
     public boolean isCompleted() {
         final boolean isFireExtinguished = Arrays.stream(terrainMatrix)

@@ -3,15 +3,16 @@ package com.javarush.games.snake.model;
 import com.javarush.games.snake.model.enums.Element;
 import com.javarush.games.snake.model.terrain.TerrainType;
 
+/** Локализованные строки и мини-форматирование без String.format. */
 public enum Strings {
-    VERSION("1.21", "1.21"),
+    VERSION("1.22", "1.22"),
 
-    // Main menu
+    // Главное меню
     MAIN_TITLE("ALCHEMY SNAKE", "ЗМЕЙКА АЛХИМИКА"),
     MAIN_SUBTITLE("MASTER OF ELEMENTS", "МАСТЕР СТИХИЙ"),
     MAIN_VERSION("VER ", "ВЕРСИЯ "),
 
-    // Menu entries
+    // Пункты меню
     MENU_START("START", "ИГРАТЬ"),
     MENU_OPTIONS("OPTIONS", "НАСТРОЙКИ"),
     MENU_CONTROLS("CONTROLS", "УПРАВЛЕНИЕ"),
@@ -22,7 +23,7 @@ public enum Strings {
     MENU_ACCELERATION("ACCELERATION", "УСКОРЕНИЕ"),
     MENU_LANGUAGE("LANGUAGE", "ЯЗЫК"),
 
-    // Options
+    // Настройки
     OPTIONS_TITLE("OPTIONS", "НАСТРОЙКИ"),
     OPTION_ENABLED("ENABLED", "ВКЛЮЧЕНО"),
     OPTION_DISABLED("DISABLED", "ВЫКЛЮЧЕНО"),
@@ -31,7 +32,7 @@ public enum Strings {
     SIGN_TYPE_KANJI("KANJI", "КАНДЗИ"),
     SIGN_TYPE_EMOJI("EMOJI", "ЭМОДЗИ"),
 
-    // Help: game goals
+    // Помощь: цели игры
     HELP_GOALS_TITLE("GAME GOALS", "ЦЕЛИ ИГРЫ"),
     HELP_GOALS_WIN("COLLECT TO WIN:", "СОБЕРИТЕ, ЧТОБЫ ПОБЕДИТЬ:"),
     HELP_ORB_WATER("ORB OF WATER", "СФЕРА ВОДЫ"),
@@ -42,7 +43,7 @@ public enum Strings {
     HELP_GOALS_GROW("COLLECT TO GROW:", "СОБЕРИТЕ, ЧТОБЫ РАСТИ:"),
     HELP_ORB_WISDOM("ORB OF WISDOM", "СФЕРА МУДРОСТИ"),
 
-    // Help: snake abilities
+    // Помощь: возможности змеи
     HELP_ABILITIES_TITLE("SNAKE ABILITIES", "ВОЗМОЖНОСТИ ЗМЕИ"),
     HELP_NEUTRAL_NAME("— NEUTRAL SNAKE", "— НЕЙТРАЛЬНАЯ ЗМЕЯ"),
     HELP_NEUTRAL_DESC("NO SPECIAL POWERS", "НЕТ ОСОБЫХ СИЛ"),
@@ -57,7 +58,7 @@ public enum Strings {
     HELP_ALMIGHTY_NAME("— ALMIGHTY SNAKE", "— ВСЕМОГУЩАЯ ЗМЕЯ"),
     HELP_ALMIGHTY_DESC("INVULNERABLE SPACE EATER", "НЕУЯЗВИМА, ЕСТ ПРОСТРАНСТВО"),
 
-    // Help: terrain types
+    // Помощь: виды местности
     HELP_TERRAIN_TITLE("TYPES OF TERRAIN", "ВИДЫ МЕСТНОСТИ"),
     TERRAIN_FIELD("GRASS FIELD", "ТРАВЯНОЕ ПОЛЕ"),
     TERRAIN_WATER("DEEP WATER", "ГЛУБОКАЯ ВОДА"),
@@ -70,7 +71,7 @@ public enum Strings {
     TERRAIN_WORMHOLE("SECRET WORMHOLE", "ТАЙНАЯ ЧЕРВОТОЧИНА"),
     TERRAIN_VOID("VOID", "ПУСТОТА"),
 
-    // Help: rules and tips (1)
+    // Помощь: правила и советы (1)
     HELP_TIPS1_TITLE("RULES AND TIPS (1)", "ПРАВИЛА И СОВЕТЫ (1)"),
     HELP_TIPS1_COLLECT("YOU SHOULD COLLECT ALL ORBS", "СОБЕРИТЕ ВСЕ СФЕРЫ"),
     HELP_TIPS1_FAST("AS FAST AS POSSIBLE.", "КАК МОЖНО БЫСТРЕЕ."),
@@ -83,7 +84,7 @@ public enum Strings {
     HELP_TIPS1_TURN("YOU CAN TURN & SWAP ELEMENTS", "МОЖНО ПОВЕРНУТЬ И СМЕНИТЬ"),
     HELP_TIPS1_SLEEP("EVEN WHILE SLEEPING.", "СТИХИЮ ДАЖЕ ВО СНЕ."),
 
-    // Help: rules and tips (2)
+    // Помощь: правила и советы (2)
     HELP_TIPS2_TITLE("RULES AND TIPS (2)", "ПРАВИЛА И СОВЕТЫ (2)"),
     HELP_TIPS2_LONG("A LONG SNAKE BECOMES", "ДЛИННАЯ ЗМЕЯ СТАНОВИТСЯ"),
     HELP_TIPS2_FASTER("FASTER AND STRONGER.", "БЫСТРЕЕ И СИЛЬНЕЕ."),
@@ -96,7 +97,7 @@ public enum Strings {
     HELP_TIPS2_FIRE("ALSO, A FIRE SNAKE MELTS", "А ОГНЕННАЯ ЗМЕЯ ТАЕТ"),
     HELP_TIPS2_MELT("WITH EVERY STEP IN THE WATER!", "С КАЖДЫМ ШАГОМ В ВОДЕ!"),
 
-    // Help: controls
+    // Помощь: управление
     HELP_CONTROLS_TITLE("CONTROLS", "УПРАВЛЕНИЕ"),
     HELP_CONTROL_ARROWS("↑ ↓ ← →       :", "↑ ↓ ← →       :"),
     HELP_CONTROL_HOLD("HOLD DIRECTION:", "ДЕРЖАТЬ КУРС  :"),
@@ -112,7 +113,7 @@ public enum Strings {
     HELP_CONTROL_BACK("BACK TO MENU", "НАЗАД В МЕНЮ"),
     HELP_PAGE("← PAGE %d/%d →", "← СТР. %d/%d →"),
 
-    // Game field
+    // Игровое поле
     HUD_HUNGER("hunger  : ", "голод   : "),
     HUD_STRENGTH("strength: ", "длина   : "),
     HUD_ELEMENT("element : ", "стихия  : "),
@@ -136,7 +137,7 @@ public enum Strings {
     ELEMENT_SHORT_ALMIGHTY("S", "ВС"),
     ELEMENT_SHORT_DEAD("D", "М"),
 
-    // Game over
+    // Конец игры
     GAME_OVER_BUMPED("Snake hit the wall!\nOuch, it hurts!",
             "Змея врезалась в стену!\nОй, как больно!"),
     GAME_OVER_DROWNED("Snake has drowned!\nOnly water snakes can swim!",
@@ -156,7 +157,7 @@ public enum Strings {
     GAME_OVER_UNKNOWN("Snake died for unknown reasons.",
             "Змея погибла по неизвестной причине."),
 
-    // Stage names
+    // Названия уровней
     STAGE_TUTORIAL_1("TUTORIAL 1", "ОБУЧЕНИЕ 1"),
     STAGE_TUTORIAL_2("TUTORIAL 2", "ОБУЧЕНИЕ 2"),
     STAGE_TUTORIAL_3("TUTORIAL 3", "ОБУЧЕНИЕ 3"),
@@ -169,65 +170,68 @@ public enum Strings {
     STAGE_EMPTY("Empty", "ПУСТАЯ"),
     STAGE_UNNAMED("Unnamed", "БЕЗ ИМЕНИ"),
 
-    // Tutorial 1
+    // Обучение 1
     TUTORIAL_1_BRIEFING("%s\nAlchemy Snake feeds on Orbs of Wisdom.\nThey look like this: %s\nCollect 3 of them!\n\n~ PRESS SPACE TO START ~",
             "%s\nЗмейка алхимика питается Сферами Мудрости.\nОни выглядят так: %s\nСоберите 3 из них!\n\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     TUTORIAL_1_COMPLETE("%s COMPLETE!\nGOOD JOB!\n\n~ PRESS SPACE TO RETURN ~",
             "%s ПРОЙДЕНО!\nМОЛОДЕЦ!\n\n~ ПРОБЕЛ — В МЕНЮ ~"),
 
-    // Tutorial 2
+    // Обучение 2
     TUTORIAL_2_BRIEFING("%s\nLook, it's a river! But our snake can't swim yet.\nIt will drown if it goes fully into the water: %s\nGrow longer, build a bridge and cross the river!\n\n~ PRESS SPACE TO START ~",
             "%s\nСмотрите, это река! Но наша змея пока не умеет плавать.\nОна утонет, если полностью уйдёт под воду: %s\nУдлинитесь, постройте мост и пересеките реку!\n\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     TUTORIAL_2_COMPLETE("%s COMPLETE!\nYOU SUCCESSFULLY CROSSED THE RIVER!\n\n~ PRESS SPACE TO RETURN ~",
             "%s ПРОЙДЕНО!\nВЫ УСПЕШНО ПЕРЕСЕКЛИ РЕКУ!\n\n~ ПРОБЕЛ — В МЕНЮ ~"),
 
-    // Tutorial 3
+    // Обучение 3
     TUTORIAL_3_BRIEFING("%s\nLet's learn something about the elements.\nEat the Orb of Water (%s) to be able to swim.\nThe water snake can extinguish fire (%s).\nNow put out the fire on the right side!\n~ PRESS SPACE TO START ~",
             "%s\nДавайте узнаем о стихиях.\nСъешьте Сферу Воды (%s), чтобы научиться плавать.\nВодяная змея может тушить огонь (%s).\nА теперь потушите огонь справа!\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     TUTORIAL_3_COMPLETE("%s COMPLETE!\nEXCELLENT WORK!\n\n~ PRESS SPACE TO RETURN ~",
             "%s ПРОЙДЕНО!\nОТЛИЧНАЯ РАБОТА!\n\n~ ПРОБЕЛ — В МЕНЮ ~"),
 
-    // Tutorial 4
+    // Обучение 4
     TUTORIAL_4_BRIEFING("%s\nThe dense forest is guarding the Earth Orb!\nLuckily, we can eat the Fire Orb (%s) to set wood aflame!\nGet rid of the trees (%s) and grab the Earth Orb!\n\n~ PRESS SPACE TO START ~",
             "%s\nГустой лес охраняет Сферу Земли!\nК счастью, мы можем съесть Сферу Огня (%s) и поджечь дерево!\nИзбавьтесь от деревьев (%s) и заберите Сферу Земли!\n\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     TUTORIAL_4_COMPLETE("%s COMPLETE!\nYOU'RE ON FIRE!\n\n~ PRESS SPACE TO RETURN ~",
             "%s ПРОЙДЕНО!\nВЫ В ОГНЕ!\n\n~ ПРОБЕЛ — В МЕНЮ ~"),
 
-    // Tutorial 5
+    // Обучение 5
     TUTORIAL_5_BRIEFING("%s\nIsn't there an Air Orb behind the wall?...\nLet's eat the Earth Orb (%s) to be able to enter wormholes!\nBut which wormhole (%s) leads to the Air Orb?...\nWell, let's try and guess!\n\n~ PRESS SPACE TO START ~",
             "%s\nНеужели за стеной Сфера Воздуха?...\nСъешьте Сферу Земли (%s), чтобы уметь входить в червоточины!\nНо какая червоточина (%s) ведёт к Сфере Воздуха?...\nЧто ж, давайте проверим!\n\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     TUTORIAL_5_COMPLETE("%s COMPLETE!\nJust how deep is the rabbit hole?...\n\n~ PRESS SPACE TO RETURN ~",
             "%s ПРОЙДЕНО!\nКак глубока кроличья нора?...\n\n~ ПРОБЕЛ — В МЕНЮ ~"),
 
-    // Tutorial 6
+    // Обучение 6
     TUTORIAL_6_BRIEFING("%s\nWhoa! It's the legendary ORB OF POWER... behind the wall again!\nBut there are no wormholes this time...\nHow about eating the Air Orb (%s) to fly over walls?\nPress ESC or ENTER to switch elements and land.\n~ PRESS SPACE TO START ~",
             "%s\nОго! Легендарная СФЕРА СИЛЫ... снова за стеной!\nНо на этот раз червоточин нет...\nМожет, съесть Сферу Воздуха (%s) и перелететь через стену?\nНажмите ESC или ENTER, чтобы сменить стихию и приземлиться.\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     TUTORIAL_6_COMPLETE("%s COMPLETE!\nThat's all for today's lessons.\nNow let's try some real stages!\n\n~ PRESS SPACE TO RETURN ~",
             "%s ПРОЙДЕНО!\nНа сегодня уроков хватит.\nТеперь попробуйте настоящие уровни!\n\n~ ПРОБЕЛ — В МЕНЮ ~"),
 
-    // Regular stages
+    // Обычные уровни
     LEVEL_BRIEFING("%s\nCollect the Orb of Power!\nBecome the God of Snakes and destroy the realm!\n\n~ PRESS SPACE TO START ~",
             "%s\nСоберите Сферу Силы!\nСтаньте Богом Змей и разрушьте царство!\n\n~ ПРОБЕЛ — НАЧАТЬ ~"),
     LEVEL_COMPLETE("%s COMPLETE!", "%s ПРОЙДЕН!"),
     LAST_LEVEL_COMPLETE("%s COMPLETE!\n\nThis was the last stage... for now!",
             "%s ПРОЙДЕН!\n\nЭто был последний уровень... пока что!"),
 
-    // Debug stage
+    // Тестовый уровень
     EMPTY_BRIEFING("TESTING STAGE", "ТЕСТОВЫЙ УРОВЕНЬ"),
     EMPTY_COMPLETE("TEST COMPLETE", "ТЕСТ ПРОЙДЕН");
 
     private final String english;
     private final String russian;
 
+    /** Хранит английский и русский варианты строки. */
     Strings(String english, String russian) {
         this.english = english;
         this.russian = russian;
     }
 
+    /** Возвращает строку на текущем языке. */
     public String get() {
         return (Options.getLanguage() == Options.Language.RUSSIAN) ? russian : english;
     }
 
+    /** Подставляет аргументы вместо %s и %d. */
     public String format(Object... args) {
         final String template = get();
         final StringBuilder result = new StringBuilder();
@@ -253,6 +257,7 @@ public enum Strings {
         return result.toString();
     }
 
+    /** Название стихии для HUD. */
     public static String getElementName(Element element) {
         switch (element) {
             case NEUTRAL:
@@ -274,6 +279,7 @@ public enum Strings {
         }
     }
 
+    /** Короткое обозначение стихии. */
     public static String getElementShortName(Element element) {
         switch (element) {
             case NEUTRAL:
@@ -295,6 +301,7 @@ public enum Strings {
         }
     }
 
+    /** Название типа местности. */
     public static String getTerrainName(TerrainType type) {
         switch (type) {
             case FIELD:

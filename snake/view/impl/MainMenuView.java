@@ -7,6 +7,7 @@ import com.javarush.games.snake.view.MenuSelector;
 import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.View;
 
+/** Главное меню. */
 public class MainMenuView extends View {
     private static final int TITLE_Y = 5;
     private static final int SUBTITLE_Y = 7;
@@ -30,11 +31,13 @@ public class MainMenuView extends View {
 
     private static MainMenuView instance;
 
+    /** Возвращает единственный экземпляр. */
     public static MainMenuView getInstance() {
         if (instance == null) instance = new MainMenuView();
         return instance;
     }
 
+    /** Рисует заголовок, пункты и название уровня. */
     @Override
     public void update() {
         drawBlackBackground();
@@ -55,6 +58,7 @@ public class MainMenuView extends View {
         MenuSelector.drawMenuEntriesWithPointer(MENU_X, MENU_Y);
     }
 
+    /** Рисует рамку заголовка. */
     private void drawTitleFrame() {
         for (int i = 0; i < TITLE_FRAME.length; i++) {
             Message.print(-1, TITLE_Y, TITLE_FRAME[i], TITLE_FRAME_COLORS[i]);

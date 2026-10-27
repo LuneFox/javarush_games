@@ -2,9 +2,8 @@ package com.javarush.games.snake.view;
 
 import com.javarush.engine.cell.Game;
 
-/**
- * Something that can render itself into a single cell of the game field.
- */
+/** Объект, который умеет рисоваться в клетке поля. */
 public interface Drawable {
+    /** Рисует объект в клетке поля. */
     void draw(Game target);
 }

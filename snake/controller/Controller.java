@@ -9,16 +9,20 @@ import com.javarush.games.snake.controller.strategies.MapEditorControlStrategy;
 import com.javarush.games.snake.controller.strategies.OptionsMenuControlStrategy;
 import com.javarush.games.snake.model.Phase;
 
+/** Раскладывает ввод по действиям текущей фазы. */
 public class Controller {
 
+    /** Передаёт левый клик текущей стратегии. */
     public final void leftClick(int x, int y) {
         selectStrategy().leftClick(x, y);
     }
 
+    /** Передаёт правый клик текущей стратегии. */
     public final void rightClick(int x, int y) {
         selectStrategy().rightClick(x, y);
     }
 
+    /** Передаёт нажатие клавиши текущей стратегии. */
     public final void pressKey(Key key) {
         final ControlStrategy strategy = selectStrategy();
 
@@ -52,6 +56,7 @@ public class Controller {
         }
     }
 
+    /** Передаёт отпускание клавиши текущей стратегии. */
     public final void releaseKey(Key key) {
         final ControlStrategy strategy = selectStrategy();
 
@@ -73,6 +78,7 @@ public class Controller {
         }
     }
 
+    /** Выбирает стратегию по текущей фазе. */
     private ControlStrategy selectStrategy() {
         switch (Phase.getCurrentPhase()) {
             case GAME_FIELD:

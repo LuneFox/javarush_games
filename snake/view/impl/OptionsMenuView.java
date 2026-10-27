@@ -11,14 +11,17 @@ import com.javarush.games.snake.view.Message;
 import com.javarush.games.snake.view.Sign;
 import com.javarush.games.snake.view.View;
 
+/** Экран настроек. */
 public class OptionsMenuView extends View {
     private static OptionsMenuView instance;
 
+    /** Возвращает единственный экземпляр. */
     public static OptionsMenuView getInstance() {
         if (instance == null) instance = new OptionsMenuView();
         return instance;
     }
 
+    /** Рисует настройки и их значения. */
     @Override
     public void update() {
         drawBlackBackground();
