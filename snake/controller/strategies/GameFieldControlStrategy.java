@@ -58,8 +58,8 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     @Override
     public void pressRight() {
-        setHighSpeed();
         if (game.isStopped()) return;
+        setHighSpeed();
         game.getSnake().setDirection(Direction.RIGHT);
     }
 
@@ -70,8 +70,8 @@ public class GameFieldControlStrategy implements ControlStrategy {
 
     @Override
     public void pressLeft() {
-        setHighSpeed();
         if (game.isStopped()) return;
+        setHighSpeed();
         game.getSnake().setDirection(Direction.LEFT);
     }
 

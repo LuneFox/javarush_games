@@ -7,7 +7,6 @@ import com.javarush.games.snake.model.Score;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Element;
 
-import java.util.Arrays;
 import java.util.Date;
 
 public abstract class Terrain extends GameObject {
@@ -103,12 +102,23 @@ public abstract class Terrain extends GameObject {
     }
 
     private boolean hasFireNeighbor() {
-        return Arrays.stream(game.getStage().getTerrainMatrix())
-                .flatMap(Arrays::stream)
-                .filter(terrain -> Math.abs(terrain.x - this.x) <= 1)
-                .filter(terrain -> Math.abs(terrain.y - this.y) <= 1)
-                .filter(terrain -> terrain != this)
-                .anyMatch(terrain -> terrain instanceof FireTerrain);
+        final Terrain[][] matrix = game.getStage().getTerrainMatrix();
+
+        for (int dx = -1; dx <= 1; dx++) {
+            for (int dy = -1; dy <= 1; dy++) {
+                if (dx == 0 && dy == 0) continue;
+
+                final int neighborX = x + dx;
+                final int neighborY = y + dy;
+
+                if (neighborX < 0 || neighborY < 0) continue;
+                if (neighborY >= matrix.length || neighborX >= matrix[neighborY].length) continue;
+
+                if (matrix[neighborY][neighborX] instanceof FireTerrain) return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean isCompletelyDry() {

@@ -128,16 +128,23 @@ public class Snake {
 
         checkEscapeBorders();
         checkBiteSelf();
+
+        if (!isAlive) {
+            setElement(Element.DEAD);
+            return;
+        }
+
         interactWithTerrain();
 
-        if (isAlive) {
-            snakeParts.addFirst(newHead);
-            snakeParts.removeLast();
-            starve();
-            canChangeElement = true;
-        } else {
+        if (!isAlive) {
             setElement(Element.DEAD);
+            return;
         }
+
+        snakeParts.addFirst(newHead);
+        snakeParts.removeLast();
+        starve();
+        canChangeElement = true;
     }
 
     private GameObject createNewHead() {
@@ -174,9 +181,15 @@ public class Snake {
     private void checkBiteSelf() {
         if (element == Element.ALMIGHTY) return;
 
-        if (collidesWithObject(newHead)) {
-            kill();
-            game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN.get());
+        // The last segment leaves its cell during this very turn, so it must not be checked.
+        for (int i = 0; i < snakeParts.size() - 1; i++) {
+            GameObject part = snakeParts.get(i);
+
+            if (part.x == newHead.x && part.y == newHead.y) {
+                kill();
+                game.setGameOverReason(Strings.GAME_OVER_SELF_BITTEN.get());
+                return;
+            }
         }
     }
 
@@ -228,10 +241,17 @@ public class Snake {
     }
 
     public void forceRotationToElement(Element element) {
-        do {
-            rotateElement(Direction.RIGHT);
-        } while (getElement() != element);
+        if (!availableElements.contains(element)) {
+            availableElements.add(element);
+        }
 
+        // Move the requested element to the front of the list. This loop always finishes,
+        // because the element is guaranteed to be present in the (non-empty) list.
+        while (availableElements.getFirst() != element) {
+            availableElements.addLast(availableElements.removeFirst());
+        }
+
+        setElement(element);
         canChangeElement = false;
     }
 

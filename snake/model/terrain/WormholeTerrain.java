@@ -41,8 +41,12 @@ public class WormholeTerrain extends Terrain {
         for (WormHole wormHole : stage.getWormHoles()) {
             if (wormHole.locationIsAt(x, y)) {
                 wormHole.warpToDestination(snake);
-            } else if (wormHole.destinationIsAt(x, y)) {
+                return;
+            }
+
+            if (wormHole.destinationIsAt(x, y)) {
                 wormHole.warpToBeginning(snake);
+                return;
             }
         }
     }

@@ -26,7 +26,7 @@ public class Message {
     }
 
     public void draw() {
-        if (x + charSequence.length >= SnakeGame.SIZE || x < 0) return;
+        if (x + charSequence.length > SnakeGame.SIZE || x < 0) return;
 
         for (int i = 0; i < charSequence.length; i++) {
             String symbol = String.valueOf(charSequence[i]);

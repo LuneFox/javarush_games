@@ -106,6 +106,9 @@ public abstract class Stage {
 
     public void createNeutralOrb() {
         Terrain terrain = getTerrainForNeutralOrb();
+
+        if (terrain == null) return;
+
         Orb neutralOrb = Orb.create(terrain.x, terrain.y, Element.NEUTRAL);
         orbs.add(neutralOrb);
     }
@@ -127,7 +130,10 @@ public abstract class Stage {
                     .collect(Collectors.toList());
         }
 
-        int random = game.getRandomNumber(applicableTerrains.size() - 1);
+        if (applicableTerrains.isEmpty()) return null;
+
+        // getRandomNumber(bound) never returns the bound itself, so the size is passed as is.
+        int random = game.getRandomNumber(applicableTerrains.size());
         return applicableTerrains.get(random);
     }
 

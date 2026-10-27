@@ -67,6 +67,7 @@ public class SnakeGame extends Game {
     private void resetValues() {
         Score.reset();
         stage.initialize();
+        gameOverReason = null;
         turnDelay = MAX_TURN_DELAY;
         isStopped = false;
         isPaused = false;
@@ -74,10 +75,7 @@ public class SnakeGame extends Game {
     }
 
     public void onTurn(int step) {
-        if (stage.isCompleted()) {
-            stage.showCompleteMessage();
-            return;
-        }
+        if (isStopped || isPaused) return;
 
         if (stage.isNotStarted()) {
             stage.showBriefingMessage();
@@ -85,12 +83,22 @@ public class SnakeGame extends Game {
         }
 
         makeTurn();
+
+        if (isStopped) return;
+
         setTurnTimer(turnDelay);
         Phase.proceed(Phase.GAME_FIELD);
     }
 
     private void makeTurn() {
         snake.move();
+
+        // A dead snake must not eat orbs or change the world anymore.
+        if (!snake.isAlive()) {
+            checkGameOver();
+            return;
+        }
+
         stage.checkOrbCollision(snake);
         processPassiveTerrainEffects();
         checkGameOver();
@@ -110,17 +118,18 @@ public class SnakeGame extends Game {
     }
 
     private void gameOver() {
-        Phase.proceed(Phase.GAME_FIELD);
-        stopTurnTimer();
         isStopped = true;
+        stopTurnTimer();
+        Phase.proceed(Phase.GAME_FIELD);
         showMessageDialog(Color.YELLOW, gameOverReason, Color.RED, 27);
     }
 
     private void win() {
-        Phase.proceed(Phase.GAME_FIELD);
-        stopTurnTimer();
-        StageManager.selectNextStage();
         isStopped = true;
+        stopTurnTimer();
+        Phase.proceed(Phase.GAME_FIELD);
+        stage.showCompleteMessage();
+        StageManager.selectNextStage();
     }
 
     public void setNormalTurnDelay() {
