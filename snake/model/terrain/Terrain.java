@@ -23,7 +23,7 @@ public abstract class Terrain extends GameObject implements Drawable {
     public static final int SAND = 8;
     public static final int VOID = 9;
 
-    private static final int SYMBOL_TEXT_SIZE = 90;
+    protected static final int SYMBOL_TEXT_SIZE = 90;
     private static final int TWO_DIGITS_TEXT_SIZE = 60;
     private static final int MANY_DIGITS_TEXT_SIZE = 40;
     private static final int POINTS_PER_DESTROYED_TERRAIN = 1;
@@ -96,7 +96,27 @@ public abstract class Terrain extends GameObject implements Drawable {
             }
         }
 
+        drawCell(target, backgroundColor);
+    }
+
+    /** Рисует клетку с заданным фоном. */
+    protected final void drawCell(Game target, Color backgroundColor) {
         target.setCellValueEx(x, y, backgroundColor, sign, color, SYMBOL_TEXT_SIZE);
+    }
+
+    /** Рисует клетку с заданным знаком и размером. */
+    protected final void drawCell(Game target, String sign, int textSize) {
+        target.setCellValueEx(x, y, backgroundColor, sign, color, textSize);
+    }
+
+    /** Рисует клетку с заданным знаком. */
+    protected final void drawCell(Game target, String sign) {
+        drawCell(target, sign, SYMBOL_TEXT_SIZE);
+    }
+
+    /** Рисует клетку с обычным знаком. */
+    protected final void drawDefaultCell(Game target) {
+        drawCell(target, sign);
     }
 
     /** Рисует обратный отсчёт до высыхания. */
@@ -153,6 +173,16 @@ public abstract class Terrain extends GameObject implements Drawable {
 
     /** Применяет пассивный эффект клетки за ход. */
     public void applyPassiveEffect() {
+        // По умолчанию ничего не делает
+    }
+
+    /** Вызывается, когда змейка находится на клетке. */
+    public void onSnakeThrough() {
+        // По умолчанию ничего не делает
+    }
+
+    /** Вызывается, когда змейка покидает клетку. */
+    public void onSnakeLeft() {
         // По умолчанию ничего не делает
     }
 

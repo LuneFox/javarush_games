@@ -27,6 +27,7 @@ public class Snake implements Drawable {
     private static final int STARVATION_INTERVAL_MS = 300;
     private static final int SEGMENTS_PER_HUNGER_POINT = 5;
     private static final int TAIL_LOSS_SCORE_PENALTY = 5;
+    private static final Color SHADOW_COLOR = Color.DIMGRAY;
 
     private final SnakeGame game;
     private final LinkedList<GameObject> snakeParts;
@@ -119,6 +120,19 @@ public class Snake implements Drawable {
         }
     }
 
+    /** Рисует тень под летящей змейкой. */
+    public void drawShadow(Game target) {
+        if (!isFlying()) return;
+
+        for (GameObject part : snakeParts) {
+            final int shadowY = part.y + 1;
+
+            if (shadowY > SnakeGame.PLAYFIELD_MAX_Y) continue;
+
+            target.setCellValueEx(part.x, shadowY, SHADOW_COLOR, "");
+        }
+    }
+
     /** Делает шаг: голова, проверки, местность и хвост. */
     public void move() {
         newHead = createNewHead();
@@ -133,9 +147,31 @@ public class Snake implements Drawable {
         if (!isAlive) return;
 
         snakeParts.addFirst(newHead);
-        snakeParts.removeLast();
+        markTerrainUnderBody();
+        final GameObject tail = snakeParts.removeLast();
+
+        if (!isFlying() && !SnakeGame.isOutOfBounds(tail.x, tail.y)) {
+            game.getStage().getTerrain(tail.x, tail.y).onSnakeLeft();
+        }
+
         applyStarvation();
         canChangeElement = true;
+    }
+
+    /** Отмечает клетки под телом змейки. */
+    private void markTerrainUnderBody() {
+        if (isFlying()) return;
+
+        for (GameObject part : snakeParts) {
+            if (SnakeGame.isOutOfBounds(part.x, part.y)) continue;
+
+            game.getStage().getTerrain(part.x, part.y).onSnakeThrough();
+        }
+    }
+
+    /** Летает ли змейка (воздушная стихия). */
+    private boolean isFlying() {
+        return element == Element.AIR;
     }
 
     /** Создаёт клетку новой головы по направлению. */
@@ -220,7 +256,12 @@ public class Snake implements Drawable {
     /** Убирает последний сегмент, если длина позволяет. */
     public void loseTail() {
         if (snakeParts.size() <= MIN_LENGTH) return;
-        snakeParts.removeLast();
+
+        final GameObject tail = snakeParts.removeLast();
+
+        if (!isFlying() && !SnakeGame.isOutOfBounds(tail.x, tail.y)) {
+            game.getStage().getTerrain(tail.x, tail.y).onSnakeLeft();
+        }
     }
 
     /** Сбрасывает голод и удлиняет змейку. */
@@ -270,8 +311,7 @@ public class Snake implements Drawable {
             availableElements.addFirst(availableElements.removeLast());
         }
 
-        GameFieldView.getInstance().drawElementsPanel();
-        draw(game);
+        GameFieldView.getInstance().update();
     }
 
     /** Занята ли клетка объекта каким-либо сегментом. */

@@ -6,10 +6,11 @@ public enum Sign {
     SNAKE_DEAD(new String[]{"死", "\uD83D\uDC80"}),
     SNAKE_BODY(new String[]{"体", "S"}),
 
-    TERRAIN_FIELD(new String[]{"w", "w"}),
+    TERRAIN_FIELD(new String[]{"W", "W"}),
     TERRAIN_WOOD(new String[]{"木", "\uD83C\uDF42"}),
     TERRAIN_WATER(new String[]{"川", "~"}),
     TERRAIN_FIRE(new String[]{"炎", "\uD83D\uDD25"}),
+    TERRAIN_FIRE_2(new String[]{"焱", "\uD83D\uDD25"}),
     TERRAIN_FOREST_1(new String[]{"森", "\uD83C\uDF33"}),
     TERRAIN_FOREST_2(new String[]{"林", "\uD83C\uDF32"}),
     TERRAIN_WORMHOLE(new String[]{"下", "\uD83D\uDD73"}),

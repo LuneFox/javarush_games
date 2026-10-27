@@ -32,13 +32,23 @@ public class GameFieldView extends View {
         return instance;
     }
 
-    /** Обновляет поле, орбы, змейку и HUD. */
+    /** Обновляет поле, тень, орбы, змейку и HUD. */
     @Override
     public void update() {
         drawField();
+        drawSnakeShadow();
         drawOrbs();
         drawSnake();
         drawInterface();
+
+        if (game.isPaused()) {
+            drawSleepingLabel();
+        }
+    }
+
+    /** Рисует тень под летящей змейкой. */
+    private void drawSnakeShadow() {
+        game.getSnake().drawShadow(game);
     }
 
     /** Рисует все клетки поля. */

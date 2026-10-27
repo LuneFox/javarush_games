@@ -206,6 +206,11 @@ public class SnakeGame extends Game {
         return isStopped;
     }
 
+    /** Поставлена ли игра на паузу. */
+    public boolean isPaused() {
+        return isPaused;
+    }
+
     /** Возвращает змейку. */
     public Snake getSnake() {
         return snake;
