@@ -42,6 +42,7 @@ public class WoodTerrain extends Terrain {
     /** Применяет пассивный эффект клетки за ход. */
     @Override
     public void applyPassiveEffect() {
+        dryOutIfNeeded();
         igniteFromAdjacentFire();
     }
 }

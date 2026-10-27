@@ -24,9 +24,12 @@ public abstract class Terrain extends GameObject implements Drawable {
     public static final int VOID = 9;
 
     private static final int SYMBOL_TEXT_SIZE = 90;
+    private static final int TWO_DIGITS_TEXT_SIZE = 60;
+    private static final int MANY_DIGITS_TEXT_SIZE = 40;
     private static final int POINTS_PER_DESTROYED_TERRAIN = 1;
     private static final long DRYING_TIME_MS = 1000;
     private static final long WET_DRYING_TIME_PER_SEGMENT_MS = 500;
+    private static final Color WET_TEXT_COLOR = Color.LIGHTBLUE;
 
     private final TerrainType type;
     private final Color color;
@@ -35,6 +38,8 @@ public abstract class Terrain extends GameObject implements Drawable {
 
     private Date startedToDryTimestamp;
     private boolean isWet;
+    private long wetDurationMs;
+    private long wetUntilMillis;
 
     /** Создаёт местность по коду или типу. */
     public static Terrain create(int x, int y, TerrainType type) {
@@ -79,10 +84,41 @@ public abstract class Terrain extends GameObject implements Drawable {
         restartDryingTimer();
     }
 
-    /** Рисует клетку местности. */
+    /** Рисует клетку; мокрая клетка показывает секунды до высыхания. */
     @Override
     public void draw(Game target) {
+        if (isWet) {
+            final int secondsLeft = getSecondsUntilDry();
+
+            if (secondsLeft > 0) {
+                drawWetCountdown(target, secondsLeft);
+                return;
+            }
+        }
+
         target.setCellValueEx(x, y, backgroundColor, sign, color, SYMBOL_TEXT_SIZE);
+    }
+
+    /** Рисует обратный отсчёт до высыхания. */
+    private void drawWetCountdown(Game target, int secondsLeft) {
+        final String label = String.valueOf(secondsLeft);
+        target.setCellValueEx(x, y, backgroundColor, label, WET_TEXT_COLOR, wetCountdownTextSize(label.length()));
+    }
+
+    /** Размер шрифта для числа секунд. */
+    private int wetCountdownTextSize(int digits) {
+        if (digits <= 1) return SYMBOL_TEXT_SIZE;
+        if (digits == 2) return TWO_DIGITS_TEXT_SIZE;
+
+        return MANY_DIGITS_TEXT_SIZE;
+    }
+
+    /** Сколько секунд осталось до высыхания. */
+    private int getSecondsUntilDry() {
+        final long remainingMillis = wetUntilMillis - new Date().getTime();
+        if (remainingMillis <= 0) return 0;
+
+        return (int) ((remainingMillis + 999) / 1000);
     }
 
     /** Реагирует на попадание змейки в клетку. */
@@ -120,6 +156,14 @@ public abstract class Terrain extends GameObject implements Drawable {
         // По умолчанию ничего не делает
     }
 
+    /** Снимает мокрое состояние, когда время высыхания истекло. */
+    protected final void dryOutIfNeeded() {
+        if (!isWet) return;
+        if (new Date().getTime() < wetUntilMillis) return;
+
+        isWet = false;
+    }
+
     /** Поджигает клетку от соседнего огня. */
     protected final void igniteFromAdjacentFire() {
         if (!hasAdjacentFire()) {
@@ -155,9 +199,7 @@ public abstract class Terrain extends GameObject implements Drawable {
 
     /** Достаточно ли клетка высохла для огня. */
     private boolean isDryEnoughToBurn() {
-        final long dryingTime = isWet
-                ? Math.max(game.getSnake().getLength() * WET_DRYING_TIME_PER_SEGMENT_MS, DRYING_TIME_MS)
-                : DRYING_TIME_MS;
+        final long dryingTime = isWet ? wetDurationMs : DRYING_TIME_MS;
         final long timePassed = new Date().getTime() - startedToDryTimestamp.getTime();
 
         return timePassed > dryingTime;
@@ -168,9 +210,11 @@ public abstract class Terrain extends GameObject implements Drawable {
         startedToDryTimestamp = new Date();
     }
 
-    /** Делает клетку мокрой и сбрасывает таймер. */
+    /** Делает клетку мокрой и запускает таймер высыхания. */
     public void makeWet() {
         isWet = true;
+        wetDurationMs = Math.max((long) game.getSnake().getLength() * WET_DRYING_TIME_PER_SEGMENT_MS, DRYING_TIME_MS);
+        wetUntilMillis = new Date().getTime() + wetDurationMs;
         restartDryingTimer();
     }
 

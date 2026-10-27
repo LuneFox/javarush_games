@@ -5,7 +5,7 @@ import com.javarush.games.snake.model.terrain.TerrainType;
 
 /** Локализованные строки и мини-форматирование без String.format. */
 public enum Strings {
-    VERSION("1.22", "1.22"),
+    VERSION("1.23", "1.23"),
 
     // Главное меню
     MAIN_TITLE("ALCHEMY SNAKE", "ЗМЕЙКА АЛХИМИКА"),
