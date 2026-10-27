@@ -1,10 +1,8 @@
 package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.enums.Element;
-import com.javarush.games.snake.model.map.Stage;
 import com.javarush.games.snake.view.Sign;
 
 /** Деревянный пол: горит и намокает. */
@@ -24,18 +22,23 @@ public class WoodTerrain extends Terrain {
         if (snakeElement == Element.ALMIGHTY) return;
         if (snakeElement != Element.FIRE && snakeElement != Element.WATER) return;
 
-        final GameObject newHead = snake.getNewHead();
-        final Stage stage = game.getStage();
-
         switch (snakeElement) {
             case FIRE:
-                stage.putTerrain(newHead.x, newHead.y, TerrainType.FIRE);
+                game.getStage().putTerrain(x, y, TerrainType.FIRE);
                 break;
             case WATER:
-                stage.getTerrain(newHead.x, newHead.y).makeWet();
+                makeWet();
                 break;
             default:
                 break;
+        }
+    }
+
+    /** Поддерживает древесину мокрой под водяной змейкой. */
+    @Override
+    public void onSnakeContact(Snake snake) {
+        if (snake.getElement() == Element.WATER) {
+            makeWet();
         }
     }
 

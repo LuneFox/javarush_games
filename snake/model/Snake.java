@@ -174,6 +174,16 @@ public class Snake implements Drawable {
         return element == Element.AIR;
     }
 
+    /** Проверяет контакт змейки с местностью после пассивных эффектов. */
+    public void checkTerrainContacts() {
+        for (GameObject part : snakeParts) {
+            if (!isAlive) return;
+            if (SnakeGame.isOutOfBounds(part.x, part.y)) continue;
+
+            game.getStage().getTerrain(part.x, part.y).onSnakeContact(this);
+        }
+    }
+
     /** Создаёт клетку новой головы по направлению. */
     private GameObject createNewHead() {
         final GameObject head = snakeParts.get(0);

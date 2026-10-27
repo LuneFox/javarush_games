@@ -121,6 +121,8 @@ public class SnakeGame extends Game {
 
         stage.collectOrbs(snake);
         applyPassiveTerrainEffects();
+        // Пассивные эффекты могли изменить клетки под телом змейки.
+        snake.checkTerrainContacts();
         checkGameState();
     }
 

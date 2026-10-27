@@ -186,6 +186,11 @@ public abstract class Terrain extends GameObject implements Drawable {
         // По умолчанию ничего не делает
     }
 
+    /** Вызывается при контакте любой части змейки с клеткой. */
+    public void onSnakeContact(Snake snake) {
+        // По умолчанию ничего не делает
+    }
+
     /** Снимает мокрое состояние, когда время высыхания истекло. */
     protected final void dryOutIfNeeded() {
         if (!isWet) return;

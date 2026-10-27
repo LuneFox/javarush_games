@@ -2,7 +2,6 @@ package com.javarush.games.snake.model.terrain;
 
 import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
-import com.javarush.games.snake.model.GameObject;
 import com.javarush.games.snake.model.Snake;
 import com.javarush.games.snake.model.Strings;
 import com.javarush.games.snake.model.enums.Element;
@@ -43,7 +42,17 @@ public class FireTerrain extends Terrain {
     @Override
     public void interact(Snake snake) {
         super.interact(snake);
+        handleFireContact(snake);
+    }
 
+    /** Реагирует на огонь под любой частью тела змейки. */
+    @Override
+    public void onSnakeContact(Snake snake) {
+        handleFireContact(snake);
+    }
+
+    /** Применяет последствия касания огня. */
+    private void handleFireContact(Snake snake) {
         final Element snakeElement = snake.getElement();
 
         if (snakeElement == Element.ALMIGHTY) return;
@@ -56,9 +65,8 @@ public class FireTerrain extends Terrain {
                 break;
             case WATER:
                 final Stage stage = game.getStage();
-                final GameObject newHead = snake.getNewHead();
-                stage.putTerrain(newHead.x, newHead.y, TerrainType.WOOD);
-                stage.getTerrain(newHead.x, newHead.y).makeWet();
+                stage.putTerrain(x, y, TerrainType.WOOD);
+                stage.getTerrain(x, y).makeWet();
                 break;
             default:
                 break;
