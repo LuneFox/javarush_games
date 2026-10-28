@@ -18,19 +18,31 @@ import java.util.List;
 
 /** Бонус из кирпича: вылезает, прыгает, скользит и подбирается. */
 public abstract class Bonus extends GameObject implements Movable {
+    /** Сила прыжка бонуса. */
     private static final int MAX_JUMP_ENERGY = 4;
+    /** Шаг выдвижения из кирпича. */
     private static final int POP_OUT_STEP = 1;
+    /** Шаг скольжения по кирпичам. */
     private static final int SLIDE_STEP = 1;
+    /** X смены направления скольжения. */
     private static final int SLIDE_DIRECTION_SWITCH_X = 40;
+    /** X окончания скольжения. */
     private static final int SLIDE_END_X = 63;
+    /** Скорость падения бонуса. */
     private static final int FALL_SPEED = 3;
 
+    /** Иконка бонуса над Марио. */
     private final GameObject icon;
+    /** Физика прыжка бонуса. */
     private final JumpPhysics jumpPhysics;
+    /** Направление скольжения. */
     private final Direction slideDirection;
+    /** Верхняя координата кирпича. */
     private final int brickTopY;
 
+    /** Кирпич, из которого появился бонус. */
     private QuestionBrick parentBrick;
+    /** Признак того, что бонус уже выдвинулся. */
     private boolean poppedOut;
 
     /** Создаёт бонус с картинкой и иконкой. */

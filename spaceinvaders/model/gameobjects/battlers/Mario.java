@@ -17,28 +17,49 @@ import java.util.List;
 
 /** Марио: ходьба с инерцией, прыжки, бонус и стрельба. */
 public class Mario extends Battler implements Movable {
+    /** Запас прочности Марио. */
     private static final int HIT_POINTS = 1;
+    /** Допустимый выход за края поля при ходьбе. */
     private static final int WALKING_MARGIN = 4;
+    /** Максимальная сила прыжка. */
     private static final int MAX_JUMP_ENERGY = 5;
+    /** Верхняя граница прыжка. */
     private static final int JUMP_CEILING_Y = 66;
+    /** Скорость подъёма в прыжке. */
     private static final int JUMP_RAISE_SPEED = 4;
+    /** Скорость падения. */
     private static final int JUMP_DESCEND_SPEED = 2;
+    /** Длительность анимации смерти. */
     private static final int DEATH_ANIMATION_FRAMES = 30;
+    /** Кадр начала подъёма при смерти. */
     private static final int DEATH_RISE_FROM_FRAME = 10;
+    /** Кадр окончания подъёма при смерти. */
     private static final int DEATH_RISE_UNTIL_FRAME = 15;
+    /** Шаг подъёма при смерти. */
     private static final int DEATH_RISE_STEP = -2;
+    /** Шаг падения при смерти. */
     private static final int DEATH_FALL_STEP = 3;
+    /** Зазор от головы Марио до снаряда. */
     private static final int BULLET_TOP_GAP = 4;
 
+    /** Физика ходьбы. */
     private final MarioWalk walk = new MarioWalk();
+    /** Аниматор поз. */
     private final MarioAnimator animator = new MarioAnimator(this);
+    /** Физика прыжка. */
     private final JumpPhysics jumpPhysics;
+    /** Левая граница ходьбы. */
     private final int leftWalkingBound;
+    /** Правая граница ходьбы. */
     private final int rightWalkingBound;
 
+    /** Текущее направление ходьбы. */
     private Direction walkingDirection = Direction.NONE;
+    /** Направление взгляда. */
     private Direction facing = Direction.LEFT;
+    /** Подобранный бонус или null. */
     private Bonus bonus;
+    /** Счётчик кадров анимации смерти и победы. */
     private int animationFrame;
 
     /** Создаёт Марио в точке появления. */

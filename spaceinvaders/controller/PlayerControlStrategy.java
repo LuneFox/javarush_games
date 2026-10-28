@@ -6,6 +6,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 
 /** Управление Марио в бою; пауза и рестарт передаются игре. */
 public class PlayerControlStrategy implements ControlStrategy {
+    /** Игра, которой управляет стратегия. */
     private final SpaceInvadersGame game;
 
     /** Создаёт стратегию для указанной игры. */

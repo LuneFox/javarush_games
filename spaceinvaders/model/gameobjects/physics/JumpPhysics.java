@@ -4,13 +4,21 @@ import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 
 /** Прыжки и падения объекта. */
 public class JumpPhysics {
+    /** Объект, к которому применяется физика. */
     private final GameObject object;
+    /** Уровень пола. */
     private int floorLevel;
+    /** Уровень потолка. */
     private final int ceilingLevel;
+    /** Скорость подъёма. */
     private final int raiseSpeed;
+    /** Скорость падения. */
     private int descendSpeed;
+    /** Оставшаяся энергия прыжка. */
     private int jumpEnergy;
+    /** Максимальная энергия прыжка. */
     private final int maxJumpEnergy;
+    /** Число завершённых прыжков. */
     private long completedJumps;
 
     /** Создаёт физику прыжка для объекта. */

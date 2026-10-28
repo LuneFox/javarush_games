@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.view.shapes;
 
 /** Кадры огненного шара. */
 public class FireballShape {
+    /** Первый кадр огненного шара. */
     public static final int[][] FIREBALL_1 = new int[][]{
             {0, 5, 0, 5, 5, 0, 0, 0},
             {0, 0, 5, 0, 5, 5, 5, 0},
@@ -12,6 +13,7 @@ public class FireballShape {
             {0, 5, 5, 4, 4, 5, 5, 0},
             {0, 0, 5, 5, 5, 5, 0, 0}
     };
+    /** Второй кадр огненного шара. */
     public static final int[][] FIREBALL_2 = new int[][]{
             {0, 0, 0, 0, 0, 5, 0, 0},
             {0, 5, 5, 5, 0, 0, 0, 5},
@@ -22,6 +24,7 @@ public class FireballShape {
             {0, 5, 5, 4, 4, 5, 5, 0},
             {0, 0, 5, 5, 5, 5, 0, 0}
     };
+    /** Третий кадр огненного шара. */
     public static final int[][] FIREBALL_3 = new int[][]{
             {0, 0, 5, 5, 5, 5, 0, 0},
             {0, 5, 5, 4, 4, 5, 5, 0},
@@ -32,6 +35,7 @@ public class FireballShape {
             {0, 5, 5, 5, 0, 5, 0, 0},
             {0, 0, 0, 5, 5, 0, 5, 0}
     };
+    /** Четвёртый кадр огненного шара. */
     public static final int[][] FIREBALL_4 = new int[][]{
             {0, 0, 5, 5, 5, 5, 0, 0},
             {0, 5, 5, 4, 4, 5, 5, 0},

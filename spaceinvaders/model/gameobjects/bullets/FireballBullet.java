@@ -6,6 +6,7 @@ import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 
 /** Огненный шар Марио. */
 public class FireballBullet extends Bullet {
+    /** Задержка между кадрами огненного шара. */
     private static final int FRAME_DELAY = 2;
 
     /** Создаёт огненный шар. */

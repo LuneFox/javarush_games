@@ -10,36 +10,59 @@ import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
 
 /** Фон игры: небо, облака, холмы, кусты и земля. */
 public class Scenery implements Drawable {
+    /** Последняя строка чёрного космоса. */
     private static final int NIGHT_SKY_LAST_ROW = 60;
+    /** Последняя строка тёмно-синей каймы. */
     private static final int TWILIGHT_ROW = 63;
+    /** Первая строка полосы ROYALBLUE. */
     private static final int DAWN_FIRST_ROW = 64;
+    /** Последняя строка полосы ROYALBLUE. */
     private static final int DAWN_LAST_ROW = 66;
+    /** Первая строка полосы DODGERBLUE. */
     private static final int MORNING_FIRST_ROW = 67;
+    /** Последняя строка полосы DODGERBLUE. */
     private static final int MORNING_LAST_ROW = 69;
 
-    // На один элемент больше, чем помещается на экране: запас нужен для прокрутки слоя.
+    /** Количество холмов с запасом для прокрутки. */
     private static final int HILLS_COUNT = 3;
+    /** Количество кустов с запасом для прокрутки. */
     private static final int BUSHES_COUNT = 4;
+    /** Количество плиток пола с запасом для прокрутки. */
     private static final int FLOOR_TILES_COUNT = 8;
+    /** Начальный сдвиг холмов по X. */
     private static final int HILLS_OFFSET_X = 14;
+    /** Расстояние между холмами в ширинах холма. */
     private static final double HILLS_GAP = 1.8;
 
-    // Земля — ближний слой, кусты и холмы — всё более дальние.
+    /** Коэффициент параллакса пола. */
     private static final double FLOOR_PARALLAX_FACTOR = 1.0;
+    /** Коэффициент параллакса кустов. */
     private static final double BUSH_PARALLAX_FACTOR = 0.7;
+    /** Коэффициент параллакса холмов. */
     private static final double HILL_PARALLAX_FACTOR = 0.4;
+    /** Скорость дрейфа облаков за ход. */
     private static final double CLOUD_SPEED = 0.25;
 
+    /** Игра, для которой рисуется фон. */
     private final SpaceInvadersGame game;
+    /** Спрайт облака. */
     private final GameObject cloud = new GameObject();
+    /** Спрайт холма. */
     private final GameObject hill = new GameObject();
+    /** Спрайт куста. */
     private final GameObject bush = new GameObject();
+    /** Спрайт плитки пола. */
     private final GameObject floorTile = new GameObject();
 
+    /** X Марио на предыдущем кадре. */
     private double lastMarioX;
+    /** Смещение слоя пола. */
     private double floorOffset;
+    /** Смещение слоя кустов. */
     private double bushesOffset;
+    /** Смещение слоя холмов. */
     private double hillsOffset;
+    /** Смещение облаков. */
     private double cloudOffset;
 
     /** Создаёт сцену и готовит декорации. */

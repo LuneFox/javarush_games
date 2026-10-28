@@ -14,14 +14,22 @@ import java.util.List;
 
 /** Армия врагов: создание танков и команды строю. */
 public class EnemyArmy implements Movable, Drawable {
+    /** Количество рядов обычных танков. */
     private static final int ROWS = 3;
+    /** Количество колонок обычных танков. */
     private static final int COLUMNS = 10;
+    /** Шаг между танками по X и Y. */
     private static final int TANK_STEP = TankShape.TANK_1.length + 1;
+    /** Верхняя координата первого ряда. */
     private static final int FIRST_ROW_TOP_Y = 15;
+    /** Верхняя координата босса. */
     private static final int BOSS_ROW_Y = 1;
 
+    /** Игра, в которой находится армия. */
     private final SpaceInvadersGame game;
+    /** Живые и уничтожаемые танки. */
     private final List<EnemyTank> tanks = new ArrayList<>();
+    /** Логика движения строя. */
     private final ArmyMarch march = new ArmyMarch();
 
     /** Создаёт армию из танков и босса. */

@@ -6,7 +6,9 @@ import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 
 /** Выбирает и включает позу Марио. */
 class MarioAnimator {
+    /** Задержка между кадрами ходьбы. */
     private static final int WALK_FRAME_DELAY = 2;
+    /** Длительность цикла победной анимации. */
     private static final int VICTORY_CYCLE_FRAMES = 20;
 
     /** Поза Марио. */
@@ -14,7 +16,9 @@ class MarioAnimator {
         STANDING, WALKING, JUMPING, BRAKING, DEAD
     }
 
+    /** Анимируемый объект. */
     private final GameObject mario;
+    /** Текущая поза. */
     private Pose pose;
 
     /** Создаёт аниматор для Марио. */

@@ -13,12 +13,18 @@ import java.util.List;
 
 /** Всё, что живёт на поле один раунд: Марио, армия, пули и кирпичи. */
 public class Arena {
+    /** Максимум монет игрока одновременно на поле. */
     private static final int MAX_COINS_ON_FIELD = 2;
 
+    /** Марио текущего раунда. */
     private final Mario mario;
+    /** Армия врагов. */
     private final EnemyArmy enemyArmy;
+    /** Снаряды игрока. */
     private final List<Bullet> playerBullets = new ArrayList<>();
+    /** Снаряды врагов. */
     private final List<Bullet> enemyBullets = new ArrayList<>();
+    /** Кирпичи уровня. */
     private final List<Brick> bricks;
 
     /** Создаёт поле с Марио, армией и кирпичами. */

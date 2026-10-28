@@ -12,19 +12,32 @@ import java.util.List;
 public class Sprite {
     /** Режим анимации. */
     public enum Loop {
-        REPEAT, ONCE
+        /** Повторять анимацию по кругу. */
+        REPEAT,
+
+        /** Проиграть анимацию один раз. */
+        ONCE
     }
 
+    /** Игра для доступа к экрану. */
     private final SpaceInvadersGame game;
 
+    /** Текущий кадр. */
     private int[][] frame;
+    /** Ширина текущего кадра. */
     private int width;
+    /** Высота текущего кадра. */
     private int height;
 
+    /** Все кадры анимации. */
     private List<int[][]> frames;
+    /** Индекс следующего кадра. */
     private int currentFrame;
+    /** Задержка между кадрами в ходах. */
     private int frameDelay;
+    /** Счётчик ходов до смены кадра. */
     private int frameTimer;
+    /** Режим повторения анимации. */
     private Loop loop;
 
     /** Создаёт спрайт для игры. */

@@ -6,13 +6,20 @@ import com.javarush.games.spaceinvaders.model.Mirror;
 
 /** Базовый объект поля: положение, спрайт и столкновения. */
 public class GameObject implements Drawable {
+    /** Игра, к которой привязаны объекты. */
     protected static SpaceInvadersGame game;
 
+    /** Спрайт объекта. */
     private Sprite sprite;
+    /** Координата X. */
     private double x;
+    /** Координата Y. */
     private double y;
+    /** Признак того, что объект жив. */
     private boolean alive = true;
+    /** X последней точки столкновения. */
     private int lastCollisionX;
+    /** Y последней точки столкновения. */
     private int lastCollisionY;
 
     /** Запоминает игру для всех объектов. */

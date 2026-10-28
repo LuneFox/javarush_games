@@ -12,7 +12,9 @@ public final class LevelLayout {
     /** Верхний ряд кирпичей и линия, до которой не должна дойти армия. */
     public static final int BRICK_ROW_Y = GameField.HEIGHT - 30 - BrickShape.BRICK.length;
 
+    /** Колонки обычных кирпичей. */
     private static final int[] PLAIN_BRICK_COLUMNS = {0, 20, 30, 60, 70, 90};
+    /** Колонки кирпичей с бонусами. */
     private static final int[] QUESTION_BRICK_COLUMNS = {10, 80};
 
     /** Запрещает создание экземпляров. */

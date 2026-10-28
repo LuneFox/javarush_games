@@ -6,14 +6,21 @@ import com.javarush.games.spaceinvaders.model.Score;
 
 /** Диалог окончания раунда. */
 public class EndingScreen {
+    /** Префикс победного сообщения. */
     private static final String VICTORY_PREFIX = "SCORE: ";
+    /** Окончание победного сообщения. */
     private static final String VICTORY_SUFFIX = " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!";
+    /** Сообщение о поражении. */
     private static final String DEFEAT_MESSAGE = "MAMMA MIA!";
+    /** Размер текста победы. */
     private static final int VICTORY_TEXT_SIZE = 20;
+    /** Размер текста поражения. */
     private static final int DEFEAT_TEXT_SIZE = 75;
 
+    /** Игра, для которой показывается финал. */
     private final SpaceInvadersGame game;
 
+    /** Признак показанного финала. */
     private boolean shown;
 
     /** Создаёт экран финала для игры. */

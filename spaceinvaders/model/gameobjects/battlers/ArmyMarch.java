@@ -7,9 +7,12 @@ import java.util.List;
 
 /** Марш строя врагов: направление, скорость и шаг вниз у границы. */
 class ArmyMarch {
+    /** Максимальная скорость марша. */
     private static final double MAX_SPEED = 3.0;
+    /** Делимое для расчёта скорости по числу танков. */
     private static final double SPEED_DIVIDEND = 5.0;
 
+    /** Текущее направление марша. */
     private Direction direction = Direction.RIGHT;
 
     /** Двигает все танки на шаг. */

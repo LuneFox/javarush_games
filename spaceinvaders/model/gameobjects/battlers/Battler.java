@@ -4,6 +4,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 
 /** Боец, который выдерживает несколько попаданий. */
 public abstract class Battler extends GameObject {
+    /** Оставшиеся очки прочности. */
     protected int hitPoints;
 
     /** Создаёт бойца в заданной точке. */

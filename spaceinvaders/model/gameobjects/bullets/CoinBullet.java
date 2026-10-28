@@ -6,6 +6,7 @@ import com.javarush.games.spaceinvaders.view.shapes.CoinShape;
 
 /** Монета, выбитая из кирпича. */
 public class CoinBullet extends Bullet {
+    /** Задержка между кадрами монеты. */
     private static final int FRAME_DELAY = 1;
 
     /** Создаёт монету. */

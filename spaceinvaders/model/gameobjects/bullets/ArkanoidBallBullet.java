@@ -12,10 +12,14 @@ import java.util.List;
 
 /** Шар арканоида: скачет по полю и убивает танки. */
 public class ArkanoidBallBullet extends Bullet {
+    /** Начальная горизонтальная скорость. */
     private static final int START_SPEED_X = 2;
+    /** Влияние места попадания в Марио на направление. */
     private static final double HIT_POSITION_FACTOR = 2;
 
+    /** Постоянный модуль скорости шара. */
     private final double ballSpeed;
+    /** Текущая горизонтальная скорость. */
     private double speedX;
 
     /** Создаёт шар у Марио. */

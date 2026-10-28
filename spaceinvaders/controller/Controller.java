@@ -5,6 +5,7 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
 /** Переводит клавиши движка в события управления. */
 public class Controller {
+    /** Стратегия обработки клавиш. */
     private final ControlStrategy strategy;
 
     /** Создаёт контроллер с управлением Марио. */

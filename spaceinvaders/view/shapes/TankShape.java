@@ -5,6 +5,7 @@ import java.util.List;
 
 /** Картинки танка и фигурок тетриса. */
 public class TankShape {
+    /** Первый кадр движения танка. */
     public static final int[][] TANK_1 = new int[][]{
             {33, 0, 0, 0, 33},
             {6, 97, 6, 97, 6},
@@ -13,6 +14,7 @@ public class TankShape {
             {33, 0, 97, 0, 33},
             {0, 0, 97, 0, 0}
     };
+    /** Второй кадр движения танка. */
     public static final int[][] TANK_2 = new int[][]{
             {6, 0, 0, 0, 6},
             {33, 97, 6, 97, 33},
@@ -21,6 +23,7 @@ public class TankShape {
             {6, 0, 97, 0, 6},
             {0, 0, 97, 0, 0}
     };
+    /** Первый кадр взрыва танка. */
     public static final int[][] TANK_KILL_1 = new int[][]{
             {71, 0, 0, 0, 71},
             {3, 3, 3, 3, 3},
@@ -29,6 +32,7 @@ public class TankShape {
             {71, 0, 2, 0, 71},
             {0, 0, 3, 0, 0}
     };
+    /** Второй кадр взрыва танка. */
     public static final int[][] TANK_KILL_2 = new int[][]{
             {0, 0, 0, 0, 0},
             {0, 3, 3, 3, 0},
@@ -37,6 +41,7 @@ public class TankShape {
             {0, 0, 3, 0, 0},
             {0, 0, 0, 0, 0}
     };
+    /** Третий кадр взрыва танка. */
     public static final int[][] TANK_KILL_3 = new int[][]{
             {0, 0, 0, 0, 0},
             {0, 0, 68, 0, 0},
@@ -46,6 +51,7 @@ public class TankShape {
             {0, 0, 0, 0, 0}
     };
 
+    /** Набор фигурок тетриса для снарядов. */
     private static final List<int[][]> TETRIS_BULLETS = Arrays.asList(
             new int[][]{{71, 71}, {71, 71}},               // квадрат
             new int[][]{{71}, {71}, {71}, {71}},           // палочка

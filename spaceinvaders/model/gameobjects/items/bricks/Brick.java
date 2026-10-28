@@ -13,8 +13,10 @@ import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 /** Кирпич: подпрыгивает от удара и даёт монету. */
 public class Brick extends GameObject implements Movable {
+    /** Сдвиг монеты от левого края кирпича. */
     private static final int COIN_OFFSET_X = 2;
 
+    /** Физика подпрыгивания кирпича. */
     private final JumpPhysics bounce;
 
     /** Создаёт обычный кирпич. */

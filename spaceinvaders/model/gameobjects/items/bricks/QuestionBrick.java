@@ -8,11 +8,16 @@ import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
 /** Кирпич с вопросом: прячет бонус и выдаёт его при ударе. */
 public class QuestionBrick extends Brick {
+    /** Шанс появления бонуса за ход. */
     private static final double BONUS_SPAWN_CHANCE = 0.005;
+    /** Количество вариантов бонусов. */
     private static final int BONUS_VARIANTS = 3;
+    /** Сдвиг шара арканоида от левого края. */
     private static final int ARKANOID_BALL_OFFSET_X = 2;
 
+    /** Бонус, спрятанный в кирпиче. */
     private Bonus bonus;
+    /** Признак того, что бонус уже открыт. */
     private boolean bonusRevealed;
 
     /** Создаёт кирпич с вопросом. */

@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.view.shapes;
 
 /** Кадры вращающейся монеты. */
 public class CoinShape {
+    /** Кадр монеты шириной 7 пикселей. */
     public static final int[][] COIN_WIDTH_7 = new int[][]{
             {0, 0, 59, 59, 59, 0, 0},
             {0, 59, 68, 68, 68, 59, 0},
@@ -13,6 +14,7 @@ public class CoinShape {
             {0, 59, 68, 68, 68, 59, 0},
             {0, 0, 59, 59, 59, 0, 0}
     };
+    /** Кадр монеты шириной 5 пикселей. */
     public static final int[][] COIN_WIDTH_5 = new int[][]{
             {0, 0, 59, 59, 59, 0, 0},
             {0, 59, 68, 68, 68, 59, 0},
@@ -24,6 +26,7 @@ public class CoinShape {
             {0, 59, 68, 68, 68, 59, 0},
             {0, 0, 59, 59, 59, 0, 0}
     };
+    /** Кадр монеты шириной 3 пикселя. */
     public static final int[][] COIN_WIDTH_3 = new int[][]{
             {0, 0, 0, 59, 0, 0, 0},
             {0, 0, 59, 68, 59, 0, 0},
@@ -35,6 +38,7 @@ public class CoinShape {
             {0, 0, 59, 68, 59, 0, 0},
             {0, 0, 0, 59, 0, 0, 0}
     };
+    /** Кадр монеты шириной 1 пиксель. */
     public static final int[][] COIN_WIDTH_1 = new int[][]{
             {0, 0, 0, 60, 0, 0, 0},
             {0, 0, 0, 59, 0, 0, 0},

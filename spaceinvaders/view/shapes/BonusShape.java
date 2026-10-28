@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.view.shapes;
 
 /** Картинки бонусов. */
 public class BonusShape {
+    /** Спрайт гриба. */
     public static final int[][] MUSHROOM = new int[][]{
             {0, 0, 0, 4, 5, 5, 4, 0, 0, 0},
             {0, 0, 4, 4, 5, 5, 4, 5, 0, 0},
@@ -14,6 +15,7 @@ public class BonusShape {
             {0, 0, 0, 2, 2, 2, 105, 0, 0, 0},
             {0, 0, 0, 0, 2, 105, 0, 0, 0, 0}
     };
+    /** Иконка гриба над Марио. */
     public static final int[][] MUSHROOM_OVERHEAD_ICON = new int[][]{
             {0, 0, 5, 0, 0},
             {0, 5, 3, 5, 0},
@@ -21,6 +23,7 @@ public class BonusShape {
             {40, 38, 111, 38, 40},
             {0, 92, 92, 92, 0}
     };
+    /** Спрайт звёздочки. */
     public static final int[][] STAR = new int[][]{
             {0, 0, 0, 0, 3, 0, 0, 0, 0},
             {0, 0, 0, 3, 3, 3, 0, 0, 0},
@@ -32,6 +35,7 @@ public class BonusShape {
             {0, 3, 3, 3, 0, 3, 3, 3, 0},
             {0, 3, 3, 0, 0, 0, 3, 3, 0}
     };
+    /** Иконка звёздочки над Марио. */
     public static final int[][] STAR_OVERHEAD_ICON = new int[][]{
             {0, 0, 3, 0, 0},
             {0, 68, 3, 68, 0},
@@ -40,6 +44,7 @@ public class BonusShape {
             {0, 0, 3, 0, 0}
     };
 
+    /** Спрайт шара арканоида. */
     public static final int[][] ARKANOID_BALL = new int[][]{
             {0, 2, 2, 10, 0},
             {2, 2, 10, 10, 79},

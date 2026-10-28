@@ -2,9 +2,12 @@ package com.javarush.games.spaceinvaders.model;
 
 /** Счёт текущей игры. */
 public final class Score {
+    /** Базовые очки за подобранный бонус. */
     private static final int BONUS_PICKUP_POINTS = 9;
 
+    /** Текущий счёт. */
     private static int score;
+    /** Лучший счёт за сессию. */
     private static int topScore;
 
     static {

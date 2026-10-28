@@ -11,13 +11,20 @@ import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 
 /** Обычный танк врага; босс отличается прочностью, спрайтами и снарядами. */
 public class EnemyTank extends Battler implements Shooter {
+    /** Задержка между кадрами марша. */
     private static final int MARCH_FRAME_DELAY = 5;
+    /** Шаг вниз при достижении края. */
     private static final int STEP_DOWN = 2;
+    /** Диапазон случайного шанса выстрела. */
     private static final int FIRE_CHANCE_RANGE = 100;
+    /** Сдвиг дула от левого края. */
     private static final int BULLET_OFFSET_X = 2;
+    /** Задержка между кадрами взрыва. */
     private static final int EXPLOSION_FRAME_DELAY = 1;
 
+    /** Очки за уничтожение танка. */
     private final int scoreForKill;
+    /** Признак восстановления после попадания. */
     private boolean recoveringFromHit;
 
     /** Создаёт танк в заданной точке. */

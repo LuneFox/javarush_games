@@ -80,7 +80,9 @@ enum Symbol {
     SYM_APOSTROPHE(makeArray(1, "00110000"), '\''),
     SYM_QUOTE(makeArray(3, "000000101101"), '\"');
 
+    /** Символы, которые отображает глиф. */
     private final char[] chars;
+    /** Пиксельная матрица глифа. */
     private final int[][] matrix;
 
     /** Создаёт глиф с картинкой и символами. */

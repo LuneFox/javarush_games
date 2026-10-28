@@ -4,11 +4,16 @@ import com.javarush.games.spaceinvaders.model.Direction;
 
 /** Физика ходьбы Марио: инерция, ускорение и торможение. */
 class MarioWalk {
+    /** Начальная скорость ходьбы. */
     private static final double START_SPEED = 0.6;
+    /** Максимальная скорость ходьбы. */
     private static final double MAX_SPEED = 2.4;
+    /** Ускорение при ходьбе. */
     private static final double ACCELERATION = 0.2;
+    /** Порог остановки. */
     private static final double STOP_SPEED_THRESHOLD = 0.5;
 
+    /** Текущая скорость. */
     private double speed;
 
     /** Пересчитывает скорость и сообщает о торможении. */

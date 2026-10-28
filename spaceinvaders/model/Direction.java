@@ -2,5 +2,18 @@ package com.javarush.games.spaceinvaders.model;
 
 /** Направление движения или взгляда. */
 public enum Direction {
-    RIGHT, LEFT, UP, DOWN, NONE
+    /** Вправо. */
+    RIGHT,
+
+    /** Влево. */
+    LEFT,
+
+    /** Вверх. */
+    UP,
+
+    /** Вниз. */
+    DOWN,
+
+    /** Направление отсутствует. */
+    NONE
 }

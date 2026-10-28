@@ -7,12 +7,17 @@ import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 
 /** Снаряд, летящий по вертикали. */
 public abstract class Bullet extends GameObject implements Movable {
+    /** Начальная скорость снаряда. */
     private static final int INITIAL_SPEED = 2;
+    /** Пауза между столкновениями в миллисекундах. */
     private static final long COLLISION_COOLDOWN_MS = 500;
 
+    /** Текущая вертикальная скорость. */
     protected double speedY;
 
+    /** Признак опасности для врагов. */
     private boolean lethalToEnemies;
+    /** Время последнего столкновения. */
     private long lastCollisionTime;
 
     /** Создаёт снаряд в заданной точке с направлением. */

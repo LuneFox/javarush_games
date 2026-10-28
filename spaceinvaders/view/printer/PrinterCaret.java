@@ -2,12 +2,17 @@ package com.javarush.games.spaceinvaders.view.printer;
 
 /** Курсор печати: позиция и выравнивание строк. */
 class PrinterCaret {
+    /** Высота строки. */
     private static final int LINE_HEIGHT = 9;
 
+    /** Начальный X строки. */
     private final int baseX;
+    /** Выравнивание текста. */
     private final TextAlign align;
 
+    /** Текущий X курсора. */
     private int x;
+    /** Текущий Y курсора. */
     private int y;
 
     /** Создаёт курсор в заданной точке. */

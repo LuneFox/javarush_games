@@ -6,8 +6,11 @@ import com.javarush.games.spaceinvaders.view.shapes.BossTankShape;
 
 /** Босс армии: прочнее, стреляет реже и машинками. */
 public class BossTank extends EnemyTank {
+    /** Сдвиг дула босса от левого края. */
     private static final int BULLET_OFFSET_X = 3;
+    /** Очки за каждую единицу прочности босса. */
     private static final int SCORE_PER_HIT_POINT = 50;
+    /** Базовый делитель шанса выстрела босса. */
     private static final int FIRE_RATE_DIVISOR = 4;
 
     /** Создаёт босса в заданной точке. */

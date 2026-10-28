@@ -5,10 +5,13 @@ import com.javarush.games.spaceinvaders.view.PixelScreen;
 
 /** Печатный глиф: 1 в матрице — видимый пиксель. */
 public class SymbolImage {
+    /** Код прозрачного пикселя. */
     private static final int TRANSPARENT = 0;
 
+    /** Экран для печати. */
     private static PixelScreen screen;
 
+    /** Пиксельная матрица глифа. */
     private final int[][] matrix;
 
     /** Запоминает экран для печати. */

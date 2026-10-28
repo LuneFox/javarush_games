@@ -24,18 +24,29 @@ import java.util.List;
 
 /** Адаптер игры к движку: создаёт участников, проводит ход и передаёт клавиши. */
 public class SpaceInvadersGame extends Game {
+    /** Задержка между ходами в миллисекундах. */
     private static final int TURN_DELAY_MS = 40;
+    /** Число ходов после конца раунда до показа финального диалога. */
     private static final int TURNS_BEFORE_ENDING = 60;
 
+    /** Текущее поле боя. */
     private Arena arena;
+    /** Пиксельный буфер экрана. */
     private PixelScreen screen;
+    /** Фон игры. */
     private Scenery scenery;
+    /** Эффект вспышки. */
     private ScreenFlash flash;
+    /** Табло со счётом и стадией. */
     private ScoreBoard scoreBoard;
+    /** Финальный диалог. */
     private EndingScreen endingScreen;
+    /** Обработчик управления. */
     private Controller controller;
 
+    /** Текущее состояние игры. */
     private GameStatus status = GameStatus.RUNNING;
+    /** Счётчик ходов после окончания раунда. */
     private int turnsAfterRoundEnd;
 
     /** Инициализирует игру при запуске. */

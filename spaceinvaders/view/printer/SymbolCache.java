@@ -5,8 +5,10 @@ import java.util.Map;
 
 /** Ленивый кэш глифов. */
 public class SymbolCache {
+    /** Символ-заглушка для неизвестных глифов. */
     private static final char FALLBACK = ' ';
 
+    /** Кэш глифов по символам. */
     private final Map<Character, SymbolImage> glyphs = new HashMap<>(128);
 
     /** Возвращает глиф символа или пробел. */

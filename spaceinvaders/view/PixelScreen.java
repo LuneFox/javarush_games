@@ -7,7 +7,9 @@ import com.javarush.games.spaceinvaders.model.GameField;
 
 /** Пиксельный буфер, который в конце хода переносится в движок. */
 public class PixelScreen implements Drawable {
+    /** Игра, в которую переносится буфер. */
     private final Game game;
+    /** Цвета пикселей экрана. */
     private final Color[][] pixels;
 
     /** Создаёт экран и очищает его. */

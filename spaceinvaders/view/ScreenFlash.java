@@ -7,9 +7,12 @@ import com.javarush.games.spaceinvaders.model.GameField;
 
 /** Одноразовая бело-жёлтая вспышка на всё поле. */
 public class ScreenFlash implements Drawable {
+    /** Игра, на экране которой рисуется вспышка. */
     private final SpaceInvadersGame game;
 
+    /** Признак заказанной вспышки. */
     private boolean requested;
+    /** Цвет текущего пикселя вспышки. */
     private boolean white;
 
     /** Создаёт вспышку для игры. */

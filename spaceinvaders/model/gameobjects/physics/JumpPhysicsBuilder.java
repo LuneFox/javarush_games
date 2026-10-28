@@ -5,13 +5,20 @@ import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 
 /** Собирает настройки физики прыжка. */
 public class JumpPhysicsBuilder {
+    /** Энергия прыжка по умолчанию. */
     private static final int DEFAULT_MAX_JUMP_ENERGY = 3;
 
+    /** Объект для физики. */
     private final GameObject object;
+    /** Уровень пола. */
     private int floorLevel = GameField.HEIGHT - 1;
+    /** Уровень потолка. */
     private int ceilingLevel;
+    /** Скорость подъёма. */
     private int raiseSpeed = 1;
+    /** Скорость падения. */
     private int descendSpeed = 1;
+    /** Максимальная энергия прыжка. */
     private int maxJumpEnergy = DEFAULT_MAX_JUMP_ENERGY;
 
     /** Создаёт строитель для объекта. */

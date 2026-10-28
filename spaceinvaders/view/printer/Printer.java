@@ -5,8 +5,11 @@ import com.javarush.games.spaceinvaders.model.GameField;
 
 /** Печатает текст пиксельным шрифтом в буфер экрана. */
 public class Printer {
+    /** Кэш глифов. */
     private static final SymbolCache CACHE = new SymbolCache();
+    /** Цвет обводки текста. */
     private static final Color STROKE_COLOR = Color.SADDLEBROWN;
+    /** Отступ между символами. */
     private static final int CHAR_SPACING = 1;
 
     /** Запрещает создание экземпляров. */
