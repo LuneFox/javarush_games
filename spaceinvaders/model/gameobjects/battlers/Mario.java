@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
+import com.javarush.engine.cell.Color;
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.GameField;
 import com.javarush.games.spaceinvaders.model.Mirror;
@@ -17,8 +18,8 @@ import java.util.List;
 
 /** Марио: ходьба с инерцией, прыжки, бонус и стрельба. */
 public class Mario extends Battler implements Movable {
-    /** Запас прочности Марио. */
-    private static final int HIT_POINTS = 1;
+    /** Максимальный запас здоровья Марио. */
+    private static final int HIT_POINTS = 5;
     /** Допустимый выход за края поля при ходьбе. */
     private static final int WALKING_MARGIN = 4;
     /** Максимальная сила прыжка. */
@@ -41,6 +42,12 @@ public class Mario extends Battler implements Movable {
     private static final int DEATH_FALL_STEP = 3;
     /** Зазор от головы Марио до снаряда. */
     private static final int BULLET_TOP_GAP = 4;
+    /** Сколько миллисекунд показывать полоску здоровья после попадания. */
+    private static final long HEALTH_BAR_DURATION_MS = 1000;
+    /** Высота полоски здоровья. */
+    private static final int HEALTH_BAR_HEIGHT = 2;
+    /** Зазор между ногами Марио и полоской здоровья. */
+    private static final int HEALTH_BAR_GAP = 1;
 
     /** Физика ходьбы. */
     private final MarioWalk walk = new MarioWalk();
@@ -61,6 +68,8 @@ public class Mario extends Battler implements Movable {
     private Bonus bonus;
     /** Счётчик кадров анимации смерти и победы. */
     private int animationFrame;
+    /** Время, до которого видна полоска здоровья. */
+    private long healthBarHideTime;
 
     /** Создаёт Марио в точке появления. */
     public Mario() {
@@ -203,7 +212,7 @@ public class Mario extends Battler implements Movable {
         return bullet.collidesWith(this, Mirror.of(facing));
     }
 
-    /** Применяет попадание: теряет бонус или погибает. */
+    /** Применяет попадание: теряет бонус или здоровье и показывает HP. */
     @Override
     public void takeHit() {
         if (!isAlive()) return;
@@ -212,10 +221,17 @@ public class Mario extends Battler implements Movable {
         if (hasBonus()) {
             bonus = null;
             Score.removeBonusPickup();
+            showHealthBar();
             return;
         }
 
         super.takeHit();
+        showHealthBar();
+    }
+
+    /** Показывает полоску здоровья на секунду. */
+    private void showHealthBar() {
+        healthBarHideTime = System.currentTimeMillis() + HEALTH_BAR_DURATION_MS;
     }
 
     /** Проигрывает анимацию смерти. */
@@ -243,12 +259,48 @@ public class Mario extends Battler implements Movable {
      * Отрисовка
      */
 
-    /** Рисует Марио и иконку бонуса. */
+    /** Рисует Марио, полоску здоровья и иконку бонуса. */
     @Override
     public void draw() {
         updateFacing();
         super.draw(Mirror.of(facing));
+        drawHealthBar();
         drawBonusIcon();
+    }
+
+    /** Рисует полоску здоровья под ногами, пока она видна. */
+    private void drawHealthBar() {
+        if (!isHealthBarVisible()) return;
+
+        int barX = (int) getX();
+        int barY = (int) getY() + getHeight() + HEALTH_BAR_GAP;
+        int barWidth = getWidth();
+
+        for (int x = 0; x < barWidth; x++) {
+            for (int y = 0; y < HEALTH_BAR_HEIGHT; y++) {
+                game.getScreen().setPixel(barX + x, barY + y, Color.DARKGRAY);
+            }
+        }
+
+        int filledWidth = barWidth * hitPoints / HIT_POINTS;
+        Color barColor = healthColor();
+        for (int x = 0; x < filledWidth; x++) {
+            for (int y = 0; y < HEALTH_BAR_HEIGHT; y++) {
+                game.getScreen().setPixel(barX + x, barY + y, barColor);
+            }
+        }
+    }
+
+    /** Сообщает, видна ли полоска здоровья. */
+    private boolean isHealthBarVisible() {
+        return isAlive() && System.currentTimeMillis() < healthBarHideTime;
+    }
+
+    /** Возвращает цвет полоски по текущему здоровью. */
+    private Color healthColor() {
+        if (hitPoints >= 4) return Color.GREEN;
+        if (hitPoints >= 2) return Color.YELLOW;
+        return Color.RED;
     }
 
     /** Обновляет направление взгляда. */
