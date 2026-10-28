@@ -1,33 +1,31 @@
 package com.javarush.games.spaceinvaders.view.printer;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Lazily built set of glyphs. A character that has no glyph is printed as a space, so a single
+ * unsupported symbol never breaks the whole line.
+ */
 public class SymbolCache {
-    private final Map<Character, SymbolImage> cache;
+    private static final char FALLBACK = ' ';
 
-    SymbolCache() {
-        cache = new HashMap<>(128);
-    }
+    private final Map<Character, SymbolImage> glyphs = new HashMap<>(128);
 
     SymbolImage get(Character character) {
-        SymbolImage value = cache.get(character);
-
-        if (value == null) {
-            putAllSymbols();
-            value = cache.get(character);
+        if (glyphs.isEmpty()) {
+            loadAllGlyphs();
         }
 
-        // Characters that have no glyph are printed as blank space, the whole line must not break
-        return (value != null) ? value : cache.get(' ');
+        SymbolImage glyph = glyphs.get(character);
+        return (glyph != null) ? glyph : glyphs.get(FALLBACK);
     }
 
-    private void putAllSymbols() {
-        Arrays.stream(Symbol.values()).forEach(element -> {
-            for (char c : element.getChars()) {
-                cache.put(c, new SymbolImage(element));
+    private void loadAllGlyphs() {
+        for (Symbol symbol : Symbol.values()) {
+            for (char character : symbol.getChars()) {
+                glyphs.put(character, new SymbolImage(symbol));
             }
-        });
+        }
     }
 }

@@ -1,22 +1,26 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.bullets;
 
-import java.util.Optional;
+/**
+ * The only place that knows which class implements a bullet type.
+ */
+public final class BulletFactory {
+    private BulletFactory() {
+    }
 
-public class BulletFactory {
-    public static Optional<Bullet> getBullet(BulletType bulletType, double x, double y) {
-        switch (bulletType) {
+    public static Bullet create(BulletType type, double x, double y) {
+        switch (type) {
             case COIN:
-                return Optional.of(new CoinBullet(x, y));
+                return new CoinBullet(x, y);
             case FIREBALL:
-                return Optional.of(new FireballBullet(x, y));
+                return new FireballBullet(x, y);
             case ARKANOID_BALL:
-                return Optional.of(new ArkanoidBallBullet(x, y));
+                return new ArkanoidBallBullet(x, y);
             case TETRIS:
-                return Optional.of(new TetrisBullet(x, y));
+                return new TetrisBullet(x, y);
             case RACING_CAR:
-                return Optional.of(new RacingCarBullet(x, y));
+                return new RacingCarBullet(x, y);
             default:
-                return Optional.empty();
+                throw new IllegalArgumentException("Unknown bullet type: " + type);
         }
     }
 }

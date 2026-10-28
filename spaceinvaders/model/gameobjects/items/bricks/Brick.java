@@ -1,55 +1,58 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.items.bricks;
 
-import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.Direction;
+import com.javarush.games.spaceinvaders.model.LevelLayout;
 import com.javarush.games.spaceinvaders.model.Mirror;
-import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
-import com.javarush.games.spaceinvaders.model.gameobjects.Shooter;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelper;
+import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
-import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelperBuilder;
+import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysics;
+import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysicsBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
-import java.util.Optional;
+/**
+ * A brick jumps up when Mario hits it from below and gives away a coin. The question brick overrides
+ * what exactly is given away.
+ */
+public class Brick extends GameObject implements Movable {
+    private static final int COIN_OFFSET_X = 2;
 
-public class Brick extends GameObject implements Shooter, Movable {
-    private final JumpHelper jumpHelper;
+    private final JumpPhysics bounce;
 
     public Brick(double x, double y) {
+        this(x, y, BrickShape.BRICK);
+    }
+
+    protected Brick(double x, double y, int[][] image) {
         super(x, y);
-        setStaticView(BrickShape.BRICK);
-        jumpHelper = new JumpHelperBuilder(this)
-                .setFloorLevel(SpaceInvadersGame.HEIGHT - 30 - BrickShape.BRICK.length)
+        setStaticView(image);
+        bounce = new JumpPhysicsBuilder(this)
+                .setFloorLevel(LevelLayout.BRICK_ROW_Y)
                 .build();
     }
 
-    public void verifyTouch(Mario mario) {
-        if (!mario.isAlive) return;
+    public void bumpIfTouchedBy(Mario mario) {
+        if (!mario.isAlive()) return;
+        if (!collidesWith(mario, Mirror.of(mario.getFacing()))) return;
 
-        final Mirror mirror = (mario.getFaceDirection() == Direction.RIGHT) ? Mirror.NONE : Mirror.HORIZONTAL;
-        if (this.collidesWith(mario, mirror)) {
-            jumpHelper.initJump();
-            shoot();
-        }
+        bounce.startJump();
+        releaseContent();
     }
 
+    /**
+     * Called when Mario hits the brick from below.
+     */
+    protected void releaseContent() {
+        if (game.isRoundOver()) return;
+
+        game.addPlayerBullet(BulletFactory.create(BulletType.COIN, getX() + COIN_OFFSET_X, getY()));
+    }
+
+    @Override
     public void move() {
-        if (game.isStopped()) return;
-        jumpHelper.progressJump();
-    }
+        if (game.isRoundOver()) return;
 
-    public void shoot() {
-        Optional<Bullet> bulletOptional = getAmmo();
-        bulletOptional.ifPresent(coin -> game.addPlayerBullet(coin));
-    }
-
-    public Optional<Bullet> getAmmo() {
-        if (game.isStopped()) return Optional.empty();
-
-        return BulletFactory.getBullet(BulletType.COIN, x + 2, y);
+        bounce.update();
     }
 }

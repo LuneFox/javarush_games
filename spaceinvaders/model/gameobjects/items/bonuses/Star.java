@@ -1,53 +1,43 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses;
 
-
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
-import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
-import java.util.Date;
 import java.util.List;
 
+/**
+ * The star reflects enemy bullets back while it is carried, and turns all of them around at once
+ * when it is used.
+ */
 public class Star extends Bonus {
-    public static final long BULLET_COLLISION_COOLDOWN_MS = 500;
-
     public Star(double x, double y) {
-        super(x, y);
-        setStaticView(BonusShape.STAR);
-        buildJumpHelper();
-        overheadIcon = new GameObject() {
-            {
-                setStaticView(BonusShape.STAR_OVERHEAD_ICON);
-            }
-        };
+        super(x, y, BonusShape.STAR, BonusShape.STAR_OVERHEAD_ICON);
     }
 
     @Override
-    public void verifyHit(List<Bullet> bullets) {
-        bullets.forEach(bullet -> {
-            if (collidesWith(bullet, Mirror.HORIZONTAL) && bulletCollisionCooledDown(bullet)) {
-                bullet.inverseDirection();
-                bullet.canKillEnemies = true;
-                bullet.lastCollisionDate = new Date();
-            }
-        });
+    protected void reactToBullets(List<Bullet> bullets) {
+        for (Bullet bullet : bullets) {
+            if (!collidesWith(bullet, Mirror.HORIZONTAL)) continue;
+            if (!bullet.isCollisionCooledDown()) continue;
+
+            bullet.reverseDirection();
+            bullet.makeLethalToEnemies();
+            bullet.markCollision();
+        }
     }
 
     @Override
-    public void consume() {
-        // The star is not fired away like a mushroom, it is used up by the SPACE press itself
-        isAlive = false;
-        game.getFlash().show();
-        Score.add(game.getEnemyBullets().size());
-        game.getEnemyBullets().forEach(bullet -> {
-            bullet.inverseDirection();
-            bullet.canKillEnemies = true;
-        });
-    }
+    public void activate() {
+        destroy();
+        game.getFlash().request();
 
-    protected boolean bulletCollisionCooledDown(Bullet bullet) {
-        return new Date().getTime() - bullet.lastCollisionDate.getTime() >= BULLET_COLLISION_COOLDOWN_MS;
+        List<Bullet> enemyBullets = game.getEnemyBullets();
+        Score.add(enemyBullets.size());
+        for (Bullet bullet : enemyBullets) {
+            bullet.reverseDirection();
+            bullet.makeLethalToEnemies();
+        }
     }
 }

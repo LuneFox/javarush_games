@@ -1,231 +1,158 @@
 package com.javarush.games.spaceinvaders;
 
-import com.javarush.engine.cell.Color;
 import com.javarush.engine.cell.Game;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.spaceinvaders.controller.Controller;
+import com.javarush.games.spaceinvaders.model.Arena;
+import com.javarush.games.spaceinvaders.model.GameField;
+import com.javarush.games.spaceinvaders.model.GameStatus;
 import com.javarush.games.spaceinvaders.model.Score;
+import com.javarush.games.spaceinvaders.model.StageProgress;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
-import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Battler;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyArmy;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.CoinBullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.Brick;
-import com.javarush.games.spaceinvaders.model.gameobjects.items.bricks.QuestionBrick;
-import com.javarush.games.spaceinvaders.view.Display;
-import com.javarush.games.spaceinvaders.view.Flash;
+import com.javarush.games.spaceinvaders.view.EndingScreen;
+import com.javarush.games.spaceinvaders.view.PixelScreen;
 import com.javarush.games.spaceinvaders.view.Scenery;
-import com.javarush.games.spaceinvaders.view.printer.Printer;
+import com.javarush.games.spaceinvaders.view.ScoreBoard;
+import com.javarush.games.spaceinvaders.view.ScreenFlash;
 import com.javarush.games.spaceinvaders.view.printer.SymbolImage;
-import com.javarush.games.spaceinvaders.view.printer.TextAlign;
-import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
- * VERSION 1.08
+ * Engine adapter of the game: creates the collaborators, runs one turn and forwards the keys.
+ * Everything else is delegated to the arena, the score board and the ending screen.
  */
-
 public class SpaceInvadersGame extends Game {
-    private static SpaceInvadersGame instance;
-    public static final int WIDTH = 100;
-    public static final int HEIGHT = 100;
-    public static final int COIN_BULLETS_MAX = 2;
-    public static final int FLOOR_HEIGHT = 4;
-    private static int stage = 0;
+    private static final int TURN_DELAY_MS = 40;
+    private static final int TURNS_BEFORE_ENDING = 60;
 
-    private Controller controller;
-    private Display display;
+    private Arena arena;
+    private PixelScreen screen;
     private Scenery scenery;
-    private Flash flash;
+    private ScreenFlash flash;
+    private ScoreBoard scoreBoard;
+    private EndingScreen endingScreen;
+    private Controller controller;
 
-    private Mario mario;
-    private EnemyArmy enemyArmy;
-
-    private List<Bullet> marioBullets;
-    private List<Bullet> enemyBullets;
-    private List<Brick> bricks;
-
-    private static int showPauseTimer;
-    private int gameOverDelay;
-    private boolean isEndingDisplayed;
-    private boolean isPaused;
-    private boolean isStopped;
+    private GameStatus status = GameStatus.RUNNING;
+    private int turnsAfterRoundEnd;
 
     @Override
     public void initialize() {
         showGrid(false);
-        setScreenSize(WIDTH, HEIGHT);
+        setScreenSize(GameField.WIDTH, GameField.HEIGHT);
 
         GameObject.setGame(this);
-        Battler.setGame(this);
 
-        instance = this;
+        screen = new PixelScreen(this);
+        SymbolImage.setScreen(screen);
         scenery = new Scenery(this);
-        flash = new Flash(this);
-        display = new Display(this);
+        flash = new ScreenFlash(this);
+        scoreBoard = new ScoreBoard();
+        endingScreen = new EndingScreen(this);
         controller = new Controller(this);
-        SymbolImage.setDisplay(display);
 
         startNewGame();
     }
 
+    /**
+     * Starts the first stage or the next one, depending on how the previous stage ended.
+     */
     public void startNewGame() {
-        resetValues();
-        createAssets();
-        drawStage();
+        moveToNextStage();
+
+        arena = new Arena(this);
+        status = GameStatus.RUNNING;
+        turnsAfterRoundEnd = 0;
+        endingScreen.reset();
+
+        setTurnTimer(TURN_DELAY_MS);
+        render();
     }
 
-    private void resetValues() {
-        // The ending is displayed after the death animation, so a living Mario here means a completed stage
-        if (mario != null && mario.isAlive) {
-            stage++;
+    private void moveToNextStage() {
+        if (arena != null && arena.getMario().isAlive()) {
+            StageProgress.advance();
         } else {
             Score.reset();
-            stage = 1;
+            StageProgress.restart();
         }
-
-        isPaused = false;
-        isStopped = false;
-        gameOverDelay = 0;
-        isEndingDisplayed = false;
-        setTurnTimer(40);
-    }
-
-    private void createAssets() {
-        mario = new Mario();
-        enemyArmy = new EnemyArmy(this);
-        enemyBullets = new ArrayList<>();
-        marioBullets = new ArrayList<>();
-        createBricks();
-    }
-
-    private void createBricks() {
-        bricks = new ArrayList<>();
-        int y = HEIGHT - 30 - BrickShape.BRICK.length;
-
-        IntStream.of(0, 20, 30, 60, 70, 90)
-                .forEach(x -> bricks.add(new Brick(x, y)));
-        IntStream.of(10, 80)
-                .forEach(x -> bricks.add(new QuestionBrick(x, y)));
     }
 
     @Override
     public void onTurn(int step) {
-        if (!isPaused) {
-            moveObjects();
-            verifyCollisions();
-            checkGameOverConditions();
-            removeDeadObjects();
+        if (!isPaused()) {
+            arena.update();
+            arena.resolveCollisions();
+            updateRound();
+            arena.removeDestroyedObjects();
             setScore(Score.getScore());
         }
-        drawStage();
+
+        render();
     }
 
-    private void moveObjects() {
-        mario.move();
-        enemyArmy.move();
-        // A shot tank is still on the field during its explosion animation, so it must not shoot
-        if (enemyArmy.hasLiveTanks()) {
-            enemyArmy.attack();
-        }
-        Stream.of(enemyBullets, marioBullets, bricks)
-                .forEach(list -> list.forEach(Movable::move));
-    }
-
-    private void verifyCollisions() {
-        mario.verifyHit(enemyBullets);
-        enemyArmy.verifyHit(marioBullets);
-        enemyArmy.verifyHit(enemyBullets);
-        bricks.forEach(brick -> brick.verifyTouch(mario));
-    }
-
-    private void removeDeadObjects() {
-        enemyArmy.removeDeadTanks();
-        Stream.of(enemyBullets, marioBullets)
-                .forEach(list -> list.removeIf(bullet -> bullet.isOffScreen() || !bullet.isAlive));
-    }
-
-    private void checkGameOverConditions() {
-        if (enemyArmy.reachedBottomLine(bricks.get(0).y)) {
-            mario.kill();
+    private void updateRound() {
+        if (arena.hasArmyReachedTheBrickLine()) {
+            arena.getMario().takeHit();
         }
 
-        if (!mario.isAlive) {
-            mario.playDeathAnimation();
-            stopGameWithEndingAfterDelay();
-        } else if (enemyArmy.getTanksCount() == 0) {
-            mario.playVictoryAnimation();
-            stopGameWithEndingAfterDelay();
+        if (arena.isMarioDefeated()) {
+            arena.getMario().playDeathAnimation();
+            finishRound();
+        } else if (arena.isArmyDestroyed()) {
+            arena.getMario().playVictoryAnimation();
+            finishRound();
         }
     }
 
-    private void drawStage() {
-        scenery.draw();
-        printStageAndScoreInfo();
-        enemyArmy.draw();
-        marioBullets.forEach(GameObject::draw);
-        bricks.forEach(GameObject::draw);
-        enemyBullets.forEach(GameObject::draw);
-        mario.draw();
-        flash.draw();
-        printPause();
-        display.draw();
-    }
+    private void finishRound() {
+        status = GameStatus.OVER;
+        turnsAfterRoundEnd++;
 
-    private static void printStageAndScoreInfo() {
-        Printer.print(String.valueOf(Score.getScore()), Color.DARKBLUE, 100, 50, TextAlign.CENTER);
-        Printer.print("TOP: " + Score.getTopScore(), Color.DARKBLUE, 100, 1, TextAlign.RIGHT);
-        Printer.print("Stage " + stage, Color.DARKBLUE, 1, 1);
+        if (turnsAfterRoundEnd < TURNS_BEFORE_ENDING) return;
+        if (endingScreen.isShown()) return;
 
-    }
-
-    private static void printPause() {
-        if (instance.isPaused) {
-            Printer.print(showPauseTimer++ % 10 < 5 ? "PAUSE" : "", Color.WHITE, 100, 50, TextAlign.CENTER);
-        }
-    }
-
-    public void addPlayerBullet(Bullet bulletToAdd) {
-        if (bulletToAdd instanceof CoinBullet && countCoinBullets() >= COIN_BULLETS_MAX) return;
-        marioBullets.add(bulletToAdd);
-    }
-
-    private long countCoinBullets() {
-        return marioBullets.stream()
-                .filter(bullet -> bullet instanceof CoinBullet)
-                .count();
-    }
-
-    private void stopGameWithEndingAfterDelay() {
-        isStopped = true;
-        gameOverDelay++;
-        if (gameOverDelay < 60) return;
-        displayEnding(mario.isAlive);
-    }
-
-    private void displayEnding(boolean isVictory) {
-        stopTurnTimer();
-        if (isVictory) {
-            String message = "SCORE: " + Score.getScore() + " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!";
-            showMessageDialog(Color.NONE, message, Color.WHITE, 20);
+        if (arena.getMario().isAlive()) {
+            endingScreen.showVictory();
         } else {
-            String message = "MAMMA MIA!";
-            showMessageDialog(Color.NONE, message, Color.RED, 75);
+            endingScreen.showDefeat();
         }
-        isEndingDisplayed = true;
     }
 
-    public void pause() {
-        // The game is over once the army has landed, or after the ending has been shown
-        if (isStopped) return;
+    private void render() {
+        scenery.draw();
+        scoreBoard.draw();
+        arena.drawObjects();
+        flash.draw();
+        scoreBoard.drawPauseLabelIfPaused(isPaused());
+        screen.draw();
+    }
 
-        isPaused = !isPaused;
+    /*
+     * Game state
+     */
+
+    public void togglePause() {
+        if (status == GameStatus.OVER) return;
+
+        status = (status == GameStatus.PAUSED) ? GameStatus.RUNNING : GameStatus.PAUSED;
+    }
+
+    public boolean isPaused() {
+        return status == GameStatus.PAUSED;
+    }
+
+    public boolean isRoundOver() {
+        return status == GameStatus.OVER;
+    }
+
+    public boolean isEndingShown() {
+        return endingScreen.isShown();
     }
 
     /*
@@ -234,59 +161,47 @@ public class SpaceInvadersGame extends Game {
 
     @Override
     public void onKeyPress(Key key) {
-        controller.pressKey(key);
+        controller.handleKeyPress(key);
     }
 
     @Override
     public void onKeyReleased(Key key) {
-        controller.releaseKey(key);
+        controller.handleKeyRelease(key);
     }
 
     /*
-     * Getters
+     * Accessors used by game objects and the controller
      */
 
-    public Flash getFlash() {
-        return flash;
+    public Arena getArena() {
+        return arena;
     }
 
     public Mario getMario() {
-        return mario;
-    }
-
-    public List<Brick> getBricks() {
-        return bricks;
-    }
-
-    public List<Bullet> getEnemyBullets() {
-        return enemyBullets;
+        return arena.getMario();
     }
 
     public EnemyArmy getEnemyArmy() {
-        return enemyArmy;
+        return arena.getEnemyArmy();
     }
 
-    public Display getDisplay() {
-        return display;
+    public List<Brick> getBricks() {
+        return arena.getBricks();
     }
 
-    public boolean isEndingDisplayed() {
-        return isEndingDisplayed;
+    public List<Bullet> getEnemyBullets() {
+        return arena.getEnemyBullets();
     }
 
-    public boolean isPaused() {
-        return isPaused;
+    public void addPlayerBullet(Bullet bullet) {
+        arena.addPlayerBullet(bullet);
     }
 
-    public boolean isStopped() {
-        return isStopped;
+    public PixelScreen getScreen() {
+        return screen;
     }
 
-    public static int getStage() {
-        return stage;
-    }
-
-    public static SpaceInvadersGame getInstance() {
-        return instance;
+    public ScreenFlash getFlash() {
+        return flash;
     }
 }

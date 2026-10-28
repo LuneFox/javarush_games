@@ -8,52 +8,56 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * A picture of a game object: a single frame or a frame sequence, drawn pixel by pixel.
+ */
 public class Sprite {
+    public enum Loop {
+        REPEAT, ONCE
+    }
+
     private final SpaceInvadersGame game;
-    private int[][] matrix;
-    int width;
-    int height;
+
+    private int[][] frame;
+    private int width;
+    private int height;
 
     private List<int[][]> frames;
     private int currentFrame;
-    private int nextFrameDelay;
-    private int nextFrameTimer;
+    private int frameDelay;
+    private int frameTimer;
     private Loop loop;
-
-    public enum Loop {
-        ENABLED, DISABLED
-    }
 
     public Sprite(SpaceInvadersGame game) {
         this.game = game;
-        this.nextFrameDelay = 1;
+        this.frameDelay = 1;
     }
 
     void draw(double x, double y, Mirror mirror) {
-        nextFrame();
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                Color color = Color.values()[matrix[j][i]];
-                double drawX = (mirror == Mirror.HORIZONTAL) ? (x + width - 1 - i) : (x + i);
-                double drawY = (y + j);
-                game.getDisplay().drawPixel((int) drawX, (int) drawY, color);
+        showNextFrame();
+
+        for (int column = 0; column < width; column++) {
+            for (int row = 0; row < height; row++) {
+                Color color = Color.values()[frame[row][column]];
+                double pixelX = (mirror == Mirror.HORIZONTAL) ? (x + width - 1 - column) : (x + column);
+                game.getScreen().setPixel((int) pixelX, (int) (y + row), color);
             }
         }
     }
 
-    void nextFrame() {
+    private void showNextFrame() {
         if (game.isPaused()) return;
-        if (nextFrameTimer++ % nextFrameDelay != 0) return;
+        if (frameTimer++ % frameDelay != 0) return;
 
         if (!isAnimationFinished()) {
-            this.matrix = frames.get(currentFrame++);
-        } else if (loop == Loop.ENABLED) {
+            frame = frames.get(currentFrame++);
+        } else if (loop == Loop.REPEAT) {
             currentFrame = 0;
-            this.matrix = frames.get(currentFrame++);
+            frame = frames.get(currentFrame++);
         }
     }
 
-    boolean isAnimationFinished(){
+    boolean isAnimationFinished() {
         return currentFrame >= frames.size();
     }
 
@@ -61,29 +65,36 @@ public class Sprite {
         this.frames = new ArrayList<>();
         this.frames.add(frame);
         this.currentFrame = 0;
-        this.setMatrix(frame);
+        setFrame(frame);
     }
 
-    void setAnimatedView(Loop loop, int nextFrameDelay, int[][]... frames) {
+    void setAnimatedView(Loop loop, int frameDelay, int[][]... frames) {
         this.loop = loop;
-        this.nextFrameDelay = nextFrameDelay;
+        this.frameDelay = frameDelay;
         this.frames = Arrays.asList(frames);
         this.currentFrame = 0;
-        int lastFrameIndex = frames.length - 1;
-        this.setMatrix(frames[lastFrameIndex]);
+        setFrame(frames[frames.length - 1]);
     }
 
-    void setMatrix(int[][] matrix) {
-        this.matrix = matrix;
-        this.width = matrix[0].length;
-        this.height = matrix.length;
+    private void setFrame(int[][] frame) {
+        this.frame = frame;
+        this.width = frame[0].length;
+        this.height = frame.length;
     }
 
-    boolean pixelIsNotTransparent(int x, int y) {
-        return matrix[y][x] != 0;
+    boolean isPixelVisible(int x, int y) {
+        return frame[y][x] != 0;
     }
 
     void erasePixel(int x, int y) {
-        matrix[y][x] = 0;
+        frame[y][x] = 0;
+    }
+
+    int getWidth() {
+        return width;
+    }
+
+    int getHeight() {
+        return height;
     }
 }

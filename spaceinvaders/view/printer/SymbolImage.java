@@ -1,66 +1,44 @@
 package com.javarush.games.spaceinvaders.view.printer;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.spaceinvaders.view.Display;
+import com.javarush.games.spaceinvaders.view.PixelScreen;
 
+/**
+ * A printable glyph. Matrix values are 1 for a visible pixel and 0 for a transparent one.
+ */
 public class SymbolImage {
-    private static Display display;
-    private static final Color[] colors = new Color[]{Color.NONE, Color.WHITE};
-    private int x;
-    private int y;
+    private static final int TRANSPARENT = 0;
+
+    private static PixelScreen screen;
+
     private final int[][] matrix;
 
-    public static void setDisplay(Display display) {
-        SymbolImage.display = display;
+    public static void setScreen(PixelScreen screen) {
+        SymbolImage.screen = screen;
     }
 
-    SymbolImage(Symbol type) {
-        this.matrix = type.getMatrix();
+    SymbolImage(Symbol symbol) {
+        this.matrix = symbol.getMatrix();
     }
 
-    void draw(int x, int y) {
-        setPosition(x, y);
-        draw();
-    }
+    /**
+     * Draws the glyph with the given color, so no glyph keeps a global current color.
+     */
+    void draw(int x, int y, Color color) {
+        for (int row = 0; row < getHeight(); row++) {
+            for (int column = 0; column < getWidth(); column++) {
+                if (matrix[row][column] == TRANSPARENT) continue;
 
-    private void setPosition(int x, int y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    private void draw() {
-        for (int j = 0; j < getHeight(); j++) {
-            for (int i = 0; i < getWidth(); i++) {
-
-                int pixel = matrix[j][i];
-                if (isPixelTransparent(pixel)) continue;
-
-                int drawX = x + i;
-                int drawY = y + j;
-
-                display.drawPixel(drawX, drawY, colors[pixel]);
+                screen.setPixel(x + column, y + row, color);
             }
         }
     }
 
-    int getHeight(){
+    int getHeight() {
         return matrix.length;
     }
 
-    int getWidth(){
+    int getWidth() {
         return matrix[0].length;
-    }
-
-    private boolean isPixelTransparent(int pixel) {
-        final int TRANSPARENT = 0;
-        return (pixel == TRANSPARENT || colors[pixel] == Color.NONE);
-    }
-
-    void changeColor(Color color) {
-        try {
-            colors[1] = color;
-        } catch (IndexOutOfBoundsException e) {
-            System.err.println("Could not change color! " + e.getMessage());
-        }
     }
 }

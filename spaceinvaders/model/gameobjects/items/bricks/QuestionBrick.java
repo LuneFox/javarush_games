@@ -1,73 +1,92 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.items.bricks;
 
-import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.ArkanoidBall;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Mushroom;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Star;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-
+/**
+ * A question brick hides a random bonus that appears from time to time and pops out when Mario hits
+ * the brick. Once the bonus is taken away, the brick stays empty.
+ */
 public class QuestionBrick extends Brick {
-    private final List<Bonus> bonuses;
-    private boolean bonusIsRevealed;
+    private static final double BONUS_SPAWN_CHANCE = 0.005;
+    private static final int BONUS_VARIANTS = 3;
+    private static final int ARKANOID_BALL_OFFSET_X = 2;
+
+    private Bonus bonus;
+    private boolean bonusRevealed;
 
     public QuestionBrick(double x, double y) {
-        super(x, y);
-        this.bonuses = new LinkedList<>();
-    }
-
-    public void move() {
-        super.move();
-        spawnRandomBonus();
-        if (bonusIsRevealed) getBonus().ifPresent(Bonus::move);
-    }
-
-    private void spawnRandomBonus() {
-        if (!bonuses.isEmpty()) return;
-        if (Math.random() < 0.005) {
-            bonuses.add(getRandomBonus());
-            bonusIsRevealed = false;
-        }
+        // An empty brick looks the same as a brick whose bonus has already been taken
+        super(x, y, BrickShape.QUESTION_BRICK_EMPTY);
     }
 
     @Override
-    public void shoot() {
-        bonusIsRevealed = true;
+    public void move() {
+        super.move();
+
+        spawnBonusIfAbsent();
+        if (bonusRevealed && bonus != null) {
+            bonus.move();
+        }
     }
 
-    private Bonus getRandomBonus() {
-        List<Bonus> bonusList = new ArrayList<>();
-        bonusList.add(new Mushroom(x, y));
-        bonusList.add(new Star(x, y));
-        bonusList.add(new ArkanoidBall(x + 2, y));
+    private void spawnBonusIfAbsent() {
+        if (bonus != null) return;
+        if (Math.random() >= BONUS_SPAWN_CHANCE) return;
 
-        Bonus bonus = bonusList.get(game.getRandomNumber(bonusList.size()));
-        bonus.setParentQuestionBrick(this);
-        return bonus;
+        bonus = createRandomBonus();
+        bonusRevealed = false;
+        showFilled();
+    }
+
+    private Bonus createRandomBonus() {
+        Bonus created;
+        switch (game.getRandomNumber(BONUS_VARIANTS)) {
+            case 0:
+                created = new Mushroom(getX(), getY());
+                break;
+            case 1:
+                created = new Star(getX(), getY());
+                break;
+            default:
+                created = new ArkanoidBall(getX() + ARKANOID_BALL_OFFSET_X, getY());
+                break;
+        }
+        created.setParentBrick(this);
+        return created;
+    }
+
+    @Override
+    protected void releaseContent() {
+        bonusRevealed = true;
+        showEmpty();
     }
 
     @Override
     public void draw() {
-        if (bonuses.isEmpty() || bonusIsRevealed) {
-            setStaticView(BrickShape.QUESTION_BRICK_EMPTY);
-        } else {
-            setStaticView(BrickShape.QUESTION_BRICK_FULL);
+        if (bonusRevealed && bonus != null) {
+            bonus.draw();
         }
-        if (bonusIsRevealed) getBonus().ifPresent(GameObject::draw);
         super.draw();
     }
 
-    private Optional<Bonus> getBonus() {
-        if (!bonuses.isEmpty()) return Optional.of(bonuses.get(0));
-        else return Optional.empty();
+    /**
+     * Called by the bonus itself once it is taken or lost.
+     */
+    public void clearBonus() {
+        bonus = null;
+        bonusRevealed = false;
+        showEmpty();
     }
 
-    public void clearBonuses() {
-        bonuses.clear();
+    private void showFilled() {
+        setStaticView(BrickShape.QUESTION_BRICK_FULL);
+    }
+
+    private void showEmpty() {
+        setStaticView(BrickShape.QUESTION_BRICK_EMPTY);
     }
 }

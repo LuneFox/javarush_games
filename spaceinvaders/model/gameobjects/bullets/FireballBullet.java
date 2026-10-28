@@ -4,20 +4,25 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 
+/**
+ * Mario's fireball: flies twice as fast as a regular bullet and cannot be shot down.
+ */
 public class FireballBullet extends Bullet {
+    private static final int FRAME_DELAY = 2;
+
     FireballBullet(double x, double y) {
         super(x, y, Direction.UP);
         doubleSpeed();
-        setAnimatedView(Sprite.Loop.ENABLED, 2,
+        setAnimatedView(Sprite.Loop.REPEAT, FRAME_DELAY,
                 FireballShape.FIREBALL_1,
                 FireballShape.FIREBALL_2,
                 FireballShape.FIREBALL_3,
                 FireballShape.FIREBALL_4);
-        canKillEnemies = true;
+        makeLethalToEnemies();
     }
 
     @Override
-    public void kill() {
-        // Can't be destroyed
+    public void destroy() {
+        // A fireball burns through everything, it cannot be destroyed
     }
 }

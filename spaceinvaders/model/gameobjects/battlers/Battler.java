@@ -1,33 +1,25 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
-import com.javarush.games.spaceinvaders.model.gameobjects.Shooter;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 
-import java.util.Optional;
-
-public abstract class Battler extends GameObject implements Shooter {
+/**
+ * A game object that withstands several hits before it is destroyed.
+ */
+public abstract class Battler extends GameObject {
     protected int hitPoints;
 
     public Battler(double x, double y) {
         super(x, y);
     }
 
-    public abstract Optional<Bullet> getAmmo();
-
     /**
-     * Ammo is spawned at the shooter, but only a living shooter has somewhere to spawn it.
-     * Mario, for instance, can lose his bonus (and with it the ammo type) when hit while shooting.
+     * Applies one hit: either takes a hit point away or destroys the battler.
      */
-    protected boolean canShoot() {
-        return isAlive;
-    }
-
-    public void kill() {
+    public void takeHit() {
         if (hitPoints > 1) {
             hitPoints--;
         } else {
-            isAlive = false;
+            destroy();
         }
     }
 }

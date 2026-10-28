@@ -1,283 +1,233 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
-import com.javarush.engine.cell.Key;
-import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.controller.Control;
 import com.javarush.games.spaceinvaders.model.Direction;
+import com.javarush.games.spaceinvaders.model.GameField;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
-import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelper;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
-import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
-import com.javarush.games.spaceinvaders.model.gameobjects.jumphelper.JumpHelperBuilder;
-import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
-import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
+import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysics;
+import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysicsBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 
 import java.util.List;
-import java.util.Optional;
 
+/**
+ * The player character: walks with inertia, jumps, carries a bonus and fires it when asked.
+ */
 public class Mario extends Battler implements Movable {
-    private static final double START_SPEED = 0.6;
-    private static final double MAX_SPEED = 2.4;
-    private static final double ACCELERATION = 0.2;
+    private static final int HIT_POINTS = 1;
+    private static final int WALKING_MARGIN = 4;
+    private static final int MAX_JUMP_ENERGY = 5;
+    private static final int JUMP_CEILING_Y = 66;
+    private static final int JUMP_RAISE_SPEED = 4;
+    private static final int JUMP_DESCEND_SPEED = 2;
+    private static final int DEATH_ANIMATION_FRAMES = 30;
+    private static final int DEATH_RISE_FROM_FRAME = 10;
+    private static final int DEATH_RISE_UNTIL_FRAME = 15;
+    private static final int DEATH_RISE_STEP = -2;
+    private static final int DEATH_FALL_STEP = 3;
+    private static final int BULLET_TOP_GAP = 4;
 
+    private final MarioWalk walk = new MarioWalk();
+    private final MarioAnimator animator = new MarioAnimator(this);
+    private final JumpPhysics jumpPhysics;
     private final int leftWalkingBound;
     private final int rightWalkingBound;
-    private final JumpHelper jumpHelper;
-    private Animation animation;
-    private Direction moveDirection = Direction.NONE;
-    private Direction faceDirection = Direction.LEFT;
-    public Bonus bonus;
-    public int finalAnimationCounter;
-    private double walkingSpeed;
 
-    public enum Animation {
-        STANDING, WALKING, JUMPING, BRAKING, DEAD
-    }
+    private Direction walkingDirection = Direction.NONE;
+    private Direction facing = Direction.LEFT;
+    private Bonus bonus;
+    private int animationFrame;
 
     public Mario() {
-        super(marioSpawnX(), marioSpawnY());
-        setStandingAnimation();
-        hitPoints = 1;
-        finalAnimationCounter = 0;
-        leftWalkingBound = -4;
-        rightWalkingBound = SpaceInvadersGame.WIDTH - getWidth() + 4;
-        walkingSpeed = 0;
-        jumpHelper = new JumpHelperBuilder(this)
-                .setMaxJumpEnergy(5)
-                .setFloorLevel(SpaceInvadersGame.HEIGHT - getHeight() - SpaceInvadersGame.FLOOR_HEIGHT)
-                .setCeilingLevel(66)
-                .setRaiseSpeed(4)
-                .setDescendSpeed(2)
+        super(spawnX(), spawnY());
+        this.hitPoints = HIT_POINTS;
+        animator.stand();
+        this.leftWalkingBound = -WALKING_MARGIN;
+        this.rightWalkingBound = GameField.WIDTH - getWidth() + WALKING_MARGIN;
+        this.jumpPhysics = new JumpPhysicsBuilder(this)
+                .setMaxJumpEnergy(MAX_JUMP_ENERGY)
+                .setFloorLevel(GameField.groundLevelFor(getHeight()))
+                .setCeilingLevel(JUMP_CEILING_Y)
+                .setRaiseSpeed(JUMP_RAISE_SPEED)
+                .setDescendSpeed(JUMP_DESCEND_SPEED)
                 .build();
     }
 
-    private static double marioSpawnX() {
-        return SpaceInvadersGame.WIDTH - MarioShape.STAND[0].length - 3;
+    private static double spawnX() {
+        return GameField.WIDTH - MarioShape.STAND[0].length - 3;
     }
 
-    private static int marioSpawnY() {
-        return SpaceInvadersGame.HEIGHT - SpaceInvadersGame.FLOOR_HEIGHT - MarioShape.STAND.length;
+    private static int spawnY() {
+        return GameField.groundLevelFor(MarioShape.STAND.length);
     }
 
+    /*
+     * Movement
+     */
+
+    @Override
     public void move() {
-        if (!isAlive) return;
-        walk();
+        if (!isAlive()) return;
+
+        boolean braking = walk.update(walkingDirection);
+        showWalkPose(braking);
+        setPosition(getX() + walk.getSpeed(), getY());
         keepInBounds();
-        jumpHelper.progressJump();
-        if (jumpHelper.isAboveFloor()) {
-            setJumpingAnimation();
+
+        jumpPhysics.update();
+        if (jumpPhysics.isInAir()) {
+            animator.jump();
         }
     }
 
-    private void walk() {
-        changeSpeed();
-        selectAnimationAccordingToSpeed();
-        brakeOnReverseDirectionInput();
-        x += walkingSpeed;
-    }
-
-    private void changeSpeed() {
-        if (moveDirection == Direction.RIGHT) {
-            if (walkingSpeed == 0) walkingSpeed = START_SPEED;
-            if (walkingSpeed < MAX_SPEED) walkingSpeed += ACCELERATION;
-        } else if (moveDirection == Direction.LEFT) {
-            if (walkingSpeed == 0) walkingSpeed = -START_SPEED;
-            if (walkingSpeed > -MAX_SPEED) walkingSpeed -= ACCELERATION;
-        } else if (moveDirection == Direction.NONE) {
-            walkingSpeed += ((walkingSpeed > 0) ? -ACCELERATION : ACCELERATION);
-            if (Math.abs(walkingSpeed) < 0.5) walkingSpeed = 0;
-        }
-    }
-
-    private void selectAnimationAccordingToSpeed() {
-        if (Math.abs(walkingSpeed) > ACCELERATION) {
-            setWalkingAnimation();
+    private void showWalkPose(boolean braking) {
+        if (braking) {
+            animator.brake();
+        } else if (walk.isMoving()) {
+            animator.walk();
         } else {
-            setStandingAnimation();
+            animator.stand();
         }
     }
 
-    private void brakeOnReverseDirectionInput() {
-        if (moveDirection == Direction.RIGHT && walkingSpeed < ACCELERATION) {
-            walkingSpeed += ACCELERATION / 2;
-            setBrakingAnimation();
-        }
-        if (moveDirection == Direction.LEFT && walkingSpeed > -ACCELERATION) {
-            walkingSpeed -= ACCELERATION / 2;
-            setBrakingAnimation();
+    private void keepInBounds() {
+        if (getX() < leftWalkingBound) {
+            setPosition(leftWalkingBound, getY());
+        } else if (getX() > rightWalkingBound) {
+            setPosition(rightWalkingBound, getY());
         }
     }
 
-    public void keepInBounds() {
-        if (x < leftWalkingBound) {
-            x = leftWalkingBound;
-        } else if (x > rightWalkingBound) {
-            x = rightWalkingBound;
-        }
-    }
-
-    @Control(Key.UP)
     public void jump() {
-        jumpHelper.initJump();
+        jumpPhysics.startJump();
+    }
+
+    public void walkTowards(Direction direction) {
+        this.walkingDirection = direction;
+    }
+
+    public Direction getWalkingDirection() {
+        return walkingDirection;
+    }
+
+    public Direction getFacing() {
+        return facing;
+    }
+
+    /*
+     * Bonus
+     */
+
+    public void pickUp(Bonus bonus) {
+        this.bonus = bonus;
+    }
+
+    public boolean hasBonus() {
+        return bonus != null;
+    }
+
+    /**
+     * SPACE action: the carried bonus is used up and does whatever it is meant to do.
+     */
+    public void useBonus() {
+        if (!isAlive() || bonus == null) return;
+
+        Bonus usedBonus = bonus;
+        bonus = null;
+        usedBonus.activate();
+    }
+
+    /**
+     * Spawns a projectile of the given type right above Mario, centered on his sprite.
+     */
+    public void launchProjectile(BulletType type, int[][] projectileImage) {
+        if (!isAlive()) return;
+
+        double x = getX() + (getWidth() - projectileImage[0].length) / 2.0;
+        double y = getY() - projectileImage.length + BULLET_TOP_GAP;
+        game.addPlayerBullet(BulletFactory.create(type, x, y));
+    }
+
+    /*
+     * Damage and death
+     */
+
+    public void receiveBullets(List<Bullet> bullets) {
+        for (Bullet bullet : bullets) {
+            if (isHitBy(bullet)) {
+                takeHit();
+                bullet.destroy();
+            }
+        }
+    }
+
+    private boolean isHitBy(Bullet bullet) {
+        if (!isAlive() || !bullet.isAlive()) return false;
+
+        return collidesWith(bullet, Mirror.of(facing));
+    }
+
+    @Override
+    public void takeHit() {
+        if (!isAlive()) return;
+
+        // A bonus absorbs the hit instead of Mario, taking its points away
+        if (bonus != null) {
+            bonus = null;
+            Score.removeBonusPickup();
+            return;
+        }
+
+        super.takeHit();
     }
 
     public void playDeathAnimation() {
-        if (finalAnimationCounter > 30) return;
-        finalAnimationCounter++;
-        setDeadAnimation();
-        this.bonus = null;
+        if (animationFrame > DEATH_ANIMATION_FRAMES) return;
 
-        if (finalAnimationCounter >= 10) {
-            y += (finalAnimationCounter < 15) ? -2 : 3;
+        animationFrame++;
+        animator.die();
+        bonus = null;
+
+        if (animationFrame >= DEATH_RISE_FROM_FRAME) {
+            double step = (animationFrame < DEATH_RISE_UNTIL_FRAME) ? DEATH_RISE_STEP : DEATH_FALL_STEP;
+            setPosition(getX(), getY() + step);
         }
     }
 
     public void playVictoryAnimation() {
-        setMoveDirection(Direction.NONE);
-
-        if (finalAnimationCounter % 20 < 10) {
-            setJumpingAnimation();
-        } else {
-            setStandingAnimation();
-        }
-        finalAnimationCounter++;
-    }
-
-    private void setStandingAnimation() {
-        if (animation == Animation.STANDING) return;
-        animation = Animation.STANDING;
-        setStaticView(MarioShape.STAND);
-    }
-
-    private void setWalkingAnimation() {
-        if (animation == Animation.WALKING) return;
-        animation = Animation.WALKING;
-        setAnimatedView(Sprite.Loop.ENABLED, 2,
-                MarioShape.WALK_3,
-                MarioShape.WALK_2,
-                MarioShape.WALK_1,
-                MarioShape.WALK_2);
-    }
-
-    private void setJumpingAnimation() {
-        if (animation == Animation.JUMPING) return;
-        animation = Animation.JUMPING;
-        setStaticView(MarioShape.JUMP);
-    }
-
-    private void setBrakingAnimation() {
-        if (animation == Animation.BRAKING) return;
-        animation = Animation.BRAKING;
-        setStaticView(MarioShape.BRAKE);
-    }
-
-    private void setDeadAnimation() {
-        if (animation == Animation.DEAD) return;
-        animation = Animation.DEAD;
-        setStaticView(MarioShape.DEAD);
-    }
-
-    @Override
-    public void draw() {
-        if (moveDirection == Direction.RIGHT) faceDirection = Direction.RIGHT;
-        else if (moveDirection == Direction.LEFT) faceDirection = Direction.LEFT;
-        super.draw(faceDirection == Direction.LEFT ? Mirror.HORIZONTAL : Mirror.NONE);
-        drawBonusOverheadIcon();
-    }
-
-    private void drawBonusOverheadIcon() {
-        if (bonus == null) return;
-
-        final double bx = x + (getWidth() / 2.0) - (bonus.overheadIcon.getWidth() / 2.0);
-        final double by = y - 3;
-        bonus.overheadIcon.setPosition(bx, by);
-        bonus.overheadIcon.draw();
-    }
-
-    public void verifyHit(List<Bullet> bullets) {
-        bullets.forEach(this::destroyMarioAndBulletOnCollision);
-    }
-
-    private void destroyMarioAndBulletOnCollision(Bullet bullet) {
-        Mirror mirror = (faceDirection == Direction.RIGHT) ? Mirror.NONE : Mirror.HORIZONTAL;
-        if (!isAlive) return;
-        if (!bullet.isAlive) return;
-        if (!collidesWith(bullet, mirror)) return;
-
-        kill();
-        bullet.kill();
-    }
-
-    @Override
-    public void kill() {
-        if (!isAlive) return;
-
-        // Remove bonus instead of death, lose the score gained for picking it up
-        if (bonus != null) {
-            bonus = null;
-            Score.add(-9 - SpaceInvadersGame.getStage());
-            return;
-        }
-
-        super.kill();
-    }
-
-    @Control(Key.SPACE)
-    public void shoot() {
-        if (!isAlive) return;
-        if (bonus == null) return;
-
-        bonus.consume();
-        bonus = null;
-    }
-
-    @Override
-    public Optional<Bullet> getAmmo() {
-        switch (bonus.getBulletType()) {
-            case FIREBALL:
-                return BulletFactory.getBullet(BulletType.FIREBALL,
-                        getBulletSpawnX(FireballShape.FIREBALL_1),
-                        getBulletSpawnY(FireballShape.FIREBALL_1));
-            case ARKANOID_BALL:
-                return BulletFactory.getBullet(BulletType.ARKANOID_BALL,
-                        getBulletSpawnX(BonusShape.ARKANOID_BALL),
-                        getBulletSpawnY(BonusShape.ARKANOID_BALL));
-        }
-        return Optional.empty();
-    }
-
-    private double getBulletSpawnX(int[][] shape) {
-        return (x + getWidth() / 2.0) - (shape[0].length / 2.0);
-    }
-
-    private double getBulletSpawnY(int[][] shape) {
-        return (y - shape.length) + 4;
+        walkTowards(Direction.NONE);
+        animator.victoryFrame(animationFrame);
+        animationFrame++;
     }
 
     /*
-     * Plain setters and getters
+     * Drawing
      */
 
-    public Direction getMoveDirection() {
-        return moveDirection;
+    @Override
+    public void draw() {
+        updateFacing();
+        super.draw(Mirror.of(facing));
+        drawBonusIcon();
     }
 
-    @Control({Key.RIGHT, Key.LEFT})
-    public void setMoveDirection(Direction moveDirection) {
-        this.moveDirection = moveDirection;
+    private void updateFacing() {
+        if (walkingDirection == Direction.RIGHT) {
+            facing = Direction.RIGHT;
+        } else if (walkingDirection == Direction.LEFT) {
+            facing = Direction.LEFT;
+        }
     }
 
-    public Direction getFaceDirection() {
-        return faceDirection;
-    }
+    private void drawBonusIcon() {
+        if (bonus == null) return;
 
-    public void setBonus(Bonus bonus) {
-        this.bonus = bonus;
+        double iconX = getX() + (getWidth() - bonus.getIconWidth()) / 2.0;
+        bonus.drawIconAt(iconX, getY() - 3);
     }
 }

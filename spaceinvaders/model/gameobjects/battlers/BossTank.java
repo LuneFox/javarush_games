@@ -1,40 +1,68 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
-import com.javarush.games.spaceinvaders.SpaceInvadersGame;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
+import com.javarush.games.spaceinvaders.model.StageProgress;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.view.shapes.BossTankShape;
 
-import java.util.Optional;
-
+/**
+ * The flagship of the army: tougher, slower to fire and shooting racing cars.
+ */
 public class BossTank extends EnemyTank {
+    private static final int BULLET_OFFSET_X = 3;
+    private static final int SCORE_PER_HIT_POINT = 50;
+    private static final int FIRE_RATE_DIVISOR = 4;
+
     public BossTank(double x, double y) {
         super(x, y);
     }
 
     @Override
-    protected void setHitPointsAndScore() {
-        hitPoints = SpaceInvadersGame.getStage();
-        scoreForKill = 50 * hitPoints;
+    protected int hitPointsForStage() {
+        return StageProgress.getNumber();
     }
 
     @Override
-    protected void setAnimationSprites() {
-        MOVE_1 = BossTankShape.BOSS_TANK_1;
-        MOVE_2 = BossTankShape.BOSS_TANK_2;
-        KILL_1 = BossTankShape.BOSS_TANK_KILL_1;
-        KILL_2 = BossTankShape.BOSS_TANK_KILL_2;
-        KILL_3 = BossTankShape.BOSS_TANK_KILL_3;
+    protected int scoreForStage() {
+        return SCORE_PER_HIT_POINT * hitPoints;
     }
 
     @Override
-    public Optional<Bullet> getAmmo() {
-        if (!canShoot()) return Optional.empty();
+    protected int fireRateDivisor() {
+        return FIRE_RATE_DIVISOR * StageProgress.getNumber();
+    }
 
-        int chanceToFire = game.getRandomNumber((100 / (4 * SpaceInvadersGame.getStage())) + 1);
-        if (chanceToFire != 0) return Optional.empty();
+    @Override
+    protected BulletType ammoType() {
+        return BulletType.RACING_CAR;
+    }
 
-        return BulletFactory.getBullet(BulletType.RACING_CAR, x + 3, y + getHeight());
+    @Override
+    protected int muzzleOffsetX() {
+        return BULLET_OFFSET_X;
+    }
+
+    @Override
+    protected int[][] marchingFrameA() {
+        return BossTankShape.BOSS_TANK_1;
+    }
+
+    @Override
+    protected int[][] marchingFrameB() {
+        return BossTankShape.BOSS_TANK_2;
+    }
+
+    @Override
+    protected int[][] destructionFrameA() {
+        return BossTankShape.BOSS_TANK_KILL_1;
+    }
+
+    @Override
+    protected int[][] destructionFrameB() {
+        return BossTankShape.BOSS_TANK_KILL_2;
+    }
+
+    @Override
+    protected int[][] destructionFrameC() {
+        return BossTankShape.BOSS_TANK_KILL_3;
     }
 }

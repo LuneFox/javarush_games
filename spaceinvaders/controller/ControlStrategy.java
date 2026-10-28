@@ -1,40 +1,43 @@
 package com.javarush.games.spaceinvaders.controller;
 
-
+/**
+ * Reaction to the game controls. Every method has a do-nothing default, so a strategy implements
+ * only the keys it cares about.
+ */
 public interface ControlStrategy {
-    default void pressUp() {
+    default void upPressed() {
     }
 
-    default void releaseUp() {
+    default void upReleased() {
     }
 
-    default void pressDown() {
+    default void downPressed() {
     }
 
-    default void releaseDown() {
+    default void downReleased() {
     }
 
-    default void pressRight() {
+    default void leftPressed() {
     }
 
-    default void releaseRight() {
+    default void leftReleased() {
     }
 
-    default void pressLeft() {
+    default void rightPressed() {
     }
 
-    default void releaseLeft() {
+    default void rightReleased() {
     }
 
-    default void pressSpace() {
+    default void spacePressed() {
     }
 
-    default void releaseSpace() {
+    default void spaceReleased() {
     }
 
-    default void pressPause() {
+    default void pausePressed() {
     }
 
-    default void releasePause() {
+    default void pauseReleased() {
     }
 }

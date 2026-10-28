@@ -1,29 +1,44 @@
 package com.javarush.games.spaceinvaders.view.printer;
 
+/**
+ * Text cursor: remembers where the next glyph goes and how the lines of one call are aligned.
+ */
 class PrinterCaret {
     private static final int LINE_HEIGHT = 9;
-    private final int caretBase;
+
+    private final int baseX;
     private final TextAlign align;
-    int x;
-    int y;
+
+    private int x;
+    private int y;
 
     PrinterCaret(int x, int y, TextAlign align) {
-        this.caretBase = x;
+        this.baseX = x;
         this.x = x;
         this.y = y;
         this.align = align;
     }
 
-    void gotoNewLine() {
-        x = caretBase;
+    void newLine() {
+        x = baseX;
         y += LINE_HEIGHT;
     }
 
-    void gotoNextSymbol(char c) {
-        x += Printer.calculateWidth(Character.toString(c));
+    void advance(char symbol) {
+        x += Printer.glyphWidth(symbol);
     }
 
-    void gotoStartPosition(String line) {
-        if (align == TextAlign.RIGHT) x = caretBase - Printer.calculateWidth(line);
+    void alignTo(String line) {
+        if (align == TextAlign.RIGHT) {
+            x = baseX - Printer.measureWidth(line);
+        }
+    }
+
+    int getX() {
+        return x;
+    }
+
+    int getY() {
+        return y;
     }
 }

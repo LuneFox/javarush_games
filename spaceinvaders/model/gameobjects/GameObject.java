@@ -4,14 +4,18 @@ import com.javarush.games.spaceinvaders.Drawable;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 
+/**
+ * Base class of every sprite on the field: knows its position, its picture and its collisions.
+ */
 public class GameObject implements Drawable {
     protected static SpaceInvadersGame game;
+
     private Sprite sprite;
-    public double x;
-    public double y;
-    public boolean isAlive;
-    protected int lastCollisionX;
-    protected int lastCollisionY;
+    private double x;
+    private double y;
+    private boolean alive = true;
+    private int lastCollisionX;
+    private int lastCollisionY;
 
     public static void setGame(SpaceInvadersGame game) {
         GameObject.game = game;
@@ -24,7 +28,38 @@ public class GameObject implements Drawable {
     public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
-        this.isAlive = true;
+    }
+
+    /*
+     * Position and lifetime
+     */
+
+    public double getX() {
+        return x;
+    }
+
+    public double getY() {
+        return y;
+    }
+
+    public void setPosition(double x, double y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public boolean isAlive() {
+        return alive;
+    }
+
+    public void destroy() {
+        alive = false;
+    }
+
+    /**
+     * An object may be forgotten once it is destroyed and its explosion animation is over.
+     */
+    public boolean canBeRemoved() {
+        return !alive && sprite.isAnimationFinished();
     }
 
     /*
@@ -36,15 +71,12 @@ public class GameObject implements Drawable {
         sprite.setStaticView(frame);
     }
 
-    public void setAnimatedView(Sprite.Loop loop, int nextFrameDelay, int[][]... frames) {
+    public void setAnimatedView(Sprite.Loop loop, int frameDelay, int[][]... frames) {
         sprite = new Sprite(game);
-        sprite.setAnimatedView(loop, nextFrameDelay, frames);
+        sprite.setAnimatedView(loop, frameDelay, frames);
     }
 
-    public boolean nothingHasRemained() {
-        return (!isAlive && sprite.isAnimationFinished());
-    }
-
+    @Override
     public void draw() {
         sprite.draw(x, y, Mirror.NONE);
     }
@@ -58,75 +90,52 @@ public class GameObject implements Drawable {
     }
 
     public int getWidth() {
-        return sprite.width;
+        return sprite.getWidth();
     }
 
     public int getHeight() {
-        return sprite.height;
-    }
-
-    public void setPosition(double x, double y) {
-        this.x = x;
-        this.y = y;
+        return sprite.getHeight();
     }
 
     /*
      * Collisions
      */
 
-    public OverlapForm getOverlapForm(GameObject anotherObject) {
-        // Return the form of overlapped rectangle area (wide, high or even) depending on how objects overlap
-        if (!this.collidesWith(anotherObject, Mirror.NONE)) {
-            return OverlapForm.NONE;
+    public Overlap overlapWith(GameObject other) {
+        if (!collidesWith(other, Mirror.NONE)) {
+            return Overlap.NONE;
         }
 
-        double xOverlap = Math.max(0, Math.min(
-                this.x + this.getWidth(), anotherObject.x + anotherObject.getWidth())
-                - Math.max(this.x, anotherObject.x));
-        double yOverlap = Math.max(0, Math.min(
-                this.y + this.getHeight(), anotherObject.y + anotherObject.getHeight())
-                - Math.max(this.y, anotherObject.y));
+        double horizontalOverlap = Math.max(0, Math.min(
+                x + getWidth(), other.x + other.getWidth()) - Math.max(x, other.x));
+        double verticalOverlap = Math.max(0, Math.min(
+                y + getHeight(), other.y + other.getHeight()) - Math.max(y, other.y));
 
-        if (yOverlap * xOverlap == 0) {
-            return OverlapForm.NONE;
+        if (horizontalOverlap * verticalOverlap == 0) {
+            return Overlap.NONE;
         }
 
-        // Add small threshold to handle near-equal cases
+        // Near-equal sides mean a corner hit
         final double threshold = 0.5;
-        if (Math.abs(yOverlap - xOverlap) < threshold) {
-            return OverlapForm.EVEN;
-        } else if (yOverlap > xOverlap) {
-            return OverlapForm.HIGH;
-        } else {
-            return OverlapForm.WIDE;
+        if (Math.abs(verticalOverlap - horizontalOverlap) < threshold) {
+            return Overlap.SQUARE;
         }
+        return (verticalOverlap > horizontalOverlap) ? Overlap.VERTICAL : Overlap.HORIZONTAL;
     }
 
-    public boolean collidesWith(GameObject anotherObject, Mirror mirror) {
-        // Check if any other object's pixels collide with this object's pixels, return true at first collision
-        for (int x = 0; x < anotherObject.getWidth(); x++) {
-            for (int y = 0; y < anotherObject.getHeight(); y++) {
-                if (anotherObject.sprite.pixelIsNotTransparent(x, y)) {
-                    double mirrorX = (mirror == Mirror.HORIZONTAL) ? (anotherObject.sprite.width - x) : x;
-                    double checkedX = anotherObject.x + mirrorX;
-                    double checkedY = anotherObject.y + y;
-                    if (collidesWithPoint(checkedX, checkedY)) {
-                        return true;
-                    }
+    /**
+     * Checks whether any non-transparent pixel of the other object touches any non-transparent
+     * pixel of this one. The other object may be mirrored.
+     */
+    public boolean collidesWith(GameObject other, Mirror mirror) {
+        for (int otherX = 0; otherX < other.getWidth(); otherX++) {
+            for (int otherY = 0; otherY < other.getHeight(); otherY++) {
+                if (!other.sprite.isPixelVisible(otherX, otherY)) {
+                    continue;
                 }
-            }
-        }
-        return false;
-    }
 
-    private boolean collidesWithPoint(double pointX, double pointY) {
-        // Check if a given point overlaps any non-transparent object's pixels
-        for (int x = 0; x < getWidth(); x++) {
-            for (int y = 0; y < getHeight(); y++) {
-                if (sprite.pixelIsNotTransparent(x, y)
-                        && (int) (x + this.x) == (int) pointX
-                        && (int) (y + this.y) == (int) pointY) {
-                    memorizeCollisionPoint(x, y);
+                double mirroredX = (mirror == Mirror.HORIZONTAL) ? (other.sprite.getWidth() - otherX) : otherX;
+                if (collidesWithPoint(other.x + mirroredX, other.y + otherY)) {
                     return true;
                 }
             }
@@ -134,7 +143,20 @@ public class GameObject implements Drawable {
         return false;
     }
 
-    private void memorizeCollisionPoint(int x, int y) {
+    private boolean collidesWithPoint(double pointX, double pointY) {
+        for (int x = 0; x < getWidth(); x++) {
+            for (int y = 0; y < getHeight(); y++) {
+                boolean sameCell = (int) (x + this.x) == (int) pointX && (int) (y + this.y) == (int) pointY;
+                if (sameCell && sprite.isPixelVisible(x, y)) {
+                    rememberCollisionPoint(x, y);
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void rememberCollisionPoint(int x, int y) {
         lastCollisionX = x;
         lastCollisionY = y;
     }

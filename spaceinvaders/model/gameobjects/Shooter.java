@@ -1,11 +1,8 @@
 package com.javarush.games.spaceinvaders.model.gameobjects;
 
-import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
-
-import java.util.Optional;
-
+/**
+ * A game object that is able to fire projectiles.
+ */
 public interface Shooter {
-    Optional<Bullet> getAmmo();
-
     void shoot();
 }

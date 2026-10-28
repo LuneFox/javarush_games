@@ -1,12 +1,19 @@
 package com.javarush.games.spaceinvaders.view.printer;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.spaceinvaders.view.Display;
+import com.javarush.games.spaceinvaders.model.GameField;
 
+/**
+ * Prints pixel font text into the screen buffer. Supports several lines separated by {@code \n},
+ * horizontal alignment and an outline toggled with {@code <} and {@code >}.
+ */
 public class Printer {
     private static final SymbolCache CACHE = new SymbolCache();
     private static final Color STROKE_COLOR = Color.SADDLEBROWN;
     private static final int CHAR_SPACING = 1;
+
+    private Printer() {
+    }
 
     public static void print(String text, int x, int y) {
         print(text, Color.WHITE, x, y, TextAlign.LEFT);
@@ -16,67 +23,69 @@ public class Printer {
         print(text, color, x, y, TextAlign.LEFT);
     }
 
-    public static void print(String text, Color color, int drawX, int drawY, TextAlign align) {
-        drawX = align != TextAlign.CENTER ? drawX : (Display.SIZE / 2) - (calculateWidth(text) / 2);
+    public static void print(String text, Color color, int x, int y, TextAlign align) {
+        int startX = (align == TextAlign.CENTER) ? (GameField.WIDTH / 2) - (measureWidth(text) / 2) : x;
+        PrinterCaret caret = new PrinterCaret(startX, y, align);
 
-        PrinterCaret caret = new PrinterCaret(drawX, drawY, align);
-        // Stroke state must not leak from one print call to the next (for example, from a stray '<')
-        boolean strokeEnabled = false;
-
+        // The outline state must not leak from one print call to the next
+        boolean stroked = false;
         int lineStart = 0;
         while (lineStart <= text.length()) {
             int lineEnd = text.indexOf('\n', lineStart);
             if (lineEnd < 0) lineEnd = text.length();
-            String line = text.substring(lineStart, lineEnd);
 
-            caret.gotoStartPosition(line);
-            char[] sequence = line.toLowerCase().toCharArray();
-
-            for (char c : sequence) {
-                strokeEnabled = drawSymbol(c, color, caret.x, caret.y, strokeEnabled);
-                caret.gotoNextSymbol(c);
-            }
-
-            caret.gotoNewLine();
+            stroked = printLine(text.substring(lineStart, lineEnd), color, caret, stroked);
             lineStart = lineEnd + 1;
         }
     }
 
-    static int calculateWidth(String s) {
-        int result = 0;
-        SymbolImage image;
-        char[] chars = s.toLowerCase().toCharArray();
+    private static boolean printLine(String line, Color color, PrinterCaret caret, boolean stroked) {
+        caret.alignTo(line);
 
-        for (char c : chars) {
-            if (charIsStrokeMarkup(c)) continue;
-            image = CACHE.get(c);
-            result += image.getWidth() + CHAR_SPACING;
+        for (char symbol : line.toLowerCase().toCharArray()) {
+            stroked = printGlyph(symbol, color, caret.getX(), caret.getY(), stroked);
+            caret.advance(symbol);
         }
 
-        return result;
+        caret.newLine();
+        return stroked;
     }
 
-    private static boolean drawSymbol(char c, Color color, int x, int y, boolean strokeEnabled) {
-        if (charIsStrokeMarkup(c)) {
-            return !strokeEnabled;
+    private static boolean printGlyph(char symbol, Color color, int x, int y, boolean stroked) {
+        if (isStrokeMarkup(symbol)) {
+            return !stroked;
         }
 
-        SymbolImage image = CACHE.get(c);
-        if (strokeEnabled) stroke(x, y, image);
-        image.changeColor(color);
-        image.draw(x, y);
-        return strokeEnabled;
+        SymbolImage glyph = CACHE.get(symbol);
+        if (stroked) {
+            drawStroke(glyph, x, y);
+        }
+        glyph.draw(x, y, color);
+        return stroked;
     }
 
-    private static boolean charIsStrokeMarkup(char c) {
-        return (c == '<') || (c == '>');
+    private static void drawStroke(SymbolImage glyph, int x, int y) {
+        glyph.draw(x - 1, y, STROKE_COLOR);
+        glyph.draw(x + 1, y, STROKE_COLOR);
+        glyph.draw(x, y - 1, STROKE_COLOR);
+        glyph.draw(x, y + 1, STROKE_COLOR);
     }
 
-    private static void stroke(int x, int y, SymbolImage image) {
-        image.changeColor(STROKE_COLOR);
-        image.draw(x - 1, y);
-        image.draw(x + 1, y);
-        image.draw(x, y - 1);
-        image.draw(x, y + 1);
+    static int glyphWidth(char symbol) {
+        if (isStrokeMarkup(symbol)) return 0;
+
+        return CACHE.get(symbol).getWidth() + CHAR_SPACING;
+    }
+
+    static int measureWidth(String text) {
+        int width = 0;
+        for (char symbol : text.toLowerCase().toCharArray()) {
+            width += glyphWidth(symbol);
+        }
+        return width;
+    }
+
+    private static boolean isStrokeMarkup(char symbol) {
+        return symbol == '<' || symbol == '>';
     }
 }
