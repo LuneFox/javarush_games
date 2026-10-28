@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.view.shapes;
 
+/** Кадры вращающейся монеты. */
 public class CoinShape {
     public static final int[][] COIN_WIDTH_7 = new int[][]{
             {0, 0, 59, 59, 59, 0, 0},

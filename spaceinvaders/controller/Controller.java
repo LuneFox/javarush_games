@@ -3,16 +3,16 @@ package com.javarush.games.spaceinvaders.controller;
 import com.javarush.engine.cell.Key;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 
-/**
- * Translates engine keys into control events. The only place that knows which key means what.
- */
+/** Переводит клавиши движка в события управления. */
 public class Controller {
     private final ControlStrategy strategy;
 
+    /** Создаёт контроллер с управлением Марио. */
     public Controller(SpaceInvadersGame game) {
         this.strategy = new PlayerControlStrategy(game);
     }
 
+    /** Обрабатывает нажатие клавиши. */
     public void handleKeyPress(Key key) {
         switch (key) {
             case UP:
@@ -38,6 +38,7 @@ public class Controller {
         }
     }
 
+    /** Обрабатывает отпускание клавиши. */
     public void handleKeyRelease(Key key) {
         switch (key) {
             case UP:

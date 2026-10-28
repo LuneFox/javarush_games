@@ -9,10 +9,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 
-/**
- * A regular enemy tank. The boss tank differs only in strength, picture and ammo, which is why
- * those details are overridable methods instead of a second copy of this class.
- */
+/** Обычный танк врага; босс отличается прочностью, спрайтами и снарядами. */
 public class EnemyTank extends Battler implements Shooter {
     private static final int MARCH_FRAME_DELAY = 5;
     private static final int STEP_DOWN = 2;
@@ -23,6 +20,7 @@ public class EnemyTank extends Battler implements Shooter {
     private final int scoreForKill;
     private boolean recoveringFromHit;
 
+    /** Создаёт танк в заданной точке. */
     public EnemyTank(double x, double y) {
         super(x, y);
         this.hitPoints = hitPointsForStage();
@@ -31,56 +29,64 @@ public class EnemyTank extends Battler implements Shooter {
     }
 
     /*
-     * Everything that makes the boss tank different
+     * То, чем босс отличается от обычного танка
      */
 
+    /** Возвращает прочность танка для текущей стадии. */
     protected int hitPointsForStage() {
         return StageProgress.getNumber() / 5 + 1;
     }
 
+    /** Возвращает очки за уничтожение танка. */
     protected int scoreForStage() {
         return 9 + hitPoints * StageProgress.getNumber();
     }
 
+    /** Возвращает делитель шанса выстрела. */
     protected int fireRateDivisor() {
         return StageProgress.getNumber();
     }
 
+    /** Возвращает тип снаряда. */
     protected BulletType ammoType() {
         return BulletType.TETRIS;
     }
 
+    /** Возвращает сдвиг дула от левого края. */
     protected int muzzleOffsetX() {
         return BULLET_OFFSET_X;
     }
 
+    /** Возвращает первый кадр движения. */
     protected int[][] marchingFrameA() {
         return TankShape.TANK_1;
     }
 
+    /** Возвращает второй кадр движения. */
     protected int[][] marchingFrameB() {
         return TankShape.TANK_2;
     }
 
+    /** Возвращает первый кадр взрыва. */
     protected int[][] destructionFrameA() {
         return TankShape.TANK_KILL_1;
     }
 
+    /** Возвращает второй кадр взрыва. */
     protected int[][] destructionFrameB() {
         return TankShape.TANK_KILL_2;
     }
 
+    /** Возвращает третий кадр взрыва. */
     protected int[][] destructionFrameC() {
         return TankShape.TANK_KILL_3;
     }
 
     /*
-     * Behaviour
+     * Поведение
      */
 
-    /**
-     * Takes one step of the formation march in the given direction.
-     */
+    /** Делает шаг строя в заданном направлении. */
     public void advance(Direction direction, double speed) {
         if (isAlive() && recoveringFromHit) {
             showMarching();
@@ -96,6 +102,7 @@ public class EnemyTank extends Battler implements Shooter {
         }
     }
 
+    /** Стреляет, если выпал шанс. */
     @Override
     public void shoot() {
         if (!isAlive()) return;
@@ -105,11 +112,13 @@ public class EnemyTank extends Battler implements Shooter {
                 ammoType(), getX() + muzzleOffsetX(), getY() + getHeight()));
     }
 
+    /** Проверяет, выпал ли шанс выстрела. */
     private boolean isFireTime() {
         int chanceRange = FIRE_CHANCE_RANGE / fireRateDivisor() + 1;
         return game.getRandomNumber(chanceRange) == 0;
     }
 
+    /** Применяет попадание и обновляет анимацию. */
     @Override
     public void takeHit() {
         if (!isAlive()) return;
@@ -123,10 +132,12 @@ public class EnemyTank extends Battler implements Shooter {
         showHitReaction();
     }
 
+    /** Включает анимацию движения. */
     private void showMarching() {
         setAnimatedView(Sprite.Loop.REPEAT, MARCH_FRAME_DELAY, marchingFrameA(), marchingFrameB());
     }
 
+    /** Показывает попадание или взрыв. */
     private void showHitReaction() {
         if (isAlive()) {
             setStaticView(destructionFrameA());

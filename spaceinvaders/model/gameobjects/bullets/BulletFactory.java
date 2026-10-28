@@ -1,12 +1,12 @@
 package com.javarush.games.spaceinvaders.model.gameobjects.bullets;
 
-/**
- * The only place that knows which class implements a bullet type.
- */
+/** Создаёт снаряды по типу. */
 public final class BulletFactory {
+    /** Запрещает создание экземпляров. */
     private BulletFactory() {
     }
 
+    /** Создаёт снаряд нужного типа. */
     public static Bullet create(BulletType type, double x, double y) {
         switch (type) {
             case COIN:

@@ -11,19 +11,18 @@ import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysics;
 import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysicsBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
-/**
- * A brick jumps up when Mario hits it from below and gives away a coin. The question brick overrides
- * what exactly is given away.
- */
+/** Кирпич: подпрыгивает от удара и даёт монету. */
 public class Brick extends GameObject implements Movable {
     private static final int COIN_OFFSET_X = 2;
 
     private final JumpPhysics bounce;
 
+    /** Создаёт обычный кирпич. */
     public Brick(double x, double y) {
         this(x, y, BrickShape.BRICK);
     }
 
+    /** Создаёт кирпич с заданной картинкой. */
     protected Brick(double x, double y, int[][] image) {
         super(x, y);
         setStaticView(image);
@@ -32,6 +31,7 @@ public class Brick extends GameObject implements Movable {
                 .build();
     }
 
+    /** Реагирует на удар Марио снизу. */
     public void bumpIfTouchedBy(Mario mario) {
         if (!mario.isAlive()) return;
         if (!collidesWith(mario, Mirror.of(mario.getFacing()))) return;
@@ -40,15 +40,14 @@ public class Brick extends GameObject implements Movable {
         releaseContent();
     }
 
-    /**
-     * Called when Mario hits the brick from below.
-     */
+    /** Выдаёт содержимое кирпича. */
     protected void releaseContent() {
         if (game.isRoundOver()) return;
 
         game.addPlayerBullet(BulletFactory.create(BulletType.COIN, getX() + COIN_OFFSET_X, getY()));
     }
 
+    /** Обновляет подпрыгивание кирпича. */
     @Override
     public void move() {
         if (game.isRoundOver()) return;

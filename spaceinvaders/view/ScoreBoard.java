@@ -7,9 +7,7 @@ import com.javarush.games.spaceinvaders.model.StageProgress;
 import com.javarush.games.spaceinvaders.view.printer.Printer;
 import com.javarush.games.spaceinvaders.view.printer.TextAlign;
 
-/**
- * The in-game text: score, top score and stage number, plus the blinking pause label.
- */
+/** Текст игры: счёт, рекорд, стадия и мигающая пауза. */
 public class ScoreBoard {
     private static final int SCORE_Y = 50;
     private static final int TOP_SCORE_Y = 1;
@@ -19,12 +17,14 @@ public class ScoreBoard {
 
     private int pauseTicks;
 
+    /** Рисует счёт, рекорд и стадию. */
     public void draw() {
         Printer.print(String.valueOf(Score.getScore()), Color.DARKBLUE, GameField.WIDTH, SCORE_Y, TextAlign.CENTER);
         Printer.print("TOP: " + Score.getTopScore(), Color.DARKBLUE, GameField.WIDTH, TOP_SCORE_Y, TextAlign.RIGHT);
         Printer.print("Stage " + StageProgress.getNumber(), Color.DARKBLUE, 1, STAGE_Y);
     }
 
+    /** Мигает надписью паузы, если игра стоит. */
     public void drawPauseLabelIfPaused(boolean paused) {
         if (!paused) return;
 

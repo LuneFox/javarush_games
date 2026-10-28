@@ -10,9 +10,7 @@ import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
 import java.util.List;
 
-/**
- * The arkanoid ball: instead of flying straight it bounces off walls, tanks and Mario.
- */
+/** Шар арканоида: скачет по полю и убивает танки. */
 public class ArkanoidBallBullet extends Bullet {
     private static final int START_SPEED_X = 2;
     private static final int MAX_SPEED = 5;
@@ -20,15 +18,17 @@ public class ArkanoidBallBullet extends Bullet {
 
     private int speedX;
 
+    /** Создаёт шар у Марио. */
     public ArkanoidBallBullet(double x, double y) {
         super(x, y, Direction.UP);
         this.speedX = (game.getMario().getFacing() == Direction.LEFT) ? -START_SPEED_X : START_SPEED_X;
         setStaticView(BonusShape.ARKANOID_BALL);
         makeLethalToEnemies();
-        // The ball is launched from Mario, so the first frames must not bounce off him
+        // Шар запускается из Марио, поэтому первые кадры не должны отражаться от него
         markCollision();
     }
 
+    /** Двигает шар и отражает его от препятствий. */
     @Override
     public void move() {
         if (game.isRoundOver()) return;
@@ -39,12 +39,14 @@ public class ArkanoidBallBullet extends Bullet {
         bounceOffWalls();
     }
 
+    /** Отражает шар от первого задетого танка. */
     private void bounceOffTanks(List<EnemyTank> tanks) {
         for (EnemyTank tank : tanks) {
             if (reboundFrom(tank)) return;
         }
     }
 
+    /** Отражает шар от Марио. */
     private void bounceOffMario() {
         if (!isCollisionCooledDown()) return;
 
@@ -56,7 +58,7 @@ public class ArkanoidBallBullet extends Bullet {
 
         double hitPosition = (getX() - mario.getX()) / mario.getWidth();
         if (overlap == Overlap.HORIZONTAL) {
-            // The part of Mario the ball hit changes the horizontal direction
+            // Место попадания в Марио меняет горизонтальное направление
             speedX += (int) (hitPosition * HIT_POSITION_FACTOR);
         }
         kickWithMario(mario);
@@ -64,6 +66,7 @@ public class ArkanoidBallBullet extends Bullet {
         markCollision();
     }
 
+    /** Добавляет шару скорость от движения Марио. */
     private void kickWithMario(Mario mario) {
         if (mario.getWalkingDirection() == Direction.RIGHT) {
             speedX++;
@@ -72,8 +75,9 @@ public class ArkanoidBallBullet extends Bullet {
         }
     }
 
+    /** Отражает шар от стен и потолка. */
     private void bounceOffWalls() {
-        // The ball may overshoot the wall, so it is put back to the wall, otherwise it would teleport
+        // Шар может проскочить стену, поэтому возвращаем его к границе, иначе он телепортируется
         if (getY() < 0) {
             setPosition(getX(), 0);
             speedY = Math.abs(speedY);
@@ -88,6 +92,7 @@ public class ArkanoidBallBullet extends Bullet {
         }
     }
 
+    /** Отражает шар от препятствия при контакте. */
     private boolean reboundFrom(GameObject obstacle) {
         Overlap overlap = overlapWith(obstacle);
         if (overlap == Overlap.NONE) return false;
@@ -96,6 +101,7 @@ public class ArkanoidBallBullet extends Bullet {
         return true;
     }
 
+    /** Меняет скорость шара по форме контакта. */
     private void applyBounce(Overlap overlap) {
         switch (overlap) {
             case HORIZONTAL:
@@ -113,13 +119,15 @@ public class ArkanoidBallBullet extends Bullet {
         }
     }
 
+    /** Ограничивает скорость шара. */
     private void limitSpeed() {
         speedX = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, speedX));
         speedY = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, speedY));
     }
 
+    /** Шар уничтожить нельзя. */
     @Override
     public void destroy() {
-        // The ball is indestructible
+        // Шар неуничтожим
     }
 }

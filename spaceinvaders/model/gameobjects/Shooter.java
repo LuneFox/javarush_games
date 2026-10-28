@@ -1,8 +1,7 @@
 package com.javarush.games.spaceinvaders.model.gameobjects;
 
-/**
- * A game object that is able to fire projectiles.
- */
+/** Объект, который умеет стрелять. */
 public interface Shooter {
+    /** Стреляет. */
     void shoot();
 }

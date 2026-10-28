@@ -7,22 +7,19 @@ import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Placement of the bricks for a stage. Brick positions and the line the enemy army must not cross
- * are defined here only.
- */
+/** Раскладка кирпичей уровня и линия обороны. */
 public final class LevelLayout {
-    /**
-     * Top row of the bricks. It is also the line the enemy army must not reach.
-     */
+    /** Верхний ряд кирпичей и линия, до которой не должна дойти армия. */
     public static final int BRICK_ROW_Y = GameField.HEIGHT - 30 - BrickShape.BRICK.length;
 
     private static final int[] PLAIN_BRICK_COLUMNS = {0, 20, 30, 60, 70, 90};
     private static final int[] QUESTION_BRICK_COLUMNS = {10, 80};
 
+    /** Запрещает создание экземпляров. */
     private LevelLayout() {
     }
 
+    /** Создаёт кирпичи уровня. */
     public static List<Brick> createBricks() {
         List<Brick> bricks = new ArrayList<>();
 

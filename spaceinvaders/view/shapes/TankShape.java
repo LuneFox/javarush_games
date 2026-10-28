@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.view.shapes;
 import java.util.Arrays;
 import java.util.List;
 
+/** Картинки танка и фигурок тетриса. */
 public class TankShape {
     public static final int[][] TANK_1 = new int[][]{
             {33, 0, 0, 0, 33},
@@ -46,8 +47,8 @@ public class TankShape {
     };
 
     private static final List<int[][]> TETRIS_BULLETS = Arrays.asList(
-            new int[][]{{71, 71}, {71, 71}},               // square
-            new int[][]{{71}, {71}, {71}, {71}},           // stick
+            new int[][]{{71, 71}, {71, 71}},               // квадрат
+            new int[][]{{71}, {71}, {71}, {71}},           // палочка
 
             new int[][]{{71, 71}, {71, 0}, {71, 0}},       // Г 0°
             new int[][]{{71, 71, 71}, {0, 0, 71}},         // Г 90°
@@ -69,6 +70,7 @@ public class TankShape {
             new int[][]{{71, 0}, {71, 71}, {0, 71}},       // S 0°
             new int[][]{{0, 71, 71}, {71, 71, 0}});        // S 90°
 
+    /** Возвращает случайную фигурку для снаряда. */
     public static int[][] getTetrisBullet() {
         int randomShapeNumber = (int) (Math.random() * TETRIS_BULLETS.size());
         return TETRIS_BULLETS.get(randomShapeNumber);

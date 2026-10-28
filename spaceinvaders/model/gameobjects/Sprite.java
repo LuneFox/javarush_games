@@ -8,10 +8,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * A picture of a game object: a single frame or a frame sequence, drawn pixel by pixel.
- */
+/** Спрайт объекта: один кадр или последовательность кадров. */
 public class Sprite {
+    /** Режим анимации. */
     public enum Loop {
         REPEAT, ONCE
     }
@@ -28,11 +27,13 @@ public class Sprite {
     private int frameTimer;
     private Loop loop;
 
+    /** Создаёт спрайт для игры. */
     public Sprite(SpaceInvadersGame game) {
         this.game = game;
         this.frameDelay = 1;
     }
 
+    /** Рисует текущий кадр со сдвигом и отражением. */
     void draw(double x, double y, Mirror mirror) {
         showNextFrame();
 
@@ -45,6 +46,7 @@ public class Sprite {
         }
     }
 
+    /** Переключает кадр по таймеру. */
     private void showNextFrame() {
         if (game.isPaused()) return;
         if (frameTimer++ % frameDelay != 0) return;
@@ -57,10 +59,12 @@ public class Sprite {
         }
     }
 
+    /** Сообщает, закончилась ли анимация. */
     boolean isAnimationFinished() {
         return currentFrame >= frames.size();
     }
 
+    /** Делает спрайт неподвижным. */
     void setStaticView(int[][] frame) {
         this.frames = new ArrayList<>();
         this.frames.add(frame);
@@ -68,6 +72,7 @@ public class Sprite {
         setFrame(frame);
     }
 
+    /** Включает анимацию из кадров. */
     void setAnimatedView(Loop loop, int frameDelay, int[][]... frames) {
         this.loop = loop;
         this.frameDelay = frameDelay;
@@ -76,24 +81,29 @@ public class Sprite {
         setFrame(frames[frames.length - 1]);
     }
 
+    /** Делает кадр текущим и запоминает его размеры. */
     private void setFrame(int[][] frame) {
         this.frame = frame;
         this.width = frame[0].length;
         this.height = frame.length;
     }
 
+    /** Проверяет, виден ли пиксель кадра. */
     boolean isPixelVisible(int x, int y) {
         return frame[y][x] != 0;
     }
 
+    /** Стирает пиксель кадра. */
     void erasePixel(int x, int y) {
         frame[y][x] = 0;
     }
 
+    /** Возвращает ширину кадра. */
     int getWidth() {
         return width;
     }
 
+    /** Возвращает высоту кадра. */
     int getHeight() {
         return height;
     }

@@ -6,10 +6,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Mushroom
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Star;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
 
-/**
- * A question brick hides a random bonus that appears from time to time and pops out when Mario hits
- * the brick. Once the bonus is taken away, the brick stays empty.
- */
+/** Кирпич с вопросом: прячет бонус и выдаёт его при ударе. */
 public class QuestionBrick extends Brick {
     private static final double BONUS_SPAWN_CHANCE = 0.005;
     private static final int BONUS_VARIANTS = 3;
@@ -18,11 +15,13 @@ public class QuestionBrick extends Brick {
     private Bonus bonus;
     private boolean bonusRevealed;
 
+    /** Создаёт кирпич с вопросом. */
     public QuestionBrick(double x, double y) {
-        // An empty brick looks the same as a brick whose bonus has already been taken
+        // Пустой кирпич выглядит так же, как кирпич с уже забранным бонусом
         super(x, y, BrickShape.QUESTION_BRICK_EMPTY);
     }
 
+    /** Обновляет кирпич и его бонус. */
     @Override
     public void move() {
         super.move();
@@ -33,6 +32,7 @@ public class QuestionBrick extends Brick {
         }
     }
 
+    /** Иногда создаёт бонус. */
     private void spawnBonusIfAbsent() {
         if (bonus != null) return;
         if (Math.random() >= BONUS_SPAWN_CHANCE) return;
@@ -42,6 +42,7 @@ public class QuestionBrick extends Brick {
         showFilled();
     }
 
+    /** Создаёт случайный бонус. */
     private Bonus createRandomBonus() {
         Bonus created;
         switch (game.getRandomNumber(BONUS_VARIANTS)) {
@@ -59,12 +60,14 @@ public class QuestionBrick extends Brick {
         return created;
     }
 
+    /** Открывает бонус при ударе. */
     @Override
     protected void releaseContent() {
         bonusRevealed = true;
         showEmpty();
     }
 
+    /** Рисует бонус и кирпич. */
     @Override
     public void draw() {
         if (bonusRevealed && bonus != null) {
@@ -73,19 +76,19 @@ public class QuestionBrick extends Brick {
         super.draw();
     }
 
-    /**
-     * Called by the bonus itself once it is taken or lost.
-     */
+    /** Очищает кирпич от бонуса. */
     public void clearBonus() {
         bonus = null;
         bonusRevealed = false;
         showEmpty();
     }
 
+    /** Показывает кирпич с бонусом. */
     private void showFilled() {
         setStaticView(BrickShape.QUESTION_BRICK_FULL);
     }
 
+    /** Показывает пустой кирпич. */
     private void showEmpty() {
         setStaticView(BrickShape.QUESTION_BRICK_EMPTY);
     }

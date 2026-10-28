@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.view.shapes;
 
+/** Картинки кирпичей. */
 public class BrickShape {
     public static final int[][] BRICK = new int[][]{
             {128, 128, 131, 128, 128, 128, 131, 128, 128, 128},

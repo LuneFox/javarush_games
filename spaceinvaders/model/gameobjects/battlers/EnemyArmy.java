@@ -12,9 +12,7 @@ import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * The enemy formation: spawns the tanks and forwards commands to them.
- */
+/** Армия врагов: создание танков и команды строю. */
 public class EnemyArmy implements Movable, Drawable {
     private static final int ROWS = 3;
     private static final int COLUMNS = 10;
@@ -26,12 +24,14 @@ public class EnemyArmy implements Movable, Drawable {
     private final List<EnemyTank> tanks = new ArrayList<>();
     private final ArmyMarch march = new ArmyMarch();
 
+    /** Создаёт армию из танков и босса. */
     public EnemyArmy(SpaceInvadersGame game) {
         this.game = game;
         spawnTanks();
         tanks.add(createBossTank());
     }
 
+    /** Расставляет обычные танки. */
     private void spawnTanks() {
         for (int column = 0; column < COLUMNS; column++) {
             for (int row = 0; row < ROWS; row++) {
@@ -42,11 +42,13 @@ public class EnemyArmy implements Movable, Drawable {
         }
     }
 
+    /** Создаёт босса по центру. */
     private BossTank createBossTank() {
         double x = (TANK_STEP * COLUMNS / 2.0) - (BossTankShape.BOSS_TANK_1[0].length / 2.0);
         return new BossTank(x, BOSS_ROW_Y);
     }
 
+    /** Рисует все танки. */
     @Override
     public void draw() {
         for (EnemyTank tank : tanks) {
@@ -54,6 +56,7 @@ public class EnemyArmy implements Movable, Drawable {
         }
     }
 
+    /** Двигает строй. */
     @Override
     public void move() {
         if (game.isRoundOver()) return;
@@ -61,12 +64,14 @@ public class EnemyArmy implements Movable, Drawable {
         march.advance(tanks);
     }
 
+    /** Заставляет случайный танк выстрелить. */
     public void fireRandomTank() {
         if (game.isRoundOver() || tanks.isEmpty()) return;
 
         tanks.get(game.getRandomNumber(tanks.size())).shoot();
     }
 
+    /** Обрабатывает попадания пуль по танкам. */
     public void receiveBullets(List<Bullet> bullets) {
         for (EnemyTank tank : tanks) {
             for (Bullet bullet : bullets) {
@@ -75,6 +80,7 @@ public class EnemyArmy implements Movable, Drawable {
         }
     }
 
+    /** Уничтожает танк и пулю при столкновении. */
     private void destroyTankIfHit(EnemyTank tank, Bullet bullet) {
         if (!bullet.isLethalToEnemies()) return;
         if (!bullet.isAlive() || !tank.isAlive()) return;
@@ -84,6 +90,7 @@ public class EnemyArmy implements Movable, Drawable {
         bullet.destroy();
     }
 
+    /** Проверяет, дошёл ли строй до линии. */
     public boolean isBottomLineReached(double lineY) {
         for (EnemyTank tank : tanks) {
             if (tank.getY() + tank.getHeight() >= lineY - 1) {
@@ -93,14 +100,17 @@ public class EnemyArmy implements Movable, Drawable {
         return false;
     }
 
+    /** Убирает уничтоженные танки. */
     public void removeDestroyedTanks() {
         tanks.removeIf(GameObject::canBeRemoved);
     }
 
+    /** Сообщает, пуста ли армия. */
     public boolean isEmpty() {
         return tanks.isEmpty();
     }
 
+    /** Возвращает танки. */
     public List<EnemyTank> getTanks() {
         return tanks;
     }

@@ -7,15 +7,14 @@ import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
 import java.util.List;
 
-/**
- * The star reflects enemy bullets back while it is carried, and turns all of them around at once
- * when it is used.
- */
+/** Звёздочка: отражает пули и разворачивает их все. */
 public class Star extends Bonus {
+    /** Создаёт звёздочку. */
     public Star(double x, double y) {
         super(x, y, BonusShape.STAR, BonusShape.STAR_OVERHEAD_ICON);
     }
 
+    /** Отражает попавшую пулю. */
     @Override
     protected void reactToBullets(List<Bullet> bullets) {
         for (Bullet bullet : bullets) {
@@ -28,6 +27,7 @@ public class Star extends Bonus {
         }
     }
 
+    /** Разворачивает все вражеские пули и включает вспышку. */
     @Override
     public void activate() {
         destroy();

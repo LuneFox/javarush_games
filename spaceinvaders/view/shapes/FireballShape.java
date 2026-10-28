@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.view.shapes;
 
+/** Кадры огненного шара. */
 public class FireballShape {
     public static final int[][] FIREBALL_1 = new int[][]{
             {0, 5, 0, 5, 5, 0, 0, 0},

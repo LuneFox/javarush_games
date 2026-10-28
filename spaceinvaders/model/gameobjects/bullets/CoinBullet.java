@@ -4,12 +4,11 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.CoinShape;
 
-/**
- * A coin knocked out of a brick. Spins while flying and kills a tank it meets.
- */
+/** Монета, выбитая из кирпича. */
 public class CoinBullet extends Bullet {
     private static final int FRAME_DELAY = 1;
 
+    /** Создаёт монету. */
     CoinBullet(double x, double y) {
         super(x, y, Direction.UP);
         setAnimatedView(Sprite.Loop.REPEAT, FRAME_DELAY,

@@ -16,10 +16,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysicsBui
 
 import java.util.List;
 
-/**
- * An item hidden in a question brick: it pops out of the brick, jumps, slides along the brick row
- * and can be picked up by Mario. What the item does when it is used is defined by subclasses.
- */
+/** Бонус из кирпича: вылезает, прыгает, скользит и подбирается. */
 public abstract class Bonus extends GameObject implements Movable {
     private static final int MAX_JUMP_ENERGY = 4;
     private static final int POP_OUT_STEP = 1;
@@ -36,6 +33,7 @@ public abstract class Bonus extends GameObject implements Movable {
     private QuestionBrick parentBrick;
     private boolean poppedOut;
 
+    /** Создаёт бонус с картинкой и иконкой. */
     protected Bonus(double x, double y, int[][] image, int[][] iconImage) {
         super(x, y);
         this.slideDirection = (x < GameField.CENTER_X) ? Direction.RIGHT : Direction.LEFT;
@@ -49,9 +47,7 @@ public abstract class Bonus extends GameObject implements Movable {
                 .build();
     }
 
-    /**
-     * One step of the bonus life: getting out of the brick, reacting to hits, jumping, sliding.
-     */
+    /** Делает шаг жизненного цикла бонуса. */
     @Override
     public void move() {
         if (game.isRoundOver() || !isAlive()) return;
@@ -71,6 +67,7 @@ public abstract class Bonus extends GameObject implements Movable {
         collectIfTouchedBy(game.getMario());
     }
 
+    /** Выдвигает бонус из кирпича. */
     private void riseAboveBrick() {
         if (getY() <= brickTopY) {
             setPosition(getX(), brickTopY);
@@ -80,6 +77,7 @@ public abstract class Bonus extends GameObject implements Movable {
         setPosition(getX(), getY() - POP_OUT_STEP);
     }
 
+    /** Заставляет бонус прыгнуть от кирпича. */
     private void jumpOnBricks(List<Brick> bricks) {
         for (Brick brick : bricks) {
             if (collidesWith(brick, Mirror.NONE)) {
@@ -89,6 +87,7 @@ public abstract class Bonus extends GameObject implements Movable {
         }
     }
 
+    /** Двигает бонус по кирпичам и вниз. */
     private void slide() {
         if (slideDirection == Direction.RIGHT) {
             setPosition(getX() + SLIDE_STEP, getY());
@@ -102,10 +101,12 @@ public abstract class Bonus extends GameObject implements Movable {
         removeIfOutOfField();
     }
 
+    /** Опускает бонус на землю. */
     private void fallToGround() {
         jumpPhysics.fallTo(GameField.groundLevelFor(getHeight()), FALL_SPEED);
     }
 
+    /** Убирает бонус, ушедший за поле. */
     private void removeIfOutOfField() {
         if (getX() + getWidth() < 0 || getX() > GameField.WIDTH) {
             destroy();
@@ -113,6 +114,7 @@ public abstract class Bonus extends GameObject implements Movable {
         }
     }
 
+    /** Отдаёт бонус Марио при касании. */
     private void collectIfTouchedBy(Mario mario) {
         if (!collidesWith(mario, Mirror.of(mario.getFacing()))) return;
 
@@ -122,6 +124,7 @@ public abstract class Bonus extends GameObject implements Movable {
         Score.addBonusPickup();
     }
 
+    /** Освобождает кирпич от бонуса. */
     private void detachFromParentBrick() {
         if (parentBrick == null) return;
 
@@ -129,32 +132,31 @@ public abstract class Bonus extends GameObject implements Movable {
     }
 
     /*
-     * Drawing
+     * Отрисовка
      */
 
+    /** Возвращает ширину иконки. */
     public int getIconWidth() {
         return icon.getWidth();
     }
 
+    /** Рисует иконку в заданной точке. */
     public void drawIconAt(double x, double y) {
         icon.setPosition(x, y);
         icon.draw();
     }
 
     /*
-     * Behaviour of the concrete bonus
+     * Поведение конкретного бонуса
      */
 
-    /**
-     * How the bonus reacts to an enemy bullet that hits it.
-     */
+    /** Реагирует на вражеские пули. */
     protected abstract void reactToBullets(List<Bullet> bullets);
 
-    /**
-     * Uses the bonus up: called when the player presses SPACE.
-     */
+    /** Использует бонус. */
     public abstract void activate();
 
+    /** Запоминает кирпич-владельца. */
     public void setParentBrick(QuestionBrick parentBrick) {
         this.parentBrick = parentBrick;
     }

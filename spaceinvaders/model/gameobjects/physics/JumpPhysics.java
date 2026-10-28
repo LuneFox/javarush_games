@@ -2,9 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.physics;
 
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 
-/**
- * Gives an object the ability to jump over the field and to fall down to a floor level.
- */
+/** Прыжки и падения объекта. */
 public class JumpPhysics {
     private final GameObject object;
     private int floorLevel;
@@ -15,6 +13,7 @@ public class JumpPhysics {
     private final int maxJumpEnergy;
     private long completedJumps;
 
+    /** Создаёт физику прыжка для объекта. */
     JumpPhysics(GameObject object,
                int floorLevel,
                int ceilingLevel,
@@ -29,15 +28,14 @@ public class JumpPhysics {
         this.maxJumpEnergy = maxJumpEnergy;
     }
 
+    /** Начинает прыжок. */
     public void startJump() {
         if (isInAir()) return;
 
         jumpEnergy = maxJumpEnergy;
     }
 
-    /**
-     * One step of the jump: rises while the energy lasts, then falls down to the floor.
-     */
+    /** Делает шаг прыжка или падения. */
     public void update() {
         if (jumpEnergy > 0) {
             rise();
@@ -48,6 +46,7 @@ public class JumpPhysics {
         }
     }
 
+    /** Поднимает объект. */
     private void rise() {
         object.setPosition(object.getX(), object.getY() - raiseSpeed);
         if (object.getY() < ceilingLevel) {
@@ -55,6 +54,7 @@ public class JumpPhysics {
         }
     }
 
+    /** Опускает объект. */
     private void descend() {
         object.setPosition(object.getX(), object.getY() + descendSpeed);
         if (object.getY() > floorLevel) {
@@ -62,28 +62,30 @@ public class JumpPhysics {
         }
     }
 
+    /** Считает приземление. */
     private void countLanding() {
         if (isOnFloor()) {
             completedJumps++;
         }
     }
 
-    /**
-     * Makes the object fall to the given floor, for example from a brick down to the ground.
-     */
+    /** Задаёт пол и скорость падения. */
     public void fallTo(int floorLevel, int descendSpeed) {
         this.floorLevel = floorLevel;
         this.descendSpeed = descendSpeed;
     }
 
+    /** Сообщает, в воздухе ли объект. */
     public boolean isInAir() {
         return object.getY() < floorLevel;
     }
 
+    /** Сообщает, на полу ли объект. */
     private boolean isOnFloor() {
         return object.getY() == floorLevel;
     }
 
+    /** Возвращает число завершённых прыжков. */
     public long getCompletedJumps() {
         return completedJumps;
     }

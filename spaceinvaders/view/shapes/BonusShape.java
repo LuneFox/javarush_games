@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.view.shapes;
 
+/** Картинки бонусов. */
 public class BonusShape {
     public static final int[][] MUSHROOM = new int[][]{
             {0, 0, 0, 4, 5, 5, 4, 0, 0, 0},

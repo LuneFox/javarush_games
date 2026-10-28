@@ -1,9 +1,6 @@
 package com.javarush.games.spaceinvaders.model;
 
-/**
- * Score of the current game. The value is shared by game objects created in different classes,
- * so it is kept static.
- */
+/** Счёт текущей игры. */
 public final class Score {
     private static final int BONUS_PICKUP_POINTS = 9;
 
@@ -14,36 +11,37 @@ public final class Score {
         reset();
     }
 
+    /** Запрещает создание экземпляров. */
     private Score() {
     }
 
+    /** Сбрасывает счёт. */
     public static void reset() {
         score = 0;
     }
 
-    /**
-     * Adds points multiplied by the number of the current stage, as the game has always scored.
-     */
+    /** Начисляет очки с учётом номера стадии. */
     public static void add(int baseAmount) {
         score += baseAmount * StageProgress.getNumber();
         topScore = Math.max(score, topScore);
     }
 
+    /** Начисляет очки за подобранный бонус. */
     public static void addBonusPickup() {
         add(BONUS_PICKUP_POINTS + StageProgress.getNumber());
     }
 
-    /**
-     * A bonus that absorbed a hit is lost together with the points it brought.
-     */
+    /** Списывает очки за потерянный бонус. */
     public static void removeBonusPickup() {
         add(-BONUS_PICKUP_POINTS - StageProgress.getNumber());
     }
 
+    /** Возвращает текущий счёт. */
     public static int getScore() {
         return score;
     }
 
+    /** Возвращает лучший счёт. */
     public static int getTopScore() {
         return topScore;
     }

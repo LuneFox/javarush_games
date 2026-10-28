@@ -1,11 +1,10 @@
 package com.javarush.games.spaceinvaders.model;
 
-/**
- * Horizontal mirroring of a sprite. Mario is drawn mirrored when he looks left.
- */
+/** Отражение спрайта по горизонтали. */
 public enum Mirror {
     HORIZONTAL, NONE;
 
+    /** Возвращает отражение для взгляда в заданную сторону. */
     public static Mirror of(Direction facing) {
         return (facing == Direction.RIGHT) ? NONE : HORIZONTAL;
     }

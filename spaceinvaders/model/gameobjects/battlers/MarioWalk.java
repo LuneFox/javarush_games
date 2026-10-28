@@ -2,10 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.model.Direction;
 
-/**
- * Horizontal walking physics of Mario: inertia, acceleration and braking when the direction is
- * reversed.
- */
+/** Физика ходьбы Марио: инерция, ускорение и торможение. */
 class MarioWalk {
     private static final double START_SPEED = 0.6;
     private static final double MAX_SPEED = 2.4;
@@ -14,14 +11,13 @@ class MarioWalk {
 
     private double speed;
 
-    /**
-     * Recalculates the speed for the requested direction and tells whether Mario is braking now.
-     */
+    /** Пересчитывает скорость и сообщает о торможении. */
     boolean update(Direction direction) {
         accelerate(direction);
         return brakeIfReversing(direction);
     }
 
+    /** Ускоряет или замедляет Марио. */
     private void accelerate(Direction direction) {
         if (direction == Direction.RIGHT) {
             if (speed == 0) speed = START_SPEED;
@@ -35,9 +31,7 @@ class MarioWalk {
         }
     }
 
-    /**
-     * Mario keeps sliding for a while in the old direction before he starts moving the other way.
-     */
+    /** Тормозит при смене направления. */
     private boolean brakeIfReversing(Direction direction) {
         if (direction == Direction.RIGHT && speed < ACCELERATION) {
             speed += ACCELERATION / 2;
@@ -50,10 +44,12 @@ class MarioWalk {
         return false;
     }
 
+    /** Возвращает текущую скорость. */
     double getSpeed() {
         return speed;
     }
 
+    /** Сообщает, идёт ли Марио. */
     boolean isMoving() {
         return Math.abs(speed) > ACCELERATION;
     }

@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.view.shapes;
 
+/** Картинки декораций. */
 public class DecoShape {
     public static final int[][] FLOOR = new int[][]{
             {143, 118, 118, 118, 118, 118, 118, 118, 118, 126, 143, 118, 118, 118, 118, 143},

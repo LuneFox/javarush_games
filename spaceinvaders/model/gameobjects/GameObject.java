@@ -4,9 +4,7 @@ import com.javarush.games.spaceinvaders.Drawable;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
 
-/**
- * Base class of every sprite on the field: knows its position, its picture and its collisions.
- */
+/** Базовый объект поля: положение, спрайт и столкновения. */
 public class GameObject implements Drawable {
     protected static SpaceInvadersGame game;
 
@@ -17,90 +15,104 @@ public class GameObject implements Drawable {
     private int lastCollisionX;
     private int lastCollisionY;
 
+    /** Запоминает игру для всех объектов. */
     public static void setGame(SpaceInvadersGame game) {
         GameObject.game = game;
     }
 
+    /** Создаёт объект в начале координат. */
     public GameObject() {
         this(0, 0);
     }
 
+    /** Создаёт объект в заданной точке. */
     public GameObject(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
     /*
-     * Position and lifetime
+     * Положение и жизнь
      */
 
+    /** Возвращает координату X. */
     public double getX() {
         return x;
     }
 
+    /** Возвращает координату Y. */
     public double getY() {
         return y;
     }
 
+    /** Переносит объект в заданную точку. */
     public void setPosition(double x, double y) {
         this.x = x;
         this.y = y;
     }
 
+    /** Сообщает, жив ли объект. */
     public boolean isAlive() {
         return alive;
     }
 
+    /** Помечает объект уничтоженным. */
     public void destroy() {
         alive = false;
     }
 
-    /**
-     * An object may be forgotten once it is destroyed and its explosion animation is over.
-     */
+    /** Сообщает, можно ли убрать объект с поля. */
     public boolean canBeRemoved() {
         return !alive && sprite.isAnimationFinished();
     }
 
     /*
-     * Graphics
+     * Графика
      */
 
+    /** Задаёт неподвижный спрайт. */
     public void setStaticView(int[][] frame) {
         sprite = new Sprite(game);
         sprite.setStaticView(frame);
     }
 
+    /** Задаёт анимированный спрайт. */
     public void setAnimatedView(Sprite.Loop loop, int frameDelay, int[][]... frames) {
         sprite = new Sprite(game);
         sprite.setAnimatedView(loop, frameDelay, frames);
     }
 
+    /** Рисует объект. */
     @Override
     public void draw() {
         sprite.draw(x, y, Mirror.NONE);
     }
 
+    /** Рисует объект с отражением. */
     public void draw(Mirror mirror) {
         sprite.draw(x, y, mirror);
     }
 
+    /** Стирает пиксель в точке последнего столкновения. */
     public void eraseCollisionPixel() {
         sprite.erasePixel(lastCollisionX, lastCollisionY);
     }
 
+    /** Возвращает ширину спрайта. */
     public int getWidth() {
         return sprite.getWidth();
     }
 
+    /** Возвращает высоту спрайта. */
     public int getHeight() {
         return sprite.getHeight();
     }
 
     /*
-     * Collisions
+     * Столкновения
      */
 
+    /** Определяет форму пересечения с другим объектом. */
     public Overlap overlapWith(GameObject other) {
         if (!collidesWith(other, Mirror.NONE)) {
             return Overlap.NONE;
@@ -115,7 +127,7 @@ public class GameObject implements Drawable {
             return Overlap.NONE;
         }
 
-        // Near-equal sides mean a corner hit
+        // Почти равные стороны означают удар углом
         final double threshold = 0.5;
         if (Math.abs(verticalOverlap - horizontalOverlap) < threshold) {
             return Overlap.SQUARE;
@@ -123,10 +135,7 @@ public class GameObject implements Drawable {
         return (verticalOverlap > horizontalOverlap) ? Overlap.VERTICAL : Overlap.HORIZONTAL;
     }
 
-    /**
-     * Checks whether any non-transparent pixel of the other object touches any non-transparent
-     * pixel of this one. The other object may be mirrored.
-     */
+    /** Проверяет попиксельное столкновение с другим объектом. */
     public boolean collidesWith(GameObject other, Mirror mirror) {
         for (int otherX = 0; otherX < other.getWidth(); otherX++) {
             for (int otherY = 0; otherY < other.getHeight(); otherY++) {
@@ -143,6 +152,7 @@ public class GameObject implements Drawable {
         return false;
     }
 
+    /** Проверяет, попадает ли точка в непрозрачный пиксель. */
     private boolean collidesWithPoint(double pointX, double pointY) {
         for (int x = 0; x < getWidth(); x++) {
             for (int y = 0; y < getHeight(); y++) {
@@ -156,6 +166,7 @@ public class GameObject implements Drawable {
         return false;
     }
 
+    /** Запоминает точку последнего столкновения. */
     private void rememberCollisionPoint(int x, int y) {
         lastCollisionX = x;
         lastCollisionY = y;

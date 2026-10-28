@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.view.printer;
 
+/** Пиксельные глифы шрифта. */
 enum Symbol {
     RUS_A(makeArray(4, "0000000001101001111110011001"), 'а', 'a'),
     RUS_B(makeArray(4, "0000000011111000111010011110"), 'б'),
@@ -82,11 +83,13 @@ enum Symbol {
     private final char[] chars;
     private final int[][] matrix;
 
+    /** Создаёт глиф с картинкой и символами. */
     Symbol(int[][] matrix, char... chars) {
         this.matrix = matrix;
         this.chars = chars;
     }
 
+    /** Строит матрицу глифа из строки. */
     private static int[][] makeArray(int width, String string) {
         final int CHAR_AND_INT_DIFFERENCE = 48;
         int height = string.length() / width;
@@ -103,10 +106,12 @@ enum Symbol {
         return result;
     }
 
+    /** Возвращает символы глифа. */
     char[] getChars() {
         return chars;
     }
 
+    /** Возвращает картинку глифа. */
     int[][] getMatrix() {
         return matrix;
     }

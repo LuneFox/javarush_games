@@ -15,9 +15,7 @@ import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
 
 import java.util.List;
 
-/**
- * The player character: walks with inertia, jumps, carries a bonus and fires it when asked.
- */
+/** Марио: ходьба с инерцией, прыжки, бонус и стрельба. */
 public class Mario extends Battler implements Movable {
     private static final int HIT_POINTS = 1;
     private static final int WALKING_MARGIN = 4;
@@ -43,6 +41,7 @@ public class Mario extends Battler implements Movable {
     private Bonus bonus;
     private int animationFrame;
 
+    /** Создаёт Марио в точке появления. */
     public Mario() {
         super(spawnX(), spawnY());
         this.hitPoints = HIT_POINTS;
@@ -58,18 +57,21 @@ public class Mario extends Battler implements Movable {
                 .build();
     }
 
+    /** Возвращает X точки появления. */
     private static double spawnX() {
         return GameField.WIDTH - MarioShape.STAND[0].length - 3;
     }
 
+    /** Возвращает Y точки появления. */
     private static int spawnY() {
         return GameField.groundLevelFor(MarioShape.STAND.length);
     }
 
     /*
-     * Movement
+     * Движение
      */
 
+    /** Делает шаг: ходьба, границы и прыжок. */
     @Override
     public void move() {
         if (!isAlive()) return;
@@ -85,6 +87,7 @@ public class Mario extends Battler implements Movable {
         }
     }
 
+    /** Выбирает позу по скорости и торможению. */
     private void showWalkPose(boolean braking) {
         if (braking) {
             animator.brake();
@@ -95,6 +98,7 @@ public class Mario extends Battler implements Movable {
         }
     }
 
+    /** Не даёт Марио выйти за границы поля. */
     private void keepInBounds() {
         if (getX() < leftWalkingBound) {
             setPosition(leftWalkingBound, getY());
@@ -103,37 +107,41 @@ public class Mario extends Battler implements Movable {
         }
     }
 
+    /** Начинает прыжок. */
     public void jump() {
         jumpPhysics.startJump();
     }
 
+    /** Задаёт направление ходьбы. */
     public void walkTowards(Direction direction) {
         this.walkingDirection = direction;
     }
 
+    /** Возвращает направление ходьбы. */
     public Direction getWalkingDirection() {
         return walkingDirection;
     }
 
+    /** Возвращает направление взгляда. */
     public Direction getFacing() {
         return facing;
     }
 
     /*
-     * Bonus
+     * Бонус
      */
 
+    /** Подбирает бонус. */
     public void pickUp(Bonus bonus) {
         this.bonus = bonus;
     }
 
+    /** Сообщает, есть ли у Марио бонус. */
     public boolean hasBonus() {
         return bonus != null;
     }
 
-    /**
-     * SPACE action: the carried bonus is used up and does whatever it is meant to do.
-     */
+    /** Использует бонус по нажатию пробела. */
     public void useBonus() {
         if (!isAlive() || bonus == null) return;
 
@@ -142,9 +150,7 @@ public class Mario extends Battler implements Movable {
         usedBonus.activate();
     }
 
-    /**
-     * Spawns a projectile of the given type right above Mario, centered on his sprite.
-     */
+    /** Запускает снаряд над головой Марио. */
     public void launchProjectile(BulletType type, int[][] projectileImage) {
         if (!isAlive()) return;
 
@@ -154,9 +160,10 @@ public class Mario extends Battler implements Movable {
     }
 
     /*
-     * Damage and death
+     * Урон и смерть
      */
 
+    /** Обрабатывает попадания вражеских пуль. */
     public void receiveBullets(List<Bullet> bullets) {
         for (Bullet bullet : bullets) {
             if (isHitBy(bullet)) {
@@ -166,17 +173,19 @@ public class Mario extends Battler implements Movable {
         }
     }
 
+    /** Проверяет попадание пули в Марио. */
     private boolean isHitBy(Bullet bullet) {
         if (!isAlive() || !bullet.isAlive()) return false;
 
         return collidesWith(bullet, Mirror.of(facing));
     }
 
+    /** Применяет попадание: теряет бонус или погибает. */
     @Override
     public void takeHit() {
         if (!isAlive()) return;
 
-        // A bonus absorbs the hit instead of Mario, taking its points away
+        // Бонус принимает удар на себя и забирает свои очки
         if (bonus != null) {
             bonus = null;
             Score.removeBonusPickup();
@@ -186,6 +195,7 @@ public class Mario extends Battler implements Movable {
         super.takeHit();
     }
 
+    /** Проигрывает анимацию смерти. */
     public void playDeathAnimation() {
         if (animationFrame > DEATH_ANIMATION_FRAMES) return;
 
@@ -199,6 +209,7 @@ public class Mario extends Battler implements Movable {
         }
     }
 
+    /** Проигрывает анимацию победы. */
     public void playVictoryAnimation() {
         walkTowards(Direction.NONE);
         animator.victoryFrame(animationFrame);
@@ -206,9 +217,10 @@ public class Mario extends Battler implements Movable {
     }
 
     /*
-     * Drawing
+     * Отрисовка
      */
 
+    /** Рисует Марио и иконку бонуса. */
     @Override
     public void draw() {
         updateFacing();
@@ -216,6 +228,7 @@ public class Mario extends Battler implements Movable {
         drawBonusIcon();
     }
 
+    /** Обновляет направление взгляда. */
     private void updateFacing() {
         if (walkingDirection == Direction.RIGHT) {
             facing = Direction.RIGHT;
@@ -224,6 +237,7 @@ public class Mario extends Battler implements Movable {
         }
     }
 
+    /** Рисует иконку бонуса над головой. */
     private void drawBonusIcon() {
         if (bonus == null) return;
 

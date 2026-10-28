@@ -22,10 +22,7 @@ import com.javarush.games.spaceinvaders.view.printer.SymbolImage;
 
 import java.util.List;
 
-/**
- * Engine adapter of the game: creates the collaborators, runs one turn and forwards the keys.
- * Everything else is delegated to the arena, the score board and the ending screen.
- */
+/** Адаптер игры к движку: создаёт участников, проводит ход и передаёт клавиши. */
 public class SpaceInvadersGame extends Game {
     private static final int TURN_DELAY_MS = 40;
     private static final int TURNS_BEFORE_ENDING = 60;
@@ -41,6 +38,7 @@ public class SpaceInvadersGame extends Game {
     private GameStatus status = GameStatus.RUNNING;
     private int turnsAfterRoundEnd;
 
+    /** Инициализирует игру при запуске. */
     @Override
     public void initialize() {
         showGrid(false);
@@ -59,9 +57,7 @@ public class SpaceInvadersGame extends Game {
         startNewGame();
     }
 
-    /**
-     * Starts the first stage or the next one, depending on how the previous stage ended.
-     */
+    /** Начинает новую игру: следующую стадию или первую после поражения. */
     public void startNewGame() {
         moveToNextStage();
 
@@ -74,6 +70,7 @@ public class SpaceInvadersGame extends Game {
         render();
     }
 
+    /** Переводит счётчик стадий вперёд или сбрасывает его. */
     private void moveToNextStage() {
         if (arena != null && arena.getMario().isAlive()) {
             StageProgress.advance();
@@ -83,6 +80,7 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
+    /** Проводит один ход: обновляет бой и рисует кадр. */
     @Override
     public void onTurn(int step) {
         if (!isPaused()) {
@@ -96,6 +94,7 @@ public class SpaceInvadersGame extends Game {
         render();
     }
 
+    /** Проверяет условия конца раунда и включает финальную анимацию. */
     private void updateRound() {
         if (arena.hasArmyReachedTheBrickLine()) {
             arena.getMario().takeHit();
@@ -110,6 +109,7 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
+    /** Отмечает конец раунда и показывает финал после задержки. */
     private void finishRound() {
         status = GameStatus.OVER;
         turnsAfterRoundEnd++;
@@ -124,6 +124,7 @@ public class SpaceInvadersGame extends Game {
         }
     }
 
+    /** Рисует кадр: сцену, интерфейс, объекты боя и вспышку. */
     private void render() {
         scenery.draw();
         scoreBoard.draw();
@@ -134,73 +135,87 @@ public class SpaceInvadersGame extends Game {
     }
 
     /*
-     * Game state
+     * Состояние игры
      */
 
+    /** Ставит игру на паузу или снимает её. */
     public void togglePause() {
         if (status == GameStatus.OVER) return;
 
         status = (status == GameStatus.PAUSED) ? GameStatus.RUNNING : GameStatus.PAUSED;
     }
 
+    /** Сообщает, стоит ли игра на паузе. */
     public boolean isPaused() {
         return status == GameStatus.PAUSED;
     }
 
+    /** Сообщает, закончился ли раунд. */
     public boolean isRoundOver() {
         return status == GameStatus.OVER;
     }
 
+    /** Сообщает, показан ли финальный диалог. */
     public boolean isEndingShown() {
         return endingScreen.isShown();
     }
 
     /*
-     * Controls
+     * Управление
      */
 
+    /** Передаёт нажатие клавиши контроллеру. */
     @Override
     public void onKeyPress(Key key) {
         controller.handleKeyPress(key);
     }
 
+    /** Передаёт отпускание клавиши контроллеру. */
     @Override
     public void onKeyReleased(Key key) {
         controller.handleKeyRelease(key);
     }
 
     /*
-     * Accessors used by game objects and the controller
+     * Доступ к объектам для игровых объектов и контроллера
      */
 
+    /** Возвращает поле текущего боя. */
     public Arena getArena() {
         return arena;
     }
 
+    /** Возвращает Марио текущего боя. */
     public Mario getMario() {
         return arena.getMario();
     }
 
+    /** Возвращает армию врагов. */
     public EnemyArmy getEnemyArmy() {
         return arena.getEnemyArmy();
     }
 
+    /** Возвращает кирпичи уровня. */
     public List<Brick> getBricks() {
         return arena.getBricks();
     }
 
+    /** Возвращает вражеские пули. */
     public List<Bullet> getEnemyBullets() {
         return arena.getEnemyBullets();
     }
 
+    /** Добавляет пулю игрока на поле. */
     public void addPlayerBullet(Bullet bullet) {
         arena.addPlayerBullet(bullet);
     }
 
+    /** Возвращает пиксельный экран. */
     public PixelScreen getScreen() {
         return screen;
     }
 
+    /** Возвращает вспышку экрана. */
     public ScreenFlash getFlash() {
         return flash;
     }

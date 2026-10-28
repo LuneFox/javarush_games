@@ -3,15 +3,13 @@ package com.javarush.games.spaceinvaders.view.printer;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Lazily built set of glyphs. A character that has no glyph is printed as a space, so a single
- * unsupported symbol never breaks the whole line.
- */
+/** Ленивый кэш глифов. */
 public class SymbolCache {
     private static final char FALLBACK = ' ';
 
     private final Map<Character, SymbolImage> glyphs = new HashMap<>(128);
 
+    /** Возвращает глиф символа или пробел. */
     SymbolImage get(Character character) {
         if (glyphs.isEmpty()) {
             loadAllGlyphs();
@@ -21,6 +19,7 @@ public class SymbolCache {
         return (glyph != null) ? glyph : glyphs.get(FALLBACK);
     }
 
+    /** Загружает все глифы в кэш. */
     private void loadAllGlyphs() {
         for (Symbol symbol : Symbol.values()) {
             for (char character : symbol.getChars()) {

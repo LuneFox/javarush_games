@@ -8,17 +8,14 @@ import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 
 import java.util.List;
 
-/**
- * The mushroom absorbs enemy bullets, losing a pixel with every hit, and turns into a fireball.
- */
+/** Гриб: гасит пули и превращается в огненный шар. */
 public class Mushroom extends Bonus {
+    /** Создаёт гриб. */
     public Mushroom(double x, double y) {
         super(x, y, copyOf(BonusShape.MUSHROOM), BonusShape.MUSHROOM_OVERHEAD_ICON);
     }
 
-    /**
-     * The mushroom loses pixels when it absorbs hits, so it must not share its image with the shape.
-     */
+    /** Копирует картинку, чтобы гриб мог терять пиксели. */
     private static int[][] copyOf(int[][] shape) {
         int[][] copy = new int[shape.length][shape[0].length];
         for (int row = 0; row < shape.length; row++) {
@@ -27,6 +24,7 @@ public class Mushroom extends Bonus {
         return copy;
     }
 
+    /** Гасит попавшие пули и теряет пиксель. */
     @Override
     protected void reactToBullets(List<Bullet> bullets) {
         for (Bullet bullet : bullets) {
@@ -37,6 +35,7 @@ public class Mushroom extends Bonus {
         }
     }
 
+    /** Запускает огненный шар. */
     @Override
     public void activate() {
         destroy();

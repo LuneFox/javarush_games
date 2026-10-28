@@ -8,10 +8,7 @@ import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
 
-/**
- * The background of the game: sky, clouds, hills, bushes and the ground. The decorative objects are
- * owned by this instance, not shared statically.
- */
+/** Фон игры: небо, облака, холмы, кусты и земля. */
 public class Scenery implements Drawable {
     private static final int NIGHT_SKY_LAST_ROW = 60;
     private static final int HORIZON_ROW = 63;
@@ -33,6 +30,7 @@ public class Scenery implements Drawable {
     private final GameObject bush = new GameObject();
     private final GameObject floorTile = new GameObject();
 
+    /** Создаёт сцену и готовит декорации. */
     public Scenery(SpaceInvadersGame game) {
         this.game = game;
         cloud.setStaticView(DecoShape.CLOUD);
@@ -41,6 +39,7 @@ public class Scenery implements Drawable {
         floorTile.setStaticView(DecoShape.FLOOR);
     }
 
+    /** Рисует весь фон. */
     @Override
     public void draw() {
         drawSky();
@@ -50,6 +49,7 @@ public class Scenery implements Drawable {
         drawFloor();
     }
 
+    /** Заливает небо. */
     private void drawSky() {
         for (int y = 0; y < GameField.HEIGHT; y++) {
             Color skyColor = skyColorAt(y);
@@ -59,6 +59,7 @@ public class Scenery implements Drawable {
         }
     }
 
+    /** Возвращает цвет неба для строки. */
     private Color skyColorAt(int y) {
         if (y <= NIGHT_SKY_LAST_ROW) return Color.BLACK;
         if (y == HORIZON_ROW) return Color.MIDNIGHTBLUE;
@@ -68,6 +69,7 @@ public class Scenery implements Drawable {
         return Color.DEEPSKYBLUE;
     }
 
+    /** Рисует облака. */
     private void drawClouds() {
         cloud.setPosition(5, 65);
         cloud.draw();
@@ -77,6 +79,7 @@ public class Scenery implements Drawable {
         cloud.draw(Mirror.HORIZONTAL);
     }
 
+    /** Рисует холмы. */
     private void drawHills() {
         double y = GameField.HEIGHT - DecoShape.FLOOR.length - DecoShape.HILL.length;
         for (int i = 0; i < HILLS_COUNT; i++) {
@@ -85,6 +88,7 @@ public class Scenery implements Drawable {
         }
     }
 
+    /** Рисует кусты. */
     private void drawBushes() {
         double y = GameField.HEIGHT - DecoShape.FLOOR.length - DecoShape.BUSH.length;
         for (int i = 0; i < BUSHES_COUNT; i++) {
@@ -93,6 +97,7 @@ public class Scenery implements Drawable {
         }
     }
 
+    /** Рисует землю. */
     private void drawFloor() {
         double y = GameField.HEIGHT - DecoShape.FLOOR.length;
         for (int i = 0; i < FLOOR_TILES_COUNT; i++) {

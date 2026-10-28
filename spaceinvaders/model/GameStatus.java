@@ -1,22 +1,13 @@
 package com.javarush.games.spaceinvaders.model;
 
-/**
- * Lifecycle of the game session. A single value replaces the three booleans
- * (paused / stopped / ending displayed) that used to allow impossible combinations.
- */
+/** Состояние игровой сессии. */
 public enum GameStatus {
-    /**
-     * The battle is in progress.
-     */
+    /** Бой идёт. */
     RUNNING,
 
-    /**
-     * The battle is frozen by the player.
-     */
+    /** Бой приостановлен игроком. */
     PAUSED,
 
-    /**
-     * The stage is finished, Mario plays his death or victory animation and the ending is coming.
-     */
+    /** Раунд закончен, идёт финальная анимация. */
     OVER
 }

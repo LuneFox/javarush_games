@@ -1,31 +1,26 @@
 package com.javarush.games.spaceinvaders.model;
 
-/**
- * Number of the stage being played. The value is shared by game objects created in different
- * classes, so it is kept static, the same way {@link Score} is.
- */
+/** Номер текущей стадии. */
 public final class StageProgress {
     private static final int FIRST_STAGE = 1;
 
     private static int number = FIRST_STAGE;
 
+    /** Запрещает создание экземпляров. */
     private StageProgress() {
     }
 
+    /** Возвращает номер стадии. */
     public static int getNumber() {
         return number;
     }
 
-    /**
-     * Called when the previous stage was completed.
-     */
+    /** Переводит на следующую стадию. */
     public static void advance() {
         number++;
     }
 
-    /**
-     * Called when the player lost and the game starts over.
-     */
+    /** Возвращает первую стадию. */
     public static void restart() {
         number = FIRST_STAGE;
     }

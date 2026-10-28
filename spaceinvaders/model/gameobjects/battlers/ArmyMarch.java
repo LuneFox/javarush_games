@@ -5,16 +5,14 @@ import com.javarush.games.spaceinvaders.model.GameField;
 
 import java.util.List;
 
-/**
- * Movement of the enemy formation: keeps the march direction, speeds the army up as tanks die and
- * makes it step down when the border of the field is reached.
- */
+/** Марш строя врагов: направление, скорость и шаг вниз у границы. */
 class ArmyMarch {
     private static final double MAX_SPEED = 3.0;
     private static final double SPEED_DIVIDEND = 5.0;
 
     private Direction direction = Direction.RIGHT;
 
+    /** Двигает все танки на шаг. */
     void advance(List<EnemyTank> tanks) {
         if (tanks.isEmpty()) return;
 
@@ -25,10 +23,12 @@ class ArmyMarch {
         }
     }
 
+    /** Возвращает скорость строя по числу танков. */
     private double speedFor(int tankCount) {
         return Math.min(MAX_SPEED, SPEED_DIVIDEND / tankCount);
     }
 
+    /** Проверяет, пора ли строю шагнуть вниз. */
     private boolean shouldStepDown(List<EnemyTank> tanks) {
         if (direction == Direction.LEFT && leftMostX(tanks) <= 0) {
             direction = Direction.RIGHT;
@@ -41,6 +41,7 @@ class ArmyMarch {
         return false;
     }
 
+    /** Возвращает левый край строя. */
     private double leftMostX(List<EnemyTank> tanks) {
         double leftMost = GameField.WIDTH;
         for (EnemyTank tank : tanks) {
@@ -49,6 +50,7 @@ class ArmyMarch {
         return leftMost;
     }
 
+    /** Возвращает правый край строя. */
     private double rightMostEdge(List<EnemyTank> tanks) {
         double rightMost = 0;
         for (EnemyTank tank : tanks) {

@@ -4,12 +4,11 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 
-/**
- * Mario's fireball: flies twice as fast as a regular bullet and cannot be shot down.
- */
+/** Огненный шар Марио. */
 public class FireballBullet extends Bullet {
     private static final int FRAME_DELAY = 2;
 
+    /** Создаёт огненный шар. */
     FireballBullet(double x, double y) {
         super(x, y, Direction.UP);
         doubleSpeed();
@@ -21,8 +20,9 @@ public class FireballBullet extends Bullet {
         makeLethalToEnemies();
     }
 
+    /** Огненный шар уничтожить нельзя. */
     @Override
     public void destroy() {
-        // A fireball burns through everything, it cannot be destroyed
+        // Огненный шар пролетает сквозь всё, уничтожить его нельзя
     }
 }

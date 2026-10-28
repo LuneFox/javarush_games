@@ -3,31 +3,32 @@ package com.javarush.games.spaceinvaders.view.printer;
 import com.javarush.engine.cell.Color;
 import com.javarush.games.spaceinvaders.model.GameField;
 
-/**
- * Prints pixel font text into the screen buffer. Supports several lines separated by {@code \n},
- * horizontal alignment and an outline toggled with {@code <} and {@code >}.
- */
+/** Печатает текст пиксельным шрифтом в буфер экрана. */
 public class Printer {
     private static final SymbolCache CACHE = new SymbolCache();
     private static final Color STROKE_COLOR = Color.SADDLEBROWN;
     private static final int CHAR_SPACING = 1;
 
+    /** Запрещает создание экземпляров. */
     private Printer() {
     }
 
+    /** Печатает белый текст слева. */
     public static void print(String text, int x, int y) {
         print(text, Color.WHITE, x, y, TextAlign.LEFT);
     }
 
+    /** Печатает цветной текст слева. */
     public static void print(String text, Color color, int x, int y) {
         print(text, color, x, y, TextAlign.LEFT);
     }
 
+    /** Печатает текст с выравниванием. */
     public static void print(String text, Color color, int x, int y, TextAlign align) {
         int startX = (align == TextAlign.CENTER) ? (GameField.WIDTH / 2) - (measureWidth(text) / 2) : x;
         PrinterCaret caret = new PrinterCaret(startX, y, align);
 
-        // The outline state must not leak from one print call to the next
+        // Состояние обводки не должно переходить из одного вызова печати в другой
         boolean stroked = false;
         int lineStart = 0;
         while (lineStart <= text.length()) {
@@ -39,6 +40,7 @@ public class Printer {
         }
     }
 
+    /** Печатает одну строку. */
     private static boolean printLine(String line, Color color, PrinterCaret caret, boolean stroked) {
         caret.alignTo(line);
 
@@ -51,6 +53,7 @@ public class Printer {
         return stroked;
     }
 
+    /** Печатает символ или переключает обводку. */
     private static boolean printGlyph(char symbol, Color color, int x, int y, boolean stroked) {
         if (isStrokeMarkup(symbol)) {
             return !stroked;
@@ -64,6 +67,7 @@ public class Printer {
         return stroked;
     }
 
+    /** Рисует обводку символа. */
     private static void drawStroke(SymbolImage glyph, int x, int y) {
         glyph.draw(x - 1, y, STROKE_COLOR);
         glyph.draw(x + 1, y, STROKE_COLOR);
@@ -71,12 +75,14 @@ public class Printer {
         glyph.draw(x, y + 1, STROKE_COLOR);
     }
 
+    /** Возвращает ширину символа с отступом. */
     static int glyphWidth(char symbol) {
         if (isStrokeMarkup(symbol)) return 0;
 
         return CACHE.get(symbol).getWidth() + CHAR_SPACING;
     }
 
+    /** Возвращает ширину текста. */
     static int measureWidth(String text) {
         int width = 0;
         for (char symbol : text.toLowerCase().toCharArray()) {
@@ -85,6 +91,7 @@ public class Printer {
         return width;
     }
 
+    /** Проверяет, является ли символ разметкой обводки. */
     private static boolean isStrokeMarkup(char symbol) {
         return symbol == '<' || symbol == '>';
     }

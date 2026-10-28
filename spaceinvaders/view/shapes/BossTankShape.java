@@ -1,5 +1,6 @@
 package com.javarush.games.spaceinvaders.view.shapes;
 
+/** Картинки танка-босса и его снаряда. */
 public class BossTankShape {
     public static final int[][] BOSS_TANK_1 = new int[][]{
             {4, 4, 31, 0, 0, 0, 0, 0, 0, 0, 4, 4, 68},

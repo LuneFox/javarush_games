@@ -1,27 +1,16 @@
 package com.javarush.games.spaceinvaders.model.gameobjects;
 
-/**
- * Shape of the area where two sprites overlap. It tells in which direction a bouncing object
- * should reflect: a wide overlap means a top/bottom contact, a tall one means a side contact.
- */
+/** Форма области пересечения двух спрайтов. */
 public enum Overlap {
-    /**
-     * The overlap is wider than tall: the objects meet with their top or bottom sides.
-     */
+    /** Пересечение шире, чем выше: контакт сверху или снизу. */
     HORIZONTAL,
 
-    /**
-     * The overlap is taller than wide: the objects meet with their left or right sides.
-     */
+    /** Пересечение выше, чем шире: контакт сбоку. */
     VERTICAL,
 
-    /**
-     * The overlap is a square: the objects meet with a corner.
-     */
+    /** Пересечение почти квадратное: контакт углом. */
     SQUARE,
 
-    /**
-     * The sprites do not touch.
-     */
+    /** Спрайты не соприкасаются. */
     NONE
 }
