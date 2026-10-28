@@ -10,4 +10,12 @@ public class RacingCarBullet extends Bullet {
         super(x, y, Direction.DOWN);
         setStaticView(BossTankShape.BOSS_TANK_AMMO);
     }
+
+    /** Отражённую машинку уничтожить нельзя: она таранит всё насквозь, как огненный шар. */
+    @Override
+    public void destroy() {
+        if (isLethalToEnemies()) return;
+
+        super.destroy();
+    }
 }
