@@ -77,6 +77,8 @@ public class Printer {
 
     /** Возвращает ширину символа с отступом. */
     static int glyphWidth(char symbol) {
+        // Перевод строки не занимает места, иначе ширина многострочного текста считается неверно
+        if (symbol == '\n') return 0;
         if (isStrokeMarkup(symbol)) return 0;
 
         return CACHE.get(symbol).getWidth() + CHAR_SPACING;

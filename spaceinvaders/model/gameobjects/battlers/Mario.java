@@ -177,7 +177,8 @@ public class Mario extends Battler implements Movable {
     private boolean isHitBy(Bullet bullet) {
         if (!isAlive() || !bullet.isAlive()) return false;
 
-        return collidesWith(bullet, Mirror.of(facing));
+        // Отражать нужно Марио: пуля рисуется без отражения
+        return bullet.collidesWith(this, Mirror.of(facing));
     }
 
     /** Применяет попадание: теряет бонус или погибает. */
@@ -186,7 +187,7 @@ public class Mario extends Battler implements Movable {
         if (!isAlive()) return;
 
         // Бонус принимает удар на себя и забирает свои очки
-        if (bonus != null) {
+        if (hasBonus()) {
             bonus = null;
             Score.removeBonusPickup();
             return;

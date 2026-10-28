@@ -24,6 +24,8 @@ public class QuestionBrick extends Brick {
     /** Обновляет кирпич и его бонус. */
     @Override
     public void move() {
+        if (game.isRoundOver()) return;
+
         super.move();
 
         spawnBonusIfAbsent();
@@ -63,6 +65,8 @@ public class QuestionBrick extends Brick {
     /** Открывает бонус при ударе. */
     @Override
     protected void releaseContent() {
+        if (game.isRoundOver()) return;
+
         bonusRevealed = true;
         showEmpty();
     }

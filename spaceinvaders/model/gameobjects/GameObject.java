@@ -143,7 +143,8 @@ public class GameObject implements Drawable {
                     continue;
                 }
 
-                double mirroredX = (mirror == Mirror.HORIZONTAL) ? (other.sprite.getWidth() - otherX) : otherX;
+                // Отражённый спрайт рисуется по формуле x + width - 1 - i, хитбокс должен совпадать с ним
+                double mirroredX = (mirror == Mirror.HORIZONTAL) ? (other.getWidth() - 1 - otherX) : otherX;
                 if (collidesWithPoint(other.x + mirroredX, other.y + otherY)) {
                     return true;
                 }

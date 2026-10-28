@@ -24,7 +24,7 @@ public class EnemyTank extends Battler implements Shooter {
     public EnemyTank(double x, double y) {
         super(x, y);
         this.hitPoints = hitPointsForStage();
-        this.scoreForKill = scoreForStage();
+        this.scoreForKill = baseKillScore();
         showMarching();
     }
 
@@ -37,9 +37,12 @@ public class EnemyTank extends Battler implements Shooter {
         return StageProgress.getNumber() / 5 + 1;
     }
 
-    /** Возвращает очки за уничтожение танка. */
-    protected int scoreForStage() {
-        return 9 + hitPoints * StageProgress.getNumber();
+    /**
+     * Возвращает базовые очки за уничтожение танка. Множитель стадии добавляет {@link Score},
+     * поэтому здесь стадия не учитывается — иначе очки умножались бы на неё дважды.
+     */
+    protected int baseKillScore() {
+        return 9 + hitPoints;
     }
 
     /** Возвращает делитель шанса выстрела. */

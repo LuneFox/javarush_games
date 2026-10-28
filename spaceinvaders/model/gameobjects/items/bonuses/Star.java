@@ -18,7 +18,8 @@ public class Star extends Bonus {
     @Override
     protected void reactToBullets(List<Bullet> bullets) {
         for (Bullet bullet : bullets) {
-            if (!collidesWith(bullet, Mirror.HORIZONTAL)) continue;
+            // Пуля рисуется без отражения, поэтому и хитбокс у неё обычный
+            if (!collidesWith(bullet, Mirror.NONE)) continue;
             if (!bullet.isCollisionCooledDown()) continue;
 
             bullet.reverseDirection();

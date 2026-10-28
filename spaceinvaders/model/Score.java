@@ -26,14 +26,14 @@ public final class Score {
         topScore = Math.max(score, topScore);
     }
 
-    /** Начисляет очки за подобранный бонус. */
+    /** Начисляет очки за подобранный бонус: базовые очки, умноженные на номер стадии. */
     public static void addBonusPickup() {
-        add(BONUS_PICKUP_POINTS + StageProgress.getNumber());
+        add(BONUS_PICKUP_POINTS);
     }
 
-    /** Списывает очки за потерянный бонус. */
+    /** Списывает очки за потерянный бонус: те же базовые очки, умноженные на номер стадии. */
     public static void removeBonusPickup() {
-        add(-BONUS_PICKUP_POINTS - StageProgress.getNumber());
+        add(-BONUS_PICKUP_POINTS);
     }
 
     /** Возвращает текущий счёт. */

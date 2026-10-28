@@ -21,9 +21,9 @@ public class BossTank extends EnemyTank {
         return StageProgress.getNumber();
     }
 
-    /** Возвращает очки за босса по его прочности. */
+    /** Возвращает базовые очки за уничтожение босса по его прочности. */
     @Override
-    protected int scoreForStage() {
+    protected int baseKillScore() {
         return SCORE_PER_HIT_POINT * hitPoints;
     }
 

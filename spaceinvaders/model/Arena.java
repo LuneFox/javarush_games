@@ -15,7 +15,6 @@ import java.util.List;
 public class Arena {
     private static final int MAX_COINS_ON_FIELD = 2;
 
-    private final SpaceInvadersGame game;
     private final Mario mario;
     private final EnemyArmy enemyArmy;
     private final List<Bullet> playerBullets = new ArrayList<>();
@@ -24,7 +23,6 @@ public class Arena {
 
     /** Создаёт поле с Марио, армией и кирпичами. */
     public Arena(SpaceInvadersGame game) {
-        this.game = game;
         this.mario = new Mario();
         this.enemyArmy = new EnemyArmy(game);
         this.bricks = LevelLayout.createBricks();
@@ -39,8 +37,8 @@ public class Arena {
         mario.move();
         enemyArmy.move();
         enemyArmy.fireRandomTank();
-        moveAll(playerBullets);
         moveAll(enemyBullets);
+        moveAll(playerBullets);
         moveAll(bricks);
     }
 
