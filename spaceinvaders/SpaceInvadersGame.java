@@ -62,6 +62,7 @@ public class SpaceInvadersGame extends Game {
         moveToNextStage();
 
         arena = new Arena(this);
+        scenery.resetParallax();
         status = GameStatus.RUNNING;
         turnsAfterRoundEnd = 0;
         endingScreen.reset();
