@@ -138,6 +138,16 @@ public class EnemyTank extends Battler implements Shooter {
         return game.getRandomNumber(chanceRange) < fireChanceMultiplier();
     }
 
+    /** Взрывает танк без дополнительных попаданий. */
+    public void explode() {
+        if (!isAlive()) return;
+
+        hitPoints = 0;
+        destroy();
+        Score.add(scoreForKill);
+        showHitReaction();
+    }
+
     /** Применяет попадание и обновляет анимацию. */
     @Override
     public void takeHit() {

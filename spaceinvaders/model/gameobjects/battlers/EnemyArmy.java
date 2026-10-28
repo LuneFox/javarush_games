@@ -32,12 +32,15 @@ public class EnemyArmy implements Movable, Drawable {
     private final List<EnemyTank> tanks = new ArrayList<>();
     /** Логика движения строя. */
     private final ArmyMarch march = new ArmyMarch();
+    /** Босс армии. */
+    private final BossTank boss;
 
     /** Создаёт армию из танков и босса. */
     public EnemyArmy(SpaceInvadersGame game) {
         this.game = game;
         spawnTanks();
-        tanks.add(createBossTank());
+        this.boss = createBossTank();
+        tanks.add(boss);
     }
 
     /** Расставляет обычные и красные танки. */
@@ -100,6 +103,18 @@ public class EnemyArmy implements Movable, Drawable {
         tanks.get(game.getRandomNumber(tanks.size())).shoot();
     }
 
+    /** Сообщает, уничтожен ли босс. */
+    public boolean isBossDefeated() {
+        return !boss.isAlive();
+    }
+
+    /** Взрывает все оставшиеся танки. */
+    public void explodeAllTanks() {
+        for (EnemyTank tank : tanks) {
+            tank.explode();
+        }
+    }
+
     /** Обрабатывает попадания пуль по танкам. */
     public void receiveBullets(List<Bullet> bullets) {
         for (EnemyTank tank : tanks) {
@@ -137,6 +152,16 @@ public class EnemyArmy implements Movable, Drawable {
     /** Сообщает, пуста ли армия. */
     public boolean isEmpty() {
         return tanks.isEmpty();
+    }
+
+    /** Сообщает, уничтожены ли все танки, даже если анимация ещё не закончилась. */
+    public boolean isDefeated() {
+        for (EnemyTank tank : tanks) {
+            if (tank.isAlive()) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /** Возвращает танки. */

@@ -115,7 +115,7 @@ public class SpaceInvadersGame extends Game {
         if (arena.isMarioDefeated()) {
             arena.getMario().playDeathAnimation();
             finishRound();
-        } else if (arena.isArmyDestroyed()) {
+        } else if (arena.isLevelCompleted()) {
             arena.getMario().playVictoryAnimation();
             finishRound();
         }

@@ -61,6 +61,11 @@ public abstract class Bullet extends GameObject implements Movable {
         reflectable = false;
     }
 
+    /** Уничтожает снаряд при попадании в базу. */
+    public void destroyOnBaseHit() {
+        destroy();
+    }
+
     /** Сообщает, прошёл ли перерыв после столкновения. */
     public boolean isCollisionCooledDown() {
         return System.currentTimeMillis() - lastCollisionTime >= COLLISION_COOLDOWN_MS;

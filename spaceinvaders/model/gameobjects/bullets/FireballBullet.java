@@ -4,7 +4,7 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 
-/** Огненный шар Марио. */
+/** Огненный шар Марио; танки пробивает, но о кирпичи базы разбивается. */
 public class FireballBullet extends Bullet {
     /** Задержка между кадрами огненного шара. */
     private static final int FRAME_DELAY = 2;
@@ -24,6 +24,12 @@ public class FireballBullet extends Bullet {
     /** Огненный шар уничтожить нельзя. */
     @Override
     public void destroy() {
-        // Огненный шар пролетает сквозь всё, уничтожить его нельзя
+        // Огненный шар пролетает сквозь танки, уничтожить его нельзя
+    }
+
+    /** О кирпичи и орла базы огненный шар разбивается. */
+    @Override
+    public void destroyOnBaseHit() {
+        super.destroy();
     }
 }

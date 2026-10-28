@@ -1,6 +1,7 @@
 package com.javarush.games.spaceinvaders.model;
 
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.model.gameobjects.EagleBase;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyArmy;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
@@ -26,6 +27,10 @@ public class Arena {
     private final List<Bullet> enemyBullets = new ArrayList<>();
     /** Кирпичи уровня. */
     private final List<Brick> bricks;
+    /** База с орлом, появляющаяся после смерти босса. */
+    private EagleBase base;
+    /** Признак обработки победы над базой. */
+    private boolean baseVictoryHandled;
 
     /** Создаёт поле с Марио, армией и кирпичами. */
     public Arena(SpaceInvadersGame game) {
@@ -43,6 +48,15 @@ public class Arena {
         mario.move();
         enemyArmy.move();
         enemyArmy.fireRandomTank();
+
+        if (base == null && enemyArmy.isBossDefeated()) {
+            base = new EagleBase();
+        }
+        if (base != null) {
+            destroyEagleIfArmyDefeated();
+            base.move();
+        }
+
         moveAll(enemyBullets);
         moveAll(playerBullets);
         moveAll(bricks);
@@ -60,9 +74,26 @@ public class Arena {
         mario.receiveBullets(enemyBullets);
         enemyArmy.receiveBullets(playerBullets);
         enemyArmy.receiveBullets(enemyBullets);
+
+        if (base != null) {
+            base.receiveBullets(playerBullets);
+            base.receiveBullets(enemyBullets);
+            if (!baseVictoryHandled && base.isDefeated()) {
+                baseVictoryHandled = true;
+                enemyArmy.explodeAllTanks();
+            }
+            destroyEagleIfArmyDefeated();
+        }
+
         for (Brick brick : bricks) {
             brick.bumpIfTouchedBy(mario);
         }
+    }
+
+    /** Взрывает орла, если последний танк уже уничтожен. */
+    private void destroyEagleIfArmyDefeated() {
+        if (base == null || base.isDefeated() || !enemyArmy.isDefeated()) return;
+        base.destroyEagle();
     }
 
     /** Убирает уничтоженные танки и пули. */
@@ -84,6 +115,9 @@ public class Arena {
     /** Рисует объекты поля в порядке слоёв. */
     public void drawObjects() {
         enemyArmy.draw();
+        if (base != null) {
+            base.draw();
+        }
         for (Bullet bullet : playerBullets) {
             bullet.draw();
         }
@@ -119,9 +153,15 @@ public class Arena {
         return !mario.isAlive();
     }
 
-    /** Сообщает, уничтожена ли армия. */
+    /** Сообщает, уничтожена ли армия без учёта базы. */
     public boolean isArmyDestroyed() {
         return enemyArmy.isEmpty();
+    }
+
+    /** Сообщает, пройден ли уровень: армия уничтожена или база побеждена. */
+    public boolean isLevelCompleted() {
+        return enemyArmy.isEmpty()
+                || (base != null && (base.isDefeated() || enemyArmy.isDefeated()));
     }
 
     /** Сообщает, дошла ли армия до линии кирпичей. */
@@ -156,5 +196,10 @@ public class Arena {
     /** Возвращает кирпичи уровня. */
     public List<Brick> getBricks() {
         return bricks;
+    }
+
+    /** Возвращает базу с орлом или null, пока босс жив. */
+    public EagleBase getBase() {
+        return base;
     }
 }
