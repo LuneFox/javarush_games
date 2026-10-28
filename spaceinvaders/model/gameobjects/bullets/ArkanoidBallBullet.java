@@ -2,6 +2,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.bullets;
 
 import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.GameField;
+import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.Overlap;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.EnemyTank;
@@ -10,12 +11,14 @@ import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
 import java.util.List;
 
-/** Шар арканоида: скачет по полю и убивает танки. */
+/** Шар арканоида: скачет по полю, убивает танки и пролетает сквозь кирпичи. */
 public class ArkanoidBallBullet extends Bullet {
     /** Начальная горизонтальная скорость. */
     private static final int START_SPEED_X = 2;
     /** Влияние места попадания в Марио на направление. */
     private static final double HIT_POSITION_FACTOR = 2;
+    /** Минимальная вертикальная скорость, чтобы шар не зацикливался горизонтально. */
+    private static final double MIN_VERTICAL_SPEED = 0.7;
 
     /** Постоянный модуль скорости шара. */
     private final double ballSpeed;
@@ -57,15 +60,19 @@ public class ArkanoidBallBullet extends Bullet {
         if (!isCollisionCooledDown()) return;
 
         Mario mario = game.getMario();
-        Overlap overlap = overlapWith(mario);
+        if (!mario.isAlive()) return;
+
+        Overlap overlap = overlapWith(mario, Mirror.of(mario.getFacing()));
         if (overlap == Overlap.NONE) return;
 
         applyBounce(overlap);
 
-        double hitPosition = (getX() - mario.getX()) / mario.getWidth();
         if (overlap == Overlap.HORIZONTAL) {
             // Место попадания в Марио меняет горизонтальное направление
-            speedX += (int) (hitPosition * HIT_POSITION_FACTOR);
+            double ballCenter = getX() + getWidth() / 2.0;
+            double marioCenter = mario.getX() + mario.getWidth() / 2.0;
+            double hitPosition = (ballCenter - marioCenter) / (mario.getWidth() / 2.0);
+            speedX += hitPosition * HIT_POSITION_FACTOR;
         }
         kickWithMario(mario);
         markCollision();
@@ -124,7 +131,7 @@ public class ArkanoidBallBullet extends Bullet {
         }
     }
 
-    /** Сохраняет постоянный модуль скорости при изменении направления. */
+    /** Сохраняет модуль скорости и минимальный вертикальный компонент. */
     private void normalizeSpeed() {
         double currentSpeed = Math.sqrt(speedX * speedX + speedY * speedY);
         if (currentSpeed == 0) {
@@ -135,6 +142,13 @@ public class ArkanoidBallBullet extends Bullet {
 
         speedX = speedX / currentSpeed * ballSpeed;
         speedY = speedY / currentSpeed * ballSpeed;
+
+        if (Math.abs(speedY) < MIN_VERTICAL_SPEED) {
+            double sign = (speedY < 0) ? -1 : 1;
+            speedY = sign * MIN_VERTICAL_SPEED;
+            double horizontal = Math.sqrt(ballSpeed * ballSpeed - speedY * speedY);
+            speedX = (speedX < 0) ? -horizontal : horizontal;
+        }
     }
 
     /** Шар уничтожить нельзя. */

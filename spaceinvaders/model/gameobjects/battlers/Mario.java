@@ -97,6 +97,7 @@ public class Mario extends Battler implements Movable {
     public void move() {
         if (!isAlive()) return;
 
+        updateFacing();
         boolean braking = walk.update(walkingDirection);
         showWalkPose(braking);
         setPosition(getX() + walk.getSpeed(), getY());

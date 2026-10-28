@@ -121,7 +121,12 @@ public class GameObject implements Drawable {
 
     /** Определяет форму пересечения с другим объектом. */
     public Overlap overlapWith(GameObject other) {
-        if (!collidesWith(other, Mirror.NONE)) {
+        return overlapWith(other, Mirror.NONE);
+    }
+
+    /** Определяет форму пересечения с другим объектом с учётом отражения. */
+    public Overlap overlapWith(GameObject other, Mirror mirror) {
+        if (!collidesWith(other, mirror)) {
             return Overlap.NONE;
         }
 
