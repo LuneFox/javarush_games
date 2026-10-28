@@ -10,6 +10,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Mushroom;
 import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysics;
 import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysicsBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
@@ -162,9 +163,14 @@ public class Mario extends Battler implements Movable {
      * Бонус
      */
 
-    /** Подбирает бонус. */
+    /** Подбирает бонус; гриб восстанавливает 1 здоровье. */
     public void pickUp(Bonus bonus) {
         this.bonus = bonus;
+
+        if (bonus instanceof Mushroom) {
+            hitPoints = Math.min(HIT_POINTS, hitPoints + 1);
+            showHealthBar();
+        }
     }
 
     /** Сообщает, есть ли у Марио бонус. */

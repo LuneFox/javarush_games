@@ -8,7 +8,7 @@ import com.javarush.games.spaceinvaders.view.shapes.FireballShape;
 
 import java.util.List;
 
-/** Гриб: гасит пули и превращается в огненный шар. */
+/** Гриб: восстанавливает здоровье при подборе, гасит пули и становится огненным шаром. */
 public class Mushroom extends Bonus {
     /** Создаёт гриб. */
     public Mushroom(double x, double y) {
