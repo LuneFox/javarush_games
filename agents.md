@@ -1,5 +1,12 @@
 # Agent notes: JavaRush game projects
 
+## Leave changes uncommitted
+
+Every change requested in this project must be left as **uncommitted changes** in the working
+tree. Do not `git commit`, do not `git push`, do not amend, squash, rebase, tag, or create
+branches. Do not run `git stash` on the user's work either. The user reviews the diff and
+commits it themselves.
+
 ## Publication target
 
 These projects are not published by running a normal JVM. JavaRush compiles the game and
