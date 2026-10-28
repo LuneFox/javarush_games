@@ -253,7 +253,7 @@ public class Mario extends Battler implements Movable {
     }
 
     private double getBulletSpawnX(int[][] shape) {
-        return (x + getWidth() / 2.0) - (shape.length / 2.0);
+        return (x + getWidth() / 2.0) - (shape[0].length / 2.0);
     }
 
     private double getBulletSpawnY(int[][] shape) {

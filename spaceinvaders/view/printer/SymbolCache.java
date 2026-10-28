@@ -15,19 +15,19 @@ public class SymbolCache {
         SymbolImage value = cache.get(character);
 
         if (value == null) {
-            value = put(character);
+            putAllSymbols();
+            value = cache.get(character);
         }
 
-        return value;
+        // Characters that have no glyph are printed as blank space, the whole line must not break
+        return (value != null) ? value : cache.get(' ');
     }
 
-    SymbolImage put(Character character) {
+    private void putAllSymbols() {
         Arrays.stream(Symbol.values()).forEach(element -> {
             for (char c : element.getChars()) {
                 cache.put(c, new SymbolImage(element));
             }
         });
-
-        return cache.get(character);
     }
 }

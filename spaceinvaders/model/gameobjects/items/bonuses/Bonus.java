@@ -39,6 +39,8 @@ public abstract class Bonus extends GameObject implements Movable {
 
     public void move() {
         if (game.isStopped()) return;
+        // A collected or lost bonus is inert, only its icon is still drawn over Mario's head
+        if (!isAlive) return;
 
         if (!isEjected) {
             eject();
@@ -108,17 +110,25 @@ public abstract class Bonus extends GameObject implements Movable {
 
     private void checkMovingOutsideBorders() {
         if (x + getWidth() < 0 || x > SpaceInvadersGame.WIDTH) {
-            parentQuestionBrick.clearBonuses();
+            isAlive = false;
+            detachFromQuestionBrick();
         }
     }
 
     private void verifyTouch(Mario mario) {
         Mirror mirror = (mario.getFaceDirection() == Direction.RIGHT) ? Mirror.NONE : Mirror.HORIZONTAL;
         if (this.collidesWith(mario, mirror)) {
+            isAlive = false;
             mario.setBonus(this);
-            parentQuestionBrick.clearBonuses();
+            detachFromQuestionBrick();
             Score.add(9 + SpaceInvadersGame.getStage());
         }
+    }
+
+    private void detachFromQuestionBrick() {
+        if (parentQuestionBrick == null) return;
+
+        parentQuestionBrick.clearBonuses();
     }
 
     public void setParentQuestionBrick(QuestionBrick parentQuestionBrick) {

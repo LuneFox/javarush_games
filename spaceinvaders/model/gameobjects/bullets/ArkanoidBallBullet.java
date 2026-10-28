@@ -5,6 +5,7 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.OverlapForm;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Star;
 import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
 import java.util.Date;
@@ -36,28 +37,27 @@ public class ArkanoidBallBullet extends Bullet {
         bounceFromObjects(SpaceInvadersGame.getInstance().getEnemyArmy().getEnemyTanks());
         bounceFromMario();
         bounceFromWalls();
-        realignBounds();
     }
 
     private void bounceFromWalls() {
-        if (y <= 0) {
-            dy = -dy;
+        // The ball may overshoot the border, so it is put back to the border it hit, otherwise it would teleport
+        if (y < 0) {
+            y = 0;
+            dy = Math.abs(dy);
         }
 
-        if (x <= 0 || x >= 95) {
-            dx = -dx;
+        if (x < 0) {
+            x = 0;
+            dx = Math.abs(dx);
+        } else if (x + getWidth() > SpaceInvadersGame.WIDTH) {
+            x = SpaceInvadersGame.WIDTH - getWidth();
+            dx = -Math.abs(dx);
         }
     }
 
     private void shift() {
         y += dy;
         x += dx;
-    }
-
-    private void realignBounds() {
-        if (y < 0) y = 0;
-        if (x < 0) x = 0;
-        if (x > 95) x = 95;
     }
 
     @Override
@@ -67,30 +67,25 @@ public class ArkanoidBallBullet extends Bullet {
 
     private void bounceFromObjects(List<? extends GameObject> objectList) {
         for (GameObject gameObject : objectList) {
-            OverlapForm form = getOverlapForm(gameObject);
-            switch (form) {
+            switch (getOverlapForm(gameObject)) {
                 case WIDE:
                     dy = -dy;
-                    break;
+                    return;
                 case HIGH:
                     dx = -dx;
-                    break;
+                    return;
                 case EVEN:
                     dy = -dy;
                     dx = -dx;
-                    break;
+                    return;
                 default:
                     break;
-            }
-
-            if (!(form == OverlapForm.NONE)) {
-                break;
             }
         }
     }
 
     private void bounceFromMario() {
-        if (new Date().getTime() - lastCollisionDate.getTime() < 500) {
+        if (!bulletCollisionCooledDown()) {
             return;
         }
 
@@ -129,5 +124,9 @@ public class ArkanoidBallBullet extends Bullet {
         dy = Math.max(-5, Math.min(5, dy));
 
         lastCollisionDate = new Date();
+    }
+
+    private boolean bulletCollisionCooledDown() {
+        return new Date().getTime() - lastCollisionDate.getTime() >= Star.BULLET_COLLISION_COOLDOWN_MS;
     }
 }

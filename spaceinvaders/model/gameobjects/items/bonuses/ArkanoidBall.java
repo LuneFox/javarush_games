@@ -28,6 +28,7 @@ public class ArkanoidBall extends Bonus {
 
     @Override
     public void consume() {
+        isAlive = false;
         game.getMario().getAmmo().ifPresent(bullet -> game.addPlayerBullet(bullet));
     }
 }

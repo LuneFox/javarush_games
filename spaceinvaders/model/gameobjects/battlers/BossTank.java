@@ -30,6 +30,8 @@ public class BossTank extends EnemyTank {
 
     @Override
     public Optional<Bullet> getAmmo() {
+        if (!canShoot()) return Optional.empty();
+
         int chanceToFire = game.getRandomNumber((100 / (4 * SpaceInvadersGame.getStage())) + 1);
         if (chanceToFire != 0) return Optional.empty();
 

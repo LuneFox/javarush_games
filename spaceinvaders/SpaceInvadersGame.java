@@ -51,7 +51,7 @@ public class SpaceInvadersGame extends Game {
     private List<Bullet> enemyBullets;
     private List<Brick> bricks;
 
-    private static char showPauseTimer;
+    private static int showPauseTimer;
     private int gameOverDelay;
     private boolean isEndingDisplayed;
     private boolean isPaused;
@@ -82,13 +82,15 @@ public class SpaceInvadersGame extends Game {
     }
 
     private void resetValues() {
-        if (mario == null || mario.isAlive) {
+        // The ending is displayed after the death animation, so a living Mario here means a completed stage
+        if (mario != null && mario.isAlive) {
             stage++;
         } else {
             Score.reset();
             stage = 1;
         }
 
+        isPaused = false;
         isStopped = false;
         gameOverDelay = 0;
         isEndingDisplayed = false;
@@ -128,7 +130,10 @@ public class SpaceInvadersGame extends Game {
     private void moveObjects() {
         mario.move();
         enemyArmy.move();
-        enemyArmy.attack();
+        // A shot tank is still on the field during its explosion animation, so it must not shoot
+        if (enemyArmy.hasLiveTanks()) {
+            enemyArmy.attack();
+        }
         Stream.of(enemyBullets, marioBullets, bricks)
                 .forEach(list -> list.forEach(Movable::move));
     }
@@ -154,9 +159,7 @@ public class SpaceInvadersGame extends Game {
         if (!mario.isAlive) {
             mario.playDeathAnimation();
             stopGameWithEndingAfterDelay();
-        }
-
-        if (enemyArmy.getTanksCount() == 0) {
+        } else if (enemyArmy.getTanksCount() == 0) {
             mario.playVictoryAnimation();
             stopGameWithEndingAfterDelay();
         }
@@ -219,6 +222,9 @@ public class SpaceInvadersGame extends Game {
     }
 
     public void pause() {
+        // The game is over once the army has landed, or after the ending has been shown
+        if (isStopped) return;
+
         isPaused = !isPaused;
     }
 

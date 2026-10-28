@@ -52,7 +52,7 @@ public class EnemyArmy implements Movable, Drawable {
     }
 
     private void addBossTank() {
-        double bossTankX = (STEP * COLUMNS / 2.0) - (BossTankShape.BOSS_TANK_1.length / 2.0);
+        double bossTankX = (STEP * COLUMNS / 2.0) - (BossTankShape.BOSS_TANK_1[0].length / 2.0);
         double bossTankY = 1;
         BossTank bossTank = new BossTank(bossTankX, bossTankY);
         enemyTanks.add(bossTank);
@@ -143,6 +143,10 @@ public class EnemyArmy implements Movable, Drawable {
 
     public int getTanksCount() {
         return enemyTanks.size();
+    }
+
+    public boolean hasLiveTanks() {
+        return enemyTanks.stream().anyMatch(tank -> tank.isAlive);
     }
 
     public List<EnemyTank> getEnemyTanks() {

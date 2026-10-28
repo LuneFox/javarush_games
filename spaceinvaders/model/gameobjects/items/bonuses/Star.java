@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.List;
 
 public class Star extends Bonus {
+    public static final long BULLET_COLLISION_COOLDOWN_MS = 500;
+
     public Star(double x, double y) {
         super(x, y);
         setStaticView(BonusShape.STAR);
@@ -35,6 +37,8 @@ public class Star extends Bonus {
 
     @Override
     public void consume() {
+        // The star is not fired away like a mushroom, it is used up by the SPACE press itself
+        isAlive = false;
         game.getFlash().show();
         Score.add(game.getEnemyBullets().size());
         game.getEnemyBullets().forEach(bullet -> {
@@ -44,6 +48,6 @@ public class Star extends Bonus {
     }
 
     protected boolean bulletCollisionCooledDown(Bullet bullet) {
-        return new Date().getTime() - bullet.lastCollisionDate.getTime() > 500;
+        return new Date().getTime() - bullet.lastCollisionDate.getTime() >= BULLET_COLLISION_COOLDOWN_MS;
     }
 }

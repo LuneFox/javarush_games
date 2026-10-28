@@ -65,6 +65,8 @@ public class EnemyTank extends Battler {
 
     @Override
     public Optional<Bullet> getAmmo() {
+        if (!canShoot()) return Optional.empty();
+
         int chanceToFire = game.getRandomNumber((100 / SpaceInvadersGame.getStage()) + 1);
         if (chanceToFire != 0) return Optional.empty();
 

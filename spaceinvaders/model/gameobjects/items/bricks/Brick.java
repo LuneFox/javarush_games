@@ -48,6 +48,8 @@ public class Brick extends GameObject implements Shooter, Movable {
     }
 
     public Optional<Bullet> getAmmo() {
+        if (game.isStopped()) return Optional.empty();
+
         return BulletFactory.getBullet(BulletType.COIN, x + 2, y);
     }
 }

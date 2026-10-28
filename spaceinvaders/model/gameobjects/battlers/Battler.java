@@ -15,6 +15,14 @@ public abstract class Battler extends GameObject implements Shooter {
 
     public abstract Optional<Bullet> getAmmo();
 
+    /**
+     * Ammo is spawned at the shooter, but only a living shooter has somewhere to spawn it.
+     * Mario, for instance, can lose his bonus (and with it the ammo type) when hit while shooting.
+     */
+    protected boolean canShoot() {
+        return isAlive;
+    }
+
     public void kill() {
         if (hitPoints > 1) {
             hitPoints--;

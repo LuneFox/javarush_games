@@ -57,12 +57,16 @@ public class BattleControlStrategy implements ControlStrategy {
 
     @Override
     public void pressSpace() {
-        if (game.isStopped() && game.isEndingDisplayed()) {
-            game.startNewGame();
-        } else {
-            Mario mario = game.getMario();
-            mario.shoot();
+        // During the death animation Mario's bonus is already gone, so there is nothing to shoot
+        if (game.isStopped()) {
+            // The timer is stopped only when the ending is displayed, so this ignores stray auto-repeats
+            if (game.isEndingDisplayed()) game.startNewGame();
+            return;
         }
+        if (game.isPaused()) return;
+
+        Mario mario = game.getMario();
+        mario.shoot();
     }
 
     @Override
