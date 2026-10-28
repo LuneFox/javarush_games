@@ -49,12 +49,22 @@ public class EnemyTank extends Battler implements Shooter {
      * поэтому здесь стадия не учитывается — иначе очки умножались бы на неё дважды.
      */
     protected int baseKillScore() {
+        return baseKillScoreFor(hitPoints);
+    }
+
+    /** Возвращает базовые очки за танк с заданной прочностью. */
+    protected int baseKillScoreFor(int hitPoints) {
         return 9 + hitPoints;
     }
 
     /** Возвращает делитель шанса выстрела. */
     protected int fireRateDivisor() {
         return StageProgress.getNumber();
+    }
+
+    /** Возвращает множитель шанса выстрела. */
+    protected int fireChanceMultiplier() {
+        return 1;
     }
 
     /** Возвращает тип снаряда. */
@@ -125,7 +135,7 @@ public class EnemyTank extends Battler implements Shooter {
     /** Проверяет, выпал ли шанс выстрела. */
     private boolean isFireTime() {
         int chanceRange = FIRE_CHANCE_RANGE / fireRateDivisor() + 1;
-        return game.getRandomNumber(chanceRange) == 0;
+        return game.getRandomNumber(chanceRange) < fireChanceMultiplier();
     }
 
     /** Применяет попадание и обновляет анимацию. */

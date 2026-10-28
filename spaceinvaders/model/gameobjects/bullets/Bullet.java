@@ -17,6 +17,8 @@ public abstract class Bullet extends GameObject implements Movable {
 
     /** Признак опасности для врагов. */
     private boolean lethalToEnemies;
+    /** Признак возможности отражения звёздочкой. */
+    private boolean reflectable = true;
     /** Время последнего столкновения. */
     private long lastCollisionTime;
 
@@ -47,6 +49,16 @@ public abstract class Bullet extends GameObject implements Movable {
     /** Делает снаряд опасным для врагов. */
     public void makeLethalToEnemies() {
         lethalToEnemies = true;
+    }
+
+    /** Сообщает, можно ли отразить снаряд звёздочкой. */
+    public boolean isReflectable() {
+        return reflectable;
+    }
+
+    /** Запрещает отражение снаряда звёздочкой. */
+    protected void makeNonReflectable() {
+        reflectable = false;
     }
 
     /** Сообщает, прошёл ли перерыв после столкновения. */

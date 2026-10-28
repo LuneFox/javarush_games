@@ -51,6 +51,13 @@ public class TankShape {
             {0, 0, 0, 0, 0}
     };
 
+    /** Ярко-красная пуля красного танка. */
+    public static final int[][] RED_BULLET = new int[][]{
+            {0, 5, 0},
+            {5, 111, 5},
+            {0, 5, 0}
+    };
+
     /** Набор фигурок тетриса для снарядов. */
     private static final List<int[][]> TETRIS_BULLETS = Arrays.asList(
             new int[][]{{71, 71}, {71, 71}},               // квадрат

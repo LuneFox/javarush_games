@@ -19,6 +19,8 @@ public final class BulletFactory {
                 return new TetrisBullet(x, y);
             case RACING_CAR:
                 return new RacingCarBullet(x, y);
+            case RED:
+                return new RedBullet(x, y);
             default:
                 throw new IllegalArgumentException("Unknown bullet type: " + type);
         }

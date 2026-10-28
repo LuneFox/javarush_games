@@ -15,5 +15,8 @@ public enum BulletType {
     RACING_CAR,
 
     /** Шар арканоида. */
-    ARKANOID_BALL
+    ARKANOID_BALL,
+
+    /** Красная пуля красного танка. */
+    RED
 }

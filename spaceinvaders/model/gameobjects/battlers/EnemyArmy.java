@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 import com.javarush.games.spaceinvaders.Drawable;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.Mirror;
+import com.javarush.games.spaceinvaders.model.StageProgress;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
@@ -39,15 +40,35 @@ public class EnemyArmy implements Movable, Drawable {
         tanks.add(createBossTank());
     }
 
-    /** Расставляет обычные танки. */
+    /** Расставляет обычные и красные танки. */
     private void spawnTanks() {
+        boolean[] redSlots = chooseRedSlots(redTankCount());
+        int index = 0;
         for (int column = 0; column < COLUMNS; column++) {
             for (int row = 0; row < ROWS; row++) {
                 int x = column * TANK_STEP;
                 int y = row * TANK_STEP + FIRST_ROW_TOP_Y;
-                tanks.add(new EnemyTank(x, y));
+                tanks.add(redSlots[index++] ? new RedTank(x, y) : new EnemyTank(x, y));
             }
         }
+    }
+
+    /** Возвращает число красных танков для текущей стадии. */
+    private int redTankCount() {
+        return Math.min(Math.max(0, StageProgress.getNumber() - 1), ROWS * COLUMNS);
+    }
+
+    /** Случайно выбирает слоты для красных танков. */
+    private boolean[] chooseRedSlots(int count) {
+        boolean[] slots = new boolean[ROWS * COLUMNS];
+        for (int i = 0; i < count; i++) {
+            int slot;
+            do {
+                slot = game.getRandomNumber(slots.length);
+            } while (slots[slot]);
+            slots[slot] = true;
+        }
+        return slots;
     }
 
     /** Создаёт босса по центру. */
