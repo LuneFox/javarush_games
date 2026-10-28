@@ -13,6 +13,10 @@ These projects are not published by running a normal JVM. JavaRush compiles the 
 **transpiles it to JavaScript**. The runtime only implements a subset of the JDK, so code that
 compiles with `javac` can still fail to publish.
 
+Publication itself is manual: only the user can upload the project and trigger publication in
+the JavaRush web interface. The agent can prepare code, compile it locally, and inspect an
+already published bundle, but cannot publish the project or verify the publication result.
+
 The project README lists the main limits:
 
 - no Java newer than 8;
@@ -21,6 +25,42 @@ The project README lists the main limits:
 - no multithreading;
 - no Reflection API;
 - “and much more” — the JRE emulation is partial.
+
+## Published runtime is a GWT/JS app
+
+The public JavaRush page is only an Angular shell. The game itself is a separately served,
+GWT-compiled JavaScript application. For the Space Invaders publication this was:
+
+- page: <https://javarush.com/projects/apps/50729> (`Galabugs Invaders`);
+- game app: <https://apps.javarush.com/game-task/published/68556969/WebApp.html>;
+- loader: `WebApp.nocache.js`, which loads a GWT permutation `*.cache.js`;
+- GWT version: 2.8.2.
+
+Consequences for format/porting work:
+
+- The published artifact is obfuscated JavaScript, not a JVM application. Local `javac`
+  success says nothing about the JavaScript runtime, and vice versa.
+- Original Java source and source maps are not exposed. The `.cache.js.map` URL returned 404.
+- Package and class names survive compilation. The published bundle still contained
+  `com.javarush.games.spaceinvaders`, `SpaceInvadersGame`, `Arena`, `EnemyArmy`, `Mario`,
+  `EagleBase`, `Eagle`, `BaseBrick`, `Sprite` and `CellLabel`. This is enough to inspect the
+  class structure and some logic, but not to recover readable Java source.
+- Rendering goes through GWT cell widgets from `com.javarush.engine.cell` (DOM cells), according
+  to the bundle; it is not an HTML `<canvas>` renderer.
+- The game app URL is publication-specific. If it changes after republishing, the current
+  `appUrl` can be found in the page's serialized state/API response, for example the
+  `/api/1.0/rest/apps/app50729` entry.
+- Therefore, when a published game behaves differently from the local build, inspect the
+  published GWT bundle/app as well as the local Java source. Do not assume the JavaRush web
+  project is running the same artifact that was compiled locally.
+
+Practical consequence for API experiments: local `javac` only proves that the code compiles
+against the desktop JDK 8. The JavaRush/GWT server compiler has its own JRE emulation; a class
+or method can compile locally but be rejected during GWT compilation or behave differently in
+the published bundle. The agent cannot publish the project or verify the JavaRush publication:
+that is a manual action performed by the user in the JavaRush web interface. When trying a new
+Java API, flag the risk, keep a fallback implementation using APIs already proven in this
+project, and ask the user to publish/check it.
 
 ## Rule of thumb
 
@@ -77,5 +117,9 @@ are fine” above), but verify that the JavaRush project contains the file befor
 2. Search the changed code for APIs outside the supported subset.
 3. Check that all referenced source files (including newly added ones) are present in the
    JavaRush project.
-4. Publish, or at minimum test the game locally with the JavaRush engine jar.
-5. Do not treat “compiles locally” as “publishes on JavaRush.”
+4. Test the game locally with the JavaRush engine jar. Publication is manual and can only be
+   performed by the user in the JavaRush web interface; do not claim to have published or
+   verified it.
+5. After the user publishes, if behavior differs, inspect the published GWT app/bundle (see
+   “Published runtime is a GWT/JS app”) and compare it with the local Java source.
+6. Do not treat “compiles locally” as “publishes on JavaRush.”
