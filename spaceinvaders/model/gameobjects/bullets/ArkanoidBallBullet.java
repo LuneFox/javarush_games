@@ -13,15 +13,16 @@ import java.util.List;
 /** Шар арканоида: скачет по полю и убивает танки. */
 public class ArkanoidBallBullet extends Bullet {
     private static final int START_SPEED_X = 2;
-    private static final int MAX_SPEED = 5;
     private static final double HIT_POSITION_FACTOR = 2;
 
-    private int speedX;
+    private final double ballSpeed;
+    private double speedX;
 
     /** Создаёт шар у Марио. */
     public ArkanoidBallBullet(double x, double y) {
         super(x, y, Direction.UP);
         this.speedX = (game.getMario().getFacing() == Direction.LEFT) ? -START_SPEED_X : START_SPEED_X;
+        this.ballSpeed = Math.sqrt(speedX * speedX + speedY * speedY);
         setStaticView(BonusShape.ARKANOID_BALL);
         makeLethalToEnemies();
         // Шар запускается из Марио, поэтому первые кадры не должны отражаться от него
@@ -37,6 +38,7 @@ public class ArkanoidBallBullet extends Bullet {
         bounceOffTanks(game.getEnemyArmy().getTanks());
         bounceOffMario();
         bounceOffWalls();
+        normalizeSpeed();
     }
 
     /** Отражает шар от первого задетого танка. */
@@ -62,7 +64,6 @@ public class ArkanoidBallBullet extends Bullet {
             speedX += (int) (hitPosition * HIT_POSITION_FACTOR);
         }
         kickWithMario(mario);
-        limitSpeed();
         markCollision();
     }
 
@@ -119,10 +120,17 @@ public class ArkanoidBallBullet extends Bullet {
         }
     }
 
-    /** Ограничивает скорость шара. */
-    private void limitSpeed() {
-        speedX = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, speedX));
-        speedY = Math.max(-MAX_SPEED, Math.min(MAX_SPEED, speedY));
+    /** Сохраняет постоянный модуль скорости при изменении направления. */
+    private void normalizeSpeed() {
+        double currentSpeed = Math.sqrt(speedX * speedX + speedY * speedY);
+        if (currentSpeed == 0) {
+            speedX = 0;
+            speedY = -ballSpeed;
+            return;
+        }
+
+        speedX = speedX / currentSpeed * ballSpeed;
+        speedY = speedY / currentSpeed * ballSpeed;
     }
 
     /** Шар уничтожить нельзя. */

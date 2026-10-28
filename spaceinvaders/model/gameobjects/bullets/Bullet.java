@@ -10,7 +10,7 @@ public abstract class Bullet extends GameObject implements Movable {
     private static final int INITIAL_SPEED = 2;
     private static final long COLLISION_COOLDOWN_MS = 500;
 
-    protected int speedY;
+    protected double speedY;
 
     private boolean lethalToEnemies;
     private long lastCollisionTime;
