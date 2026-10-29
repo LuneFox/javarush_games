@@ -62,7 +62,6 @@ public class EagleShape {
                 if (distance > maxRadius * maxRadius) continue;
 
                 int sparkle = (x * 7 + y * 11 + frame * 13) % 10;
-                if (frame == 3 && sparkle < 4) continue;
 
                 if (sparkle == 0) {
                     shape[y][x] = 34;
