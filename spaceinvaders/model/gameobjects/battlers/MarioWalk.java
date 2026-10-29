@@ -49,6 +49,11 @@ class MarioWalk {
         return false;
     }
 
+    /** Мгновенно останавливает ходьбу. */
+    void stop() {
+        speed = 0;
+    }
+
     /** Возвращает текущую скорость. */
     double getSpeed() {
         return speed;

@@ -159,6 +159,9 @@ public class SpaceInvadersGame extends Game {
             }
             finishRound();
         } else if (arena.isLevelCompleted()) {
+            // Победа всегда отжимает бег, даже если игрок продолжает держать стрелку
+            arena.getMario().stopWalking();
+
             // Прыжки начинаются, когда победное сообщение уже на экране
             if (endingScreen.isShown()) {
                 arena.getMario().playVictoryAnimation();

@@ -171,6 +171,12 @@ public class Mario extends Battler implements Movable {
         return walkingDirection;
     }
 
+    /** Принудительно и мгновенно останавливает Марио. */
+    public void stopWalking() {
+        walkingDirection = Direction.NONE;
+        walk.stop();
+    }
+
     /** Возвращает направление взгляда. */
     public Direction getFacing() {
         return facing;

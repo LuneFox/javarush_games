@@ -33,7 +33,6 @@ public class PlayerControlStrategy implements ControlStrategy {
     /** Останавливает Марио, если он шёл вправо. */
     @Override
     public void rightReleased() {
-        if (game.isRoundOver()) return;
         if (game.getMario().getWalkingDirection() != Direction.RIGHT) return;
 
         game.getMario().walkTowards(Direction.NONE);
@@ -50,7 +49,6 @@ public class PlayerControlStrategy implements ControlStrategy {
     /** Останавливает Марио, если он шёл влево. */
     @Override
     public void leftReleased() {
-        if (game.isRoundOver()) return;
         if (game.getMario().getWalkingDirection() != Direction.LEFT) return;
 
         game.getMario().walkTowards(Direction.NONE);

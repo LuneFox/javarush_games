@@ -15,10 +15,17 @@ ignored by Git (`agent_dev/` in `.gitignore`) and must never be tracked or stage
 
 Do not create generated files next to source files or in a separate tracked screenshots
 directory. Existing development screenshots were moved to
-`agent_dev/screenshots/spaceinvaders/`; this path stays local only.
+`agent_dev/spaceinvaders/screenshots/`; this path stays local only.
 
 A screenshot or other asset intended for the repository documentation must be a deliberate,
 reviewed asset placed in its normal tracked location, not in `agent_dev/`.
+
+## Game-specific architecture notes
+
+Local, game-specific maps live in `agent_dev/<game>/AGENTS.md`. Read the relevant map before
+exploring the code, and update it whenever architecture, state flow, controls, balance, UI,
+or build/test instructions change. These files are ignored by Git together with the rest of
+`agent_dev/`.
 
 ## Publication target
 
