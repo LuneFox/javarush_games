@@ -124,6 +124,7 @@ public class SpaceInvadersGame extends Game {
             finishRound();
         } else if (arena.isLevelCompleted()) {
             arena.getMario().playVictoryAnimation();
+            scenery.startVictorySkyRise();
             finishRound();
         }
     }
@@ -146,7 +147,7 @@ public class SpaceInvadersGame extends Game {
     /** Рисует кадр: сцену, интерфейс, объекты боя и вспышку. */
     private void render() {
         scenery.draw();
-        scoreBoard.draw();
+        scoreBoard.draw(!scenery.isVictoryScene());
         arena.drawObjects();
         flash.draw();
         scoreBoard.drawPauseLabelIfPaused(isPaused());

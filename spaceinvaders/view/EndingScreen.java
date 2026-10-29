@@ -9,7 +9,7 @@ public class EndingScreen {
     /** Префикс победного сообщения. */
     private static final String VICTORY_PREFIX = "SCORE: ";
     /** Окончание победного сообщения. */
-    private static final String VICTORY_SUFFIX = " ~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!";
+    private static final String VICTORY_SUFFIX = "\n~ THANK YOU, MARIO!\nBUT OUR PRINCESS IS IN ANOTHER GAME!";
     /** Сообщение о поражении. */
     private static final String DEFEAT_MESSAGE = "MAMMA MIA!";
     /** Размер текста победы. */

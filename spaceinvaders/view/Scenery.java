@@ -6,6 +6,7 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.GameField;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.StageProgress;
+import com.javarush.games.spaceinvaders.model.gameobjects.EagleBase;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
 import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
 
@@ -13,6 +14,12 @@ import com.javarush.games.spaceinvaders.view.shapes.DecoShape;
 public class Scenery implements Drawable {
     /** Последняя строка чёрного космоса. */
     private static final int NIGHT_SKY_LAST_ROW = 60;
+    /** Верхняя строка обычного неба. */
+    private static final int SKY_TOP_ROW = NIGHT_SKY_LAST_ROW + 1;
+    /** Нижняя граница базы с орлом — выше небо в победной сцене не поднимается. */
+    private static final int VICTORY_SKY_TOP_ROW = EagleBase.BASE_HEIGHT;
+    /** Шаг подъёма неба в победной сцене. */
+    private static final int VICTORY_SKY_RISE_STEP = 2;
     /** Последняя строка тёмно-синей каймы. */
     private static final int TWILIGHT_ROW = 63;
     /** Первая строка полосы ROYALBLUE. */
@@ -60,6 +67,15 @@ public class Scenery implements Drawable {
     private static final int MOON_X = 72;
     /** Y Луны. */
     private static final int MOON_Y = 71;
+    /** Новые облака, появляющиеся после победы выше кирпичей. */
+    private static final int[][] VICTORY_CLOUDS = {
+            {6, 20}, {46, 32}, {74, 46}, {24, 52}
+    };
+    /** Новые звёзды, появляющиеся после победы выше кирпичей. */
+    private static final int[][] VICTORY_STARS = {
+            {10, 22, 1, 0}, {35, 30, 2, 1}, {60, 20, 1, 2},
+            {84, 40, 2, 0}, {20, 50, 1, 1}, {72, 52, 1, 0}
+    };
     /** Порядок смены палитр неба по стадиям. */
     private static final SkyTheme[] SKY_THEMES = SkyTheme.values();
 
@@ -88,6 +104,12 @@ public class Scenery implements Drawable {
     private double cloudOffset;
     /** Смещение звёздного поля. */
     private double starOffset;
+    /** Верхняя строка неба в победной сцене. */
+    private int victorySkyTopRow = SKY_TOP_ROW;
+    /** Идёт ли подъём неба после победы. */
+    private boolean victorySkyRiseActive;
+    /** Заполнило ли небо всю сцену после победы. */
+    private boolean victorySkyComplete;
 
     /** Создаёт сцену и готовит декорации. */
     public Scenery(SpaceInvadersGame game) {
@@ -99,24 +121,46 @@ public class Scenery implements Drawable {
         moon.setStaticView(DecoShape.MOON);
     }
 
-    /** Сбрасывает смещения слоёв, привязанных к ходу Марио, при старте нового раунда. */
+    /** Сбрасывает смещения слоёв и победный подъём неба при старте нового раунда. */
     public void resetParallax() {
         lastMarioX = game.getMario().getX();
         floorOffset = 0;
         bushesOffset = 0;
         hillsOffset = 0;
+        victorySkyTopRow = SKY_TOP_ROW;
+        victorySkyRiseActive = false;
+        victorySkyComplete = false;
+    }
+
+    /** Сообщает, идёт ли победная сцена. */
+    public boolean isVictoryScene() {
+        return victorySkyRiseActive || victorySkyComplete;
+    }
+
+    /** Запускает подъём неба в победной сцене. */
+    public void startVictorySkyRise() {
+        if (victorySkyRiseActive || victorySkyComplete) return;
+
+        victorySkyRiseActive = true;
+        victorySkyComplete = false;
+        victorySkyTopRow = SKY_TOP_ROW;
     }
 
     /** Рисует весь фон. */
     @Override
     public void draw() {
         updateOffsets();
+        updateVictorySkyRise();
         SkyTheme theme = currentTheme();
         drawSky(theme);
-        if (theme == SkyTheme.BLACK) {
-            drawNightSky();
-        } else {
-            drawClouds();
+        if (!victorySkyRiseActive) {
+            if (theme == SkyTheme.BLACK) {
+                drawNightSky();
+                if (victorySkyComplete) drawStars(VICTORY_STARS);
+            } else {
+                drawClouds();
+                if (victorySkyComplete) drawVictoryClouds();
+            }
         }
         drawHills();
         drawBushes();
@@ -166,8 +210,9 @@ public class Scenery implements Drawable {
 
     /** Заливает небо. */
     private void drawSky(SkyTheme theme) {
+        boolean victory = victorySkyRiseActive || victorySkyComplete;
         for (int y = 0; y < GameField.HEIGHT; y++) {
-            Color skyColor = skyColorAt(y, theme);
+            Color skyColor = victory ? victorySkyColorAt(y, theme) : skyColorAt(y, theme);
             for (int x = 0; x < GameField.WIDTH; x++) {
                 game.getScreen().setPixel(x, y, skyColor);
             }
@@ -183,6 +228,28 @@ public class Scenery implements Drawable {
         return SKY_THEMES[themeIndex];
     }
 
+    /** Поднимает небо после победы, пока оно не заполнит чёрную зону. */
+    private void updateVictorySkyRise() {
+        if (!victorySkyRiseActive || game.isPaused()) return;
+
+        victorySkyTopRow = Math.max(VICTORY_SKY_TOP_ROW, victorySkyTopRow - VICTORY_SKY_RISE_STEP);
+        if (victorySkyTopRow == VICTORY_SKY_TOP_ROW) {
+            victorySkyRiseActive = false;
+            victorySkyComplete = true;
+        }
+    }
+
+    /** Возвращает цвет неба для строки в победной сцене. */
+    private Color victorySkyColorAt(int y, SkyTheme theme) {
+        if (y < victorySkyTopRow) return Color.BLACK;
+
+        int row = y - victorySkyTopRow;
+        if (row <= 2) return theme.edgeColor;
+        if (row <= 5) return theme.upperColor;
+        if (row <= 8) return theme.middleColor;
+        return theme.lowerColor;
+    }
+
     /** Возвращает цвет неба для строки с учётом палитры. */
     private Color skyColorAt(int y, SkyTheme theme) {
         if (y <= NIGHT_SKY_LAST_ROW) return Color.BLACK;
@@ -195,13 +262,20 @@ public class Scenery implements Drawable {
 
     /** Рисует звёзды и луну на чёрном небе. */
     private void drawNightSky() {
-        drawStars();
+        drawStars(STARS);
         drawMoon();
     }
 
+    /** Рисует новые облака в освободившемся верхнем пространстве. */
+    private void drawVictoryClouds() {
+        for (int[] cloudPosition : VICTORY_CLOUDS) {
+            drawCloudAt(cloudPosition[0], cloudPosition[1], Mirror.NONE);
+        }
+    }
+
     /** Рисует звёздное поле. */
-    private void drawStars() {
-        for (int[] star : STARS) {
+    private void drawStars(int[][] stars) {
+        for (int[] star : stars) {
             int x = (int) pixel(wrap(star[0] + starOffset, GameField.WIDTH));
             int y = star[1];
             int size = star[2];

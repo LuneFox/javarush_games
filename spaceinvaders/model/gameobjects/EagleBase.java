@@ -12,8 +12,8 @@ import java.util.List;
 public class EagleBase implements Movable, Drawable {
     /** Ширина базы. */
     private static final int BASE_WIDTH = 18;
-    /** Высота базы. */
-    private static final int BASE_HEIGHT = 15;
+    /** Высота базы; она же нижняя граница базы на экране. */
+    public static final int BASE_HEIGHT = 15;
     /** Размер одной клетки кирпича. */
     private static final int CELL_SIZE = 3;
     /** Смещение орла по X внутри базы. */

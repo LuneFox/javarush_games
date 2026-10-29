@@ -25,7 +25,14 @@ public class ScoreBoard {
 
     /** Рисует счёт, рекорд и стадию. */
     public void draw() {
-        Printer.print(String.valueOf(Score.getScore()), Color.DARKBLUE, GameField.WIDTH, SCORE_Y, TextAlign.CENTER);
+        draw(true);
+    }
+
+    /** Рисует табло; showScore управляет центральной строкой счёта. */
+    public void draw(boolean showScore) {
+        if (showScore) {
+            Printer.print(String.valueOf(Score.getScore()), Color.DARKBLUE, GameField.WIDTH, SCORE_Y, TextAlign.CENTER);
+        }
         Printer.print("TOP: " + Score.getTopScore(), Color.DARKBLUE, GameField.WIDTH, TOP_SCORE_Y, TextAlign.RIGHT);
         Printer.print("Stage " + StageProgress.getNumber(), Color.DARKBLUE, 1, STAGE_Y);
     }
