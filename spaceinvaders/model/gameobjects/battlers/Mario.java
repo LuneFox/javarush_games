@@ -69,8 +69,14 @@ public class Mario extends Battler implements Movable {
     private Direction facing = Direction.LEFT;
     /** Подобранный бонус или null. */
     private Bonus bonus;
-    /** Счётчик кадров анимации смерти и победы. */
+    /** Счётчик кадров анимации смерти. */
     private int animationFrame;
+    /** Кадр текущего победного цикла. */
+    private int victoryFrame;
+    /** Сколько победных прыжков ещё осталось. */
+    private int victoryJumpsLeft;
+    /** Признак запуска победной анимации. */
+    private boolean victoryStarted;
     /** Время, до которого видна полоска здоровья. */
     private long healthBarHideTime;
 
@@ -284,11 +290,28 @@ public class Mario extends Battler implements Movable {
         }
     }
 
-    /** Проигрывает анимацию победы. */
+    /** Проигрывает ровно три победных прыжка и затем оставляет Марио стоять. */
     public void playVictoryAnimation() {
         walkTowards(Direction.NONE);
-        animator.victoryFrame(animationFrame);
-        animationFrame++;
+
+        if (!victoryStarted) {
+            victoryStarted = true;
+            victoryFrame = 0;
+            victoryJumpsLeft = MarioAnimator.VICTORY_JUMPS;
+        }
+
+        if (victoryJumpsLeft <= 0) {
+            animator.stand();
+            return;
+        }
+
+        animator.victoryFrame(victoryFrame);
+        victoryFrame++;
+
+        if (victoryFrame >= MarioAnimator.VICTORY_CYCLE_FRAMES) {
+            victoryFrame = 0;
+            victoryJumpsLeft--;
+        }
     }
 
     /*

@@ -9,7 +9,9 @@ class MarioAnimator {
     /** Задержка между кадрами ходьбы. */
     private static final int WALK_FRAME_DELAY = 2;
     /** Длительность цикла победной анимации. */
-    private static final int VICTORY_CYCLE_FRAMES = 20;
+    static final int VICTORY_CYCLE_FRAMES = 20;
+    /** Количество победных прыжков. */
+    static final int VICTORY_JUMPS = 3;
 
     /** Поза Марио. */
     private enum Pose {

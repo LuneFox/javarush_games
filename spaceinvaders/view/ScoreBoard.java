@@ -55,17 +55,11 @@ public class ScoreBoard {
 
     /** Мигает надписью паузы, если игра стоит. */
     public void drawPauseLabelIfPaused(boolean paused) {
-        drawPauseLabelIfPaused(paused, false);
-    }
-
-    /** Рисует PAUSE или стартовую подсказку PRESS ENTER. */
-    public void drawPauseLabelIfPaused(boolean paused, boolean startHint) {
         if (!paused) return;
 
         boolean labelVisible = pauseTicks++ % BLINK_PERIOD < BLINK_PERIOD / 2;
         if (labelVisible) {
-            String text = startHint ? "PRESS ENTER" : "PAUSE";
-            Printer.print(text, Color.WHITE, GameField.WIDTH, PAUSE_Y, TextAlign.CENTER);
+            Printer.print("PAUSE", Color.WHITE, GameField.WIDTH, PAUSE_Y, TextAlign.CENTER);
         }
     }
 }

@@ -43,7 +43,6 @@ public class EndingScreen {
 
     /** Показывает победный текст. */
     public void showVictory() {
-        game.stopTurnTimer();
         victoryTextVisible = true;
         defeatTextVisible = false;
         defeatScoreVisible = false;
@@ -83,7 +82,6 @@ public class EndingScreen {
                 Printer.print("<SCORE: " + Score.getScore() + ">", Color.WHITE,
                         GameField.WIDTH, DEFEAT_TEXT_Y + DEFEAT_SCORE_LINE_OFFSET,
                         TextAlign.CENTER);
-                game.stopTurnTimer();
             }
         }
     }

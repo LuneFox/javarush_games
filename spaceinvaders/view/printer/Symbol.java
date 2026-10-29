@@ -76,6 +76,8 @@ enum Symbol {
     SYM_SLASH(makeArray(3, "000001001010010100100"), '/'),
     SYM_SQ_BRACKET_L(makeArray(2, "0011101010101011"), '['),
     SYM_SQ_BRACKET_R(makeArray(2, "0011010101010111"), ']'),
+    SYM_PAREN_L(makeArray(2, "00011010101001"), '('),
+    SYM_PAREN_R(makeArray(2, "00100101010110"), ')'),
     SYM_NEWLINE(makeArray(1, "0"), '\n'),
     SYM_APOSTROPHE(makeArray(1, "00110000"), '\''),
     SYM_QUOTE(makeArray(3, "000000101101"), '\"');

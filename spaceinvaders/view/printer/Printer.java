@@ -26,8 +26,13 @@ public class Printer {
         print(text, color, x, y, TextAlign.LEFT);
     }
 
-    /** Печатает текст с выравниванием. */
+    /** Печатает текст с выравниванием и стандартной обводкой. */
     public static void print(String text, Color color, int x, int y, TextAlign align) {
+        print(text, color, x, y, align, STROKE_COLOR);
+    }
+
+    /** Печатает текст с выбранным цветом обводки. */
+    public static void print(String text, Color color, int x, int y, TextAlign align, Color strokeColor) {
         int startX = (align == TextAlign.CENTER) ? (GameField.WIDTH / 2) - (measureWidth(text) / 2) : x;
         PrinterCaret caret = new PrinterCaret(startX, y, align);
 
@@ -38,17 +43,18 @@ public class Printer {
             int lineEnd = text.indexOf('\n', lineStart);
             if (lineEnd < 0) lineEnd = text.length();
 
-            stroked = printLine(text.substring(lineStart, lineEnd), color, caret, stroked);
+            stroked = printLine(text.substring(lineStart, lineEnd), color, strokeColor, caret, stroked);
             lineStart = lineEnd + 1;
         }
     }
 
     /** Печатает одну строку. */
-    private static boolean printLine(String line, Color color, PrinterCaret caret, boolean stroked) {
+    private static boolean printLine(String line, Color color, Color strokeColor,
+                                     PrinterCaret caret, boolean stroked) {
         caret.alignTo(line);
 
         for (char symbol : line.toLowerCase().toCharArray()) {
-            stroked = printGlyph(symbol, color, caret.getX(), caret.getY(), stroked);
+            stroked = printGlyph(symbol, color, strokeColor, caret.getX(), caret.getY(), stroked);
             caret.advance(symbol);
         }
 
@@ -57,25 +63,31 @@ public class Printer {
     }
 
     /** Печатает символ или переключает обводку. */
-    private static boolean printGlyph(char symbol, Color color, int x, int y, boolean stroked) {
+    private static boolean printGlyph(char symbol, Color color, Color strokeColor,
+                                      int x, int y, boolean stroked) {
         if (isStrokeMarkup(symbol)) {
             return !stroked;
         }
 
         SymbolImage glyph = CACHE.get(symbol);
         if (stroked) {
-            drawStroke(glyph, x, y);
+            drawStroke(glyph, x, y, strokeColor);
         }
         glyph.draw(x, y, color);
         return stroked;
     }
 
     /** Рисует обводку символа. */
-    private static void drawStroke(SymbolImage glyph, int x, int y) {
-        glyph.draw(x - 1, y, STROKE_COLOR);
-        glyph.draw(x + 1, y, STROKE_COLOR);
-        glyph.draw(x, y - 1, STROKE_COLOR);
-        glyph.draw(x, y + 1, STROKE_COLOR);
+    private static void drawStroke(SymbolImage glyph, int x, int y, Color strokeColor) {
+        glyph.draw(x - 1, y, strokeColor);
+        glyph.draw(x + 1, y, strokeColor);
+        glyph.draw(x, y - 1, strokeColor);
+        glyph.draw(x, y + 1, strokeColor);
+    }
+
+    /** Возвращает ширину текста для позиционирования. */
+    public static int width(String text) {
+        return measureWidth(text);
     }
 
     /** Возвращает ширину символа с отступом. */

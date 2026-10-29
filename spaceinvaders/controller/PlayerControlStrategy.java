@@ -60,8 +60,8 @@ public class PlayerControlStrategy implements ControlStrategy {
     @Override
     public void spacePressed() {
         if (game.isRoundOver()) {
-            // Таймер останавливается только после показа финала, поэтому случайные автоповторы игнорируются
-            if (game.isEndingShown()) game.startNewGame();
+            // После финала сначала возвращаемся на главный экран, а не начинаем игру сразу
+            if (game.isEndingShown()) game.continueAfterEnding();
             return;
         }
         if (game.isPaused() || game.isIntroActive()) return;

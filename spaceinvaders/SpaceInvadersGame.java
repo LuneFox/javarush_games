@@ -17,6 +17,7 @@ import com.javarush.games.spaceinvaders.view.EndingScreen;
 import com.javarush.games.spaceinvaders.view.PixelScreen;
 import com.javarush.games.spaceinvaders.view.Scenery;
 import com.javarush.games.spaceinvaders.view.ScoreBoard;
+import com.javarush.games.spaceinvaders.view.StartScreen;
 import com.javarush.games.spaceinvaders.view.ScreenFlash;
 import com.javarush.games.spaceinvaders.view.printer.SymbolImage;
 
@@ -39,6 +40,8 @@ public class SpaceInvadersGame extends Game {
     private ScreenFlash flash;
     /** Табло со счётом и стадией. */
     private ScoreBoard scoreBoard;
+    /** Стартовый экран. */
+    private StartScreen startScreen;
     /** Финальный диалог. */
     private EndingScreen endingScreen;
     /** Обработчик управления. */
@@ -68,6 +71,7 @@ public class SpaceInvadersGame extends Game {
         scenery = new Scenery(this);
         flash = new ScreenFlash(this);
         scoreBoard = new ScoreBoard();
+        startScreen = new StartScreen(this);
         endingScreen = new EndingScreen(this);
         controller = new Controller(this);
 
@@ -84,6 +88,7 @@ public class SpaceInvadersGame extends Game {
             status = GameStatus.PAUSED;
             showStartHint = true;
             startHintPending = false;
+            startScreen.reset();
         } else {
             status = GameStatus.RUNNING;
             showStartHint = false;
@@ -120,6 +125,24 @@ public class SpaceInvadersGame extends Game {
         render();
     }
 
+    /** Продолжает игру после финала: победа — следующий уровень, поражение — главный экран. */
+    public void continueAfterEnding() {
+        if (arena.getMario().isAlive()) {
+            startNewGame();
+        } else {
+            returnToMainScreen();
+        }
+    }
+
+    /** Возвращает игру на главный экран, подготовив следующую игру. */
+    public void returnToMainScreen() {
+        startNewGame();
+        status = GameStatus.PAUSED;
+        showStartHint = true;
+        startScreen.reset();
+        render();
+    }
+
     /** Проверяет условия конца раунда и включает финальную анимацию. */
     private void updateRound() {
         if (arena.isIntroActive()) return;
@@ -136,7 +159,10 @@ public class SpaceInvadersGame extends Game {
             }
             finishRound();
         } else if (arena.isLevelCompleted()) {
-            arena.getMario().playVictoryAnimation();
+            // Прыжки начинаются, когда победное сообщение уже на экране
+            if (endingScreen.isShown()) {
+                arena.getMario().playVictoryAnimation();
+            }
             scenery.startVictorySkyRise();
             finishRound();
         }
@@ -159,15 +185,21 @@ public class SpaceInvadersGame extends Game {
 
     /** Рисует кадр: сцену, интерфейс, объекты боя и вспышку. */
     private void render() {
+        if (showStartHint) {
+            startScreen.draw();
+            screen.draw();
+            return;
+        }
+
         scenery.draw();
         scoreBoard.draw(!scenery.isVictoryScene() && !endingScreen.isShown()
-                && !showStartHint && !arena.isIntroActive());
+                && !arena.isIntroActive());
         arena.drawObjects();
         scoreBoard.drawIntroStageIfActive(arena.isIntroActive() && !isPaused(),
                 arena.isBossIntroActive());
         flash.draw();
         endingScreen.draw();
-        scoreBoard.drawPauseLabelIfPaused(isPaused(), showStartHint);
+        scoreBoard.drawPauseLabelIfPaused(isPaused());
         screen.draw();
     }
 
@@ -177,7 +209,12 @@ public class SpaceInvadersGame extends Game {
 
     /** Ставит игру на паузу или снимает её. */
     public void togglePause() {
-        if (status == GameStatus.OVER) return;
+        if (status == GameStatus.OVER) {
+            if (endingScreen.isShown()) {
+                continueAfterEnding();
+            }
+            return;
+        }
 
         showStartHint = false;
         status = (status == GameStatus.PAUSED) ? GameStatus.RUNNING : GameStatus.PAUSED;
