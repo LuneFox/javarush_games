@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 import com.javarush.games.spaceinvaders.model.GameField;
 import com.javarush.games.spaceinvaders.model.Score;
+import com.javarush.games.spaceinvaders.model.StageProgress;
 import com.javarush.games.spaceinvaders.view.printer.Printer;
 import com.javarush.games.spaceinvaders.view.printer.TextAlign;
 
@@ -21,6 +22,69 @@ public class EndingScreen {
     private static final int DEFEAT_SCORE_LINE_OFFSET = 9;
     /** Задержка перед показом счёта после поражения. */
     private static final long DEFEAT_SCORE_DELAY_MS = 2000L;
+    /** Победные шутки; выбор зависит от номера стадии. */
+    private static final String[][] VICTORY_JOKES = {
+            {
+                    "THANK YOU, MARIO!",
+                    "BUT OUR PRINCESS IS",
+                    "IN ANOTHER GAME!"
+            },
+            {
+                    "THE PRINCESS IS",
+                    "SAFE. SHE WENT",
+                    "FOR A 1-UP."
+            },
+            {
+                    "BOWSER CALLED.",
+                    "HE WANTS HIS",
+                    "CASTLE BACK."
+            },
+            {
+                    "YOU GOT A STAR!",
+                    "NOW PLEASE STOP",
+                    "EATING MY COINS."
+            },
+            {
+                    "LUIGI WAS HERE.",
+                    "HE TOOK THE",
+                    "LAST MUSHROOM."
+            },
+            {
+                    "THE PIPE LEADS TO",
+                    "ANOTHER CASTLE.",
+                    "CLASSIC."
+            },
+            {
+                    "CONGRATULATIONS!",
+                    "YOUR PRINCESS IS",
+                    "IN THE DLC."
+            },
+            {
+                    "YOU SAVED THE DAY!",
+                    "NOW PLEASE SAVE",
+                    "YOUR PROGRESS."
+            },
+            {
+                    "MARIO, YOU ARE",
+                    "THE BEST PLUMBER",
+                    "IN THIS GALAXY."
+            },
+            {
+                    "THE TANKS HAVE",
+                    "RAGE QUIT.",
+                    "YOU WIN!"
+            },
+            {
+                    "IT'S-A ME, MARIO!",
+                    "AND I'M HERE TO",
+                    "FIX YOUR PIPES."
+            },
+            {
+                    "BLUE SHELL INCOMING!",
+                    "...WRONG GAME.",
+                    "STILL COUNTS."
+            }
+    };
 
     /** Игра, для которой показывается финал. */
     private final SpaceInvadersGame game;
@@ -60,15 +124,13 @@ public class EndingScreen {
     /** Рисует победный или проигрышный текст пиксельным шрифтом. */
     public void draw() {
         if (victoryTextVisible) {
-            String[] lines = {
-                    "SCORE: " + Score.getScore(),
-                    "THANK YOU, MARIO!",
-                    "BUT OUR PRINCESS IS",
-                    "IN ANOTHER GAME!"
-            };
-            for (int i = 0; i < lines.length; i++) {
-                Printer.print("<" + lines[i] + ">", Color.WHITE, GameField.WIDTH,
-                        VICTORY_TEXT_Y + i * VICTORY_LINE_HEIGHT, TextAlign.CENTER);
+            Printer.print("<SCORE: " + Score.getScore() + ">", Color.WHITE,
+                    GameField.WIDTH, VICTORY_TEXT_Y, TextAlign.CENTER);
+
+            String[] joke = VICTORY_JOKES[(StageProgress.getNumber() - 1) % VICTORY_JOKES.length];
+            for (int i = 0; i < joke.length; i++) {
+                Printer.print("<" + joke[i] + ">", Color.WHITE, GameField.WIDTH,
+                        VICTORY_TEXT_Y + (i + 1) * VICTORY_LINE_HEIGHT, TextAlign.CENTER);
             }
         } else if (defeatTextVisible) {
             Printer.print("<" + DEFEAT_MESSAGE + ">", Color.RED,
