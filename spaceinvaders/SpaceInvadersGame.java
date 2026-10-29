@@ -147,9 +147,10 @@ public class SpaceInvadersGame extends Game {
     /** Рисует кадр: сцену, интерфейс, объекты боя и вспышку. */
     private void render() {
         scenery.draw();
-        scoreBoard.draw(!scenery.isVictoryScene());
+        scoreBoard.draw(!scenery.isVictoryScene() && !endingScreen.isShown());
         arena.drawObjects();
         flash.draw();
+        endingScreen.draw();
         scoreBoard.drawPauseLabelIfPaused(isPaused());
         screen.draw();
     }
