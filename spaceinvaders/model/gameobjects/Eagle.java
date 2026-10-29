@@ -1,6 +1,8 @@
 package com.javarush.games.spaceinvaders.model.gameobjects;
 
+import com.javarush.games.spaceinvaders.model.Score;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Battler;
+import com.javarush.games.spaceinvaders.model.gameobjects.battlers.BossTank;
 import com.javarush.games.spaceinvaders.view.shapes.EagleShape;
 
 /** Орёл базы: цель, которую нужно уничтожить. */
@@ -21,6 +23,9 @@ public class Eagle extends Battler {
         if (!isAlive()) return;
 
         super.takeHit();
+        if (!isAlive()) {
+            Score.add(BossTank.baseBossKillScore());
+        }
         setAnimatedView(Sprite.Loop.ONCE, EXPLOSION_FRAME_DELAY,
                 EagleShape.EXPLOSION_1,
                 EagleShape.EXPLOSION_2,

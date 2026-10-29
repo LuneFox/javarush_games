@@ -24,10 +24,15 @@ public class BossTank extends EnemyTank {
         return StageProgress.getNumber();
     }
 
+    /** Возвращает базовые очки за босса на текущей стадии. */
+    public static int baseBossKillScore() {
+        return SCORE_PER_HIT_POINT * StageProgress.getNumber();
+    }
+
     /** Возвращает базовые очки за уничтожение босса по его прочности. */
     @Override
     protected int baseKillScore() {
-        return SCORE_PER_HIT_POINT * hitPoints;
+        return baseBossKillScore();
     }
 
     /** Возвращает делитель шанса выстрела босса. */

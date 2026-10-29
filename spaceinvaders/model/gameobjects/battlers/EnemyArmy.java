@@ -11,7 +11,10 @@ import com.javarush.games.spaceinvaders.view.shapes.BossTankShape;
 import com.javarush.games.spaceinvaders.view.shapes.TankShape;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Map;
 
 /** Армия врагов: создание танков и команды строю. */
 public class EnemyArmy implements Movable, Drawable {
@@ -25,6 +28,10 @@ public class EnemyArmy implements Movable, Drawable {
     private static final int FIRST_ROW_TOP_Y = 15;
     /** Верхняя координата босса. */
     private static final int BOSS_ROW_Y = 1;
+    /** Скорость въезда танков на поле. */
+    private static final double INTRO_SPEED = 2.0;
+    /** Дополнительный отступ босса за верхней границей. */
+    private static final int BOSS_INTRO_GAP = 20;
 
     /** Игра, в которой находится армия. */
     private final SpaceInvadersGame game;
@@ -34,6 +41,16 @@ public class EnemyArmy implements Movable, Drawable {
     private final ArmyMarch march = new ArmyMarch();
     /** Босс армии. */
     private final BossTank boss;
+    /** Целевые координаты танков на поле. */
+    private final Map<EnemyTank, Double> introTargets = new IdentityHashMap<>();
+    /** Ряды танков в порядке выезда: снизу вверх. */
+    private final List<Double> introRows = new ArrayList<>();
+    /** Индекс текущего выезжающего ряда. */
+    private int introRowIndex;
+    /** Признак вступительной сцены. */
+    private boolean introActive;
+    /** Признак выезда босса после обычных танков. */
+    private boolean introBossPhase;
 
     /** Создаёт армию из танков и босса. */
     public EnemyArmy(SpaceInvadersGame game) {
@@ -41,6 +58,29 @@ public class EnemyArmy implements Movable, Drawable {
         spawnTanks();
         this.boss = createBossTank();
         tanks.add(boss);
+        startIntro();
+    }
+
+    /** Прячет танки за верхней границей и запускает вступительную сцену. */
+    private void startIntro() {
+        introActive = true;
+        introBossPhase = false;
+        introRowIndex = 0;
+        introRows.clear();
+
+        for (EnemyTank tank : tanks) {
+            double target = tank.getY();
+            introTargets.put(tank, target);
+            if (tank == boss) {
+                tank.setPosition(tank.getX(), -tank.getHeight() - BOSS_INTRO_GAP);
+            } else {
+                if (!introRows.contains(target)) {
+                    introRows.add(target);
+                }
+                tank.setPosition(tank.getX(), -tank.getHeight());
+            }
+        }
+        Collections.sort(introRows, Collections.reverseOrder());
     }
 
     /** Расставляет обычные и красные танки. */
@@ -88,17 +128,65 @@ public class EnemyArmy implements Movable, Drawable {
         }
     }
 
-    /** Двигает строй. */
+    /** Двигает строй или проигрывает вступительную сцену. */
     @Override
     public void move() {
         if (game.isRoundOver()) return;
+        if (introActive) {
+            updateIntro();
+            return;
+        }
 
         march.advance(tanks);
     }
 
+    /** Двигает танки к позициям, затем выпускает босса. */
+    private void updateIntro() {
+        if (!introBossPhase) {
+            if (introRowIndex >= introRows.size()) {
+                introBossPhase = true;
+                return;
+            }
+
+            double rowTarget = introRows.get(introRowIndex);
+            boolean allArrived = true;
+            for (EnemyTank tank : tanks) {
+                if (tank == boss) continue;
+
+                double target = introTargets.get(tank);
+                if (target != rowTarget) continue;
+                if (tank.getY() < target) {
+                    tank.setPosition(tank.getX(), Math.min(target, tank.getY() + INTRO_SPEED));
+                    allArrived = false;
+                }
+            }
+            if (allArrived) {
+                introRowIndex++;
+            }
+            return;
+        }
+
+        double target = introTargets.get(boss);
+        if (boss.getY() < target) {
+            boss.setPosition(boss.getX(), Math.min(target, boss.getY() + INTRO_SPEED));
+        } else {
+            introActive = false;
+        }
+    }
+
+    /** Сообщает, идёт ли вступительная сцена. */
+    public boolean isIntroActive() {
+        return introActive;
+    }
+
+    /** Сообщает, выезжает ли сейчас босс. */
+    public boolean isBossIntroActive() {
+        return introActive && introBossPhase;
+    }
+
     /** Заставляет случайный танк выстрелить. */
     public void fireRandomTank() {
-        if (game.isRoundOver() || tanks.isEmpty()) return;
+        if (isIntroActive() || game.isRoundOver() || tanks.isEmpty()) return;
 
         tanks.get(game.getRandomNumber(tanks.size())).shoot();
     }

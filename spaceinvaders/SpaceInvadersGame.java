@@ -50,6 +50,10 @@ public class SpaceInvadersGame extends Game {
     private int turnsAfterRoundEnd;
     /** Признак поражения из-за прорыва линии кирпичей. */
     private boolean brickLineDefeat;
+    /** Признак того, что стартовая подсказка ещё не была показана. */
+    private boolean startHintPending = true;
+    /** Признак видимой стартовой подсказки. */
+    private boolean showStartHint;
 
     /** Инициализирует игру при запуске. */
     @Override
@@ -76,7 +80,14 @@ public class SpaceInvadersGame extends Game {
 
         arena = new Arena(this);
         scenery.resetParallax();
-        status = GameStatus.RUNNING;
+        if (startHintPending) {
+            status = GameStatus.PAUSED;
+            showStartHint = true;
+            startHintPending = false;
+        } else {
+            status = GameStatus.RUNNING;
+            showStartHint = false;
+        }
         turnsAfterRoundEnd = 0;
         brickLineDefeat = false;
         endingScreen.reset();
@@ -111,6 +122,8 @@ public class SpaceInvadersGame extends Game {
 
     /** Проверяет условия конца раунда и включает финальную анимацию. */
     private void updateRound() {
+        if (arena.isIntroActive()) return;
+
         if (arena.hasArmyReachedTheBrickLine() && arena.getMario().isAlive()) {
             arena.getMario().dieFromBrickLineBreach();
             arena.startBrickLineDestruction();
@@ -147,11 +160,14 @@ public class SpaceInvadersGame extends Game {
     /** Рисует кадр: сцену, интерфейс, объекты боя и вспышку. */
     private void render() {
         scenery.draw();
-        scoreBoard.draw(!scenery.isVictoryScene() && !endingScreen.isShown());
+        scoreBoard.draw(!scenery.isVictoryScene() && !endingScreen.isShown()
+                && !showStartHint && !arena.isIntroActive());
         arena.drawObjects();
+        scoreBoard.drawIntroStageIfActive(arena.isIntroActive() && !isPaused(),
+                arena.isBossIntroActive());
         flash.draw();
         endingScreen.draw();
-        scoreBoard.drawPauseLabelIfPaused(isPaused());
+        scoreBoard.drawPauseLabelIfPaused(isPaused(), showStartHint);
         screen.draw();
     }
 
@@ -163,6 +179,7 @@ public class SpaceInvadersGame extends Game {
     public void togglePause() {
         if (status == GameStatus.OVER) return;
 
+        showStartHint = false;
         status = (status == GameStatus.PAUSED) ? GameStatus.RUNNING : GameStatus.PAUSED;
     }
 
@@ -216,6 +233,11 @@ public class SpaceInvadersGame extends Game {
     /** Возвращает поле текущего боя. */
     public Arena getArena() {
         return arena;
+    }
+
+    /** Сообщает, идёт ли вступительная сцена. */
+    public boolean isIntroActive() {
+        return arena != null && arena.isIntroActive();
     }
 
     /** Возвращает Марио текущего боя. */

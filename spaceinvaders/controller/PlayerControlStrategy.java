@@ -64,7 +64,7 @@ public class PlayerControlStrategy implements ControlStrategy {
             if (game.isEndingShown()) game.startNewGame();
             return;
         }
-        if (game.isPaused()) return;
+        if (game.isPaused() || game.isIntroActive()) return;
 
         game.getMario().useBonus();
     }
@@ -78,6 +78,6 @@ public class PlayerControlStrategy implements ControlStrategy {
     /** Проверяет, можно ли сейчас управлять Марио. */
     private boolean canControlMario() {
         Mario mario = game.getMario();
-        return !game.isPaused() && !game.isRoundOver() && mario.isAlive();
+        return !game.isPaused() && !game.isRoundOver() && !game.isIntroActive() && mario.isAlive();
     }
 }

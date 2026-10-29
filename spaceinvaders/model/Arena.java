@@ -51,6 +51,11 @@ public class Arena {
 
     /** Двигает все объекты поля на один шаг. */
     public void update() {
+        if (enemyArmy.isIntroActive()) {
+            enemyArmy.move();
+            return;
+        }
+
         mario.move();
         enemyArmy.move();
         enemyArmy.fireRandomTank();
@@ -117,6 +122,8 @@ public class Arena {
 
     /** Обрабатывает столкновения объектов поля. */
     public void resolveCollisions() {
+        if (enemyArmy.isIntroActive()) return;
+
         mario.receiveBullets(enemyBullets);
         enemyArmy.receiveBullets(playerBullets);
         enemyArmy.receiveBullets(enemyBullets);
@@ -193,6 +200,16 @@ public class Arena {
         return playerBullets.stream()
                 .filter(bullet -> bullet instanceof CoinBullet)
                 .count();
+    }
+
+    /** Сообщает, идёт ли вступительная сцена перед уровнем. */
+    public boolean isIntroActive() {
+        return enemyArmy.isIntroActive();
+    }
+
+    /** Сообщает, выезжает ли сейчас босс. */
+    public boolean isBossIntroActive() {
+        return enemyArmy.isBossIntroActive();
     }
 
     /** Сообщает, побеждён ли Марио. */

@@ -17,6 +17,8 @@ public class ScoreBoard {
     private static final int STAGE_Y = 1;
     /** Y надписи паузы. */
     private static final int PAUSE_Y = 50;
+    /** Y центральной надписи с номером стадии во время заставки. */
+    private static final int INTRO_STAGE_Y = 47;
     /** Период мигания паузы. */
     private static final int BLINK_PERIOD = 10;
 
@@ -37,13 +39,33 @@ public class ScoreBoard {
         Printer.print("Stage " + StageProgress.getNumber(), Color.DARKBLUE, 1, STAGE_Y);
     }
 
+    /** Рисует номер стадии по центру во время вступительной сцены. */
+    public void drawIntroStageIfActive(boolean introActive) {
+        drawIntroStageIfActive(introActive, false);
+    }
+
+    /** Рисует STAGE N, а во время выезда босса — GO!. */
+    public void drawIntroStageIfActive(boolean introActive, boolean bossIntroActive) {
+        if (!introActive) return;
+
+        String text = bossIntroActive ? "GO!" : "STAGE " + StageProgress.getNumber();
+        Printer.print("<" + text + ">", Color.WHITE,
+                GameField.WIDTH, INTRO_STAGE_Y, TextAlign.CENTER);
+    }
+
     /** Мигает надписью паузы, если игра стоит. */
     public void drawPauseLabelIfPaused(boolean paused) {
+        drawPauseLabelIfPaused(paused, false);
+    }
+
+    /** Рисует PAUSE или стартовую подсказку PRESS ENTER. */
+    public void drawPauseLabelIfPaused(boolean paused, boolean startHint) {
         if (!paused) return;
 
         boolean labelVisible = pauseTicks++ % BLINK_PERIOD < BLINK_PERIOD / 2;
         if (labelVisible) {
-            Printer.print("PAUSE", Color.WHITE, GameField.WIDTH, PAUSE_Y, TextAlign.CENTER);
+            String text = startHint ? "PRESS ENTER" : "PAUSE";
+            Printer.print(text, Color.WHITE, GameField.WIDTH, PAUSE_Y, TextAlign.CENTER);
         }
     }
 }
