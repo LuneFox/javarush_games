@@ -188,6 +188,18 @@ public class SpaceInvadersGame extends Game {
         controller.handleKeyRelease(key);
     }
 
+    /** Левый клик мышью заставляет Марио прыгнуть. */
+    @Override
+    public void onMouseLeftClick(int x, int y) {
+        controller.handleMouseLeftClick();
+    }
+
+    /** Правый клик мышью использует предмет. */
+    @Override
+    public void onMouseRightClick(int x, int y) {
+        controller.handleMouseRightClick();
+    }
+
     /*
      * Доступ к объектам для игровых объектов и контроллера
      */

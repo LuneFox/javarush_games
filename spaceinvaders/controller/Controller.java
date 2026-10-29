@@ -7,6 +7,8 @@ import com.javarush.games.spaceinvaders.SpaceInvadersGame;
 public class Controller {
     /** Стратегия обработки клавиш. */
     private final ControlStrategy strategy;
+    /** Признак удержания ENTER, чтобы автоповтор не переключал паузу многократно. */
+    private boolean enterHeld;
 
     /** Создаёт контроллер с управлением Марио. */
     public Controller(SpaceInvadersGame game) {
@@ -34,9 +36,25 @@ public class Controller {
             case PAUSE:
                 strategy.pausePressed();
                 break;
+            case ENTER:
+                if (!enterHeld) {
+                    enterHeld = true;
+                    strategy.pausePressed();
+                }
+                break;
             default:
                 break;
         }
+    }
+
+    /** Обрабатывает левый клик мышью как прыжок. */
+    public void handleMouseLeftClick() {
+        strategy.upPressed();
+    }
+
+    /** Обрабатывает правый клик мышью как использование предмета. */
+    public void handleMouseRightClick() {
+        strategy.spacePressed();
     }
 
     /** Обрабатывает отпускание клавиши. */
@@ -58,6 +76,10 @@ public class Controller {
                 strategy.spaceReleased();
                 break;
             case PAUSE:
+                strategy.pauseReleased();
+                break;
+            case ENTER:
+                enterHeld = false;
                 strategy.pauseReleased();
                 break;
             default:
