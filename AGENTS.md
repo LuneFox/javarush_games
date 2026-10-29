@@ -7,6 +7,19 @@ tree. Do not `git commit`, do not `git push`, do not amend, squash, rebase, tag,
 branches. Do not run `git stash` on the user's work either. The user reviews the diff and
 commits it themselves.
 
+## Development artifacts live in agent_dev
+
+All screenshots, image crops, reports, logs, temporary files and other artifacts generated
+during development must be written under `agent_dev/` in the repository root. The directory is
+ignored by Git (`agent_dev/` in `.gitignore`) and must never be tracked or staged.
+
+Do not create generated files next to source files or in a separate tracked screenshots
+directory. Existing development screenshots were moved to
+`agent_dev/screenshots/spaceinvaders/`; this path stays local only.
+
+A screenshot or other asset intended for the repository documentation must be a deliberate,
+reviewed asset placed in its normal tracked location, not in `agent_dev/`.
+
 ## Publication target
 
 These projects are not published by running a normal JVM. JavaRush compiles the game and

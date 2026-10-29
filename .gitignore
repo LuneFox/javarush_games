@@ -1,1 +1,4 @@
 *.jrtc
+
+# Agent-generated development artifacts (screenshots, reports, temp files)
+agent_dev/
