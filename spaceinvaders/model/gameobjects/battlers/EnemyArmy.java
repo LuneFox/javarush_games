@@ -2,6 +2,8 @@ package com.javarush.games.spaceinvaders.model.gameobjects.battlers;
 
 import com.javarush.games.spaceinvaders.Drawable;
 import com.javarush.games.spaceinvaders.SpaceInvadersGame;
+import com.javarush.games.spaceinvaders.model.Direction;
+import com.javarush.games.spaceinvaders.model.GameField;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.StageProgress;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
@@ -32,6 +34,8 @@ public class EnemyArmy implements Movable, Drawable {
     private static final double INTRO_SPEED = 2.0;
     /** Дополнительный отступ босса за верхней границей. */
     private static final int BOSS_INTRO_GAP = 20;
+    /** Длительность заморозки танков звёздочкой. */
+    private static final long STAR_FREEZE_MS = 1000L;
 
     /** Игра, в которой находится армия. */
     private final SpaceInvadersGame game;
@@ -51,6 +55,8 @@ public class EnemyArmy implements Movable, Drawable {
     private boolean introActive;
     /** Признак выезда босса после обычных танков. */
     private boolean introBossPhase;
+    /** Время, до которого танки заморожены звёздочкой. */
+    private long frozenUntil;
 
     /** Создаёт армию из танков и босса. */
     public EnemyArmy(SpaceInvadersGame game) {
@@ -58,7 +64,13 @@ public class EnemyArmy implements Movable, Drawable {
         spawnTanks();
         this.boss = createBossTank();
         tanks.add(boss);
+        march.setDirection(mirroredLevel() ? Direction.LEFT : Direction.RIGHT);
         startIntro();
+    }
+
+    /** Проверяет, нужно ли зеркалить поле для текущей стадии. */
+    private static boolean mirroredLevel() {
+        return StageProgress.getNumber() % 2 == 1;
     }
 
     /** Прячет танки за верхней границей и запускает вступительную сцену. */
@@ -87,9 +99,13 @@ public class EnemyArmy implements Movable, Drawable {
     private void spawnTanks() {
         boolean[] redSlots = chooseRedSlots(redTankCount());
         int index = 0;
+        boolean mirrored = mirroredLevel();
         for (int column = 0; column < COLUMNS; column++) {
             for (int row = 0; row < ROWS; row++) {
                 int x = column * TANK_STEP;
+                if (mirrored) {
+                    x = GameField.WIDTH - TankShape.TANK_1[0].length - x;
+                }
                 int y = row * TANK_STEP + FIRST_ROW_TOP_Y;
                 tanks.add(redSlots[index++] ? new RedTank(x, y) : new EnemyTank(x, y));
             }
@@ -114,9 +130,17 @@ public class EnemyArmy implements Movable, Drawable {
         return slots;
     }
 
-    /** Создаёт босса по центру. */
+    /** Создаёт босса по центру текущего строя обычных танков. */
     private BossTank createBossTank() {
-        double x = (TANK_STEP * COLUMNS / 2.0) - (BossTankShape.BOSS_TANK_1[0].length / 2.0);
+        double left = GameField.WIDTH;
+        double right = 0;
+        for (EnemyTank tank : tanks) {
+            left = Math.min(left, tank.getX());
+            right = Math.max(right, tank.getX() + tank.getWidth());
+        }
+
+        double center = (left + right) / 2.0;
+        double x = center - BossTankShape.BOSS_TANK_1[0].length / 2.0;
         return new BossTank(x, BOSS_ROW_Y);
     }
 
@@ -132,6 +156,7 @@ public class EnemyArmy implements Movable, Drawable {
     @Override
     public void move() {
         if (game.isRoundOver()) return;
+        if (isFrozen()) return;
         if (introActive) {
             updateIntro();
             return;
@@ -184,9 +209,22 @@ public class EnemyArmy implements Movable, Drawable {
         return introActive && introBossPhase;
     }
 
+    /** Отталкивает танки на шаг назад и замораживает их на секунду. */
+    public void pushBackAndFreeze() {
+        for (EnemyTank tank : tanks) {
+            tank.stepBack(introTargets.get(tank));
+        }
+        frozenUntil = System.currentTimeMillis() + STAR_FREEZE_MS;
+    }
+
+    /** Сообщает, заморожены ли танки звёздочкой. */
+    public boolean isFrozen() {
+        return System.currentTimeMillis() < frozenUntil;
+    }
+
     /** Заставляет случайный танк выстрелить. */
     public void fireRandomTank() {
-        if (isIntroActive() || game.isRoundOver() || tanks.isEmpty()) return;
+        if (isIntroActive() || isFrozen() || game.isRoundOver() || tanks.isEmpty()) return;
 
         tanks.get(game.getRandomNumber(tanks.size())).shoot();
     }

@@ -15,6 +15,11 @@ class ArmyMarch {
     /** Текущее направление марша. */
     private Direction direction = Direction.RIGHT;
 
+    /** Задаёт начальное направление марша. */
+    void setDirection(Direction direction) {
+        this.direction = direction;
+    }
+
     /** Двигает все танки на шаг. */
     void advance(List<EnemyTank> tanks) {
         if (tanks.isEmpty()) return;

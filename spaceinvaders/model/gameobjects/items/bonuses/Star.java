@@ -7,7 +7,7 @@ import com.javarush.games.spaceinvaders.view.shapes.BonusShape;
 
 import java.util.List;
 
-/** Звёздочка: отражает обычные вражеские пули; красные пули не отражаются. */
+/** Звёздочка: отражает пули, отталкивает танки и замораживает их; красные пули не отражаются. */
 public class Star extends Bonus {
     /** Создаёт звёздочку. */
     public Star(double x, double y) {
@@ -29,11 +29,12 @@ public class Star extends Bonus {
         }
     }
 
-    /** Разворачивает все отражаемые вражеские пули и включает вспышку. */
+    /** Разворачивает пули, отталкивает танки и включает вспышку. */
     @Override
     public void activate() {
         destroy();
         game.getFlash().request();
+        game.getEnemyArmy().pushBackAndFreeze();
 
         List<Bullet> enemyBullets = game.getEnemyBullets();
         int reflectedCount = 0;

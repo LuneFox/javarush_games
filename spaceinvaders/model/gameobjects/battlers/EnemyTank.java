@@ -122,6 +122,13 @@ public class EnemyTank extends Battler implements Shooter {
         }
     }
 
+    /** Отступает на один шаг вверх, но не выше исходной позиции. */
+    public void stepBack(double minimumY) {
+        if (!isAlive()) return;
+
+        setPosition(getX(), Math.max(minimumY, getY() - STEP_DOWN));
+    }
+
     /** Стреляет, если выпал шанс. */
     @Override
     public void shoot() {

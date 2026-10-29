@@ -5,12 +5,14 @@ import com.javarush.games.spaceinvaders.model.Direction;
 import com.javarush.games.spaceinvaders.model.GameField;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.Score;
+import com.javarush.games.spaceinvaders.model.StageProgress;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.Bullet;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Bonus;
 import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Mushroom;
+import com.javarush.games.spaceinvaders.model.gameobjects.items.bonuses.Star;
 import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysics;
 import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysicsBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.MarioShape;
@@ -76,6 +78,7 @@ public class Mario extends Battler implements Movable {
     public Mario() {
         super(spawnX(), spawnY());
         this.hitPoints = HIT_POINTS;
+        this.facing = mirroredLevel() ? Direction.RIGHT : Direction.LEFT;
         animator.stand();
         this.leftWalkingBound = -WALKING_MARGIN;
         this.rightWalkingBound = GameField.WIDTH - getWidth() + WALKING_MARGIN;
@@ -90,7 +93,15 @@ public class Mario extends Battler implements Movable {
 
     /** Возвращает X точки появления. */
     private static double spawnX() {
+        if (mirroredLevel()) {
+            return 3;
+        }
         return GameField.WIDTH - MarioShape.STAND[0].length - 3;
+    }
+
+    /** Проверяет, нужно ли зеркалить поле для текущей стадии. */
+    private static boolean mirroredLevel() {
+        return StageProgress.getNumber() % 2 == 1;
     }
 
     /** Возвращает Y точки появления. */
@@ -203,7 +214,16 @@ public class Mario extends Battler implements Movable {
     /** Обрабатывает попадания вражеских пуль. */
     public void receiveBullets(List<Bullet> bullets) {
         for (Bullet bullet : bullets) {
-            if (isHitBy(bullet)) {
+            if (!isHitBy(bullet)) continue;
+
+            if (hasBonus() && bonus instanceof Star && bullet.isReflectable()) {
+                bonus = null;
+                Score.removeBonusPickup();
+                showHealthBar();
+                bullet.reverseDirection();
+                bullet.makeLethalToEnemies();
+                bullet.markCollision();
+            } else {
                 takeHit();
                 bullet.destroy();
             }
