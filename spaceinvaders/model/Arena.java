@@ -16,6 +16,8 @@ import java.util.List;
 public class Arena {
     /** Максимум монет игрока одновременно на поле. */
     private static final int MAX_COINS_ON_FIELD = 2;
+    /** Задержка между взрывами кирпичей при прорыве линии. */
+    private static final int BRICK_EXPLOSION_INTERVAL = 2;
 
     /** Марио текущего раунда. */
     private final Mario mario;
@@ -31,6 +33,10 @@ public class Arena {
     private EagleBase base;
     /** Признак обработки победы над базой. */
     private boolean baseVictoryHandled;
+    /** Признак последовательного разрушения кирпичей. */
+    private boolean brickLineDestructionActive;
+    /** Оставшиеся ходы до взрыва следующего кирпича. */
+    private int brickExplosionCooldown;
 
     /** Создаёт поле с Марио, армией и кирпичами. */
     public Arena(SpaceInvadersGame game) {
@@ -60,6 +66,9 @@ public class Arena {
         moveAll(enemyBullets);
         moveAll(playerBullets);
         moveAll(bricks);
+        if (brickLineDestructionActive) {
+            updateBrickLineDestruction();
+        }
     }
 
     /** Двигает список объектов. */
@@ -67,6 +76,43 @@ public class Arena {
         for (Movable object : objects) {
             object.move();
         }
+    }
+
+    /** Запускает последовательное разрушение кирпичей при прорыве линии. */
+    public void startBrickLineDestruction() {
+        if (brickLineDestructionActive) return;
+
+        brickLineDestructionActive = true;
+        brickExplosionCooldown = 0;
+        explodeNextBrick();
+    }
+
+    /** Взрывает следующий кирпич с задержкой. */
+    private void updateBrickLineDestruction() {
+        if (brickExplosionCooldown > 0) {
+            brickExplosionCooldown--;
+            return;
+        }
+        explodeNextBrick();
+    }
+
+    /** Находит самый левый живой кирпич и взрывает его. */
+    private void explodeNextBrick() {
+        Brick next = null;
+        for (Brick brick : bricks) {
+            if (!brick.isAlive()) continue;
+            if (next == null || brick.getX() < next.getX()) {
+                next = brick;
+            }
+        }
+
+        if (next == null) {
+            brickLineDestructionActive = false;
+            return;
+        }
+
+        next.explode();
+        brickExplosionCooldown = BRICK_EXPLOSION_INTERVAL;
     }
 
     /** Обрабатывает столкновения объектов поля. */
@@ -101,6 +147,7 @@ public class Arena {
         enemyArmy.removeDestroyedTanks();
         removeDestroyedBullets(playerBullets);
         removeDestroyedBullets(enemyBullets);
+        bricks.removeIf(brick -> brick.canBeRemoved());
     }
 
     /** Убирает улетевшие и уничтоженные пули. */

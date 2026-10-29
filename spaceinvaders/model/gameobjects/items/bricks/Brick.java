@@ -3,6 +3,7 @@ package com.javarush.games.spaceinvaders.model.gameobjects.items.bricks;
 import com.javarush.games.spaceinvaders.model.LevelLayout;
 import com.javarush.games.spaceinvaders.model.Mirror;
 import com.javarush.games.spaceinvaders.model.gameobjects.GameObject;
+import com.javarush.games.spaceinvaders.model.gameobjects.Sprite;
 import com.javarush.games.spaceinvaders.model.gameobjects.Movable;
 import com.javarush.games.spaceinvaders.model.gameobjects.battlers.Mario;
 import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletFactory;
@@ -10,6 +11,7 @@ import com.javarush.games.spaceinvaders.model.gameobjects.bullets.BulletType;
 import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysics;
 import com.javarush.games.spaceinvaders.model.gameobjects.physics.JumpPhysicsBuilder;
 import com.javarush.games.spaceinvaders.view.shapes.BrickShape;
+import com.javarush.games.spaceinvaders.view.shapes.EagleShape;
 
 /** Кирпич: подпрыгивает от удара и даёт монету. */
 public class Brick extends GameObject implements Movable {
@@ -35,11 +37,23 @@ public class Brick extends GameObject implements Movable {
 
     /** Реагирует на удар Марио снизу. */
     public void bumpIfTouchedBy(Mario mario) {
+        if (!isAlive()) return;
         if (!mario.isAlive()) return;
         if (!collidesWith(mario, Mirror.of(mario.getFacing()))) return;
 
         bounce.startJump();
         releaseContent();
+    }
+
+    /** Взрывает кирпич при прорыве линии обороны. */
+    public void explode() {
+        if (!isAlive()) return;
+
+        destroy();
+        setAnimatedView(Sprite.Loop.ONCE, 1,
+                EagleShape.EXPLOSION_1,
+                EagleShape.EXPLOSION_2,
+                EagleShape.EXPLOSION_3);
     }
 
     /** Выдаёт содержимое кирпича. */
@@ -52,6 +66,7 @@ public class Brick extends GameObject implements Movable {
     /** Обновляет подпрыгивание кирпича. */
     @Override
     public void move() {
+        if (!isAlive()) return;
         if (game.isRoundOver()) return;
 
         bounce.update();

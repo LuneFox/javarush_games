@@ -85,6 +85,14 @@ public class QuestionBrick extends Brick {
         super.draw();
     }
 
+    /** Взрывает кирпич, не оставляя бонус на поле. */
+    @Override
+    public void explode() {
+        bonus = null;
+        bonusRevealed = false;
+        super.explode();
+    }
+
     /** Очищает кирпич от бонуса. */
     public void clearBonus() {
         bonus = null;

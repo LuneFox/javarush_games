@@ -48,6 +48,8 @@ public class SpaceInvadersGame extends Game {
     private GameStatus status = GameStatus.RUNNING;
     /** Счётчик ходов после окончания раунда. */
     private int turnsAfterRoundEnd;
+    /** Признак поражения из-за прорыва линии кирпичей. */
+    private boolean brickLineDefeat;
 
     /** Инициализирует игру при запуске. */
     @Override
@@ -76,6 +78,7 @@ public class SpaceInvadersGame extends Game {
         scenery.resetParallax();
         status = GameStatus.RUNNING;
         turnsAfterRoundEnd = 0;
+        brickLineDefeat = false;
         endingScreen.reset();
 
         setTurnTimer(TURN_DELAY_MS);
@@ -108,12 +111,16 @@ public class SpaceInvadersGame extends Game {
 
     /** Проверяет условия конца раунда и включает финальную анимацию. */
     private void updateRound() {
-        if (arena.hasArmyReachedTheBrickLine()) {
-            arena.getMario().takeHit();
+        if (arena.hasArmyReachedTheBrickLine() && arena.getMario().isAlive()) {
+            arena.getMario().dieFromBrickLineBreach();
+            arena.startBrickLineDestruction();
+            brickLineDefeat = true;
         }
 
         if (arena.isMarioDefeated()) {
-            arena.getMario().playDeathAnimation();
+            if (!brickLineDefeat) {
+                arena.getMario().playDeathAnimation();
+            }
             finishRound();
         } else if (arena.isLevelCompleted()) {
             arena.getMario().playVictoryAnimation();

@@ -240,6 +240,16 @@ public class Mario extends Battler implements Movable {
         healthBarHideTime = System.currentTimeMillis() + HEALTH_BAR_DURATION_MS;
     }
 
+    /** Убивает Марио при прорыве линии, оставляя статичную позу смерти. */
+    public void dieFromBrickLineBreach() {
+        if (!isAlive()) return;
+
+        hitPoints = 0;
+        bonus = null;
+        destroy();
+        animator.die();
+    }
+
     /** Проигрывает анимацию смерти. */
     public void playDeathAnimation() {
         if (animationFrame > DEATH_ANIMATION_FRAMES) return;
