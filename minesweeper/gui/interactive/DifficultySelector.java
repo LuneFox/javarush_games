@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
@@ -91,7 +93,9 @@ public class DifficultySelector extends InteractiveObject {
 
     /** Печатает название сложности. */
     private void printDifficultyName() {
-        String difficultyName = Options.getDifficultyName(this.difficultySetting);
+        String difficultyName = Options.getDifficultyName(this.difficultySetting)
+                + Text.DIFFICULTY_MINES_SEPARATOR.getText()
+                + Options.getMineCount(this.difficultySetting);
         Color nameColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(difficultyName, nameColor, x + width, y + height + 1, Printer.Align.RIGHT);
     }

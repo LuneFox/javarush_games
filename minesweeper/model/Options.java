@@ -61,6 +61,11 @@ public class Options {
         return difficulty;
     }
 
+    /** Возвращает число мин для указанной сложности. */
+    public static int getMineCount(int difficulty) {
+        return (int) Math.ceil(difficulty / 1.5);
+    }
+
     /** Сообщает, включён ли режим на время. */
     public static boolean isTimerEnabled() {
         return timerEnabled;

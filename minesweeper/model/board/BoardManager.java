@@ -8,6 +8,7 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.board.field.Field;
 import com.javarush.games.minesweeper.model.board.field.FieldDao;
+import com.javarush.games.minesweeper.model.board.field.MineFieldValidator;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
@@ -29,6 +30,8 @@ public class BoardManager {
     private final Timer timer;
     /** Инструменты режима разработчика. */
     private final DeveloperTools developerTools;
+    /** Генератор полей без угадывания. */
+    private final NoGuessGenerator noGuessGenerator;
 
     /** Разрешён ли взрыв флажков. */
     private boolean isFlagExplosionAllowed;
@@ -38,6 +41,8 @@ public class BoardManager {
     private boolean isRecursiveMove;
     /** Попала ли мини-бомба в мину. */
     private boolean miniBombHitMine;
+    /** Число попыток разложить мины без изолированных мин. */
+    private static final int MINE_PLACEMENT_ATTEMPTS = 1000;
 
     /** Создаёт экземпляр BoardManager. */
     public BoardManager(MinesweeperGame game) {
@@ -46,6 +51,7 @@ public class BoardManager {
         this.timer = new Timer();
         this.flagManager = new FlagManager(game);
         this.developerTools = new DeveloperTools(game, fieldDao, flagManager);
+        this.noGuessGenerator = new NoGuessGenerator(game, fieldDao);
     }
 
     /*
@@ -62,20 +68,35 @@ public class BoardManager {
         isFirstMove = true;
     }
 
-    /** Расставляет мины по полю. */
+    /** Расставляет мины по полю, избегая мин без безопасных соседей. */
     private void placeMines() {
-        double numberOfMinesToPlant = (Options.getDifficulty() / 1.5);
+        int numberOfMinesToPlant = countMines();
 
-        while (fieldDao.count(Cell::isMined) < numberOfMinesToPlant) {
-            int randomX = game.getRandomNumber(Field.SIZE);
-            int randomY = game.getRandomNumber(Field.SIZE);
+        for (int attempt = 0; attempt < MINE_PLACEMENT_ATTEMPTS; attempt++) {
+            clearMines();
 
-            Cell cell = getCell(randomX, randomY);
+            while (fieldDao.count(Cell::isMined) < numberOfMinesToPlant) {
+                int randomX = game.getRandomNumber(Field.SIZE);
+                int randomY = game.getRandomNumber(Field.SIZE);
 
-            if (!cell.isMined()) {
-                cell.setMined(true);
+                Cell cell = getCell(randomX, randomY);
+                if (!cell.isMined()) cell.setMined(true);
             }
+
+            if (!MineFieldValidator.hasBuriedMine(fieldDao)) return;
         }
+    }
+
+    /** Убирает мины с поля перед новой попыткой раскладки. */
+    private void clearMines() {
+        for (Cell cell : fieldDao.getAllCells()) {
+            cell.setMined(false);
+        }
+    }
+
+    /** Возвращает число мин для текущей сложности. */
+    private int countMines() {
+        return Options.getMineCount(Options.getDifficulty());
     }
 
     /** Пересчитывает число мин вокруг всех клеток. */
@@ -178,10 +199,20 @@ public class BoardManager {
     /** Превращает первую клетку в дверь магазина. */
     private Cell transformToEmptyShopCell(Cell cell) {
         List<Cell> oldFlaggedCells = collectFlagsFromField();
-        cell = restartUntilCellIsEmpty(cell);
+        cell = createFirstClickCell(cell);
         cell.setShop(true);
         placeCollectedFlagsOnNewCells(oldFlaggedCells);
         return cell;
+    }
+
+    /** Создаёт поле вокруг первого клика. */
+    private Cell createFirstClickCell(Cell cell) {
+        if (NoGuessGenerator.isEnabled()
+                && noGuessGenerator.generate(cell.x, cell.y, countMines())) {
+            updateAllCountMinedNeighbors();
+            return getCell(cell.x, cell.y);
+        }
+        return restartUntilCellIsEmpty(cell);
     }
 
     /** Пересоздаёт поле, пока выбранная клетка не станет пустой. */

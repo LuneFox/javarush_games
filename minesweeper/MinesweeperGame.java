@@ -28,7 +28,7 @@ import java.util.function.Predicate;
  */
 public class MinesweeperGame extends Game {
     /** Версия игры. */
-    public static final String VERSION = "1.26";
+    public static final String VERSION = "1.27";
 
     /** Контроллер игры. */
     private Controller controller;
