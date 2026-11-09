@@ -27,7 +27,7 @@ public class Cell extends InteractiveObject {
     }
 
     public Cell(int x, int y) {
-        this.background = new Image(ImageType.CELL_CLOSED, x * 10, y * 10);
+        this.background = new Image(ImageType.CELL_CLOSED, x * 10, y * 10, false);
         this.x = x;
         this.y = y;
         states = 0;
@@ -53,6 +53,19 @@ public class Cell extends InteractiveObject {
 
         setRevealedBackground();
         setRevealedSprite();
+    }
+
+    /**
+     * Перерисовывает закрытую или открытую клетку в актуальных цветах темы.
+     */
+    public void refreshTheme() {
+        if (isOpen()) {
+            setRevealedContent();
+            return;
+        }
+
+        background.setMatrix(background.getMatrixFromStorage(ImageType.CELL_CLOSED));
+        setSprite(isFlagged() ? ImageType.BOARD_FLAG : ImageType.NONE);
     }
 
     private void setRevealedBackground() {
@@ -89,7 +102,7 @@ public class Cell extends InteractiveObject {
     }
 
     private void setSprite(ImageType imageType) {
-        this.sprite = new Image(imageType, x * 10, y * 10);
+        this.sprite = new Image(imageType, x * 10, y * 10, false);
     }
 
     private void setSprite(int number) {
@@ -97,7 +110,7 @@ public class Cell extends InteractiveObject {
             throw new IllegalArgumentException("Sprites numbers must be from 0 to 9");
         }
 
-        this.sprite = new Image(sprites.get(number), x * 10, y * 10);
+        this.sprite = new Image(sprites.get(number), x * 10, y * 10, false);
     }
 
     public int produceMoney() {
@@ -226,6 +239,13 @@ public class Cell extends InteractiveObject {
 
     public boolean isNumerable() {
         return !(isMined() || isDestroyed() || isFlagged() || isShop());
+    }
+
+    /**
+     * Сообщает, нужно ли пересчитывать число мин вокруг клетки, в том числе под флажком.
+     */
+    public boolean isCountable() {
+        return !(isMined() || isDestroyed() || isShop());
     }
 
     public boolean cannotBeOpened() {

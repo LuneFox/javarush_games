@@ -32,8 +32,9 @@ public class Bomb extends ShopItem {
     }
 
     private void use(Cell cell) {
+        if (!game.destroyCell(cell)) return;
+
         this.deactivate();
-        game.destroyCell(cell);
 
         final Shop shop = game.getShop();
         shop.getScanner().putToStock();
@@ -50,7 +51,7 @@ public class Bomb extends ShopItem {
 
     private boolean unableToActivate() {
         if (game.isStopped() || isActivated) return true;
-        return game.getShop().getBomb().isActivated();
+        return game.getShop().getScanner().isActivated();
     }
 
     public void drawFrame() {

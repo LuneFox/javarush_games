@@ -25,5 +25,12 @@ public abstract class Cache<K, V> {
         return value;
     }
 
+    /**
+     * Возвращает значение из кэша без создания нового.
+     */
+    protected V getIfPresent(K key) {
+        return cache.get(key);
+    }
+
     protected abstract V put(K key);
 }

@@ -36,12 +36,20 @@ public class Image extends InteractiveObject {
     }
 
     public Image(ImageType type, int x, int y) {
+        this(type, x, y, true);
+    }
+
+    /**
+     * Создаёт изображение; при {@code track == false} оно не попадает в общий реестр
+     * перекрашивания, чтобы временные спрайты клеток не удерживались в памяти.
+     */
+    public Image(ImageType type, int x, int y, boolean track) {
         super(x, y);
         this.type = type;
         this.matrix = getMatrixFromStorage(type);
         this.height = matrix.length;
         this.width = matrix[0].length;
-        ImageManager.addImage(this);
+        if (track) ImageManager.addImage(this);
     }
 
     public final void setPosition(int drawX, int drawY) {

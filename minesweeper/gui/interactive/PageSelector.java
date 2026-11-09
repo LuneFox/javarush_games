@@ -4,9 +4,8 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Simple page selector that looks like this: <   1/12   >
@@ -15,7 +14,7 @@ import java.util.Set;
  */
 
 public class PageSelector extends InteractiveObject {
-    public static final Set<PageSelector> allSelectors = new HashSet<>();
+    public static final List<PageSelector> allSelectors = new ArrayList<>();
     private static final int DEFAULT_PAGE = 0;
     private final int maxPage;
     private int currentPage;
@@ -92,21 +91,5 @@ public class PageSelector extends InteractiveObject {
 
     private void setDefaultPage() {
         currentPage = DEFAULT_PAGE;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PageSelector that = (PageSelector) o;
-        return maxPage == that.maxPage
-                && currentPage == that.currentPage
-                && Objects.equals(prevPageArrow, that.prevPageArrow)
-                && Objects.equals(nextPageArrow, that.nextPageArrow);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(maxPage, currentPage, prevPageArrow, nextPageArrow);
     }
 }

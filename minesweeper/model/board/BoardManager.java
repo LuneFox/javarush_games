@@ -66,7 +66,7 @@ public class BoardManager {
     }
 
     public void updateAllCountMinedNeighbors() {
-        fieldDao.getAllCells(Cell::isNumerable).forEach(cell -> {
+        fieldDao.getAllCells(Cell::isCountable).forEach(cell -> {
             final int minesCount = fieldDao.getNeighborCells(cell, Cell::isMined).size();
             cell.setCountMinedNeighbors(minesCount);
         });
@@ -220,6 +220,8 @@ public class BoardManager {
     }
 
     private void checkVictory() {
+        if (game.isStopped()) return;
+
         final long countClosedCells = fieldDao.getAllCells(Cell::isClosed).size();
         final long countDangerousCells = fieldDao.getAllCells(Cell::isDangerousToOpen).size();
 
@@ -232,10 +234,14 @@ public class BoardManager {
      * Destroy cell (mini bomb action)
      */
 
-    public void destroyCell(Cell cell) {
+    /**
+     * Уничтожает клетку и сообщает, удалось ли это.
+     */
+    public boolean destroyCell(Cell cell) {
+        if (game.isStopped()) return false;
         if (cell.isIndestructible() && !isRecursiveMove) {
             PopUpMessage.show("Не получилось!");
-            return;
+            return false;
         }
 
         addMove();
@@ -251,12 +257,13 @@ public class BoardManager {
 
             cell.destroy();
 
-            fieldDao.getNeighborCells(cell, Cell::isMined).forEach(this::destroyCell);
+            fieldDao.getNeighborCells(cell, Cell::isMined).forEach(neighbor -> destroyCell(neighbor));
         } else {
             cell.destroy();
         }
         updateAllCountMinedNeighbors();
         checkVictory();
+        return true;
     }
 
     public void cleanUpAfterMineDestruction() {
@@ -337,6 +344,13 @@ public class BoardManager {
     public void refreshOpenedCellsGraphics() {
         if (game.isStopped()) return;
         fieldDao.getAllCells(Cell::isOpen).forEach(Cell::setRevealedContent);
+    }
+
+    /**
+     * Перерисовывает все клетки поля в актуальных цветах темы.
+     */
+    public void refreshAllCellsGraphics() {
+        fieldDao.getAllCells().forEach(Cell::refreshTheme);
     }
 
 

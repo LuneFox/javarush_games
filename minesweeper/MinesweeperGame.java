@@ -88,23 +88,35 @@ public class MinesweeperGame extends Game {
         result = Result.UNDEFINED;
     }
 
+    /**
+     * Завершает игру победой, если она ещё не завершена.
+     */
     public void win() {
-        finish(Result.WIN);
+        if (!finish(Result.WIN)) return;
         player.getScore().registerTopScore();
     }
 
+    /**
+     * Завершает игру поражением, если она ещё не завершена.
+     */
     public void lose() {
-        finish(Result.LOSE);
+        if (!finish(Result.LOSE)) return;
         shop.getDice().hide();
         boardManager.revealMines();
     }
 
-    private void finish(Result result) {
+    /**
+     * Фиксирует результат один раз и сообщает, был ли он принят.
+     */
+    private boolean finish(Result result) {
+        if (isStopped) return false;
+
         this.isStopped = true;
         this.result = result;
         View.setGameOverShowDelay(30);
         Phase.setActive(Phase.GAME_OVER);
         GameStatistics.update();
+        return true;
     }
 
     /*
@@ -127,9 +139,13 @@ public class MinesweeperGame extends Game {
         shop.aimWithBomb(cell);
     }
 
-    public void destroyCell(Cell cell) {
-        boardManager.destroyCell(cell);
+    /**
+     * Уничтожает клетку бомбой и сообщает, удалось ли это.
+     */
+    public boolean destroyCell(Cell cell) {
+        boolean destroyed = boardManager.destroyCell(cell);
         boardManager.cleanUpAfterMineDestruction();
+        return destroyed;
     }
 
     public boolean isScannerOrBombActivated() {
@@ -148,6 +164,13 @@ public class MinesweeperGame extends Game {
 
     public void refreshOpenedCellsGraphics() {
         boardManager.refreshOpenedCellsGraphics();
+    }
+
+    /**
+     * Перерисовывает все клетки поля в актуальных цветах темы.
+     */
+    public void refreshAllCellsGraphics() {
+        boardManager.refreshAllCellsGraphics();
     }
 
     public void scanNeighbors(Cell cell) {

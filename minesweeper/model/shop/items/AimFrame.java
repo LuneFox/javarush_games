@@ -10,10 +10,18 @@ public class AimFrame implements Drawable {
     private int y;
     private final int padding;
     private final Image image;
-    private Cell focusCell;
+    /**
+     * Координата X клетки, на которую наведена рамка.
+     */
+    private int focusX;
+    /**
+     * Координата Y клетки, на которую наведена рамка.
+     */
+    private int focusY;
 
     public AimFrame(Cell initialFocusCell, int padding, ImageType imageType) {
-        this.focusCell = initialFocusCell;
+        this.focusX = initialFocusCell.x;
+        this.focusY = initialFocusCell.y;
         this.padding = padding;
         this.image = Image.cache.get(imageType);
         setPosition(getDestinationX(), getDestinationY());
@@ -36,18 +44,19 @@ public class AimFrame implements Drawable {
     }
 
     private int getDestinationX() {
-        return focusCell.x * 10 + padding;
+        return focusX * 10 + padding;
     }
 
     private int getDestinationY() {
-        return focusCell.y * 10 + padding;
+        return focusY * 10 + padding;
     }
 
     public boolean isNotFocusedOnCell(Cell cell) {
-        return focusCell != cell;
+        return focusX != cell.x || focusY != cell.y;
     }
 
     public void focusOnCell(Cell cell) {
-        this.focusCell = cell;
+        this.focusX = cell.x;
+        this.focusY = cell.y;
     }
 }

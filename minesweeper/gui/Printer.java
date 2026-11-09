@@ -15,6 +15,10 @@ public class Printer {
     private static final int CHAR_SPACING = 1;
     private static final int LINE_HEIGHT = 9;
     public static final Cache<Character, Image> cache;
+    /**
+     * Признак, что таблица символов шрифта уже собрана.
+     */
+    private static boolean cacheInitialized;
     private static boolean isStrokeEnabled;
 
     public enum Align {
@@ -25,14 +29,17 @@ public class Printer {
         cache = new Cache<Character, Image>(128) {
             @Override
             protected Image put(Character character) {
-                Arrays.stream(ImageType.values())
-                        .filter(element -> element.name().startsWith("SYM_"))
-                        .forEach(element -> {
-                            for (char c : element.getCharacters()) {
-                                cache.put(c, new Image(element));
-                            }
-                        });
-                return cache.get(character);
+                if (!cacheInitialized) {
+                    cacheInitialized = true;
+                    Arrays.stream(ImageType.values())
+                            .filter(element -> element.name().startsWith("SYM_"))
+                            .forEach(element -> {
+                                for (char c : element.getCharacters()) {
+                                    cache.put(c, new Image(element));
+                                }
+                            });
+                }
+                return getIfPresent(character);
             }
         };
     }
@@ -46,6 +53,7 @@ public class Printer {
     }
 
     public static void print(String input, Color color, int drawX, int drawY, Align align) {
+        isStrokeEnabled = false;
         drawX = adjustDrawX(input, drawX);
         drawY = adjustDrawY(drawY);
         final int caretBase = drawX;
@@ -91,10 +99,19 @@ public class Printer {
             return;
         }
 
-        Image symbol = cache.get(c);
+        Image symbol = getSymbol(c);
+        if (symbol == null) return;
         if (isStrokeEnabled) stroke(x, y, symbol);
         symbol.changeColor(color, 1);
         symbol.draw(x, y);
+    }
+
+    /**
+     * Возвращает символ шрифта или пробел для неизвестного символа.
+     */
+    private static Image getSymbol(char c) {
+        Image symbol = cache.get(c);
+        return symbol == null ? cache.get(' ') : symbol;
     }
 
     private static boolean charIsStrokeMarkup(char c) {
@@ -126,11 +143,11 @@ public class Printer {
 
     public static int calculateWidth(String s) {
         int width = 0;
-        Image symbol;
         char[] chars = s.toLowerCase().toCharArray();
         for (char c : chars) {
             if (charIsStrokeMarkup(c)) continue;
-            symbol = cache.get(c);
+            Image symbol = getSymbol(c);
+            if (symbol == null) continue;
             width += (symbol.getMatrix()[0].length + CHAR_SPACING);
         }
         return width;

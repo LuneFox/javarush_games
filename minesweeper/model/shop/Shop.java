@@ -47,6 +47,7 @@ public class Shop {
     }
 
     public void reset() {
+        helpDisplayItem = null;
         createNewItems();
         fillSlots();
         giveStarterFlags();
@@ -88,7 +89,10 @@ public class Shop {
     }
 
     public void sell(ShopItem item) {
-        if (item == null) return;
+        if (game.isStopped() || item == null) return;
+        if (item.isActivated() || item.getInStock() <= 0) return;
+        if (item.isUnaffordable()) return;
+
         processItemTransaction(item);
         activateItem(item);
     }

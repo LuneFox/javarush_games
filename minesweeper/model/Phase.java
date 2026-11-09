@@ -79,10 +79,12 @@ public enum Phase {
     }
 
     public static void leftClickOnCurrentView(int x, int y) {
+        if (currentView == null) return;
         currentView.click(x, y, Click.LEFT);
     }
 
     public static void rightClickOnCurrentView(int x, int y) {
+        if (currentView == null) return;
         currentView.click(x, y, Click.RIGHT);
     }
 }
