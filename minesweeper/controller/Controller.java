@@ -15,13 +15,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Преобразует события движка в вызовы стратегий управления. */
 public class Controller {
+    /** Стратегии управления по фазам. */
     private static final Map<Phase, ControlStrategy> strategyMap = new HashMap<>();
+    /** Y последнего клика. */
     private static int lastClickY;
 
+    /** Ссылка на игру. */
     private final MinesweeperGame game;
+    /** Текущая стратегия управления. */
     private ControlStrategy strategy;
 
+    /** Создаёт экземпляр Controller. */
     public Controller(MinesweeperGame game) {
         this.game = game;
         ControlMain.setGame(game);
@@ -33,18 +39,20 @@ public class Controller {
         createStrategies();
     }
 
+    /** Создаёт стратегии управления для всех фаз. */
     private static void createStrategies() {
         ControlStrategyFactory factory = new ControlStrategyFactory();
         Arrays.stream(Phase.values()).forEach(phase -> strategyMap.put(phase, factory.createStrategy(phase)));
         strategyMap.put(null, new ControlDisabled());
     }
 
+    /** Сообщает, был ли последний клик в верхней половине экрана. */
     public static boolean clickedOnUpperHalf() {
         return lastClickY < 50;
     }
 
+    /** Обрабатывает клик. */
     public final void click(int x, int y, Click click) {
-        // System.out.printf(click + ": %d %d%n", x, y);
         if (isInvalidInput(x, y)) return;
 
         lastClickY = y;
@@ -59,6 +67,7 @@ public class Controller {
         }
     }
 
+    /** Обрабатывает нажатие клавиши. */
     public final void pressKey(Key key) {
         if (isInvalidInput(0, 0)) return;
 
@@ -75,10 +84,12 @@ public class Controller {
         else strategy.pressOther();
     }
 
+    /** Выбирает стратегию по активной фазе. */
     private void selectStrategyAccordingToActivePhase() {
         strategy = strategyMap.get(Phase.getActive());
     }
 
+    /** Сообщает, является ли ввод недопустимым. */
     private boolean isInvalidInput(int x, int y) {
         return !(Button.isAnimationFinished()
                 && Util.isWithinScreen(x, y)

@@ -1,5 +1,11 @@
 package com.javarush.games.minesweeper.model;
 
+/** Результат партии. */
 public enum Result {
-    WIN, LOSE, UNDEFINED
+    /** Победа. */
+    WIN,
+    /** Поражение. */
+    LOSE,
+    /** Результат ещё не определён. */
+    UNDEFINED
 }

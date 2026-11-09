@@ -14,9 +14,12 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
 
+/** Экран настроек. */
 public class ViewOptions extends View {
 
+    /** Кнопка закрытия экрана. */
     private final Button closeButton = new Button(88, 2, "x", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
@@ -24,17 +27,25 @@ public class ViewOptions extends View {
             PopUpMessage.show(Options.OPTIONS_SAVED);
         }
     };
+    /** Фоновое изображение. */
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
+    /** Селектор сложности. */
     final DifficultySelector difficultySelector = Options.getDifficultySelector().linkView(this);
+    /** Переключатель авто-покупки флажков. */
     final SwitchSelector autoBuyFlagsSelector = Options.getAutoBuyFlagsSelector().linkView(this);
+    /** Переключатель режима на время. */
     final SwitchSelector timerEnabledSelector = Options.getTimerEnabledSelector().linkView(this);
+    /** Переключатель показа сообщений. */
     final SwitchSelector displayMessageSelector = Options.getDisplayMessageSelector().linkView(this);
+    /** Селектор темы. */
     final ThemeSelector themeSelector = Options.getThemeSelector().linkView(this);
 
+    /** Создаёт экземпляр ViewOptions. */
     public ViewOptions(MinesweeperGame game) {
         super(game);
     }
 
+    /** Обновляет состояние. */
     @Override
     public void update() {
         background.draw();

@@ -8,24 +8,32 @@ import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 
-/**
- * A fidget that can be turned on and off.
- * Has a form of a common switch with a handle that slides along the rail.
- */
-
+/** Переключатель с двумя состояниями. */
 public class SwitchSelector extends InteractiveObject {
+    /** Состояние. */
     private State state;
+    /** Направляющая переключателя. */
     private final Image rail;
+    /** Ручка переключателя. */
     private final Image handle;
+    /** Левая граница переключателя. */
     private final int leftStopper;
+    /** Правая граница переключателя. */
     private final int rightStopper;
+    /** Подпись выключенного состояния. */
     private final String labelOff;
+    /** Подпись включённого состояния. */
     private final String labelOn;
 
+    /** Состояние переключателя. */
     public enum State {
-        ON, OFF
+        /** Включено. */
+        ON,
+        /** Выключено. */
+        OFF
     }
 
+    /** Создаёт экземпляр SwitchSelector. */
     public SwitchSelector(int x, int y, String labelOff, String labelOn) {
         super(x, y);
 
@@ -44,6 +52,7 @@ public class SwitchSelector extends InteractiveObject {
         this.state = State.OFF;
     }
 
+    /** Создаёт экземпляр SwitchSelector. */
     public SwitchSelector(int x, int y, String labelOff, String labelOn, State state) {
         this(x, y, labelOff, labelOn);
         this.state = state;
@@ -53,6 +62,7 @@ public class SwitchSelector extends InteractiveObject {
         }
     }
 
+    /** Рисует объект на экране. */
     @Override
     public void draw() {
         moveHandle();
@@ -60,6 +70,7 @@ public class SwitchSelector extends InteractiveObject {
         printLabel();
     }
 
+    /** Двигает ручку переключателя. */
     private void moveHandle() {
         if (state == State.ON && handle.x < rightStopper) {
             handle.x++;
@@ -68,6 +79,7 @@ public class SwitchSelector extends InteractiveObject {
         }
     }
 
+    /** Рисует переключатель. */
     private void drawSwitch() {
         rail.draw();
         final int HANDLE_BODY_COLOR = 1;
@@ -75,16 +87,19 @@ public class SwitchSelector extends InteractiveObject {
         handle.draw();
     }
 
+    /** Печатает подпись. */
     private void printLabel() {
         String label = (state == State.ON) ? labelOn : labelOff;
         Color textColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(label, textColor, (Display.SIZE - 2), (y + height + 1), Printer.Align.RIGHT);
     }
 
+    /** Обрабатывает левый клик. */
     public void onLeftClick() {
         state = (state == State.ON) ? State.OFF : State.ON;
     }
 
+    /** Сообщает, включён ли переключатель. */
     public boolean isEnabled() {
         return state == State.ON;
     }

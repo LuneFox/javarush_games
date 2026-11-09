@@ -7,19 +7,18 @@ import com.javarush.games.minesweeper.gui.Theme;
 import static com.javarush.engine.cell.Color.*;
 import static com.javarush.games.minesweeper.gui.image.ImageCreator.*;
 
-/**
- * All images' body data and colors are stored here. Each image corresponds a visual element.
- * To get matrix and colors you need to create a storage with a given element.
- */
-
+/** Хранит матрицы и палитры всех типов изображений. */
 public class ImageStorage {
+    /** Палитра изображения. */
     private Color[] colors;
+    /** Данные матрицы. */
     private final int[][] data;
 
+    /** Создаёт экземпляр ImageStorage. */
     public ImageStorage(ImageType imageType) {
         switch (imageType) {
             /*
-             * Big images
+             * Большие изображения
              */
             case PICTURE_MAIN_LOGO:
                 setColors(WHITE, BLACK, DARKSLATEGRAY, SANDYBROWN, RED, YELLOW);
@@ -224,7 +223,7 @@ public class ImageStorage {
                 break;
             case GUI_BUTTON:
                 setColors(Theme.BUTTON_BG.getColor(), BLACK, Theme.BUTTON_BORDER.getColor());
-                data = null; // it's dynamic, depends on text size, create a frame
+                data = null; // размер зависит от текста, поэтому создаётся рамка
                 break;
             case GUI_ARROW:
                 setColors(Theme.LABEL.getColor(), WHITE);
@@ -331,7 +330,7 @@ public class ImageStorage {
                 break;
 
             /*
-              Sprites
+              Спрайты
              */
             case BOARD_0:
                 setColors(NONE);
@@ -403,7 +402,7 @@ public class ImageStorage {
                 break;
 
             /*
-             * Cells
+             * Клетки
              */
             case CELL_CLOSED:
                 setColors(Theme.CELL_BG_UP.getColor(), Theme.CELL_LIGHT.getColor(), Theme.CELL_SHADOW.getColor());
@@ -415,7 +414,7 @@ public class ImageStorage {
                 break;
 
             /*
-             * Symbols
+             * Символы
              */
             case SYM_RU_LETTER_A:
                 data = makeArray("0000000001101001111110011001", 4);
@@ -638,16 +637,19 @@ public class ImageStorage {
         }
     }
 
+    /** Задаёт палитру изображения. */
     private void setColors(Color... colors) {
         this.colors = new Color[colors.length + 1];
         this.colors[0] = NONE;
         System.arraycopy(colors, 0, this.colors, 1, colors.length);
     }
 
+    /** Возвращает палитру. */
     public Color[] getColors() {
         return colors == null ? new Color[]{NONE, WHITE} : colors;
     }
 
+    /** Возвращает данные. */
     public int[][] getData() {
         return data;
     }

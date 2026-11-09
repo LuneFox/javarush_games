@@ -1,53 +1,99 @@
 package com.javarush.games.minesweeper.model.board.field;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
+/** Доступ к клеткам поля и их соседям. */
 public class FieldDao {
+    /** Текущее поле. */
     private Field field;
 
+    /** Создаёт экземпляр FieldDao. */
     public FieldDao() {
         createNewField();
     }
 
+    /** Создаёт новое поле. */
     public void createNewField() {
         field = new Field();
     }
 
+    /** Возвращает клетку по координатам. */
     public Cell getCell(int x, int y) {
-        return field.grid[y][x];
+        return field.getCell(x, y);
     }
 
+    /** Возвращает клетку по экранным координатам. */
     public Cell getCellByCoordinates(int x, int y) {
-        return field.grid[y / 10][x / 10];
+        return field.getCell(x / Cell.PIXEL_SIZE, y / Cell.PIXEL_SIZE);
     }
 
+    /** Возвращает все клетки поля. */
     public List<Cell> getAllCells(Predicate<Cell> predicate) {
-        return getAllCells().stream().filter(predicate).collect(Collectors.toList());
+        List<Cell> result = new ArrayList<>();
+        for (Cell cell : getAllCells()) {
+            if (predicate.test(cell)) result.add(cell);
+        }
+        return result;
     }
 
+    /** Возвращает все клетки поля. */
     public List<Cell> getAllCells() {
-        return Arrays.stream(field.grid).flatMap(Arrays::stream).collect(Collectors.toList());
+        return field.getAllCells();
     }
 
+    /** Считает клетки по условию. */
+    public int count(Predicate<Cell> predicate) {
+        int count = 0;
+        for (Cell cell : getAllCells()) {
+            if (predicate.test(cell)) count++;
+        }
+        return count;
+    }
+
+    /** Возвращает соседние клетки. */
     public List<Cell> getNeighborCells(Cell centerCell, Predicate<Cell> predicate) {
-        return getNeighborCells(centerCell).stream().filter(predicate).collect(Collectors.toList());
+        return collectArea(centerCell, predicate, false);
     }
 
-    public List<Cell> getNeighborCells(Cell centerCell) {
-        return getCellsIn3x3area(centerCell, cell -> !cell.equals(centerCell));
+    /** Считает соседние клетки по условию. */
+    public int countNeighborCells(Cell centerCell, Predicate<Cell> predicate) {
+        int count = 0;
+        int minX = Math.max(0, centerCell.x - 1);
+        int maxX = Math.min(Field.SIZE - 1, centerCell.x + 1);
+        int minY = Math.max(0, centerCell.y - 1);
+        int maxY = Math.min(Field.SIZE - 1, centerCell.y + 1);
+
+        for (int y = minY; y <= maxY; y++) {
+            for (int x = minX; x <= maxX; x++) {
+                if (x == centerCell.x && y == centerCell.y) continue;
+                if (predicate.test(field.getCell(x, y))) count++;
+            }
+        }
+        return count;
     }
 
+    /** Возвращает клетки области 3×3. */
     public List<Cell> getCellsIn3x3area(Cell centerCell, Predicate<Cell> predicate) {
-        return getCellsIn3x3area(centerCell).stream().filter(predicate).collect(Collectors.toList());
+        return collectArea(centerCell, predicate, true);
     }
 
-    public List<Cell> getCellsIn3x3area(Cell centerCell) {
-        return getAllCells().stream()
-                .filter(cell -> Math.abs(cell.y - centerCell.y) <= 1)
-                .filter(cell -> Math.abs(cell.x - centerCell.x) <= 1)
-                .collect(Collectors.toList());
+    /** Собирает клетки области. */
+    private List<Cell> collectArea(Cell centerCell, Predicate<Cell> predicate, boolean includeCenter) {
+        List<Cell> result = new ArrayList<>(9);
+        int minX = Math.max(0, centerCell.x - 1);
+        int maxX = Math.min(Field.SIZE - 1, centerCell.x + 1);
+        int minY = Math.max(0, centerCell.y - 1);
+        int maxY = Math.min(Field.SIZE - 1, centerCell.y + 1);
+
+        for (int y = minY; y <= maxY; y++) {
+            for (int x = minX; x <= maxX; x++) {
+                if (!includeCenter && x == centerCell.x && y == centerCell.y) continue;
+                Cell cell = field.getCell(x, y);
+                if (predicate.test(cell)) result.add(cell);
+            }
+        }
+        return result;
     }
 }

@@ -8,17 +8,28 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
 
+/** Выбирает сложность игры. */
 public class DifficultySelector extends InteractiveObject {
+    /** Максимальная сложность. */
     private static final int MAX_DIFFICULTY = 45;
+    /** Минимальная сложность. */
     private static final int MIN_DIFFICULTY = 5;
+    /** Шаг сложности. */
     private static final int DIFFICULTY_STEP = 5;
+    /** Ширина по умолчанию. */
     private static final int DEFAULT_WIDTH = 49;
+    /** Сложность по умолчанию. */
     private static final int DEFAULT_DIFFICULTY_SETTING = 10;
+    /** Выбранная сложность. */
     private int difficultySetting;
+    /** Стрелка уменьшения сложности. */
     private final Arrow difficultyDownArrow;
+    /** Стрелка увеличения сложности. */
     private final Arrow difficultyUpArrow;
+    /** Полосы сложности. */
     private final Image[] bars = new Image[MAX_DIFFICULTY / 5];
 
+    /** Создаёт экземпляр DifficultySelector. */
     public DifficultySelector(int x, int y) {
         super(x, y);
 
@@ -31,6 +42,7 @@ public class DifficultySelector extends InteractiveObject {
         createBars();
     }
 
+    /** Создаёт полосы сложности. */
     private void createBars() {
         for (int i = 0; i < bars.length; i++) {
             int x = getBarHorizontalPosition(i);
@@ -49,10 +61,12 @@ public class DifficultySelector extends InteractiveObject {
         }
     }
 
+    /** Возвращает горизонтальную позицию полосы. */
     private int getBarHorizontalPosition(int i) {
         return (i * 4) + this.x + difficultyDownArrow.width + 2;
     }
 
+    /** Рисует объект на экране. */
     @Override
     public void draw() {
         drawBars();
@@ -60,6 +74,7 @@ public class DifficultySelector extends InteractiveObject {
         printDifficultyName();
     }
 
+    /** Рисует полосы сложности. */
     private void drawBars() {
         final int barsCount = difficultySetting / 5;
 
@@ -68,17 +83,20 @@ public class DifficultySelector extends InteractiveObject {
         }
     }
 
+    /** Рисует стрелки сложности. */
     private void drawDifficultyArrows() {
         difficultyDownArrow.draw();
         difficultyUpArrow.draw();
     }
 
+    /** Печатает название сложности. */
     private void printDifficultyName() {
         String difficultyName = Options.getDifficultyName(this.difficultySetting);
         Color nameColor = Theme.MAIN_MENU_QUOTE_FRONT.getColor();
         Printer.print(difficultyName, nameColor, x + width, y + height + 1, Printer.Align.RIGHT);
     }
 
+    /** Обрабатывает левый клик. */
     @Override
     public void onLeftClick() {
         if (difficultyDownArrow.covers(latestClickX, latestClickY)) {
@@ -90,18 +108,21 @@ public class DifficultySelector extends InteractiveObject {
         }
     }
 
+    /** Увеличивает сложность. */
     public void difficultyUp() {
         difficultyUpArrow.onLeftClick();
         if (difficultySetting < MAX_DIFFICULTY)
             difficultySetting += DIFFICULTY_STEP;
     }
 
+    /** Уменьшает сложность. */
     public void difficultyDown() {
         difficultyDownArrow.onLeftClick();
         if (difficultySetting > MIN_DIFFICULTY)
             difficultySetting -= DIFFICULTY_STEP;
     }
 
+    /** Возвращает выбранную сложность. */
     public int getDifficultySetting() {
         return difficultySetting;
     }

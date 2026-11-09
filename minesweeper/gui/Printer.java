@@ -6,27 +6,34 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 
 import java.util.Arrays;
 
-/**
- * Utility class for drawing text information using symbol images.
- */
-
+/** Печатает текст пиксельными символами. */
 public class Printer {
+    /** Маркер центрирования. */
     public static final int CENTER = Integer.MIN_VALUE;
+    /** Расстояние между символами. */
     private static final int CHAR_SPACING = 1;
+    /** Высота строки. */
     private static final int LINE_HEIGHT = 9;
+    /** Кэш значений. */
     public static final Cache<Character, Image> cache;
     /**
      * Признак, что таблица символов шрифта уже собрана.
      */
     private static boolean cacheInitialized;
+    /** Включена ли обводка текста. */
     private static boolean isStrokeEnabled;
 
+    /** Выравнивание текста. */
     public enum Align {
-        LEFT, RIGHT
+        /** Выравнивание по левому краю. */
+        LEFT,
+        /** Выравнивание по правому краю. */
+        RIGHT
     }
 
     static {
         cache = new Cache<Character, Image>(128) {
+            /** Создаёт и сохраняет значение. */
             @Override
             protected Image put(Character character) {
                 if (!cacheInitialized) {
@@ -44,37 +51,48 @@ public class Printer {
         };
     }
 
+    /** Печатает текст. */
     public static void print(String text, int x, int y) {
         print(text, Color.WHITE, x, y, Align.LEFT);
     }
 
+    /** Печатает текст. */
     public static void print(String text, Color color, int x, int y) {
         print(text, color, x, y, Align.LEFT);
     }
 
+    /** Печатает текст. */
     public static void print(String input, Color color, int drawX, int drawY, Align align) {
         isStrokeEnabled = false;
         drawX = adjustDrawX(input, drawX);
         drawY = adjustDrawY(drawY);
         final int caretBase = drawX;
 
+        /** Курсор посимвольной печати текста. */
         class Caret {
+            /** Координата X. */
             private int x, y;
 
+            /** Создаёт экземпляр Caret. */
             private Caret(int x, int y) {
                 this.x = x;
                 this.y = y;
             }
 
+            /** Переходит на новую строку. */
             private void gotoNewLine() {
                 x = caretBase;
                 y += LINE_HEIGHT;
             }
 
+            /** Переходит к следующему символу. */
             private void gotoNextSymbol(char c) {
-                x += calculateWidth(Character.toString(c));
+                if (!charIsStrokeMarkup(c)) {
+                    x += symbolWidth(c);
+                }
             }
 
+            /** Переходит к началу строки. */
             private void gotoStartPosition(String line) {
                 if (align == Align.RIGHT) x = caretBase - calculateWidth(line);
             }
@@ -93,6 +111,7 @@ public class Printer {
         }
     }
 
+    /** Рисует символ. */
     private static void drawSymbol(char c, Color color, int x, int y) {
         if (charIsStrokeMarkup(c)) {
             isStrokeEnabled = !isStrokeEnabled;
@@ -114,10 +133,18 @@ public class Printer {
         return symbol == null ? cache.get(' ') : symbol;
     }
 
+    /** Возвращает ширину символа. */
+    private static int symbolWidth(char c) {
+        Image symbol = getSymbol(c);
+        return symbol == null ? 0 : symbol.getMatrix()[0].length + CHAR_SPACING;
+    }
+
+    /** Сообщает, является ли символ разметкой обводки. */
     private static boolean charIsStrokeMarkup(char c) {
         return (c == '<') || (c == '>');
     }
 
+    /** Рисует обводку символа. */
     private static void stroke(int x, int y, Image symbol) {
         symbol.changeColor(Theme.TEXT_SHADOW.getColor(), 1);
         symbol.draw(x - 1, y);
@@ -126,6 +153,7 @@ public class Printer {
         symbol.draw(x, y + 1);
     }
 
+    /** Корректирует X для выравнивания. */
     private static int adjustDrawX(String input, int drawX) {
         if (drawX == CENTER) {
             int width = calculateWidth(input);
@@ -134,6 +162,7 @@ public class Printer {
         return drawX;
     }
 
+    /** Корректирует Y для выравнивания. */
     private static int adjustDrawY(int drawY) {
         if (drawY == CENTER) {
             drawY = 0;
@@ -141,14 +170,11 @@ public class Printer {
         return drawY;
     }
 
+    /** Вычисляет ширину текста. */
     public static int calculateWidth(String s) {
         int width = 0;
-        char[] chars = s.toLowerCase().toCharArray();
-        for (char c : chars) {
-            if (charIsStrokeMarkup(c)) continue;
-            Image symbol = getSymbol(c);
-            if (symbol == null) continue;
-            width += (symbol.getMatrix()[0].length + CHAR_SPACING);
+        for (char c : s.toLowerCase().toCharArray()) {
+            if (!charIsStrokeMarkup(c)) width += symbolWidth(c);
         }
         return width;
     }

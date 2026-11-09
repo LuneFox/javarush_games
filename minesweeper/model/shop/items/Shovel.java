@@ -6,9 +6,12 @@ import com.javarush.games.minesweeper.gui.ShopItemStatusBar;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 
+/** Золотая лопата, удваивающая золото. */
 public class Shovel extends ShopItem {
+    /** Полоса состояния предмета. */
     protected final ShopItemStatusBar statusBar;
 
+    /** Создаёт экземпляр Shovel. */
     public Shovel(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL);
@@ -20,15 +23,18 @@ public class Shovel extends ShopItem {
         statusBar = new ShopItemStatusBar(99, Color.DARKORANGE, this);
     }
 
+    /** Активирует предмет. */
     @Override
     public void activate() {
         lease();
     }
 
+    /** Рисует полосу состояния. */
     public void drawStatusBar() {
         statusBar.draw();
     }
 
+    /** Возвращает описание лопаты. */
     private String getShovelDescription() {
         return "Следующие 5 шагов\n" +
                 "вы будете получать\n" +

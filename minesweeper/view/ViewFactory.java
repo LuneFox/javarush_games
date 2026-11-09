@@ -4,13 +4,17 @@ import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.impl.*;
 
+/** Создаёт экран по фазе игры. */
 public class ViewFactory {
 
+    /** Создаёт экземпляр ViewFactory. */
     public ViewFactory(MinesweeperGame game) {
         this.game = game;
     }
 
+    /** Ссылка на игру. */
     private final MinesweeperGame game;
+    /** Создаёт экран. */
     public View createView(Phase phase) {
         switch (phase) {
             case ABOUT:

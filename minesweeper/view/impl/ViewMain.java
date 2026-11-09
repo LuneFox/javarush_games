@@ -15,7 +15,9 @@ import com.javarush.games.minesweeper.view.View;
 
 import java.util.Date;
 
+/** Главное меню игры. */
 public class ViewMain extends View {
+    /** Цитаты главного меню. */
     private final String[] quotes = new String[]{
             "Самая взрывная\nголоволомка!",
             "Осторожно, игра\nзаминирована!",
@@ -28,38 +30,50 @@ public class ViewMain extends View {
             "Втыкая флаг,\nне задень мину!",
             "Какой идиот\nзакопал цифры?!"
     };
+    /** Текущая цитата меню. */
     private String quote;
+    /** Время последней смены цитаты. */
     private Date lastQuoteDate;
 
+    /** Кнопка открытия настроек. */
     final Button optionsButton = new Button(61, 64, 36, 9, "опции", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.OPTIONS);
         }
     };
+    /** Кнопка «Об игре». */
     final Button aboutButton = new Button(61, 76, 36, 9, "об игре", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.ABOUT);
         }
     };
+    /** Кнопка «Рекорды». */
     final Button recordsButton = new Button(2, 88, "рекорды", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.RECORDS);
         }
     };
+    /** Кнопка старта. */
     final Button startButton = new Button(61, 88, 36, 9, "старт", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             game.startNewGame();
         }
     };
+    /** Логотип игры. */
     final FloatingImage logo = new FloatingImage(ImageType.PICTURE_MAIN_LOGO, this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
@@ -72,17 +86,20 @@ public class ViewMain extends View {
             }
         }
     };
+    /** Фоновое изображение. */
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
+    /** Создаёт экземпляр ViewMain. */
     public ViewMain(MinesweeperGame game) {
         super(game);
         lastQuoteDate = new Date();
         quote = quotes[0];
     }
 
+    /** Обновляет состояние. */
     @Override
     public void update() {
-        View.setGameOverShowDelay(0); // solves synchronization / control disable bug
+        View.setGameOverShowDelay(0); // устраняет рассинхронизацию и блокировку управления
 
         background.draw();
         Printer.print(Options.isDeveloperModeEnabled() ? "Developer Mode" : "JavaRush",
@@ -94,6 +111,7 @@ public class ViewMain extends View {
         super.update();
     }
 
+    /** Рисует кнопки главного меню. */
     private void drawMenuButtons() {
         optionsButton.draw();
         aboutButton.draw();
@@ -102,6 +120,7 @@ public class ViewMain extends View {
         startButton.draw();
     }
 
+    /** Печатает текст под логотипом. */
     private void printTextUnderLogo() {
         if (game.isStopped() || game.isFirstMove()) {
             printRandomQuote();
@@ -110,6 +129,7 @@ public class ViewMain extends View {
         }
     }
 
+    /** Обновляет текст кнопки старта. */
     private void replaceStartButtonText() {
         if (game.isStopped() || game.isFirstMove()) {
             if (!startButton.getLabelText().equals("старт")) startButton.replaceText(36, "старт");
@@ -118,21 +138,24 @@ public class ViewMain extends View {
         }
     }
 
+    /** Печатает случайную цитату. */
     private void printRandomQuote() {
         if (new Date().getTime() - lastQuoteDate.getTime() > 30000) {
             quote = quotes[game.getRandomNumber(quotes.length)];
             lastQuoteDate = new Date();
         }
-        Printer.print(quote, Theme.TEXT_SHADOW.getColor(), 5, 44); // shadow
+        Printer.print(quote, Theme.TEXT_SHADOW.getColor(), 5, 44); // тень
         Printer.print(quote, Theme.MAIN_MENU_QUOTE_FRONT.getColor(), 4, 44);
     }
 
+    /** Печатает подсказку о продолжении игры. */
     private void printResumeGame() {
         String resume = "Игра приостановлена\nESC - продолжить";
-        Printer.print(resume, Theme.TEXT_SHADOW.getColor(), 5, 44); // shadow
+        Printer.print(resume, Theme.TEXT_SHADOW.getColor(), 5, 44); // тень
         Printer.print(resume, Theme.LABEL.getColor(), 4, 44);
     }
 
+    /** Печатает лучший счёт. */
     private void printTopScore() {
         final long topScore = game.getPlayer().getScore().getTopScore();
         if (topScore > 0) {

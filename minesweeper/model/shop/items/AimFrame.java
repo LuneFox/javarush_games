@@ -5,10 +5,15 @@ import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.Drawable;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 
+/** Рамка прицела для сканера и бомбы. */
 public class AimFrame implements Drawable {
+    /** Координата X. */
     private int x;
+    /** Координата Y. */
     private int y;
+    /** Отступ рамки. */
     private final int padding;
+    /** Изображение. */
     private final Image image;
     /**
      * Координата X клетки, на которую наведена рамка.
@@ -19,6 +24,7 @@ public class AimFrame implements Drawable {
      */
     private int focusY;
 
+    /** Создаёт экземпляр AimFrame. */
     public AimFrame(Cell initialFocusCell, int padding, ImageType imageType) {
         this.focusX = initialFocusCell.x;
         this.focusY = initialFocusCell.y;
@@ -27,6 +33,7 @@ public class AimFrame implements Drawable {
         setPosition(getDestinationX(), getDestinationY());
     }
 
+    /** Рисует объект на экране. */
     @Override
     public void draw() {
         int moveSpeed = 5;
@@ -37,24 +44,29 @@ public class AimFrame implements Drawable {
         image.draw(x, y);
     }
 
+    /** Задаёт позицию. */
     @Override
     public void setPosition(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    /** Возвращает координату X цели. */
     private int getDestinationX() {
-        return focusX * 10 + padding;
+        return focusX * Cell.PIXEL_SIZE + padding;
     }
 
+    /** Возвращает координату Y цели. */
     private int getDestinationY() {
-        return focusY * 10 + padding;
+        return focusY * Cell.PIXEL_SIZE + padding;
     }
 
+    /** Сообщает, наведена ли рамка на другую клетку. */
     public boolean isNotFocusedOnCell(Cell cell) {
         return focusX != cell.x || focusY != cell.y;
     }
 
+    /** Наводит рамку на клетку. */
     public void focusOnCell(Cell cell) {
         this.focusX = cell.x;
         this.focusY = cell.y;

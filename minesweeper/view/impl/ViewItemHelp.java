@@ -10,21 +10,27 @@ import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.shop.items.ShopItem;
 import com.javarush.games.minesweeper.view.View;
 
+/** Экран справки о предмете магазина. */
 public class ViewItemHelp extends View {
 
+    /** Кнопка закрытия экрана. */
     private final Button closeButton = new Button(88, 2, "x", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.SHOP);
         }
     };
+    /** Фоновое изображение. */
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
+    /** Создаёт экземпляр ViewItemHelp. */
     public ViewItemHelp(MinesweeperGame game) {
         super(game);
     }
 
+    /** Обновляет состояние. */
     @Override
     public void update() {
         ShopItem displayItem = game.getShop().getHelpDisplayItem();

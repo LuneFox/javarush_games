@@ -7,9 +7,12 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.shop.Shop;
 
+/** Сканер, открывающий безопасную клетку. */
 public class Scanner extends ShopItem {
+    /** Рамка прицела или ячейки. */
     private final AimFrame frame;
 
+    /** Создаёт экземпляр Scanner. */
     public Scanner(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SCANNER);
@@ -21,6 +24,7 @@ public class Scanner extends ShopItem {
         frame = new AimFrame(game.getCell(4, 4), framePadding, ImageType.BOARD_SCANNER_FRAME);
     }
 
+    /** Наводит предмет на клетку. */
     public void aim(Cell cell) {
         if (!isActivated) return;
 
@@ -32,6 +36,7 @@ public class Scanner extends ShopItem {
         use(cell);
     }
 
+    /** Использует предмет. */
     private void use(Cell cell) {
         deactivate();
         game.scanNeighbors(cell);
@@ -41,6 +46,7 @@ public class Scanner extends ShopItem {
         putToStock();
     }
 
+    /** Активирует предмет. */
     @Override
     public void activate() {
         if (unableToActivate()) return;
@@ -48,17 +54,20 @@ public class Scanner extends ShopItem {
         game.getShop().getBomb().emptyStock();
     }
 
+    /** Сообщает, нельзя ли активировать предмет. */
     private boolean unableToActivate() {
         if (game.isStopped() || isActivated) return true;
         return game.getShop().getBomb().isActivated;
     }
 
+    /** Рисует рамку прицела. */
     public void drawFrame() {
         if (!isActivated) return;
         game.setInterlacedEffect(false);
         frame.draw();
     }
 
+    /** Возвращает описание сканера. */
     private String getScannerDescription() {
         return "Откроет безопасную\n" +
                 "клетку в указанном\n" +

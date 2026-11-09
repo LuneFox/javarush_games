@@ -1,30 +1,31 @@
 package com.javarush.games.minesweeper.model.shop;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.ShakeHelper;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
 import com.javarush.games.minesweeper.model.InteractiveObject;
-import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.shop.items.ShopItem;
-import com.javarush.games.minesweeper.view.impl.ViewShop;
 
-/**
- * Clicking on this slot will sell the player the corresponding item.
- */
-
+/** Интерактивная ячейка витрины магазина. */
 public class ShopSlot extends InteractiveObject {
+    /** Длительность нажатия. */
     private static final int PRESS_DURATION = 5;
+    /** Глубина нажатия. */
     private static final int PRESS_DEPTH = 1;
+    /** Оставшееся время нажатия. */
     private int pressedCountDown;
 
+    /** Предмет магазина. */
     private ShopItem item;
+    /** Рамка прицела или ячейки. */
     private Image frame;
+    /** Анимация дрожания активного предмета. */
     private final ShakeHelper activatedShaker = new ShakeHelper();
 
+    /** Создаёт экземпляр ShopSlot. */
     public ShopSlot(int x, int y) {
         frame = Image.cache.get(ImageType.SHOP_SHOWCASE_FRAME);
         this.x = x;
@@ -33,6 +34,7 @@ public class ShopSlot extends InteractiveObject {
         this.width = 20;
     }
 
+    /** Рисует объект на экране. */
     @Override
     public void draw() {
         final int shift = shiftFrame() ? PRESS_DEPTH : 0;
@@ -44,6 +46,7 @@ public class ShopSlot extends InteractiveObject {
         printInfoOverlay();
     }
 
+    /** Сдвигает рамку при нажатии. */
     private boolean shiftFrame() {
         if (pressedCountDown > 0) {
             frame = Image.cache.get(ImageType.SHOP_SHOWCASE_FRAME_PRESSED);
@@ -55,6 +58,7 @@ public class ShopSlot extends InteractiveObject {
         }
     }
 
+    /** Меняет цвет рамки по состоянию предмета. */
     private void changeFrameColor() {
         Color frameColor;
         frameColor = (item.isUnobtainable()) ? Color.RED : Theme.SHOP_ITEM_FRAME_AVAILABLE.getColor();
@@ -62,6 +66,7 @@ public class ShopSlot extends InteractiveObject {
         frame.changeColor(frameColor, 3);
     }
 
+    /** Печатает стоимость или статус предмета. */
     private void printInfoOverlay() {
         if (item.getInStock() > 0 && !item.isActivated()) {
             printItemCost();
@@ -72,49 +77,54 @@ public class ShopSlot extends InteractiveObject {
         }
     }
 
+    /** Печатает стоимость предмета. */
     private void printItemCost() {
         Printer.print("<" + item.getCost() + ">", Color.YELLOW, x + 18, y + 10, Printer.Align.RIGHT);
     }
 
+    /** Печатает статус активного предмета. */
     private void printActivatedStatus() {
         Printer.print("<АКТ>", Color.YELLOW, x + 18 + activatedShaker.getShift(), y + 10, Printer.Align.RIGHT);
         Printer.print(item.getRemainingMovesText(), Color.MAGENTA, x + 18, y, Printer.Align.RIGHT);
     }
 
+    /** Печатает отметку об отсутствии товара. */
     private void printOutOfStockMarker() {
         Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), x + 18, y + 10, Printer.Align.RIGHT);
     }
 
+    /** Обрабатывает левый клик. */
     @Override
     public void onLeftClick() {
         pressedCountDown = PRESS_DURATION;
 
         if (item.isActivated()) {
             activatedShaker.startShaking();
-            PopUpMessage.show("Уже активировано");
+            game.showMessage("Уже активировано");
             return;
         }
 
         if (item.getInStock() <= 0) {
-            PopUpMessage.show("Нет в продаже");
+            game.showMessage("Нет в продаже");
             return;
         }
 
         if (item.isUnaffordable()) {
-            ViewShop.shakeMoney();
-            PopUpMessage.show("Не хватает золота");
+            game.shakeShopMoney();
+            game.showMessage("Не хватает золота");
             return;
         }
 
         game.getShop().sell(item);
     }
 
+    /** Обрабатывает правый клик. */
     @Override
     public void onRightClick() {
-        game.getShop().setHelpDisplayItem(item);
-        Phase.setActive(Phase.ITEM_HELP);
+        game.openItemHelp(item);
     }
 
+    /** Задаёт предмет. */
     public void setItem(ShopItem item) {
         this.item = item;
     }

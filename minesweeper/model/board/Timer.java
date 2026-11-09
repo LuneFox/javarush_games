@@ -1,23 +1,23 @@
 package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.engine.cell.Color;
-import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.Phase;
 
 import java.util.Date;
 
-/**
- * Red timer stripe that appears at the top of the screen when you play in time attack mode.
- */
-
+/** Полоса таймера для режима игры на время. */
 public class Timer extends InteractiveObject {
+    /** Лимит времени. */
     private final float TIME_LIMIT = 500F;
+    /** Цвета таймера. */
     private final Color[] COLORS = new Color[]{Color.RED, Color.DEEPPINK};
+    /** Оставшееся время. */
     private float time;
+    /** Время последнего тика таймера. */
     private long lastTickTime;
 
+    /** Создаёт экземпляр Timer. */
     public Timer() {
         super();
         x = 0;
@@ -28,6 +28,7 @@ public class Timer extends InteractiveObject {
         lastTickTime = getCurrentTime();
     }
 
+    /** Рисует объект на экране. */
     public void draw() {
         if (!Options.isTimerEnabled()) return;
         if (game.isStopped()) return;
@@ -40,6 +41,7 @@ public class Timer extends InteractiveObject {
         tick();
     }
 
+    /** Обновляет таймер. */
     public void tick() {
         if (!game.isStopped() && timeIsUp()) {
             initiateLoseByTimeout();
@@ -48,12 +50,13 @@ public class Timer extends InteractiveObject {
         }
     }
 
+    /** Завершает игру по истечении времени. */
     private void initiateLoseByTimeout() {
-        Phase.setActive(Phase.BOARD);
-        PopUpMessage.show("Время вышло!");
+        game.showMessage("Время вышло!");
         game.lose();
     }
 
+    /** Уменьшает оставшееся время. */
     private void countDown() {
         if (!Options.isTimerEnabled()) return;
         if (getCurrentTime() - lastTickTime < 1000) return;
@@ -62,12 +65,14 @@ public class Timer extends InteractiveObject {
         lastTickTime = getCurrentTime();
     }
 
+    /** Меняет цвета таймера. */
     public void swapColor() {
         Color swap = COLORS[0];
         COLORS[0] = COLORS[1];
         COLORS[1] = swap;
     }
 
+    /** Сбрасывает состояние в начальное. */
     public void reset() {
         if (Options.isTimerEnabled()) {
             time = TIME_LIMIT;
@@ -75,14 +80,17 @@ public class Timer extends InteractiveObject {
         }
     }
 
+    /** Сообщает, вышло ли время. */
     public boolean timeIsUp() {
         return (Options.isTimerEnabled() && time <= 0);
     }
 
+    /** Возвращает бонус за оставшееся время. */
     public int getScoreBonus() {
         return (Options.isTimerEnabled()) ? ((int) (time / 50) * (Options.getDifficulty() / 5)) : 0;
     }
 
+    /** Возвращает текущее время. */
     private long getCurrentTime() {
         return new Date().getTime();
     }

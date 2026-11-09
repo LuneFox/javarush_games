@@ -4,28 +4,26 @@ import com.javarush.games.minesweeper.gui.Effect;
 
 import java.util.Arrays;
 
-/**
- * Utility class for generating images of different kinds.
- */
-
+/** Создаёт матрицы изображений, спрайтов и рамок. */
 public class ImageCreator {
+    /** Разница между символом цифры и числом. */
     public static final int CHAR_AND_INT_DIFFERENCE = 48;
 
-    // IMAGE GENERATION
+    // СОЗДАНИЕ ИЗОБРАЖЕНИЙ
 
-    /**
-     * Fill an array with one-digit numbers from strings.
-     */
+    /** Создаёт матрицу из строк. */
     public static int[][] makeArray(String... strings) {
         int height = detectHeight(strings);
         int width = detectWidth(strings);
         return transformStringsToArray(strings, height, width);
     }
 
+    /** Определяет высоту матрицы. */
     private static int detectHeight(String[] strings) {
         return strings.length;
     }
 
+    /** Определяет ширину матрицы. */
     private static int detectWidth(String[] strings) {
         return Arrays.stream(strings)
                 .mapToInt(String::length)
@@ -33,6 +31,7 @@ public class ImageCreator {
                 .orElse(0);
     }
 
+    /** Преобразует строки в матрицу. */
     private static int[][] transformStringsToArray(String[] strings, int height, int width) {
         int[][] result = new int[height][width];
 
@@ -47,10 +46,7 @@ public class ImageCreator {
         return result;
     }
 
-    /**
-     * Split string by width and fill the array with numbers.
-     * e.g. String with length=12 and width=3 will make a 3x4 array.
-     */
+    /** Создаёт матрицу из строк. */
     public static int[][] makeArray(String singleString, int width) {
         int height = singleString.length() / width;
         int[][] result = new int[height][width];
@@ -67,10 +63,7 @@ public class ImageCreator {
         return result;
     }
 
-    /**
-     * Place a sprite over an empty 10x10 grid, top and left are paddings.
-     * Useful to place and align small images over 10x10 pixel cells without filling empty spaces with zeros.
-     **/
+    /** Создаёт спрайт с отступами. */
     public static int[][] makeSprite(String string, int width, int top, int left) {
         int height = string.length() / width;
         if ((width + left > 10) || (height + top > 10)) {
@@ -87,14 +80,18 @@ public class ImageCreator {
         return result;
     }
 
+    // СОЗДАНИЕ РАМОК
 
-    // FRAME GENERATION
-
+    /** Прозрачный цвет рамки. */
     private static final int FRAME_COLOR_TRANSPARENT = 0;
+    /** Цвет фона рамки. */
     private static final int FRAME_COLOR_BACKGROUND = 1;
+    /** Цвет тени рамки. */
     private static final int FRAME_COLOR_SHADOW = 2;
+    /** Цвет обводки рамки. */
     private static final int FRAME_COLOR_STROKE = 3;
 
+    /** Создаёт матрицу рамки. */
     public static int[][] createFrame(int sizeX, int sizeY, Effect... effects) {
         final boolean addShadow = Arrays.asList(effects).contains(Effect.SHADOW);
         final boolean addStroke = Arrays.asList(effects).contains(Effect.STROKE);
@@ -108,6 +105,7 @@ public class ImageCreator {
         return frame;
     }
 
+    /** Заполняет фон матрицы. */
     private static void fillBackground(int[][] frame) {
         for (int y = 0; y < frame.length; y++) {
             for (int x = 0; x < frame[0].length; x++) {
@@ -116,41 +114,45 @@ public class ImageCreator {
         }
     }
 
+    /** Добавляет тень рамки. */
     private static void addFrameShadow(int[][] frame) {
-        // Draw bottom borderline without left pixel;
+        // Нижняя граница без левого пикселя.
         for (int x = 0; x < frame[0].length; x++) {
             frame[frame.length - 1][x] = (x == 0) ? FRAME_COLOR_TRANSPARENT : FRAME_COLOR_SHADOW;
         }
 
-        // Draw right borderline without top pixel;
+        // Правая граница без верхнего пикселя.
         for (int y = 0; y < frame.length; y++) {
             frame[y][frame[0].length - 1] = (y == 0) ? FRAME_COLOR_TRANSPARENT : FRAME_COLOR_SHADOW;
         }
     }
 
+    /** Добавляет внутреннюю обводку. */
     private static void addInnerStroke(int[][] frame, boolean addShadow) {
         int sizeY = frame.length - (addShadow ? 1 : 0);
         int sizeX = frame[0].length - (addShadow ? 1 : 0);
 
-        // Draw top and bottom lines
+        // Верхняя и нижняя линии.
         for (int x = 0; x < sizeX; x++) {
             frame[0][x] = FRAME_COLOR_STROKE;
             frame[sizeY - 1][x] = FRAME_COLOR_STROKE;
         }
 
-        // Draw remaining left and right lines
+        // Остальные левые и правые линии.
         for (int y = 1; y < sizeY - 1; y++) {
             frame[y][0] = FRAME_COLOR_STROKE;
             frame[y][sizeX - 1] = FRAME_COLOR_STROKE;
         }
     }
 
+    // СОЗДАНИЕ КЛЕТОК
 
-    // CELL GENERATION
-
+    /** Светлый цвет клетки. */
     private static final int CELL_LIGHT_COLOR = 2;
+    /** Тёмный цвет клетки. */
     private static final int CELL_SHADOW_COLOR = 3;
 
+    /** Создаёт матрицу клетки. */
     public static int[][] createCell(int sizeX, int sizeY, boolean bevelUp) {
         int[][] cell = new int[sizeY][sizeX];
         fillBackground(cell);
@@ -158,6 +160,7 @@ public class ImageCreator {
         return cell;
     }
 
+    /** Рисует скос клетки. */
     private static void bevelCell(int[][] cell, int sizeX, int sizeY, boolean up) {
         for (int x = 0; x < sizeX; x++) {
             cell[0][x] = CELL_LIGHT_COLOR;

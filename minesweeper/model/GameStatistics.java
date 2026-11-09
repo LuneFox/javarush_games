@@ -7,10 +7,14 @@ import com.javarush.games.minesweeper.model.shop.items.Dice;
 import java.util.HashMap;
 import java.util.Map;
 
+/** Сводная статистика завершённой партии. */
 public class GameStatistics {
+    /** Ссылка на игру. */
     private static MinesweeperGame game;
+    /** Таблица статистики. */
     private static final Map<String, String> table = new HashMap<>();
 
+    /** Обновляет состояние. */
     public static void update() {
         table.put("result", getResult());
         table.put("total", getTotalScore());
@@ -26,36 +30,43 @@ public class GameStatistics {
         table.put("difficulty", getDifficulty());
     }
 
+    /** Возвращает значение из кэша. */
     public static String get(String key) {
         return table.getOrDefault(key, "не найдено");
     }
 
+    /** Возвращает результат партии. */
     private static String getResult() {
         return game.isWon() ? "<победа!>" : "<не повезло!>";
     }
 
+    /** Возвращает итоговый счёт. */
     private static String getTotalScore() {
         return Integer.toString(game.getScore().getTotalScore());
     }
 
+    /** Возвращает описание очков за клетки. */
     private static String getCellScoreInfo() {
-        long countCells = game.getAllCells(Cell::isScored).size();
+        int countCells = game.countCells(Cell::isScored);
         return countCells + "*" + Options.getDifficulty() + " = " +
                 countCells * Options.getDifficulty();
     }
 
+    /** Возвращает описание очков за мины. */
     private static String getMinesScoreInfo() {
         if (!game.isWon()) return "не учтено";
-        long countMines = game.getAllCells(Cell::isMined).size();
+        int countMines = game.countCells(Cell::isMined);
         return countMines + "*" + 20 * Options.getDifficulty() + " = " +
                 countMines * 20 * Options.getDifficulty();
     }
 
+    /** Возвращает описание очков кубика. */
     private static String getDiceScoreInfo() {
         return getDice().getAverageLuck() + " * " + getDice().getRollsCount() + " * " + Options.getDifficulty() + " = " +
                 getDiceScore();
     }
 
+    /** Возвращает описание очков за золото. */
     private static String getMoneyScoreInfo() {
         if (!game.isWon()) return "не учтено";
         final int money = game.getPlayer().getMoneyBalance();
@@ -63,6 +74,7 @@ public class GameStatistics {
                 money * Options.getDifficulty();
     }
 
+    /** Возвращает описание штрафа за щиты. */
     private static String getShieldsScoreInfo() {
         int count = game.getPlayer().getBrokenShields();
         if (count == 0) return "0";
@@ -70,30 +82,37 @@ public class GameStatistics {
                 game.getScore().getLostScore();
     }
 
+    /** Возвращает очки кубика. */
     private static String getDiceScore() {
         return Integer.toString(game.getScore().getDiceScore());
     }
 
+    /** Возвращает очки за время. */
     private static String getTimerScore() {
         return Integer.toString(game.getScore().getTimerScore());
     }
 
+    /** Возвращает среднюю удачу кубика. */
     private static String getDiceAvgLuck() {
         return Double.toString(getDice().getAverageLuck());
     }
 
+    /** Возвращает число затронутых кубиком клеток. */
     private static String getDiceRollsCount() {
         return Integer.toString(getDice().getRollsCount());
     }
 
+    /** Возвращает сложность игры. */
     private static String getDifficulty() {
         return Integer.toString(Options.getDifficulty());
     }
 
+    /** Возвращает предмет «Кубик». */
     private static Dice getDice() {
         return game.getShop().getDice();
     }
 
+    /** Задаёт игру. */
     public static void setGame(MinesweeperGame game) {
         GameStatistics.game = game;
     }

@@ -15,31 +15,37 @@ import com.javarush.games.minesweeper.model.player.Score;
 import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.items.Bomb;
 import com.javarush.games.minesweeper.model.shop.items.Scanner;
+import com.javarush.games.minesweeper.model.shop.items.ShopItem;
 import com.javarush.games.minesweeper.view.View;
+import com.javarush.games.minesweeper.view.impl.ViewShop;
 
 import java.util.List;
 import java.util.function.Predicate;
 
 /**
- * Main game class. Part of the model.
- * Cannot remove it from root because it is required by JavaRush Game Engine to compile the game.
- * Also plays role the Facade for Controller and View (central node to get to all possible game elements).
+ * Точка входа JavaRush и фасад игры: связывает модель, контроллер и представление,
+ * а также отдаёт контроллеру и представлению единый доступ к игровым объектам.
  */
 public class MinesweeperGame extends Game {
+    /** Версия игры. */
     public static final String VERSION = "1.25";
 
+    /** Контроллер игры. */
     private Controller controller;
+    /** Виртуальный экран. */
     private Display display;
+    /** Менеджер поля. */
     private BoardManager boardManager;
+    /** Магазин. */
     private Shop shop;
+    /** Игрок. */
     private Player player;
+    /** Результат партии. */
     private Result result;
+    /** Признак остановки игры. */
     private boolean isStopped;
 
-    /**
-     * Everything that happens during the launch and before the user starts interacting.
-     * Creates all important instances and sets the game field parameters.
-     */
+    /** Инициализирует игру и создаёт её объекты. */
     @Override
     public void initialize() {
         super.showGrid(false);
@@ -54,32 +60,31 @@ public class MinesweeperGame extends Game {
         controller = new Controller(this);
         boardManager = new BoardManager(this);
         shop = new Shop(this);
+        Phase.linkShopSlots(shop.getShowCaseSlots());
         player = new Player(this);
         isStopped = true;
 
         Phase.setActive(Phase.MAIN);
     }
 
-    /**
-     * Defines what happens at every tick.
-     * In this particular case it updates the view related to current game phase
-     * and draws pixels from the invisible Display on real game screen.
-     *
-     * @param step count of frames since the launch of the application.
-     */
+    /** Обновляет представление и выводит кадр на экран. */
     @Override
     public void onTurn(int step) {
         Phase.updateView();
         display.draw();
     }
 
+    /**
+     * Начинает новую партию с текущими настройками.
+     */
     public void startNewGame() {
         Options.apply();
         resetAssets();
         Phase.setActive(Phase.BOARD);
-        PopUpMessage.show("Новая игра");
+        showMessage("Новая игра");
     }
 
+    /** Сбрасывает поле, игрока и магазин перед новой партией. */
     private void resetAssets() {
         boardManager.reset();
         player.reset();
@@ -120,23 +125,57 @@ public class MinesweeperGame extends Game {
     }
 
     /*
-     * Facade
+     * Фасад
      */
 
+    /** Обрабатывает левый клик по игровому полю. */
     public void leftClickOnBoard(int x, int y) {
-        boardManager.interactWithLeftClick(x, y);
+        boardManager.handleLeftClick(x, y);
         shop.checkExpiredItems();
     }
 
+    /** Обрабатывает правый клик по игровому полю. */
     public void rightClickOnBoard(int x, int y) {
-        boardManager.interactWithRightClick(x, y);
+        boardManager.handleRightClick(x, y);
         shop.checkExpiredItems();
     }
 
-    public void aimWithScannerOrBomb(Cell cell) {
+    /**
+     * Наводит активный предмет магазина на клетку.
+     */
+    public void aimAtCell(Cell cell) {
         if (isStopped()) return;
         shop.aimWithScanner(cell);
         shop.aimWithBomb(cell);
+    }
+
+    /**
+     * Показывает короткое сообщение поверх игры.
+     */
+    public void showMessage(String message) {
+        PopUpMessage.show(message);
+    }
+
+    /**
+     * Открывает экран магазина.
+     */
+    public void openShop() {
+        Phase.setActive(Phase.SHOP);
+    }
+
+    /**
+     * Открывает справку по предмету магазина.
+     */
+    public void openItemHelp(ShopItem item) {
+        shop.setHelpDisplayItem(item);
+        Phase.setActive(Phase.ITEM_HELP);
+    }
+
+    /**
+     * Запускает анимацию тряски золота в магазине.
+     */
+    public void shakeShopMoney() {
+        ViewShop.shakeMoney();
     }
 
     /**
@@ -148,22 +187,22 @@ public class MinesweeperGame extends Game {
         return destroyed;
     }
 
-    public boolean isScannerOrBombActivated() {
+    /**
+     * Сообщает, наводится ли сейчас сканер или бомба.
+     */
+    public boolean isAiming() {
         Scanner scanner = shop.getScanner();
         Bomb bomb = shop.getBomb();
         return scanner.isActivated() || bomb.isActivated();
     }
 
     /*
-     * Method shortcuts
+     * Короткие методы
      */
 
+    /** Возвращает клетку по координатам. */
     public Cell getCell(int x, int y) {
         return boardManager.getCell(x, y);
-    }
-
-    public void refreshOpenedCellsGraphics() {
-        boardManager.refreshOpenedCellsGraphics();
     }
 
     /**
@@ -173,121 +212,154 @@ public class MinesweeperGame extends Game {
         boardManager.refreshAllCellsGraphics();
     }
 
+    /** Сканирует область вокруг клетки. */
     public void scanNeighbors(Cell cell) {
         boardManager.scanNeighbors(cell);
     }
 
+    /** Рисует игровое поле. */
     public void drawGameBoard() {
         boardManager.draw();
     }
 
+    /** Пытается доиграть партию автоходами. */
     @DeveloperOption
     public void autoSolve() {
         boardManager.autoSolve();
     }
 
+    /** Автоматически ставит флажки. */
     @DeveloperOption
     public void autoFlag() {
         boardManager.autoFlag();
     }
 
+    /** Автоматически открывает клетки. */
     @DeveloperOption
     public void autoOpen() {
         boardManager.autoOpen();
     }
 
+    /** Применяет сканер к случайной безопасной клетке. */
     @DeveloperOption
     public void autoScan() {
         boardManager.autoScan();
     }
 
+    /** Возвращает количество флажков у игрока. */
     public int countPlayerFlags() {
         return player.countFlags();
     }
 
+    /** Запрещает дальнейшее каскадное открытие. */
     public void stopRecursion() {
         boardManager.setRecursiveMove(false);
     }
 
+    /** Запрещает взрыв флажков. */
     public void restrictFlagExplosion() {
         boardManager.setFlagExplosionAllowed(false);
     }
 
     /*
-     * Plain getters
+     * Обычные геттеры
      */
 
+    /** Возвращает все клетки поля. */
     public List<Cell> getAllCells(Predicate<Cell> predicate) {
         return boardManager.getAllCells(predicate);
     }
 
+    /**
+     * Считает клетки, удовлетворяющие условию, без создания промежуточного списка.
+     */
+    public int countCells(Predicate<Cell> predicate) {
+        return boardManager.countCells(predicate);
+    }
+
+    /** Возвращает магазин. */
     public Shop getShop() {
         return shop;
     }
 
-    public boolean shovelIsActivated() {
+    /**
+     * Сообщает, активна ли золотая лопата.
+     */
+    public boolean isShovelActivated() {
         return shop.getShovel().isActivated();
     }
 
+    /** Возвращает игрока. */
     public Player getPlayer() {
         return player;
     }
 
+    /** Возвращает счёт игрока. */
     public Score getScore() {
         return player.getScore();
     }
 
+    /** Сообщает, остановлена ли игра. */
     public boolean isStopped() {
         return isStopped;
     }
 
+    /** Возвращает бонус за время. */
     public int getTimerBonus() {
         return boardManager.getTimer().getScoreBonus();
     }
 
+    /** Сообщает, победа ли это. */
     public boolean isWon() {
         return result == Result.WIN;
     }
 
+    /** Сообщает, идёт ли каскадное открытие. */
     public boolean isRecursiveMove() {
         return boardManager.isRecursiveMove();
     }
 
+    /** Сообщает, разрешён ли взрыв флажков. */
     public boolean isFlagExplosionAllowed() {
         return boardManager.isFlagExplosionAllowed();
     }
 
+    /** Сообщает, идёт ли ещё первый ход. */
     public boolean isFirstMove() {
         return boardManager.isFirstMove();
     }
 
     /*
-     * Plain setters
+     * Обычные сеттеры
      */
 
+    /** Включает или выключает чересстрочный эффект. */
     public void setInterlacedEffect(boolean enabled) {
         display.setInterlaceEnabled(enabled);
     }
 
+    /** Рисует пиксель. */
     public void drawPixel(int x, int y, Color color) {
         display.drawPixel(x, y, color);
     }
 
-
     /*
-     * Controls
+     * Управление
      */
 
+    /** Обрабатывает левый клик мышью. */
     @Override
     public void onMouseLeftClick(int x, int y) {
         controller.click(x, y, Click.LEFT);
     }
 
+    /** Обрабатывает правый клик мышью. */
     @Override
     public void onMouseRightClick(int x, int y) {
         controller.click(x, y, Click.RIGHT);
     }
 
+    /** Обрабатывает нажатие клавиши. */
     @Override
     public void onKeyPress(Key key) {
         controller.pressKey(key);

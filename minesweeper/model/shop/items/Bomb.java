@@ -7,9 +7,12 @@ import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.shop.Shop;
 
+/** Мини-бомба, уничтожающая клетку. */
 public class Bomb extends ShopItem {
+    /** Рамка прицела или ячейки. */
     private final AimFrame frame;
 
+    /** Создаёт экземпляр Bomb. */
     public Bomb(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB);
@@ -21,6 +24,7 @@ public class Bomb extends ShopItem {
         frame = new AimFrame(game.getCell(4, 4), framePadding, ImageType.BOARD_BOMB_FRAME);
     }
 
+    /** Наводит предмет на клетку. */
     public void aim(Cell cell) {
         if (!isActivated) return;
 
@@ -31,6 +35,7 @@ public class Bomb extends ShopItem {
         use(cell);
     }
 
+    /** Использует предмет. */
     private void use(Cell cell) {
         if (!game.destroyCell(cell)) return;
 
@@ -42,6 +47,7 @@ public class Bomb extends ShopItem {
         putToStock();
     }
 
+    /** Активирует предмет. */
     @Override
     public void activate() {
         if (unableToActivate()) return;
@@ -49,17 +55,20 @@ public class Bomb extends ShopItem {
         game.getShop().getScanner().emptyStock();
     }
 
+    /** Сообщает, нельзя ли активировать предмет. */
     private boolean unableToActivate() {
         if (game.isStopped() || isActivated) return true;
         return game.getShop().getScanner().isActivated();
     }
 
+    /** Рисует рамку прицела. */
     public void drawFrame() {
         if (!isActivated) return;
         game.setInterlacedEffect(false);
         frame.draw();
     }
 
+    /** Возвращает описание бомбы. */
     private String getBombDescription() {
         return "Бросив бомбочку, вы\n" +
                 "уничтожите закрытую\n" +

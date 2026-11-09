@@ -8,10 +8,14 @@ import com.javarush.games.minesweeper.model.InteractiveObject;
 
 import java.util.Arrays;
 
+/** Выбирает цветовую тему игры. */
 public class ThemeSelector extends InteractiveObject {
+    /** Палитры тем. */
     private final Image[] themePalettes;
+    /** Курсор выбранной темы. */
     private final Image themeCursor;
 
+    /** Создаёт экземпляр ThemeSelector. */
     public ThemeSelector(int x, int y) {
         super(x, y);
         this.themeCursor = new Image(ImageType.GUI_THEME_PALETTE);
@@ -40,6 +44,7 @@ public class ThemeSelector extends InteractiveObject {
         themeCursor.setPosition(currentPalette.x, currentPalette.y);
     }
 
+    /** Рисует объект на экране. */
     @Override
     public void draw() {
         Arrays.stream(themePalettes).forEach(Image::draw);
@@ -52,6 +57,7 @@ public class ThemeSelector extends InteractiveObject {
         themeCursor.draw();
     }
 
+    /** Обрабатывает левый клик. */
     @Override
     public void onLeftClick() {
         for (int i = 0; i < themePalettes.length; i++) {

@@ -18,14 +18,22 @@ import java.util.Map;
 
 import static com.javarush.engine.cell.Color.*;
 
+/** Экран таблицы рекордов. */
 public class ViewRecords extends View {
 
+    /** Заголовок. */
     private static final String TITLE = "<Лучшие игроки>";
+    /** Таблица рекордов. */
     private static final Map<Integer, List<String>> RECORDS;
+    /** Изображение призового кубка. */
     private static final Image PRIZE_CUP = new Image(ImageType.PICTURE_PRIZE_CUP);
+    /** Фоновое изображение экрана. */
     private static final Image BACKGROUND = Image.cache.get(ImageType.GUI_BACKGROUND);
+    /** Расстояние между записями. */
     private static final int GAP_BETWEEN_ENTRIES = 20;
+    /** Кнопка закрытия экрана. */
     private final Button closeButton = new Button(88, 2, "x", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
@@ -35,17 +43,19 @@ public class ViewRecords extends View {
 
     static {
         RECORDS = new HashMap<>();
-        // Position, name, JavaRush ID, score
+        // Место, имя, ID JavaRush, счёт
         RECORDS.put(1, Arrays.asList("Gans Electro", "3136750", "47421"));
         RECORDS.put(2, Arrays.asList("Dim", "2700224", "43263"));
         RECORDS.put(3, Arrays.asList("Pavlo Plynko", "28219", "37890"));
         RECORDS.put(4, Arrays.asList("Михаил Васильев", "2522974", "37125"));
     }
 
+    /** Создаёт экземпляр ViewRecords. */
     public ViewRecords(MinesweeperGame game) {
         super(game);
     }
 
+    /** Обновляет состояние. */
     @Override
     public void update() {
         BACKGROUND.draw();
@@ -55,6 +65,7 @@ public class ViewRecords extends View {
         drawEntries();
     }
 
+    /** Рисует призовые кубки. */
     private void drawPrizeCups() {
         for (int i = 0; i < 3; i++) {
             if (i == 0) {
@@ -71,17 +82,18 @@ public class ViewRecords extends View {
         }
     }
 
+    /** Рисует записи таблицы. */
     private void drawEntries() {
         Color[] colors = new Color[]{WHITE, GOLD, SILVER, PALEGOLDENROD, LIGHTGREY};
         int topLine = 17 - GAP_BETWEEN_ENTRIES;
         int bottomLine = topLine + 9;
         int currentColor = 0;
         for (int i = 1; i <= RECORDS.size(); i++) {
-            // Name (top line, left)
+            // Имя (верхняя строка, слева)
             Printer.print(RECORDS.get(i).get(0), colors[++currentColor], 19, topLine += GAP_BETWEEN_ENTRIES);
-            // JavaRush ID (bottom line, left)
+            // ID JavaRush (нижняя строка, слева)
             Printer.print("\nID " + RECORDS.get(i).get(1), colors[currentColor], 19, topLine);
-            // Score (bottom line, right)
+            // Счёт (нижняя строка, справа)
             Printer.print(RECORDS.get(i).get(2), colors[0], 98, bottomLine += GAP_BETWEEN_ENTRIES, Align.RIGHT);
         }
         super.update();

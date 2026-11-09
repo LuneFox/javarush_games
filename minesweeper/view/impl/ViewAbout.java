@@ -10,23 +10,30 @@ import com.javarush.games.minesweeper.gui.interactive.PageSelector;
 import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.view.View;
 
+/** Экран с информацией об игре. */
 public class ViewAbout extends View {
+    /** Переключатель страниц экрана. */
     public static final PageSelector pageSelector = new PageSelector(27, 89, 44, 5);
 
+    /** Кнопка закрытия экрана. */
     private final Button closeButton = new Button(88, 2, "x", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.MAIN);
         }
     };
+    /** Фоновое изображение. */
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
+    /** Создаёт экземпляр ViewAbout. */
     public ViewAbout(MinesweeperGame game) {
         super(game);
         linkObject(pageSelector);
     }
 
+    /** Обновляет состояние. */
     @Override
     public void update() {
         background.draw();
@@ -36,6 +43,7 @@ public class ViewAbout extends View {
         super.update();
     }
 
+    /** Рисует содержимое страницы. */
     private void drawPageContainer() {
         switch (pageSelector.getCurrentPage()) {
             case 0:
@@ -51,7 +59,7 @@ public class ViewAbout extends View {
             case 2:
                 printPage("<Удобства>",
                         "Если около ячейки\nуже стоит равное ей\nколичество флажков,\nправый клик по ней" +
-                                "\nоткроет прилегающие\nячейки автоматом,\nаналогично двойному\nклику в Windows.");
+                                "\nоткроет прилегающие\nячейки автоматом,\nаналогично парному\nклику в Windows.");
                 break;
             case 3:
                 printPage("<На время>",
@@ -70,6 +78,7 @@ public class ViewAbout extends View {
         }
     }
 
+    /** Печатает страницу. */
     private void printPage(String title, String contents) {
         Printer.print(title, Theme.LABEL.getColor(), Printer.CENTER, 2);
         Printer.print(contents, 3, 13);

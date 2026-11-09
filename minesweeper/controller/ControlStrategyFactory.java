@@ -3,7 +3,9 @@ package com.javarush.games.minesweeper.controller;
 import com.javarush.games.minesweeper.controller.impl.*;
 import com.javarush.games.minesweeper.model.Phase;
 
+/** Создаёт стратегию управления по фазе игры. */
 public class ControlStrategyFactory {
+    /** Создаёт стратегию для фазы. */
     public ControlStrategy createStrategy(Phase phase) {
         switch (phase) {
             case ABOUT:

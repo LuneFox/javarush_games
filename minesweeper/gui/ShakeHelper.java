@@ -1,15 +1,15 @@
 package com.javarush.games.minesweeper.gui;
 
-/**
- * A simple tool that returns 1 or 0 every time getShift() is called until duration becomes 0.
- * Helps to animate shaking elements by adding the result of getShift() to their coordinates with each view update.
- */
-
+/** Создаёт короткую анимацию дрожания. */
 public class ShakeHelper {
+    /** Длительность дрожания. */
     private static final int SHAKE_DURATION = 10;
+    /** Оставшееся время дрожания. */
     private int shakeCountDown;
+    /** Текущий сдвиг дрожания. */
     private int shakeShift;
 
+    /** Возвращает текущий сдвиг дрожания. */
     public int getShift() {
         if (shakeCountDown == 0) return 0;
         shakeShift = (shakeShift == 0) ? 1 : 0;
@@ -17,6 +17,7 @@ public class ShakeHelper {
         return shakeShift;
     }
 
+    /** Запускает дрожание. */
     public void startShaking() {
         shakeCountDown = SHAKE_DURATION;
     }

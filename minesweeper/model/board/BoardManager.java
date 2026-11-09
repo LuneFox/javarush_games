@@ -2,11 +2,9 @@ package com.javarush.games.minesweeper.model.board;
 
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
-import com.javarush.games.minesweeper.gui.PopUpMessage;
-import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.Options;
-import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.board.field.Cell;
+import com.javarush.games.minesweeper.model.board.field.Field;
 import com.javarush.games.minesweeper.model.board.field.FieldDao;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.player.Score;
@@ -16,46 +14,59 @@ import com.javarush.games.minesweeper.model.shop.items.Shield;
 
 import java.util.List;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
+/** Управляет полем, ходами и правилами сапёра. */
 public class BoardManager {
+    /** Ссылка на игру. */
     private final MinesweeperGame game;
+    /** Объект доступа к клеткам поля. */
     private final FieldDao fieldDao;
+    /** Менеджер флажков. */
     private final FlagManager flagManager;
+    /** Таймер партии. */
     private final Timer timer;
+    /** Инструменты режима разработчика. */
+    private final DeveloperTools developerTools;
 
-    private boolean stopAutoSolve;
+    /** Разрешён ли взрыв флажков. */
     private boolean isFlagExplosionAllowed;
+    /** Идёт ли ещё первый ход. */
     private boolean isFirstMove;
+    /** Идёт ли каскадное открытие. */
     private boolean isRecursiveMove;
+    /** Попала ли мини-бомба в мину. */
     private boolean miniBombHitMine;
 
+    /** Создаёт экземпляр BoardManager. */
     public BoardManager(MinesweeperGame game) {
         this.game = game;
         this.fieldDao = new FieldDao();
         this.timer = new Timer();
         this.flagManager = new FlagManager(game);
+        this.developerTools = new DeveloperTools(game, fieldDao, flagManager);
     }
 
     /*
-     * Creation
+     * Создание
      */
 
+    /** Сбрасывает состояние в начальное. */
     public void reset() {
         fieldDao.createNewField();
-        plantMines();
+        placeMines();
         updateAllCountMinedNeighbors();
         timer.reset();
         isRecursiveMove = false;
         isFirstMove = true;
     }
 
-    private void plantMines() {
+    /** Расставляет мины по полю. */
+    private void placeMines() {
         double numberOfMinesToPlant = (Options.getDifficulty() / 1.5);
 
-        while (fieldDao.getAllCells(Cell::isMined).size() < numberOfMinesToPlant) {
-            int randomX = game.getRandomNumber(10);
-            int randomY = game.getRandomNumber(10);
+        while (fieldDao.count(Cell::isMined) < numberOfMinesToPlant) {
+            int randomX = game.getRandomNumber(Field.SIZE);
+            int randomY = game.getRandomNumber(Field.SIZE);
 
             Cell cell = getCell(randomX, randomY);
 
@@ -65,66 +76,72 @@ public class BoardManager {
         }
     }
 
+    /** Пересчитывает число мин вокруг всех клеток. */
     public void updateAllCountMinedNeighbors() {
-        fieldDao.getAllCells(Cell::isCountable).forEach(cell -> {
-            final int minesCount = fieldDao.getNeighborCells(cell, Cell::isMined).size();
-            cell.setCountMinedNeighbors(minesCount);
-        });
+        for (Cell cell : fieldDao.getAllCells()) {
+            if (!cell.isCountable()) continue;
+            cell.setCountMinedNeighbors(fieldDao.countNeighborCells(cell, Cell::isMined));
+        }
     }
 
     /*
-     * Draw
+     * Отрисовка
      */
 
+    /** Рисует объект на экране. */
     public void draw() {
         drawField();
         timer.draw();
         game.getShop().drawItemAssets();
     }
 
+    /** Рисует игровое поле. */
     private void drawField() {
         fieldDao.getAllCells().forEach(Cell::draw);
     }
 
     /*
-     * Interaction
+     * Взаимодействие
      */
 
-    public void interactWithLeftClick(int x, int y) {
+    /** Обрабатывает левый клик по полю. */
+    public void handleLeftClick(int x, int y) {
         Cell cell = fieldDao.getCellByCoordinates(x, y);
 
         if (cell.isShop()) {
-            Phase.setActive(Phase.SHOP);
+            game.openShop();
             return;
         }
 
-        if (game.isScannerOrBombActivated()) {
-            game.aimWithScannerOrBomb(cell);
+        if (game.isAiming()) {
+            game.aimAtCell(cell);
             return;
         }
 
         openCell(cell);
     }
 
-    public void interactWithRightClick(int x, int y) {
+    /** Обрабатывает правый клик по полю. */
+    public void handleRightClick(int x, int y) {
         Cell cell = fieldDao.getCellByCoordinates(x, y);
 
         if (cell.isShop()) {
-            PopUpMessage.show("Двери магазина");
+            game.showMessage("Двери магазина");
             return;
         }
 
         if (cell.isClosed()) {
-            flagManager.swapFlag(cell);
+            flagManager.toggleFlag(cell);
         } else {
             openSurroundingCells(cell);
         }
     }
 
     /*
-     * Open cell
+     * Открытие клетки
      */
 
+    /** Открывает клетку и запускает каскад при необходимости. */
     private void openCell(Cell cell) {
         if (cell.cannotBeOpened()) return;
 
@@ -143,10 +160,10 @@ public class BoardManager {
 
         cell.reveal();
 
-        addMove();
-        addMoney(cell);
-        addTimerBonusScore();
-        addDiceBonusScore(cell);
+        registerMove();
+        awardMoney(cell);
+        awardTimerBonus();
+        awardDiceBonus(cell);
 
         if (cell.isEmpty()) {
             isRecursiveMove = true;
@@ -156,6 +173,7 @@ public class BoardManager {
         checkVictory();
     }
 
+    /** Превращает первую клетку в дверь магазина. */
     private Cell transformToEmptyShopCell(Cell cell) {
         List<Cell> oldFlaggedCells = collectFlagsFromField();
         cell = restartUntilCellIsEmpty(cell);
@@ -164,6 +182,7 @@ public class BoardManager {
         return cell;
     }
 
+    /** Пересоздаёт поле, пока выбранная клетка не станет пустой. */
     private Cell restartUntilCellIsEmpty(Cell cell) {
         while (!cell.isEmpty()) {
             reset();
@@ -173,65 +192,78 @@ public class BoardManager {
         return cell;
     }
 
+    /** Собирает флажки с поля. */
     private List<Cell> collectFlagsFromField() {
         List<Cell> flaggedCellsBefore = fieldDao.getAllCells(Cell::isFlagged);
-        flaggedCellsBefore.forEach(flagManager::returnFlagToPlayerInventory);
+        flaggedCellsBefore.forEach(flagManager::returnFlagToPlayer);
         return flaggedCellsBefore;
     }
 
+    /** Расставляет собранные флажки на новые клетки. */
     private void placeCollectedFlagsOnNewCells(List<Cell> oldFLaggedCells) {
         oldFLaggedCells.forEach(oldFlaggedCell -> {
             Cell newCellToFlag = fieldDao.getCell(oldFlaggedCell.x, oldFlaggedCell.y);
-            flagManager.placeFlagFromPlayerInventory(newCellToFlag);
+            flagManager.placeFlag(newCellToFlag);
         });
     }
 
+    /** Применяет щит к заминированной клетке. */
     private void tryUsingShieldOnMinedCell(Cell cell) {
         Shield shield = game.getShop().getShield();
         if (shield.isActivated()) shield.use(cell);
     }
 
+    /** Завершает игру из-за взрыва клетки. */
     private void gameOverFromCellExplosion(Cell cell) {
         cell.setGameOverCause(true);
         game.lose();
     }
 
-    private void addMove() {
+    /** Регистрирует ход игрока. */
+    private void registerMove() {
         if (isRecursiveMove()) return;
-        game.getPlayer().addMove();
+        game.getPlayer().registerMove();
     }
 
-    private void addTimerBonusScore() {
+    /** Начисляет бонус за оставшееся время. */
+    private void awardTimerBonus() {
         if (isRecursiveMove) return;
         final Score score = game.getScore();
         score.addTimerScore();
         timer.reset();
     }
 
-    private void addDiceBonusScore(Cell cell) {
+    /** Начисляет бонус кубика за открытую клетку. */
+    private void awardDiceBonus(Cell cell) {
         final Shop shop = game.getShop();
         final Dice dice = shop.getDice();
         dice.use(cell);
     }
 
-    private void addMoney(Cell cell) {
+    /** Начисляет золото за открытую клетку. */
+    private void awardMoney(Cell cell) {
         final Player player = game.getPlayer();
-        player.gainMoney(cell.produceMoney());
+        player.gainMoney(cell.calculateMoney());
     }
 
+    /** Проверяет условие победы. */
     private void checkVictory() {
         if (game.isStopped()) return;
 
-        final long countClosedCells = fieldDao.getAllCells(Cell::isClosed).size();
-        final long countDangerousCells = fieldDao.getAllCells(Cell::isDangerousToOpen).size();
+        int closedCells = 0;
+        int dangerousCells = 0;
+        for (Cell cell : fieldDao.getAllCells()) {
+            if (cell.isClosed()) closedCells++;
+            if (cell.isDangerousToOpen()) dangerousCells++;
+        }
 
-        if (countClosedCells == countDangerousCells) {
+        if (closedCells == dangerousCells) {
             game.win();
         }
     }
 
     /*
-     * Destroy cell (mini bomb action)
+     * Уничтожение клетки (мини-бомба)
      */
 
     /**
@@ -240,16 +272,16 @@ public class BoardManager {
     public boolean destroyCell(Cell cell) {
         if (game.isStopped()) return false;
         if (cell.isIndestructible() && !isRecursiveMove) {
-            PopUpMessage.show("Не получилось!");
+            game.showMessage("Не получилось!");
             return false;
         }
 
-        addMove();
-        addTimerBonusScore();
+        registerMove();
+        awardTimerBonus();
         flagManager.returnFlagToShop(cell);
 
         if (cell.isMined()) {
-            PopUpMessage.show(isRecursiveMove ? "Взорвались мины!" : "Взорвалась мина!");
+            game.showMessage(isRecursiveMove ? "Взорвались мины!" : "Взорвалась мина!");
 
             miniBombHitMine = true;
             isRecursiveMove = true;
@@ -266,47 +298,48 @@ public class BoardManager {
         return true;
     }
 
+    /** Открывает соседей после взрыва мин. */
     public void cleanUpAfterMineDestruction() {
         if (!miniBombHitMine) return;
 
-        fieldDao.getAllCells()
-                .stream()
-                .filter(Cell::isDestroyed)
-                .filter(Cell::wasMinedBeforeDestruction)
-                .collect(Collectors.toList()).forEach(explodedMine ->
-                        fieldDao.getNeighborCells(explodedMine, Cell::isClosed)
-                                .forEach(this::openCell));
+        for (Cell explodedMine : fieldDao.getAllCells()) {
+            if (!explodedMine.isDestroyed() || !explodedMine.wasMinedBeforeDestruction()) continue;
+            for (Cell neighbor : fieldDao.getNeighborCells(explodedMine, Cell::isClosed)) {
+                openCell(neighbor);
+            }
+        }
 
         refreshOpenedCellsGraphics();
         miniBombHitMine = false;
     }
 
     /*
-     * Scan neighbors (scanner action)
+     * Сканирование соседей (сканер)
      */
 
-    public void scanNeighbors(Cell cell) {  // action for Scanner
-        List<Cell> safeCells = fieldDao.getCellsIn3x3area(cell).stream()
-                .filter(Cell::isSafeToOpen)
-                .collect(Collectors.toList());
-        if (safeCells.size() != 0) {
-            PopUpMessage.show("Сканирование...");
+    /** Сканирует область вокруг клетки. */
+    public void scanNeighbors(Cell cell) {
+        List<Cell> safeCells = fieldDao.getCellsIn3x3area(cell, Cell::isSafeToOpen);
+        if (!safeCells.isEmpty()) {
+            game.showMessage("Сканирование...");
             scanRandomCell(safeCells);
         } else {
-            PopUpMessage.show("Нечего сканировать");
+            game.showMessage("Нечего сканировать");
             placeFlagsForPlayer(cell);
         }
     }
 
+    /** Открывает случайную безопасную клетку. */
     private void scanRandomCell(List<Cell> safeNeighbors) {
         Cell cell = safeNeighbors.get(game.getRandomNumber(safeNeighbors.size()));
-        if (cell.isFlagged()) { // by mistake
-            flagManager.swapFlag(cell);
+        if (cell.isFlagged()) { // флажок поставлен ошибочно
+            flagManager.toggleFlag(cell);
         }
         cell.setScanned(true);
         openCell(cell);
     }
 
+    /** Расставляет флажки вокруг клетки. */
     private void placeFlagsForPlayer(Cell cell) {
         fieldDao.getCellsIn3x3area(cell, Cell::isClosed).forEach(closedCell -> {
             final Player player = game.getPlayer();
@@ -316,187 +349,121 @@ public class BoardManager {
                 shop.give(shop.getFlag());
             }
 
-            flagManager.placeFlagFromPlayerInventory(closedCell);
+            flagManager.placeFlag(closedCell);
         });
     }
 
     /*
-     * Other
+     * Прочее
      */
 
+    /** Открывает соседние клетки при совпадении флажков. */
     private void openSurroundingCells(Cell cell) {
-        if (game.isScannerOrBombActivated()) return;
+        if (game.isAiming()) return;
         if (!cell.isOpen() || cell.isEmpty() || cell.isMined()) return;
 
         int countMinedNeighbors = cell.getCountMinedNeighbors();
-        long countShieldedNeighbors = fieldDao.getNeighborCells(cell, Cell::isShielded).size();
-        long countFlaggedNeighbors = fieldDao.getNeighborCells(cell, Cell::isFlagged).size();
+        int countShieldedNeighbors = fieldDao.countNeighborCells(cell, Cell::isShielded);
+        int countFlaggedNeighbors = fieldDao.countNeighborCells(cell, Cell::isFlagged);
 
         if (countMinedNeighbors == countFlaggedNeighbors + countShieldedNeighbors) {
-            fieldDao.getNeighborCells(cell).forEach(this::openCell);
+            fieldDao.getNeighborCells(cell, cellToOpen -> true).forEach(this::openCell);
         }
     }
 
+    /** Открывает все мины. */
     public void revealMines() {
-        fieldDao.getAllCells(Cell::isMined).forEach(Cell::reveal);
+        for (Cell cell : fieldDao.getAllCells()) {
+            if (cell.isMined()) cell.reveal();
+        }
     }
 
+    /** Перерисовывает открытые клетки. */
     public void refreshOpenedCellsGraphics() {
         if (game.isStopped()) return;
-        fieldDao.getAllCells(Cell::isOpen).forEach(Cell::setRevealedContent);
+        for (Cell cell : fieldDao.getAllCells()) {
+            if (cell.isOpen()) cell.setRevealedContent();
+        }
     }
 
     /**
      * Перерисовывает все клетки поля в актуальных цветах темы.
      */
     public void refreshAllCellsGraphics() {
-        fieldDao.getAllCells().forEach(Cell::refreshTheme);
+        for (Cell cell : fieldDao.getAllCells()) {
+            cell.refreshTheme();
+        }
     }
 
-
     /*
-     * ---------------------------------------------- Cheats ----------------------------------------------
+     * ---------------------------------------------- Читы ----------------------------------------------
      */
 
+    /** Автоматически ставит флажки. */
     @DeveloperOption
     public void autoFlag() {
-        if (!Options.isDeveloperModeEnabled()) return;
-
-        forceEnableAutoBuyFlags();
-
-        boolean[] success = new boolean[1];
-
-        fieldDao.getAllCells(Cell::isNumerable).forEach(cell -> {
-            if (!cell.isOpen()) return;
-
-            List<Cell> dangerousNeighbors = fieldDao.getNeighborCells(cell, Cell::isDangerousToOpen);
-            List<Cell> closedNeighbors = fieldDao.getNeighborCells(cell, Cell::isClosed);
-
-            if (dangerousNeighbors.size() == closedNeighbors.size()) {
-                dangerousNeighbors.stream()
-                        .filter(Cell::isNotFlagged)
-                        .forEach(dangerousNeighbor -> {
-                            buyFlagIfAbsent();
-                            flagManager.swapFlag(dangerousNeighbor);
-                            success[0] = true;
-                        });
-            }
-        });
-
-        showAutoFlagResult(success);
+        developerTools.autoFlag();
     }
 
-    private void buyFlagIfAbsent() {
-        if (game.getPlayer().countFlags() == 0) {
-            Shop shop = game.getShop();
-            shop.sellFlag();
-        }
-    }
-
-    private void forceEnableAutoBuyFlags() {
-        SwitchSelector selector = Options.getAutoBuyFlagsSelector();
-        if (!selector.isEnabled()) {
-            selector.click(selector.x, selector.y); // click self
-        }
-    }
-
-    private void showAutoFlagResult(boolean[] success) {
-        if (!success[0]) {
-            stopAutoSolve = true;
-            PopUpMessage.show("DEV: CANNOT FLAG");
-        } else {
-            PopUpMessage.show("DEV: AUTO FLAG");
-        }
-    }
-
+    /** Автоматически открывает клетки. */
     @DeveloperOption
     public void autoOpen() {
-        if (!Options.isDeveloperModeEnabled()) return;
-
-        long closedCells = fieldDao.getAllCells(Cell::isClosed).size();
-
-        if (isFirstMove) {
-            List<Cell> allCells = fieldDao.getAllCells();
-            Cell randomCell = allCells.get(game.getRandomNumber(allCells.size()));
-            game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
-        } else {
-            fieldDao.getAllCells().stream()
-                    .filter(Cell::isNumerable)
-                    .filter(Cell::isOpen)
-                    .forEach(cell -> game.onMouseRightClick(cell.x * 10, cell.y * 10));
-        }
-        PopUpMessage.show(fieldDao.getAllCells(Cell::isClosed).size() == closedCells ? "DEV: CANNOT OPEN" : "DEV: AUTO OPEN");
+        developerTools.autoOpen();
     }
 
+    /** Применяет сканер к случайной безопасной клетке. */
     @DeveloperOption
     public void autoScan() {
-        if (!Options.isDeveloperModeEnabled()) return;
-
-        List<Cell> safeCells = fieldDao.getAllCells(Cell::isSafeToOpen);
-        if (safeCells.isEmpty()) return;
-
-        Cell randomCell = safeCells.get(game.getRandomNumber(safeCells.size()));
-        game.getShop().getScanner().activate();
-        game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
-        game.onMouseLeftClick(randomCell.x * 10, randomCell.y * 10);
-
-        PopUpMessage.show("DEV: RANDOM SCAN");
+        developerTools.autoScan();
     }
 
+    /** Пытается доиграть партию автоходами. */
     @DeveloperOption
     public void autoSolve() {
-        if (!Options.isDeveloperModeEnabled()) return;
-
-        long closedCells = fieldDao.getAllCells(Cell::isClosed).size();
-        stopAutoSolve = false;
-        int limit = 0;
-
-        while (!stopAutoSolve) {
-            autoOpen();
-            autoFlag();
-            if (limit++ > closedCells) break; // Limit is set to prevent accidental infinite loops
-        }
-        autoOpen();
-
-        PopUpMessage.show(fieldDao.getAllCells(Cell::isClosed).size() == closedCells ? "DEV: CANNOT SOLVE!" : "DEV: SOLVING...");
+        developerTools.autoSolve();
     }
 
-
-    /*
-     * Delegations
-     */
+    /** Возвращает клетку по координатам. */
     public Cell getCell(int x, int y) {
         return fieldDao.getCell(x, y);
     }
 
+    /** Возвращает все клетки поля. */
     public List<Cell> getAllCells(Predicate<Cell> predicate) {
         return fieldDao.getAllCells(predicate);
     }
 
+    /** Считает клетки, удовлетворяющие условию. */
+    public int countCells(Predicate<Cell> predicate) {
+        return fieldDao.count(predicate);
+    }
 
-    /*
-     * Getters, setters
-     */
+    /** Сообщает, разрешён ли взрыв флажков. */
     public boolean isFlagExplosionAllowed() {
         return isFlagExplosionAllowed;
     }
 
+    /** Разрешает или запрещает взрыв флажков. */
     public void setFlagExplosionAllowed(boolean flagExplosionAllowed) {
         isFlagExplosionAllowed = flagExplosionAllowed;
     }
 
+    /** Сообщает, идёт ли каскадное открытие. */
     public boolean isRecursiveMove() {
         return isRecursiveMove;
     }
 
+    /** Задаёт режим каскадного открытия. */
     public void setRecursiveMove(boolean recursiveMove) {
         isRecursiveMove = recursiveMove;
     }
 
+    /** Сообщает, идёт ли ещё первый ход. */
     public boolean isFirstMove() {
         return isFirstMove;
     }
 
+    /** Возвращает таймер партии. */
     public Timer getTimer() {
         return timer;
     }

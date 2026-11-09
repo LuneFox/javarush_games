@@ -5,21 +5,26 @@ import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.player.Player;
 import com.javarush.games.minesweeper.model.shop.Shop;
 
+/** Ставит и возвращает флажки. */
 public class FlagManager {
+    /** Ссылка на игру. */
     private final MinesweeperGame game;
 
+    /** Создаёт экземпляр FlagManager. */
     FlagManager(MinesweeperGame game) {
         this.game = game;
     }
 
-    void swapFlag(Cell cell) {
+    /** Переключает флажок на клетке. */
+    void toggleFlag(Cell cell) {
         if (cell.isFlagged()) {
-            returnFlagToPlayerInventory(cell);
+            returnFlagToPlayer(cell);
         } else {
-            placeFlagFromPlayerInventory(cell);
+            placeFlag(cell);
         }
     }
 
+    /** Возвращает флажок на склад. */
     void returnFlagToShop(Cell cell) {
         if (!cell.isFlagged()) return;
 
@@ -27,9 +32,9 @@ public class FlagManager {
         cell.setFlagged(false);
     }
 
-    void returnFlagToPlayerInventory(Cell cell) {
-        if (game.isStopped()) return;
-        if (cell.isOpen()) return;
+    /** Возвращает флажок игроку. */
+    void returnFlagToPlayer(Cell cell) {
+        if (game.isStopped() || cell.isOpen() || !cell.isFlagged()) return;
 
         final Shop shop = game.getShop();
         final Player player = game.getPlayer();
@@ -38,16 +43,15 @@ public class FlagManager {
         cell.setFlagged(false);
     }
 
-    void placeFlagFromPlayerInventory(Cell cell) {
-        if (game.isStopped()) return;
-        if (cell.isOpen()) return;
+    /** Ставит флажок из инвентаря. */
+    void placeFlag(Cell cell) {
+        if (game.isStopped() || cell.isOpen() || cell.isFlagged()) return;
 
         final Shop shop = game.getShop();
         final Player player = game.getPlayer();
 
         if (player.countFlags() == 0) shop.offerFlag();
         if (player.countFlags() == 0) return;
-        if (cell.isFlagged()) return;
 
         player.loseItem(shop.getFlag());
         cell.setFlagged(true);

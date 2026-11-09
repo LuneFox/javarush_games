@@ -14,26 +14,36 @@ import com.javarush.games.minesweeper.model.Phase;
 import com.javarush.games.minesweeper.model.GameStatistics;
 import com.javarush.games.minesweeper.view.View;
 
+/** Экран детализации счёта. */
 public class ViewScore extends View {
+    /** Переключатель страниц экрана. */
     public static final PageSelector pageSelector = new PageSelector(30, 89, 40, 2);
+    /** Отступ сверху. */
     private static final int PADDING_TOP = 15;
+    /** Отступ справа. */
     private static final int PADDING_RIGHT = Display.SIZE - 2;
+    /** Отступ слева. */
     private static final int PADDING_LEFT = 3;
 
+    /** Кнопка закрытия экрана. */
     private final Button closeButton = new Button(88, 2, "x", this) {
+        /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.GAME_OVER);
         }
     };
+    /** Фоновое изображение. */
     final Image background = Image.cache.get(ImageType.GUI_BACKGROUND);
 
+    /** Создаёт экземпляр ViewScore. */
     public ViewScore(MinesweeperGame game) {
         super(game);
         linkObject(pageSelector);
     }
 
+    /** Обновляет состояние. */
     @Override
     public void update() {
         background.draw();
@@ -49,6 +59,7 @@ public class ViewScore extends View {
         super.update();
     }
 
+    /** Печатает детализацию общего счёта. */
     private void printTotalScoreDetails() {
         printPage("<детализация>",
                 "ячейки:\n" +
@@ -68,6 +79,7 @@ public class ViewScore extends View {
         );
     }
 
+    /** Печатает детализацию очков кубика. */
     private void printDiceScoreDetails() {
         printPage("<очки кубика>",
                 "средняя удача:\n" +
@@ -81,6 +93,7 @@ public class ViewScore extends View {
         );
     }
 
+    /** Печатает страницу. */
     private void printPage(String title, String leftText, String rightText) {
         Printer.print(title,
                 Theme.LABEL.getColor(),
