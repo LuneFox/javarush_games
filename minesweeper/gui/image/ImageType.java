@@ -1,271 +1,278 @@
 package com.javarush.games.minesweeper.gui.image;
 
-/** Типы графических элементов игры. */
+/**
+ * Типы графических элементов: интерфейс, поле, магазин, картинки и символы шрифта.
+ *
+ * <p>Префикс имени задаёт категорию: GUI_ — интерфейс, CELL_ и BOARD_ — поле,
+ * SHOP_ — магазин, PICTURE_ — крупные картинки, SYM_ — символы пиксельного шрифта.
+ * Для каждого типа ImageStorage хранит матрицу и палитру; элементы SYM_ дополнительно
+ * содержат символы, которые печатает Printer.
+ */
 public enum ImageType {
     /** Пустое изображение. */
     NONE,
 
-    /** Элемент интерфейса GUI_BACKGROUND. */
+    /** Фон главного меню и внутренних экранов. */
     GUI_BACKGROUND,
-    /** Элемент интерфейса GUI_BUTTON. */
+    /** Заготовка кнопки; её размер задаётся при создании. */
     GUI_BUTTON,
-    /** Элемент интерфейса GUI_SURROUND_FRAME. */
+    /** Синяя рамка вокруг игрового поля. */
     GUI_SURROUND_FRAME,
-    /** Элемент интерфейса GUI_POPUP_MESSAGE. */
+    /** Панель всплывающего сообщения. */
     GUI_POPUP_MESSAGE,
-    /** Элемент интерфейса GUI_ARROW. */
+    /** Стрелка переключателя страниц. */
     GUI_ARROW,
-    /** Элемент интерфейса GUI_DIFFICULTY_BAR. */
+    /** Полоса индикатора сложности. */
     GUI_DIFFICULTY_BAR,
-    /** Элемент интерфейса GUI_SWITCH_HANDLE. */
+    /** Ручка переключателя. */
     GUI_SWITCH_HANDLE,
-    /** Элемент интерфейса GUI_SWITCH_RAIL. */
+    /** Направляющая переключателя. */
     GUI_SWITCH_RAIL,
-    /** Элемент интерфейса GUI_THEME_PALETTE. */
+    /** Палитра выбора темы. */
     GUI_THEME_PALETTE,
-    /** Элемент интерфейса GUI_VICTORY_WINDOW. */
+    /** Окно результата партии. */
     GUI_VICTORY_WINDOW,
 
-    /** Элемент клетки CELL_OPENED. */
+    /** Открытая клетка без числа. */
     CELL_OPENED,
-    /** Элемент клетки CELL_CLOSED. */
+    /** Закрытая клетка поля. */
     CELL_CLOSED,
-    /** Элемент поля BOARD_DESTROYED. */
+    /** Клетка, уничтоженная мини-бомбой. */
     BOARD_DESTROYED,
 
-    /** Элемент поля BOARD_0. */
+    /** Пустой спрайт открытой клетки без числа. */
     BOARD_0,
-    /** Элемент поля BOARD_1. */
+    /** Спрайт цифры 1 на открытой клетке. */
     BOARD_1,
-    /** Элемент поля BOARD_2. */
+    /** Спрайт цифры 2 на открытой клетке. */
     BOARD_2,
-    /** Элемент поля BOARD_3. */
+    /** Спрайт цифры 3 на открытой клетке. */
     BOARD_3,
-    /** Элемент поля BOARD_4. */
+    /** Спрайт цифры 4 на открытой клетке. */
     BOARD_4,
-    /** Элемент поля BOARD_5. */
+    /** Спрайт цифры 5 на открытой клетке. */
     BOARD_5,
-    /** Элемент поля BOARD_6. */
+    /** Спрайт цифры 6 на открытой клетке. */
     BOARD_6,
-    /** Элемент поля BOARD_7. */
+    /** Спрайт цифры 7 на открытой клетке. */
     BOARD_7,
-    /** Элемент поля BOARD_8. */
+    /** Спрайт цифры 8 на открытой клетке. */
     BOARD_8,
-    /** Элемент поля BOARD_9. */
+    /** Спрайт цифры 9 на открытой клетке. */
     BOARD_9,
-    /** Элемент поля BOARD_FLAG. */
+    /** Флажок на закрытой клетке. */
     BOARD_FLAG,
-    /** Элемент поля BOARD_MINE. */
+    /** Мина на открытой клетке. */
     BOARD_MINE,
-    /** Элемент поля BOARD_SHOP. */
+    /** Дверь магазина на поле. */
     BOARD_SHOP,
-    /** Элемент поля BOARD_DICE_1. */
+    /** Грань кубика с 1 точкой. */
     BOARD_DICE_1,
-    /** Элемент поля BOARD_DICE_2. */
+    /** Грань кубика с 2 точками. */
     BOARD_DICE_2,
-    /** Элемент поля BOARD_DICE_3. */
+    /** Грань кубика с 3 точками. */
     BOARD_DICE_3,
-    /** Элемент поля BOARD_DICE_4. */
+    /** Грань кубика с 4 точками. */
     BOARD_DICE_4,
-    /** Элемент поля BOARD_DICE_5. */
+    /** Грань кубика с 5 точками. */
     BOARD_DICE_5,
-    /** Элемент поля BOARD_DICE_6. */
+    /** Грань кубика с 6 точками. */
     BOARD_DICE_6,
-    /** Элемент поля BOARD_SCANNER_FRAME. */
+    /** Синяя рамка области действия сканера. */
     BOARD_SCANNER_FRAME,
-    /** Элемент поля BOARD_BOMB_FRAME. */
+    /** Рамка прицела мини-бомбы. */
     BOARD_BOMB_FRAME,
 
-    /** Элемент магазина SHOP_HEADER_COIN. */
+    /** Монета в шапке магазина. */
     SHOP_HEADER_COIN,
-    /** Элемент магазина SHOP_HEADER_PANEL. */
+    /** Панель шапки и подвала магазина. */
     SHOP_HEADER_PANEL,
-    /** Элемент магазина SHOP_SHOWCASE_PANEL. */
+    /** Панель витрины магазина. */
     SHOP_SHOWCASE_PANEL,
-    /** Элемент магазина SHOP_SHOWCASE_FRAME. */
+    /** Рамка ячейки витрины магазина. */
     SHOP_SHOWCASE_FRAME,
-    /** Элемент магазина SHOP_SHOWCASE_FRAME_PRESSED. */
+    /** Нажатая рамка ячейки витрины. */
     SHOP_SHOWCASE_FRAME_PRESSED,
-    /** Элемент магазина SHOP_SHOWCASE_SHIELD. */
+    /** Иконка щита в магазине. */
     SHOP_SHOWCASE_SHIELD,
-    /** Элемент магазина SHOP_SHOWCASE_SCANNER. */
+    /** Иконка сканера в магазине. */
     SHOP_SHOWCASE_SCANNER,
-    /** Элемент магазина SHOP_SHOWCASE_FLAG. */
+    /** Иконка флажка в магазине. */
     SHOP_SHOWCASE_FLAG,
-    /** Элемент магазина SHOP_SHOWCASE_SHOVEL. */
+    /** Иконка золотой лопаты. */
     SHOP_SHOWCASE_SHOVEL,
-    /** Элемент магазина SHOP_SHOWCASE_DICE. */
+    /** Иконка кубика удачи. */
     SHOP_SHOWCASE_DICE,
-    /** Элемент магазина SHOP_SHOWCASE_BOMB. */
+    /** Иконка мини-бомбы. */
     SHOP_SHOWCASE_BOMB,
 
-    /** Картинка PICTURE_MAIN_LOGO. */
+    /** Логотип главного меню. */
     PICTURE_MAIN_LOGO,
-    /** Картинка PICTURE_PRIZE_CUP. */
+    /** Призовой кубок на экране рекордов. */
     PICTURE_PRIZE_CUP,
-    /** Картинка PICTURE_YELLOW_CAT_SMILE. */
+    /** Довольный жёлтый кот на экране победы. */
     PICTURE_YELLOW_CAT_SMILE,
-    /** Картинка PICTURE_YELLOW_CAT_SAD. */
+    /** Грустный жёлтый кот на экране поражения. */
     PICTURE_YELLOW_CAT_SAD,
 
-    /** Символ шрифта SYM_RU_LETTER_A. */
+    /** Русская буква «а»; также латинская «a». */
     SYM_RU_LETTER_A('а', 'a'),
-    /** Символ шрифта SYM_RU_LETTER_B. */
+    /** Русская буква «б». */
     SYM_RU_LETTER_B('б'),
-    /** Символ шрифта SYM_RU_LETTER_V. */
+    /** Русская буква «в»; также латинская «b». */
     SYM_RU_LETTER_V('в', 'b'),
-    /** Символ шрифта SYM_RU_LETTER_G. */
+    /** Русская буква «г». */
     SYM_RU_LETTER_G('г'),
-    /** Символ шрифта SYM_RU_LETTER_D. */
+    /** Русская буква «д». */
     SYM_RU_LETTER_D('д'),
-    /** Символ шрифта SYM_RU_LETTER_YE. */
+    /** Русская буква «е»; также латинская «e». */
     SYM_RU_LETTER_YE('е', 'e'),
-    /** Символ шрифта SYM_RU_LETTER_YO. */
+    /** Русская буква «ё». */
     SYM_RU_LETTER_YO('ё'),
-    /** Символ шрифта SYM_RU_LETTER_J. */
+    /** Русская буква «ж». */
     SYM_RU_LETTER_J('ж'),
-    /** Символ шрифта SYM_RU_LETTER_Z. */
+    /** Русская буква «з». */
     SYM_RU_LETTER_Z('з'),
-    /** Символ шрифта SYM_RU_LETTER_I. */
+    /** Русская буква «и». */
     SYM_RU_LETTER_I('и'),
-    /** Символ шрифта SYM_RU_LETTER_IKR. */
+    /** Русская буква «й». */
     SYM_RU_LETTER_IKR('й'),
-    /** Символ шрифта SYM_RU_LETTER_K. */
+    /** Русская буква «к»; также латинская «k». */
     SYM_RU_LETTER_K('к', 'k'),
-    /** Символ шрифта SYM_RU_LETTER_L. */
+    /** Русская буква «л». */
     SYM_RU_LETTER_L('л'),
-    /** Символ шрифта SYM_RU_LETTER_M. */
+    /** Русская буква «м»; также латинская «m». */
     SYM_RU_LETTER_M('м', 'm'),
-    /** Символ шрифта SYM_RU_LETTER_N. */
+    /** Русская буква «н»; также латинская «h». */
     SYM_RU_LETTER_N('н', 'h'),
-    /** Символ шрифта SYM_RU_LETTER_O. */
+    /** Русская буква «о»; также латинская «o». */
     SYM_RU_LETTER_O('о', 'o'),
-    /** Символ шрифта SYM_RU_LETTER_P. */
+    /** Русская буква «п». */
     SYM_RU_LETTER_P('п'),
-    /** Символ шрифта SYM_RU_LETTER_R. */
+    /** Русская буква «р»; также латинская «p». */
     SYM_RU_LETTER_R('р', 'p'),
-    /** Символ шрифта SYM_RU_LETTER_S. */
+    /** Русская буква «с»; также латинская «c». */
     SYM_RU_LETTER_S('с', 'c'),
-    /** Символ шрифта SYM_RU_LETTER_T. */
+    /** Русская буква «т»; также латинская «t». */
     SYM_RU_LETTER_T('т', 't'),
-    /** Символ шрифта SYM_RU_LETTER_U. */
+    /** Русская буква «у». */
     SYM_RU_LETTER_U('у'),
-    /** Символ шрифта SYM_RU_LETTER_F. */
+    /** Русская буква «ф». */
     SYM_RU_LETTER_F('ф'),
-    /** Символ шрифта SYM_RU_LETTER_H. */
+    /** Русская буква «х». */
     SYM_RU_LETTER_H('х'),
-    /** Символ шрифта SYM_RU_LETTER_C. */
+    /** Русская буква «ц». */
     SYM_RU_LETTER_C('ц'),
-    /** Символ шрифта SYM_RU_LETTER_CH. */
+    /** Русская буква «ч». */
     SYM_RU_LETTER_CH('ч'),
-    /** Символ шрифта SYM_RU_LETTER_SHA. */
+    /** Русская буква «ш». */
     SYM_RU_LETTER_SHA('ш'),
-    /** Символ шрифта SYM_RU_LETTER_SCHA. */
+    /** Русская буква «щ». */
     SYM_RU_LETTER_SCHA('щ'),
-    /** Символ шрифта SYM_RU_LETTER_SOFT. */
+    /** Русская буква «ь». */
     SYM_RU_LETTER_SOFT('ь'),
-    /** Символ шрифта SYM_RU_LETTER_Y. */
+    /** Русская буква «ы». */
     SYM_RU_LETTER_Y('ы'),
-    /** Символ шрифта SYM_RU_LETTER_HARD. */
+    /** Русская буква «ъ». */
     SYM_RU_LETTER_HARD('ъ'),
-    /** Символ шрифта SYM_RU_LETTER_E. */
+    /** Русская буква «э». */
     SYM_RU_LETTER_E('э'),
-    /** Символ шрифта SYM_RU_LETTER_YU. */
+    /** Русская буква «ю». */
     SYM_RU_LETTER_YU('ю'),
-    /** Символ шрифта SYM_RU_LETTER_YA. */
+    /** Русская буква «я». */
     SYM_RU_LETTER_YA('я'),
-    /** Символ шрифта SYM_EN_LETTER_D. */
+    /** Латинская буква «d». */
     SYM_EN_LETTER_D('d'),
-    /** Символ шрифта SYM_EN_LETTER_F. */
+    /** Латинская буква «f». */
     SYM_EN_LETTER_F('f'),
-    /** Символ шрифта SYM_EN_LETTER_G. */
+    /** Латинская буква «g». */
     SYM_EN_LETTER_G('g'),
-    /** Символ шрифта SYM_EN_LETTER_I. */
+    /** Латинская буква «i». */
     SYM_EN_LETTER_I('i'),
-    /** Символ шрифта SYM_EN_LETTER_J. */
+    /** Латинская буква «j». */
     SYM_EN_LETTER_J('j'),
-    /** Символ шрифта SYM_EN_LETTER_L. */
+    /** Латинская буква «l». */
     SYM_EN_LETTER_L('l'),
-    /** Символ шрифта SYM_EN_LETTER_N. */
+    /** Латинская буква «n». */
     SYM_EN_LETTER_N('n'),
-    /** Символ шрифта SYM_EN_LETTER_Q. */
+    /** Латинская буква «q». */
     SYM_EN_LETTER_Q('q'),
-    /** Символ шрифта SYM_EN_LETTER_R. */
+    /** Латинская буква «r». */
     SYM_EN_LETTER_R('r'),
-    /** Символ шрифта SYM_EN_LETTER_S. */
+    /** Латинская буква «s». */
     SYM_EN_LETTER_S('s'),
-    /** Символ шрифта SYM_EN_LETTER_U. */
+    /** Латинская буква «u». */
     SYM_EN_LETTER_U('u'),
-    /** Символ шрифта SYM_EN_LETTER_V. */
+    /** Латинская буква «v». */
     SYM_EN_LETTER_V('v'),
-    /** Символ шрифта SYM_EN_LETTER_W. */
+    /** Латинская буква «w». */
     SYM_EN_LETTER_W('w'),
-    /** Символ шрифта SYM_EN_LETTER_X. */
+    /** Латинская буква «x». */
     SYM_EN_LETTER_X('x'),
-    /** Символ шрифта SYM_EN_LETTER_Y. */
+    /** Латинская буква «y». */
     SYM_EN_LETTER_Y('y'),
-    /** Символ шрифта SYM_EN_LETTER_Z. */
+    /** Латинская буква «z». */
     SYM_EN_LETTER_Z('z'),
-    /** Символ шрифта SYM_DIGIT_0. */
+    /** Цифра 0. */
     SYM_DIGIT_0('0'),
-    /** Символ шрифта SYM_DIGIT_1. */
+    /** Цифра 1. */
     SYM_DIGIT_1('1'),
-    /** Символ шрифта SYM_DIGIT_2. */
+    /** Цифра 2. */
     SYM_DIGIT_2('2'),
-    /** Символ шрифта SYM_DIGIT_3. */
+    /** Цифра 3. */
     SYM_DIGIT_3('3'),
-    /** Символ шрифта SYM_DIGIT_4. */
+    /** Цифра 4. */
     SYM_DIGIT_4('4'),
-    /** Символ шрифта SYM_DIGIT_5. */
+    /** Цифра 5. */
     SYM_DIGIT_5('5'),
-    /** Символ шрифта SYM_DIGIT_6. */
+    /** Цифра 6. */
     SYM_DIGIT_6('6'),
-    /** Символ шрифта SYM_DIGIT_7. */
+    /** Цифра 7. */
     SYM_DIGIT_7('7'),
-    /** Символ шрифта SYM_DIGIT_8. */
+    /** Цифра 8. */
     SYM_DIGIT_8('8'),
-    /** Символ шрифта SYM_DIGIT_9. */
+    /** Цифра 9. */
     SYM_DIGIT_9('9'),
-    /** Символ шрифта SYM_SYMBOL_COMMA. */
+    /** Запятая. */
     SYM_SYMBOL_COMMA(','),
-    /** Символ шрифта SYM_SYMBOL_DOT. */
+    /** Точка. */
     SYM_SYMBOL_DOT('.'),
-    /** Символ шрифта SYM_SYMBOL_COLON. */
+    /** Двоеточие. */
     SYM_SYMBOL_COLON(':'),
-    /** Символ шрифта SYM_SYMBOL_EXCLAMATION. */
+    /** Восклицательный знак. */
     SYM_SYMBOL_EXCLAMATION('!'),
-    /** Символ шрифта SYM_SYMBOL_QUESTION. */
+    /** Вопросительный знак. */
     SYM_SYMBOL_QUESTION('?'),
-    /** Символ шрифта SYM_SYMBOL_SPACE. */
+    /** Пробел. */
     SYM_SYMBOL_SPACE(' '),
-    /** Символ шрифта SYM_SYMBOL_DASH. */
+    /** Дефис. */
     SYM_SYMBOL_DASH('-'),
-    /** Символ шрифта SYM_SYMBOL_EQUALS. */
+    /** Знак равенства. */
     SYM_SYMBOL_EQUALS('='),
-    /** Символ шрифта SYM_SYMBOL_ASTERISK. */
+    /** Звёздочка. */
     SYM_SYMBOL_ASTERISK('*'),
-    /** Символ шрифта SYM_SYMBOL_SLASH. */
+    /** Косая черта. */
     SYM_SYMBOL_SLASH('/'),
-    /** Символ шрифта SYM_SYMBOL_SQ_BRACKET_L. */
+    /** Открывающая квадратная скобка. */
     SYM_SYMBOL_SQ_BRACKET_L('['),
-    /** Символ шрифта SYM_SYMBOL_SQ_BRACKET_R. */
+    /** Закрывающая квадратная скобка. */
     SYM_SYMBOL_SQ_BRACKET_R(']'),
-    /** Символ шрифта SYM_SYMBOL_NEWLINE. */
+    /** Перевод строки. */
     SYM_SYMBOL_NEWLINE('\n');
 
-    /** Символы шрифта. */
+    /** Символы, которые печатаются этим элементом шрифта. */
     private char[] characters;
 
-    /** Возвращает символы. */
+    /** Возвращает символы шрифта; у обычных изображений массив не задан. */
     public char[] getCharacters() {
         return characters;
     }
 
-    /** Создаёт экземпляр ImageType. */
+    /** Создаёт тип обычного изображения без привязки к символам. */
     ImageType() {
     }
 
-    /** Создаёт экземпляр ImageType. */
+    /** Создаёт тип символа шрифта с указанными символами. */
     ImageType(char... characters) {
         this.characters = characters;
     }
