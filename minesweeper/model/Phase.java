@@ -69,7 +69,12 @@ public enum Phase {
 
     /** Обновляет текущий экран. */
     public static void updateView() {
-        changeCurrentViewIfNeeded();
+        if (currentView == null) {
+            if (pendingView == null) return;
+            changeCurrentView();
+        } else {
+            changeCurrentViewIfNeeded();
+        }
         currentView.update();
     }
 
