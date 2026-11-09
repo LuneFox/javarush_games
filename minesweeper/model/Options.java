@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.gui.interactive.DifficultySelector;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
@@ -8,13 +10,12 @@ import com.javarush.games.minesweeper.gui.interactive.ThemeSelector;
 public class Options {
     /** Названия сложностей. */
     private static final String[] DIFFICULTY_NAMES = new String[]{
-            "хомячок", "новичок", "любитель",
-            "опытный", "эксперт", "отчаянный",
-            "безумец", "бессмертный", "чак норрис"
+            Text.DIFFICULTY_HAMSTER.getText(), Text.DIFFICULTY_NOVICE.getText(),
+            Text.DIFFICULTY_AMATEUR.getText(), Text.DIFFICULTY_EXPERIENCED.getText(),
+            Text.DIFFICULTY_EXPERT.getText(), Text.DIFFICULTY_DESPERATE.getText(),
+            Text.DIFFICULTY_MADMAN.getText(), Text.DIFFICULTY_IMMORTAL.getText(),
+            Text.DIFFICULTY_CHUCK_NORRIS.getText()
     };
-
-    /** Сообщение о сохранении настроек. */
-    public static final String OPTIONS_SAVED = "Сохранено";
 
     /** Сложность игры. */
     private static int difficulty;
@@ -38,9 +39,9 @@ public class Options {
 
     static {
         difficultySelector = new DifficultySelector(49, 14);
-        autoBuyFlagsSelector = new SwitchSelector(85, 32, "вручную", "авто");
-        timerEnabledSelector = new SwitchSelector(85, 50, "нет", "да");
-        displayMessageSelector = new SwitchSelector(85, 69, "скрывать", "показывать", SwitchSelector.State.ON);
+        autoBuyFlagsSelector = new SwitchSelector(85, 32, Text.OPTION_MANUAL.getText(), Text.OPTION_AUTO.getText());
+        timerEnabledSelector = new SwitchSelector(85, 50, Text.OPTION_NO.getText(), Text.OPTION_YES.getText());
+        displayMessageSelector = new SwitchSelector(85, 69, Text.OPTION_HIDE.getText(), Text.OPTION_SHOW.getText(), SwitchSelector.State.ON);
         themeSelector = new ThemeSelector(51, 87);
     }
 

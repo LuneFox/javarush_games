@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.board.field.Cell;
 import com.javarush.games.minesweeper.model.shop.items.Dice;
@@ -32,12 +34,12 @@ public class GameStatistics {
 
     /** Возвращает значение из кэша. */
     public static String get(String key) {
-        return table.getOrDefault(key, "не найдено");
+        return table.getOrDefault(key, Text.STATS_NOT_FOUND.getText());
     }
 
     /** Возвращает результат партии. */
     private static String getResult() {
-        return game.isWon() ? "<победа!>" : "<не повезло!>";
+        return game.isWon() ? Text.GAME_RESULT_WIN.getText() : Text.GAME_RESULT_LOSE.getText();
     }
 
     /** Возвращает итоговый счёт. */
@@ -54,7 +56,7 @@ public class GameStatistics {
 
     /** Возвращает описание очков за мины. */
     private static String getMinesScoreInfo() {
-        if (!game.isWon()) return "не учтено";
+        if (!game.isWon()) return Text.STATS_NOT_COUNTED.getText();
         int countMines = game.countCells(Cell::isMined);
         return countMines + "*" + 20 * Options.getDifficulty() + " = " +
                 countMines * 20 * Options.getDifficulty();
@@ -68,7 +70,7 @@ public class GameStatistics {
 
     /** Возвращает описание очков за золото. */
     private static String getMoneyScoreInfo() {
-        if (!game.isWon()) return "не учтено";
+        if (!game.isWon()) return Text.STATS_NOT_COUNTED.getText();
         final int money = game.getPlayer().getMoneyBalance();
         return money + "*" + Options.getDifficulty() + " = " +
                 money * Options.getDifficulty();

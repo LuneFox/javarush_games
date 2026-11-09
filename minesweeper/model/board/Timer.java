@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.board;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
@@ -52,7 +54,7 @@ public class Timer extends InteractiveObject {
 
     /** Завершает игру по истечении времени. */
     private void initiateLoseByTimeout() {
-        game.showMessage("Время вышло!");
+        game.showMessage(Text.GAME_TIME_UP.getText());
         game.lose();
     }
 

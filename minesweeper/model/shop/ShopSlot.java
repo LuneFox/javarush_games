@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.ShakeHelper;
@@ -84,13 +86,13 @@ public class ShopSlot extends InteractiveObject {
 
     /** Печатает статус активного предмета. */
     private void printActivatedStatus() {
-        Printer.print("<АКТ>", Color.YELLOW, x + 18 + activatedShaker.getShift(), y + 10, Printer.Align.RIGHT);
+        Printer.print(Text.SHOP_ACTIVE.getText(), Color.YELLOW, x + 18 + activatedShaker.getShift(), y + 10, Printer.Align.RIGHT);
         Printer.print(item.getRemainingMovesText(), Color.MAGENTA, x + 18, y, Printer.Align.RIGHT);
     }
 
     /** Печатает отметку об отсутствии товара. */
     private void printOutOfStockMarker() {
-        Printer.print("<НЕТ>", Theme.SHOP_SIGN_NO.getColor(), x + 18, y + 10, Printer.Align.RIGHT);
+        Printer.print(Text.SHOP_OUT_OF_STOCK.getText(), Theme.SHOP_SIGN_NO.getColor(), x + 18, y + 10, Printer.Align.RIGHT);
     }
 
     /** Обрабатывает левый клик. */
@@ -100,18 +102,18 @@ public class ShopSlot extends InteractiveObject {
 
         if (item.isActivated()) {
             activatedShaker.startShaking();
-            game.showMessage("Уже активировано");
+            game.showMessage(Text.SHOP_ALREADY_ACTIVE.getText());
             return;
         }
 
         if (item.getInStock() <= 0) {
-            game.showMessage("Нет в продаже");
+            game.showMessage(Text.SHOP_NOT_FOR_SALE.getText());
             return;
         }
 
         if (item.isUnaffordable()) {
             game.shakeShopMoney();
-            game.showMessage("Не хватает золота");
+            game.showMessage(Text.SHOP_NOT_ENOUGH_GOLD.getText());
             return;
         }
 

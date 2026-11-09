@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.Click;
 import com.javarush.games.minesweeper.view.View;
@@ -56,7 +58,7 @@ public abstract class InteractiveObject implements Drawable, Clickable {
         } else if (click == Click.RIGHT) {
             onRightClick();
         } else {
-            throw new IllegalArgumentException("Invalid click type");
+            throw new IllegalArgumentException(Text.ERROR_INVALID_CLICK.getText());
         }
     }
 

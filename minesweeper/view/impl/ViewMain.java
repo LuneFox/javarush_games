@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
@@ -19,16 +21,10 @@ import java.util.Date;
 public class ViewMain extends View {
     /** Цитаты главного меню. */
     private final String[] quotes = new String[]{
-            "Самая взрывная\nголоволомка!",
-            "Осторожно, игра\nзаминирована!",
-            "Просто бомба!",
-            "Здесь не бывает\nкислых мин!",
-            "Не собери их все!",
-            "Главное - не бомбить",
-            "Не приводи детей\nна работу!",
-            "В лопате нет\nничего смешного!",
-            "Втыкая флаг,\nне задень мину!",
-            "Какой идиот\nзакопал цифры?!"
+            Text.QUOTE_1.getText(), Text.QUOTE_2.getText(), Text.QUOTE_3.getText(),
+            Text.QUOTE_4.getText(), Text.QUOTE_5.getText(), Text.QUOTE_6.getText(),
+            Text.QUOTE_7.getText(), Text.QUOTE_8.getText(), Text.QUOTE_9.getText(),
+            Text.QUOTE_10.getText()
     };
     /** Текущая цитата меню. */
     private String quote;
@@ -36,7 +32,7 @@ public class ViewMain extends View {
     private Date lastQuoteDate;
 
     /** Кнопка открытия настроек. */
-    final Button optionsButton = new Button(61, 64, 36, 9, "опции", this) {
+    final Button optionsButton = new Button(61, 64, 36, 9, Text.BUTTON_OPTIONS.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -45,7 +41,7 @@ public class ViewMain extends View {
         }
     };
     /** Кнопка «Об игре». */
-    final Button aboutButton = new Button(61, 76, 36, 9, "об игре", this) {
+    final Button aboutButton = new Button(61, 76, 36, 9, Text.BUTTON_ABOUT.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -54,7 +50,7 @@ public class ViewMain extends View {
         }
     };
     /** Кнопка «Рекорды». */
-    final Button recordsButton = new Button(2, 88, "рекорды", this) {
+    final Button recordsButton = new Button(2, 88, Text.BUTTON_RECORDS.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -63,7 +59,7 @@ public class ViewMain extends View {
         }
     };
     /** Кнопка старта. */
-    final Button startButton = new Button(61, 88, 36, 9, "старт", this) {
+    final Button startButton = new Button(61, 88, 36, 9, Text.BUTTON_START.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -79,10 +75,10 @@ public class ViewMain extends View {
             super.onLeftClick();
             if (Options.getDeveloperModeCounter() < 9) {
                 Options.setDeveloperModeCounter(Options.getDeveloperModeCounter() + 1);
-                PopUpMessage.show("Версия: " + MinesweeperGame.VERSION);
+                PopUpMessage.show(Text.MAIN_VERSION_PREFIX.getText() + MinesweeperGame.VERSION);
             } else {
                 Options.setDeveloperModeEnabled(true);
-                PopUpMessage.show("Вы разработчик!");
+                PopUpMessage.show(Text.MAIN_DEV_WELCOME.getText());
             }
         }
     };
@@ -102,7 +98,7 @@ public class ViewMain extends View {
         View.setGameOverShowDelay(0); // устраняет рассинхронизацию и блокировку управления
 
         background.draw();
-        Printer.print(Options.isDeveloperModeEnabled() ? "Developer Mode" : "JavaRush",
+        Printer.print(Options.isDeveloperModeEnabled() ? Text.MAIN_DEV_MODE.getText() : Text.MAIN_BRAND.getText(),
                 Theme.MAIN_MENU_LABEL.getColor(), Image.CENTER, 2);
         logo.draw(2.8, Image.CENTER, 8);
         drawMenuButtons();
@@ -132,9 +128,9 @@ public class ViewMain extends View {
     /** Обновляет текст кнопки старта. */
     private void replaceStartButtonText() {
         if (game.isStopped() || game.isFirstMove()) {
-            if (!startButton.getLabelText().equals("старт")) startButton.replaceText(36, "старт");
+            if (!startButton.getLabelText().equals(Text.BUTTON_START.getText())) startButton.replaceText(36, Text.BUTTON_START.getText());
         } else {
-            if (!startButton.getLabelText().equals("заново")) startButton.replaceText(36, "заново");
+            if (!startButton.getLabelText().equals(Text.BUTTON_RESTART.getText())) startButton.replaceText(36, Text.BUTTON_RESTART.getText());
         }
     }
 
@@ -150,7 +146,7 @@ public class ViewMain extends View {
 
     /** Печатает подсказку о продолжении игры. */
     private void printResumeGame() {
-        String resume = "Игра приостановлена\nESC - продолжить";
+        String resume = Text.MAIN_RESUME.getText();
         Printer.print(resume, Theme.TEXT_SHADOW.getColor(), 5, 44); // тень
         Printer.print(resume, Theme.LABEL.getColor(), 4, 44);
     }
@@ -159,7 +155,7 @@ public class ViewMain extends View {
     private void printTopScore() {
         final long topScore = game.getPlayer().getScore().getTopScore();
         if (topScore > 0) {
-            Printer.print("счёт: " + topScore + "\n" + game.getPlayer().getTitle(),
+            Printer.print(Text.SCORE_PREFIX.getText() + topScore + "\n" + game.getPlayer().getTitle(),
                     Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 4, 65);
         }
     }

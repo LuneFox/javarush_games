@@ -81,7 +81,7 @@ public class MinesweeperGame extends Game {
         Options.apply();
         resetAssets();
         Phase.setActive(Phase.BOARD);
-        showMessage("Новая игра");
+        showMessage(Text.GAME_NEW.getText());
     }
 
     /** Сбрасывает поле, игрока и магазин перед новой партией. */

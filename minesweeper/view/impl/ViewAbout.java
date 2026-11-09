@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.gui.Theme;
@@ -16,7 +18,7 @@ public class ViewAbout extends View {
     public static final PageSelector pageSelector = new PageSelector(27, 89, 44, 5);
 
     /** Кнопка закрытия экрана. */
-    private final Button closeButton = new Button(88, 2, "x", this) {
+    private final Button closeButton = new Button(88, 2, Text.BUTTON_CLOSE.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -47,33 +49,22 @@ public class ViewAbout extends View {
     private void drawPageContainer() {
         switch (pageSelector.getCurrentPage()) {
             case 0:
-                printPage("<Информация>",
-                        "В моей версии игры\nесть магазин вещей.\nОни помогут меньше\nполагаться на удачу," +
-                                "\nбольше планировать\nкаждый ход. Без них\nбудет трудновато на\nбольшой сложности!");
+                printPage(Text.ABOUT_INFO_TITLE.getText(), Text.ABOUT_INFO_TEXT.getText());
                 break;
             case 1:
-                printPage("<О магазине>",
-                        "Во время игры\nклавиша [пробел]\nоткроет или закроет\nмагазин. Также вход\nпоявляется на поле.\n" +
-                                "\nПравый клик по вещи\nпокажет её описание.");
+                printPage(Text.ABOUT_SHOP_TITLE.getText(), Text.ABOUT_SHOP_TEXT.getText());
                 break;
             case 2:
-                printPage("<Удобства>",
-                        "Если около ячейки\nуже стоит равное ей\nколичество флажков,\nправый клик по ней" +
-                                "\nоткроет прилегающие\nячейки автоматом,\nаналогично парному\nклику в Windows.");
+                printPage(Text.ABOUT_CONVENIENCE_TITLE.getText(), Text.ABOUT_CONVENIENCE_TEXT.getText());
                 break;
             case 3:
-                printPage("<На время>",
-                        "В игре на время\nуспевайте открывать\nновые ячейки, пока\nшкала вверху экрана" +
-                                "\nне закончилась. Если\nвремя выйдет, мины\nвзорвутся! Скорость\nдаёт больше очков.");
+                printPage(Text.ABOUT_TIMER_TITLE.getText(), Text.ABOUT_TIMER_TEXT.getText());
                 break;
             case 4:
-                printPage("<Рекорды>",
-                        "Чтобы попасть на\nстраницу рекордов,\nсделайте скриншот\nс вашим результатом" +
-                                "\nи прикрепите его\nв комментариях.\n\n...и спасибо за игру!");
+                printPage(Text.ABOUT_RECORDS_TITLE.getText(), Text.ABOUT_RECORDS_TEXT.getText());
                 break;
             default:
-                printPage("<404>",
-                        "Страница не найдена.");
+                printPage(Text.ABOUT_404_TITLE.getText(), Text.ABOUT_404_TEXT.getText());
                 break;
         }
     }

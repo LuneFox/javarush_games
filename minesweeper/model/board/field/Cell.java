@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.board.field;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Theme;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -130,7 +132,7 @@ public class Cell extends InteractiveObject {
     /** Задаёт спрайт. */
     private void setSprite(int number) {
         if (number < 0 || number > MAX_NUMBER) {
-            throw new IllegalArgumentException("Sprites numbers must be from 0 to " + MAX_NUMBER);
+            throw new IllegalArgumentException(Text.ERROR_SPRITE_RANGE_PREFIX.getText() + MAX_NUMBER);
         }
 
         setSprite(sprites.get(number));

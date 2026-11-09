@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.player;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Options;
 import com.javarush.games.minesweeper.model.board.field.Cell;
@@ -37,7 +39,7 @@ public class Score {
         if (totalScore <= topScore) return;
         setTopScore(totalScore);
         player.setTitle(Options.getDifficultyName(Options.getDifficulty()));
-        game.showMessage("Новый рекорд!");
+        game.showMessage(Text.GAME_NEW_RECORD.getText());
     }
 
     /** Возвращает текущий счёт. */

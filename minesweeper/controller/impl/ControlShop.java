@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.controller.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.controller.ControlStrategy;
@@ -39,7 +41,7 @@ public class ControlShop implements ControlStrategy {
     @DeveloperOption
     public void pressUp() {
         game.getPlayer().cheatMoney();
-        game.showMessage("DEV: 99 GOLD");
+        game.showMessage(Text.DEV_GOLD_99.getText());
     }
 
     /** Обрабатывает нажатие вниз. */

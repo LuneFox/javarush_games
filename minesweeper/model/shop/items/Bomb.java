@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.items;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -16,8 +18,8 @@ public class Bomb extends ShopItem {
     public Bomb(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_BOMB);
-        name = "Мини-бомба";
-        description = getBombDescription();
+        name = Text.ITEM_BOMB_NAME.getText();
+        description = Text.ITEM_BOMB_DESCRIPTION.getText();
         cost = 6 + Options.getDifficulty() / 10;
         inStock = 1;
         int framePadding = -3;
@@ -68,14 +70,4 @@ public class Bomb extends ShopItem {
         frame.draw();
     }
 
-    /** Возвращает описание бомбы. */
-    private String getBombDescription() {
-        return "Бросив бомбочку, вы\n" +
-                "уничтожите закрытую\n" +
-                "клетку на поле.\n" +
-                "Если взорвёте мину,\n" +
-                "соседние мины тоже\n" +
-                "взорвутся по цепи.\n" +
-                "Очков не даёт.";
-    }
 }

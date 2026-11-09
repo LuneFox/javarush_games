@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.board;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.interactive.SwitchSelector;
 import com.javarush.games.minesweeper.model.Options;
@@ -75,7 +77,7 @@ final class DeveloperTools {
                 }
             }
         }
-        game.showMessage(fieldDao.count(Cell::isClosed) == closedCells ? "DEV: CANNOT OPEN" : "DEV: AUTO OPEN");
+        game.showMessage(fieldDao.count(Cell::isClosed) == closedCells ? Text.DEV_CANNOT_OPEN.getText() : Text.DEV_AUTO_OPEN.getText());
     }
 
     /**
@@ -91,7 +93,7 @@ final class DeveloperTools {
         game.getShop().getScanner().activate();
         game.onMouseLeftClick(randomCell.x * Cell.PIXEL_SIZE, randomCell.y * Cell.PIXEL_SIZE);
         game.onMouseLeftClick(randomCell.x * Cell.PIXEL_SIZE, randomCell.y * Cell.PIXEL_SIZE);
-        game.showMessage("DEV: RANDOM SCAN");
+        game.showMessage(Text.DEV_RANDOM_SCAN.getText());
     }
 
     /**
@@ -112,8 +114,8 @@ final class DeveloperTools {
         autoOpen();
 
         game.showMessage(fieldDao.count(Cell::isClosed) == closedCells
-                ? "DEV: CANNOT SOLVE!"
-                : "DEV: SOLVING...");
+                ? Text.DEV_CANNOT_SOLVE.getText()
+                : Text.DEV_SOLVING.getText());
     }
 
     /**
@@ -141,9 +143,9 @@ final class DeveloperTools {
     private void showAutoFlagResult(boolean success) {
         if (!success) {
             stopAutoSolve = true;
-            game.showMessage("DEV: CANNOT FLAG");
+            game.showMessage(Text.DEV_CANNOT_FLAG.getText());
         } else {
-            game.showMessage("DEV: AUTO FLAG");
+            game.showMessage(Text.DEV_AUTO_FLAG.getText());
         }
     }
 }

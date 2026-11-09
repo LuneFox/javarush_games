@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Options;
@@ -126,22 +128,22 @@ public class Shop {
     /** Предлагает игроку купить флажок. */
     public void offerFlag() {
         if (!Options.getAutoBuyFlagsSelector().isEnabled() && flag.getInStock() > 0) {
-            game.showMessage("Купите флажок!");
+            game.showMessage(Text.SHOP_BUY_FLAG.getText());
             game.openShop();
             return;
         }
 
         if (game.countPlayerFlags() == 0 && flag.getInStock() == 0) {
-            game.showMessage("Флажки кончились");
+            game.showMessage(Text.SHOP_NO_FLAGS.getText());
             return;
         }
 
         if (flag.isUnobtainable()) {
-            game.showMessage("Невозможно купить!");
+            game.showMessage(Text.SHOP_CANNOT_BUY.getText());
             return;
         }
 
-        game.showMessage("Куплен флажок");
+        game.showMessage(Text.SHOP_FLAG_BOUGHT.getText());
         sellFlag();
     }
 
@@ -175,7 +177,7 @@ public class Shop {
         if (!Options.isDeveloperModeEnabled()) return;
         shovel.cheat99();
         dice.cheat99();
-        game.showMessage("DEV: 99 TOOLS");
+        game.showMessage(Text.DEV_TOOLS_99.getText());
     }
 
     /** Возвращает ячейки витрины магазина. */

@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.items;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -16,8 +18,8 @@ public class Scanner extends ShopItem {
     public Scanner(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SCANNER);
-        name = "Сканер";
-        description = getScannerDescription();
+        name = Text.ITEM_SCANNER_NAME.getText();
+        description = Text.ITEM_SCANNER_DESCRIPTION.getText();
         cost = 8 + Options.getDifficulty() / 5;
         inStock = 1;
         int framePadding = -9;
@@ -67,14 +69,4 @@ public class Scanner extends ShopItem {
         frame.draw();
     }
 
-    /** Возвращает описание сканера. */
-    private String getScannerDescription() {
-        return "Откроет безопасную\n" +
-                "клетку в указанном\n" +
-                "поле размером 3*3.\n" +
-                "Клик по клетке:\n" +
-                "   передвинуть поле\n" +
-                "Клик в центр поля:\n" +
-                "   сканировать поле";
-    }
 }

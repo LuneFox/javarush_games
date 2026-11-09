@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.gui.image;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.gui.Effect;
 
 import java.util.Arrays;
@@ -67,7 +69,7 @@ public class ImageCreator {
     public static int[][] makeSprite(String string, int width, int top, int left) {
         int height = string.length() / width;
         if ((width + left > 10) || (height + top > 10)) {
-            throw new IllegalArgumentException("Sprite is too big!");
+            throw new IllegalArgumentException(Text.ERROR_SPRITE_TOO_BIG.getText());
         }
 
         int[][] overlay = makeArray(string, width);

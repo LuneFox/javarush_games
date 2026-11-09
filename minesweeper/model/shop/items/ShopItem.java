@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.items;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
@@ -45,7 +47,7 @@ public abstract class ShopItem {
         if (isExpired()) {
             deactivate();
             putToStock();
-            game.showMessage(name + ": всё");
+            game.showMessage(name + Text.SHOP_ALL_STOCK_SUFFIX.getText());
         }
     }
 

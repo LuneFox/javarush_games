@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.items;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -11,8 +13,8 @@ public class Flag extends ShopItem {
     public Flag(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_FLAG);
-        name = "Флажок";
-        description = getFlagDescription();
+        name = Text.ITEM_FLAG_NAME.getText();
+        description = Text.ITEM_FLAG_DESCRIPTION.getText();
         cost = 1;
         inStock = game.countCells(Cell::isMined);
     }
@@ -23,14 +25,4 @@ public class Flag extends ShopItem {
         // Не активируется
     }
 
-    /** Возвращает описание флажка. */
-    private String getFlagDescription() {
-        return "Обычный флажок\n" +
-                "для установки на\n" +
-                "поле. Вы можете\n" +
-                "сэкономить золото,\n" +
-                "не покупая флажки,\n" +
-                "когда позиция мины\n" +
-                "очевидна.";
-    }
 }

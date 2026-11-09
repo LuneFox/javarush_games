@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -14,7 +16,7 @@ import com.javarush.games.minesweeper.view.View;
 public class ViewItemHelp extends View {
 
     /** Кнопка закрытия экрана. */
-    private final Button closeButton = new Button(88, 2, "x", this) {
+    private final Button closeButton = new Button(88, 2, Text.BUTTON_CLOSE.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {

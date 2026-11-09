@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -18,13 +20,13 @@ import com.javarush.games.minesweeper.view.View;
 public class ViewOptions extends View {
 
     /** Кнопка закрытия экрана. */
-    private final Button closeButton = new Button(88, 2, "x", this) {
+    private final Button closeButton = new Button(88, 2, Text.BUTTON_CLOSE.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
             super.onLeftClick();
             Phase.setActive(Phase.MAIN);
-            PopUpMessage.show(Options.OPTIONS_SAVED);
+            PopUpMessage.show(Text.OPTIONS_SAVED.getText());
         }
     };
     /** Фоновое изображение. */
@@ -50,21 +52,21 @@ public class ViewOptions extends View {
     public void update() {
         background.draw();
         final int leftPadding = 2;
-        Printer.print("<настройки>", Theme.LABEL.getColor(), Printer.CENTER, 2);
+        Printer.print(Text.OPTIONS_TITLE.getText(), Theme.LABEL.getColor(), Printer.CENTER, 2);
 
-        Printer.print("сложность", leftPadding, Options.getDifficultySelector().y - 1);
+        Printer.print(Text.OPTIONS_DIFFICULTY.getText(), leftPadding, Options.getDifficultySelector().y - 1);
         difficultySelector.draw();
 
-        Printer.print("покупка флажков", leftPadding, Options.getAutoBuyFlagsSelector().y - 1);
+        Printer.print(Text.OPTIONS_BUY_FLAGS.getText(), leftPadding, Options.getAutoBuyFlagsSelector().y - 1);
         autoBuyFlagsSelector.draw();
 
-        Printer.print("игра на время", leftPadding, Options.getTimerEnabledSelector().y - 1);
+        Printer.print(Text.OPTIONS_TIMER.getText(), leftPadding, Options.getTimerEnabledSelector().y - 1);
         timerEnabledSelector.draw();
 
-        Printer.print("Сообщения:", leftPadding, Options.getDisplayMessageSelector().y - 1);
+        Printer.print(Text.OPTIONS_MESSAGES.getText(), leftPadding, Options.getDisplayMessageSelector().y - 1);
         displayMessageSelector.draw();
 
-        Printer.print("тема: " + Theme.getCurrentName(), leftPadding, Options.getThemeSelector().y);
+        Printer.print(Text.OPTIONS_THEME_PREFIX.getText() + Theme.getCurrentName(), leftPadding, Options.getThemeSelector().y);
         themeSelector.draw();
 
         closeButton.draw();

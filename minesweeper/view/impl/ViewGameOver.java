@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -15,7 +17,7 @@ import com.javarush.games.minesweeper.view.View;
 /** Экран завершения партии. */
 public class ViewGameOver extends View {
     /** Кнопка «Снова». */
-    private final Button againButton = new Button(57, 69, "снова", this) {
+    private final Button againButton = new Button(57, 69, Text.BUTTON_AGAIN.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -24,7 +26,7 @@ public class ViewGameOver extends View {
         }
     };
     /** Кнопка возврата в меню. */
-    private final Button returnToMenuButton = new Button(15, 69, "меню", this) {
+    private final Button returnToMenuButton = new Button(15, 69, Text.BUTTON_MENU.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -33,7 +35,7 @@ public class ViewGameOver extends View {
         }
     };
     /** Кнопка скрытия оверлея. */
-    private final Button hideOverlayButton = new Button(73, 35, "x", this) {
+    private final Button hideOverlayButton = new Button(73, 35, Text.BUTTON_CLOSE.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -42,7 +44,7 @@ public class ViewGameOver extends View {
         }
     };
     /** Кнопка детализации счёта. */
-    private final Button showScoreDetailButton = new Button(18, 55, "?", this) {
+    private final Button showScoreDetailButton = new Button(18, 55, Text.BUTTON_HELP.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -86,7 +88,7 @@ public class ViewGameOver extends View {
         Image face = game.isWon() ? happyFace : sadFace;
         face.draw(Image.CENTER, Image.CENTER);
         Printer.print(GameStatistics.get("result"), Theme.LABEL.getColor(), 18, 33);
-        Printer.print("счёт: " + GameStatistics.get("total"), Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
+        Printer.print(Text.SCORE_PREFIX.getText() + GameStatistics.get("total"), Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
     }
 
     /** Ждёт окончания задержки перед показом экрана. */

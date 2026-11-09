@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.PopUpMessage;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -28,7 +30,7 @@ public class ViewShop extends View {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
-            PopUpMessage.show("Мины на поле");
+            PopUpMessage.show(Text.SHOP_MINES.getText());
         }
 
         /** Обрабатывает правый клик. */
@@ -42,7 +44,7 @@ public class ViewShop extends View {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
-            PopUpMessage.show("Ваши флажки");
+            PopUpMessage.show(Text.SHOP_FLAGS.getText());
         }
 
         /** Обрабатывает правый клик. */
@@ -56,7 +58,7 @@ public class ViewShop extends View {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
-            PopUpMessage.show("Ваше золото");
+            PopUpMessage.show(Text.SHOP_MONEY.getText());
         }
 
         /** Обрабатывает правый клик. */
@@ -90,7 +92,7 @@ public class ViewShop extends View {
     private void drawShowCase() {
         showCasePanel.draw(10, 10);
         game.getShop().getShowCaseSlots().forEach(InteractiveObject::draw);
-        Printer.print("*** магазин ***", Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
+        Printer.print(Text.SHOP_TITLE.getText(), Theme.SHOP_TITLE.getColor(), Printer.CENTER, 22);
     }
 
     /** Рисует шапку магазина. */
@@ -100,9 +102,9 @@ public class ViewShop extends View {
         headerMine.draw(13, 10);
         headerFlag.draw(42, 11);
         headerCoin.draw(70, 13);
-        Printer.print("" + game.countCells(Cell::isDangerousToOpen), 25, 12);
-        Printer.print("" + player.countFlags(), 52, 12);
-        Printer.print("" + shiftDisplayedMoney(), 76 + moneyShakeHelper.getShift(), 12);
+        Printer.print(Integer.toString(game.countCells(Cell::isDangerousToOpen)), 25, 12);
+        Printer.print(Integer.toString(player.countFlags()), 52, 12);
+        Printer.print(Integer.toString(shiftDisplayedMoney()), 76 + moneyShakeHelper.getShift(), 12);
     }
 
     /** Плавно показывает баланс золота. */
@@ -124,8 +126,8 @@ public class ViewShop extends View {
         headerFooterPanel.draw(10, 78);
         final long currentScore = game.getPlayer().getScore().getCurrentScore();
         final long countMoves = game.getPlayer().getMoves();
-        Printer.print("Очки:" + currentScore, Theme.SHOP_SCORE.getColor(), 13, 80);
-        Printer.print("Шаги:" + countMoves, Theme.SHOP_MOVES.getColor(), 88, 80, Printer.Align.RIGHT);
+        Printer.print(Text.SHOP_SCORE_PREFIX.getText() + currentScore, Theme.SHOP_SCORE.getColor(), 13, 80);
+        Printer.print(Text.SHOP_MOVES_PREFIX.getText() + countMoves, Theme.SHOP_MOVES.getColor(), 88, 80, Printer.Align.RIGHT);
     }
 
     /** Запускает тряску золота. */

@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Printer;
@@ -21,8 +23,6 @@ import static com.javarush.engine.cell.Color.*;
 /** Экран таблицы рекордов. */
 public class ViewRecords extends View {
 
-    /** Заголовок. */
-    private static final String TITLE = "<Лучшие игроки>";
     /** Таблица рекордов. */
     private static final Map<Integer, List<String>> RECORDS;
     /** Изображение призового кубка. */
@@ -32,7 +32,7 @@ public class ViewRecords extends View {
     /** Расстояние между записями. */
     private static final int GAP_BETWEEN_ENTRIES = 20;
     /** Кнопка закрытия экрана. */
-    private final Button closeButton = new Button(88, 2, "x", this) {
+    private final Button closeButton = new Button(88, 2, Text.BUTTON_CLOSE.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -59,7 +59,7 @@ public class ViewRecords extends View {
     @Override
     public void update() {
         BACKGROUND.draw();
-        Printer.print(TITLE, Theme.LABEL.getColor(), Printer.CENTER, 2);
+        Printer.print(Text.RECORDS_TITLE.getText(), Theme.LABEL.getColor(), Printer.CENTER, 2);
         closeButton.draw();
         drawPrizeCups();
         drawEntries();
@@ -92,7 +92,7 @@ public class ViewRecords extends View {
             // Имя (верхняя строка, слева)
             Printer.print(RECORDS.get(i).get(0), colors[++currentColor], 19, topLine += GAP_BETWEEN_ENTRIES);
             // ID JavaRush (нижняя строка, слева)
-            Printer.print("\nID " + RECORDS.get(i).get(1), colors[currentColor], 19, topLine);
+            Printer.print(Text.RECORDS_ID_PREFIX.getText() + RECORDS.get(i).get(1), colors[currentColor], 19, topLine);
             // Счёт (нижняя строка, справа)
             Printer.print(RECORDS.get(i).get(2), colors[0], 98, bottomLine += GAP_BETWEEN_ENTRIES, Align.RIGHT);
         }

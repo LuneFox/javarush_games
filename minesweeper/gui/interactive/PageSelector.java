@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.gui.interactive;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.gui.Printer;
 import com.javarush.games.minesweeper.model.InteractiveObject;
@@ -64,7 +66,7 @@ public class PageSelector extends InteractiveObject {
 
     /** Печатает номер страницы. */
     private void printPageIndex() {
-        String indexText = ((currentPage + 1) + " / " + (maxPage + 1));
+        String indexText = ((currentPage + 1) + Text.PAGE_INDEX_SEPARATOR.getText() + (maxPage + 1));
         int textHorizontalPosition = getTextHorizontalPosition(indexText);
         Printer.print(indexText, Color.WHITE, textHorizontalPosition, y - 1);
     }

@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.view.impl;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.Display;
@@ -26,7 +28,7 @@ public class ViewScore extends View {
     private static final int PADDING_LEFT = 3;
 
     /** Кнопка закрытия экрана. */
-    private final Button closeButton = new Button(88, 2, "x", this) {
+    private final Button closeButton = new Button(88, 2, Text.BUTTON_CLOSE.getText(), this) {
         /** Обрабатывает левый клик. */
         @Override
         public void onLeftClick() {
@@ -61,14 +63,8 @@ public class ViewScore extends View {
 
     /** Печатает детализацию общего счёта. */
     private void printTotalScoreDetails() {
-        printPage("<детализация>",
-                "ячейки:\n" +
-                        "кубик:\n" +
-                        "мины:\n" +
-                        "золото:\n" +
-                        "щиты:\n" +
-                        "скорость:\n\n" +
-                        "итого:",
+        printPage(Text.SCORE_DETAILS_TITLE.getText(),
+                Text.SCORE_DETAILS_LABELS.getText(),
                 GameStatistics.get("cells") + "\n" +
                         GameStatistics.get("dice_total") + "\n" +
                         GameStatistics.get("mines") + "\n" +
@@ -81,11 +77,8 @@ public class ViewScore extends View {
 
     /** Печатает детализацию очков кубика. */
     private void printDiceScoreDetails() {
-        printPage("<очки кубика>",
-                "средняя удача:\n" +
-                        "затронуто ячеек:\n" +
-                        "бонус сложности:\n\n" +
-                        "в общем счёте:",
+        printPage(Text.SCORE_DICE_TITLE.getText(),
+                Text.SCORE_DICE_LABELS.getText(),
                 GameStatistics.get("dice_luck") + "\n" +
                         GameStatistics.get("dice_rolls") + "\n" +
                         GameStatistics.get("difficulty") + "\n\n\n" +

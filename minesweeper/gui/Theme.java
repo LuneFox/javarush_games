@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.gui;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.ImageManager;
@@ -190,10 +192,10 @@ public enum Theme {
 
     static {
         NAMES = new HashMap<>();
-        NAMES.put(0, "СССР");
-        NAMES.put(1, "МЯТА");
-        NAMES.put(2, "НЕБО");
-        NAMES.put(3, "ДЮНА");
+        NAMES.put(0, Text.THEME_USSR.getText());
+        NAMES.put(1, Text.THEME_MINT.getText());
+        NAMES.put(2, Text.THEME_SKY.getText());
+        NAMES.put(3, Text.THEME_DUNE.getText());
         currentNumber = 3;
     }
 

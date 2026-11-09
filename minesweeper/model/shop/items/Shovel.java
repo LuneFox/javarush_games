@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.items;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.ShopItemStatusBar;
@@ -15,8 +17,8 @@ public class Shovel extends ShopItem {
     public Shovel(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHOVEL);
-        name = "Золотая лопата";
-        description = getShovelDescription();
+        name = Text.ITEM_SHOVEL_NAME.getText();
+        description = Text.ITEM_SHOVEL_DESCRIPTION.getText();
         cost = 9;
         inStock = 1;
         effectDuration = 5;
@@ -34,14 +36,4 @@ public class Shovel extends ShopItem {
         statusBar.draw();
     }
 
-    /** Возвращает описание лопаты. */
-    private String getShovelDescription() {
-        return "Следующие 5 шагов\n" +
-                "вы будете получать\n" +
-                "в два раза больше\n" +
-                "золотых монет.\n" +
-                "Золото добывается\n" +
-                "при открытии клеток\n" +
-                "с цифрами.";
-    }
 }

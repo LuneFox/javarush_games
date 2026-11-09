@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.items;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
@@ -16,8 +18,10 @@ public class Shield extends ShopItem {
     public Shield(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_SHIELD);
-        name = "Сапёрский щит";
-        description = getShieldDescription();
+        name = Text.ITEM_SHIELD_NAME.getText();
+        description = Text.ITEM_SHIELD_DESCRIPTION_PREFIX.getText()
+                + 150 * difficultyModifier
+                + Text.ITEM_SHIELD_DESCRIPTION_SUFFIX.getText();
         cost = 13 + difficultyModifier;
         inStock = 1;
     }
@@ -28,7 +32,7 @@ public class Shield extends ShopItem {
         cell.setShielded(true);
         affectScore();
         putToStock();
-        game.showMessage("Щит разрушен!");
+        game.showMessage(Text.SHOP_SHIELD_BROKEN.getText());
     }
 
     /** Применяет штраф к счёту. */
@@ -45,11 +49,4 @@ public class Shield extends ShopItem {
         isActivated = true;
     }
 
-    /** Возвращает описание щита. */
-    private String getShieldDescription() {
-        return "Спасёт от взрыва\n" +
-                "при открытии мины\n" +
-                "один раз. Однако вы\n" +
-                "потеряете " + 150 * difficultyModifier + " очков.";
-    }
 }

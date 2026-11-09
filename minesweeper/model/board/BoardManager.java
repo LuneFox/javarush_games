@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.board;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.games.minesweeper.DeveloperOption;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.model.Options;
@@ -126,7 +128,7 @@ public class BoardManager {
         Cell cell = fieldDao.getCellByCoordinates(x, y);
 
         if (cell.isShop()) {
-            game.showMessage("Двери магазина");
+            game.showMessage(Text.BOARD_SHOP_DOORS.getText());
             return;
         }
 
@@ -272,7 +274,7 @@ public class BoardManager {
     public boolean destroyCell(Cell cell) {
         if (game.isStopped()) return false;
         if (cell.isIndestructible() && !isRecursiveMove) {
-            game.showMessage("Не получилось!");
+            game.showMessage(Text.BOARD_SCAN_FAILED.getText());
             return false;
         }
 
@@ -281,7 +283,7 @@ public class BoardManager {
         flagManager.returnFlagToShop(cell);
 
         if (cell.isMined()) {
-            game.showMessage(isRecursiveMove ? "Взорвались мины!" : "Взорвалась мина!");
+            game.showMessage(isRecursiveMove ? Text.BOARD_MINES_EXPLODED.getText() : Text.BOARD_MINE_EXPLODED.getText());
 
             miniBombHitMine = true;
             isRecursiveMove = true;
@@ -321,10 +323,10 @@ public class BoardManager {
     public void scanNeighbors(Cell cell) {
         List<Cell> safeCells = fieldDao.getCellsIn3x3area(cell, Cell::isSafeToOpen);
         if (!safeCells.isEmpty()) {
-            game.showMessage("Сканирование...");
+            game.showMessage(Text.BOARD_SCANNING.getText());
             scanRandomCell(safeCells);
         } else {
-            game.showMessage("Нечего сканировать");
+            game.showMessage(Text.BOARD_NOTHING_TO_SCAN.getText());
             placeFlagsForPlayer(cell);
         }
     }

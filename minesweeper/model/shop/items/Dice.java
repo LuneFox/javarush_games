@@ -1,5 +1,7 @@
 package com.javarush.games.minesweeper.model.shop.items;
 
+import com.javarush.games.minesweeper.Text;
+
 import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.MinesweeperGame;
 import com.javarush.games.minesweeper.Util;
@@ -28,8 +30,8 @@ public class Dice extends ShopItem {
     public Dice(MinesweeperGame game) {
         super(game);
         icon = Image.cache.get(ImageType.SHOP_SHOWCASE_DICE);
-        name = "Кубик удачи";
-        description = getDiceDescription();
+        name = Text.ITEM_DICE_NAME.getText();
+        description = Text.ITEM_DICE_DESCRIPTION.getText();
         cost = 6;
         inStock = 1;
         effectDuration = 3;
@@ -99,13 +101,4 @@ public class Dice extends ShopItem {
         return rollsCount;
     }
 
-    /** Возвращает описание кубика. */
-    private String getDiceDescription() {
-        return "Следующие 3 шага\n" +
-                "вы можете получить\n" +
-                "от 1 до 6 раз больше\n" +
-                "очков. Базовое\n" +
-                "количество зависит\n" +
-                "от сложности игры.";
-    }
 }
