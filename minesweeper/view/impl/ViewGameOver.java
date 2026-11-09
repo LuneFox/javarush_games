@@ -58,6 +58,8 @@ public class ViewGameOver extends View {
     private final Image happyFace = new Image(ImageType.PICTURE_YELLOW_CAT_SMILE);
     /** Изображение грустного кота. */
     private final Image sadFace = new Image(ImageType.PICTURE_YELLOW_CAT_SAD);
+    /** Победный результат текущего баннера. */
+    private boolean won;
 
     /** Создаёт экземпляр ViewGameOver. */
     public ViewGameOver(MinesweeperGame game) {
@@ -84,8 +86,9 @@ public class ViewGameOver extends View {
 
     /** Рисует баннер результата. */
     private void drawBanner() {
+        if (game.isStopped()) won = game.isWon();
         victoryWindow.draw(Image.CENTER, Image.CENTER);
-        Image face = game.isWon() ? happyFace : sadFace;
+        Image face = won ? happyFace : sadFace;
         face.draw(Image.CENTER, Image.CENTER);
         Printer.print(GameStatistics.get("result"), Theme.LABEL.getColor(), 18, 33);
         Printer.print(Text.SCORE_PREFIX.getText() + GameStatistics.get("total"), Options.isDeveloperModeEnabled() ? Color.RED : Color.LIGHTGOLDENRODYELLOW, 29, 57);
