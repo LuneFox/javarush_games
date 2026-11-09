@@ -63,6 +63,16 @@ public class Printer {
 
     /** Печатает текст. */
     public static void print(String input, Color color, int drawX, int drawY, Align align) {
+        print(input, color, Theme.TEXT_SHADOW.getColor(), drawX, drawY, align);
+    }
+
+    /** Печатает текст с заданным цветом обводки. */
+    public static void print(String input, Color color, Color strokeColor, int drawX, int drawY) {
+        print(input, color, strokeColor, drawX, drawY, Align.LEFT);
+    }
+
+    /** Печатает текст с заданным цветом обводки и выравниванием. */
+    public static void print(String input, Color color, Color strokeColor, int drawX, int drawY, Align align) {
         isStrokeEnabled = false;
         drawX = adjustDrawX(input, drawX);
         drawY = adjustDrawY(drawY);
@@ -104,7 +114,7 @@ public class Printer {
             caret.gotoStartPosition(line);
             char[] sequence = line.toLowerCase().toCharArray();
             for (char c : sequence) {
-                drawSymbol(c, color, caret.x, caret.y);
+                drawSymbol(c, color, strokeColor, caret.x, caret.y);
                 caret.gotoNextSymbol(c);
             }
             caret.gotoNewLine();
@@ -112,7 +122,7 @@ public class Printer {
     }
 
     /** Рисует символ. */
-    private static void drawSymbol(char c, Color color, int x, int y) {
+    private static void drawSymbol(char c, Color color, Color strokeColor, int x, int y) {
         if (charIsStrokeMarkup(c)) {
             isStrokeEnabled = !isStrokeEnabled;
             return;
@@ -120,7 +130,7 @@ public class Printer {
 
         Image symbol = getSymbol(c);
         if (symbol == null) return;
-        if (isStrokeEnabled) stroke(x, y, symbol);
+        if (isStrokeEnabled) stroke(x, y, symbol, strokeColor);
         symbol.changeColor(color, 1);
         symbol.draw(x, y);
     }
@@ -145,8 +155,8 @@ public class Printer {
     }
 
     /** Рисует обводку символа. */
-    private static void stroke(int x, int y, Image symbol) {
-        symbol.changeColor(Theme.TEXT_SHADOW.getColor(), 1);
+    private static void stroke(int x, int y, Image symbol, Color strokeColor) {
+        symbol.changeColor(strokeColor, 1);
         symbol.draw(x - 1, y);
         symbol.draw(x + 1, y);
         symbol.draw(x, y - 1);

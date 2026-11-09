@@ -4,6 +4,7 @@ import com.javarush.engine.cell.Color;
 import com.javarush.games.minesweeper.controller.Controller;
 import com.javarush.games.minesweeper.gui.image.Image;
 import com.javarush.games.minesweeper.gui.image.ImageType;
+import com.javarush.games.minesweeper.gui.image.Mirror;
 import com.javarush.games.minesweeper.model.InteractiveObject;
 import com.javarush.games.minesweeper.model.Options;
 
@@ -102,14 +103,15 @@ public class PopUpMessage extends InteractiveObject {
         posY += slideFromBottom ? SLIDE_STEP : -SLIDE_STEP;
     }
 
-    /** Рисует панель. */
+    /** Рисует панель; при появлении снизу градиент переворачивается. */
     private void drawPanel() {
-        panel.draw(Image.CENTER, posY);
+        panel.setPosition(Image.CENTER, posY);
+        panel.draw(slideFromBottom ? Mirror.VERTICAL : Mirror.NONE);
     }
 
     /** Печатает сообщение. */
     private void printMessage() {
-        Printer.print(text, Color.WHITE, Printer.CENTER, posY + 1);
+        Printer.print("<" + text + ">", Color.WHITE, Color.GRAY, Printer.CENTER, posY + 1);
     }
 
     /** Сообщает, закончилось ли время сообщения. */

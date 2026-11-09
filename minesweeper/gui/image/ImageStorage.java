@@ -274,8 +274,8 @@ public class ImageStorage {
                 data = createFrame(10, 10, Effect.STROKE);
                 break;
             case GUI_POPUP_MESSAGE:
-                setColors(BLACK, BLACK, BLACK);
-                data = createFrame(90, 11);
+                setColors(LIGHTGRAY, LIGHTGRAY, DARKGRAY, DARKGRAY, GRAY, GRAY, DIMGRAY, DIMGRAY, DIMGRAY, BLACK);
+                data = createGradientFrame(90, 11, 9);
                 break;
             case BOARD_DICE_1:
                 setColors(WHITE, RED, BLACK);

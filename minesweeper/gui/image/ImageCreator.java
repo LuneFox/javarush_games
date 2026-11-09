@@ -93,6 +93,36 @@ public class ImageCreator {
     /** Цвет обводки рамки. */
     private static final int FRAME_COLOR_STROKE = 3;
 
+    /** Создаёт вертикальный градиент из заданного числа оттенков без рамки. */
+    public static int[][] createVerticalGradient(int width, int height, int steps) {
+        int[][] gradient = new int[height][width];
+
+        for (int y = 0; y < height; y++) {
+            for (int x = 0; x < width; x++) {
+                gradient[y][x] = 1 + (y * steps) / height;
+            }
+        }
+
+        return gradient;
+    }
+
+    /** Создаёт вертикальный градиент с чёрной рамкой по краям. */
+    public static int[][] createGradientFrame(int width, int height, int steps) {
+        int[][] frame = createVerticalGradient(width, height, steps);
+        int border = steps + 1;
+
+        for (int x = 0; x < width; x++) {
+            frame[0][x] = border;
+            frame[height - 1][x] = border;
+        }
+        for (int y = 0; y < height; y++) {
+            frame[y][0] = border;
+            frame[y][width - 1] = border;
+        }
+
+        return frame;
+    }
+
     /** Создаёт матрицу рамки. */
     public static int[][] createFrame(int sizeX, int sizeY, Effect... effects) {
         final boolean addShadow = Arrays.asList(effects).contains(Effect.SHADOW);
