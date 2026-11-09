@@ -27,6 +27,47 @@ exploring the code, and update it whenever architecture, state flow, controls, b
 or build/test instructions change. These files are ignored by Git together with the rest of
 `agent_dev/`.
 
+## JavaDoc and comment style
+
+The current JavaDoc style is intentional: short, factual, Russian, and written for a reader who
+already knows Java but not this game. Keep it consistent across all games.
+
+- Document every type, field, constant, constructor, and method with a JavaDoc comment directly
+  above its declaration. Do not leave public or private members undocumented just because their
+  names look obvious.
+- Prefer **one line**:
+  `/** Возвращает сдвиг дула от левого края. */`
+- Start with a capital letter and end with a period. Use Russian prose; keep class names, API
+  names, and established terms such as JavaDoc/GWT in their original form.
+- Start with the role of the member:
+  - constructors: `Создаёт ...`;
+  - getters: `Возвращает ...`;
+  - boolean checks: `Сообщает, ...` or `Проверяет ...`;
+  - actions: `Двигает ...`, `Рисует ...`, `Печатает ...`, `Сбрасывает ...`;
+  - mutators: `Задаёт ...`, `Включает ...`, `Запрещает ...`.
+- Write what the member means or guarantees, not a paraphrase of its signature:
+  `/** Задержка между кадрами марша. */` is better than `/** Задержка. */`.
+- Use a multi-line JavaDoc only when a real caveat, formula, or cross-reference needs explaining.
+  Keep the opening `/**` and closing `*/` on their own lines and wrap prose at roughly 100
+  columns:
+  ```java
+  /**
+   * Возвращает базовые очки за уничтожение танка. Множитель стадии добавляет {@link Score},
+   * поэтому здесь стадия не учитывается — иначе очки умножались бы на неё дважды.
+   */
+  ```
+- Do **not** add `@param`, `@return`, `@throws`, `@author`, `@since`, or `@version` by default.
+  The project uses prose summaries instead; add a tag only if omitting it would make a genuinely
+  non-obvious contract unclear.
+- Use `{@link Type}` when referring to another project type in prose, as in the example above.
+- Use inline `//` comments for non-obvious “why” notes, not for restating code. Use plain
+  `/* ... */` block comments as section headers inside long classes; do not turn section headers
+  into JavaDoc.
+- A JavaDoc must stay true when behavior changes. Updating code without updating its comment is a
+  defect.
+
+The same tone applies to README and agent notes: concise, concrete, no filler.
+
 ## Publication target
 
 These projects are not published by running a normal JVM. JavaRush compiles the game and
