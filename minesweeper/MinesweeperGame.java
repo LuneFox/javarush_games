@@ -67,10 +67,11 @@ public class MinesweeperGame extends Game {
         Phase.setActive(Phase.MAIN);
     }
 
-    /** Обновляет представление и выводит кадр на экран. */
+    /** Обновляет взрывы, представление и выводит кадр на экран. */
     @Override
     public void onTurn(int step) {
-        if (display == null) return;
+        if (display == null || boardManager == null) return;
+        boardManager.updateExplosions();
         Phase.updateView();
         display.draw();
     }
@@ -183,9 +184,7 @@ public class MinesweeperGame extends Game {
      * Уничтожает клетку бомбой и сообщает, удалось ли это.
      */
     public boolean destroyCell(Cell cell) {
-        boolean destroyed = boardManager.destroyCell(cell);
-        boardManager.cleanUpAfterMineDestruction();
-        return destroyed;
+        return boardManager.destroyCell(cell);
     }
 
     /**

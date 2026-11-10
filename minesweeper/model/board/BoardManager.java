@@ -15,6 +15,7 @@ import com.javarush.games.minesweeper.model.shop.Shop;
 import com.javarush.games.minesweeper.model.shop.items.Dice;
 import com.javarush.games.minesweeper.model.shop.items.Shield;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -41,8 +42,16 @@ public class BoardManager {
     private boolean isRecursiveMove;
     /** Попала ли мини-бомба в мину. */
     private boolean miniBombHitMine;
+    /** Мины, которые взорвутся на текущем шаге. */
+    private final List<Cell> currentWave = new ArrayList<>();
+    /** Мины, которые перейдут в следующий шаг взрыва. */
+    private final List<Cell> nextWave = new ArrayList<>();
+    /** Оставшаяся задержка перед следующим шагом взрыва. */
+    private int explosionDelay;
     /** Число попыток разложить мины без изолированных мин. */
     private static final int MINE_PLACEMENT_ATTEMPTS = 1000;
+    /** Задержка перед каждым следующим взрывом в кадрах. */
+    private static final int EXPLOSION_DELAY = 5;
 
     /** Создаёт экземпляр BoardManager. */
     public BoardManager(MinesweeperGame game) {
@@ -66,6 +75,10 @@ public class BoardManager {
         timer.reset();
         isRecursiveMove = false;
         isFirstMove = true;
+        miniBombHitMine = false;
+        currentWave.clear();
+        nextWave.clear();
+        explosionDelay = 0;
     }
 
     /** Расставляет мины по полю, избегая мин без безопасных соседей. */
@@ -303,7 +316,7 @@ public class BoardManager {
      * Уничтожает клетку и сообщает, удалось ли это.
      */
     public boolean destroyCell(Cell cell) {
-        if (game.isStopped()) return false;
+        if (game.isStopped() || isExplosionActive()) return false;
         if (cell.isIndestructible() && !isRecursiveMove) {
             game.showMessage(Text.BOARD_SCAN_FAILED.getText());
             return false;
@@ -314,26 +327,78 @@ public class BoardManager {
         flagManager.returnFlagToShop(cell);
 
         if (cell.isMined()) {
-            game.showMessage(isRecursiveMove ? Text.BOARD_MINES_EXPLODED.getText() : Text.BOARD_MINE_EXPLODED.getText());
-
+            game.showMessage(Text.BOARD_MINE_EXPLODED.getText());
             miniBombHitMine = true;
             isRecursiveMove = true;
             isFlagExplosionAllowed = true;
 
             cell.destroy();
+            collectNeighborMines(cell, currentWave);
+            updateAllCountMinedNeighbors();
 
-            fieldDao.getNeighborCells(cell, Cell::isMined).forEach(neighbor -> destroyCell(neighbor));
+            if (currentWave.isEmpty()) {
+                cleanUpAfterMineDestruction();
+            } else {
+                explosionDelay = EXPLOSION_DELAY;
+            }
         } else {
             cell.destroy();
+            updateAllCountMinedNeighbors();
         }
-        updateAllCountMinedNeighbors();
+
         checkVictory();
         return true;
     }
 
+    /** Добавляет соседние мины в указанную волну. */
+    private void collectNeighborMines(Cell cell, List<Cell> wave) {
+        for (Cell neighbor : fieldDao.getNeighborCells(cell, Cell::isMined)) {
+            if (!wave.contains(neighbor)) wave.add(neighbor);
+        }
+    }
+
+    /** Сообщает, идёт ли ещё цепочка взрывов. */
+    private boolean isExplosionActive() {
+        return !currentWave.isEmpty() || !nextWave.isEmpty();
+    }
+
+    /** Продвигает волну взрывов на один кадр. */
+    public void updateExplosions() {
+        if (currentWave.isEmpty()) {
+            if (miniBombHitMine) cleanUpAfterMineDestruction();
+            return;
+        }
+        if (explosionDelay > 0) {
+            explosionDelay--;
+            return;
+        }
+
+        List<Cell> exploded = new ArrayList<>(currentWave);
+        currentWave.clear();
+
+        for (Cell cell : exploded) {
+            if (!cell.isMined()) continue;
+            flagManager.returnFlagToShop(cell);
+            cell.destroy();
+        }
+
+        updateAllCountMinedNeighbors();
+        for (Cell cell : exploded) {
+            collectNeighborMines(cell, nextWave);
+        }
+        currentWave.addAll(nextWave);
+        nextWave.clear();
+
+        if (currentWave.isEmpty()) {
+            cleanUpAfterMineDestruction();
+        } else {
+            explosionDelay = EXPLOSION_DELAY;
+        }
+    }
+
     /** Открывает соседей после взрыва мин. */
     public void cleanUpAfterMineDestruction() {
-        if (!miniBombHitMine) return;
+        if (!miniBombHitMine || isExplosionActive()) return;
 
         for (Cell explodedMine : fieldDao.getAllCells()) {
             if (!explodedMine.isDestroyed() || !explodedMine.wasMinedBeforeDestruction()) continue;
