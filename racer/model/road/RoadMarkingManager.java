@@ -7,29 +7,34 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Builds and updates the dashed lane markings. It owns two rows of dashes (upper at y = 30, lower at
- * y = 70, the lower row shifted right by one dash length) with a pitch of four dash lengths, and
- * recycles dashes that scroll off the left edge back to the right side so the pattern never runs out.
+ * Строит и обновляет пунктирную разметку полос. Управляет двумя рядами отметок (верхний на
+ * y = 30, нижний на y = 70, нижний сдвинут вправо на длину отметки) с шагом в четыре длины
+ * отметки и возвращает ушедшие за левый край отметки в правый конец их собственного ряда,
+ * поэтому разметка не заканчивается и сохраняет шаг.
  */
 public class RoadMarkingManager implements GameObjectManager {
+    /** Шаг между соседними отметками в одной полосе: четыре длины отметки. */
+    private static final double PITCH = 4 * RoadMarking.LENGTH;
+
+    /** Все отметки обеих полос. */
     private final List<RoadMarking> markings = new ArrayList<>();
 
     /**
-     * Creates the manager and immediately seeds both rows of dashes.
+     * Создаёт менеджер и сразу заполняет оба ряда отметок.
      */
     public RoadMarkingManager() {
         createMarkings();
     }
 
     /**
-     * Seeds the two dash rows from x = {@code WIDTH + LENGTH} down to {@code -LENGTH} in steps of
-     * {@code 4 * LENGTH}. The upper row sits a quarter of the road width above the centre line and the
-     * lower row the same distance below it, offset one dash length to the right.
+     * Заполняет два ряда отметок от x = {@code WIDTH + LENGTH} до {@code -LENGTH} с шагом
+     * {@link #PITCH}. Верхний ряд стоит на четверть ширины дороги выше центральной линии,
+     * нижний — на столько же ниже и сдвинут вправо на длину отметки.
      */
     private void createMarkings() {
         final double len = RoadMarking.LENGTH;
 
-        for (double i = RacerGame.WIDTH + len; i >= -len; i -= (4 * len)) {
+        for (double i = RacerGame.WIDTH + len; i >= -len; i -= PITCH) {
 
             final double screenHalf = RacerGame.HEIGHT / 2.0;
             final double laneHalf = RoadManager.ROAD_WIDTH / 4.0;
@@ -43,49 +48,53 @@ public class RoadMarkingManager implements GameObjectManager {
     }
 
     /**
-     * Draws every dash into the display buffer in list order.
+     * Рисует все отметки в буфер отображения в порядке списка.
      */
     public void drawObjects() {
         markings.forEach(RoadMarking::draw);
     }
 
     /**
-     * Moves every dash left by {@code boost} and recycles the ones that have already left the screen.
-     * The off-screen test runs before the move, so a dash can overshoot the left edge by up to one
-     * frame of movement. A negative boost (the car driving backwards) would push dashes to the right
-     * with nothing bringing them back.
+     * Двигает все отметки влево на {@code boost}, затем возвращает ушедшие за экран. Сначала
+     * двигаются все отметки: правая граница для возврата должна быть уже сдвинутой, иначе
+     * отметка, сдвинутая позже в этом же кадре, превратит зазор 20 px в 26 px. Отметка может
+     * уйти за левый край на один кадр движения до возврата; отрицательный boost (машина едет
+     * назад) сдвигал бы отметки вправо, и вернуть их было бы нечем.
      *
-     * @param boost world pixels per frame, normally the car's current speed
+     * @param boost мировые пиксели за кадр, обычно текущая скорость машины
      */
     public void moveObjects(double boost) {
         for (RoadMarking marking : markings) {
+            marking.x -= boost;
+        }
+
+        for (RoadMarking marking : markings) {
             if (marking.isOutsideScreen()) {
                 transferBehindRightBorder(marking);
-            } else {
-                marking.x -= boost;
             }
         }
     }
 
     /**
-     * Recycles a dash by placing it past the current rightmost dash: the largest x among all dashes plus
-     * two dash lengths, rounded up to a whole pixel. It is off-screen again immediately, but the exact
-     * four-length pitch used when seeding is not restored.
+     * Возвращает отметку за правый край её полосы: ставит её на шаг {@link #PITCH} правее
+     * самой правой отметки той же полосы. Так сохраняется исходный шаг, и разметка не
+     * расползается.
      *
-     * @param marking dash that has left the left edge
+     * @param marking отметка, ушедшая за левый край
      */
     private void transferBehindRightBorder(RoadMarking marking) {
-        double rightBorder = getRightBorder();
-        marking.x = Math.ceil(rightBorder + RoadMarking.LENGTH * 2);
+        marking.x = getRightBorder(marking.y) + PITCH;
     }
 
     /**
-     * Finds the largest x among all dashes, used as the anchor for recycling.
+     * Возвращает наибольшую x-координату среди отметок той же полосы.
      *
-     * @return the rightmost dash position, or 0 when there are no dashes
+     * @param y ряд полосы
+     * @return правая граница полосы, или 0, если в ней нет отметок
      */
-    private double getRightBorder() {
+    private double getRightBorder(double y) {
         return markings.stream()
+                .filter(marking -> marking.y == y)
                 .mapToDouble(marking -> marking.x)
                 .max()
                 .orElse(0);
